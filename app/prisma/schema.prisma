@@ -1,0 +1,64 @@
+// Prisma schema file: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+model Account {
+  id                String @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  uid               String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id              String           @id @default(cuid())
+  name            String?
+  email           String           @unique
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  identifications Identification[]
+}
+
+model Identification {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  identity   Identity @relation(fields: [identityId], references: [id])
+  identityId Int
+}
+
+model Identity {
+  id              Int              @id @default(autoincrement())
+  name            String
+  slug            String           @unique
+  description     String?
+  identifications Identification[]
+
+  @@map(name: "identities")
+}
+
+model Activity {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+// model Post {
+//   id        Int     @default(autoincrement()) @id
+//   title     String
+//   content   String?
+//   published Boolean @default(false)
+// }

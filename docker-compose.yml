@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  nextjs:
+    image: nextjs:latest
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000 # Next.js application
+      - 9229:9229 # Node.js debug port
+    env_file:
+      - ./app/.env
+
+  postgres:
+    image: postgres:14
+    ports:
+      - 5432:5432
+    env_file:
+      - ./app/.env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  cypress:
+    # https://github.com/cypress-io/cypress-docker-images
+    image: "cypress/included:8.4.1"
+    depends_on:
+      nextjs:
+        condition: service_healthy
+    environment:
+      - CYPRESS_baseUrl=http://localhost:3000/
+    working_dir: /e2e
+    volumes:
+      - ./cypress:/e2e/cypress
+      - ./cypress.json:/e2e/cypress.json
+
+# For more information on how volumes work, please see https://docs.docker.com/storage/volumes/
+volumes:
+  postgres_data: null

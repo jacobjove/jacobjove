@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  github_workflow_preprocessor:
+    command: sh .github/preprocess.sh
+    entrypoint: ''
+    image: ghcr.io/mithro/actions-includes/image:main
+    user: root
+    volumes:
+      - .:/github/workspace
+      - ./.git:/github/workspace/.git
+
+  nextjs:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args:
+        ENVIRONMENT: dev
+      network: host
+    image: nextjs:latest
+    command: npm run dev
+    environment:
+      NEXTAUTH_URL: "http://localhost:3000"
+      REACT_EDITOR: "code"
+    user: root # avoid permissions issues with writing in build dir
+    volumes:
+      - ./app:/app
+      # Prevent the container's node_modules and .next folders from being overwritten 
+      # by the initial mapping of the local directory to /app.
+      - ./app/node_modules:/app/node_modules
+      - ./app/.next:/app/.next
