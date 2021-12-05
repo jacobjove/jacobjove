@@ -33,7 +33,9 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
       <Container maxWidth={"lg"}>
         <Grid container spacing={2}>
           <Grid item xs={12} lg={8}>
-            <Box textAlign="center">Welcome to HabitBuilder.</Box>
+            <Box>
+              <Typography variant={"h1"}>Be your best self.</Typography>
+            </Box>
           </Grid>
         </Grid>
       </Container>
