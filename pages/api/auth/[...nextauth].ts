@@ -55,10 +55,10 @@ if (useMockProviders) {
 // https://next-auth.js.org/configuration/callbacks
 const callbacks = {
   async signIn({ user, account, profile, email, credentials }) {
-    if (account.provider === "google") {
-      return profile.email_verified
-    }
-    return true // Do different verification for other providers that don't have `email_verified`
+    // if (account.provider === "google") {
+    //   return profile.email_verified
+    // }
+    return true
   },
   // async redirect({ url, baseUrl }) {
   //   return baseUrl
