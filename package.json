@@ -54,6 +54,7 @@
     "@next-auth/prisma-adapter": "^0.5.2-next.19",
     "@next/bundle-analyzer": "^9.5.2",
     "@prisma/client": "^3.5.0",
+    "@sentry/nextjs": "^6.15.0",
     "apollo-server-micro": "^3.5.0",
     "axios": "^0.21.4",
     "babel-jest": "^27.2.2",

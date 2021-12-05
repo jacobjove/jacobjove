@@ -2,12 +2,64 @@ import prisma from '@/lib/prisma';
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { AppProviders } from 'next-auth/providers';
+
+const { VERCEL_ENV, APP_ENV } = process.env;
+let useMockProviders = VERCEL_ENV === 'preview';
+if (APP_ENV === 'test') {
+  console.log('⚠️ Using mocked auth providers');
+  useMockProviders = true;
+}
+
+const providers: AppProviders = [];
+if (useMockProviders) {
+  const credentials = {
+    name: { type: 'test' },
+  }
+  const authorize = async (credentials) => {
+    const user = {
+      id: credentials.name,
+      name: credentials.name,
+      email: credentials.name,
+    };
+    return user;
+  }
+  providers.push(
+    CredentialsProvider({
+      id: 'google',
+      name: 'Mocked Google',
+      authorize,
+      credentials,
+    }),
+    CredentialsProvider({
+      id: 'github',
+      name: 'Mocked GitHub',
+      authorize,
+      credentials,
+    }),
+  );
+} else {
+  providers.push(
+    GoogleProvider({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+    }),
+    GitHubProvider({
+      clientId: process.env.AUTH_GITHUB_ID,
+      clientSecret: process.env.AUTH_GITHUB_SECRET,
+    }),
+  );
+}
 
 // https://next-auth.js.org/configuration/callbacks
 const callbacks = {
-  // async signIn({ user, account, profile, email, credentials }) {
-  //   return true
-  // },
+  async signIn({ user, account, profile, email, credentials }) {
+    if (account.provider === "google") {
+      return profile.email_verified
+    }
+    return true // Do different verification for other providers that don't have `email_verified`
+  },
   // async redirect({ url, baseUrl }) {
   //   return baseUrl
   // },
@@ -77,7 +129,7 @@ const callbacks = {
 
 export default NextAuth({
   // https://next-auth.js.org/configuration/options#callbacks
-  callbacks: callbacks,
+  callbacks,
   // https://next-auth.js.org/configuration/pages
   pages: {
     signIn: "/auth/signin",
@@ -86,16 +138,7 @@ export default NextAuth({
     // verifyRequest: '/auth/verify-request', // (used for check email message)
     // newUser: '/auth/new-user'
   },
-  providers: [
-    GoogleProvider({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
-    }),
-    GitHubProvider({
-      clientId: process.env.AUTH_GITHUB_ID,
-      clientSecret: process.env.AUTH_GITHUB_SECRET,
-    }),
-  ],
+  providers,
   secret: process.env.SECRET_KEY,
   // https://next-auth.js.org/configuration/options#session
   session: { strategy: "jwt" },

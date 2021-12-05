@@ -6,3 +6,6 @@
 coverage/
 generated/
 node_modules/
+
+# Sentry
+.sentryclirc
