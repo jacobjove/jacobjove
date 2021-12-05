@@ -1,4 +1,4 @@
-import { GOOGLE_ANALYTICS_TRACKING_ID } from "../analytics/google/googleAnalytics";
+import { GOOGLE_ANALYTICS_TRACKING_ID } from "@/analytics/google/googleAnalytics";
 import createCache from "@emotion/cache";
 import createEmotionServer from "@emotion/server/create-instance";
 import BaseDocument, { DocumentContext, Head, Html, Main, NextScript } from "next/document";

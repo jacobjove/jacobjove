@@ -24,7 +24,7 @@ WORKDIR /app
 FROM base AS builder
 
 # Copy package.json and package-lock.json to the container.
-COPY app/package*.json /app/
+COPY package*.json /app/
 
 # Install dependencies.
 RUN npm set cache .npm; npm ci || (npm cache clean -f && npm ci)

@@ -18,7 +18,6 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "plugins": [{ "name": "nexus/typescript-language-service" }],
     "removeComments": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
@@ -37,7 +36,7 @@
     "*.jsx",
     "**/*.js",
     "**/*.jsx", 
-    "next.config.mjs", 
+    "../next.config.mjs", 
     "prisma/seed.ts"  
   ],
   "exclude": [

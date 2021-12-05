@@ -10,7 +10,7 @@ services:
       - 3000:3000 # Next.js application
       - 9229:9229 # Node.js debug port
     env_file:
-      - ./app/.env
+      - ./.env
     environment:
       NEXTAUTH_URL_INTERNAL: "http://nextjs:3000"
 
@@ -21,14 +21,14 @@ services:
   #   ports:
   #     - 4000:4000 # GraphQL application
   #   env_file:
-  #     - ./app/.env
+  #     - ./.env
 
   postgres:
     image: postgres:14
     ports:
       - 5432:5432
     env_file:
-      - ./app/.env
+      - ./.env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s

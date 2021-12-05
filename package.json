@@ -27,7 +27,7 @@
     "test:verbose": "jest --verbose",
     "test:watch": "jest --watch",
     "test:watchAll": "jest --watchAll",
-    "prepare": "cd .. && husky install app/.husky"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@apollo/client": "^3.5.5",
@@ -69,7 +69,6 @@
     "next-compose-plugins": "^2.2.0",
     "next-images": "^1.4.1",
     "next-seo": "^4.28.1",
-    "nexus": "^1.1.0",
     "prop-types": "^15.7.2",
     "qs": "^6.10.1",
     "react": "^17.0.2",
