@@ -4,3 +4,8 @@ services:
   cypress:
     environment:
       - CYPRESS_baseUrl=https://www.habits.com/
+
+  nextjs:
+    environment:
+      NEXTAUTH_URL: "https://habit-builder.com"
+      NODE_ENV: production

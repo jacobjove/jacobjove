@@ -57,18 +57,40 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
   });
   return (
     <Layout>
-      <NextSeo title={"Action Builder"} canonical={"/"} description={"Be your best self."} />
+      <NextSeo
+        title={"Dashboard"}
+        canonical={"/app/planner"}
+        description={"Be your best self."}
+        noindex
+        nofollow
+      />
       <Container maxWidth={"xl"}>
         <Grid container spacing={2}>
           <Grid item xs={12} lg={8}>
             <Card raised sx={{ height: "100%" }}>
-              <Box textAlign="center" marginTop="1rem">
-                <Link href={"/app/dashboard"} passHref>
-                  <Button component={"a"} rel="nofollow" variant="contained" color="secondary">
-                    Dashboard
-                  </Button>
-                </Link>
-              </Box>
+              <CardHeader title="Calendar" />
+              <CardContent>
+                <CalendarViewer data={schedulerData} initialDate={currentDate} />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Card raised sx={{ height: "100%" }}>
+              <CardHeader title="Actions" />
+              <CardContent>
+                {(!!props.schedules.length && <ActionTable actions={props.schedules} />) || (
+                  <Typography component="p" textAlign="center">
+                    No actions yet.
+                  </Typography>
+                )}
+                <Box textAlign="center" marginTop="1rem">
+                  <Link href="/actions" passHref>
+                    <Button component={"a"} variant="contained" color="secondary">
+                      Explore actions
+                    </Button>
+                  </Link>
+                </Box>
+              </CardContent>
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
@@ -149,43 +171,43 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     await client
       .query({
         query: gql`
-        query Selections {
-          calendars (where: {userId: {equals: "${session.user.id}"}}) {
-            events (
-              where: {
-                start: {
-                  gt: "${ototoi.toISOString()}"
-                  lt: "${itsukago.toISOString()}"
+          query Selections {
+            calendars (where: {userId: {equals: "${session.user.id}"}}) {
+              events (
+                where: {
+                  start: {
+                    gt: "${ototoi.toISOString()}"
+                    lt: "${itsukago.toISOString()}"
+                  }
                 }
+              ) {
+                name
+                start
+                end
               }
-            ) {
-              name
-              start
-              end
+            }
+            schedules (where: {userId: {equals: "${session.user.id}"}}) {
+              action {
+                name
+                slug
+              }
+              frequency
+              multiplier
+            }
+            identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
+              identity {
+                name
+                slug
+              }
+            }
+            valueSelections (where: {userId: {equals: "${session.user.id}"}}) {
+              value {
+                name
+                slug
+              }
             }
           }
-          schedules (where: {userId: {equals: "${session.user.id}"}}) {
-            action {
-              name
-              slug
-            }
-            frequency
-            multiplier
-          }
-          identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
-            identity {
-              name
-              slug
-            }
-          }
-          valueSelections (where: {userId: {equals: "${session.user.id}"}}) {
-            value {
-              name
-              slug
-            }
-          }
-        }
-      `,
+        `,
       })
       .then((result) => {
         data = result.data;

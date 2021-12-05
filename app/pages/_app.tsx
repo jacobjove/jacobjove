@@ -1,4 +1,4 @@
-import apolloClient from "@/lib/apollo";
+import apolloClient from "@/lib/apollo/client/apollo";
 import { ApolloProvider } from "@apollo/client";
 import { createTheme } from "@mui/material";
 import { blue, orange } from "@mui/material/colors";

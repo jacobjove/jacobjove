@@ -14,8 +14,9 @@ const identities = [
       slug: "brother"
   },
   {
-      name: "Boyfriend",
-      slug: "boyfriend"
+      name: "Lover",
+      slug: "lover",
+      description: "One who loves another romantically; a significant other."
   }
 ];
 

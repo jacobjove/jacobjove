@@ -49,27 +49,27 @@ const callbacks = {
     */
     if (token) {
       session.accessToken = token.accessToken
-      if (!session.user.id) {
-        // Get the user's ID.
-        let user = await prisma.user.findUnique({
-          where: {
+    }
+    if (session.user && !session.user.id) {
+      // Get the user's ID.
+      let user = await prisma.user.findUnique({
+        where: {
+          email: session.user.email,
+        },
+        select: {
+          id: true
+        },
+      });
+      if (!user) {
+        // Create a new user.
+        user = await prisma.user.create({
+          data: {
             email: session.user.email,
+            name: session.user.name,
           },
-          select: {
-            id: true
-          },
-        });
-        if (!user) {
-          // Create a new user.
-          user = await prisma.user.create({
-            data: {
-              email: session.user.email,
-              name: session.user.name,
-            },
-          })
-        }
-        token.userId = user.id
+        })
       }
+      session.user.id = user.id
     }
     return session;
   }

@@ -8,9 +8,6 @@
   ],
   "debug.console.fontSize": 11,
   "debug.javascript.unmapMissingSources": true,
-  "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-  },
   "editor.formatOnSave": true,
   "editor.linkedEditing": true,
   "editor.rulers": [

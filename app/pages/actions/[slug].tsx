@@ -1,4 +1,4 @@
-import { Identity } from "@/prisma/generated";
+import { Action } from "@/prisma/generated";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
 import prisma from "@/lib/prisma";
@@ -7,45 +7,45 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
 import React, { FC } from "react";
 
-interface IdentityProps {
-  identity: Identity;
+interface ActionProps {
+  action: Action;
 }
 
 /**
- * A page that renders the HTML of a single identity.
+ * A page that renders the HTML of a single action.
  */
-const IdentityDetailPage: FC<IdentityProps> = ({ identity }: IdentityProps) => {
+const HabitDetailPage: FC<ActionProps> = ({ action }: ActionProps) => {
   return (
     <Layout>
       <NextSeo
-        title={identity.name}
-        canonical={`/${identity.slug}`}
-        description={`${identity.description}`}
+        title={action.name}
+        canonical={`/${action.slug}`}
+        description={`${action.description}`}
       />
       <Container>
-        <PageHeader>{identity.name}</PageHeader>
-        {identity.description && <p dangerouslySetInnerHTML={{ __html: identity.description }} />}
+        <PageHeader>{action.name}</PageHeader>
+        {action.description && <p dangerouslySetInnerHTML={{ __html: action.description }} />}
       </Container>
     </Layout>
   );
 };
-export default IdentityDetailPage;
+export default HabitDetailPage;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let identity = {};
+  let action = {};
   let notFound = false;
   const { slug } = params || {};
-  await prisma.identity
+  await prisma.action
     .findUnique({ where: { slug: `${slug}` } })
     .then((result) => {
-      identity = result;
+      action = result;
     })
     .catch(() => {
       notFound = true;
     });
   return {
     props: {
-      identity,
+      action,
     },
     notFound,
     revalidate: 10,

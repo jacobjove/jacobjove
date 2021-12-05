@@ -2,15 +2,18 @@
 .git
 .gitignore
 
+# Cypress
+cypress/
+
 # Docker
 Dockerfile.*
 docker-compose.*
 
-# PyCharm / IntelliJ / Visual Studio Code
-.idea
-.idea/
-.DS_Store
-.vscode
+# GitHub
+.github/
+README.md
+LICENSE.txt
+SECURITY.md
 
 # Node JS
 node_modules/
@@ -23,11 +26,8 @@ node_modules/
 *.sln
 *.sw?
 
-# Cypress
-cypress/
-
-# GitHub
-.github/
-README.md
-LICENSE.txt
-SECURITY.md
+# PyCharm / IntelliJ / Visual Studio Code
+.idea
+.idea/
+.DS_Store
+.vscode

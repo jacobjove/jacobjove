@@ -18,9 +18,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 
-const pages = [
-  ["About", "/about"],
-];
+const pages = [["About", "/about"]];
 
 const settings = [
   ["Profile", "/profile"],
@@ -44,7 +42,7 @@ const Header: FC = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const isActive = (pathname: string) => (router.pathname === pathname);
+  const isActive = (pathname: string) => router.pathname === pathname;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -111,7 +109,12 @@ const Header: FC = () => {
               }}
             >
               {pages.map((item) => (
-                <MenuItem key={item[0]} onClick={handleCloseNavMenu} sx={{ textAlign: "center" }} className={isActive(item[1]) ? "active" : ""}>
+                <MenuItem
+                  key={item[0]}
+                  onClick={handleCloseNavMenu}
+                  sx={{ textAlign: "center" }}
+                  className={isActive(item[1]) ? "active" : ""}
+                >
                   <Link href={item[1]}>
                     <a>{item[0]}</a>
                   </Link>

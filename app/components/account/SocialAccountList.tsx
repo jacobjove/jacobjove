@@ -1,4 +1,4 @@
-import { Account } from ".prisma/client";
+import { Account } from "@/prisma/generated";
 import axios, { AxiosResponse } from "axios";
 import { Provider } from "next-auth/providers";
 import { signIn } from "next-auth/react";
@@ -8,13 +8,9 @@ import {
   FacebookLoginButton,
   GithubLoginButton,
   GoogleLoginButton,
-  TwitterLoginButton
+  TwitterLoginButton,
 } from "react-social-login-buttons";
 
-interface SocialAccountListProps {
-  providers: Record<string, Provider>;
-  accounts: Account[];
-}
 const SOCIAL_LOGIN_BUTTONS: Record<string, typeof GithubLoginButton> = {
   facebook: FacebookLoginButton,
   discord: DiscordLoginButton,
@@ -26,6 +22,7 @@ const SOCIAL_LOGIN_BUTTONS: Record<string, typeof GithubLoginButton> = {
 interface SocialConnectButtonProps {
   provider: Provider;
 }
+
 const SocialConnectButton: FC<SocialConnectButtonProps> = ({
   provider,
 }: SocialConnectButtonProps) => {
@@ -51,6 +48,11 @@ const SocialConnectButton: FC<SocialConnectButtonProps> = ({
   );
 };
 
+interface SocialAccountListProps {
+  providers: Record<string, Provider>;
+  accounts: Account[];
+}
+
 const SocialAccountList: FC<SocialAccountListProps> = ({
   providers,
   accounts,
@@ -62,10 +64,10 @@ const SocialAccountList: FC<SocialAccountListProps> = ({
           provider.name != "Credentials" && (
             <div key={providerKey}>
               <p>{provider.name}</p>
-              {(accounts.find((account) => account["provider"] === provider.id) && (
+              {(accounts.find((account) => account.provider === provider.id) && (
                 <p>
                   Connected (
-                  {accounts.find((account) => account["provider"] === provider.id)["uid"]})
+                  {accounts.find((account) => account.provider === provider.id)["uid"]})
                 </p>
               )) || <SocialConnectButton provider={provider} />}
             </div>

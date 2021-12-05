@@ -10,17 +10,34 @@ services:
       - .:/github/workspace
       - ./.git:/github/workspace/.git
 
+  # graphql:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     args:
+  #       NODE_ENV: development
+  #     network: host
+  #   image: nextjs:latest
+  #   user: root
+  #   volumes:
+  #     - ./app:/app
+  #     # Prevent the container's node_modules and .next folders from being overwritten 
+  #     # by the initial mapping of the local directory to /app.
+  #     - ./app/node_modules:/app/node_modules
+  #     - ./app/.next:/app/.next
+
   nextjs:
     build:
-      context: ./app
+      context: .
       dockerfile: Dockerfile
       args:
-        ENVIRONMENT: dev
+        NODE_ENV: development
       network: host
     image: nextjs:latest
     command: npm run dev
     environment:
       NEXTAUTH_URL: "http://localhost:3000"
+      NODE_ENV: development
       REACT_EDITOR: "code"
     user: root # avoid permissions issues with writing in build dir
     volumes:

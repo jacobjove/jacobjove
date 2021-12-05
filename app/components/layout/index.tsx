@@ -3,11 +3,12 @@ import Header from "@/components/Layout/Header";
 import { FunctionComponent } from "react";
 
 const Layout: FunctionComponent = ({ children }) => {
-  const footerHeight = "2rem";
+  const footerHeightRem = 2;
+  const footerHeight = `${footerHeightRem}rem`;
   return (
     <div style={{ minHeight: "100vh", position: "relative" }}>
       <Header />
-      <div style={{ paddingTop: "2rem", paddingBottom: footerHeight }}>{children}</div>
+      <div style={{ paddingTop: "2rem", paddingBottom: `${footerHeightRem*1.5}rem` }}>{children}</div>
       <Footer height={footerHeight} />
     </div>
   );

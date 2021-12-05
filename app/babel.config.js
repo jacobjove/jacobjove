@@ -5,8 +5,16 @@ module.exports = (api) => {
 
   api.cache.using(() => JSON.stringify({ target }));
 
-  const presets = ["next/babel"];
-  const plugins = [];
+  const presets = ["@babel/preset-typescript", "next/babel"];
+  const plugins = [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "babel-plugin-parameter-decorator",
+    ["@babel/plugin-proposal-private-methods", { "loose": true }],
+    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    "babel-plugin-transform-typescript-metadata",
+    "@babel/plugin-transform-modules-commonjs",
+  ];
 
   // Enable optimizations only for the `web` bundle.
   if (target === "web") {

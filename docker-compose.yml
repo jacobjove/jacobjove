@@ -5,11 +5,23 @@ services:
     image: nextjs:latest
     depends_on:
       - postgres
+      # - graphql
     ports:
       - 3000:3000 # Next.js application
       - 9229:9229 # Node.js debug port
     env_file:
       - ./app/.env
+    environment:
+      NEXTAUTH_URL_INTERNAL: "http://nextjs:3000"
+
+  # graphql:
+  #   image: nextjs:latest
+  #   depends_on:
+  #     - postgres
+  #   ports:
+  #     - 4000:4000 # GraphQL application
+  #   env_file:
+  #     - ./app/.env
 
   postgres:
     image: postgres:14
