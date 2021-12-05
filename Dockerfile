@@ -32,9 +32,6 @@ RUN npm set cache .npm; npm ci || (npm cache clean -f && npm ci)
 # Copy source files.
 COPY . /app
 
-# Build prisma client.
-RUN npx prisma generate
-
 # Build app.
 RUN npm run build
 
