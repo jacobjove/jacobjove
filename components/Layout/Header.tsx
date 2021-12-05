@@ -76,6 +76,9 @@ const Header: FC = () => {
                 sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
               >
                 HabitBuilder
+                {process.env.NODE_ENV !== "production" && (
+                  <small><sup>{process.env.NODE_ENV || process.env.VERCEL_ENV}</sup></small>
+                )}
               </Typography>
             </a>
           </Link>
