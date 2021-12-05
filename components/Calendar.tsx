@@ -13,19 +13,6 @@ import {
   GroupingPanel,
   Resources,
 } from "@devexpress/dx-react-scheduler-material-ui";
-import { connectProps } from "@devexpress/dx-react-core";
-import { withStyles, makeStyles, fade } from "@material-ui/core/styles";
-import PriorityHigh from "@material-ui/icons/PriorityHigh";
-import LowPriority from "@material-ui/icons/LowPriority";
-import Lens from "@material-ui/icons/Lens";
-import Event from "@material-ui/icons/Event";
-import AccessTime from "@material-ui/icons/AccessTime";
-import Paper from "@material-ui/core/Paper";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import Grid from "@material-ui/core/Grid";
-import FormControl from "@material-ui/core/FormControl";
-import classNames from "clsx";
 import { FC, FormEventHandler, useState } from "react";
 
 interface CalendarProps {
