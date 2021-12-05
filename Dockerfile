@@ -30,7 +30,7 @@ COPY package*.json /app/
 RUN npm set cache .npm; npm ci || (npm cache clean -f && npm ci)
 
 # Copy source files.
-COPY app /app
+COPY . /app
 
 # Build prisma client.
 RUN npx prisma generate

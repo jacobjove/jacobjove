@@ -1,4 +1,4 @@
-import { ViewState, GroupingState, IntegratedGrouping } from "@devexpress/dx-react-scheduler";
+import { ViewState } from "@devexpress/dx-react-scheduler";
 import {
   Scheduler,
   WeekView,
@@ -10,8 +10,8 @@ import {
   AllDayPanel,
   AppointmentTooltip,
   AppointmentForm,
-  GroupingPanel,
-  Resources,
+  // GroupingPanel,
+  // Resources,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { FC, FormEventHandler, useState } from "react";
 
