@@ -1,4 +1,5 @@
 # https://github.com/typescript-eslint/typescript-eslint/blob/HEAD/docs/getting-started/linting/README.md#ignoring-unnecessary-files
-node_modules
-dist
+.next
 coverage
+dist
+node_modules
