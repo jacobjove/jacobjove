@@ -15,6 +15,7 @@
     "dev": "next dev",
     "analyze": "ANALYZE=true npm run build",
     "build": "prisma generate && next build",
+    "build:migrate": "prisma generate && npm run migrate && next build",
     "start": "next start",
     "start:migrate": "npm run migrate && npm run start",
     "make-migrations": "prisma migrate dev",
