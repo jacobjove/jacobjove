@@ -35,12 +35,6 @@ interface PlannerPageProps {
   calendars: (Calendar & {
     events: CalendarEvent[];
   })[];
-  identitySelections: (IdentitySelection & {
-    identity: Identity;
-  })[];
-  valueSelections: (ValueSelection & {
-    value: Value;
-  })[];
 }
 
 const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
@@ -56,7 +50,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         nofollow
       />
       <Container maxWidth={"lg"}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} md={8} lg={6} xl={4}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
@@ -84,58 +78,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <Card raised sx={{ height: "100%" }}>
-              <CardHeader title="Identities" />
-              <CardContent>
-                {(!!props.identitySelections.length &&
-                  props.identitySelections.map((identitySelection, index) => (
-                    <p key={index}>
-                      <Link href={`/identities/${identitySelection.identity.slug}`}>
-                        <a>{identitySelection.identity.name}</a>
-                      </Link>
-                    </p>
-                  ))) || (
-                  <Typography component="p" textAlign="center">
-                    No identities yet.
-                  </Typography>
-                )}
-                <Box textAlign="center" marginTop="1rem">
-                  <Link href="/identities" passHref>
-                    <Button component={"a"} variant="contained" color="secondary">
-                      Explore identities
-                    </Button>
-                  </Link>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <Card raised sx={{ height: "100%" }}>
-              <CardHeader title="Values" />
-              <CardContent>
-                {(!!props.valueSelections.length &&
-                  props.valueSelections.map((valueSelection, index) => (
-                    <p key={index}>
-                      <Link href={`/valueSelections/${valueSelection.value.slug}`}>
-                        <a>{valueSelection.value.name}</a>
-                      </Link>
-                    </p>
-                  ))) || (
-                  <Typography component="p" textAlign="center">
-                    No values yet.
-                  </Typography>
-                )}
-                <Box textAlign="center" marginTop="1rem">
-                  <Link href="/valueSelections" passHref>
-                    <Button component={"a"} variant="contained" color="secondary">
-                      Explore values
-                    </Button>
-                  </Link>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
         </Grid>
       </Container>
     </Layout>
@@ -154,8 +96,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     date: today.toISOString(),
     calendars: [],
     schedules: [],
-    identitySelections: [],
-    valueSelections: [],
   };
   if (!session?.user?.id) {
     return { 
@@ -194,18 +134,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
               frequency
               multiplier
             }
-            identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
-              identity {
-                name
-                slug
-              }
-            }
-            valueSelections (where: {userId: {equals: "${session.user.id}"}}) {
-              value {
-                name
-                slug
-              }
-            }
           }
         `,
       })
@@ -213,8 +141,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         data = result.data;
         props.calendars = data?.calendars;
         props.schedules = data?.schedules;
-        props.identitySelections = data?.identitySelections;
-        props.valueSelections = data?.valueSelections;
       })
       .catch((error) => {
         console.error(error);

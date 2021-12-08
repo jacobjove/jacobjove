@@ -60,7 +60,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
         nofollow
       />
       <Container maxWidth={"xl"}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} lg={6}>
             <Card raised sx={{ height: "100%" }}>
               <CardContent>

@@ -157,7 +157,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     identitySelections: [],
     valueSelections: [],
   };
-  if (session?.user?.id) {
+  if (!session?.user?.id) {
+    return { 
+      redirect: {
+        destination: '/auth/signin?callbackUrl=/app/planner',  // TODO
+        permanent: false,
+      },
+    } 
+  } else {
     let data;
     await client
       .query({

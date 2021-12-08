@@ -63,8 +63,8 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
         nofollow
       />
       <Container maxWidth={"xl"}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} lg={8} xl={6}>
+        <Grid container spacing={2} direction="row-reverse" justifyContent="center">
+          <Grid item xs={12} md={8} lg={6} xl={4}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
               <CardContent>
@@ -72,7 +72,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
+          <Grid item xs={12} sm={6} lg={3} xl={2}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Actions" />
               <CardContent>
@@ -91,7 +91,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
+          <Grid item xs={12} sm={6} lg={3} xl={2}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Identities" />
               <CardContent>
@@ -112,7 +112,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
+          <Grid item xs={12} sm={6} lg={3} xl={2}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Values" />
               <CardContent>
