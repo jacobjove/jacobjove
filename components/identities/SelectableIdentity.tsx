@@ -1,10 +1,10 @@
-import { Identity } from "@/prisma/generated";
+import { Identity } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import Button from "@mui/material/Button";
-import Box from "@mui/system/Box";
+import Box from "@mui/material/Box";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC, MouseEvent } from "react";
 import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
 
 const TOGGLE_IDENTIFICATION = gql`
@@ -29,7 +29,7 @@ const SelectableIdentity: FC<SelectableIdentityProps> = ({
   const { data: session } = useSession();
   const [mutate] = useMutation(TOGGLE_IDENTIFICATION);
   const [selected, setSelected] = React.useState(initiallySelected);
-  const toggleIdentitySelection = (e) => {
+  const toggleIdentitySelection = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (session?.user) {

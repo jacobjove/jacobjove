@@ -1,4 +1,3 @@
-import { GOOGLE_ANALYTICS_TRACKING_ID } from "@/analytics/google/googleAnalytics";
 import createCache from "@emotion/cache";
 import createEmotionServer from "@emotion/server/create-instance";
 import BaseDocument, { DocumentContext, Head, Html, Main, NextScript } from "next/document";
@@ -50,34 +49,9 @@ class Document extends BaseDocument {
     return (
       <Html lang="en">
         <Head>
-          <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
-
-          {/* Font Awesome */}
-          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
-          {/* Latest compiled and minified Bootstrap CSS */}
-          <link
-            rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          />
-          {/* Global Site Tag (gtag.js) - Google Analytics */}
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_TRACKING_ID}`}
-          />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GOOGLE_ANALYTICS_TRACKING_ID}', {
-                  page_path: window.location.pathname,
-                });
-              `,
-            }}
-          />
+          <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         </Head>
-        <body>
+        <body style={{ width: "100%", margin: "0", padding: "0" }}>
           <Main />
           <NextScript />
           <div id="modal-root"></div>

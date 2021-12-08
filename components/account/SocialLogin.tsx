@@ -1,6 +1,6 @@
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { signIn } from "next-auth/react";
-import React, { FunctionComponent, ReactElement } from "react";
+import { FC, ReactElement } from "react";
 import {
   DiscordLoginButton,
   FacebookLoginButton,
@@ -31,7 +31,7 @@ interface SocialLoginProps {
   onError: CallableFunction;
 }
 
-const SocialLogin: FunctionComponent<SocialLoginProps> = ({
+const SocialLogin: FC<SocialLoginProps> = ({
   providers,
   callbackUrl,
   onError,
@@ -48,7 +48,7 @@ const SocialLogin: FunctionComponent<SocialLoginProps> = ({
   let SocialLoginButton;
   Object.entries(providers).forEach(([, provider]) => {
     if (provider.id === CREDENTIALS_KEY) {
-      return null;
+      return;
     }
     SocialLoginButton = SOCIAL_LOGIN_BUTTONS[provider.id];
     socialAuthLoginComponents.push(

@@ -4,10 +4,10 @@ import {
   Identity,
   Calendar,
   Schedule,
-  Event,
+  CalendarEvent,
   Value,
   ValueSelection,
-} from "@/prisma/generated";
+} from "@/graphql/schema";
 import Layout from "@/components/Layout";
 import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
@@ -23,16 +23,17 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { NextSeo } from "next-seo";
-import ActionTable from "@/components/ActionTable";
+import ActionTable from "@/components/actions/ActionTable";
 import CalendarViewer from "@/components/Calendar";
+import { useState } from "react";
 
-interface DefaultPageProps {
+interface PlannerPageProps {
   date: string;
   schedules: (Schedule & {
     action: Action;
   })[];
   calendars: (Calendar & {
-    events: Event[];
+    events: CalendarEvent[];
   })[];
   identitySelections: (IdentitySelection & {
     identity: Identity;
@@ -42,19 +43,9 @@ interface DefaultPageProps {
   })[];
 }
 
-const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
-  const currentDate = props.date;
-  const schedulerData = [];
-  props.calendars.forEach((calendar) => {
-    console.log("calendar: ", calendar);
-    calendar.events.forEach((event) => {
-      schedulerData.push({
-        startDate: event.start,
-        endDate: event.end,
-        title: event.name,
-      });
-    });
-  });
+const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
+  const currentDate = new Date(props.date);
+  const [date, setDate] = useState(currentDate);
   return (
     <Layout>
       <NextSeo
@@ -64,13 +55,13 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
         noindex
         nofollow
       />
-      <Container maxWidth={"xl"}>
+      <Container maxWidth={"lg"}>
         <Grid container spacing={2}>
           <Grid item xs={12} lg={8}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
               <CardContent>
-                <CalendarViewer data={schedulerData} initialDate={currentDate} />
+                <CalendarViewer calendars={props.calendars} date={date} onDateChange={setDate} />
               </CardContent>
             </Card>
           </Grid>
@@ -150,7 +141,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
     </Layout>
   );
 };
-export default DefaultPage;
+export default PlannerPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
@@ -159,7 +150,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const itsukago = new Date(today);
   ototoi.setDate(today.getDate() - 2);
   itsukago.setDate(today.getDate() + 5);
-  const props: DefaultPageProps = {
+  const props: PlannerPageProps = {
     date: today.toISOString(),
     calendars: [],
     schedules: [],
@@ -181,7 +172,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                   }
                 }
               ) {
-                name
+                title
                 start
                 end
               }

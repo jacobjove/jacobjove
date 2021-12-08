@@ -21,7 +21,7 @@ const getApolloServerHandler = async () => {
         resolvers,
         dateScalarMode: 'isoDate',
         emitSchemaFile: {
-          path: "/app/graphql/schema.gql",
+          path: `${process.env.BASE_DIR}/graphql/schema.gql`,
           commentDescriptions: true,
         },
         validate: false,
@@ -29,7 +29,7 @@ const getApolloServerHandler = async () => {
       debug: process.env.NODE_ENV !== 'production',
     });
     await apolloServer.start();
-    console.log(">>>>>>> Started apollo server")
+    // console.log(">>>>> Started apollo server")
     apolloServerHandler = apolloServer.createHandler({ path: '/api/graphql' });
   }
   return apolloServerHandler;

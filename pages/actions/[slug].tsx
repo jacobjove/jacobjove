@@ -1,4 +1,4 @@
-import { Action } from "@/prisma/generated";
+import { Action } from "@/graphql/schema";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
 import prisma from "@/lib/prisma";
@@ -32,7 +32,7 @@ const HabitDetailPage: FC<ActionProps> = ({ action }: ActionProps) => {
 export default HabitDetailPage;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let action = {};
+  let action: Action | null = null;
   let notFound = false;
   const { slug } = params || {};
   await prisma.action

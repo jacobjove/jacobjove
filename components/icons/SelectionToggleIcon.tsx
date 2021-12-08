@@ -4,13 +4,13 @@ import { IconProps } from "@mui/material";
 import React, { FC } from "react";
 
 interface SelectionToggleIconProps extends IconProps {
-    positive: boolean;
-  }
-  
+  positive: boolean;
+}
+
 const SelectionToggleIcon: FC<SelectionToggleIconProps> = ({
-    positive,
+  positive,
 }: SelectionToggleIconProps) => {
-    return positive ? <StarIcon /> : <StarOutlineIcon />;
+  return positive ? <StarIcon /> : <StarOutlineIcon />;
 };
 
 export default SelectionToggleIcon;

@@ -4,14 +4,13 @@ import {
   Identity,
   Calendar,
   Schedule,
-  Event,
+  CalendarEvent,
   Value,
   ValueSelection,
-} from "@/prisma/generated";
+} from "@/graphql/schema";
 import Layout from "@/components/Layout";
 import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -21,9 +20,10 @@ import { getSession } from "next-auth/react";
 import Link from "next/link";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import { NextSeo } from "next-seo";
-import ActionTable from "@/components/ActionTable";
+import { OldCalendar } from "@/components/Calendar";
+import { useState } from "react";
+import { addDays, subDays, parseISO } from "date-fns";
 import CalendarViewer from "@/components/Calendar";
 
 interface DefaultPageProps {
@@ -32,7 +32,7 @@ interface DefaultPageProps {
     action: Action;
   })[];
   calendars: (Calendar & {
-    events: Event[];
+    events: CalendarEvent[];
   })[];
   identitySelections: (IdentitySelection & {
     identity: Identity;
@@ -42,17 +42,25 @@ interface DefaultPageProps {
   })[];
 }
 
+interface CalendarItem {
+  title: string;
+  startDate: Date;
+  endDate: Date;
+}
+
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
-  const currentDate = props.date;
-  const schedulerData = [];
+  const currentDate = new Date(props.date);
+  const [date, setDate] = useState(currentDate);
+  const schedulerData: CalendarItem[] = [];
+  const calendarEvents: CalendarEvent[] = [];
   props.calendars.forEach((calendar) => {
-    console.log("calendar: ", calendar);
-    calendar.events.forEach((event) => {
+    calendar.events.forEach((event: CalendarEvent) => {
       schedulerData.push({
-        startDate: event.start,
-        endDate: event.end,
-        title: event.name,
+        title: event.title,
+        startDate: parseISO(event.start),
+        endDate: parseISO(event.end),
       });
+      calendarEvents.push(event);
     });
   });
   return (
@@ -66,11 +74,18 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
       />
       <Container maxWidth={"xl"}>
         <Grid container spacing={2}>
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12} lg={6}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
               <CardContent>
-                <CalendarViewer data={schedulerData} initialDate={currentDate} />
+                <OldCalendar data={schedulerData} date={date} />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} lg={6}>
+            <Card raised sx={{ height: "100%" }}>
+              <CardContent>
+                <CalendarViewer date={date} onDateChange={setDate} calendars={props.calendars} />
               </CardContent>
             </Card>
           </Grid>
@@ -84,10 +99,8 @@ export default DefaultPage;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
   const today = new Date();
-  const ototoi = new Date(today);
-  const itsukago = new Date(today);
-  ototoi.setDate(today.getDate() - 2);
-  itsukago.setDate(today.getDate() + 5);
+  const ototoi = subDays(today, 2);
+  const itsukago = addDays(today, 5);
   const props: DefaultPageProps = {
     date: today.toISOString(),
     calendars: [],
@@ -96,12 +109,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     valueSelections: [],
   };
   if (session?.user?.id) {
-    let data;
     await client
       .query({
         query: gql`
           query Selections {
             calendars (where: {userId: {equals: "${session.user.id}"}}) {
+              id
+              name
               events (
                 where: {
                   start: {
@@ -110,7 +124,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                   }
                 }
               ) {
-                name
+                title
                 start
                 end
               }
@@ -139,11 +153,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         `,
       })
       .then((result) => {
-        data = result.data;
-        props.calendars = data?.calendars;
-        props.schedules = data?.schedules;
-        props.identitySelections = data?.identitySelections;
-        props.valueSelections = data?.valueSelections;
+        props.calendars = result.data?.calendars;
+        props.schedules = result.data?.schedules;
+        props.identitySelections = result.data?.identitySelections;
+        props.valueSelections = result.data?.valueSelections;
       })
       .catch((error) => {
         console.error(error);

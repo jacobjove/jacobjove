@@ -1,13 +1,3 @@
-import {
-  Action,
-  IdentitySelection,
-  Identity,
-  Calendar,
-  Schedule,
-  Event,
-  Value,
-  ValueSelection,
-} from "@/prisma/generated";
 import Layout from "@/components/Layout";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -16,25 +6,31 @@ import Container from "@mui/material/Container";
 import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { NextSeo } from "next-seo";
 
 interface DefaultPageProps {
   date: string;
+  ctaHref: string;
 }
 
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
   // const currentDate = props.date;
   return (
     <Layout>
-      <NextSeo title={"Action Builder"} canonical={"/"} description={"Be your best self."} />
+      <NextSeo title={"HabitBuilder"} canonical={"/"} description={"Be your best self."} />
       <Container maxWidth={"lg"}>
         <Grid container spacing={2}>
           <Grid item xs={12} lg={8}>
             <Box>
               <Typography variant={"h1"}>Be your best self.</Typography>
+            </Box>
+            <Box>
+              <Link href={props.ctaHref} passHref>
+                <Button variant={"contained"} color={"primary"}>
+                  {props.ctaHref === "/app/dashboard" ? "Go to dashboard" : "Sign up"}
+                </Button>
+              </Link>
             </Box>
           </Grid>
         </Grid>
@@ -49,9 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const today = new Date();
   const props: DefaultPageProps = {
     date: today.toISOString(),
+    ctaHref: session?.user?.email ? "/app/dashboard" : "/auth/registration",
   };
-  // if (session?.user?.id) {
-    
-  // }
   return { props };
 };

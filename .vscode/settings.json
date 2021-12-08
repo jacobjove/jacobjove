@@ -8,6 +8,7 @@
   ],
   "debug.console.fontSize": 11,
   "debug.javascript.unmapMissingSources": true,
+  "editor.detectIndentation": true,
   "editor.formatOnSave": true,
   "editor.linkedEditing": true,
   "editor.rulers": [
@@ -22,7 +23,8 @@
       "typescriptreact"
   ],
   "eslint.workingDirectories": [
-      "./app"
+    "./components",
+    "./pages",
   ],
   "explorer.autoReveal": false,
   "explorer.confirmDragAndDrop": false,
@@ -55,4 +57,7 @@
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "workbench.editor.limit.enabled": true,
   "workbench.editor.limit.value": 7,
+  "shellcheck.ignorePatterns": {
+    "*.*ignore": true
+  },
 }

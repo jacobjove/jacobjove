@@ -1,4 +1,4 @@
-import { Identity } from "@/prisma/generated";
+import { Identity } from "@/graphql/schema";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
 import prisma from "@/lib/prisma";
@@ -32,7 +32,7 @@ const IdentityDetailPage: FC<IdentityProps> = ({ identity }: IdentityProps) => {
 export default IdentityDetailPage;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let identity = {};
+  let identity: Identity | null = null;
   let notFound = false;
   const { slug } = params || {};
   await prisma.identity

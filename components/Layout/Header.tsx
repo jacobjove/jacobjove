@@ -17,8 +17,22 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const DynamicPageTransitionProgressBar = dynamic(
+  () => import("@/components/PageTransitionProgressBar")
+);
 
 const pages = [["About", "/about"]];
+
+const APP_PAGES = [
+  ["Dashboard", "/app/dashboard"],
+  ["Calendar", "/app/calendar"],
+  ["Planner", "/app/planner"],
+];
 
 const settings = [
   ["Profile", "/profile"],
@@ -29,9 +43,21 @@ const AppBar = styled(_AppBar)(() => ({
   color: "whitesmoke",
   "& a": {
     color: "whitesmoke",
+    textDecoration: "none",
     "&:hover": {
       textDecoration: "none",
       color: "white",
+    },
+  },
+  "& #appTabs": {
+    backgroundColor: "whitesmoke",
+    color: "darkgray",
+    "& a": {
+      color: "darkgray",
+      "&:hover": {
+        textDecoration: "none",
+        color: "black",
+      },
     },
   },
 }));
@@ -67,17 +93,19 @@ const Header: FC = () => {
     <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link href="/">
-            <a>
+          <Link href={`${router.pathname.includes("/app/") ? "/app" : "/"}`}>
+            <a style={{ display: "flex", alignItems: "center" }}>
+              <Image alt="HabitBuilder logo" src="/logo.png" width={40} height={40} />
               <Typography
-                variant="h6"
                 noWrap
-                component="div"
-                sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+                component="span"
+                sx={{ ml: 0.5, mr: 2, display: { xs: "none", md: "inline" } }}
               >
                 HabitBuilder
                 {process.env.NODE_ENV !== "production" && (
-                  <small><sup>{process.env.NODE_ENV || process.env.VERCEL_ENV}</sup></small>
+                  <small>
+                    <sup>{process.env.NODE_ENV || process.env.VERCEL_ENV}</sup>
+                  </small>
                 )}
               </Typography>
             </a>
@@ -147,7 +175,7 @@ const Header: FC = () => {
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={session.user.name} src={session.user.image} />
+                    <Avatar alt={`${session.user.name}`} src={`${session.user.image}`} />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -177,6 +205,14 @@ const Header: FC = () => {
                       </Link>
                     </MenuItem>
                   ))}
+                  {session.user.isAdmin ||
+                    (true && (
+                      <MenuItem>
+                        <Link href="/_admin">
+                          <a>Administration</a>
+                        </Link>
+                      </MenuItem>
+                    ))}
                   <Divider />
                   <MenuItem onClick={logout}>
                     Sign out <LogoutIcon sx={{ marginLeft: "0.5rem" }} />
@@ -191,6 +227,23 @@ const Header: FC = () => {
           </Box>
         </Toolbar>
       </Container>
+      {router.pathname.includes("/app/") && (
+        <Box id="appTabs" sx={{ width: "100%" }}>
+          <Container maxWidth="xl">
+            <Tabs
+              aria-label="nav tabs"
+              value={APP_PAGES.findIndex((item) => item[1] === router.pathname)}
+            >
+              {APP_PAGES.map(([name, path]) => (
+                <Link key={name} href={path} passHref>
+                  <Tab component="a" label={name} />
+                </Link>
+              ))}
+            </Tabs>
+          </Container>
+        </Box>
+      )}
+      <DynamicPageTransitionProgressBar />
     </AppBar>
   );
 };

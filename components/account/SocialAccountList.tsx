@@ -66,8 +66,7 @@ const SocialAccountList: FC<SocialAccountListProps> = ({
               <p>{provider.name}</p>
               {(accounts.find((account) => account.provider === provider.id) && (
                 <p>
-                  Connected (
-                  {accounts.find((account) => account.provider === provider.id)["uid"]})
+                  Connected ({accounts.find((account) => account.provider === provider.id)["uid"]})
                 </p>
               )) || <SocialConnectButton provider={provider} />}
             </div>

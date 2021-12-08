@@ -16,6 +16,7 @@ async function main() {
     await prisma.user.create({
       data: {
         email: adminEmail,
+        isAdmin: true,
       },
     });
   }
@@ -89,40 +90,42 @@ async function main() {
         name: `Default`,
       }
     });
-    actions.forEach(async (action) => {
-      try {
-        await prisma.schedule.create({
-          data: {
-            userId: user.id,
-            actionId: action.id,
-            chron: "0 7 * * *",
-            frequency: "DAY",
-            multiplier: 1,
-          },
-        });
-      } catch (e) {
-        console.log(e);
-      }
-      const today = new Date();
-      for (let i = 0; i < 30; i++) {
+    if (calendar) {
+      actions.forEach(async (action) => {
         try {
-          const start = new Date(today);
-          start.setDate(start.getDate() + i);
-          const end = new Date(start);
-          end.setTime(end.getTime() + 60 * 60 * 1000);
-          await prisma.event.create({
+          await prisma.schedule.create({
             data: {
-              calendarId: calendar.id,
-              start: start.toISOString(),
-              end: end.toISOString(),
-              name: `${action.name} event ${i}`,
+              userId: user.id,
+              actionId: action.id,
+              chron: "0 7 * * *",
+              frequency: "DAY",
+              multiplier: 1,
             },
           });
         } catch (e) {
           console.log(e);
         }
-      }
-    });
+        const today = new Date();
+        for (let i = 0; i < 30; i++) {
+          try {
+            const start = new Date(today);
+            start.setDate(start.getDate() + i);
+            const end = new Date(start);
+            end.setTime(end.getTime() + 60 * 60 * 1000);
+            await prisma.calendarEvent.create({
+              data: {
+                calendarId: calendar.id,
+                start: start.toISOString(),
+                end: end.toISOString(),
+                title: `${action.name} event ${i}`,
+              },
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      });
+    }
   });
 }
 

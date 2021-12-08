@@ -1,8 +1,9 @@
 import prisma from '@/lib/prisma';
-import NextAuth from "next-auth";
+import NextAuth, { CallbacksOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+
 import { AppProviders } from 'next-auth/providers';
 
 const { VERCEL_ENV, APP_ENV } = process.env;
@@ -12,16 +13,20 @@ if (APP_ENV === 'test') {
   useMockProviders = true;
 }
 
+interface MockCredentials {
+  name: string;
+}
+
 const providers: AppProviders = [];
 if (useMockProviders) {
   const credentials = {
     name: { type: 'test' },
   }
-  const authorize = async (credentials) => {
+  const authorize = async (credentials?: MockCredentials) => {
     const user = {
-      id: credentials.name,
-      name: credentials.name,
-      email: credentials.name,
+      id: credentials?.name,
+      name: credentials?.name,
+      email: credentials?.name,
     };
     return user;
   }
@@ -42,27 +47,27 @@ if (useMockProviders) {
 } else {
   providers.push(
     GoogleProvider({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      clientId: process.env.AUTH_GOOGLE_ID ?? "",
+      clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
     }),
     GitHubProvider({
-      clientId: process.env.AUTH_GITHUB_ID,
-      clientSecret: process.env.AUTH_GITHUB_SECRET,
+      clientId: process.env.AUTH_GITHUB_ID ?? "",
+      clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
     }),
   );
 }
 
 // https://next-auth.js.org/configuration/callbacks
-const callbacks = {
+const callbacks: CallbacksOptions = {
   async signIn({ user, account, profile, email, credentials }) {
     // if (account.provider === "google") {
     //   return profile.email_verified
     // }
     return true
   },
-  // async redirect({ url, baseUrl }) {
-  //   return baseUrl
-  // },
+  async redirect({ url, baseUrl }) {
+    return baseUrl
+  },
   // https://next-auth.js.org/configuration/callbacks#jwt-callback
   async jwt({ token, account }) {
     // The account is only passed the first time this callback is called on a new session.
@@ -99,7 +104,7 @@ const callbacks = {
         jti: 'e6a89a68-0554-4930-8b74-32af60148b5f'
       }
     */
-    if (token) {
+    if (token.accessToken) {
       session.accessToken = token.accessToken
     }
     if (session.user && !session.user.id) {

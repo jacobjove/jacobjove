@@ -1,6 +1,7 @@
-import prisma from '@/lib/prisma';
-import { PrismaClient } from '@prisma/client';
-import { User } from 'next-auth';
+import prisma from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next";
+import { User } from "next-auth";
 import { getSession } from "next-auth/react";
 
 export type Context = {
@@ -9,7 +10,12 @@ export type Context = {
   prisma: PrismaClient;
 };
 
-export async function createContext(context): Promise<Context> {
+interface FromContext {
+  req: NextApiRequest;
+  res: NextApiResponse;
+}
+
+export async function createContext(context: FromContext): Promise<Context> {
   const session = await getSession({ req: context.req });
   const user = session?.user || null;
   const accessToken = session?.accessToken || "";

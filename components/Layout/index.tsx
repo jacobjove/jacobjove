@@ -8,7 +8,9 @@ const Layout: FunctionComponent = ({ children }) => {
   return (
     <div style={{ minHeight: "100vh", position: "relative" }}>
       <Header />
-      <div style={{ paddingTop: "2rem", paddingBottom: `${footerHeightRem*1.5}rem` }}>{children}</div>
+      <div style={{ paddingTop: "2rem", paddingBottom: `${footerHeightRem + 2.5}rem` }}>
+        {children}
+      </div>
       <Footer height={footerHeight} />
     </div>
   );

@@ -4,10 +4,10 @@ import {
   Identity,
   Calendar,
   Schedule,
-  Event,
+  CalendarEvent,
   Value,
   ValueSelection,
-} from "@/prisma/generated";
+} from "@/graphql/schema";
 import Layout from "@/components/Layout";
 import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
@@ -23,8 +23,10 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { NextSeo } from "next-seo";
-import ActionTable from "@/components/ActionTable";
+import ActionTable from "@/components/actions/ActionTable";
+import IdentityTable from "@/components/identities/IdentityTable";
 import CalendarViewer from "@/components/Calendar";
+import { useState } from "react";
 
 interface DefaultPageProps {
   date: string;
@@ -32,7 +34,7 @@ interface DefaultPageProps {
     action: Action;
   })[];
   calendars: (Calendar & {
-    events: Event[];
+    events: CalendarEvent[];
   })[];
   identitySelections: (IdentitySelection & {
     identity: Identity;
@@ -42,16 +44,22 @@ interface DefaultPageProps {
   })[];
 }
 
+interface CalendarItem {
+  title: string;
+  startDate: Date | string;
+  endDate: Date | string;
+}
+
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
-  const currentDate = props.date;
-  const schedulerData = [];
+  const currentDate = new Date(props.date);
+  const [date, setDate] = useState(currentDate);
+  const schedulerData: CalendarItem[] = [];
   props.calendars.forEach((calendar) => {
-    console.log("calendar: ", calendar);
     calendar.events.forEach((event) => {
       schedulerData.push({
         startDate: event.start,
         endDate: event.end,
-        title: event.name,
+        title: event.title,
       });
     });
   });
@@ -70,7 +78,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
               <CardContent>
-                <CalendarViewer data={schedulerData} initialDate={currentDate} />
+                <CalendarViewer calendars={props.calendars} date={date} onDateChange={setDate} />
               </CardContent>
             </Card>
           </Grid>
@@ -97,14 +105,9 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Identities" />
               <CardContent>
-                {(!!props.identitySelections.length &&
-                  props.identitySelections.map((identitySelection, index) => (
-                    <p key={index}>
-                      <Link href={`/identities/${identitySelection.identity.slug}`}>
-                        <a>{identitySelection.identity.name}</a>
-                      </Link>
-                    </p>
-                  ))) || (
+                {(!!props.identitySelections.length && (
+                  <IdentityTable identitySelections={props.identitySelections} />
+                )) || (
                   <Typography component="p" textAlign="center">
                     No identities yet.
                   </Typography>

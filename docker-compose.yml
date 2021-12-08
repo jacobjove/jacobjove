@@ -13,6 +13,7 @@ services:
       - ./.env
     environment:
       NEXTAUTH_URL_INTERNAL: "http://nextjs:3000"
+    profiles: [ "prod" ]
 
   # graphql:
   #   image: nextjs:latest
@@ -37,6 +38,7 @@ services:
       start_period: 30s
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    profiles: [ "dev", "prod" ]
 
   cypress:
     # https://github.com/cypress-io/cypress-docker-images
@@ -50,6 +52,7 @@ services:
     volumes:
       - ./cypress:/e2e/cypress
       - ./cypress.json:/e2e/cypress.json
+    profiles: [ "tools" ]
 
 # For more information on how volumes work, please see https://docs.docker.com/storage/volumes/
 volumes:

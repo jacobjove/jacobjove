@@ -1,4 +1,4 @@
-import { Action } from "@/prisma/generated";
+import { Action, Schedule as _Schedule } from "@/graphql/schema";
 import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
@@ -10,6 +10,10 @@ import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React from "react";
+
+type Schedule = _Schedule & {
+  action: Action;
+};
 
 interface ActionsPageProps {
   actions: Action[];
@@ -82,7 +86,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
     props.actions = data.actions;
     if (data?.schedules?.length) {
-      props.selectedActionIds = data.schedules.map((schedule) => parseInt(schedule.actionId));
+      props.selectedActionIds = data.schedules.map((schedule: Schedule) =>
+        parseInt(`${schedule.actionId}`)
+      );
     }
   }
   return {

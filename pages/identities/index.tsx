@@ -1,4 +1,4 @@
-import { Identity } from "@/prisma/generated";
+import { Identity } from "@/graphql/schema";
 import SelectableIdentity from "@/components/identities/SelectableIdentity";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
@@ -11,6 +11,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React from "react";
+import { IdentitySelection } from ".prisma/client";
 
 interface IdentitiesPageProps {
   identities: Identity[];
@@ -56,11 +57,20 @@ export default IdentitiesPage;
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
-  let selectedIdentityIds = [];
+  const props: IdentitiesPageProps = {
+    identities: [],
+    selectedIdentityIds: [],
+  };
   if (session?.user?.id) {
-    const { data } = await client.query({
-      query: gql`
-        query IdentitySelections {
+    await client
+      .query({
+        query: gql`
+        query Identities {
+          identities {
+            id
+            name
+            slug
+          }
           identitySelections (
             where: {
               userId: {equals: "${session.user.id}"}
@@ -73,21 +83,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           }
         }
       `,
-    });
-    if (data?.identitySelections?.length) {
-      selectedIdentityIds = data.identitySelections.map((identitySelection) =>
-        parseInt(identitySelection.identity.id)
-      );
-    }
+      })
+      .then((res) => {
+        props.identities = res.data.identities;
+        if (res.data.identitySelections.length) {
+          props.selectedIdentityIds = res.data.identitySelections.map(
+            (identitySelection: IdentitySelection & { identity: Identity }) =>
+              parseInt(`${identitySelection.identity.id}`)
+          );
+        }
+      });
   }
-  return {
-    props: {
-      identities: await prisma.identity.findMany({
-        orderBy: {
-          name: "asc",
-        },
-      }),
-      selectedIdentityIds,
-    },
-  };
+  return { props };
 };

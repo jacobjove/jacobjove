@@ -69,7 +69,11 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
               <h1 className="page-title text-center" style={{ margin: "1rem" }}>
                 Sign in
               </h1>
-              <SocialLogin providers={providers} callbackUrl={callbackUrl} onError={setErrors} />
+              <SocialLogin
+                providers={providers}
+                callbackUrl={callbackUrl ?? "/"}
+                onError={setErrors}
+              />
             </div>
           )}
         </Box>
