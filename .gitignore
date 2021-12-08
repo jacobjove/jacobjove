@@ -1,7 +1,6 @@
 .env
 .vercel
 .DS_Store
-.husky
 .next
 coverage/
 generated/
