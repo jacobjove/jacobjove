@@ -4,6 +4,7 @@ import { FC, useState } from "react";
 import { useDrop } from "react-dnd";
 import { differenceInMinutes, addMinutes, parseISO } from "date-fns";
 import { gql, useMutation } from "@apollo/client";
+import { CalendarEventCreateInput } from "@/prisma/generated";
 
 interface EventSlotProps {
   date: Date;
@@ -25,7 +26,7 @@ const SCHEDULE_ACTION = gql`
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, events: initialEvents, calendarId } = props;
-  const [events, setEvents] = useState<CalendarEvent[]>(initialEvents ?? []);
+  const [events, setEvents] = useState<Partial<CalendarEvent>[]>(initialEvents ?? []);
   const [numEvents, setNumEvents] = useState(events?.length ?? 0);
   const [addEvent, { data, loading, error }] = useMutation(SCHEDULE_ACTION);
   if (data) {
@@ -41,12 +42,18 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
       drop: (item: Partial<CalendarEvent>) => {
         const start = date;
         const end = addMinutes(date, 30);
-        console.log("Dropped ", item);
+        const scheduleId = item.scheduleId ?? null;
         const calendarEventData = {
           title: item.title ?? "Untitled Event",
-          scheduleId: item.scheduleId,
           start: start.toISOString(),
           end: end.toISOString(),
+        };
+        console.log(`Dropped item with calendarId=${calendarId}`);
+        const tmpEvent = {
+          id: "tmp-id",
+          calendarId,
+          scheduleId,
+          ...calendarEventData,
         };
         addEvent({
           variables: {
@@ -56,21 +63,24 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
                   id: calendarId,
                 },
               },
+              schedule: scheduleId
+                ? {
+                    connect: { id: scheduleId },
+                  }
+                : undefined,
               ...calendarEventData,
             },
           },
           optimisticResponse: {
             __typename: "Mutation",
-            scheduleAction: {
-              id: "tmp-id",
+            createCalendarEvent: {
+              ...tmpEvent,
               __typename: "CalendarEvent",
-              calendarId: calendarId,
-              ...calendarEventData,
             },
           },
         });
         setNumEvents(numEvents + 1);
-        setEvents(events.concat([{ id: "tmp-id", ...calendarEventData, calendarId }]));
+        setEvents(events.concat([tmpEvent]));
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
@@ -89,6 +99,10 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
     >
       {!!events?.length &&
         events.map((event, index) => {
+          if (!event.start || !event.end) {
+            console.error("Event missing start or end time: ", event);
+            return null;
+          }
           const widthPercent = 100 / numEvents - 2;
           const width = `${widthPercent}%`;
           const eventStart = parseISO(event.start);

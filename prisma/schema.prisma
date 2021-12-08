@@ -67,12 +67,14 @@ model CalendarEvent {
   id         String    @id @default(cuid())
   calendar   Calendar  @relation(fields: [calendarId], references: [id], onDelete: Cascade)
   calendarId String
-  title      String
   schedule   Schedule? @relation(fields: [scheduleId], references: [id])
+  scheduleId Int?
+  title      String
   start      DateTime
   end        DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime?
 
-  scheduleId Int?
   @@map(name: "calendarEvents")
 }
 

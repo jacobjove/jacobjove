@@ -41,7 +41,6 @@ const theme = createTheme({
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   // const apolloClient = useApollo(pageProps.initialApolloState)
   useEffect(() => {
-    console.log(tagManagerArgs);
     TagManager.initialize(tagManagerArgs);
   }, []);
   return (

@@ -1716,12 +1716,14 @@ input CalendarCreateWithoutUserInput {
 type CalendarEvent {
   calendar: Calendar!
   calendarId: String!
+  createdAt: DateTime!
   end: DateTime!
   id: String!
   schedule: Schedule
   scheduleId: Int
   start: DateTime!
   title: String!
+  updatedAt: DateTime
 }
 
 type CalendarEventAvgAggregate {
@@ -1735,37 +1737,45 @@ input CalendarEventAvgOrderByAggregateInput {
 type CalendarEventCountAggregate {
   _all: Int!
   calendarId: Int!
+  createdAt: Int!
   end: Int!
   id: Int!
   scheduleId: Int!
   start: Int!
   title: Int!
+  updatedAt: Int!
 }
 
 input CalendarEventCountOrderByAggregateInput {
   calendarId: SortOrder
+  createdAt: SortOrder
   end: SortOrder
   id: SortOrder
   scheduleId: SortOrder
   start: SortOrder
   title: SortOrder
+  updatedAt: SortOrder
 }
 
 input CalendarEventCreateInput {
   calendar: CalendarCreateNestedOneWithoutEventsInput!
+  createdAt: DateTime
   end: DateTime!
   id: String
   schedule: ScheduleCreateNestedOneWithoutCalendarEventsInput
   start: DateTime!
   title: String!
+  updatedAt: DateTime
 }
 
 input CalendarEventCreateManyCalendarInput {
+  createdAt: DateTime
   end: DateTime!
   id: String
   scheduleId: Int
   start: DateTime!
   title: String!
+  updatedAt: DateTime
 }
 
 input CalendarEventCreateManyCalendarInputEnvelope {
@@ -1775,19 +1785,23 @@ input CalendarEventCreateManyCalendarInputEnvelope {
 
 input CalendarEventCreateManyInput {
   calendarId: String!
+  createdAt: DateTime
   end: DateTime!
   id: String
   scheduleId: Int
   start: DateTime!
   title: String!
+  updatedAt: DateTime
 }
 
 input CalendarEventCreateManyScheduleInput {
   calendarId: String!
+  createdAt: DateTime
   end: DateTime!
   id: String
   start: DateTime!
   title: String!
+  updatedAt: DateTime
 }
 
 input CalendarEventCreateManyScheduleInputEnvelope {
@@ -1820,19 +1834,23 @@ input CalendarEventCreateOrConnectWithoutScheduleInput {
 }
 
 input CalendarEventCreateWithoutCalendarInput {
+  createdAt: DateTime
   end: DateTime!
   id: String
   schedule: ScheduleCreateNestedOneWithoutCalendarEventsInput
   start: DateTime!
   title: String!
+  updatedAt: DateTime
 }
 
 input CalendarEventCreateWithoutScheduleInput {
   calendar: CalendarCreateNestedOneWithoutEventsInput!
+  createdAt: DateTime
   end: DateTime!
   id: String
   start: DateTime!
   title: String!
+  updatedAt: DateTime
 }
 
 type CalendarEventGroupBy {
@@ -1842,11 +1860,13 @@ type CalendarEventGroupBy {
   _min: CalendarEventMinAggregate
   _sum: CalendarEventSumAggregate
   calendarId: String!
+  createdAt: DateTime!
   end: DateTime!
   id: String!
   scheduleId: Int
   start: DateTime!
   title: String!
+  updatedAt: DateTime
 }
 
 input CalendarEventListRelationFilter {
@@ -1857,38 +1877,46 @@ input CalendarEventListRelationFilter {
 
 type CalendarEventMaxAggregate {
   calendarId: String
+  createdAt: DateTime
   end: DateTime
   id: String
   scheduleId: Int
   start: DateTime
   title: String
+  updatedAt: DateTime
 }
 
 input CalendarEventMaxOrderByAggregateInput {
   calendarId: SortOrder
+  createdAt: SortOrder
   end: SortOrder
   id: SortOrder
   scheduleId: SortOrder
   start: SortOrder
   title: SortOrder
+  updatedAt: SortOrder
 }
 
 type CalendarEventMinAggregate {
   calendarId: String
+  createdAt: DateTime
   end: DateTime
   id: String
   scheduleId: Int
   start: DateTime
   title: String
+  updatedAt: DateTime
 }
 
 input CalendarEventMinOrderByAggregateInput {
   calendarId: SortOrder
+  createdAt: SortOrder
   end: SortOrder
   id: SortOrder
   scheduleId: SortOrder
   start: SortOrder
   title: SortOrder
+  updatedAt: SortOrder
 }
 
 input CalendarEventOrderByRelationAggregateInput {
@@ -1902,31 +1930,37 @@ input CalendarEventOrderByWithAggregationInput {
   _min: CalendarEventMinOrderByAggregateInput
   _sum: CalendarEventSumOrderByAggregateInput
   calendarId: SortOrder
+  createdAt: SortOrder
   end: SortOrder
   id: SortOrder
   scheduleId: SortOrder
   start: SortOrder
   title: SortOrder
+  updatedAt: SortOrder
 }
 
 input CalendarEventOrderByWithRelationInput {
   calendar: CalendarOrderByWithRelationInput
   calendarId: SortOrder
+  createdAt: SortOrder
   end: SortOrder
   id: SortOrder
   schedule: ScheduleOrderByWithRelationInput
   scheduleId: SortOrder
   start: SortOrder
   title: SortOrder
+  updatedAt: SortOrder
 }
 
 enum CalendarEventScalarFieldEnum {
   calendarId
+  createdAt
   end
   id
   scheduleId
   start
   title
+  updatedAt
 }
 
 input CalendarEventScalarWhereInput {
@@ -1934,11 +1968,13 @@ input CalendarEventScalarWhereInput {
   NOT: [CalendarEventScalarWhereInput!]
   OR: [CalendarEventScalarWhereInput!]
   calendarId: StringFilter
+  createdAt: DateTimeFilter
   end: DateTimeFilter
   id: StringFilter
   scheduleId: IntNullableFilter
   start: DateTimeFilter
   title: StringFilter
+  updatedAt: DateTimeNullableFilter
 }
 
 input CalendarEventScalarWhereWithAggregatesInput {
@@ -1946,11 +1982,13 @@ input CalendarEventScalarWhereWithAggregatesInput {
   NOT: [CalendarEventScalarWhereWithAggregatesInput!]
   OR: [CalendarEventScalarWhereWithAggregatesInput!]
   calendarId: StringWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
   end: DateTimeWithAggregatesFilter
   id: StringWithAggregatesFilter
   scheduleId: IntNullableWithAggregatesFilter
   start: DateTimeWithAggregatesFilter
   title: StringWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
 }
 
 type CalendarEventSumAggregate {
@@ -1963,18 +2001,22 @@ input CalendarEventSumOrderByAggregateInput {
 
 input CalendarEventUpdateInput {
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   end: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   schedule: ScheduleUpdateOneWithoutCalendarEventsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
   end: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpdateManyWithWhereWithoutCalendarInput {
@@ -2026,19 +2068,23 @@ input CalendarEventUpdateWithWhereUniqueWithoutScheduleInput {
 }
 
 input CalendarEventUpdateWithoutCalendarInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
   end: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   schedule: ScheduleUpdateOneWithoutCalendarEventsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpdateWithoutScheduleInput {
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   end: DateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpsertWithWhereUniqueWithoutCalendarInput {
@@ -2059,12 +2105,14 @@ input CalendarEventWhereInput {
   OR: [CalendarEventWhereInput!]
   calendar: CalendarRelationFilter
   calendarId: StringFilter
+  createdAt: DateTimeFilter
   end: DateTimeFilter
   id: StringFilter
   schedule: ScheduleRelationFilter
   scheduleId: IntNullableFilter
   start: DateTimeFilter
   title: StringFilter
+  updatedAt: DateTimeNullableFilter
 }
 
 input CalendarEventWhereUniqueInput {

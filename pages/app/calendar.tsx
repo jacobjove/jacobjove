@@ -115,7 +115,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           query Selections {
             calendars (where: {userId: {equals: "${session.user.id}"}}) {
               id
-              name
+              color
               events (
                 where: {
                   start: {
