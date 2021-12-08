@@ -1,9 +1,9 @@
-import { Identity } from "@/graphql/schema";
+import { IdentitySelection } from ".prisma/client";
 import SelectableIdentity from "@/components/identities/SelectableIdentity";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
+import { Identity } from "@/graphql/schema";
 import client from "@/lib/apollo/client/apollo";
-import prisma from "@/lib/prisma";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -11,7 +11,6 @@ import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React from "react";
-import { IdentitySelection } from ".prisma/client";
 
 interface IdentitiesPageProps {
   identities: Identity[];

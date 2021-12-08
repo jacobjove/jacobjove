@@ -1,9 +1,10 @@
 import { CalendarEvent } from "@/graphql/schema";
+import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+import { addMinutes, differenceInMinutes, parseISO } from "date-fns";
 import { FC, useState } from "react";
 import { useDrop } from "react-dnd";
-import { differenceInMinutes, addMinutes, parseISO } from "date-fns";
-import { gql, useMutation } from "@apollo/client";
 
 interface EventSlotProps {
   date: Date;
@@ -23,11 +24,36 @@ const SCHEDULE_ACTION = gql`
   }
 `;
 
+const Root = styled("div")(() => ({
+  display: "flex",
+  position: "relative",
+  flexGrow: 1,
+  "&.droppable": {
+    backgroundColor: "lightgray",
+  },
+  "&:hover": {
+    backgroundColor: "whitesmoke",
+    cursor: "pointer",
+  },
+  "& .event": {
+    position: "absolute",
+    border: "1px solid white",
+    borderRadius: "3px",
+    padding: "0.25rem 0.5rem",
+    "&:hover": {
+      backgroundColor: "lightblue",
+    },
+  },
+}));
+
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, events: initialEvents, calendarId } = props;
   const [events, setEvents] = useState<Partial<CalendarEvent>[]>(initialEvents ?? []);
   const [numEvents, setNumEvents] = useState(events?.length ?? 0);
   const [addEvent, { data, loading, error }] = useMutation(SCHEDULE_ACTION);
+  const openEventCreationDialog = () => {
+    console.log("open event creation dialog");
+  };
   if (data) {
     console.log("data: ", data);
   }
@@ -47,7 +73,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           start: start.toISOString(),
           end: end.toISOString(),
         };
-        console.log(`Dropped item with calendarId=${calendarId}`);
         const tmpEvent = {
           id: "tmp-id",
           calendarId,
@@ -89,12 +114,10 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
     [date]
   );
   return (
-    <Box
-      display="flex"
-      position="relative"
-      flexGrow={1}
+    <Root
       ref={dropRef}
-      bgcolor={isOver && canDrop ? "lightgray" : "transparent"}
+      className={isOver && canDrop ? "droppable" : ""}
+      onClick={openEventCreationDialog}
     >
       {!!events?.length &&
         events.map((event, index) => {
@@ -113,22 +136,24 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           return (
             <Box
               key={index}
-              position="absolute"
+              className="event"
               left={`${widthPercent * index + index}%`}
               top={topOffset}
               height={height}
               zIndex={index}
               bgcolor={"rgb(100, 181, 246)"} // or calendar.color
               width={width}
-              border={"1px solid white"}
-              borderRadius={"3px"}
-              padding={"0.25rem 0.5rem"}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log("clicked event: ", event.title);
+              }}
             >
               {event.title}
             </Box>
           );
         })}
-    </Box>
+    </Root>
   );
 };
 

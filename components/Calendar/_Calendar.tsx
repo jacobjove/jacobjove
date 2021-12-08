@@ -1,12 +1,11 @@
-import Box from "@mui/material/Box";
-import React, { FC, Fragment } from "react";
-import { styled } from "@mui/material/styles";
-
 import DateSelector from "@/components/Calendar/DateSelector";
-import Toolbar from "@mui/material/Toolbar";
-import { Calendar, CalendarEvent } from "@/graphql/schema";
-import { parseISO, setHours, setMinutes, setSeconds, differenceInMinutes } from "date-fns";
 import EventSlot from "@/components/Calendar/EventSlot";
+import { Calendar, CalendarEvent } from "@/graphql/schema";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import { differenceInMinutes, parseISO, setHours, setMinutes, setSeconds } from "date-fns";
+import React, { FC, Fragment } from "react";
 
 const START_HOUR = 7;
 const END_HOUR = 20;
@@ -38,6 +37,7 @@ const Root = styled("div")(() => ({
   "& .calendar-slots-column": {
     flexGrow: 1,
     position: "relative",
+    cursor: "pointer",
   },
   "& .border-trick-box": {
     borderRight: "1px solid rgba(224, 224, 224, 1)",
@@ -59,7 +59,6 @@ interface CalendarProps {
 
 const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
   const { date, calendars, onDateChange } = props;
-  console.log("date", date, typeof date);
   const primaryCalendar = calendars[0]; // calendars.find((c) => c.isPrimary);
 
   // const calendarStart = setHours(setMinutes(setSeconds(date, 0), 0), START_HOUR);
@@ -70,7 +69,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
   const events: CalendarEvent[] = [];
   props.calendars.forEach((calendar) => {
     calendar.events.forEach((event: CalendarEvent) => {
-      console.log("event", event.title, event.start, event.end);
+      // console.log("event", event.title, event.start, event.end);
       events.push(event);
     });
   });

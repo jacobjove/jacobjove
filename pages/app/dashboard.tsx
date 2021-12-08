@@ -1,31 +1,31 @@
+import ActionTable from "@/components/actions/ActionTable";
+import CalendarViewer from "@/components/Calendar";
+import IdentityTable from "@/components/identities/IdentityTable";
+import Layout from "@/components/Layout";
 import {
   Action,
-  IdentitySelection,
-  Identity,
   Calendar,
-  Schedule,
   CalendarEvent,
+  Identity,
+  IdentitySelection,
+  Schedule,
   Value,
   ValueSelection,
 } from "@/graphql/schema";
-import Layout from "@/components/Layout";
 import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import Link from "next/link";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import { NextSeo } from "next-seo";
-import ActionTable from "@/components/actions/ActionTable";
-import IdentityTable from "@/components/identities/IdentityTable";
-import CalendarViewer from "@/components/Calendar";
+import Link from "next/link";
 import { useState } from "react";
 
 interface DefaultPageProps {
@@ -42,12 +42,6 @@ interface DefaultPageProps {
   valueSelections: (ValueSelection & {
     value: Value;
   })[];
-}
-
-interface CalendarItem {
-  title: string;
-  startDate: Date | string;
-  endDate: Date | string;
 }
 
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {

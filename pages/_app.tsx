@@ -1,16 +1,17 @@
+import { PageTransitionContextProvider } from "@/components/PageTransitionContext";
 import apolloClient from "@/lib/apollo/client/apollo";
 import { ApolloProvider } from "@apollo/client";
 import { createTheme } from "@mui/material";
 import { blue, orange } from "@mui/material/colors";
 import { ThemeProvider } from "@mui/material/styles";
 import { SessionProvider } from "next-auth/react";
+import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import { useEffect } from "react";
-import TagManager from "react-gtm-module";
-import { PageTransitionContextProvider } from "@/components/PageTransitionContext";
-import { DefaultSeo } from "next-seo";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import TagManager from "react-gtm-module";
+import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
 // TODO: https://github.com/vercel/next.js/discussions/15518#discussioncomment-42875
 const tagManagerArgs = {
@@ -19,10 +20,8 @@ const tagManagerArgs = {
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Roboto", '"Helvetica Neue"', "Arial", "sans-serif"].join(","),
+    fontFamily: ["Open Sans", "sans-serif"].join(","),
     h1: {
-      /* this will change the font size for h1, we can also do 
-        it for others, */
       fontSize: "3rem",
     },
   },
