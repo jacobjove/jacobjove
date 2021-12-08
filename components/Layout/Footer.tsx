@@ -1,6 +1,6 @@
 // Material UI
 import { Typography } from "@mui/material";
-import { CSSProperties, FC } from "react";
+import { FC } from "react";
 
 const copyrightOwner = "Jacob T. Fredericksen";
 

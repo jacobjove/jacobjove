@@ -112,14 +112,14 @@ async function main() {
             start.setDate(start.getDate() + i);
             const end = new Date(start);
             end.setTime(end.getTime() + 60 * 60 * 1000);
-            await prisma.calendarEvent.create({
-              data: {
-                calendarId: calendar.id,
-                start: start.toISOString(),
-                end: end.toISOString(),
-                title: `${action.name} event ${i}`,
-              },
-            });
+            // await prisma.calendarEvent.create({
+            //   data: {
+            //     calendarId: calendar.id,
+            //     start: start.toISOString(),
+            //     end: end.toISOString(),
+            //     title: `${action.name} event ${i}`,
+            //   },
+            // });
           } catch (e) {
             console.log(e);
           }

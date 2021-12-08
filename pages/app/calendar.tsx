@@ -21,7 +21,6 @@ import Link from "next/link";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import { NextSeo } from "next-seo";
-import { OldCalendar } from "@/components/Calendar";
 import { useState } from "react";
 import { addDays, subDays, parseISO } from "date-fns";
 import CalendarViewer from "@/components/Calendar";
@@ -42,24 +41,12 @@ interface DefaultPageProps {
   })[];
 }
 
-interface CalendarItem {
-  title: string;
-  startDate: Date;
-  endDate: Date;
-}
-
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
   const currentDate = new Date(props.date);
   const [date, setDate] = useState(currentDate);
-  const schedulerData: CalendarItem[] = [];
   const calendarEvents: CalendarEvent[] = [];
   props.calendars.forEach((calendar) => {
     calendar.events.forEach((event: CalendarEvent) => {
-      schedulerData.push({
-        title: event.title,
-        startDate: parseISO(event.start),
-        endDate: parseISO(event.end),
-      });
       calendarEvents.push(event);
     });
   });
@@ -74,14 +61,6 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
       />
       <Container maxWidth={"xl"}>
         <Grid container spacing={2}>
-          <Grid item xs={12} lg={6}>
-            <Card raised sx={{ height: "100%" }}>
-              <CardHeader title="Calendar" />
-              <CardContent>
-                <OldCalendar data={schedulerData} date={date} />
-              </CardContent>
-            </Card>
-          </Grid>
           <Grid item xs={12} lg={6}>
             <Card raised sx={{ height: "100%" }}>
               <CardContent>

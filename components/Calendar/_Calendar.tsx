@@ -70,6 +70,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
   const events: CalendarEvent[] = [];
   props.calendars.forEach((calendar) => {
     calendar.events.forEach((event: CalendarEvent) => {
+      console.log("event", event.title, event.start, event.end);
       events.push(event);
     });
   });
@@ -120,9 +121,10 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
                     setMinutes(setSeconds(date, 0), j * 30),
                     START_HOUR + i
                   );
-                  const eventSlotEvents = events.filter((event) => {
+                  const eventSlotEvents = events.filter((event: CalendarEvent) => {
                     const diff = differenceInMinutes(parseISO(event.start), eventSlotDate);
-                    return Math.abs(diff) < 30 && diff > 0;
+                    console.log("Inspecting event", event.title, event.start, event.end, diff, Math.abs(diff) < 30 && diff > 0);
+                    return Math.abs(diff) < 30 && diff >= 0;
                   });
                   return (
                     <Box key={j} className="calendar-event-slot" height={`${HOUR_HEIGHT}px`}>
@@ -130,7 +132,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
                       <EventSlot
                         date={eventSlotDate}
                         events={eventSlotEvents}
-                        calendarId={primaryCalendar.id}
+                        calendarId={primaryCalendar?.id}
                       />
                     </Box>
                   );

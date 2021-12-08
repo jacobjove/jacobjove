@@ -57,7 +57,7 @@ model Calendar {
   id       String          @id @default(cuid())
   user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
-  name     String
+  name     String?
   color    Color?
   isPublic Boolean         @default(false)
   events   CalendarEvent[]

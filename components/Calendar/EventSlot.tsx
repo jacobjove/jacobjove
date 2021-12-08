@@ -4,7 +4,6 @@ import { FC, useState } from "react";
 import { useDrop } from "react-dnd";
 import { differenceInMinutes, addMinutes, parseISO } from "date-fns";
 import { gql, useMutation } from "@apollo/client";
-import { CalendarEventCreateInput } from "@/prisma/generated";
 
 interface EventSlotProps {
   date: Date;

@@ -1619,7 +1619,7 @@ type Calendar {
   events(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
   id: String!
   isPublic: Boolean!
-  name: String!
+  name: String
   user: User!
   userId: String!
 }
@@ -1650,7 +1650,7 @@ input CalendarCreateInput {
   events: CalendarEventCreateNestedManyWithoutCalendarInput
   id: String
   isPublic: Boolean
-  name: String!
+  name: String
   user: UserCreateNestedOneWithoutCalendarsInput!
 }
 
@@ -1658,7 +1658,7 @@ input CalendarCreateManyInput {
   color: Color
   id: String
   isPublic: Boolean
-  name: String!
+  name: String
   userId: String!
 }
 
@@ -1666,7 +1666,7 @@ input CalendarCreateManyUserInput {
   color: Color
   id: String
   isPublic: Boolean
-  name: String!
+  name: String
 }
 
 input CalendarCreateManyUserInputEnvelope {
@@ -1701,7 +1701,7 @@ input CalendarCreateWithoutEventsInput {
   color: Color
   id: String
   isPublic: Boolean
-  name: String!
+  name: String
   user: UserCreateNestedOneWithoutCalendarsInput!
 }
 
@@ -1710,7 +1710,7 @@ input CalendarCreateWithoutUserInput {
   events: CalendarEventCreateNestedManyWithoutCalendarInput
   id: String
   isPublic: Boolean
-  name: String!
+  name: String
 }
 
 type CalendarEvent {
@@ -2126,7 +2126,7 @@ type CalendarGroupBy {
   color: Color
   id: String!
   isPublic: Boolean!
-  name: String!
+  name: String
   userId: String!
 }
 
@@ -2213,7 +2213,7 @@ input CalendarScalarWhereInput {
   color: EnumColorNullableFilter
   id: StringFilter
   isPublic: BoolFilter
-  name: StringFilter
+  name: StringNullableFilter
   userId: StringFilter
 }
 
@@ -2224,7 +2224,7 @@ input CalendarScalarWhereWithAggregatesInput {
   color: EnumColorNullableWithAggregatesFilter
   id: StringWithAggregatesFilter
   isPublic: BoolWithAggregatesFilter
-  name: StringWithAggregatesFilter
+  name: StringNullableWithAggregatesFilter
   userId: StringWithAggregatesFilter
 }
 
@@ -2233,7 +2233,7 @@ input CalendarUpdateInput {
   events: CalendarEventUpdateManyWithoutCalendarInput
   id: StringFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutCalendarsInput
 }
 
@@ -2241,7 +2241,7 @@ input CalendarUpdateManyMutationInput {
   color: NullableEnumColorFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
 }
 
 input CalendarUpdateManyWithWhereWithoutUserInput {
@@ -2280,7 +2280,7 @@ input CalendarUpdateWithoutEventsInput {
   color: NullableEnumColorFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutCalendarsInput
 }
 
@@ -2289,7 +2289,7 @@ input CalendarUpdateWithoutUserInput {
   events: CalendarEventUpdateManyWithoutCalendarInput
   id: StringFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
 }
 
 input CalendarUpsertWithWhereUniqueWithoutUserInput {
@@ -2311,7 +2311,7 @@ input CalendarWhereInput {
   events: CalendarEventListRelationFilter
   id: StringFilter
   isPublic: BoolFilter
-  name: StringFilter
+  name: StringNullableFilter
   user: UserRelationFilter
   userId: StringFilter
 }

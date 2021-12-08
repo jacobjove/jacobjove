@@ -53,16 +53,6 @@ interface CalendarItem {
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
   const currentDate = new Date(props.date);
   const [date, setDate] = useState(currentDate);
-  const schedulerData: CalendarItem[] = [];
-  props.calendars.forEach((calendar) => {
-    calendar.events.forEach((event) => {
-      schedulerData.push({
-        startDate: event.start,
-        endDate: event.end,
-        title: event.title,
-      });
-    });
-  });
   return (
     <Layout>
       <NextSeo

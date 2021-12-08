@@ -57,7 +57,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
       />
       <Container maxWidth={"lg"}>
         <Grid container spacing={2}>
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12} md={8} lg={6} xl={4}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
               <CardContent>
@@ -157,7 +157,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     identitySelections: [],
     valueSelections: [],
   };
-  if (session?.user?.id) {
+  if (!session?.user?.id) {
+    return { 
+      redirect: {
+        destination: '/auth/signin?callbackUrl=/app/planner',
+        permanent: false,
+      },
+    }
+  } else {
     let data;
     await client
       .query({
