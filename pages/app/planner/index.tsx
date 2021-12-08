@@ -1,29 +1,20 @@
-import {
-  Action,
-  IdentitySelection,
-  Identity,
-  Calendar,
-  Schedule,
-  CalendarEvent,
-  Value,
-  ValueSelection,
-} from "@/graphql/schema";
+import ActionTable from "@/components/actions/ActionTable";
+import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
+import { Action, Calendar, CalendarEvent, Schedule } from "@/graphql/schema";
 import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import Link from "next/link";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import { NextSeo } from "next-seo";
-import ActionTable from "@/components/actions/ActionTable";
-import CalendarViewer from "@/components/Calendar";
+import Link from "next/link";
 import { useState } from "react";
 
 interface PlannerPageProps {
@@ -95,12 +86,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     schedules: [],
   };
   if (!session?.user?.id) {
-    return { 
+    return {
       redirect: {
-        destination: '/auth/signin?callbackUrl=/app/planner',
+        destination: "/auth/signin?callbackUrl=/app/planner",
         permanent: false,
       },
-    }
+    };
   } else {
     let data;
     await client
