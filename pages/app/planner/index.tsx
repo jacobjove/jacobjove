@@ -51,7 +51,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
       />
       <Container maxWidth={"lg"}>
         <Grid container spacing={2} justifyContent="center">
-          <Grid item xs={12} md={8} lg={6} xl={4}>
+          <Grid item xs={12} md={8} lg={6}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
               <CardContent>
@@ -59,7 +59,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
+          <Grid item xs={12} md={4} lg={3}>
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Actions" />
               <CardContent>
