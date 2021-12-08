@@ -123,7 +123,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
                   );
                   const eventSlotEvents = events.filter((event: CalendarEvent) => {
                     const diff = differenceInMinutes(parseISO(event.start), eventSlotDate);
-                    console.log("Inspecting event", event.title, event.start, event.end, diff, Math.abs(diff) < 30 && diff > 0);
+                    // console.log("Inspecting event", event.title, event.start, event.end, diff, Math.abs(diff) < 30 && diff > 0);
                     return Math.abs(diff) < 30 && diff >= 0;
                   });
                   return (
