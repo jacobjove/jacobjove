@@ -13,16 +13,13 @@ import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import Link from "next/link";
-import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import { NextSeo } from "next-seo";
 import { useState } from "react";
-import { addDays, subDays, parseISO } from "date-fns";
+import { addDays, subDays } from "date-fns";
 import CalendarViewer from "@/components/Calendar";
 
 interface DefaultPageProps {

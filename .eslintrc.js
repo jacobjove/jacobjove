@@ -1,6 +1,9 @@
 // https://eslint.org/docs/user-guide/configuring/
 
 const sharedRules = {
+  // "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^_", ignoreRestSiblings: true }],
+  // "@typescript-eslint/no-explicit-any": "off",
+  "@typescript-eslint/explicit-module-boundary-types": "off",
   "no-console": "off",
   // https://mui.com/guides/minimizing-bundle-size/#development-environment
   "no-restricted-imports": [
@@ -10,10 +13,14 @@ const sharedRules = {
     }
   ],
   "no-unused-vars": "off",
+  // https://github.com/sweepline/eslint-plugin-unused-imports#react
+  // "react/jsx-uses-react": "on",
+  // "react/jsx-uses-vars": "on",
   "react/react-in-jsx-scope": ["off"],
-  "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^_", ignoreRestSiblings: true }],
-  // "@typescript-eslint/no-explicit-any": "off",
-  "@typescript-eslint/explicit-module-boundary-types": "off",
+  "unused-imports/no-unused-imports": "error",
+  "unused-imports/no-unused-vars": [
+    "warn", { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+  ]
 };
 
 module.exports = {
@@ -24,7 +31,10 @@ module.exports = {
     node: true,
   },
   // https://eslint.org/docs/user-guide/configuring/configuration-files#extending-configuration-files
-  extends: ["eslint:recommended", "next"],
+  extends: [
+    "eslint:recommended", 
+    "next"
+  ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -32,7 +42,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react"],
+  plugins: ["react", "unused-imports"],
   rules: sharedRules,
   // https://eslint.org/docs/user-guide/configuring/configuration-files#how-do-overrides-work
   overrides: [
@@ -46,7 +56,7 @@ module.exports = {
       ],
       // https://www.npmjs.com/package/@typescript-eslint/parser
       parser: "@typescript-eslint/parser",
-      plugins: ["react", "@typescript-eslint"],
+      plugins: ["react", "@typescript-eslint", "unused-imports"],
       rules: sharedRules,
     },
     {

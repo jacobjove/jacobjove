@@ -59,7 +59,6 @@ const DatePlannerPage: NextPage<DatePlannerPageProps> = (props: DatePlannerPageP
         <Grid container spacing={2}>
           <Grid item xs={12} lg={8}>
             <Card raised sx={{ height: "100%" }}>
-              <CardHeader title="Calendar" />
               <CardContent>
                 <CalendarViewer calendars={props.calendars} date={date} onDateChange={setDate} />
               </CardContent>
@@ -67,7 +66,6 @@ const DatePlannerPage: NextPage<DatePlannerPageProps> = (props: DatePlannerPageP
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Card raised sx={{ height: "100%" }}>
-              <CardHeader title="Actions" />
               <CardContent>
                 {(!!props.schedules.length && <ActionTable actions={props.schedules} />) || (
                   <Typography component="p" textAlign="center">

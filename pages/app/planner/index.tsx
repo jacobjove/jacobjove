@@ -19,7 +19,6 @@ import Container from "@mui/material/Container";
 import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
-import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { NextSeo } from "next-seo";
@@ -53,7 +52,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} md={8} lg={6}>
             <Card raised sx={{ height: "100%" }}>
-              <CardHeader title="Calendar" />
               <CardContent>
                 <CalendarViewer calendars={props.calendars} date={date} onDateChange={setDate} />
               </CardContent>
@@ -61,7 +59,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           </Grid>
           <Grid item xs={12} md={4} lg={3}>
             <Card raised sx={{ height: "100%" }}>
-              <CardHeader title="Actions" />
               <CardContent>
                 {(!!props.schedules.length && <ActionTable actions={props.schedules} />) || (
                   <Typography component="p" textAlign="center">
