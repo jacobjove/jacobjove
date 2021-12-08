@@ -102,28 +102,29 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             console.error("Event missing start or end time: ", event);
             return null;
           }
-          const widthPercent = 100 / numEvents - 2;
-          const width = `${widthPercent}%`;
           const eventStart = parseISO(event.start);
           const eventEnd = parseISO(event.end);
-          const topOffset = `${(differenceInMinutes(eventStart, date) / 30) * 100}%`;
-          console.log(topOffset);
           const eventDuration = differenceInMinutes(eventEnd, eventStart);
-          console.log("duration:", eventDuration);
+          // Calculate styles.
+          const widthPercent = 100 / numEvents - 2;
+          const width = `${widthPercent}%`;
+          const topOffset = `${(differenceInMinutes(eventStart, date) / 30) * 100}%`;
+          const height = `${(eventDuration / 30) * 100}%`;
           return (
             <Box
               key={index}
               position="absolute"
-              left={`${widthPercent * index + index + 1}%`}
+              left={`${widthPercent * index + index}%`}
               top={topOffset}
-              height="96%"
+              height={height}
               zIndex={index}
-              bgcolor={"lightblue"} // calendar.color
+              bgcolor={"rgb(100, 181, 246)"} // or calendar.color
               width={width}
+              border={"1px solid white"}
               borderRadius={"3px"}
               padding={"0.25rem 0.5rem"}
             >
-              {event.title} at {eventStart.toLocaleTimeString()}
+              {event.title}
             </Box>
           );
         })}
