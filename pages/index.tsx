@@ -1,13 +1,13 @@
 import Layout from "@/components/Layout";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import Link from "next/link";
-import Typography from "@mui/material/Typography";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 
 interface DefaultPageProps {
   date: string;
@@ -25,7 +25,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             <Box>
               <Typography variant={"h1"}>Be your best self.</Typography>
             </Box>
-            <Box>
+            <Box marginTop="2rem">
               <Link href={props.ctaHref} passHref>
                 <Button variant={"contained"} color={"primary"}>
                   {props.ctaHref === "/app/dashboard" ? "Go to dashboard" : "Sign up"}

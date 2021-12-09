@@ -1,7 +1,7 @@
 import { handleLogout } from "@/auth";
 import SocialLogin, { Provider } from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
-import { Alert, Box, Button, Paper } from "@mui/material";
+import { Alert, Box, Button, Paper, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import { GetServerSideProps } from "next";
 import { getProviders, useSession } from "next-auth/react";
@@ -66,9 +66,13 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
             </Paper>
           )) || (
             <div id="sign-in">
-              <h1 className="page-title text-center" style={{ margin: "1rem" }}>
+              <Typography
+                variant="h1"
+                className="page-title text-center"
+                style={{ margin: "1rem" }}
+              >
                 Sign in
-              </h1>
+              </Typography>
               <SocialLogin
                 providers={providers}
                 callbackUrl={callbackUrl ?? "/"}

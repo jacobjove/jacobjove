@@ -1,13 +1,13 @@
 import { handleLogout } from "@/auth";
 import SocialLogin, { Provider } from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
-import { Alert, Box, Button, Paper } from "@mui/material";
+import { Alert, Box, Button, Paper, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import { GetServerSideProps } from "next";
 import { getProviders, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 interface RegistrationPageProps {
   providers: Provider[];
@@ -68,9 +68,13 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
             </Paper>
           )) || (
             <div id="sign-in">
-              <h1 className="page-title text-center" style={{ margin: "1rem" }}>
+              <Typography
+                variant="h1"
+                className="page-title text-center"
+                style={{ margin: "1rem" }}
+              >
                 Sign in
-              </h1>
+              </Typography>
               <SocialLogin
                 providers={providers}
                 callbackUrl={callbackUrl ?? "/"}

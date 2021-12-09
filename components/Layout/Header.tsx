@@ -10,17 +10,17 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Image from "next/image";
-import dynamic from "next/dynamic";
 
 const DynamicPageTransitionProgressBar = dynamic(
   () => import("@/components/PageTransitionProgressBar")
@@ -146,8 +146,8 @@ const Header: FC = () => {
                   sx={{ textAlign: "center" }}
                   className={isActive(item[1]) ? "active" : ""}
                 >
-                  <Link href={item[1]}>
-                    <a>{item[0]}</a>
+                  <Link href={item[1]} passHref>
+                    <Typography component="a">{item[0]}</Typography>
                   </Link>
                 </MenuItem>
               ))}
@@ -164,8 +164,8 @@ const Header: FC = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Box key={page[0]} sx={{ m: 2, color: "white", display: "block" }}>
-                <Link href={page[1]}>
-                  <a>{page[0]}</a>
+                <Link href={page[1]} passHref>
+                  <Typography component="a">{page[0]}</Typography>
                 </Link>
               </Box>
             ))}
@@ -220,8 +220,8 @@ const Header: FC = () => {
                 </Menu>
               </>
             )) || (
-              <Link href={`/auth/signin?callbackUrl=${router.pathname}`}>
-                <a>Sign in</a>
+              <Link href={`/auth/signin?callbackUrl=${router.pathname}`} passHref>
+                <Typography component="a">Sign in</Typography>
               </Link>
             )}
           </Box>
