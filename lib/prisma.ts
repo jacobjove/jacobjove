@@ -6,7 +6,6 @@ declare const global: NodeJS.Global & { prisma?: PrismaClient };
 const prisma = global.prisma || new PrismaClient();
 
 if (process.env.NODE_ENV === "development") {
-  console.log("Using global prisma (dev)", " <<<<<<<<<<<");
   global.prisma = prisma;
 } else {
   console.log("WARNING: Not using global prisma <<<<<<<<<<<");

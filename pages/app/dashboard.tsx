@@ -4,11 +4,13 @@ import IdentityTable from "@/components/identities/IdentityTable";
 import Layout from "@/components/Layout";
 import {
   Action,
+  ActionSchedule,
   Calendar,
   CalendarEvent,
   Identity,
   IdentitySelection,
   Schedule,
+  UserActionSchedule,
   Value,
   ValueSelection,
 } from "@/graphql/schema";
@@ -23,15 +25,17 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { Session } from "next-auth";
+import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useState } from "react";
 
 interface DefaultPageProps {
-  date: string;
-  schedules: (Schedule & {
+  dateISO: string;
+  actionSchedules: (ActionSchedule & {
     action: Action;
+    schedule: Schedule;
   })[];
   calendars: (Calendar & {
     events: CalendarEvent[];
@@ -42,11 +46,16 @@ interface DefaultPageProps {
   valueSelections: (ValueSelection & {
     value: Value;
   })[];
+  session: Session;
 }
 
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
-  const currentDate = new Date(props.date);
-  const [date, setDate] = useState(currentDate);
+  const { dateISO, actionSchedules, calendars, identitySelections, valueSelections } = props;
+  const { data: session } = useSession();
+  const [date, setDate] = useState(new Date(dateISO));
+  if (!session) {
+    return null;
+  }
   return (
     <Layout>
       <NextSeo
@@ -62,7 +71,12 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
               <CardContent>
-                <CalendarViewer calendars={props.calendars} date={date} onDateChange={setDate} />
+                <CalendarViewer
+                  calendars={calendars}
+                  date={date}
+                  setDate={setDate}
+                  session={session}
+                />
               </CardContent>
             </Card>
           </Grid>
@@ -70,7 +84,9 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Actions" />
               <CardContent>
-                {(!!props.schedules.length && <ActionTable actions={props.schedules} />) || (
+                {(!!actionSchedules.length && (
+                  <ActionTable actionSchedules={actionSchedules} />
+                )) || (
                   <Typography component="p" textAlign="center">
                     No actions yet.
                   </Typography>
@@ -89,8 +105,8 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Identities" />
               <CardContent>
-                {(!!props.identitySelections.length && (
-                  <IdentityTable identitySelections={props.identitySelections} />
+                {(!!identitySelections.length && (
+                  <IdentityTable identitySelections={identitySelections} />
                 )) || (
                   <Typography component="p" textAlign="center">
                     No identities yet.
@@ -110,8 +126,8 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             <Card raised sx={{ height: "100%" }}>
               <CardHeader title="Values" />
               <CardContent>
-                {(!!props.valueSelections.length &&
-                  props.valueSelections.map((valueSelection, index) => (
+                {(!!valueSelections.length &&
+                  valueSelections.map((valueSelection, index) => (
                     <p key={index}>
                       <Link href={`/valueSelections/${valueSelection.value.slug}`}>
                         <a>{valueSelection.value.name}</a>
@@ -141,23 +157,31 @@ export default DefaultPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  if (!session?.user?.id) {
+    return {
+      redirect: {
+        destination: `/auth/signin?callbackUrl=/app/dashboard`,
+        permanent: false,
+      },
+    };
+  }
   const today = new Date();
   const ototoi = new Date(today);
   const itsukago = new Date(today);
   ototoi.setDate(today.getDate() - 2);
   itsukago.setDate(today.getDate() + 5);
   const props: DefaultPageProps = {
-    date: today.toISOString(),
+    dateISO: today.toISOString(),
     calendars: [],
-    schedules: [],
+    actionSchedules: [],
     identitySelections: [],
     valueSelections: [],
+    session,
   };
-  if (session?.user?.id) {
-    let data;
-    await client
-      .query({
-        query: gql`
+  let data;
+  await client
+    .query({
+      query: gql`
         query Selections {
           calendars (where: {userId: {equals: "${session.user.id}"}}) {
             id
@@ -175,13 +199,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
               end
             }
           }
-          schedules (where: {userId: {equals: "${session.user.id}"}}) {
-            action {
-              name
-              slug
+          userActionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
+            actionSchedule {
+              action {
+                name
+                slug
+              }
+              schedule {
+                frequency
+                multiplier
+              }
             }
-            frequency
-            multiplier
           }
           identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
             identity {
@@ -197,17 +225,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           }
         }
       `,
-      })
-      .then((result) => {
-        data = result.data;
-        props.calendars = data?.calendars;
-        props.schedules = data?.schedules;
-        props.identitySelections = data?.identitySelections;
-        props.valueSelections = data?.valueSelections;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+    })
+    .then((result) => {
+      data = result.data;
+      props.calendars = data?.calendars;
+      props.actionSchedules = result.data?.userActionSchedules?.map(
+        (userActionSchedule: UserActionSchedule) => userActionSchedule.actionSchedule
+      );
+      props.identitySelections = data?.identitySelections;
+      props.valueSelections = data?.valueSelections;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   return { props };
 };

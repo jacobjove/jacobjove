@@ -1,36 +1,40 @@
+import ActionTable from "@/components/actions/ActionTable";
+import CalendarViewer from "@/components/Calendar";
+import Layout from "@/components/Layout";
 import {
   Action,
-  IdentitySelection,
-  Identity,
+  ActionSchedule,
   Calendar,
-  Schedule,
   CalendarEvent,
+  Identity,
+  IdentitySelection,
+  Schedule,
+  UserActionSchedule,
   Value,
   ValueSelection,
 } from "@/graphql/schema";
-import Layout from "@/components/Layout";
 import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
-import Link from "next/link";
-import CardHeader from "@mui/material/CardHeader";
+import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { GetServerSideProps, NextPage } from "next";
+import { Session } from "next-auth";
+import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import ActionTable from "@/components/actions/ActionTable";
-import CalendarViewer from "@/components/Calendar";
+import Link from "next/link";
 import { useState } from "react";
 
 interface DatePlannerPageProps {
-  date: string;
-  schedules: (Schedule & {
+  dateISO: string;
+  actionSchedules: (ActionSchedule & {
     action: Action;
+    schedule: Schedule;
   })[];
   calendars: (Calendar & {
     events: CalendarEvent[];
@@ -41,15 +45,20 @@ interface DatePlannerPageProps {
   valueSelections: (ValueSelection & {
     value: Value;
   })[];
+  session: Session;
 }
 
 const DatePlannerPage: NextPage<DatePlannerPageProps> = (props: DatePlannerPageProps) => {
-  const currentDate = new Date(props.date);
-  const [date, setDate] = useState(currentDate);
+  const { dateISO, actionSchedules, calendars, identitySelections, valueSelections } = props;
+  const { data: session } = useSession();
+  const [date, setDate] = useState(new Date(dateISO));
+  if (!session) {
+    return null;
+  }
   return (
     <Layout>
       <NextSeo
-        title={"Dashboard"}
+        title={"Day Planner"}
         canonical={"/app/planner"}
         description={"Be your best self."}
         noindex
@@ -60,14 +69,21 @@ const DatePlannerPage: NextPage<DatePlannerPageProps> = (props: DatePlannerPageP
           <Grid item xs={12} lg={8}>
             <Card raised sx={{ height: "100%" }}>
               <CardContent>
-                <CalendarViewer calendars={props.calendars} date={date} onDateChange={setDate} />
+                <CalendarViewer
+                  calendars={props.calendars}
+                  date={date}
+                  setDate={setDate}
+                  session={session}
+                />
               </CardContent>
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Card raised sx={{ height: "100%" }}>
               <CardContent>
-                {(!!props.schedules.length && <ActionTable actions={props.schedules} />) || (
+                {(!!props.actionSchedules.length && (
+                  <ActionTable actionSchedules={props.actionSchedules} />
+                )) || (
                   <Typography component="p" textAlign="center">
                     No actions yet.
                   </Typography>
@@ -143,25 +159,34 @@ export default DatePlannerPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  if (!session?.user?.id) {
+    return {
+      redirect: {
+        destination: `/auth/signin?callbackUrl=/app/planner/${context.params?.date}`,
+        permanent: false,
+      },
+    };
+  }
   const today = new Date();
   const ototoi = new Date(today);
   const itsukago = new Date(today);
   ototoi.setDate(today.getDate() - 2);
   itsukago.setDate(today.getDate() + 5);
   const props: DatePlannerPageProps = {
-    date: today.toISOString(),
+    dateISO: today.toISOString(),
     calendars: [],
-    schedules: [],
+    actionSchedules: [],
     identitySelections: [],
     valueSelections: [],
+    session,
   };
   if (!session?.user?.id) {
-    return { 
+    return {
       redirect: {
-        destination: '/auth/signin?callbackUrl=/app/planner',  // TODO
+        destination: "/auth/signin?callbackUrl=/app/planner", // TODO
         permanent: false,
       },
-    } 
+    };
   } else {
     let data;
     await client
@@ -184,13 +209,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 end
               }
             }
-            schedules (where: {userId: {equals: "${session.user.id}"}}) {
-              action {
-                name
-                slug
+            userActionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
+              actionSchedule {
+                action {
+                  name
+                  slug
+                }
+                schedule {
+                  frequency
+                  multiplier
+                }
               }
-              frequency
-              multiplier
             }
             identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
               identity {
@@ -210,7 +239,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       .then((result) => {
         data = result.data;
         props.calendars = data?.calendars;
-        props.schedules = data?.schedules;
+        props.actionSchedules = data?.userActionSchedules?.map(
+          (userActionSchedule: UserActionSchedule) => userActionSchedule.actionSchedule
+        );
         props.identitySelections = data?.identitySelections;
         props.valueSelections = data?.valueSelections;
       })

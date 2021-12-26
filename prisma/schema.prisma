@@ -34,19 +34,21 @@ enum Role {
 }
 
 model User {
-  id                 String              @id @default(cuid())
+  id                 String               @id @default(cuid())
   name               String?
-  email              String              @unique
+  email              String               @unique
   emailVerified      DateTime?
   image              String?
-  isAdmin            Boolean             @default(false)
+  isAdmin            Boolean              @default(false)
   accounts           Account[]
-  schedules          Schedule[]
   identitySelections IdentitySelection[]
   valueSelections    ValueSelection[]
   beliefSelections   BeliefSelection[]
+  actions            Action[]
   actionCompletions  ActionCompletion[]
+  actionSchedules    UserActionSchedule[]
   calendars          Calendar[]
+  UserAction         UserAction[]
 }
 
 enum Color {
@@ -64,18 +66,110 @@ model Calendar {
 }
 
 model CalendarEvent {
-  id         String    @id @default(cuid())
-  calendar   Calendar  @relation(fields: [calendarId], references: [id], onDelete: Cascade)
-  calendarId String
-  schedule   Schedule? @relation(fields: [scheduleId], references: [id])
-  scheduleId Int?
-  title      String
-  start      DateTime
-  end        DateTime
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  id           String              @id @default(cuid())
+  calendar     Calendar            @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  calendarId   String
+  schedule     UserActionSchedule? @relation(fields: [scheduleId], references: [id])
+  scheduleId   Int?
+  userAction   UserAction?         @relation(fields: [userActionId], references: [id])
+  userActionId Int?
+  title        String
+  start        DateTime
+  end          DateTime
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime?
 
   @@map(name: "calendarEvents")
+}
+
+model ScheduleTemplate {
+  id                      Int                      @id @default(autoincrement())
+  frequency               FREQUENCY                @default(DAY)
+  multiplier              Int                      @default(1)
+  chron                   String?
+  actionScheduleTemplates ActionScheduleTemplate[]
+}
+
+model Action {
+  id                 Int                      @id @default(autoincrement())
+  name               String
+  slug               String                   @unique
+  description        String?
+  identityRelations  IdentityActionRelation[]
+  scheduleTemplates  ActionScheduleTemplate[]
+  completions        ActionCompletion[]
+  users              User[]
+  UserAction         UserAction[]
+  UserActionSchedule UserActionSchedule[]
+}
+
+model UserAction {
+  id             Int                  @id @default(autoincrement())
+  user           User                 @relation(fields: [userId], references: [id])
+  userId         String
+  action         Action               @relation(fields: [actionId], references: [id])
+  actionId       Int
+  schedules      UserActionSchedule[]
+  calendarEvents CalendarEvent[]
+  adoptedAt      DateTime             @default(now())
+  abandonedAt    DateTime?
+
+  @@unique([userId, actionId])
+}
+
+model ActionScheduleTemplate {
+  id                  Int                  @id @default(autoincrement())
+  action              Action               @relation(fields: [actionId], references: [id])
+  actionId            Int
+  scheduleTemplate    ScheduleTemplate     @relation(fields: [scheduleTemplateId], references: [id])
+  scheduleTemplateId  Int
+  frequency           FREQUENCY            @default(DAY)
+  multiplier          Int                  @default(1)
+  chron               String?
+  quantity            Int                  @default(1)
+  // unit                 FREQUENCY                     @default(DAY)
+  userActionSchedules UserActionSchedule[]
+
+  @@unique([actionId, frequency, multiplier])
+}
+
+model UserActionSchedule {
+  id                       Int                    @id @default(autoincrement())
+  userAction               UserAction?            @relation(fields: [userActionId], references: [id])
+  userActionId             Int
+  user                     User                   @relation(fields: [userId], references: [id])
+  userId                   String
+  action                   Action                 @relation(fields: [actionId], references: [id])
+  actionId                 Int
+  actionScheduleTemplate   ActionScheduleTemplate @relation(fields: [actionScheduleTemplateId], references: [id])
+  actionScheduleTemplateId Int
+  calendarEvents           CalendarEvent[]
+  adoptedAt                DateTime               @default(now())
+  abandonedAt              DateTime?
+  active                   Boolean                @default(false)
+}
+
+model ActionCompletion {
+  id       Int      @id @default(autoincrement())
+  action   Action   @relation(fields: [actionId], references: [id])
+  actionId Int
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+  date     DateTime @default(now())
+}
+
+enum TYPE {
+  CHRON
+  INTERVAL
+}
+
+enum FREQUENCY {
+  MINUTE
+  HOUR
+  DAY
+  WEEK
+  MONTH
+  YEAR
 }
 
 model IdentitySelection {
@@ -109,55 +203,6 @@ model IdentityActionRelation {
   deleted    DateTime?
 
   @@unique([identityId, actionId])
-}
-
-model Action {
-  id                Int                      @id @default(autoincrement())
-  name              String
-  slug              String                   @unique
-  description       String?
-  identityRelations IdentityActionRelation[]
-  schedules         Schedule[]
-  completions       ActionCompletion[]
-}
-
-model ActionCompletion {
-  id       Int      @id @default(autoincrement())
-  action   Action   @relation(fields: [actionId], references: [id])
-  actionId Int
-  user     User     @relation(fields: [userId], references: [id])
-  userId   String
-  date     DateTime @default(now())
-}
-
-enum TYPE {
-  CHRON
-  INTERVAL
-}
-
-enum UNIT {
-  MINUTE
-  HOUR
-  DAY
-  WEEK
-  MONTH
-  YEAR
-}
-
-model Schedule {
-  id             Int             @id @default(autoincrement())
-  user           User            @relation(fields: [userId], references: [id])
-  userId         String
-  action         Action          @relation(fields: [actionId], references: [id])
-  actionId       Int
-  frequency      UNIT            @default(DAY)
-  multiplier     Int             @default(1)
-  chron          String?
-  adoptedAt      DateTime        @default(now())
-  abandonedAt    DateTime?
-  calendarEvents CalendarEvent[]
-
-  @@unique([userId, actionId])
 }
 
 model Belief {

@@ -1,31 +1,35 @@
+import CalendarViewer from "@/components/Calendar";
+import Layout from "@/components/Layout";
 import {
   Action,
-  IdentitySelection,
-  Identity,
+  ActionSchedule,
   Calendar,
-  Schedule,
   CalendarEvent,
+  Identity,
+  IdentitySelection,
+  Schedule,
+  UserActionSchedule,
   Value,
   ValueSelection,
 } from "@/graphql/schema";
-import Layout from "@/components/Layout";
 import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
 import CardContent from "@mui/material/CardContent";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import { addDays, subDays } from "date-fns";
+import { GetServerSideProps, NextPage } from "next";
+import { Session } from "next-auth";
+import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useState } from "react";
-import { addDays, subDays } from "date-fns";
-import CalendarViewer from "@/components/Calendar";
 
 interface DefaultPageProps {
-  date: string;
-  schedules: (Schedule & {
+  dateISO: string;
+  actionSchedules: (ActionSchedule & {
     action: Action;
+    schedule: Schedule;
   })[];
   calendars: (Calendar & {
     events: CalendarEvent[];
@@ -36,17 +40,22 @@ interface DefaultPageProps {
   valueSelections: (ValueSelection & {
     value: Value;
   })[];
+  session: Session;
 }
 
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
-  const currentDate = new Date(props.date);
-  const [date, setDate] = useState(currentDate);
+  const { dateISO, actionSchedules, calendars, identitySelections, valueSelections } = props;
+  const { data: session } = useSession();
+  const [date, setDate] = useState(new Date(dateISO));
   const calendarEvents: CalendarEvent[] = [];
-  props.calendars.forEach((calendar) => {
+  calendars.forEach((calendar) => {
     calendar.events.forEach((event: CalendarEvent) => {
       calendarEvents.push(event);
     });
   });
+  if (!session) {
+    return null;
+  }
   return (
     <Layout>
       <NextSeo
@@ -61,7 +70,12 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
           <Grid item xs={12} lg={6}>
             <Card raised sx={{ height: "100%" }}>
               <CardContent>
-                <CalendarViewer date={date} onDateChange={setDate} calendars={props.calendars} />
+                <CalendarViewer
+                  date={date}
+                  setDate={setDate}
+                  calendars={calendars}
+                  session={session}
+                />
               </CardContent>
             </Card>
           </Grid>
@@ -74,20 +88,28 @@ export default DefaultPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  if (!session?.user?.id) {
+    return {
+      redirect: {
+        destination: `/auth/signin?callbackUrl=/app/calendar`,
+        permanent: false,
+      },
+    };
+  }
   const today = new Date();
   const ototoi = subDays(today, 2);
   const itsukago = addDays(today, 5);
   const props: DefaultPageProps = {
-    date: today.toISOString(),
+    dateISO: today.toISOString(),
     calendars: [],
-    schedules: [],
+    actionSchedules: [],
     identitySelections: [],
     valueSelections: [],
+    session,
   };
-  if (session?.user?.id) {
-    await client
-      .query({
-        query: gql`
+  await client
+    .query({
+      query: gql`
           query Selections {
             calendars (where: {userId: {equals: "${session.user.id}"}}) {
               id
@@ -105,13 +127,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 end
               }
             }
-            schedules (where: {userId: {equals: "${session.user.id}"}}) {
-              action {
-                name
-                slug
+            userActionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
+              actionSchedule {
+                action {
+                  name
+                  slug
+                }
+                schedule {
+                  frequency
+                  multiplier
+                }
               }
-              frequency
-              multiplier
             }
             identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
               identity {
@@ -127,16 +153,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             }
           }
         `,
-      })
-      .then((result) => {
-        props.calendars = result.data?.calendars;
-        props.schedules = result.data?.schedules;
-        props.identitySelections = result.data?.identitySelections;
-        props.valueSelections = result.data?.valueSelections;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+    })
+    .then((result) => {
+      props.calendars = result.data?.calendars;
+      props.actionSchedules = result.data?.userActionSchedules?.map(
+        (userActionSchedule: UserActionSchedule) => userActionSchedule.actionSchedule
+      );
+      props.identitySelections = result.data?.identitySelections;
+      props.valueSelections = result.data?.valueSelections;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   return { props };
 };

@@ -6,12 +6,12 @@ import usersData from "./seeds/users";
 import valuesData from "./seeds/values";
 
 async function main() {
-  const adminEmail = process.env.ADMIN_USER || `test@gmail.com`
+  const adminEmail = process.env.ADMIN_USER || `test@gmail.com`;
   const user = await prisma.user.findUnique({
     where: {
-      email: adminEmail
-    }
-  })
+      email: adminEmail,
+    },
+  });
   if (!user) {
     await prisma.user.create({
       data: {
@@ -79,7 +79,7 @@ async function main() {
         data: {
           userId: user.id,
           name: `Default`,
-        }
+        },
       });
     } catch (e) {
       console.log(e);
@@ -88,18 +88,28 @@ async function main() {
       where: {
         userId: user.id,
         name: `Default`,
-      }
+      },
     });
     if (calendar) {
       actions.forEach(async (action) => {
         try {
-          await prisma.schedule.create({
+          const schedule = await prisma.schedule.create({
             data: {
-              userId: user.id,
-              actionId: action.id,
               chron: "0 7 * * *",
               frequency: "DAY",
               multiplier: 1,
+            },
+          });
+          const actionSchedule = await prisma.actionSchedule.create({
+            data: {
+              actionId: action.id,
+              scheduleId: schedule.id,
+            },
+          });
+          await prisma.userActionSchedule.create({
+            data: {
+              userId: user.id,
+              actionScheduleId: actionSchedule.id,
             },
           });
         } catch (e) {

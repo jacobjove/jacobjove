@@ -11,7 +11,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext", "esnext.asynciterable"],
-    "module": "esnext",
+    // "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": true,
     "noImplicitReturns": true,
@@ -37,10 +38,7 @@
     "prisma/seed.ts",
     "prisma/generated/*.ts",
     "next-env.d.ts",
-    "next.config.js", 
+    "next.config.js"
   ],
-  "exclude": [
-    "node_modules",
-    "cypress",    
-  ]
+  "exclude": ["node_modules", "cypress"]
 }

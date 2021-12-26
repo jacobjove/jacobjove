@@ -1,7 +1,7 @@
-import { Action, Schedule as _Schedule } from "@/graphql/schema";
 import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
+import { Action, Schedule as _Schedule, UserAction } from "@/graphql/schema";
 import client from "@/lib/apollo/client/apollo";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
@@ -72,7 +72,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             name
             slug
           }
-          schedules (
+          userActions (
             where: {
               userId: {
                 equals: "${session.user.id}"
@@ -85,9 +85,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       `,
     });
     props.actions = data.actions;
-    if (data?.schedules?.length) {
-      props.selectedActionIds = data.schedules.map((schedule: Schedule) =>
-        parseInt(`${schedule.actionId}`)
+    if (data?.userActionSchedules?.length) {
+      props.selectedActionIds = data.userActions.map((userAction: UserAction) =>
+        parseInt(`${userAction.actionId}`)
       );
     }
   }

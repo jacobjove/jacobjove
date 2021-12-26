@@ -32,6 +32,7 @@ const APP_PAGES = [
   ["Dashboard", "/app/dashboard"],
   ["Calendar", "/app/calendar"],
   ["Planner", "/app/planner"],
+  ["Table", "/app/spreadsheet"],
 ];
 
 const settings = [
