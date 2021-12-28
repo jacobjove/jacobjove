@@ -10,6 +10,7 @@ const plugins = [];
 
 const modulesToTranspile = [
   // 'react-datasheet-grid'
+  "date-fns",
 ];
 
 if (modulesToTranspile.length) {

@@ -1,23 +1,27 @@
 import ActionCard from "@/components/actions/ActionCard";
-import { Action, ActionSchedule as _ActionSchedule, Schedule } from "@/graphql/schema";
+import { Action, UserAction, UserActionSchedule as _UserActionSchedule } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import { FC } from "react";
 
-type ActionSchedule = _ActionSchedule & {
-  action: Action;
-  schedule: Schedule;
+type UserActionSchedule = _UserActionSchedule & {
+  userAction: UserAction & {
+    action: Action;
+  };
 };
 
 interface ActionTableProps {
-  actionSchedules: ActionSchedule[];
+  userActionSchedules: UserActionSchedule[];
 }
 
 const ActionTable: FC<ActionTableProps> = (props: ActionTableProps) => {
-  const { actionSchedules } = props;
+  const { userActionSchedules } = props;
   return (
     <Box>
-      {actionSchedules.map((actionSchedule: ActionSchedule) => (
-        <ActionCard key={actionSchedule.action.name} actionSchedule={actionSchedule} />
+      {userActionSchedules.map((userActionSchedule: UserActionSchedule) => (
+        <ActionCard
+          key={userActionSchedule.userAction.action.name}
+          userActionSchedule={userActionSchedule}
+        />
       ))}
     </Box>
   );

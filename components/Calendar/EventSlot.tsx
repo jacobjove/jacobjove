@@ -1,16 +1,17 @@
+import EventBox from "@/components/Calendar/EventBox";
 import { CalendarEvent } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
-import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes, parseISO } from "date-fns";
-import { ComponentProps, FC, MouseEventHandler, useState } from "react";
+import { FC, MouseEventHandler, useState } from "react";
 import { useDrop } from "react-dnd";
 
 interface EventSlotProps {
   date: Date;
   events?: CalendarEvent[];
-  calendarId: string;
+  calendarId: number;
   onClick?: MouseEventHandler<HTMLDivElement>;
+  refetch: () => void;
 }
 
 const SCHEDULE_ACTION = gql`
@@ -48,7 +49,7 @@ const Root = styled("div")(() => ({
 const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
-  const { date, events: initialEvents, calendarId, onClick } = props;
+  const { date, events: initialEvents, onClick, refetch } = props;
   const [hovered, setHovered] = useState(false);
   const [events, setEvents] = useState<CalendarEvent[]>(initialEvents ?? []);
   // const [events, setEvents] = useState<Partial<CalendarEvent>[]>(initialEvents ?? []);
@@ -68,13 +69,16 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
         const start = date;
         const end = addMinutes(date, DEFAULT_EVENT_LENGTH_IN_MINUTES);
         const scheduleId = item.scheduleId ?? null;
+        const calendarId = item.calendarId ?? 1; // TODO
         const calendarEventData = {
           title: item.title ?? "Untitled Event",
           start: start.toISOString(),
           end: end.toISOString(),
+          allDay: false,
         };
         const tmpEvent: CalendarEvent = {
-          id: "tmp-id",
+          id: 0,
+          uid: "tmp-id",
           calendarId,
           scheduleId,
           createdAt: new Date(),
@@ -126,8 +130,10 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
       ref={dropRef}
       className={classNames.join(" ")}
       onClick={onClick}
-      onMouseOver={() => {
-        setHovered(true);
+      onMouseOver={(e) => {
+        if (e.target === e.currentTarget) {
+          setHovered(true);
+        }
       }}
       onMouseOut={() => {
         setHovered(false);
@@ -157,6 +163,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
               zIndex={index}
               width={width}
               event={event}
+              refetch={refetch}
             />
           );
         })}
@@ -165,37 +172,3 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
 };
 
 export default EventSlot;
-
-interface EventBoxProps extends ComponentProps<typeof Box> {
-  event: CalendarEvent;
-}
-
-const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
-  const { event, ...rest } = props;
-  const [hovered, setHovered] = useState(false);
-  return (
-    <Box
-      className="event"
-      {...rest}
-      sx={{
-        bgcolor: "rgb(100, 181, 246)", // or calendar.color
-        filter: hovered ? "brightness(1.1)" : null,
-      }}
-      onMouseOver={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setHovered(true);
-      }}
-      onMouseOut={() => {
-        setHovered(false);
-      }}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("clicked event: ", event);
-      }}
-    >
-      {event.title}
-    </Box>
-  );
-};

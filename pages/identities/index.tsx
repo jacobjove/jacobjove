@@ -3,7 +3,7 @@ import SelectableIdentity from "@/components/identities/SelectableIdentity";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
 import { Identity } from "@/graphql/schema";
-import client from "@/lib/apollo/client/apollo";
+import client from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";

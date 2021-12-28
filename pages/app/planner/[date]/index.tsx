@@ -3,17 +3,16 @@ import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
 import {
   Action,
-  ActionSchedule,
   Calendar,
   CalendarEvent,
   Identity,
   IdentitySelection,
-  Schedule,
+  UserAction,
   UserActionSchedule,
   Value,
   ValueSelection,
 } from "@/graphql/schema";
-import client from "@/lib/apollo/client/apollo";
+import client from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -32,9 +31,10 @@ import { useState } from "react";
 
 interface DatePlannerPageProps {
   dateISO: string;
-  actionSchedules: (ActionSchedule & {
-    action: Action;
-    schedule: Schedule;
+  actionSchedules: (UserActionSchedule & {
+    userAction: UserAction & {
+      action: Action;
+    };
   })[];
   calendars: (Calendar & {
     events: CalendarEvent[];
@@ -82,7 +82,7 @@ const DatePlannerPage: NextPage<DatePlannerPageProps> = (props: DatePlannerPageP
             <Card raised sx={{ height: "100%" }}>
               <CardContent>
                 {(!!props.actionSchedules.length && (
-                  <ActionTable actionSchedules={props.actionSchedules} />
+                  <ActionTable userActionSchedules={props.actionSchedules} />
                 )) || (
                   <Typography component="p" textAlign="center">
                     No actions yet.
@@ -204,22 +204,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                   }
                 }
               ) {
+                id
                 title
                 start
                 end
               }
             }
-            userActionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
-              actionSchedule {
+            userActionSchedules (where: {
+              userAction: {
+                is: {
+                  userId: {
+                    equals: "${session.user.id}"
+                  }
+                }
+              }
+            }) {
+              userAction {
                 action {
                   name
                   slug
                 }
-                schedule {
-                  frequency
-                  multiplier
-                }
               }
+              frequency
+              multiplier
             }
             identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
               identity {
@@ -239,9 +246,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       .then((result) => {
         data = result.data;
         props.calendars = data?.calendars;
-        props.actionSchedules = data?.userActionSchedules?.map(
-          (userActionSchedule: UserActionSchedule) => userActionSchedule.actionSchedule
-        );
+        props.actionSchedules = data?.userActionSchedules;
         props.identitySelections = data?.identitySelections;
         props.valueSelections = data?.valueSelections;
       })

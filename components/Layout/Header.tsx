@@ -104,9 +104,9 @@ const Header: FC = () => {
               >
                 HabitBuilder
                 {process.env.NODE_ENV !== "production" && (
-                  <small>
-                    <sup>{process.env.NODE_ENV || process.env.VERCEL_ENV}</sup>
-                  </small>
+                  <sup>
+                    <small>{"dev"}</small>
+                  </sup>
                 )}
               </Typography>
             </a>

@@ -1,15 +1,15 @@
+import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
 import { Action } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";
-import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleScheduleSelection($actionId: Int!, $userId: String!, $abandonedAt: DateTime) {
-    toggleScheduleAdoption(actionId: $actionId, userId: $userId, abandonedAt: $abandonedAt) {
+  mutation ToggleUserActionAdoption($actionId: Int!, $userId: String!, $abandonedAt: DateTime) {
+    toggleUserActionAdoption(actionId: $actionId, userId: $userId, abandonedAt: $abandonedAt) {
       actionId
       userId
       abandonedAt
@@ -41,8 +41,8 @@ const SelectableAction: FC<SelectableActionProps> = ({
         variables: { actionId: action.id, userId: session.user.id, abandonedAt },
         optimisticResponse: {
           __typename: "Mutation",
-          toggleSelection: {
-            __typename: "ToggleSelectionPayload",
+          toggleUserActionAdoption: {
+            __typename: "ToggleUserActionAdoptionPayload",
             actionId: action.id,
             userId: session.user.id,
             abandonedAt,

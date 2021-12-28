@@ -1,5 +1,5 @@
 import { PageTransitionContextProvider } from "@/components/PageTransitionContext";
-import apolloClient from "@/lib/apollo/client/apollo";
+import { useApollo } from "@/lib/apollo/apolloClient";
 import { ApolloProvider } from "@apollo/client";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -40,7 +40,7 @@ const theme = createTheme({
 });
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  // const apolloClient = useApollo(pageProps.initialApolloState)
+  const apolloClient = useApollo(pageProps);
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);

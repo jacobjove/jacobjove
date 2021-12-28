@@ -1,8 +1,8 @@
 import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
-import { Action, Schedule as _Schedule, UserAction } from "@/graphql/schema";
-import client from "@/lib/apollo/client/apollo";
+import { Action, UserAction as _UserAction } from "@/graphql/schema";
+import client from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -11,7 +11,7 @@ import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React from "react";
 
-type Schedule = _Schedule & {
+type UserAction = _UserAction & {
   action: Action;
 };
 
@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       `,
     });
     props.actions = data.actions;
-    if (data?.userActionSchedules?.length) {
+    if (data?.userActions?.length) {
       props.selectedActionIds = data.userActions.map((userAction: UserAction) =>
         parseInt(`${userAction.actionId}`)
       );

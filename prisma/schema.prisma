@@ -34,21 +34,19 @@ enum Role {
 }
 
 model User {
-  id                 String               @id @default(cuid())
+  id                 String              @id @default(cuid())
   name               String?
-  email              String               @unique
+  email              String              @unique
   emailVerified      DateTime?
   image              String?
-  isAdmin            Boolean              @default(false)
+  isAdmin            Boolean             @default(false)
   accounts           Account[]
   identitySelections IdentitySelection[]
   valueSelections    ValueSelection[]
   beliefSelections   BeliefSelection[]
-  actions            Action[]
+  userActions        UserAction[]
   actionCompletions  ActionCompletion[]
-  actionSchedules    UserActionSchedule[]
   calendars          Calendar[]
-  UserAction         UserAction[]
 }
 
 enum Color {
@@ -56,7 +54,8 @@ enum Color {
 }
 
 model Calendar {
-  id       String          @id @default(cuid())
+  id       Int             @id @default(autoincrement())
+  uid      String          @unique(map: "Calendar_uid_unique_constraint") @default(cuid())
   user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
   name     String?
@@ -66,16 +65,19 @@ model Calendar {
 }
 
 model CalendarEvent {
-  id           String              @id @default(cuid())
+  id           Int                 @id @default(autoincrement())
+  uid          String              @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
   calendar     Calendar            @relation(fields: [calendarId], references: [id], onDelete: Cascade)
-  calendarId   String
+  calendarId   Int
   schedule     UserActionSchedule? @relation(fields: [scheduleId], references: [id])
   scheduleId   Int?
   userAction   UserAction?         @relation(fields: [userActionId], references: [id])
   userActionId Int?
   title        String
   start        DateTime
-  end          DateTime
+  end          DateTime?
+  allDay       Boolean             @default(false)
+  notes        String?
   createdAt    DateTime            @default(now())
   updatedAt    DateTime?
 
@@ -91,16 +93,14 @@ model ScheduleTemplate {
 }
 
 model Action {
-  id                 Int                      @id @default(autoincrement())
-  name               String
-  slug               String                   @unique
-  description        String?
-  identityRelations  IdentityActionRelation[]
-  scheduleTemplates  ActionScheduleTemplate[]
-  completions        ActionCompletion[]
-  users              User[]
-  UserAction         UserAction[]
-  UserActionSchedule UserActionSchedule[]
+  id                Int                      @id @default(autoincrement())
+  name              String
+  slug              String                   @unique
+  description       String?
+  identityRelations IdentityActionRelation[]
+  scheduleTemplates ActionScheduleTemplate[]
+  completions       ActionCompletion[]
+  userActions       UserAction[]
 }
 
 model UserAction {
@@ -125,8 +125,8 @@ model ActionScheduleTemplate {
   scheduleTemplateId  Int
   frequency           FREQUENCY            @default(DAY)
   multiplier          Int                  @default(1)
-  chron               String?
   quantity            Int                  @default(1)
+  chron               String?
   // unit                 FREQUENCY                     @default(DAY)
   userActionSchedules UserActionSchedule[]
 
@@ -134,19 +134,18 @@ model ActionScheduleTemplate {
 }
 
 model UserActionSchedule {
-  id                       Int                    @id @default(autoincrement())
-  userAction               UserAction?            @relation(fields: [userActionId], references: [id])
+  id                       Int                     @id @default(autoincrement())
+  userAction               UserAction?             @relation(fields: [userActionId], references: [id])
   userActionId             Int
-  user                     User                   @relation(fields: [userId], references: [id])
-  userId                   String
-  action                   Action                 @relation(fields: [actionId], references: [id])
-  actionId                 Int
-  actionScheduleTemplate   ActionScheduleTemplate @relation(fields: [actionScheduleTemplateId], references: [id])
-  actionScheduleTemplateId Int
+  frequency                FREQUENCY               @default(DAY)
+  multiplier               Int                     @default(1)
+  quantity                 Int                     @default(1)
+  actionScheduleTemplate   ActionScheduleTemplate? @relation(fields: [actionScheduleTemplateId], references: [id])
+  actionScheduleTemplateId Int?
   calendarEvents           CalendarEvent[]
-  adoptedAt                DateTime               @default(now())
+  adoptedAt                DateTime                @default(now())
   abandonedAt              DateTime?
-  active                   Boolean                @default(false)
+  active                   Boolean                 @default(false)
 }
 
 model ActionCompletion {

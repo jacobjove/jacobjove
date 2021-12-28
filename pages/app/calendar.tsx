@@ -1,61 +1,64 @@
 import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
-import {
-  Action,
-  ActionSchedule,
-  Calendar,
-  CalendarEvent,
-  Identity,
-  IdentitySelection,
-  Schedule,
-  UserActionSchedule,
-  Value,
-  ValueSelection,
-} from "@/graphql/schema";
-import client from "@/lib/apollo/client/apollo";
-import { gql } from "@apollo/client";
+import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
+import { Calendar, CalendarEvent } from "@/graphql/schema";
+import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
+import { NetworkStatus, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import { addDays, subDays } from "date-fns";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useState } from "react";
 
-interface DefaultPageProps {
+interface CalendarPageProps {
   dateISO: string;
-  actionSchedules: (ActionSchedule & {
-    action: Action;
-    schedule: Schedule;
-  })[];
-  calendars: (Calendar & {
-    events: CalendarEvent[];
-  })[];
-  identitySelections: (IdentitySelection & {
-    identity: Identity;
-  })[];
-  valueSelections: (ValueSelection & {
-    value: Value;
-  })[];
   session: Session;
 }
 
-const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
-  const { dateISO, actionSchedules, calendars, identitySelections, valueSelections } = props;
+const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => {
+  const { dateISO } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
+  const { loading, error, data, fetchMore, refetch, networkStatus } = useQuery(
+    GET_CALENDAR_EVENTS,
+    {
+      variables: {
+        userId: session?.user?.id,
+      },
+      // Setting this value to true makes the component rerender when "networkStatus" changes,
+      // so we are able to know if it is fetching more data.
+      // notifyOnNetworkStatusChange: true,
+    }
+  );
+  const loadingItems = networkStatus === NetworkStatus.fetchMore;
+
+  if (!session) return null;
+  if (loadingItems) return <p>{"Loading..."}</p>;
+  if (error) return <p>{"Error loading data."}</p>;
+
+  const { calendars } = data;
   const calendarEvents: CalendarEvent[] = [];
-  calendars.forEach((calendar) => {
-    calendar.events.forEach((event: CalendarEvent) => {
-      calendarEvents.push(event);
-    });
-  });
-  if (!session) {
+  console.log("Building list of calendar events...");
+  calendars.forEach(
+    (
+      calendar: Calendar & {
+        events: CalendarEvent[];
+      }
+    ) => {
+      calendar.events.forEach((event: CalendarEvent) => {
+        calendarEvents.push(event);
+      });
+    }
+  );
+  if (calendars.length === 0) {
+    console.error("No calendars found.");
     return null;
   }
+  console.log("Finished building list of calendar events.");
   return (
     <Layout>
       <NextSeo
@@ -75,6 +78,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
                   setDate={setDate}
                   calendars={calendars}
                   session={session}
+                  refetch={refetch}
                 />
               </CardContent>
             </Card>
@@ -84,9 +88,10 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
     </Layout>
   );
 };
-export default DefaultPage;
+export default CalendarPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const apolloClient = initializeApollo();
   const session = await getSession({ req: context.req });
   if (!session?.user?.id) {
     return {
@@ -97,73 +102,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const today = new Date();
-  const ototoi = subDays(today, 2);
-  const itsukago = addDays(today, 5);
-  const props: DefaultPageProps = {
+  const props: CalendarPageProps = {
     dateISO: today.toISOString(),
-    calendars: [],
-    actionSchedules: [],
-    identitySelections: [],
-    valueSelections: [],
     session,
   };
-  await client
+  await apolloClient
     .query({
-      query: gql`
-          query Selections {
-            calendars (where: {userId: {equals: "${session.user.id}"}}) {
-              id
-              color
-              events (
-                where: {
-                  start: {
-                    gt: "${ototoi.toISOString()}"
-                    lt: "${itsukago.toISOString()}"
-                  }
-                }
-              ) {
-                title
-                start
-                end
-              }
-            }
-            userActionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
-              actionSchedule {
-                action {
-                  name
-                  slug
-                }
-                schedule {
-                  frequency
-                  multiplier
-                }
-              }
-            }
-            identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
-              identity {
-                name
-                slug
-              }
-            }
-            valueSelections (where: {userId: {equals: "${session.user.id}"}}) {
-              value {
-                name
-                slug
-              }
-            }
-          }
-        `,
+      query: GET_CALENDAR_EVENTS,
+      variables: {
+        userId: session.user.id,
+      },
     })
-    .then((result) => {
-      props.calendars = result.data?.calendars;
-      props.actionSchedules = result.data?.userActionSchedules?.map(
-        (userActionSchedule: UserActionSchedule) => userActionSchedule.actionSchedule
-      );
-      props.identitySelections = result.data?.identitySelections;
-      props.valueSelections = result.data?.valueSelections;
-    })
-    .catch((error) => {
-      console.error(error);
+    .catch((e) => {
+      console.error(e.networkError?.result?.errors);
     });
-  return { props };
+  return addApolloState(apolloClient, { props });
 };

@@ -1,5 +1,5 @@
 import DateSelector from "@/components/Calendar/DateSelector";
-import EventCreationDialog from "@/components/Calendar/EventCreationDialog";
+import EventEditingDialog from "@/components/Calendar/EventEditingDialog";
 import EventSlot from "@/components/Calendar/EventSlot";
 import { Calendar, CalendarEvent } from "@/graphql/schema";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -12,6 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import {
   addMinutes,
   differenceInMinutes,
+  getHours,
   isSameDay,
   parseISO,
   setHours,
@@ -26,8 +27,9 @@ import { FC, Fragment, useEffect, useRef, useState } from "react";
 
 const START_HOUR = 7;
 const END_HOUR = 22;
-const NUM_HOURS = END_HOUR - START_HOUR;
+const NUM_HOURS = END_HOUR - START_HOUR + 1;
 const HALF_HOUR_HEIGHT = 48; // Must be divisible by 2.
+const HOUR_HEIGHT = HALF_HOUR_HEIGHT * 2;
 
 const Root = styled("div")(() => ({
   "& *": {
@@ -62,35 +64,38 @@ const Root = styled("div")(() => ({
   },
 }));
 
-interface CalendarProps {
+interface CalendarViewerProps {
   date: Date;
   setDate: (date: Date) => void;
   calendars: (Calendar & {
     events: CalendarEvent[];
   })[];
+  refetch: () => void;
   session: Session;
 }
 
-const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
-  const { date, setDate, calendars: initialCalendars, session } = props;
-  // console.log("user:", session?.user);
+const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
+  const { date, setDate, calendars: initialCalendars, refetch, session } = props;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState(date);
   const [calendars, setCalendars] = useState(initialCalendars);
   // const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [eventCreationDialogOpen, setEventCreationDialogOpen] = useState(false);
-  const [eventCreationStartTime, setEventCreationStartTime] = useState<Date | null>(date);
-  const [eventCreationEndTime, setEventCreationEndTime] = useState<Date | null>(
-    eventCreationStartTime ? addMinutes(eventCreationStartTime, 30) : null
-  );
+  const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
+  const [initialEventFormData, setInitialEventFormData] = useState({
+    title: "",
+    start: date,
+    end: date ? addMinutes(date, 29) : null,
+    allDay: false,
+    notes: "",
+    calendarId: calendars[0]?.id, // TODO: Get this from the user's default calendar.
+  });
 
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT * 1.5;
   const currentTimeOffsetPx =
-    ((HALF_HOUR_HEIGHT * 2) / 60) * differenceInMinutes(date, dayStart) +
-    allDayBoxHeight +
-    HALF_HOUR_HEIGHT;
+    (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
+  // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
   const primaryCalendar = calendars[0]; // calendars.find((c) => c.isPrimary);
 
   const events: CalendarEvent[] = [];
@@ -99,7 +104,6 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
       // TODO: what about multi-day events?
       .filter((event: CalendarEvent) => isSameDay(parseISO(event.start), selectedDate))
       .forEach((event: CalendarEvent) => {
-        console.log(">", event.title, event.start);
         events.push(event);
       });
   });
@@ -110,7 +114,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
     if (scrollableDiv) {
       // console.log('Scrolling to', currentTimeOffsetPx);
       // console.log('Before', scrollableDiv.scrollTop);
-      scrollableDiv.scrollTo({ top: currentTimeOffsetPx, behavior: "smooth" });
+      scrollableDiv.scrollTo({ top: currentTimeOffsetPx - HOUR_HEIGHT, behavior: "smooth" });
       // console.log('After', scrollableDiv.scrollTop);
     }
   }, [currentTimeOffsetPx]);
@@ -154,17 +158,17 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
       <Toolbar sx={{ width: "100%", borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>
         <DateSelector date={selectedDate} onDateChange={setSelectedDate} />
         <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
-          <Button variant="text">
+          <Button variant="text" title={`Connect Google Calendar`}>
             <GoogleIcon
-              sx={{ color: "lightgray" }}
+              sx={{ color: "lightgray", fontSize: "1rem" }}
               onClick={() => {
                 console.log("connecting to google calendar...");
               }}
             />
           </Button>
-          <Button variant="text">
+          <Button variant="text" title={`Connect Apple Calendar`}>
             <AppleIcon
-              sx={{ color: "lightgray" }}
+              sx={{ color: "lightgray", fontSize: "1.1rem" }}
               onClick={() => {
                 console.log("connecting to apple calendar...");
               }}
@@ -176,7 +180,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
         <div className="time-labels-column">
           <Box
             className="time-label"
-            height={`${HALF_HOUR_HEIGHT * 2}px`}
+            height={`${allDayBoxHeight}px`}
             borderBottom="1px solid rgba(224, 224, 224, 1)"
           >
             All Day
@@ -184,7 +188,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
         </div>
         <div className="calendar-slots-column">
           <Box
-            height={`${HALF_HOUR_HEIGHT * 2}px`}
+            height={`${allDayBoxHeight}px`}
             borderBottom="1px solid rgba(224, 224, 224, 1)"
             display="flex"
           >
@@ -241,11 +245,22 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
                         events={eventSlotEvents}
                         calendarId={primaryCalendar?.id}
                         onClick={(e) => {
-                          console.log(e);
-                          setEventCreationStartTime(eventSlotDate);
-                          setEventCreationEndTime(addMinutes(eventSlotDate, 30));
-                          setEventCreationDialogOpen(true);
+                          // Only trigger if the click was actually on the slot. This check
+                          // allows us to avoid stopping propagation on click events for
+                          // other elements in the slot.
+                          if (e.target === e.currentTarget) {
+                            setInitialEventFormData({
+                              title: initialEventFormData.title ?? "",
+                              start: eventSlotDate,
+                              end: addMinutes(eventSlotDate, 29),
+                              allDay: false,
+                              notes: initialEventFormData.notes ?? "",
+                              calendarId: initialEventFormData.calendarId ?? primaryCalendar?.id,
+                            });
+                            setEventEditingDialogOpen(true);
+                          }
                         }}
+                        refetch={refetch}
                       />
                     </Box>
                   );
@@ -253,7 +268,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
               </Fragment>
             );
           })}
-          {isSameDay(date, selectedDate) && (
+          {isSameDay(date, selectedDate) && getHours(date) < END_HOUR && (
             <Box
               position="absolute"
               height="1px"
@@ -263,13 +278,11 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
               zIndex={1000}
             />
           )}
-          <EventCreationDialog
-            open={eventCreationDialogOpen}
-            setOpen={setEventCreationDialogOpen}
-            startTime={eventCreationStartTime}
-            setStartTime={setEventCreationStartTime}
-            endTime={eventCreationEndTime}
-            setEndTime={setEventCreationEndTime}
+          <EventEditingDialog
+            open={eventDialogOpen}
+            setOpen={setEventEditingDialogOpen}
+            event={initialEventFormData}
+            refetch={refetch}
           />
         </div>
       </Box>

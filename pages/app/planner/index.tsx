@@ -1,16 +1,10 @@
 import ActionTable from "@/components/actions/ActionTable";
 import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
-import {
-  Action,
-  ActionSchedule,
-  Calendar,
-  CalendarEvent,
-  Schedule,
-  UserActionSchedule,
-} from "@/graphql/schema";
-import client from "@/lib/apollo/client/apollo";
-import { gql } from "@apollo/client";
+import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
+import { Action, Calendar, CalendarEvent, UserAction, UserActionSchedule } from "@/graphql/schema";
+import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
+import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -20,16 +14,17 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useState } from "react";
 
 interface PlannerPageProps {
   dateISO: string;
-  actionSchedules: (ActionSchedule & {
-    action: Action;
-    schedule: Schedule;
+  actionSchedules: (UserActionSchedule & {
+    userAction: UserAction & {
+      action: Action;
+    };
   })[];
   calendars: (Calendar & {
     events: CalendarEvent[];
@@ -38,9 +33,23 @@ interface PlannerPageProps {
 }
 
 const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
-  const { dateISO, actionSchedules, calendars, session } = props;
-  const currentDate = new Date(dateISO);
-  const [date, setDate] = useState(currentDate);
+  const { dateISO, actionSchedules, calendars } = props;
+  const { data: session } = useSession();
+  const [date, setDate] = useState(new Date(dateISO));
+  const { loading, error, data, fetchMore, refetch, networkStatus } = useQuery(
+    GET_CALENDAR_EVENTS,
+    {
+      variables: {
+        userId: session?.user?.id,
+      },
+      // Setting this value to true makes the component rerender when "networkStatus" changes,
+      // so we are able to know if it is fetching more data.
+      // notifyOnNetworkStatusChange: true,
+    }
+  );
+  if (!session) {
+    return null;
+  }
   return (
     <Layout>
       <NextSeo
@@ -59,6 +68,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                   calendars={calendars}
                   date={date}
                   setDate={setDate}
+                  refetch={refetch}
                   session={session}
                 />
               </CardContent>
@@ -68,7 +78,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             <Card raised sx={{ height: "100%" }}>
               <CardContent>
                 {(!!actionSchedules.length && (
-                  <ActionTable actionSchedules={actionSchedules} />
+                  <ActionTable userActionSchedules={actionSchedules} />
                 )) || (
                   <Typography component="p" textAlign="center">
                     No actions yet.
@@ -92,6 +102,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
 export default PlannerPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const apolloClient = initializeApollo();
   const session = await getSession({ req: context.req });
   if (!session?.user?.id) {
     return {
@@ -102,61 +113,64 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const today = new Date();
-  const ototoi = new Date(today);
-  const itsukago = new Date(today);
-  ototoi.setDate(today.getDate() - 2);
-  itsukago.setDate(today.getDate() + 5);
   const props: PlannerPageProps = {
     dateISO: today.toISOString(),
     calendars: [],
     actionSchedules: [],
     session,
   };
-  let data;
-  await client
+
+  await apolloClient
+    .query({
+      query: GET_CALENDAR_EVENTS,
+      variables: {
+        userId: session.user.id,
+      },
+    })
+    .catch((e) => {
+      console.error(e.networkError?.result?.errors);
+    });
+
+  await apolloClient
     .query({
       query: gql`
           query Selections {
             calendars (where: {userId: {equals: "${session.user.id}"}}) {
               id
               color
-              events (
-                where: {
-                  start: {
-                    gt: "${ototoi.toISOString()}"
-                    lt: "${itsukago.toISOString()}"
-                  }
-                }
-              ) {
+              events {
+                id
                 title
                 start
                 end
               }
             }
-            userActionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
-              actionSchedule {
+            userActionSchedules (where: {
+              userAction: {
+                is: {
+                  userId: {
+                    equals: "${session.user.id}"
+                  }
+                }
+              }
+            }) {
+              userAction {
                 action {
                   name
                   slug
                 }
-                schedule {
-                  frequency
-                  multiplier
-                }
               }
+              frequency
+              multiplier
             }
           }
         `,
     })
     .then((result) => {
-      data = result.data;
-      props.calendars = data?.calendars;
-      props.actionSchedules = result.data?.userActionSchedules?.map(
-        (userActionSchedule: UserActionSchedule) => userActionSchedule.actionSchedule
-      );
+      props.actionSchedules = result.data?.userActionSchedules;
     })
     .catch((error) => {
       console.error(error);
     });
-  return { props };
+  return addApolloState(apolloClient, { props });
 };

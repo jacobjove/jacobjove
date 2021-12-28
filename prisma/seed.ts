@@ -93,23 +93,17 @@ async function main() {
     if (calendar) {
       actions.forEach(async (action) => {
         try {
-          const schedule = await prisma.schedule.create({
+          const userAction = await prisma.userAction.create({
             data: {
-              chron: "0 7 * * *",
-              frequency: "DAY",
-              multiplier: 1,
-            },
-          });
-          const actionSchedule = await prisma.actionSchedule.create({
-            data: {
+              userId: user.id,
               actionId: action.id,
-              scheduleId: schedule.id,
             },
           });
           await prisma.userActionSchedule.create({
             data: {
-              userId: user.id,
-              actionScheduleId: actionSchedule.id,
+              userActionId: userAction.id,
+              frequency: "DAY",
+              multiplier: 1,
             },
           });
         } catch (e) {

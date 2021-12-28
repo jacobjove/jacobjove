@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
-import { Action, ActionSchedule, Schedule, UserActionSchedule } from "@/graphql/schema";
-import client from "@/lib/apollo/client/apollo";
+import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
+import client from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Grid } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -167,22 +167,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 }
               }
             ) {
+              id
               title
               start
               end
             }
           }
           userActionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
-            actionSchedule {
+            userAction {
               action {
                 name
                 slug
               }
-              schedule {
-                frequency
-                multiplier
-              }
             }
+            frequency
+            multiplier
           }
           identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
             identity {
@@ -201,21 +200,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
     .then((result) => {
       const userActionSchedules: (UserActionSchedule & {
-        actionSchedule: ActionSchedule & {
+        userAction: UserAction & {
           action: Action;
-          schedule: Schedule;
         };
       })[] = result.data.userActionSchedules;
-      const actionSchedules = userActionSchedules.map(
-        (userActionSchedule) => userActionSchedule.actionSchedule
+      const actions = userActionSchedules.map(
+        (userActionSchedule) => userActionSchedule.userAction.action
       );
-      props.columns = actionSchedules?.map((actionSchedule) => actionSchedule.action.name) || [];
+      props.columns = actions?.map((action) => action.name) || [];
       const dates: Date[] = getDatesBetweenDates(ototoi, itsukago);
       for (const date of dates) {
         const dateString = date.toISOString();
         const row: any = { id: dateString, date: dateString };
-        for (const actionSchedule of actionSchedules) {
-          row[keyify(actionSchedule.action.name)] = 10;
+        for (const action of actions) {
+          row[keyify(action.name)] = 10;
         }
         props.data.push(row);
       }
