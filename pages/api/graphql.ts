@@ -3,46 +3,44 @@
 // NOTE: reflect-metadata must be imported at the top!
 import "reflect-metadata";
 
-import { createContext } from '@/graphql/context';
-import { resolvers } from '@/graphql/schema';
+import { createContext } from "@/graphql/context";
+import { resolvers } from "@/graphql/schema";
 import { ApolloServer } from "apollo-server-micro";
-import { NextApiRequest, NextApiResponse, PageConfig } from 'next';
+import { NextApiRequest, NextApiResponse, PageConfig } from "next";
 import { buildSchema } from "type-graphql";
 
-// TODO: Make sure the server is initialized correctly... not multiple instances etc...
-let apolloServerHandler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+declare const global: NodeJS.Global & {
+  apolloServerHandler?: ReturnType<ApolloServer["createHandler"]>;
+};
 
 const getApolloServerHandler = async () => {
-  if (!apolloServerHandler) {
+  if (!global.apolloServerHandler) {
     // TODO: https://prisma.typegraphql.com/docs/advanced/exposing-models
     const apolloServer = new ApolloServer({
       context: createContext,
-      schema: await buildSchema({ 
+      schema: await buildSchema({
         resolvers,
-        dateScalarMode: 'isoDate',
+        dateScalarMode: "isoDate",
         emitSchemaFile: {
           path: `${process.env.BASE_DIR}/graphql/schema.gql`,
           commentDescriptions: true,
         },
         validate: false,
       }),
-      debug: process.env.NODE_ENV !== 'production',
+      debug: process.env.NODE_ENV !== "production",
     });
     await apolloServer.start();
     // console.log(">>>>> Started apollo server")
-    apolloServerHandler = apolloServer.createHandler({ path: '/api/graphql' });
+    global.apolloServerHandler = apolloServer.createHandler({ path: "/api/graphql" });
   }
-  return apolloServerHandler;
-}
+  return global.apolloServerHandler;
+};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', 'https://studio.apollographql.com');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  if (req.method === 'OPTIONS') {
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", "https://studio.apollographql.com");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  if (req.method === "OPTIONS") {
     res.end();
     return false;
   }
