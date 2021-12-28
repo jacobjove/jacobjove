@@ -2,15 +2,42 @@ import { gql } from "@apollo/client";
 
 export const GET_CALENDAR_EVENTS = gql`
   query GetCalendarEvents($userId: String!) {
-    calendars(where: { userId: { equals: $userId } }) {
+    calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
       id
-      color
-      events {
-        id
-        title
-        start
-        end
-      }
+      scheduleId
+      calendarId
+      title
+      start
+      end
+    }
+  }
+`;
+
+export const CREATE_CALENDAR_EVENT = gql`
+  mutation CreateCalendarEvent($data: CalendarEventCreateInput!) {
+    createCalendarEvent(data: $data) {
+      id
+      scheduleId
+      calendarId
+      title
+      start
+      end
+    }
+  }
+`;
+
+export const MODIFY_CALENDAR_EVENT = gql`
+  mutation UpdateCalendarEvent(
+    $data: CalendarEventUpdateInput!
+    $where: CalendarEventWhereUniqueInput!
+  ) {
+    updateCalendarEvent(data: $data, where: $where) {
+      id
+      scheduleId
+      calendarId
+      title
+      start
+      end
     }
   }
 `;

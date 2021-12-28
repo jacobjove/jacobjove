@@ -1,7 +1,7 @@
 import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
 import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
-import { Calendar, CalendarEvent } from "@/graphql/schema";
+// import { Calendar, CalendarEvent } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
@@ -35,29 +35,10 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
     }
   );
   const loadingItems = networkStatus === NetworkStatus.fetchMore;
-
   if (!session) return null;
   if (loadingItems) return <p>{"Loading..."}</p>;
   if (error) return <p>{"Error loading data."}</p>;
-
-  const { calendars } = data;
-  const calendarEvents: CalendarEvent[] = [];
-  console.log("Building list of calendar events...");
-  calendars.forEach(
-    (
-      calendar: Calendar & {
-        events: CalendarEvent[];
-      }
-    ) => {
-      calendar.events.forEach((event: CalendarEvent) => {
-        calendarEvents.push(event);
-      });
-    }
-  );
-  if (calendars.length === 0) {
-    console.error("No calendars found.");
-    return null;
-  }
+  const { calendarEvents } = data;
   console.log("Finished building list of calendar events.");
   return (
     <Layout>
@@ -76,7 +57,8 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
                 <CalendarViewer
                   date={date}
                   setDate={setDate}
-                  calendars={calendars}
+                  // calendars={calendars}
+                  calendarEvents={calendarEvents}
                   session={session}
                   refetch={refetch}
                 />

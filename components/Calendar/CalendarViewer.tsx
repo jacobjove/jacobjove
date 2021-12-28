@@ -67,19 +67,16 @@ const Root = styled("div")(() => ({
 interface CalendarViewerProps {
   date: Date;
   setDate: (date: Date) => void;
-  calendars: (Calendar & {
-    events: CalendarEvent[];
-  })[];
+  calendarEvents: CalendarEvent[];
   refetch: () => void;
   session: Session;
 }
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
-  const { date, setDate, calendars: initialCalendars, refetch, session } = props;
+  const { date, setDate, calendarEvents, refetch, session } = props;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState(date);
-  const [calendars, setCalendars] = useState(initialCalendars);
-  // const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [calendars, setCalendars] = useState<Calendar[]>([]);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({
     title: "",
@@ -87,7 +84,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     end: date ? addMinutes(date, 29) : null,
     allDay: false,
     notes: "",
-    calendarId: calendars[0]?.id, // TODO: Get this from the user's default calendar.
+    calendarId: calendarEvents[0]?.calendarId ?? 1, // TODO: Get this from the user's default calendar.
   });
 
   const dayStart = zeroToHour(date, START_HOUR);
@@ -97,16 +94,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
   const primaryCalendar = calendars[0]; // calendars.find((c) => c.isPrimary);
-
-  const events: CalendarEvent[] = [];
-  calendars.forEach((calendar) => {
-    calendar.events
-      // TODO: what about multi-day events?
-      .filter((event: CalendarEvent) => isSameDay(parseISO(event.start), selectedDate))
-      .forEach((event: CalendarEvent) => {
-        events.push(event);
-      });
-  });
 
   useEffect(() => {
     // Scroll to the current time.
@@ -128,21 +115,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
       clearInterval(intervalId);
     };
   }, [setDate]);
-  // useEffect(() => {
-  //   // Set the events to display on the calendar.
-  //   console.log("setting events to display on calendar......");
-  //   const _events: CalendarEvent[] = [];
-  //   calendars.forEach((calendar) => {
-  //     calendar.events
-  //       // TODO: what about multi-day events?
-  //       .filter((event: CalendarEvent) => isSameDay(parseISO(event.start), selectedDate))
-  //       .forEach((event: CalendarEvent) => {
-  //         console.log(">", event.title, event.start);
-  //         _events.push(event);
-  //       });
-  //   });
-  //   setEvents(_events);
-  // }, [calendars, selectedDate]);
   if (!session?.user) {
     return (
       <Skeleton
@@ -224,7 +196,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                     setMinutes(setSeconds(selectedDate, 0), j * 30),
                     START_HOUR + i
                   );
-                  const eventSlotEvents = events.filter((event: CalendarEvent) => {
+                  const eventSlotEvents = calendarEvents.filter((event: CalendarEvent) => {
                     const diff = differenceInMinutes(
                       parseISO(event.start),
                       eventSlotDate,

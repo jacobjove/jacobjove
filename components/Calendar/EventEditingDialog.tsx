@@ -1,11 +1,12 @@
 import EventFormFields from "@/components/Calendar/EventFormFields";
+import { CREATE_CALENDAR_EVENT, MODIFY_CALENDAR_EVENT } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import {
   CalendarEventCreateInput,
   CalendarEventUpdateInput,
   CalendarEventWhereUniqueInput,
 } from "@/prisma/generated";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,33 +14,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { addMinutes } from "date-fns/esm";
 import { FC, useEffect, useState } from "react";
-
-const CREATE_CALENDAR_EVENT = gql`
-  mutation CreateCalendarEvent($data: CalendarEventCreateInput!) {
-    createCalendarEvent(data: $data) {
-      scheduleId
-      calendarId
-      title
-      start
-      end
-    }
-  }
-`;
-
-const MODIFY_CALENDAR_EVENT = gql`
-  mutation UpdateCalendarEvent(
-    $data: CalendarEventUpdateInput!
-    $where: CalendarEventWhereUniqueInput!
-  ) {
-    updateCalendarEvent(data: $data, where: $where) {
-      scheduleId
-      calendarId
-      title
-      start
-      end
-    }
-  }
-`;
 
 interface EventEditingDialogProps {
   open: boolean;
@@ -115,6 +89,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
           },
         },
       });
+      console.log("Updated event");
     } else {
       const mutationVars: {
         data: CalendarEventCreateInput;
@@ -123,7 +98,6 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
           title,
           start,
           end: end || undefined,
-          // end,
           notes,
           calendar: {
             connect: {
@@ -135,7 +109,6 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
       await mutate({
         variables: mutationVars,
         optimisticResponse: {
-          // __typename: "Mutation",
           createCalendarEvent: {
             id: "tmp-id",
             __typename: "CalendarEvent",
@@ -148,6 +121,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
           },
         },
       });
+      console.log("Created event");
     }
     console.log("Refetching...");
     await refetch();
@@ -176,7 +150,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={handleSave}>{loading ? "Saving..." : "Save"}</Button>
       </DialogActions>
     </Dialog>
   );

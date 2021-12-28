@@ -2,7 +2,7 @@ import ActionTable from "@/components/actions/ActionTable";
 import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
 import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
-import { Action, Calendar, CalendarEvent, UserAction, UserActionSchedule } from "@/graphql/schema";
+import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -26,14 +26,11 @@ interface PlannerPageProps {
       action: Action;
     };
   })[];
-  calendars: (Calendar & {
-    events: CalendarEvent[];
-  })[];
   session: Session;
 }
 
 const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
-  const { dateISO, actionSchedules, calendars } = props;
+  const { dateISO, actionSchedules } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
   const { loading, error, data, fetchMore, refetch, networkStatus } = useQuery(
@@ -50,6 +47,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session) {
     return null;
   }
+  const { calendarEvents } = data;
   return (
     <Layout>
       <NextSeo
@@ -65,7 +63,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             <Card raised sx={{ height: "100%" }}>
               <CardContent>
                 <CalendarViewer
-                  calendars={calendars}
+                  calendarEvents={calendarEvents}
                   date={date}
                   setDate={setDate}
                   refetch={refetch}
@@ -115,7 +113,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const today = new Date();
   const props: PlannerPageProps = {
     dateISO: today.toISOString(),
-    calendars: [],
     actionSchedules: [],
     session,
   };
