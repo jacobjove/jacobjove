@@ -39,6 +39,14 @@ export const CREATE_CALENDAR_EVENT = gql`
   }
 `;
 
+export const DELETE_CALENDAR_EVENT = gql`
+  mutation DeleteCalendarEvent($id: Int!) {
+    deleteCalendarEvent(where: { id: $id }) {
+      id
+    }
+  }
+`;
+
 export const MODIFY_CALENDAR_EVENT = gql`
   mutation UpdateCalendarEvent(
     $data: CalendarEventUpdateInput!

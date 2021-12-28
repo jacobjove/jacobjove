@@ -5,7 +5,7 @@ import { Calendar, CalendarEvent } from "@/graphql/schema";
 import AppleIcon from "@mui/icons-material/Apple";
 import GoogleIcon from "@mui/icons-material/Google";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
@@ -123,22 +123,22 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
       <Toolbar sx={{ width: "100%", borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>
         <DateSelector date={selectedDate} onDateChange={setSelectedDate} />
         <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
-          <Button variant="text" title={`Connect Google Calendar`}>
-            <GoogleIcon
-              sx={{ color: "lightgray", fontSize: "1rem" }}
-              onClick={() => {
-                console.log("connecting to google calendar...");
-              }}
-            />
-          </Button>
-          <Button variant="text" title={`Connect Apple Calendar`}>
-            <AppleIcon
-              sx={{ color: "lightgray", fontSize: "1.1rem" }}
-              onClick={() => {
-                console.log("connecting to apple calendar...");
-              }}
-            />
-          </Button>
+          <IconButton
+            title={`Connect Google Calendar`}
+            onClick={() => {
+              console.log("connecting to google calendar...");
+            }}
+          >
+            <GoogleIcon sx={{ color: "lightgray", fontSize: "1rem" }} />
+          </IconButton>
+          <IconButton
+            title={`Connect Apple Calendar`}
+            onClick={() => {
+              console.log("connecting to apple calendar...");
+            }}
+          >
+            <AppleIcon sx={{ color: "lightgray", fontSize: "1.1rem" }} />
+          </IconButton>
         </Box>
       </Toolbar>
       <Box display="flex">

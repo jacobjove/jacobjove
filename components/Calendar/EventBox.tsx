@@ -1,6 +1,9 @@
 import EventEditingDialog from "@/components/Calendar/EventEditingDialog";
+import { DELETE_CALENDAR_EVENT, GET_CALENDAR_EVENTS } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
-// import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -9,6 +12,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
 import { format, parseISO } from "date-fns";
 import { ComponentProps, FC, useState } from "react";
 
@@ -86,44 +90,116 @@ interface EventDetailDialogProps {
 
 const EventDetailDialog: FC<EventDetailDialogProps> = (props: EventDetailDialogProps) => {
   const { event, open, setOpen, setEditingDialogOpen } = props;
+  const [deletionDialogOpen, setDeletionDialogOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
+    <>
+      <Dialog
+        open={open}
+        onBackdropClick={(event) => {
+          event.stopPropagation();
+        }}
+        onClose={() => {
+          handleClose();
+        }}
+        // maxWidth="sm"
+        // fullWidth
+      >
+        <Box display="flex" justifyContent={"end"}>
+          <IconButton
+            onClick={() => {
+              setDeletionDialogOpen(true);
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              setEditingDialogOpen(true);
+              setOpen(false);
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </Box>
+        <DialogTitle>{event.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {event.end && (
+              <span>
+                {format(parseISO(event.start), "h:mm aa")} &ndash;{" "}
+                {format(parseISO(event.end), "h:mm aa")}
+              </span>
+            )}
+          </DialogContentText>
+          <DialogContentText>{event.notes}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <EventDeletionConfirmationDialog
+        event={event}
+        open={deletionDialogOpen}
+        setOpen={setDeletionDialogOpen}
+        setDetailDialogOpen={setOpen}
+      />
+    </>
+  );
+};
+
+interface EventDeletionConfirmationDialogProps {
+  event: CalendarEvent;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  setDetailDialogOpen: (open: boolean) => void;
+}
+
+const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> = (
+  props: EventDeletionConfirmationDialogProps
+) => {
+  const { event, open, setOpen, setDetailDialogOpen } = props;
+  const [deleteEvent, { loading }] = useMutation(DELETE_CALENDAR_EVENT, {
+    refetchQueries: [
+      GET_CALENDAR_EVENTS, // DocumentNode object parsed with gql
+      "GetCalendarEvents", // Query name
+    ],
+  });
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleDeletion = () => {
+    deleteEvent({
+      variables: {
+        id: event.id,
+      },
+    });
+    setOpen(false);
+    setDetailDialogOpen(false);
+  };
+  return (
     <Dialog
       open={open}
       onBackdropClick={(event) => {
         event.stopPropagation();
       }}
-      onClose={() => {
-        handleClose();
-      }}
+      onClose={handleClose}
     >
-      <DialogTitle>{event.title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {event.end && (
-            <span>
-              {format(parseISO(event.start), "h:mm aa")} &ndash;{" "}
-              {format(parseISO(event.end), "h:mm aa")}
-            </span>
-          )}
-        </DialogContentText>
-        <DialogContentText>{event.notes}</DialogContentText>
+        <DialogContentText>Are you sure you want to delete this event?</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={() => {
-            setEditingDialogOpen(true);
-            setOpen(false);
-          }}
-        >
-          Edit
+        <Button disabled={loading} onClick={handleClose}>
+          Cancel
         </Button>
-        <Button autoFocus onClick={handleClose}>
-          Close
+        <Button disabled={loading} onClick={handleDeletion} autoFocus>
+          {loading ? "Deleting..." : "Delete"}
         </Button>
       </DialogActions>
     </Dialog>

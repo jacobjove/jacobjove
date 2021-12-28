@@ -92,6 +92,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             },
           },
         });
+        // TODO: open event dialog
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
