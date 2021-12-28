@@ -116,15 +116,9 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     };
   }, [setDate]);
   if (!session?.user) {
-    return (
-      <Skeleton
-        sx={{ height: "100%", maxHeight: "80vh" }}
-        variant="rectangular"
-        // width={210}
-        // height={118}
-      />
-    );
+    return <Skeleton sx={{ height: "100%", maxHeight: "80vh" }} variant="rectangular" />;
   }
+  console.log("Rendering calendar viewer...");
   return (
     <Root>
       <Toolbar sx={{ width: "100%", borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>

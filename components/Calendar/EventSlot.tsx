@@ -49,12 +49,10 @@ const Root = styled("div")(() => ({
 const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
-  const { date, events: initialEvents, onClick, refetch } = props;
+  const { date, events, onClick, refetch } = props;
   const [hovered, setHovered] = useState(false);
-  const [events, setEvents] = useState<CalendarEvent[]>(initialEvents ?? []);
-  // const [events, setEvents] = useState<Partial<CalendarEvent>[]>(initialEvents ?? []);
-  const [numEvents, setNumEvents] = useState(events?.length ?? 0);
   const [addEvent, { data, loading, error }] = useMutation(SCHEDULE_ACTION);
+  const numEvents = events?.length ?? 0;
   if (data) {
     console.log("data: ", data);
   }
@@ -108,8 +106,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             },
           },
         });
-        setNumEvents(numEvents + 1);
-        setEvents(events.concat([tmpEvent]));
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),

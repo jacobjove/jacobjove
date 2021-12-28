@@ -32,6 +32,7 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
       // Setting this value to true makes the component rerender when "networkStatus" changes,
       // so we are able to know if it is fetching more data.
       // notifyOnNetworkStatusChange: true,
+      fetchPolicy: "cache-and-network", // https://github.com/apollographql/apollo-client/issues/5963#issuecomment-861573325
     }
   );
   const loadingItems = networkStatus === NetworkStatus.fetchMore;
@@ -39,7 +40,7 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
   if (loadingItems) return <p>{"Loading..."}</p>;
   if (error) return <p>{"Error loading data."}</p>;
   const { calendarEvents } = data;
-  console.log("Finished building list of calendar events.");
+  console.log("Rendering calendar page ...");
   return (
     <Layout>
       <NextSeo
