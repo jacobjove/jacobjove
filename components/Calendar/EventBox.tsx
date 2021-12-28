@@ -14,11 +14,10 @@ import { ComponentProps, FC, useState } from "react";
 
 interface EventBoxProps extends ComponentProps<typeof Box> {
   event: CalendarEvent;
-  refetch: () => void;
 }
 
 const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
-  const { event, refetch, ...rest } = props;
+  const { event, ...rest } = props;
   const [hovered, setHovered] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [eventEditingDialogOpen, setEventEditingDialogOpen] = useState(false);
@@ -71,7 +70,6 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         event={event}
         open={eventEditingDialogOpen}
         setOpen={setEventEditingDialogOpen}
-        refetch={refetch}
       />
     </>
   );

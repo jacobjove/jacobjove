@@ -1,9 +1,5 @@
 import EventFormFields from "@/components/Calendar/EventFormFields";
-import {
-  CREATE_CALENDAR_EVENT,
-  GET_CALENDAR_EVENTS,
-  MODIFY_CALENDAR_EVENT,
-} from "@/graphql/queries";
+import { CREATE_CALENDAR_EVENT, MODIFY_CALENDAR_EVENT } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import {
   CalendarEventCreateInput,
@@ -28,11 +24,10 @@ interface EventEditingDialogProps {
     end?: Date | string | null;
     id?: number | undefined;
   };
-  refetch: () => void;
 }
 
 const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDialogProps) => {
-  const { open, setOpen, event, refetch } = props;
+  const { open, setOpen, event } = props;
   const [title, setTitle] = useState(event.title ?? "");
   const [start, setStart] = useState<Date | null>(event.start ? new Date(event.start) : new Date());
   const [end, setEnd] = useState<Date | null>(
@@ -41,14 +36,8 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
   const [notes, setNotes] = useState(event.notes ?? "");
   const [calendarId, setCalendarId] = useState(event.calendarId ?? 1);
 
-  const [mutate, { data, loading, error }] = useMutation(
-    event.id ? MODIFY_CALENDAR_EVENT : CREATE_CALENDAR_EVENT,
-    {
-      refetchQueries: [
-        GET_CALENDAR_EVENTS, // DocumentNode object parsed with gql
-        "GetCalendarEvents", // Query name
-      ],
-    }
+  const [mutate, { loading }] = useMutation(
+    event.id ? MODIFY_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
   );
 
   const handleClose = () => {
@@ -134,7 +123,6 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     setNotes(event.notes ?? "");
     setCalendarId(event.calendarId ?? 1); // TODO
   }, [event]);
-  console.log("---> mutation data:", data);
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>{event.id ? "Modify" : "Create"} calendar event</DialogTitle>
@@ -150,7 +138,9 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave}>{loading ? "Saving..." : "Save"}</Button>
+        <Button onClick={handleSave} disabled={loading}>
+          {loading ? "Saving..." : "Save"}
+        </Button>
       </DialogActions>
     </Dialog>
   );

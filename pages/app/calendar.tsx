@@ -23,18 +23,15 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
   const { dateISO } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
-  const { loading, error, data, fetchMore, refetch, networkStatus } = useQuery(
-    GET_CALENDAR_EVENTS,
-    {
-      variables: {
-        userId: session?.user?.id,
-      },
-      // Setting this value to true makes the component rerender when "networkStatus" changes,
-      // so we are able to know if it is fetching more data.
-      // notifyOnNetworkStatusChange: true,
-      fetchPolicy: "cache-and-network", // https://github.com/apollographql/apollo-client/issues/5963#issuecomment-861573325
-    }
-  );
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_CALENDAR_EVENTS, {
+    variables: {
+      userId: session?.user?.id,
+    },
+    // Setting this value to true makes the component rerender when "networkStatus" changes,
+    // so we are able to know if it is fetching more data.
+    // notifyOnNetworkStatusChange: true,
+    fetchPolicy: "cache-and-network", // https://github.com/apollographql/apollo-client/issues/5963#issuecomment-861573325
+  });
   const loadingItems = networkStatus === NetworkStatus.fetchMore;
   if (!session) return null;
   if (loadingItems) return <p>{"Loading..."}</p>;
@@ -61,7 +58,6 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
                   // calendars={calendars}
                   calendarEvents={calendarEvents}
                   session={session}
-                  refetch={refetch}
                 />
               </CardContent>
             </Card>

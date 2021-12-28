@@ -13,6 +13,19 @@ export const GET_CALENDAR_EVENTS = gql`
   }
 `;
 
+export const SCHEDULE_ACTION = gql`
+  mutation ScheduleAction($data: CalendarEventCreateInput!) {
+    createCalendarEvent(data: $data) {
+      id
+      scheduleId
+      calendarId
+      title
+      start
+      end
+    }
+  }
+`;
+
 export const CREATE_CALENDAR_EVENT = gql`
   mutation CreateCalendarEvent($data: CalendarEventCreateInput!) {
     createCalendarEvent(data: $data) {

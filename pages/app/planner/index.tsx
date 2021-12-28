@@ -33,17 +33,14 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { dateISO, actionSchedules } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
-  const { loading, error, data, fetchMore, refetch, networkStatus } = useQuery(
-    GET_CALENDAR_EVENTS,
-    {
-      variables: {
-        userId: session?.user?.id,
-      },
-      // Setting this value to true makes the component rerender when "networkStatus" changes,
-      // so we are able to know if it is fetching more data.
-      // notifyOnNetworkStatusChange: true,
-    }
-  );
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_CALENDAR_EVENTS, {
+    variables: {
+      userId: session?.user?.id,
+    },
+    // Setting this value to true makes the component rerender when "networkStatus" changes,
+    // so we are able to know if it is fetching more data.
+    // notifyOnNetworkStatusChange: true,
+  });
   if (!session) {
     return null;
   }
@@ -66,7 +63,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                   calendarEvents={calendarEvents}
                   date={date}
                   setDate={setDate}
-                  refetch={refetch}
                   session={session}
                 />
               </CardContent>

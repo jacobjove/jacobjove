@@ -68,12 +68,11 @@ interface CalendarViewerProps {
   date: Date;
   setDate: (date: Date) => void;
   calendarEvents: CalendarEvent[];
-  refetch: () => void;
   session: Session;
 }
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
-  const { date, setDate, calendarEvents, refetch, session } = props;
+  const { date, setDate, calendarEvents, session } = props;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState(date);
   const [calendars, setCalendars] = useState<Calendar[]>([]);
@@ -226,7 +225,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                             setEventEditingDialogOpen(true);
                           }
                         }}
-                        refetch={refetch}
                       />
                     </Box>
                   );
@@ -248,7 +246,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
             open={eventDialogOpen}
             setOpen={setEventEditingDialogOpen}
             event={initialEventFormData}
-            refetch={refetch}
           />
         </div>
       </Box>

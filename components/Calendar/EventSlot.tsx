@@ -1,6 +1,7 @@
 import EventBox from "@/components/Calendar/EventBox";
+import { GET_CALENDAR_EVENTS, SCHEDULE_ACTION } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes, parseISO } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
@@ -11,20 +12,7 @@ interface EventSlotProps {
   events?: CalendarEvent[];
   calendarId: number;
   onClick?: MouseEventHandler<HTMLDivElement>;
-  refetch: () => void;
 }
-
-const SCHEDULE_ACTION = gql`
-  mutation ScheduleAction($data: CalendarEventCreateInput!) {
-    createCalendarEvent(data: $data) {
-      scheduleId
-      calendarId
-      title
-      start
-      end
-    }
-  }
-`;
 
 const Root = styled("div")(() => ({
   display: "flex",
@@ -49,16 +37,15 @@ const Root = styled("div")(() => ({
 const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
-  const { date, events, onClick, refetch } = props;
+  const { date, events, onClick } = props;
   const [hovered, setHovered] = useState(false);
-  const [addEvent, { data, loading, error }] = useMutation(SCHEDULE_ACTION);
+  const [addEvent, { loading }] = useMutation(SCHEDULE_ACTION, {
+    refetchQueries: [
+      GET_CALENDAR_EVENTS, // DocumentNode object parsed with gql
+      "GetCalendarEvents", // Query name
+    ],
+  });
   const numEvents = events?.length ?? 0;
-  if (data) {
-    console.log("data: ", data);
-  }
-  if (error) {
-    console.log("error: ", error);
-  }
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
       accept: "action",
@@ -75,7 +62,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           allDay: false,
         };
         const tmpEvent: CalendarEvent = {
-          id: 0,
+          id: -1,
           uid: "tmp-id",
           calendarId,
           scheduleId,
@@ -99,7 +86,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             },
           },
           optimisticResponse: {
-            __typename: "Mutation",
             createCalendarEvent: {
               ...tmpEvent,
               __typename: "CalendarEvent",
@@ -159,7 +145,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
               zIndex={index}
               width={width}
               event={event}
-              refetch={refetch}
             />
           );
         })}
