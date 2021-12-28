@@ -125,9 +125,6 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
       });
       console.log("Created event");
     }
-    console.log("Refetching...");
-    await refetch();
-    console.log("...Refetched.");
     setOpen(false);
   };
   useEffect(() => {
