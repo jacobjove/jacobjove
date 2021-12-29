@@ -3,11 +3,17 @@ import EventEditingDialog from "@/components/Calendar/EventEditingDialog";
 import EventSlot from "@/components/Calendar/EventSlot";
 import { Calendar, CalendarEvent } from "@/graphql/schema";
 import AppleIcon from "@mui/icons-material/Apple";
+import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
+import CalendarViewMonthIcon from "@mui/icons-material/CalendarViewMonth";
+import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 import GoogleIcon from "@mui/icons-material/Google";
+import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import {
   addMinutes,
@@ -26,8 +32,8 @@ import { FC, Fragment, useEffect, useRef, useState } from "react";
 // const googleCalendarClient = google.calendar('v3');
 
 const START_HOUR = 7;
-const END_HOUR = 22;
-const NUM_HOURS = END_HOUR - START_HOUR + 1;
+const END_HOUR = 23;
+const NUM_HOURS = END_HOUR - START_HOUR;
 const HALF_HOUR_HEIGHT = 48; // Must be divisible by 2.
 const HOUR_HEIGHT = HALF_HOUR_HEIGHT * 2;
 
@@ -64,18 +70,74 @@ const Root = styled("div")(() => ({
   },
 }));
 
-interface CalendarViewerProps {
+interface CalendarProps {
   date: Date;
   setDate: (date: Date) => void;
   calendarEvents: CalendarEvent[];
   session: Session;
 }
 
-const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
-  const { date, setDate, calendarEvents, session } = props;
-  const scrollableDivRef = useRef<HTMLDivElement>(null);
-  const [selectedDate, setSelectedDate] = useState(date);
+type ViewMode = "day" | "week" | "month";
+
+const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
+  const [view, setView] = useState<ViewMode>("day");
+  const [selectedDate, setSelectedDate] = useState(props.date);
   const [calendars, setCalendars] = useState<Calendar[]>([]);
+  const handleViewTabChange = (event: React.SyntheticEvent, newValue: 0 | 1 | 2) => {
+    setView(newValue === 0 ? "day" : newValue === 1 ? "week" : "month");
+  };
+  const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
+  return (
+    <>
+      <Toolbar sx={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>
+        <Grid container spacing={1} alignItems="center" justifyContent={"space-between"}>
+          <Grid item justifyContent={"center"}>
+            <IconButton
+              title={`Connect Google Calendar`}
+              onClick={() => {
+                console.log("connecting to google calendar...");
+              }}
+            >
+              <GoogleIcon sx={{ color: "lightgray", fontSize: "1rem" }} />
+            </IconButton>
+            <IconButton
+              title={`Connect Apple Calendar`}
+              onClick={() => {
+                console.log("connecting to apple calendar...");
+              }}
+            >
+              <AppleIcon sx={{ color: "lightgray", fontSize: "1.1rem" }} />
+            </IconButton>
+          </Grid>
+          <Grid item justifyContent={"center"}>
+            <DateSelector date={selectedDate} onDateChange={setSelectedDate} />
+          </Grid>
+          <Grid item justifyContent={"center"}>
+            <Tabs value={viewTabIndex} onChange={handleViewTabChange}>
+              <Tab icon={<CalendarViewDayIcon />} label="Day" />
+              <Tab icon={<CalendarViewWeekIcon />} label="Week" />
+              <Tab icon={<CalendarViewMonthIcon />} label="Month" />
+            </Tabs>
+          </Grid>
+        </Grid>
+      </Toolbar>
+      {view === "day" && <DayViewer {...props} selectedDate={selectedDate} />}
+      {view === "week" && <WeekViewer {...props} selectedDate={selectedDate} />}
+      {view === "month" && <MonthViewer {...props} selectedDate={selectedDate} />}
+    </>
+  );
+};
+
+export default CalendarViewer;
+
+interface ViewerProps extends CalendarProps {
+  selectedDate: Date;
+  // calendars: Calendar[];
+}
+
+const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
+  const { date, setDate, selectedDate, calendarEvents, session } = props;
+  const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({
     title: "",
@@ -92,7 +154,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendar = calendars[0]; // calendars.find((c) => c.isPrimary);
+  const primaryCalendarId = calendarEvents[0].calendarId; // calendars.find((c) => c.isPrimary);
 
   useEffect(() => {
     // Scroll to the current time.
@@ -120,27 +182,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   console.log("Rendering calendar viewer...");
   return (
     <Root>
-      <Toolbar sx={{ width: "100%", borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>
-        <DateSelector date={selectedDate} onDateChange={setSelectedDate} />
-        <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
-          <IconButton
-            title={`Connect Google Calendar`}
-            onClick={() => {
-              console.log("connecting to google calendar...");
-            }}
-          >
-            <GoogleIcon sx={{ color: "lightgray", fontSize: "1rem" }} />
-          </IconButton>
-          <IconButton
-            title={`Connect Apple Calendar`}
-            onClick={() => {
-              console.log("connecting to apple calendar...");
-            }}
-          >
-            <AppleIcon sx={{ color: "lightgray", fontSize: "1.1rem" }} />
-          </IconButton>
-        </Box>
-      </Toolbar>
       <Box display="flex">
         <div className="time-labels-column">
           <Box
@@ -208,7 +249,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                       <EventSlot
                         date={eventSlotDate}
                         events={eventSlotEvents}
-                        calendarId={primaryCalendar?.id}
+                        calendarId={primaryCalendarId}
                         onClick={(e) => {
                           // Only trigger if the click was actually on the slot. This check
                           // allows us to avoid stopping propagation on click events for
@@ -220,7 +261,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                               end: addMinutes(eventSlotDate, 29),
                               allDay: false,
                               notes: initialEventFormData.notes ?? "",
-                              calendarId: initialEventFormData.calendarId ?? primaryCalendar?.id,
+                              calendarId: initialEventFormData.calendarId ?? primaryCalendarId,
                             });
                             setEventEditingDialogOpen(true);
                           }
@@ -253,7 +294,15 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   );
 };
 
-export default CalendarViewer;
+const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
+  const { date, setDate, selectedDate, calendarEvents, session } = props;
+  return null;
+};
+
+const MonthViewer: FC<ViewerProps> = (props: ViewerProps) => {
+  const { date, setDate, selectedDate, calendarEvents, session } = props;
+  return null;
+};
 
 const zeroToHour = (date: Date, hour: number) => {
   return setHours(setMinutes(setSeconds(date, 0), 0), hour);

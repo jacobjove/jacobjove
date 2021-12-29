@@ -3,7 +3,13 @@ import { GET_CALENDAR_EVENTS, SCHEDULE_ACTION } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
-import { addMinutes, differenceInMinutes, parseISO } from "date-fns";
+import {
+  addMinutes,
+  differenceInMinutes,
+  parseISO,
+  roundToNearestMinutes,
+  subMinutes,
+} from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
 import { useDrop } from "react-dnd";
 
@@ -31,6 +37,18 @@ const Root = styled("div")(() => ({
     borderRadius: "3px",
     padding: "0.25rem 0.5rem",
     maxWidth: "92%",
+  },
+  "&.past": {
+    backgroundImage:
+      "linear-gradient(to right, rgba(224, 224, 224, 1), rgba(224, 224, 224, 0.9), rgba(224, 224, 224, 0.7), rgba(224, 224, 224, 0))",
+    opacity: 0.6,
+    "&.hovered": {
+      backgroundColor: "rgba(224, 224, 224, 1)",
+      cursor: "pointer",
+    },
+    "& .event": {
+      border: "1px solid lightgray",
+    },
   },
 }));
 
@@ -107,6 +125,9 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   }
   if (hovered) {
     classNames.push("hovered");
+  }
+  if (date < roundToNearestMinutes(subMinutes(new Date(), 15), { nearestTo: 30 })) {
+    classNames.push("past");
   }
   return (
     <Root
