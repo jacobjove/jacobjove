@@ -15,6 +15,7 @@ import { useDrop } from "react-dnd";
 
 interface EventSlotProps {
   date: Date;
+  view: "day" | "week";
   events?: CalendarEvent[];
   calendarId: number;
   onClick?: MouseEventHandler<HTMLDivElement>;
@@ -55,7 +56,7 @@ const Root = styled("div")(() => ({
 const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
-  const { date, events, onClick } = props;
+  const { date, view, events, onClick } = props;
   const [hovered, setHovered] = useState(false);
   const [addEvent, { loading }] = useMutation(SCHEDULE_ACTION, {
     refetchQueries: [

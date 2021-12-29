@@ -1,6 +1,9 @@
 import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
+import RepeatIcon from "@mui/icons-material/Repeat";
+import { Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import { FC } from "react";
@@ -33,10 +36,20 @@ const ActionCard: FC<ActionCardProps> = ({ userActionSchedule }: ActionCardProps
   return (
     <StyledCard ref={dragRef} sx={{ opacity }}>
       <CardContent>
-        <Link href={`/actions/${userActionSchedule.userAction.action.slug}`}>
-          <a>{userActionSchedule.userAction.action.name}</a>
+        <Link href={`/actions/${userActionSchedule.userAction.action.slug}`} passHref>
+          <Typography component="a">{userActionSchedule.userAction.action.name}</Typography>
         </Link>{" "}
-        <small>every {userActionSchedule.frequency.toLowerCase()}</small>
+        <Typography component="small">
+          every {userActionSchedule.frequency.toLowerCase()}
+        </Typography>
+        <IconButton
+          title={`Update schedule`}
+          onClick={() => {
+            console.log("modify schedule...");
+          }}
+        >
+          <RepeatIcon sx={{ color: "lightgray", fontSize: "1rem" }} />
+        </IconButton>
       </CardContent>
     </StyledCard>
   );

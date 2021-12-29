@@ -45,7 +45,7 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
       />
       <Container maxWidth={"xl"}>
         <Grid container spacing={2} justifyContent="center">
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} lg={9}>
             <Card raised sx={{ height: "100%" }}>
               <CardContent>
                 <CalendarViewer
