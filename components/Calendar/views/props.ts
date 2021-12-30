@@ -10,5 +10,7 @@ export interface CalendarProps {
 
 export interface ViewerProps extends CalendarProps {
   selectedDate: Date;
+  setSelectedDate: (date: Date) => void;
+  hidden: boolean;
   // calendars: Calendar[];
 }

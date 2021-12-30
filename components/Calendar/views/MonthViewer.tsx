@@ -59,11 +59,11 @@ const Root = styled("div")(({ theme }) => ({
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const MonthViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { date, setDate, selectedDate, calendarEvents, session } = props;
+  const { date, setDate, selectedDate, hidden, calendarEvents, session } = props;
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayIndex = getDay(firstDayOfMonth);
   return (
-    <Root>
+    <Root hidden={hidden}>
       <table>
         <thead>
           <tr>

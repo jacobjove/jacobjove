@@ -34,14 +34,14 @@ enum Role {
 }
 
 model User {
-  id                 String              @id @default(cuid())
+  id                 String             @id @default(cuid())
   name               String?
-  email              String              @unique
+  email              String             @unique
   emailVerified      DateTime?
   image              String?
-  isAdmin            Boolean             @default(false)
+  isAdmin            Boolean            @default(false)
   accounts           Account[]
-  identitySelections IdentitySelection[]
+  identitySelections UserIdentity[]
   valueSelections    ValueSelection[]
   beliefSelections   BeliefSelection[]
   userActions        UserAction[]
@@ -111,6 +111,7 @@ model UserAction {
   actionId       Int
   schedules      UserActionSchedule[]
   calendarEvents CalendarEvent[]
+  goals          Goal[]
   adoptedAt      DateTime             @default(now())
   abandonedAt    DateTime?
 
@@ -171,7 +172,7 @@ enum FREQUENCY {
   YEAR
 }
 
-model IdentitySelection {
+model UserIdentity {
   id         Int       @id @default(autoincrement())
   user       User      @relation(fields: [userId], references: [id])
   userId     String
@@ -187,10 +188,20 @@ model Identity {
   name               String
   slug               String                   @unique
   description        String?
-  identitySelections IdentitySelection[]
+  identitySelections UserIdentity[]
   actionRelations    IdentityActionRelation[]
 
   @@map(name: "identities")
+}
+
+model Goal {
+  id           Int        @id @default(autoincrement())
+  userAction   UserAction @relation(fields: [userActionId], references: [id])
+  userActionId Int
+  goalId       Int?
+  goal         Goal?      @relation("GoalMilestones", fields: [goalId], references: [id])
+  milestones   Goal[]     @relation("GoalMilestones")
+  quantity     Int
 }
 
 model IdentityActionRelation {

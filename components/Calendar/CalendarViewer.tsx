@@ -1,4 +1,3 @@
-import DateSelector from "@/components/Calendar/DateSelector";
 import DayViewer from "@/components/Calendar/views/DayViewer";
 import MonthViewer from "@/components/Calendar/views/MonthViewer";
 import { CalendarProps } from "@/components/Calendar/views/props";
@@ -13,8 +12,14 @@ import { Grid } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import Toolbar from "@mui/material/Toolbar";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { FC, useState } from "react";
+
+// TODO?  https://mui.com/components/tabs/#unstyled
+// import TabsUnstyled from '@mui/base/TabsUnstyled';
+// import TabsListUnstyled from '@mui/base/TabUnstyled';
+// import TabUnstyled from '@mui/base/TabUnstyled';
+// import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 
 // import { google } from 'googleapis';
 // const googleCalendarClient = google.calendar('v3');
@@ -36,43 +41,77 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
   };
   const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
   console.log(">>> Rendering calendar with", view, viewTabIndex);
+  const isMobile = useMediaQuery("(max-width: 600px)");
   return (
     <>
-      <Toolbar sx={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}>
-        <Grid container spacing={1} alignItems="center" justifyContent={"space-between"}>
-          <Grid item justifyContent={"center"}>
-            <IconButton
-              title={`Connect Google Calendar`}
-              onClick={() => {
-                console.log("connecting to google calendar...");
-              }}
-            >
-              <GoogleIcon sx={{ color: "lightgray", fontSize: "1rem" }} />
-            </IconButton>
-            <IconButton
-              title={`Connect Apple Calendar`}
-              onClick={() => {
-                console.log("connecting to apple calendar...");
-              }}
-            >
-              <AppleIcon sx={{ color: "lightgray", fontSize: "1.1rem" }} />
-            </IconButton>
-          </Grid>
-          <Grid item justifyContent={"center"}>
-            <DateSelector date={selectedDate} onDateChange={setSelectedDate} />
-          </Grid>
-          <Grid item justifyContent={"center"}>
-            <Tabs value={viewTabIndex} onChange={handleViewTabChange}>
-              <Tab icon={<CalendarViewDayIcon />} label="Day" />
-              <Tab icon={<CalendarViewWeekIcon />} label="Week" />
-              <Tab icon={<CalendarViewMonthIcon />} label="Month" />
-            </Tabs>
-          </Grid>
+      <Grid
+        container
+        spacing={1}
+        alignItems="end"
+        justifyContent={"space-between"}
+        sx={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}
+      >
+        <Grid item justifyContent={"center"}>
+          <Tabs value={viewTabIndex} onChange={handleViewTabChange} sx={{ minHeight: 0 }}>
+            <Tab
+              icon={<CalendarViewDayIcon />}
+              iconPosition="start"
+              {...(isMobile ? { title: "Day" } : { label: "Day" })}
+              sx={{ padding: "0 0.75rem 0.25rem", minWidth: "auto", minHeight: "auto" }}
+            />
+            <Tab
+              icon={<CalendarViewWeekIcon />}
+              iconPosition="start"
+              {...(isMobile ? { title: "Week" } : { label: "Week" })}
+              sx={{ padding: "0 0.75rem 0.25rem", minWidth: "auto", minHeight: "auto" }}
+            />
+            <Tab
+              icon={<CalendarViewMonthIcon />}
+              iconPosition="start"
+              {...(isMobile ? { title: "Month" } : { label: "Month" })}
+              sx={{ padding: "0 0.75rem 0.25rem", minWidth: "auto", minHeight: "auto" }}
+            />
+          </Tabs>
         </Grid>
-      </Toolbar>
-      {view === "day" && <DayViewer {...props} selectedDate={selectedDate} />}
-      {view === "week" && <WeekViewer {...props} selectedDate={selectedDate} />}
-      {view === "month" && <MonthViewer {...props} selectedDate={selectedDate} />}
+        <Grid item justifyContent={"center"}>
+          <IconButton
+            title={`Connect Google Calendar`}
+            onClick={() => {
+              console.log("connecting to google calendar...");
+            }}
+          >
+            <GoogleIcon sx={{ color: "lightgray", fontSize: "1rem" }} />
+          </IconButton>
+          <IconButton
+            title={`Connect Apple Calendar`}
+            onClick={() => {
+              console.log("connecting to apple calendar...");
+            }}
+          >
+            <AppleIcon sx={{ color: "lightgray", fontSize: "1.1rem" }} />
+          </IconButton>
+        </Grid>
+      </Grid>
+      <div>
+        <DayViewer
+          {...props}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          hidden={view != "day"}
+        />
+        <WeekViewer
+          {...props}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          hidden={view != "week"}
+        />
+        <MonthViewer
+          {...props}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          hidden={view != "month"}
+        />
+      </div>
     </>
   );
 };

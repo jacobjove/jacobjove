@@ -1,3 +1,4 @@
+import DateSelector from "@/components/Calendar/DateSelector";
 import EventEditingDialog from "@/components/Calendar/EventEditingDialog";
 import EventSlot from "@/components/Calendar/EventSlot";
 import { ViewerProps } from "@/components/Calendar/views/props";
@@ -57,7 +58,7 @@ const Root = styled("div")(() => ({
 }));
 
 const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { date, setDate, selectedDate, calendarEvents, session } = props;
+  const { date, setDate, selectedDate, setSelectedDate, hidden, calendarEvents, session } = props;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({
@@ -70,7 +71,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
   });
 
   const dayStart = zeroToHour(date, START_HOUR);
-  const allDayBoxHeight = HALF_HOUR_HEIGHT * 1.5;
+  const allDayBoxHeight = HALF_HOUR_HEIGHT;
   const currentTimeOffsetPx =
     (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
@@ -102,7 +103,15 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
   }
   console.log("Rendering calendar viewer...");
   return (
-    <Root>
+    <Root hidden={hidden}>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        borderBottom="1px solid rgba(224, 224, 224, 1)"
+      >
+        <DateSelector date={selectedDate} onDateChange={setSelectedDate} />
+      </Box>
       <Box display="flex">
         <div className="time-labels-column">
           <Box

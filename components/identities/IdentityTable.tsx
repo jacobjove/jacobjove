@@ -1,20 +1,20 @@
+import { Identity, UserIdentity as _UserIdentity } from "@/graphql/schema";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Identity, IdentitySelection as _IdentitySelection } from "@/graphql/schema";
-import { FC } from "react";
 import Link from "next/link";
+import { FC } from "react";
 
-type IdentitySelection = _IdentitySelection & {
+type UserIdentity = _UserIdentity & {
   identity: Identity;
 };
 
 interface IdentityTableProps {
-  identitySelections: IdentitySelection[];
+  identitySelections: UserIdentity[];
 }
 
 const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
@@ -28,7 +28,7 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {identitySelections.map((identitySelection: IdentitySelection) => (
+          {identitySelections.map((identitySelection: UserIdentity) => (
             <TableRow
               key={identitySelection.identity.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

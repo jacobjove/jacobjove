@@ -7,22 +7,22 @@ import {
   Calendar as _Calendar,
   CalendarEvent as _CalendarEvent,
   Identity as _Identity,
-  IdentitySelection as _IdentitySelection,
   ScheduleTemplate as _ScheduleTemplate,
   UserAction as _UserAction,
   UserActionSchedule as _UserActionSchedule,
+  UserIdentity as _UserIdentity,
   Value as _Value,
   ValueSelection as _ValueSelection,
 } from "@/prisma/generated";
 import { NonEmptyArray } from "type-graphql";
-import { IdentitySelectionToggleResolver } from "./resolvers/IdentitySelectionToggleResolver";
 import { UserActionToggleResolver } from "./resolvers/UserActionToggleResolver";
+import { UserIdentityToggleResolver } from "./resolvers/UserIdentityToggleResolver";
 
 const { resolvers: generatedResolvers, ...generatedSchema } = generatedSchemaExports;
 
 export const resolvers = [
   ...generatedResolvers,
-  IdentitySelectionToggleResolver,
+  UserIdentityToggleResolver,
   UserActionToggleResolver,
 ] as unknown as NonEmptyArray<Function>;
 
@@ -33,7 +33,7 @@ export type ActionScheduleTemplate = Omit<_ActionScheduleTemplate, "_count">;
 export type ScheduleTemplate = Omit<_ScheduleTemplate, "_count">;
 export type Identity = Omit<_Identity, "_count">;
 export type Value = Omit<_Value, "_count">;
-export type IdentitySelection = Omit<_IdentitySelection, "_count">;
+export type UserIdentity = Omit<_UserIdentity, "_count">;
 export type Calendar = Omit<_Calendar, "_count">;
 export type CalendarEvent = Omit<_CalendarEvent, "_count" | "start" | "end"> & {
   start: string;

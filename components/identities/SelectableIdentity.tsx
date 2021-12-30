@@ -1,15 +1,15 @@
+import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
 import { Identity } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { FC, MouseEvent } from "react";
-import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleIdentitySelection($identityId: Int!, $userId: String!, $deleted: DateTime) {
-    toggleIdentitySelection(identityId: $identityId, userId: $userId, deleted: $deleted) {
+  mutation ToggleUserIdentity($identityId: Int!, $userId: String!, $deleted: DateTime) {
+    toggleUserIdentity(identityId: $identityId, userId: $userId, deleted: $deleted) {
       identityId
       userId
       deleted
@@ -29,7 +29,7 @@ const SelectableIdentity: FC<SelectableIdentityProps> = ({
   const { data: session } = useSession();
   const [mutate] = useMutation(TOGGLE_IDENTIFICATION);
   const [selected, setSelected] = React.useState(initiallySelected);
-  const toggleIdentitySelection = (e: MouseEvent) => {
+  const toggleUserIdentity = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (session?.user) {
@@ -41,8 +41,8 @@ const SelectableIdentity: FC<SelectableIdentityProps> = ({
         variables: { identityId: identity.id, userId: session.user.id, deleted },
         optimisticResponse: {
           __typename: "Mutation",
-          toggleIdentitySelection: {
-            __typename: "ToggleIdentitySelectionPayload",
+          toggleUserIdentity: {
+            __typename: "ToggleUserIdentityPayload",
             identityId: identity.id,
             userId: session.user.id,
             deleted,
@@ -72,7 +72,7 @@ const SelectableIdentity: FC<SelectableIdentityProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/identities/${identity.slug}`} onClick={toggleIdentitySelection}>
+        <a href={`/identities/${identity.slug}`} onClick={toggleUserIdentity}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

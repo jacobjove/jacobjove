@@ -1,22 +1,20 @@
-import * as TypeGraphQL from "type-graphql";
-import graphqlFields from "graphql-fields";
-import { GraphQLResolveInfo } from "graphql";
-import { IdentitySelection } from "@/prisma/generated/models/IdentitySelection";
 import { getPrismaFromContext } from "@/prisma/generated/helpers";
-import * as GraphQLScalars from "graphql-scalars";
+import { UserIdentity } from "@/prisma/generated/models/UserIdentity";
+import { GraphQLResolveInfo } from "graphql";
+import * as TypeGraphQL from "type-graphql";
 
-@TypeGraphQL.Resolver((_of) => IdentitySelection)
-export class IdentitySelectionToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => IdentitySelection, {
+@TypeGraphQL.Resolver((_of) => UserIdentity)
+export class UserIdentityToggleResolver {
+  @TypeGraphQL.Mutation((_returns) => UserIdentity, {
     nullable: false,
   })
-  async toggleIdentitySelection(
+  async toggleUserIdentity(
     @TypeGraphQL.Ctx() ctx: any,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Arg("userId") userId: string,
     @TypeGraphQL.Arg("identityId", (_type) => TypeGraphQL.Int) identityId: number,
     @TypeGraphQL.Arg("deleted", { nullable: true }) deleted: null | Date
-  ): Promise<IdentitySelection> {
+  ): Promise<UserIdentity> {
     const prisma = getPrismaFromContext(ctx);
     const identitySelectionExists =
       (await prisma.identitySelection.count({

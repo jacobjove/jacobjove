@@ -60,13 +60,13 @@ CREATE TABLE "calendarEvents" (
 );
 
 -- CreateTable
-CREATE TABLE "IdentitySelection" (
+CREATE TABLE "UserIdentity" (
     "id" SERIAL NOT NULL,
     "userId" TEXT NOT NULL,
     "identityId" INTEGER NOT NULL,
     "deleted" TIMESTAMP(3),
 
-    CONSTRAINT "IdentitySelection_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UserIdentity_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -178,7 +178,7 @@ CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provi
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "IdentitySelection_userId_identityId_key" ON "IdentitySelection"("userId", "identityId");
+CREATE UNIQUE INDEX "UserIdentity_userId_identityId_key" ON "UserIdentity"("userId", "identityId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "identities_slug_key" ON "identities"("slug");
@@ -217,10 +217,10 @@ ALTER TABLE "calendarEvents" ADD CONSTRAINT "calendarEvents_calendarId_fkey" FOR
 ALTER TABLE "calendarEvents" ADD CONSTRAINT "calendarEvents_scheduleId_fkey" FOREIGN KEY ("scheduleId") REFERENCES "Schedule"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "IdentitySelection" ADD CONSTRAINT "IdentitySelection_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserIdentity" ADD CONSTRAINT "UserIdentity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "IdentitySelection" ADD CONSTRAINT "IdentitySelection_identityId_fkey" FOREIGN KEY ("identityId") REFERENCES "identities"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserIdentity" ADD CONSTRAINT "UserIdentity_identityId_fkey" FOREIGN KEY ("identityId") REFERENCES "identities"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "IdentityActionRelation" ADD CONSTRAINT "IdentityActionRelation_identityId_fkey" FOREIGN KEY ("identityId") REFERENCES "identities"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

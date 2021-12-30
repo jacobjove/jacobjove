@@ -58,7 +58,7 @@ const Root = styled("div")(() => ({
 }));
 
 const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { date, setDate, selectedDate, calendarEvents, session } = props;
+  const { date, setDate, selectedDate, hidden, calendarEvents, session } = props;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({
@@ -70,8 +70,6 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
     calendarId: calendarEvents[0]?.calendarId ?? 1, // TODO: Get this from the user's default calendar.
   });
   const selectedDayIndex = getDay(selectedDate);
-  console.log(">>>>> selectedDayIndex", selectedDayIndex);
-
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT * 1.5;
   const currentTimeOffsetPx =
@@ -105,7 +103,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   }
   const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return (
-    <Root>
+    <Root hidden={hidden}>
       <Box display="flex">
         <div className="time-labels-column">
           <Box
@@ -176,8 +174,8 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                   return (
                     <Fragment key={i}>
                       {[...Array(2)].map((_, j) => {
-                        console.log(">>>>>", "day", dayIndex, "hour", i, "min", j * 30);
-                        console.log(selectedDate.getDay() + dayIndex - selectedDayIndex);
+                        // console.log(">>>>>", "day", dayIndex, "hour", i, "min", j * 30);
+                        // console.log(selectedDate.getDay() + dayIndex - selectedDayIndex);
                         const eventSlotDate = setDay(
                           setHours(setMinutes(setSeconds(selectedDate, 0), j * 30), START_HOUR + i),
                           selectedDate.getDay() + dayIndex - selectedDayIndex

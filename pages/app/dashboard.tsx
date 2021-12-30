@@ -6,9 +6,9 @@ import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
 import {
   Action,
   Identity,
-  IdentitySelection,
   UserAction,
   UserActionSchedule,
+  UserIdentity,
   Value,
   ValueSelection,
 } from "@/graphql/schema";
@@ -36,7 +36,7 @@ interface DefaultPageProps {
       action: Action;
     };
   })[];
-  identitySelections: (IdentitySelection & {
+  identitySelections: (UserIdentity & {
     identity: Identity;
   })[];
   valueSelections: (ValueSelection & {
@@ -70,7 +70,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
       <Container maxWidth={"xl"}>
         <Grid container spacing={2} direction="row-reverse" justifyContent="center">
           <Grid item xs={12} md={6} lg={6} xl={4}>
-            <Card raised sx={{ height: "100%" }}>
+            <Card sx={{ height: "100%" }}>
               <CardHeader title="Calendar" />
               <CardContent>
                 <CalendarViewer
@@ -83,7 +83,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} xl={2}>
-            <Card raised sx={{ height: "100%" }}>
+            <Card sx={{ height: "100%" }}>
               <CardHeader title="Actions" />
               <CardContent>
                 {(!!actionSchedules.length && (
@@ -104,7 +104,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} xl={2}>
-            <Card raised sx={{ height: "100%" }}>
+            <Card sx={{ height: "100%" }}>
               <CardHeader title="Identities" />
               <CardContent>
                 {(!!identitySelections.length && (
@@ -125,7 +125,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} xl={2}>
-            <Card raised sx={{ height: "100%" }}>
+            <Card sx={{ height: "100%" }}>
               <CardHeader title="Values" />
               <CardContent>
                 {(!!valueSelections.length &&

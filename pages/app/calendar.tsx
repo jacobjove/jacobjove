@@ -6,7 +6,6 @@ import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
@@ -43,23 +42,21 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
         noindex
         nofollow
       />
-      <Container maxWidth={"xl"}>
-        <Grid container spacing={2} justifyContent="center">
-          <Grid item xs={12} lg={9}>
-            <Card raised sx={{ height: "100%" }}>
-              <CardContent>
-                <CalendarViewer
-                  date={date}
-                  setDate={setDate}
-                  // calendars={calendars}
-                  calendarEvents={calendarEvents}
-                  session={session}
-                />
-              </CardContent>
-            </Card>
-          </Grid>
+      <Grid container justifyContent="center">
+        <Grid item xs={12} lg={9}>
+          <Card sx={{ height: "100%" }}>
+            <CardContent sx={{ padding: "0.2rem" }}>
+              <CalendarViewer
+                date={date}
+                setDate={setDate}
+                // calendars={calendars}
+                calendarEvents={calendarEvents}
+                session={session}
+              />
+            </CardContent>
+          </Card>
         </Grid>
-      </Container>
+      </Grid>
     </Layout>
   );
 };

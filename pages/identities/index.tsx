@@ -1,4 +1,4 @@
-import { IdentitySelection } from ".prisma/client";
+import { UserIdentity } from ".prisma/client";
 import SelectableIdentity from "@/components/identities/SelectableIdentity";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
@@ -87,7 +87,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         props.identities = res.data.identities;
         if (res.data.identitySelections.length) {
           props.selectedIdentityIds = res.data.identitySelections.map(
-            (identitySelection: IdentitySelection & { identity: Identity }) =>
+            (identitySelection: UserIdentity & { identity: Identity }) =>
               parseInt(`${identitySelection.identity.id}`)
           );
         }
