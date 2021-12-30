@@ -110,7 +110,11 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
         justifyContent="center"
         borderBottom="1px solid rgba(224, 224, 224, 1)"
       >
-        <DateSelector date={selectedDate} onDateChange={setSelectedDate} />
+        <DateSelector
+          date={selectedDate}
+          setDate={setSelectedDate}
+          onDateChange={setSelectedDate}
+        />
       </Box>
       <Box display="flex">
         <div className="time-labels-column">
@@ -133,7 +137,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
           </Box>
         </div>
       </Box>
-      <Box display="flex" maxHeight="60vh" overflow={"scroll"} ref={scrollableDivRef}>
+      <Box display="flex" maxHeight="90vh" overflow={"scroll"} ref={scrollableDivRef}>
         <div className="time-labels-column">
           <Box height={`${HALF_HOUR_HEIGHT / 2}px`} />
           {[...Array(NUM_HOURS)].map((_, i) => (

@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
-import client from "@/lib/apollo/apolloClient";
+import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Grid } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -136,6 +136,7 @@ export default SpreadsheetPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  const apolloClient = initializeApollo();
   if (!session?.user?.id) {
     return {
       redirect: {
@@ -152,7 +153,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     columns: [],
     data: [],
   };
-  await client
+  await apolloClient
     .query({
       query: gql`
         query Selections {
@@ -221,7 +222,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .catch((error) => {
       console.error(error);
     });
-  return { props };
+  return addApolloState(apolloClient, { props });
 };
 
 const getDatesBetweenDates = (startDate: Date, endDate: Date) => {

@@ -47,7 +47,7 @@
     "@graphql-tools/utils": "^8.5.3",
     "@graphql-tools/wrap": "^8.3.2",
     "@mui/icons-material": "^5.2.0",
-    "@mui/lab": "^5.0.0-alpha.48",
+    "@mui/lab": "^5.0.0-alpha.62",
     "@mui/material": "^5.2.1",
     "@mui/styles": "^5.0.1",
     "@mui/x-data-grid": "^5.1.0",

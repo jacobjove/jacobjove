@@ -4,8 +4,8 @@ import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
 // import { Calendar, CalendarEvent } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { NetworkStatus, useQuery } from "@apollo/client";
+import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
@@ -45,7 +45,7 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
       <Grid container justifyContent="center">
         <Grid item xs={12} lg={9}>
           <Card sx={{ height: "100%" }}>
-            <CardContent sx={{ padding: "0.2rem" }}>
+            <Box sx={{ padding: "0.2rem 0.2rem 0.5rem" }}>
               <CalendarViewer
                 date={date}
                 setDate={setDate}
@@ -53,7 +53,7 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
                 calendarEvents={calendarEvents}
                 session={session}
               />
-            </CardContent>
+            </Box>
           </Card>
         </Grid>
       </Grid>

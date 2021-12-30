@@ -17,14 +17,14 @@ export class UserIdentityToggleResolver {
   ): Promise<UserIdentity> {
     const prisma = getPrismaFromContext(ctx);
     const identitySelectionExists =
-      (await prisma.identitySelection.count({
+      (await prisma.userIdentity.count({
         where: {
           userId: userId,
           identityId: identityId,
         },
       })) > 0;
     if (identitySelectionExists) {
-      return await prisma.identitySelection.update({
+      return await prisma.userIdentity.update({
         where: {
           userId_identityId: {
             userId: userId,
@@ -36,7 +36,7 @@ export class UserIdentityToggleResolver {
         },
       });
     } else {
-      return await prisma.identitySelection.create({
+      return await prisma.userIdentity.create({
         data: {
           userId: userId,
           identityId: identityId,

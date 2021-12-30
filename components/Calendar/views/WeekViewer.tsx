@@ -71,7 +71,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   });
   const selectedDayIndex = getDay(selectedDate);
   const dayStart = zeroToHour(date, START_HOUR);
-  const allDayBoxHeight = HALF_HOUR_HEIGHT * 1.5;
+  const allDayBoxHeight = HALF_HOUR_HEIGHT;
   const currentTimeOffsetPx =
     (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
@@ -148,7 +148,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
           </Box>
         </div>
       </Box>
-      <Box display="flex" maxHeight="60vh" overflow={"scroll"} ref={scrollableDivRef}>
+      <Box display="flex" maxHeight="90vh" overflow={"scroll"} ref={scrollableDivRef}>
         <div className="time-labels-column">
           <Box height={`${HALF_HOUR_HEIGHT / 2}px`} />
           {[...Array(NUM_HOURS)].map((_, i) => (

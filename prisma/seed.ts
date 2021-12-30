@@ -64,7 +64,7 @@ async function main() {
   users.forEach(async (user) => {
     sampleSize(identities, Math.floor(Math.random() * identities.length)).forEach((identity) => {
       try {
-        prisma.identitySelection.create({
+        prisma.userIdentity.create({
           data: {
             userId: user.id,
             identityId: identity.id,

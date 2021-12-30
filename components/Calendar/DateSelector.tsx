@@ -1,37 +1,67 @@
-import Box from "@mui/material/Box";
-import { FC } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { addDays, subDays, format } from "date-fns";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
+import { styled } from "@mui/material/styles";
+import { addDays, subDays } from "date-fns";
+import { FC } from "react";
 
 interface DateSelectorProps {
   date: Date;
+  setDate: (date: Date | null) => void;
   onDateChange: (date: Date) => void;
 }
 
-const DateSelector: FC<DateSelectorProps> = (props: DateSelectorProps) => {
-  const { date: currentDate, onDateChange } = props;
+const DateSelector: FC<DateSelectorProps> = styled((props: DateSelectorProps) => {
+  const { date: currentDate, setDate, onDateChange } = props;
   return (
-    <Box display="flex" alignItems="center">
-      <Button
-        variant="text"
-        onClick={() => onDateChange(subDays(currentDate, 1))}
-        sx={{ borderRadius: "50%", minWidth: 0 }}
-      >
+    <Box display="flex" alignItems="stretch" justifyContent={"space-evenly"}>
+      <IconButton onClick={() => onDateChange(subDays(currentDate, 1))}>
         <ChevronLeftIcon />
-      </Button>
-      <Typography mx="1rem">{format(currentDate, "MMMM d, yyyy")}</Typography>
-      <Button
-        variant="text"
-        onClick={() => onDateChange(addDays(currentDate, 1))}
-        sx={{ borderRadius: "50%", minWidth: 0 }}
-      >
+      </IconButton>
+      <DesktopDatePicker
+        inputFormat="MMMM d, yyyy"
+        value={currentDate}
+        onChange={(newValue) => {
+          setDate(newValue);
+        }}
+        renderInput={(params) => {
+          const { inputRef, inputProps, InputProps } = params;
+          const style = {
+            height: "100%",
+            border: "none",
+            width: "10rem",
+          };
+          if (inputProps) {
+            inputProps.style = { ...inputProps.style, ...style };
+          }
+          return (
+            <Input
+              className="DateSelector-input"
+              inputRef={inputRef}
+              inputProps={inputProps}
+              endAdornment={InputProps?.endAdornment}
+              style={{
+                marginLeft: "0.5rem",
+                marginRight: "0.5rem",
+                padding: "0 0.5rem",
+              }}
+            />
+          );
+        }}
+      />
+      <IconButton onClick={() => onDateChange(addDays(currentDate, 1))}>
         <ChevronRightIcon />
-      </Button>
+      </IconButton>
     </Box>
   );
-};
+})(() => ({
+  "& .DateSelector-input": {
+    height: "100%",
+    backgroundColor: "blue",
+  },
+}));
 
 export default DateSelector;

@@ -2,7 +2,7 @@ import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/Layout/PageHeader";
 import { Action, UserAction as _UserAction } from "@/graphql/schema";
-import client from "@/lib/apollo/apolloClient";
+import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -59,12 +59,13 @@ export default ActionsPage;
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  const apolloClient = initializeApollo();
   const props: ActionsPageProps = {
     actions: [],
     selectedActionIds: [],
   };
   if (session?.user?.id) {
-    const { data } = await client.query({
+    const { data } = await apolloClient.query({
       query: gql`
         query Actions {
           actions {
@@ -91,7 +92,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       );
     }
   }
-  return {
-    props,
-  };
+  return addApolloState(apolloClient, { props });
 };
