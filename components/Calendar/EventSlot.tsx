@@ -3,13 +3,7 @@ import { GET_CALENDAR_EVENTS, SCHEDULE_ACTION } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
-import {
-  addMinutes,
-  differenceInMinutes,
-  parseISO,
-  roundToNearestMinutes,
-  subMinutes,
-} from "date-fns";
+import { addMinutes, differenceInMinutes, parseISO } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
 import { useDrop } from "react-dnd";
 
@@ -19,6 +13,7 @@ interface EventSlotProps {
   events?: CalendarEvent[];
   calendarId: number;
   onClick?: MouseEventHandler<HTMLDivElement>;
+  past?: boolean;
 }
 
 const Root = styled("div")(() => ({
@@ -39,24 +34,12 @@ const Root = styled("div")(() => ({
     padding: "0.25rem 0.5rem",
     maxWidth: "92%",
   },
-  "&.past": {
-    backgroundImage:
-      "linear-gradient(to right, rgba(224, 224, 224, 1), rgba(224, 224, 224, 0.9), rgba(224, 224, 224, 0.7), rgba(224, 224, 224, 0))",
-    opacity: 0.6,
-    "&.hovered": {
-      backgroundColor: "rgba(224, 224, 224, 1)",
-      cursor: "pointer",
-    },
-    "& .event": {
-      border: "1px solid lightgray",
-    },
-  },
 }));
 
 const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
-  const { date, view, events, onClick } = props;
+  const { date, view, events, onClick, past } = props;
   const [hovered, setHovered] = useState(false);
   const [addEvent, { loading }] = useMutation(SCHEDULE_ACTION, {
     refetchQueries: [
@@ -127,7 +110,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   if (hovered) {
     classNames.push("hovered");
   }
-  if (date < roundToNearestMinutes(subMinutes(new Date(), 15), { nearestTo: 30 })) {
+  if (past) {
     classNames.push("past");
   }
   return (

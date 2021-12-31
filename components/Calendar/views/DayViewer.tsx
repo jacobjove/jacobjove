@@ -9,7 +9,7 @@ import { styled } from "@mui/material/styles";
 import {
   addMinutes,
   differenceInMinutes,
-  getHours,
+  isBefore,
   isSameDay,
   parseISO,
   setHours,
@@ -23,6 +23,8 @@ const END_HOUR = 23;
 const NUM_HOURS = END_HOUR - START_HOUR;
 const HALF_HOUR_HEIGHT = 48; // Must be divisible by 2.
 const HOUR_HEIGHT = HALF_HOUR_HEIGHT * 2;
+
+const TIME_MARKER_JUT_PX = 8;
 
 const Root = styled("div")(() => ({
   "& *": {
@@ -49,11 +51,23 @@ const Root = styled("div")(() => ({
   },
   "& .border-trick-box": {
     borderRight: "1px solid rgba(224, 224, 224, 1)",
-    width: "0.5rem",
+    width: `${TIME_MARKER_JUT_PX}px`,
   },
   "& .calendar-event-slot": {
     display: "flex",
     borderTop: "1px solid rgba(224, 224, 224, 1)",
+  },
+  "& .past": {
+    backgroundImage:
+      "linear-gradient(to right, rgba(224, 224, 224, 1), rgba(224, 224, 224, 0.9), rgba(224, 224, 224, 0.7), rgba(224, 224, 224, 0))",
+    opacity: 0.5,
+    "&.hovered": {
+      backgroundColor: "rgba(224, 224, 224, 1)",
+      cursor: "pointer",
+    },
+    "& .event": {
+      border: "1px solid lightgray",
+    },
   },
 }));
 
@@ -77,6 +91,8 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
   const primaryCalendarId = calendarEvents[0].calendarId; // calendars.find((c) => c.isPrimary);
+
+  const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
 
   useEffect(() => {
     // Scroll to the current time.
@@ -115,7 +131,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
           onDateChange={setSelectedDate}
         />
       </Box>
-      <Box display="flex">
+      <Box display="flex" position="relative">
         <div className="time-labels-column">
           <Box
             className="time-label"
@@ -125,7 +141,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
             All Day
           </Box>
         </div>
-        <div className="calendar-slots-column">
+        <div className={`calendar-slots-column`}>
           <Box
             height={`${allDayBoxHeight}px`}
             borderBottom="1px solid rgba(224, 224, 224, 1)"
@@ -136,7 +152,15 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
           </Box>
         </div>
       </Box>
-      <Box display="flex" maxHeight="90vh" overflow={"scroll"} ref={scrollableDivRef}>
+      <Box
+        display="flex"
+        maxHeight="90vh"
+        ref={scrollableDivRef}
+        position="relative"
+        sx={{
+          overflowY: "scroll",
+        }}
+      >
         <div className="time-labels-column">
           <Box height={`${HALF_HOUR_HEIGHT / 2}px`} />
           {[...Array(NUM_HOURS)].map((_, i) => (
@@ -150,7 +174,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
             </Fragment>
           ))}
         </div>
-        <div className="calendar-slots-column">
+        <div className={`calendar-slots-column`}>
           <Box height={`${HALF_HOUR_HEIGHT}px`} display="flex">
             <div className="border-trick-box" />
             <Box flexGrow={1} />
@@ -181,6 +205,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
                       <Box className="border-trick-box" />
                       <EventSlot
                         date={eventSlotDate}
+                        past={isPast}
                         view="day"
                         events={eventSlotEvents}
                         calendarId={primaryCalendarId}
@@ -207,14 +232,16 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
               </Fragment>
             );
           })}
-          {isSameDay(date, selectedDate) && getHours(date) < END_HOUR && (
+          {selectedDate < new Date() && isSameDay(date, selectedDate) && (
             <Box
+              className="past"
               position="absolute"
-              height="1px"
               width="100%"
-              bgcolor={"red"}
-              top={`${currentTimeOffsetPx}px`}
-              zIndex={1000}
+              borderBottom={`1px solid red`}
+              top={0}
+              height={`${currentTimeOffsetPx}px`}
+              left={`${TIME_MARKER_JUT_PX}px`}
+              zIndex={1}
             />
           )}
           <EventEditingDialog
