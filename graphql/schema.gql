@@ -1525,20 +1525,20 @@ type AggregateUserIdentity {
   _sum: UserIdentitySumAggregate
 }
 
+type AggregateUserValue {
+  _avg: UserValueAvgAggregate
+  _count: UserValueCountAggregate
+  _max: UserValueMaxAggregate
+  _min: UserValueMinAggregate
+  _sum: UserValueSumAggregate
+}
+
 type AggregateValue {
   _avg: ValueAvgAggregate
   _count: ValueCountAggregate
   _max: ValueMaxAggregate
   _min: ValueMinAggregate
   _sum: ValueSumAggregate
-}
-
-type AggregateValueSelection {
-  _avg: ValueSelectionAvgAggregate
-  _count: ValueSelectionCountAggregate
-  _max: ValueSelectionMaxAggregate
-  _min: ValueSelectionMinAggregate
-  _sum: ValueSelectionSumAggregate
 }
 
 type Belief {
@@ -3582,9 +3582,9 @@ type Identity {
   actionRelations(cursor: IdentityActionRelationWhereUniqueInput, distinct: [IdentityActionRelationScalarFieldEnum!], orderBy: [IdentityActionRelationOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityActionRelationWhereInput): [IdentityActionRelation!]!
   description: String
   id: Int!
-  identitySelections(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
   name: String!
   slug: String!
+  userIdentities(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
 }
 
 type IdentityActionRelation {
@@ -3914,7 +3914,7 @@ input IdentityAvgOrderByAggregateInput {
 
 type IdentityCount {
   actionRelations: Int!
-  identitySelections: Int!
+  userIdentities: Int!
 }
 
 type IdentityCountAggregate {
@@ -3935,9 +3935,9 @@ input IdentityCountOrderByAggregateInput {
 input IdentityCreateInput {
   actionRelations: IdentityActionRelationCreateNestedManyWithoutIdentityInput
   description: String
-  identitySelections: UserIdentityCreateNestedManyWithoutIdentityInput
   name: String!
   slug: String!
+  userIdentities: UserIdentityCreateNestedManyWithoutIdentityInput
 }
 
 input IdentityCreateManyInput {
@@ -3953,10 +3953,10 @@ input IdentityCreateNestedOneWithoutActionRelationsInput {
   create: IdentityCreateWithoutActionRelationsInput
 }
 
-input IdentityCreateNestedOneWithoutIdentitySelectionsInput {
+input IdentityCreateNestedOneWithoutUserIdentitiesInput {
   connect: IdentityWhereUniqueInput
-  connectOrCreate: IdentityCreateOrConnectWithoutIdentitySelectionsInput
-  create: IdentityCreateWithoutIdentitySelectionsInput
+  connectOrCreate: IdentityCreateOrConnectWithoutUserIdentitiesInput
+  create: IdentityCreateWithoutUserIdentitiesInput
 }
 
 input IdentityCreateOrConnectWithoutActionRelationsInput {
@@ -3964,19 +3964,19 @@ input IdentityCreateOrConnectWithoutActionRelationsInput {
   where: IdentityWhereUniqueInput!
 }
 
-input IdentityCreateOrConnectWithoutIdentitySelectionsInput {
-  create: IdentityCreateWithoutIdentitySelectionsInput!
+input IdentityCreateOrConnectWithoutUserIdentitiesInput {
+  create: IdentityCreateWithoutUserIdentitiesInput!
   where: IdentityWhereUniqueInput!
 }
 
 input IdentityCreateWithoutActionRelationsInput {
   description: String
-  identitySelections: UserIdentityCreateNestedManyWithoutIdentityInput
   name: String!
   slug: String!
+  userIdentities: UserIdentityCreateNestedManyWithoutIdentityInput
 }
 
-input IdentityCreateWithoutIdentitySelectionsInput {
+input IdentityCreateWithoutUserIdentitiesInput {
   actionRelations: IdentityActionRelationCreateNestedManyWithoutIdentityInput
   description: String
   name: String!
@@ -4039,9 +4039,9 @@ input IdentityOrderByWithRelationInput {
   actionRelations: IdentityActionRelationOrderByRelationAggregateInput
   description: SortOrder
   id: SortOrder
-  identitySelections: UserIdentityOrderByRelationAggregateInput
   name: SortOrder
   slug: SortOrder
+  userIdentities: UserIdentityOrderByRelationAggregateInput
 }
 
 input IdentityRelationFilter {
@@ -4077,9 +4077,9 @@ input IdentitySumOrderByAggregateInput {
 input IdentityUpdateInput {
   actionRelations: IdentityActionRelationUpdateManyWithoutIdentityInput
   description: NullableStringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutIdentityInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
+  userIdentities: UserIdentityUpdateManyWithoutIdentityInput
 }
 
 input IdentityUpdateManyMutationInput {
@@ -4096,22 +4096,22 @@ input IdentityUpdateOneRequiredWithoutActionRelationsInput {
   upsert: IdentityUpsertWithoutActionRelationsInput
 }
 
-input IdentityUpdateOneRequiredWithoutIdentitySelectionsInput {
+input IdentityUpdateOneRequiredWithoutUserIdentitiesInput {
   connect: IdentityWhereUniqueInput
-  connectOrCreate: IdentityCreateOrConnectWithoutIdentitySelectionsInput
-  create: IdentityCreateWithoutIdentitySelectionsInput
-  update: IdentityUpdateWithoutIdentitySelectionsInput
-  upsert: IdentityUpsertWithoutIdentitySelectionsInput
+  connectOrCreate: IdentityCreateOrConnectWithoutUserIdentitiesInput
+  create: IdentityCreateWithoutUserIdentitiesInput
+  update: IdentityUpdateWithoutUserIdentitiesInput
+  upsert: IdentityUpsertWithoutUserIdentitiesInput
 }
 
 input IdentityUpdateWithoutActionRelationsInput {
   description: NullableStringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutIdentityInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
+  userIdentities: UserIdentityUpdateManyWithoutIdentityInput
 }
 
-input IdentityUpdateWithoutIdentitySelectionsInput {
+input IdentityUpdateWithoutUserIdentitiesInput {
   actionRelations: IdentityActionRelationUpdateManyWithoutIdentityInput
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
@@ -4123,9 +4123,9 @@ input IdentityUpsertWithoutActionRelationsInput {
   update: IdentityUpdateWithoutActionRelationsInput!
 }
 
-input IdentityUpsertWithoutIdentitySelectionsInput {
-  create: IdentityCreateWithoutIdentitySelectionsInput!
-  update: IdentityUpdateWithoutIdentitySelectionsInput!
+input IdentityUpsertWithoutUserIdentitiesInput {
+  create: IdentityCreateWithoutUserIdentitiesInput!
+  update: IdentityUpdateWithoutUserIdentitiesInput!
 }
 
 input IdentityWhereInput {
@@ -4135,9 +4135,9 @@ input IdentityWhereInput {
   actionRelations: IdentityActionRelationListRelationFilter
   description: StringNullableFilter
   id: IntFilter
-  identitySelections: UserIdentityListRelationFilter
   name: StringFilter
   slug: StringFilter
+  userIdentities: UserIdentityListRelationFilter
 }
 
 input IdentityWhereUniqueInput {
@@ -4235,15 +4235,15 @@ type Mutation {
   createManyUserAction(data: [UserActionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserActionSchedule(data: [UserActionScheduleCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserIdentity(data: [UserIdentityCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyUserValue(data: [UserValueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyValue(data: [ValueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
-  createManyValueSelection(data: [ValueSelectionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createScheduleTemplate(data: ScheduleTemplateCreateInput!): ScheduleTemplate!
   createUser(data: UserCreateInput!): User!
   createUserAction(data: UserActionCreateInput!): UserAction!
   createUserActionSchedule(data: UserActionScheduleCreateInput!): UserActionSchedule!
   createUserIdentity(data: UserIdentityCreateInput!): UserIdentity!
+  createUserValue(data: UserValueCreateInput!): UserValue!
   createValue(data: ValueCreateInput!): Value!
-  createValueSelection(data: ValueSelectionCreateInput!): ValueSelection!
   deleteAccount(where: AccountWhereUniqueInput!): Account
   deleteAction(where: ActionWhereUniqueInput!): Action
   deleteActionCompletion(where: ActionCompletionWhereUniqueInput!): ActionCompletion
@@ -4271,15 +4271,15 @@ type Mutation {
   deleteManyUserAction(where: UserActionWhereInput): AffectedRowsOutput!
   deleteManyUserActionSchedule(where: UserActionScheduleWhereInput): AffectedRowsOutput!
   deleteManyUserIdentity(where: UserIdentityWhereInput): AffectedRowsOutput!
+  deleteManyUserValue(where: UserValueWhereInput): AffectedRowsOutput!
   deleteManyValue(where: ValueWhereInput): AffectedRowsOutput!
-  deleteManyValueSelection(where: ValueSelectionWhereInput): AffectedRowsOutput!
   deleteScheduleTemplate(where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUserAction(where: UserActionWhereUniqueInput!): UserAction
   deleteUserActionSchedule(where: UserActionScheduleWhereUniqueInput!): UserActionSchedule
   deleteUserIdentity(where: UserIdentityWhereUniqueInput!): UserIdentity
+  deleteUserValue(where: UserValueWhereUniqueInput!): UserValue
   deleteValue(where: ValueWhereUniqueInput!): Value
-  deleteValueSelection(where: ValueSelectionWhereUniqueInput!): ValueSelection
   toggleUserActionAdoption(abandonedAt: DateTime, actionId: Int!, userId: String!): UserAction!
   toggleUserIdentity(deleted: DateTime, identityId: Int!, userId: String!): UserIdentity!
   updateAccount(data: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account
@@ -4309,15 +4309,15 @@ type Mutation {
   updateManyUserAction(data: UserActionUpdateManyMutationInput!, where: UserActionWhereInput): AffectedRowsOutput!
   updateManyUserActionSchedule(data: UserActionScheduleUpdateManyMutationInput!, where: UserActionScheduleWhereInput): AffectedRowsOutput!
   updateManyUserIdentity(data: UserIdentityUpdateManyMutationInput!, where: UserIdentityWhereInput): AffectedRowsOutput!
+  updateManyUserValue(data: UserValueUpdateManyMutationInput!, where: UserValueWhereInput): AffectedRowsOutput!
   updateManyValue(data: ValueUpdateManyMutationInput!, where: ValueWhereInput): AffectedRowsOutput!
-  updateManyValueSelection(data: ValueSelectionUpdateManyMutationInput!, where: ValueSelectionWhereInput): AffectedRowsOutput!
   updateScheduleTemplate(data: ScheduleTemplateUpdateInput!, where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateUserAction(data: UserActionUpdateInput!, where: UserActionWhereUniqueInput!): UserAction
   updateUserActionSchedule(data: UserActionScheduleUpdateInput!, where: UserActionScheduleWhereUniqueInput!): UserActionSchedule
   updateUserIdentity(data: UserIdentityUpdateInput!, where: UserIdentityWhereUniqueInput!): UserIdentity
+  updateUserValue(data: UserValueUpdateInput!, where: UserValueWhereUniqueInput!): UserValue
   updateValue(data: ValueUpdateInput!, where: ValueWhereUniqueInput!): Value
-  updateValueSelection(data: ValueSelectionUpdateInput!, where: ValueSelectionWhereUniqueInput!): ValueSelection
   upsertAccount(create: AccountCreateInput!, update: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account!
   upsertAction(create: ActionCreateInput!, update: ActionUpdateInput!, where: ActionWhereUniqueInput!): Action!
   upsertActionCompletion(create: ActionCompletionCreateInput!, update: ActionCompletionUpdateInput!, where: ActionCompletionWhereUniqueInput!): ActionCompletion!
@@ -4334,8 +4334,8 @@ type Mutation {
   upsertUserAction(create: UserActionCreateInput!, update: UserActionUpdateInput!, where: UserActionWhereUniqueInput!): UserAction!
   upsertUserActionSchedule(create: UserActionScheduleCreateInput!, update: UserActionScheduleUpdateInput!, where: UserActionScheduleWhereUniqueInput!): UserActionSchedule!
   upsertUserIdentity(create: UserIdentityCreateInput!, update: UserIdentityUpdateInput!, where: UserIdentityWhereUniqueInput!): UserIdentity!
+  upsertUserValue(create: UserValueCreateInput!, update: UserValueUpdateInput!, where: UserValueWhereUniqueInput!): UserValue!
   upsertValue(create: ValueCreateInput!, update: ValueUpdateInput!, where: ValueWhereUniqueInput!): Value!
-  upsertValueSelection(create: ValueSelectionCreateInput!, update: ValueSelectionUpdateInput!, where: ValueSelectionWhereUniqueInput!): ValueSelection!
 }
 
 input NestedBoolFilter {
@@ -4610,8 +4610,8 @@ type Query {
   aggregateUserAction(cursor: UserActionWhereUniqueInput, orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): AggregateUserAction!
   aggregateUserActionSchedule(cursor: UserActionScheduleWhereUniqueInput, orderBy: [UserActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): AggregateUserActionSchedule!
   aggregateUserIdentity(cursor: UserIdentityWhereUniqueInput, orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): AggregateUserIdentity!
+  aggregateUserValue(cursor: UserValueWhereUniqueInput, orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): AggregateUserValue!
   aggregateValue(cursor: ValueWhereUniqueInput, orderBy: [ValueOrderByWithRelationInput!], skip: Int, take: Int, where: ValueWhereInput): AggregateValue!
-  aggregateValueSelection(cursor: ValueSelectionWhereUniqueInput, orderBy: [ValueSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: ValueSelectionWhereInput): AggregateValueSelection!
   belief(where: BeliefWhereUniqueInput!): Belief
   beliefSelection(where: BeliefSelectionWhereUniqueInput!): BeliefSelection
   beliefSelections(cursor: BeliefSelectionWhereUniqueInput, distinct: [BeliefSelectionScalarFieldEnum!], orderBy: [BeliefSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefSelectionWhereInput): [BeliefSelection!]!
@@ -4636,8 +4636,8 @@ type Query {
   findFirstUserAction(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): UserAction
   findFirstUserActionSchedule(cursor: UserActionScheduleWhereUniqueInput, distinct: [UserActionScheduleScalarFieldEnum!], orderBy: [UserActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): UserActionSchedule
   findFirstUserIdentity(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): UserIdentity
+  findFirstUserValue(cursor: UserValueWhereUniqueInput, distinct: [UserValueScalarFieldEnum!], orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): UserValue
   findFirstValue(cursor: ValueWhereUniqueInput, distinct: [ValueScalarFieldEnum!], orderBy: [ValueOrderByWithRelationInput!], skip: Int, take: Int, where: ValueWhereInput): Value
-  findFirstValueSelection(cursor: ValueSelectionWhereUniqueInput, distinct: [ValueSelectionScalarFieldEnum!], orderBy: [ValueSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: ValueSelectionWhereInput): ValueSelection
   goal(where: GoalWhereUniqueInput!): Goal
   goals(cursor: GoalWhereUniqueInput, distinct: [GoalScalarFieldEnum!], orderBy: [GoalOrderByWithRelationInput!], skip: Int, take: Int, where: GoalWhereInput): [Goal!]!
   groupByAccount(by: [AccountScalarFieldEnum!]!, having: AccountScalarWhereWithAggregatesInput, orderBy: [AccountOrderByWithAggregationInput!], skip: Int, take: Int, where: AccountWhereInput): [AccountGroupBy!]!
@@ -4656,8 +4656,8 @@ type Query {
   groupByUserAction(by: [UserActionScalarFieldEnum!]!, having: UserActionScalarWhereWithAggregatesInput, orderBy: [UserActionOrderByWithAggregationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserActionGroupBy!]!
   groupByUserActionSchedule(by: [UserActionScheduleScalarFieldEnum!]!, having: UserActionScheduleScalarWhereWithAggregatesInput, orderBy: [UserActionScheduleOrderByWithAggregationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): [UserActionScheduleGroupBy!]!
   groupByUserIdentity(by: [UserIdentityScalarFieldEnum!]!, having: UserIdentityScalarWhereWithAggregatesInput, orderBy: [UserIdentityOrderByWithAggregationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentityGroupBy!]!
+  groupByUserValue(by: [UserValueScalarFieldEnum!]!, having: UserValueScalarWhereWithAggregatesInput, orderBy: [UserValueOrderByWithAggregationInput!], skip: Int, take: Int, where: UserValueWhereInput): [UserValueGroupBy!]!
   groupByValue(by: [ValueScalarFieldEnum!]!, having: ValueScalarWhereWithAggregatesInput, orderBy: [ValueOrderByWithAggregationInput!], skip: Int, take: Int, where: ValueWhereInput): [ValueGroupBy!]!
-  groupByValueSelection(by: [ValueSelectionScalarFieldEnum!]!, having: ValueSelectionScalarWhereWithAggregatesInput, orderBy: [ValueSelectionOrderByWithAggregationInput!], skip: Int, take: Int, where: ValueSelectionWhereInput): [ValueSelectionGroupBy!]!
   identities(cursor: IdentityWhereUniqueInput, distinct: [IdentityScalarFieldEnum!], orderBy: [IdentityOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityWhereInput): [Identity!]!
   identity(where: IdentityWhereUniqueInput!): Identity
   identityActionRelation(where: IdentityActionRelationWhereUniqueInput!): IdentityActionRelation
@@ -4671,10 +4671,10 @@ type Query {
   userActions(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserAction!]!
   userIdentities(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
   userIdentity(where: UserIdentityWhereUniqueInput!): UserIdentity
+  userValue(where: UserValueWhereUniqueInput!): UserValue
+  userValues(cursor: UserValueWhereUniqueInput, distinct: [UserValueScalarFieldEnum!], orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): [UserValue!]!
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
   value(where: ValueWhereUniqueInput!): Value
-  valueSelection(where: ValueSelectionWhereUniqueInput!): ValueSelection
-  valueSelections(cursor: ValueSelectionWhereUniqueInput, distinct: [ValueSelectionScalarFieldEnum!], orderBy: [ValueSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: ValueSelectionWhereInput): [ValueSelection!]!
   values(cursor: ValueWhereUniqueInput, distinct: [ValueScalarFieldEnum!], orderBy: [ValueOrderByWithRelationInput!], skip: Int, take: Int, where: ValueWhereInput): [Value!]!
 }
 
@@ -4975,12 +4975,12 @@ type User {
   email: String!
   emailVerified: DateTime
   id: String!
-  identitySelections(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
   image: String
   isAdmin: Boolean!
   name: String
   userActions(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserAction!]!
-  valueSelections(cursor: ValueSelectionWhereUniqueInput, distinct: [ValueSelectionScalarFieldEnum!], orderBy: [ValueSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: ValueSelectionWhereInput): [ValueSelection!]!
+  userIdentities(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
+  userValues(cursor: UserValueWhereUniqueInput, distinct: [UserValueScalarFieldEnum!], orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): [UserValue!]!
 }
 
 type UserAction {
@@ -6000,9 +6000,9 @@ type UserCount {
   actionCompletions: Int!
   beliefSelections: Int!
   calendars: Int!
-  identitySelections: Int!
   userActions: Int!
-  valueSelections: Int!
+  userIdentities: Int!
+  userValues: Int!
 }
 
 type UserCountAggregate {
@@ -6032,12 +6032,12 @@ input UserCreateInput {
   email: String!
   emailVerified: DateTime
   id: String
-  identitySelections: UserIdentityCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
-  valueSelections: ValueSelectionCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
 }
 
 input UserCreateManyInput {
@@ -6073,22 +6073,22 @@ input UserCreateNestedOneWithoutCalendarsInput {
   create: UserCreateWithoutCalendarsInput
 }
 
-input UserCreateNestedOneWithoutIdentitySelectionsInput {
-  connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutIdentitySelectionsInput
-  create: UserCreateWithoutIdentitySelectionsInput
-}
-
 input UserCreateNestedOneWithoutUserActionsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutUserActionsInput
   create: UserCreateWithoutUserActionsInput
 }
 
-input UserCreateNestedOneWithoutValueSelectionsInput {
+input UserCreateNestedOneWithoutUserIdentitiesInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutValueSelectionsInput
-  create: UserCreateWithoutValueSelectionsInput
+  connectOrCreate: UserCreateOrConnectWithoutUserIdentitiesInput
+  create: UserCreateWithoutUserIdentitiesInput
+}
+
+input UserCreateNestedOneWithoutUserValuesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutUserValuesInput
+  create: UserCreateWithoutUserValuesInput
 }
 
 input UserCreateOrConnectWithoutAccountsInput {
@@ -6111,18 +6111,18 @@ input UserCreateOrConnectWithoutCalendarsInput {
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutIdentitySelectionsInput {
-  create: UserCreateWithoutIdentitySelectionsInput!
-  where: UserWhereUniqueInput!
-}
-
 input UserCreateOrConnectWithoutUserActionsInput {
   create: UserCreateWithoutUserActionsInput!
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutValueSelectionsInput {
-  create: UserCreateWithoutValueSelectionsInput!
+input UserCreateOrConnectWithoutUserIdentitiesInput {
+  create: UserCreateWithoutUserIdentitiesInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutUserValuesInput {
+  create: UserCreateWithoutUserValuesInput!
   where: UserWhereUniqueInput!
 }
 
@@ -6133,12 +6133,12 @@ input UserCreateWithoutAccountsInput {
   email: String!
   emailVerified: DateTime
   id: String
-  identitySelections: UserIdentityCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
-  valueSelections: ValueSelectionCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
 }
 
 input UserCreateWithoutActionCompletionsInput {
@@ -6148,12 +6148,12 @@ input UserCreateWithoutActionCompletionsInput {
   email: String!
   emailVerified: DateTime
   id: String
-  identitySelections: UserIdentityCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
-  valueSelections: ValueSelectionCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
 }
 
 input UserCreateWithoutBeliefSelectionsInput {
@@ -6163,12 +6163,12 @@ input UserCreateWithoutBeliefSelectionsInput {
   email: String!
   emailVerified: DateTime
   id: String
-  identitySelections: UserIdentityCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
-  valueSelections: ValueSelectionCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
 }
 
 input UserCreateWithoutCalendarsInput {
@@ -6178,27 +6178,12 @@ input UserCreateWithoutCalendarsInput {
   email: String!
   emailVerified: DateTime
   id: String
-  identitySelections: UserIdentityCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
-  valueSelections: ValueSelectionCreateNestedManyWithoutUserInput
-}
-
-input UserCreateWithoutIdentitySelectionsInput {
-  accounts: AccountCreateNestedManyWithoutUserInput
-  actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
-  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
-  calendars: CalendarCreateNestedManyWithoutUserInput
-  email: String!
-  emailVerified: DateTime
-  id: String
-  image: String
-  isAdmin: Boolean
-  name: String
-  userActions: UserActionCreateNestedManyWithoutUserInput
-  valueSelections: ValueSelectionCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
 }
 
 input UserCreateWithoutUserActionsInput {
@@ -6209,14 +6194,14 @@ input UserCreateWithoutUserActionsInput {
   email: String!
   emailVerified: DateTime
   id: String
-  identitySelections: UserIdentityCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
   name: String
-  valueSelections: ValueSelectionCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
 }
 
-input UserCreateWithoutValueSelectionsInput {
+input UserCreateWithoutUserIdentitiesInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
   beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
@@ -6224,11 +6209,26 @@ input UserCreateWithoutValueSelectionsInput {
   email: String!
   emailVerified: DateTime
   id: String
-  identitySelections: UserIdentityCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutUserValuesInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
+  actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
+  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
+  calendars: CalendarCreateNestedManyWithoutUserInput
+  email: String!
+  emailVerified: DateTime
+  id: String
+  image: String
+  isAdmin: Boolean
+  name: String
+  userActions: UserActionCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
 }
 
 type UserGroupBy {
@@ -6279,8 +6279,8 @@ input UserIdentityCountOrderByAggregateInput {
 
 input UserIdentityCreateInput {
   deleted: DateTime
-  identity: IdentityCreateNestedOneWithoutIdentitySelectionsInput!
-  user: UserCreateNestedOneWithoutIdentitySelectionsInput!
+  identity: IdentityCreateNestedOneWithoutUserIdentitiesInput!
+  user: UserCreateNestedOneWithoutUserIdentitiesInput!
 }
 
 input UserIdentityCreateManyIdentityInput {
@@ -6338,12 +6338,12 @@ input UserIdentityCreateOrConnectWithoutUserInput {
 
 input UserIdentityCreateWithoutIdentityInput {
   deleted: DateTime
-  user: UserCreateNestedOneWithoutIdentitySelectionsInput!
+  user: UserCreateNestedOneWithoutUserIdentitiesInput!
 }
 
 input UserIdentityCreateWithoutUserInput {
   deleted: DateTime
-  identity: IdentityCreateNestedOneWithoutIdentitySelectionsInput!
+  identity: IdentityCreateNestedOneWithoutUserIdentitiesInput!
 }
 
 type UserIdentityGroupBy {
@@ -6456,8 +6456,8 @@ input UserIdentitySumOrderByAggregateInput {
 
 input UserIdentityUpdateInput {
   deleted: NullableDateTimeFieldUpdateOperationsInput
-  identity: IdentityUpdateOneRequiredWithoutIdentitySelectionsInput
-  user: UserUpdateOneRequiredWithoutIdentitySelectionsInput
+  identity: IdentityUpdateOneRequiredWithoutUserIdentitiesInput
+  user: UserUpdateOneRequiredWithoutUserIdentitiesInput
 }
 
 input UserIdentityUpdateManyMutationInput {
@@ -6514,12 +6514,12 @@ input UserIdentityUpdateWithWhereUniqueWithoutUserInput {
 
 input UserIdentityUpdateWithoutIdentityInput {
   deleted: NullableDateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutIdentitySelectionsInput
+  user: UserUpdateOneRequiredWithoutUserIdentitiesInput
 }
 
 input UserIdentityUpdateWithoutUserInput {
   deleted: NullableDateTimeFieldUpdateOperationsInput
-  identity: IdentityUpdateOneRequiredWithoutIdentitySelectionsInput
+  identity: IdentityUpdateOneRequiredWithoutUserIdentitiesInput
 }
 
 input UserIdentityUpsertWithWhereUniqueWithoutIdentityInput {
@@ -6612,12 +6612,12 @@ input UserOrderByWithRelationInput {
   email: SortOrder
   emailVerified: SortOrder
   id: SortOrder
-  identitySelections: UserIdentityOrderByRelationAggregateInput
   image: SortOrder
   isAdmin: SortOrder
   name: SortOrder
   userActions: UserActionOrderByRelationAggregateInput
-  valueSelections: ValueSelectionOrderByRelationAggregateInput
+  userIdentities: UserIdentityOrderByRelationAggregateInput
+  userValues: UserValueOrderByRelationAggregateInput
 }
 
 input UserRelationFilter {
@@ -6654,12 +6654,12 @@ input UserUpdateInput {
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
-  valueSelections: ValueSelectionUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -6703,14 +6703,6 @@ input UserUpdateOneRequiredWithoutCalendarsInput {
   upsert: UserUpsertWithoutCalendarsInput
 }
 
-input UserUpdateOneRequiredWithoutIdentitySelectionsInput {
-  connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutIdentitySelectionsInput
-  create: UserCreateWithoutIdentitySelectionsInput
-  update: UserUpdateWithoutIdentitySelectionsInput
-  upsert: UserUpsertWithoutIdentitySelectionsInput
-}
-
 input UserUpdateOneRequiredWithoutUserActionsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutUserActionsInput
@@ -6719,12 +6711,20 @@ input UserUpdateOneRequiredWithoutUserActionsInput {
   upsert: UserUpsertWithoutUserActionsInput
 }
 
-input UserUpdateOneRequiredWithoutValueSelectionsInput {
+input UserUpdateOneRequiredWithoutUserIdentitiesInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutValueSelectionsInput
-  create: UserCreateWithoutValueSelectionsInput
-  update: UserUpdateWithoutValueSelectionsInput
-  upsert: UserUpsertWithoutValueSelectionsInput
+  connectOrCreate: UserCreateOrConnectWithoutUserIdentitiesInput
+  create: UserCreateWithoutUserIdentitiesInput
+  update: UserUpdateWithoutUserIdentitiesInput
+  upsert: UserUpsertWithoutUserIdentitiesInput
+}
+
+input UserUpdateOneRequiredWithoutUserValuesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutUserValuesInput
+  create: UserCreateWithoutUserValuesInput
+  update: UserUpdateWithoutUserValuesInput
+  upsert: UserUpsertWithoutUserValuesInput
 }
 
 input UserUpdateWithoutAccountsInput {
@@ -6734,12 +6734,12 @@ input UserUpdateWithoutAccountsInput {
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
-  valueSelections: ValueSelectionUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutActionCompletionsInput {
@@ -6749,12 +6749,12 @@ input UserUpdateWithoutActionCompletionsInput {
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
-  valueSelections: ValueSelectionUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutBeliefSelectionsInput {
@@ -6764,12 +6764,12 @@ input UserUpdateWithoutBeliefSelectionsInput {
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
-  valueSelections: ValueSelectionUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutCalendarsInput {
@@ -6779,27 +6779,12 @@ input UserUpdateWithoutCalendarsInput {
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
-  valueSelections: ValueSelectionUpdateManyWithoutUserInput
-}
-
-input UserUpdateWithoutIdentitySelectionsInput {
-  accounts: AccountUpdateManyWithoutUserInput
-  actionCompletions: ActionCompletionUpdateManyWithoutUserInput
-  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
-  calendars: CalendarUpdateManyWithoutUserInput
-  email: StringFieldUpdateOperationsInput
-  emailVerified: NullableDateTimeFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  image: NullableStringFieldUpdateOperationsInput
-  isAdmin: BoolFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  userActions: UserActionUpdateManyWithoutUserInput
-  valueSelections: ValueSelectionUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutUserActionsInput {
@@ -6810,14 +6795,14 @@ input UserUpdateWithoutUserActionsInput {
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
-  valueSelections: ValueSelectionUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
 }
 
-input UserUpdateWithoutValueSelectionsInput {
+input UserUpdateWithoutUserIdentitiesInput {
   accounts: AccountUpdateManyWithoutUserInput
   actionCompletions: ActionCompletionUpdateManyWithoutUserInput
   beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
@@ -6825,11 +6810,26 @@ input UserUpdateWithoutValueSelectionsInput {
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
-  identitySelections: UserIdentityUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutUserValuesInput {
+  accounts: AccountUpdateManyWithoutUserInput
+  actionCompletions: ActionCompletionUpdateManyWithoutUserInput
+  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
+  calendars: CalendarUpdateManyWithoutUserInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  image: NullableStringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  userActions: UserActionUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
 }
 
 input UserUpsertWithoutAccountsInput {
@@ -6852,19 +6852,380 @@ input UserUpsertWithoutCalendarsInput {
   update: UserUpdateWithoutCalendarsInput!
 }
 
-input UserUpsertWithoutIdentitySelectionsInput {
-  create: UserCreateWithoutIdentitySelectionsInput!
-  update: UserUpdateWithoutIdentitySelectionsInput!
-}
-
 input UserUpsertWithoutUserActionsInput {
   create: UserCreateWithoutUserActionsInput!
   update: UserUpdateWithoutUserActionsInput!
 }
 
-input UserUpsertWithoutValueSelectionsInput {
-  create: UserCreateWithoutValueSelectionsInput!
-  update: UserUpdateWithoutValueSelectionsInput!
+input UserUpsertWithoutUserIdentitiesInput {
+  create: UserCreateWithoutUserIdentitiesInput!
+  update: UserUpdateWithoutUserIdentitiesInput!
+}
+
+input UserUpsertWithoutUserValuesInput {
+  create: UserCreateWithoutUserValuesInput!
+  update: UserUpdateWithoutUserValuesInput!
+}
+
+type UserValue {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: Int!
+  updatedAt: DateTime
+  user: User!
+  userId: String!
+  value: Value!
+  valueId: Int!
+}
+
+type UserValueAvgAggregate {
+  id: Float
+  valueId: Float
+}
+
+input UserValueAvgOrderByAggregateInput {
+  id: SortOrder
+  valueId: SortOrder
+}
+
+type UserValueCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  updatedAt: Int!
+  userId: Int!
+  valueId: Int!
+}
+
+input UserValueCountOrderByAggregateInput {
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+  valueId: SortOrder
+}
+
+input UserValueCreateInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutUserValuesInput!
+  value: ValueCreateNestedOneWithoutUserValuesInput!
+}
+
+input UserValueCreateManyInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  userId: String!
+  valueId: Int!
+}
+
+input UserValueCreateManyUserInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  valueId: Int!
+}
+
+input UserValueCreateManyUserInputEnvelope {
+  data: [UserValueCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input UserValueCreateManyValueInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  userId: String!
+}
+
+input UserValueCreateManyValueInputEnvelope {
+  data: [UserValueCreateManyValueInput!]!
+  skipDuplicates: Boolean
+}
+
+input UserValueCreateNestedManyWithoutUserInput {
+  connect: [UserValueWhereUniqueInput!]
+  connectOrCreate: [UserValueCreateOrConnectWithoutUserInput!]
+  create: [UserValueCreateWithoutUserInput!]
+  createMany: UserValueCreateManyUserInputEnvelope
+}
+
+input UserValueCreateNestedManyWithoutValueInput {
+  connect: [UserValueWhereUniqueInput!]
+  connectOrCreate: [UserValueCreateOrConnectWithoutValueInput!]
+  create: [UserValueCreateWithoutValueInput!]
+  createMany: UserValueCreateManyValueInputEnvelope
+}
+
+input UserValueCreateOrConnectWithoutUserInput {
+  create: UserValueCreateWithoutUserInput!
+  where: UserValueWhereUniqueInput!
+}
+
+input UserValueCreateOrConnectWithoutValueInput {
+  create: UserValueCreateWithoutValueInput!
+  where: UserValueWhereUniqueInput!
+}
+
+input UserValueCreateWithoutUserInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  updatedAt: DateTime
+  value: ValueCreateNestedOneWithoutUserValuesInput!
+}
+
+input UserValueCreateWithoutValueInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutUserValuesInput!
+}
+
+type UserValueGroupBy {
+  _avg: UserValueAvgAggregate
+  _count: UserValueCountAggregate
+  _max: UserValueMaxAggregate
+  _min: UserValueMinAggregate
+  _sum: UserValueSumAggregate
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: Int!
+  updatedAt: DateTime
+  userId: String!
+  valueId: Int!
+}
+
+input UserValueListRelationFilter {
+  every: UserValueWhereInput
+  none: UserValueWhereInput
+  some: UserValueWhereInput
+}
+
+type UserValueMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  userId: String
+  valueId: Int
+}
+
+input UserValueMaxOrderByAggregateInput {
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+  valueId: SortOrder
+}
+
+type UserValueMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  userId: String
+  valueId: Int
+}
+
+input UserValueMinOrderByAggregateInput {
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+  valueId: SortOrder
+}
+
+input UserValueOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input UserValueOrderByWithAggregationInput {
+  _avg: UserValueAvgOrderByAggregateInput
+  _count: UserValueCountOrderByAggregateInput
+  _max: UserValueMaxOrderByAggregateInput
+  _min: UserValueMinOrderByAggregateInput
+  _sum: UserValueSumOrderByAggregateInput
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+  valueId: SortOrder
+}
+
+input UserValueOrderByWithRelationInput {
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+  value: ValueOrderByWithRelationInput
+  valueId: SortOrder
+}
+
+enum UserValueScalarFieldEnum {
+  createdAt
+  deletedAt
+  id
+  updatedAt
+  userId
+  valueId
+}
+
+input UserValueScalarWhereInput {
+  AND: [UserValueScalarWhereInput!]
+  NOT: [UserValueScalarWhereInput!]
+  OR: [UserValueScalarWhereInput!]
+  createdAt: DateTimeFilter
+  deletedAt: DateTimeNullableFilter
+  id: IntFilter
+  updatedAt: DateTimeNullableFilter
+  userId: StringFilter
+  valueId: IntFilter
+}
+
+input UserValueScalarWhereWithAggregatesInput {
+  AND: [UserValueScalarWhereWithAggregatesInput!]
+  NOT: [UserValueScalarWhereWithAggregatesInput!]
+  OR: [UserValueScalarWhereWithAggregatesInput!]
+  createdAt: DateTimeWithAggregatesFilter
+  deletedAt: DateTimeNullableWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
+  userId: StringWithAggregatesFilter
+  valueId: IntWithAggregatesFilter
+}
+
+type UserValueSumAggregate {
+  id: Int
+  valueId: Int
+}
+
+input UserValueSumOrderByAggregateInput {
+  id: SortOrder
+  valueId: SortOrder
+}
+
+input UserValueUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutUserValuesInput
+  value: ValueUpdateOneRequiredWithoutUserValuesInput
+}
+
+input UserValueUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserValueUpdateManyWithWhereWithoutUserInput {
+  data: UserValueUpdateManyMutationInput!
+  where: UserValueScalarWhereInput!
+}
+
+input UserValueUpdateManyWithWhereWithoutValueInput {
+  data: UserValueUpdateManyMutationInput!
+  where: UserValueScalarWhereInput!
+}
+
+input UserValueUpdateManyWithoutUserInput {
+  connect: [UserValueWhereUniqueInput!]
+  connectOrCreate: [UserValueCreateOrConnectWithoutUserInput!]
+  create: [UserValueCreateWithoutUserInput!]
+  createMany: UserValueCreateManyUserInputEnvelope
+  delete: [UserValueWhereUniqueInput!]
+  deleteMany: [UserValueScalarWhereInput!]
+  disconnect: [UserValueWhereUniqueInput!]
+  set: [UserValueWhereUniqueInput!]
+  update: [UserValueUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [UserValueUpdateManyWithWhereWithoutUserInput!]
+  upsert: [UserValueUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input UserValueUpdateManyWithoutValueInput {
+  connect: [UserValueWhereUniqueInput!]
+  connectOrCreate: [UserValueCreateOrConnectWithoutValueInput!]
+  create: [UserValueCreateWithoutValueInput!]
+  createMany: UserValueCreateManyValueInputEnvelope
+  delete: [UserValueWhereUniqueInput!]
+  deleteMany: [UserValueScalarWhereInput!]
+  disconnect: [UserValueWhereUniqueInput!]
+  set: [UserValueWhereUniqueInput!]
+  update: [UserValueUpdateWithWhereUniqueWithoutValueInput!]
+  updateMany: [UserValueUpdateManyWithWhereWithoutValueInput!]
+  upsert: [UserValueUpsertWithWhereUniqueWithoutValueInput!]
+}
+
+input UserValueUpdateWithWhereUniqueWithoutUserInput {
+  data: UserValueUpdateWithoutUserInput!
+  where: UserValueWhereUniqueInput!
+}
+
+input UserValueUpdateWithWhereUniqueWithoutValueInput {
+  data: UserValueUpdateWithoutValueInput!
+  where: UserValueWhereUniqueInput!
+}
+
+input UserValueUpdateWithoutUserInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  value: ValueUpdateOneRequiredWithoutUserValuesInput
+}
+
+input UserValueUpdateWithoutValueInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutUserValuesInput
+}
+
+input UserValueUpsertWithWhereUniqueWithoutUserInput {
+  create: UserValueCreateWithoutUserInput!
+  update: UserValueUpdateWithoutUserInput!
+  where: UserValueWhereUniqueInput!
+}
+
+input UserValueUpsertWithWhereUniqueWithoutValueInput {
+  create: UserValueCreateWithoutValueInput!
+  update: UserValueUpdateWithoutValueInput!
+  where: UserValueWhereUniqueInput!
+}
+
+input UserValueUserIdValueIdCompoundUniqueInput {
+  userId: String!
+  valueId: Int!
+}
+
+input UserValueWhereInput {
+  AND: [UserValueWhereInput!]
+  NOT: [UserValueWhereInput!]
+  OR: [UserValueWhereInput!]
+  createdAt: DateTimeFilter
+  deletedAt: DateTimeNullableFilter
+  id: IntFilter
+  updatedAt: DateTimeNullableFilter
+  user: UserRelationFilter
+  userId: StringFilter
+  value: ValueRelationFilter
+  valueId: IntFilter
+}
+
+input UserValueWhereUniqueInput {
+  id: Int
+  userId_valueId: UserValueUserIdValueIdCompoundUniqueInput
 }
 
 input UserWhereInput {
@@ -6878,12 +7239,12 @@ input UserWhereInput {
   email: StringFilter
   emailVerified: DateTimeNullableFilter
   id: StringFilter
-  identitySelections: UserIdentityListRelationFilter
   image: StringNullableFilter
   isAdmin: BoolFilter
   name: StringNullableFilter
   userActions: UserActionListRelationFilter
-  valueSelections: ValueSelectionListRelationFilter
+  userIdentities: UserIdentityListRelationFilter
+  userValues: UserValueListRelationFilter
 }
 
 input UserWhereUniqueInput {
@@ -6899,7 +7260,7 @@ type Value {
   name: String!
   slug: String!
   updatedAt: DateTime
-  valueSelections(cursor: ValueSelectionWhereUniqueInput, distinct: [ValueSelectionScalarFieldEnum!], orderBy: [ValueSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: ValueSelectionWhereInput): [ValueSelection!]!
+  userValues(cursor: UserValueWhereUniqueInput, distinct: [UserValueScalarFieldEnum!], orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): [UserValue!]!
 }
 
 type ValueAvgAggregate {
@@ -6911,7 +7272,7 @@ input ValueAvgOrderByAggregateInput {
 }
 
 type ValueCount {
-  valueSelections: Int!
+  userValues: Int!
 }
 
 type ValueCountAggregate {
@@ -6939,7 +7300,7 @@ input ValueCreateInput {
   name: String!
   slug: String!
   updatedAt: DateTime
-  valueSelections: ValueSelectionCreateNestedManyWithoutValueInput
+  userValues: UserValueCreateNestedManyWithoutValueInput
 }
 
 input ValueCreateManyInput {
@@ -6951,18 +7312,18 @@ input ValueCreateManyInput {
   updatedAt: DateTime
 }
 
-input ValueCreateNestedOneWithoutValueSelectionsInput {
+input ValueCreateNestedOneWithoutUserValuesInput {
   connect: ValueWhereUniqueInput
-  connectOrCreate: ValueCreateOrConnectWithoutValueSelectionsInput
-  create: ValueCreateWithoutValueSelectionsInput
+  connectOrCreate: ValueCreateOrConnectWithoutUserValuesInput
+  create: ValueCreateWithoutUserValuesInput
 }
 
-input ValueCreateOrConnectWithoutValueSelectionsInput {
-  create: ValueCreateWithoutValueSelectionsInput!
+input ValueCreateOrConnectWithoutUserValuesInput {
+  create: ValueCreateWithoutUserValuesInput!
   where: ValueWhereUniqueInput!
 }
 
-input ValueCreateWithoutValueSelectionsInput {
+input ValueCreateWithoutUserValuesInput {
   createdAt: DateTime
   description: String
   name: String!
@@ -7041,7 +7402,7 @@ input ValueOrderByWithRelationInput {
   name: SortOrder
   slug: SortOrder
   updatedAt: SortOrder
-  valueSelections: ValueSelectionOrderByRelationAggregateInput
+  userValues: UserValueOrderByRelationAggregateInput
 }
 
 input ValueRelationFilter {
@@ -7070,367 +7431,6 @@ input ValueScalarWhereWithAggregatesInput {
   updatedAt: DateTimeNullableWithAggregatesFilter
 }
 
-type ValueSelection {
-  createdAt: DateTime!
-  deletedAt: DateTime
-  id: Int!
-  updatedAt: DateTime
-  user: User!
-  userId: String!
-  value: Value!
-  valueId: Int!
-}
-
-type ValueSelectionAvgAggregate {
-  id: Float
-  valueId: Float
-}
-
-input ValueSelectionAvgOrderByAggregateInput {
-  id: SortOrder
-  valueId: SortOrder
-}
-
-type ValueSelectionCountAggregate {
-  _all: Int!
-  createdAt: Int!
-  deletedAt: Int!
-  id: Int!
-  updatedAt: Int!
-  userId: Int!
-  valueId: Int!
-}
-
-input ValueSelectionCountOrderByAggregateInput {
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-  valueId: SortOrder
-}
-
-input ValueSelectionCreateInput {
-  createdAt: DateTime
-  deletedAt: DateTime
-  updatedAt: DateTime
-  user: UserCreateNestedOneWithoutValueSelectionsInput!
-  value: ValueCreateNestedOneWithoutValueSelectionsInput!
-}
-
-input ValueSelectionCreateManyInput {
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  userId: String!
-  valueId: Int!
-}
-
-input ValueSelectionCreateManyUserInput {
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  valueId: Int!
-}
-
-input ValueSelectionCreateManyUserInputEnvelope {
-  data: [ValueSelectionCreateManyUserInput!]!
-  skipDuplicates: Boolean
-}
-
-input ValueSelectionCreateManyValueInput {
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  userId: String!
-}
-
-input ValueSelectionCreateManyValueInputEnvelope {
-  data: [ValueSelectionCreateManyValueInput!]!
-  skipDuplicates: Boolean
-}
-
-input ValueSelectionCreateNestedManyWithoutUserInput {
-  connect: [ValueSelectionWhereUniqueInput!]
-  connectOrCreate: [ValueSelectionCreateOrConnectWithoutUserInput!]
-  create: [ValueSelectionCreateWithoutUserInput!]
-  createMany: ValueSelectionCreateManyUserInputEnvelope
-}
-
-input ValueSelectionCreateNestedManyWithoutValueInput {
-  connect: [ValueSelectionWhereUniqueInput!]
-  connectOrCreate: [ValueSelectionCreateOrConnectWithoutValueInput!]
-  create: [ValueSelectionCreateWithoutValueInput!]
-  createMany: ValueSelectionCreateManyValueInputEnvelope
-}
-
-input ValueSelectionCreateOrConnectWithoutUserInput {
-  create: ValueSelectionCreateWithoutUserInput!
-  where: ValueSelectionWhereUniqueInput!
-}
-
-input ValueSelectionCreateOrConnectWithoutValueInput {
-  create: ValueSelectionCreateWithoutValueInput!
-  where: ValueSelectionWhereUniqueInput!
-}
-
-input ValueSelectionCreateWithoutUserInput {
-  createdAt: DateTime
-  deletedAt: DateTime
-  updatedAt: DateTime
-  value: ValueCreateNestedOneWithoutValueSelectionsInput!
-}
-
-input ValueSelectionCreateWithoutValueInput {
-  createdAt: DateTime
-  deletedAt: DateTime
-  updatedAt: DateTime
-  user: UserCreateNestedOneWithoutValueSelectionsInput!
-}
-
-type ValueSelectionGroupBy {
-  _avg: ValueSelectionAvgAggregate
-  _count: ValueSelectionCountAggregate
-  _max: ValueSelectionMaxAggregate
-  _min: ValueSelectionMinAggregate
-  _sum: ValueSelectionSumAggregate
-  createdAt: DateTime!
-  deletedAt: DateTime
-  id: Int!
-  updatedAt: DateTime
-  userId: String!
-  valueId: Int!
-}
-
-input ValueSelectionListRelationFilter {
-  every: ValueSelectionWhereInput
-  none: ValueSelectionWhereInput
-  some: ValueSelectionWhereInput
-}
-
-type ValueSelectionMaxAggregate {
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  userId: String
-  valueId: Int
-}
-
-input ValueSelectionMaxOrderByAggregateInput {
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-  valueId: SortOrder
-}
-
-type ValueSelectionMinAggregate {
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  userId: String
-  valueId: Int
-}
-
-input ValueSelectionMinOrderByAggregateInput {
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-  valueId: SortOrder
-}
-
-input ValueSelectionOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input ValueSelectionOrderByWithAggregationInput {
-  _avg: ValueSelectionAvgOrderByAggregateInput
-  _count: ValueSelectionCountOrderByAggregateInput
-  _max: ValueSelectionMaxOrderByAggregateInput
-  _min: ValueSelectionMinOrderByAggregateInput
-  _sum: ValueSelectionSumOrderByAggregateInput
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-  valueId: SortOrder
-}
-
-input ValueSelectionOrderByWithRelationInput {
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  user: UserOrderByWithRelationInput
-  userId: SortOrder
-  value: ValueOrderByWithRelationInput
-  valueId: SortOrder
-}
-
-enum ValueSelectionScalarFieldEnum {
-  createdAt
-  deletedAt
-  id
-  updatedAt
-  userId
-  valueId
-}
-
-input ValueSelectionScalarWhereInput {
-  AND: [ValueSelectionScalarWhereInput!]
-  NOT: [ValueSelectionScalarWhereInput!]
-  OR: [ValueSelectionScalarWhereInput!]
-  createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
-  id: IntFilter
-  updatedAt: DateTimeNullableFilter
-  userId: StringFilter
-  valueId: IntFilter
-}
-
-input ValueSelectionScalarWhereWithAggregatesInput {
-  AND: [ValueSelectionScalarWhereWithAggregatesInput!]
-  NOT: [ValueSelectionScalarWhereWithAggregatesInput!]
-  OR: [ValueSelectionScalarWhereWithAggregatesInput!]
-  createdAt: DateTimeWithAggregatesFilter
-  deletedAt: DateTimeNullableWithAggregatesFilter
-  id: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
-  userId: StringWithAggregatesFilter
-  valueId: IntWithAggregatesFilter
-}
-
-type ValueSelectionSumAggregate {
-  id: Int
-  valueId: Int
-}
-
-input ValueSelectionSumOrderByAggregateInput {
-  id: SortOrder
-  valueId: SortOrder
-}
-
-input ValueSelectionUpdateInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutValueSelectionsInput
-  value: ValueUpdateOneRequiredWithoutValueSelectionsInput
-}
-
-input ValueSelectionUpdateManyMutationInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-}
-
-input ValueSelectionUpdateManyWithWhereWithoutUserInput {
-  data: ValueSelectionUpdateManyMutationInput!
-  where: ValueSelectionScalarWhereInput!
-}
-
-input ValueSelectionUpdateManyWithWhereWithoutValueInput {
-  data: ValueSelectionUpdateManyMutationInput!
-  where: ValueSelectionScalarWhereInput!
-}
-
-input ValueSelectionUpdateManyWithoutUserInput {
-  connect: [ValueSelectionWhereUniqueInput!]
-  connectOrCreate: [ValueSelectionCreateOrConnectWithoutUserInput!]
-  create: [ValueSelectionCreateWithoutUserInput!]
-  createMany: ValueSelectionCreateManyUserInputEnvelope
-  delete: [ValueSelectionWhereUniqueInput!]
-  deleteMany: [ValueSelectionScalarWhereInput!]
-  disconnect: [ValueSelectionWhereUniqueInput!]
-  set: [ValueSelectionWhereUniqueInput!]
-  update: [ValueSelectionUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [ValueSelectionUpdateManyWithWhereWithoutUserInput!]
-  upsert: [ValueSelectionUpsertWithWhereUniqueWithoutUserInput!]
-}
-
-input ValueSelectionUpdateManyWithoutValueInput {
-  connect: [ValueSelectionWhereUniqueInput!]
-  connectOrCreate: [ValueSelectionCreateOrConnectWithoutValueInput!]
-  create: [ValueSelectionCreateWithoutValueInput!]
-  createMany: ValueSelectionCreateManyValueInputEnvelope
-  delete: [ValueSelectionWhereUniqueInput!]
-  deleteMany: [ValueSelectionScalarWhereInput!]
-  disconnect: [ValueSelectionWhereUniqueInput!]
-  set: [ValueSelectionWhereUniqueInput!]
-  update: [ValueSelectionUpdateWithWhereUniqueWithoutValueInput!]
-  updateMany: [ValueSelectionUpdateManyWithWhereWithoutValueInput!]
-  upsert: [ValueSelectionUpsertWithWhereUniqueWithoutValueInput!]
-}
-
-input ValueSelectionUpdateWithWhereUniqueWithoutUserInput {
-  data: ValueSelectionUpdateWithoutUserInput!
-  where: ValueSelectionWhereUniqueInput!
-}
-
-input ValueSelectionUpdateWithWhereUniqueWithoutValueInput {
-  data: ValueSelectionUpdateWithoutValueInput!
-  where: ValueSelectionWhereUniqueInput!
-}
-
-input ValueSelectionUpdateWithoutUserInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-  value: ValueUpdateOneRequiredWithoutValueSelectionsInput
-}
-
-input ValueSelectionUpdateWithoutValueInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutValueSelectionsInput
-}
-
-input ValueSelectionUpsertWithWhereUniqueWithoutUserInput {
-  create: ValueSelectionCreateWithoutUserInput!
-  update: ValueSelectionUpdateWithoutUserInput!
-  where: ValueSelectionWhereUniqueInput!
-}
-
-input ValueSelectionUpsertWithWhereUniqueWithoutValueInput {
-  create: ValueSelectionCreateWithoutValueInput!
-  update: ValueSelectionUpdateWithoutValueInput!
-  where: ValueSelectionWhereUniqueInput!
-}
-
-input ValueSelectionUserIdValueIdCompoundUniqueInput {
-  userId: String!
-  valueId: Int!
-}
-
-input ValueSelectionWhereInput {
-  AND: [ValueSelectionWhereInput!]
-  NOT: [ValueSelectionWhereInput!]
-  OR: [ValueSelectionWhereInput!]
-  createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
-  id: IntFilter
-  updatedAt: DateTimeNullableFilter
-  user: UserRelationFilter
-  userId: StringFilter
-  value: ValueRelationFilter
-  valueId: IntFilter
-}
-
-input ValueSelectionWhereUniqueInput {
-  id: Int
-  userId_valueId: ValueSelectionUserIdValueIdCompoundUniqueInput
-}
-
 type ValueSumAggregate {
   id: Int
 }
@@ -7445,7 +7445,7 @@ input ValueUpdateInput {
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
-  valueSelections: ValueSelectionUpdateManyWithoutValueInput
+  userValues: UserValueUpdateManyWithoutValueInput
 }
 
 input ValueUpdateManyMutationInput {
@@ -7456,15 +7456,15 @@ input ValueUpdateManyMutationInput {
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
-input ValueUpdateOneRequiredWithoutValueSelectionsInput {
+input ValueUpdateOneRequiredWithoutUserValuesInput {
   connect: ValueWhereUniqueInput
-  connectOrCreate: ValueCreateOrConnectWithoutValueSelectionsInput
-  create: ValueCreateWithoutValueSelectionsInput
-  update: ValueUpdateWithoutValueSelectionsInput
-  upsert: ValueUpsertWithoutValueSelectionsInput
+  connectOrCreate: ValueCreateOrConnectWithoutUserValuesInput
+  create: ValueCreateWithoutUserValuesInput
+  update: ValueUpdateWithoutUserValuesInput
+  upsert: ValueUpsertWithoutUserValuesInput
 }
 
-input ValueUpdateWithoutValueSelectionsInput {
+input ValueUpdateWithoutUserValuesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
@@ -7472,9 +7472,9 @@ input ValueUpdateWithoutValueSelectionsInput {
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
-input ValueUpsertWithoutValueSelectionsInput {
-  create: ValueCreateWithoutValueSelectionsInput!
-  update: ValueUpdateWithoutValueSelectionsInput!
+input ValueUpsertWithoutUserValuesInput {
+  create: ValueCreateWithoutUserValuesInput!
+  update: ValueUpdateWithoutUserValuesInput!
 }
 
 input ValueWhereInput {
@@ -7487,7 +7487,7 @@ input ValueWhereInput {
   name: StringFilter
   slug: StringFilter
   updatedAt: DateTimeNullableFilter
-  valueSelections: ValueSelectionListRelationFilter
+  userValues: UserValueListRelationFilter
 }
 
 input ValueWhereUniqueInput {

@@ -160,7 +160,7 @@ CREATE TABLE "values" (
 );
 
 -- CreateTable
-CREATE TABLE "ValueSelection" (
+CREATE TABLE "UserValue" (
     "id" SERIAL NOT NULL,
     "userId" TEXT NOT NULL,
     "valueId" INTEGER NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE "ValueSelection" (
     "updatedAt" TIMESTAMP(3),
     "deletedAt" TIMESTAMP(3),
 
-    CONSTRAINT "ValueSelection_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UserValue_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -202,7 +202,7 @@ CREATE UNIQUE INDEX "BeliefSelection_userId_beliefId_key" ON "BeliefSelection"("
 CREATE UNIQUE INDEX "values_slug_key" ON "values"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ValueSelection_userId_valueId_key" ON "ValueSelection"("userId", "valueId");
+CREATE UNIQUE INDEX "UserValue_userId_valueId_key" ON "UserValue"("userId", "valueId");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -247,7 +247,7 @@ ALTER TABLE "BeliefSelection" ADD CONSTRAINT "BeliefSelection_userId_fkey" FOREI
 ALTER TABLE "BeliefSelection" ADD CONSTRAINT "BeliefSelection_beliefId_fkey" FOREIGN KEY ("beliefId") REFERENCES "beliefs"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ValueSelection" ADD CONSTRAINT "ValueSelection_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserValue" ADD CONSTRAINT "UserValue_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ValueSelection" ADD CONSTRAINT "ValueSelection_valueId_fkey" FOREIGN KEY ("valueId") REFERENCES "values"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserValue" ADD CONSTRAINT "UserValue_valueId_fkey" FOREIGN KEY ("valueId") REFERENCES "values"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

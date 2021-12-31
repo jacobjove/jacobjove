@@ -1,7 +1,7 @@
 import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
-import { GET_USER_ACTIONS_AND_CALENDAR_EVENTS } from "@/graphql/queries";
+import { GET_DASHBOARD_DATA } from "@/graphql/queries";
 // import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { useQuery } from "@apollo/client";
@@ -32,17 +32,14 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(
-    GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
-    {
-      variables: {
-        userId: session?.user?.id,
-      },
-      // Setting this value to true makes the component rerender when "networkStatus" changes,
-      // so we are able to know if it is fetching more data.
-      // notifyOnNetworkStatusChange: true,
-    }
-  );
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_DASHBOARD_DATA, {
+    variables: {
+      userId: session?.user?.id,
+    },
+    // Setting this value to true makes the component rerender when "networkStatus" changes,
+    // so we are able to know if it is fetching more data.
+    // notifyOnNetworkStatusChange: true,
+  });
   if (!session) {
     return null;
   }
@@ -178,7 +175,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
   await apolloClient
     .query({
-      query: GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
+      query: GET_DASHBOARD_DATA,
       variables: {
         userId: session.user.id,
       },

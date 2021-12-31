@@ -26,3 +26,25 @@ export const calendarEventFragment = gql`
     end
   }
 `;
+
+export const userValueFragment = gql`
+  fragment UserValueFragment on UserValue {
+    id
+    value {
+      id
+      name
+      slug
+    }
+  }
+`;
+
+export const userIdentityFragment = gql`
+  fragment UserIdentityFragment on UserIdentity {
+    id
+    identity {
+      id
+      name
+      slug
+    }
+  }
+`;

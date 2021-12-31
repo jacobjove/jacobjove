@@ -34,19 +34,19 @@ enum Role {
 }
 
 model User {
-  id                 String             @id @default(cuid())
-  name               String?
-  email              String             @unique
-  emailVerified      DateTime?
-  image              String?
-  isAdmin            Boolean            @default(false)
-  accounts           Account[]
-  identitySelections UserIdentity[]
-  valueSelections    ValueSelection[]
-  beliefSelections   BeliefSelection[]
-  userActions        UserAction[]
-  actionCompletions  ActionCompletion[]
-  calendars          Calendar[]
+  id                String             @id @default(cuid())
+  name              String?
+  email             String             @unique
+  emailVerified     DateTime?
+  image             String?
+  isAdmin           Boolean            @default(false)
+  accounts          Account[]
+  userIdentities    UserIdentity[]
+  userValues        UserValue[]
+  beliefSelections  BeliefSelection[]
+  userActions       UserAction[]
+  actionCompletions ActionCompletion[]
+  calendars         Calendar[]
 }
 
 enum Color {
@@ -181,15 +181,16 @@ model UserIdentity {
   deleted    DateTime?
 
   @@unique([userId, identityId])
+  @@map(name: "userIdentities")
 }
 
 model Identity {
-  id                 Int                      @id @default(autoincrement())
-  name               String
-  slug               String                   @unique
-  description        String?
-  identitySelections UserIdentity[]
-  actionRelations    IdentityActionRelation[]
+  id              Int                      @id @default(autoincrement())
+  name            String
+  slug            String                   @unique
+  description     String?
+  userIdentities  UserIdentity[]
+  actionRelations IdentityActionRelation[]
 
   @@map(name: "identities")
 }
@@ -249,12 +250,12 @@ model Value {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
 
-  valueSelections ValueSelection[]
+  userValues UserValue[]
 
   @@map(name: "values")
 }
 
-model ValueSelection {
+model UserValue {
   id        Int       @id @default(autoincrement())
   user      User      @relation(fields: [userId], references: [id])
   userId    String

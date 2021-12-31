@@ -16,14 +16,14 @@ export class UserIdentityToggleResolver {
     @TypeGraphQL.Arg("deleted", { nullable: true }) deleted: null | Date
   ): Promise<UserIdentity> {
     const prisma = getPrismaFromContext(ctx);
-    const identitySelectionExists =
+    const userIdentityExists =
       (await prisma.userIdentity.count({
         where: {
           userId: userId,
           identityId: identityId,
         },
       })) > 0;
-    if (identitySelectionExists) {
+    if (userIdentityExists) {
       return await prisma.userIdentity.update({
         where: {
           userId_identityId: {

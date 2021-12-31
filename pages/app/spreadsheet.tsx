@@ -184,13 +184,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             frequency
             multiplier
           }
-          identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
+          userIdentities (where: {userId: {equals: "${session.user.id}"}}) {
             identity {
               name
               slug
             }
           }
-          valueSelections (where: {userId: {equals: "${session.user.id}"}}) {
+          userValues (where: {userId: {equals: "${session.user.id}"}}) {
             value {
               name
               slug

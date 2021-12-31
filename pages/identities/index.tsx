@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             name
             slug
           }
-          identitySelections (
+          userIdentities (
             where: {
               userId: {equals: "${session.user.id}"}
               deleted: {equals: null}
@@ -86,10 +86,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       })
       .then((res) => {
         props.identities = res.data.identities;
-        if (res.data.identitySelections.length) {
-          props.selectedIdentityIds = res.data.identitySelections.map(
-            (identitySelection: UserIdentity & { identity: Identity }) =>
-              parseInt(`${identitySelection.identity.id}`)
+        if (res.data.userIdentities.length) {
+          props.selectedIdentityIds = res.data.userIdentities.map(
+            (userIdentity: UserIdentity & { identity: Identity }) =>
+              parseInt(`${userIdentity.identity.id}`)
           );
         }
       });

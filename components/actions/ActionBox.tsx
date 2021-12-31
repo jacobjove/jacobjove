@@ -22,7 +22,7 @@ const ActionBox: FC<ActionBoxProps> = (props: ActionBoxProps) => {
         <ActionChip key={userAction.action.name} userAction={userAction} />
       ))}
       <Link href="/actions" passHref>
-        <IconButton component={"a"} color="info" style={{ marginLeft: 3 }}>
+        <IconButton component={"a"} color="info" style={{ marginLeft: 3 }} title="Explore actions">
           <SearchIcon />
         </IconButton>
       </Link>

@@ -14,11 +14,11 @@ type UserIdentity = _UserIdentity & {
 };
 
 interface IdentityTableProps {
-  identitySelections: UserIdentity[];
+  userIdentities: UserIdentity[];
 }
 
 const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
-  const { identitySelections } = props;
+  const { userIdentities } = props;
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -28,14 +28,14 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {identitySelections.map((identitySelection: UserIdentity) => (
+          {userIdentities.map((userIdentity: UserIdentity) => (
             <TableRow
-              key={identitySelection.identity.name}
+              key={userIdentity.identity.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                <Link href={`/identitySelections/${identitySelection.identity.slug}`}>
-                  <a>{identitySelection.identity.name}</a>
+                <Link href={`/identities/${userIdentity.identity.slug}`}>
+                  <a>{userIdentity.identity.name}</a>
                 </Link>
               </TableCell>
             </TableRow>

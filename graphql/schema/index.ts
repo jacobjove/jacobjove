@@ -11,8 +11,8 @@ import {
   UserAction as _UserAction,
   UserActionSchedule as _UserActionSchedule,
   UserIdentity as _UserIdentity,
+  UserValue as _UserValue,
   Value as _Value,
-  ValueSelection as _ValueSelection,
 } from "@/prisma/generated";
 import { NonEmptyArray } from "type-graphql";
 import { UserActionToggleResolver } from "./resolvers/UserActionToggleResolver";
@@ -39,4 +39,4 @@ export type CalendarEvent = Omit<_CalendarEvent, "_count" | "start" | "end"> & {
   start: string;
   end?: string | null;
 };
-export type ValueSelection = Omit<_ValueSelection, "_count">;
+export type UserValue = Omit<_UserValue, "_count">;

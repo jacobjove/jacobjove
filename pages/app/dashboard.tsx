@@ -2,29 +2,26 @@ import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/Calendar";
 import IdentityTable from "@/components/identities/IdentityTable";
 import Layout from "@/components/Layout";
+import { GET_DASHBOARD_DATA } from "@/graphql/queries";
 import {
-  // GET_CALENDAR_EVENTS,
-  // GET_USER_ACTIONS,
-  GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
-} from "@/graphql/queries";
-import {
-  // Action,
+  Action,
+  CalendarEvent,
   Identity,
-  // UserAction,
-  // UserActionSchedule,
+  UserAction,
+  UserActionSchedule,
   UserIdentity,
+  UserValue,
   Value,
-  ValueSelection,
 } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
@@ -32,40 +29,51 @@ import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useState } from "react";
+import GridLayout from "react-grid-layout";
 
-interface DefaultPageProps {
+interface DashboardPageProps {
   dateISO: string;
-  // actionSchedules: (UserActionSchedule & {
-  //   userAction: UserAction & {
-  //     action: Action;
-  //   };
-  // })[];
-  identitySelections: (UserIdentity & {
-    identity: Identity;
-  })[];
-  valueSelections: (ValueSelection & {
-    value: Value;
-  })[];
   session: Session;
 }
 
-const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
-  const { dateISO, identitySelections, valueSelections } = props;
+interface DashboardPageData {
+  calendarEvents: CalendarEvent[];
+  userActions: UserAction &
+    {
+      action: Action;
+      schedules: UserActionSchedule[];
+    }[];
+  userIdentities: (UserIdentity & {
+    identity: Identity;
+  })[];
+  userValues: (UserValue & {
+    value: Value;
+  })[];
+}
+
+const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) => {
+  const { dateISO } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(
-    GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
+  const { loading, error, data, fetchMore, networkStatus } = useQuery<DashboardPageData>(
+    GET_DASHBOARD_DATA,
     {
       variables: {
         userId: session?.user?.id,
       },
     }
   );
-  if (!session) {
+  if (!session || !data) {
     return null;
   }
   console.log(data);
-  const { calendarEvents, userActions } = data;
+  const { calendarEvents, userActions, userIdentities, userValues } = data;
+  const layout = [
+    { i: "a", x: 0, y: 0, w: 6, h: 2, static: true },
+    { i: "b", x: 6, y: 0, w: 3, h: 2, minW: 2, maxW: 4 },
+    { i: "c", x: 8, y: 3, w: 1, h: 2 },
+    { i: "d", x: 10, y: 8, w: 1, h: 2 },
+  ];
   return (
     <Layout>
       <NextSeo
@@ -76,11 +84,11 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
         nofollow
       />
       <Container maxWidth={"xl"}>
-        <Grid container spacing={2} direction="row-reverse" justifyContent="center">
-          <Grid item xs={12} md={6} lg={6} xl={4}>
-            <Card sx={{ height: "100%" }}>
-              <CardHeader title="Calendar" />
-              <CardContent>
+        <GridLayout className="layout" layout={layout} cols={12} rowHeight={30} width={1200}>
+          <div key="a">
+            <Card sx={{ marginY: "1rem" }}>
+              <CardHeader title="Calendar" style={{ display: "none" }} />
+              <CardContent style={{ paddingTop: "0.25rem" }}>
                 <CalendarViewer
                   calendarEvents={calendarEvents}
                   date={date}
@@ -89,56 +97,52 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
                 />
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={3} xl={2}>
-            <Card sx={{ height: "100%" }}>
-              <CardHeader title="Actions" />
+          </div>
+          <div key="b">
+            <Card sx={{ marginY: "1rem" }}>
+              <CardHeader title="Actions" style={{ display: "none" }} />
               <CardContent>
                 {(!!userActions.length && <ActionBox userActions={userActions} />) || (
                   <Typography component="p" textAlign="center">
                     No actions yet.
                   </Typography>
                 )}
-                <Box textAlign="center" marginTop="1rem">
-                  <Link href="/actions" passHref>
-                    <Button component={"a"} variant="contained" color="secondary">
-                      Explore actions
-                    </Button>
-                  </Link>
-                </Box>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={3} xl={2}>
-            <Card sx={{ height: "100%" }}>
-              <CardHeader title="Identities" />
+          </div>
+          <div key="c">
+            <Card sx={{ marginY: "1rem" }}>
+              <CardHeader title="Identities" style={{ display: "none" }} />
               <CardContent>
-                {(!!identitySelections.length && (
-                  <IdentityTable identitySelections={identitySelections} />
-                )) || (
+                {(!!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
                   <Typography component="p" textAlign="center">
                     No identities yet.
                   </Typography>
                 )}
                 <Box textAlign="center" marginTop="1rem">
                   <Link href="/identities" passHref>
-                    <Button component={"a"} variant="contained" color="secondary">
-                      Explore identities
-                    </Button>
+                    <IconButton
+                      component={"a"}
+                      color="info"
+                      style={{ marginLeft: 3 }}
+                      title="Explore identities"
+                    >
+                      <SearchIcon />
+                    </IconButton>
                   </Link>
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={3} xl={2}>
-            <Card sx={{ height: "100%" }}>
+          </div>
+          <div key="d">
+            <Card sx={{ marginY: "1rem" }}>
               <CardHeader title="Values" />
               <CardContent>
-                {(!!valueSelections.length &&
-                  valueSelections.map((valueSelection, index) => (
+                {(!!userValues.length &&
+                  userValues.map((userValue, index) => (
                     <p key={index}>
-                      <Link href={`/valueSelections/${valueSelection.value.slug}`}>
-                        <a>{valueSelection.value.name}</a>
+                      <Link href={`/userValues/${userValue.value.slug}`}>
+                        <a>{userValue.value.name}</a>
                       </Link>
                     </p>
                   ))) || (
@@ -147,21 +151,26 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
                   </Typography>
                 )}
                 <Box textAlign="center" marginTop="1rem">
-                  <Link href="/valueSelections" passHref>
-                    <Button component={"a"} variant="contained" color="secondary">
-                      Explore values
-                    </Button>
+                  <Link href="/values" passHref>
+                    <IconButton
+                      component={"a"}
+                      color="info"
+                      style={{ marginLeft: 3 }}
+                      title="Explore values"
+                    >
+                      <SearchIcon />
+                    </IconButton>
                   </Link>
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
+          </div>
+        </GridLayout>
       </Container>
     </Layout>
   );
 };
-export default DefaultPage;
+export default DashboardPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();
@@ -175,44 +184,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const today = new Date();
-  const props: DefaultPageProps = {
+  const props: DashboardPageProps = {
     dateISO: today.toISOString(),
-    identitySelections: [],
-    valueSelections: [],
     session,
   };
   await apolloClient.query({
-    query: GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
+    query: GET_DASHBOARD_DATA,
     variables: {
       userId: session?.user?.id,
     },
   });
-  await apolloClient
-    .query({
-      query: gql`
-        query Selections {
-          identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
-            identity {
-              name
-              slug
-            }
-          }
-          valueSelections (where: {userId: {equals: "${session.user.id}"}}) {
-            value {
-              name
-              slug
-            }
-          }
-        }
-      `,
-    })
-    .then((result) => {
-      props.identitySelections = result.data?.identitySelections;
-      props.valueSelections = result.data?.valueSelections;
-      console.log(result.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
   return addApolloState(apolloClient, { props });
 };

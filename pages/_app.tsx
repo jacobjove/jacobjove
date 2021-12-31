@@ -1,5 +1,7 @@
 import { PageTransitionContextProvider } from "@/components/PageTransitionContext";
 import { useApollo } from "@/lib/apollo/apolloClient";
+import "@/node_modules/react-grid-layout/css/styles.css";
+import "@/node_modules/react-resizable/css/styles.css";
 import { ApolloProvider } from "@apollo/client";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
