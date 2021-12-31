@@ -5,18 +5,16 @@ import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
 import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import Link from "next/link";
 import { useState } from "react";
 
 interface PlannerPageProps {
@@ -33,6 +31,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { dateISO, actionSchedules } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_CALENDAR_EVENTS, {
     variables: {
       userId: session?.user?.id,
@@ -54,78 +53,110 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         noindex
         nofollow
       />
-      <Container maxWidth={"lg"}>
-        <Grid container spacing={2} justifyContent="center">
-          <Grid
-            item
-            xs={12}
-            md={8}
-            lg={6}
-            order={{ xs: 2, sm: 1 }}
-            // sx={{
-            //   maxHeight: {
-            //     xs: "50vh",
-            //     sm: "auto",
-            //   },
-            // }}
-          >
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                <CalendarViewer
-                  calendarEvents={calendarEvents}
-                  date={date}
-                  setDate={setDate}
-                  collapseViewMenu={true}
-                  session={session}
-                />
-              </CardContent>
-            </Card>
+      <Grid container spacing={2} justifyContent="center">
+        <Grid
+          item
+          xs={12}
+          md={8}
+          lg={6}
+          order={{ xs: 2, sm: 1 }}
+          // sx={{
+          //   maxHeight: {
+          //     xs: "50vh",
+          //     sm: "auto",
+          //   },
+          // }}
+        >
+          <Card sx={{ height: "100%" }}>
+            <CardContent>
+              <CalendarViewer
+                calendarEvents={calendarEvents}
+                date={date}
+                setDate={setDate}
+                collapseViewMenu={true}
+                session={session}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid
+          item
+          container
+          xs={12}
+          md={4}
+          lg={3}
+          order={{ xs: 1, sm: 2 }}
+          flexDirection="column"
+          // sx={{
+          //   maxHeight: {
+          //     xs: "33vh",
+          //     sm: "auto",
+          //   },
+          // }}
+        >
+          <Grid item flexShrink={0}>
+            <form>
+              <TextField
+                value=""
+                label="Notes"
+                variant="outlined"
+                multiline
+                rows={isMobile ? 3 : 12} // TODO
+                fullWidth
+                onChange={() => {
+                  console.log("notes changed");
+                }}
+              />
+            </form>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={4}
-            lg={3}
-            order={{ xs: 1, sm: 2 }}
-            sx={{
-              maxHeight: {
-                xs: "33vh",
-                sm: "auto",
-              },
-            }}
-          >
-            <Card sx={{ height: "100%", display: "flex" }}>
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  justifyContent={"space-between"}
-                  height="100%"
-                  flexGrow="1"
-                >
-                  <Box flexGrow="1">
-                    {(!!actionSchedules.length && (
-                      <ActionBox userActionSchedules={actionSchedules} />
-                    )) || (
-                      <Typography component="p" textAlign="center">
-                        No actions yet.
-                      </Typography>
-                    )}
-                  </Box>
-                  <Box marginTop="0.8rem">
-                    <Link href="/actions" passHref>
-                      <Button component={"a"} variant="contained" color="secondary">
-                        Explore actions
-                      </Button>
-                    </Link>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
+          <Grid item flexShrink={0} padding={0.75}>
+            <div>
+              {(!!actionSchedules.length && (
+                <ActionBox userActionSchedules={actionSchedules} />
+              )) || (
+                <Typography component="p" textAlign="center">
+                  No actions yet.
+                </Typography>
+              )}
+            </div>
+          </Grid>
+          <Grid item flexShrink={0} padding={"0 0.25rem 0.25rem"}>
+            <TextField
+              value=""
+              label="Study theme"
+              sx={{ margin: "0.25rem 0" }}
+              fullWidth
+              onChange={() => {
+                console.log("study theme changed");
+              }}
+            />
+            <TextField
+              value=""
+              label="Other study theme"
+              sx={{ margin: "0.25rem 0" }}
+              fullWidth
+              onChange={() => {
+                console.log("other study theme changed");
+              }}
+            />
+          </Grid>
+          <Grid item flexShrink={0} padding={0.75}>
+            {["...", "..."].map((value, i) => (
+              <TextField
+                key={i}
+                value={value}
+                label="KPI"
+                variant="outlined"
+                margin="dense"
+                fullWidth
+                onChange={() => {
+                  console.log("KPI changed");
+                }}
+              />
+            ))}
           </Grid>
         </Grid>
-      </Container>
+      </Grid>
     </Layout>
   );
 };
