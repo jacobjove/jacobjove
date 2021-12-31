@@ -41,6 +41,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
   };
   const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
   const isMobile = useMediaQuery("(max-width: 600px)");
+  console.log(props.collapseViewMenu);
   return (
     <>
       <Grid
@@ -48,7 +49,10 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
         spacing={1}
         alignItems="end"
         justifyContent={"space-between"}
-        sx={{ borderBottom: "1px solid rgba(224, 224, 224, 1)" }}
+        sx={{
+          borderBottom: "1px solid rgba(224, 224, 224, 1)",
+          display: props.collapseViewMenu ? "none" : "flex",
+        }}
       >
         <Grid item justifyContent={"center"}>
           <Tabs value={viewTabIndex} onChange={handleViewTabChange} sx={{ minHeight: "auto" }}>

@@ -6,12 +6,14 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { createTheme } from "@mui/material";
 import { blue, orange } from "@mui/material/colors";
 import { ThemeProvider } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { SessionProvider } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
 import TagManager from "react-gtm-module";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
@@ -41,6 +43,7 @@ const theme = createTheme({
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
+  const isMobile = useMediaQuery("(max-width: 600px)");
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
@@ -49,15 +52,14 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       <PageTransitionContextProvider>
         <ApolloProvider client={apolloClient}>
           <ThemeProvider theme={theme}>
-            <DndProvider backend={HTML5Backend}>
-              <LocalizationProvider dateAdapter={DateAdapter}>
+            <LocalizationProvider dateAdapter={DateAdapter}>
+              <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
                 <DefaultSeo
                   description={"Build good habits, break bad habits, and be your best self."}
                   openGraph={{
                     type: "website",
                     url: "https://www.habitbuilder.com/",
                     site_name: "HabitBuilder",
-                    // description: "History, modularized.",
                     // images: [
                     //   {
                     //     url: 'https://www.example.ie/og-image.jpg',
@@ -99,8 +101,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                   }
                 />
                 <Component {...pageProps} />
-              </LocalizationProvider>
-            </DndProvider>
+              </DndProvider>
+            </LocalizationProvider>
           </ThemeProvider>
         </ApolloProvider>
       </PageTransitionContextProvider>

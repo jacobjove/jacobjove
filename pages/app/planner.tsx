@@ -1,4 +1,4 @@
-import ActionTable from "@/components/actions/ActionTable";
+import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
 import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
@@ -56,34 +56,70 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
       />
       <Container maxWidth={"lg"}>
         <Grid container spacing={2} justifyContent="center">
-          <Grid item xs={12} md={8} lg={6}>
+          <Grid
+            item
+            xs={12}
+            md={8}
+            lg={6}
+            order={{ xs: 2, sm: 1 }}
+            // sx={{
+            //   maxHeight: {
+            //     xs: "50vh",
+            //     sm: "auto",
+            //   },
+            // }}
+          >
             <Card sx={{ height: "100%" }}>
               <CardContent>
                 <CalendarViewer
                   calendarEvents={calendarEvents}
                   date={date}
                   setDate={setDate}
+                  collapseViewMenu={true}
                   session={session}
                 />
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={4} lg={3}>
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                {(!!actionSchedules.length && (
-                  <ActionTable userActionSchedules={actionSchedules} />
-                )) || (
-                  <Typography component="p" textAlign="center">
-                    No actions yet.
-                  </Typography>
-                )}
-                <Box textAlign="center" marginTop="1rem">
-                  <Link href="/actions" passHref>
-                    <Button component={"a"} variant="contained" color="secondary">
-                      Explore actions
-                    </Button>
-                  </Link>
+          <Grid
+            item
+            xs={12}
+            md={4}
+            lg={3}
+            order={{ xs: 1, sm: 2 }}
+            sx={{
+              maxHeight: {
+                xs: "33vh",
+                sm: "auto",
+              },
+            }}
+          >
+            <Card sx={{ height: "100%", display: "flex" }}>
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent={"space-between"}
+                  height="100%"
+                  flexGrow="1"
+                >
+                  <Box flexGrow="1">
+                    {(!!actionSchedules.length && (
+                      <ActionBox userActionSchedules={actionSchedules} />
+                    )) || (
+                      <Typography component="p" textAlign="center">
+                        No actions yet.
+                      </Typography>
+                    )}
+                  </Box>
+                  <Box marginTop="0.8rem">
+                    <Link href="/actions" passHref>
+                      <Button component={"a"} variant="contained" color="secondary">
+                        Explore actions
+                      </Button>
+                    </Link>
+                  </Box>
                 </Box>
               </CardContent>
             </Card>

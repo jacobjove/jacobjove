@@ -1,4 +1,4 @@
-import ActionTable from "@/components/actions/ActionTable";
+import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/Calendar";
 import IdentityTable from "@/components/identities/IdentityTable";
 import Layout from "@/components/Layout";
@@ -87,7 +87,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
               <CardHeader title="Actions" />
               <CardContent>
                 {(!!actionSchedules.length && (
-                  <ActionTable userActionSchedules={actionSchedules} />
+                  <ActionBox userActionSchedules={actionSchedules} />
                 )) || (
                   <Typography component="p" textAlign="center">
                     No actions yet.
