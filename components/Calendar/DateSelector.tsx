@@ -23,6 +23,7 @@ const DateSelector: FC<DateSelectorProps> = styled((props: DateSelectorProps) =>
       </IconButton>
       <DesktopDatePicker
         inputFormat="MMMM d, yyyy"
+        mask={undefined} // uncontrolled
         value={currentDate}
         onChange={(newValue) => {
           setDate(newValue);

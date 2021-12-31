@@ -1,10 +1,10 @@
 import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/Calendar";
 import Layout from "@/components/Layout";
-import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
-import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
+import { GET_USER_ACTIONS_AND_CALENDAR_EVENTS } from "@/graphql/queries";
+// import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -19,31 +19,34 @@ import { useState } from "react";
 
 interface PlannerPageProps {
   dateISO: string;
-  actionSchedules: (UserActionSchedule & {
-    userAction: UserAction & {
-      action: Action;
-    };
-  })[];
+  // actionSchedules: (UserActionSchedule & {
+  //   userAction: UserAction & {
+  //     action: Action;
+  //   };
+  // })[];
   session: Session;
 }
 
 const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
-  const { dateISO, actionSchedules } = props;
+  const { dateISO } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_CALENDAR_EVENTS, {
-    variables: {
-      userId: session?.user?.id,
-    },
-    // Setting this value to true makes the component rerender when "networkStatus" changes,
-    // so we are able to know if it is fetching more data.
-    // notifyOnNetworkStatusChange: true,
-  });
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(
+    GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
+    {
+      variables: {
+        userId: session?.user?.id,
+      },
+      // Setting this value to true makes the component rerender when "networkStatus" changes,
+      // so we are able to know if it is fetching more data.
+      // notifyOnNetworkStatusChange: true,
+    }
+  );
   if (!session) {
     return null;
   }
-  const { calendarEvents } = data;
+  const { calendarEvents, userActions } = data;
   return (
     <Layout>
       <NextSeo
@@ -54,19 +57,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         nofollow
       />
       <Grid container spacing={2} justifyContent="center">
-        <Grid
-          item
-          xs={12}
-          md={8}
-          lg={6}
-          order={{ xs: 2, sm: 1 }}
-          // sx={{
-          //   maxHeight: {
-          //     xs: "50vh",
-          //     sm: "auto",
-          //   },
-          // }}
-        >
+        <Grid item xs={12} md={8} lg={6} order={{ xs: 2, sm: 1 }}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <CalendarViewer
@@ -87,6 +78,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           lg={3}
           order={{ xs: 1, sm: 2 }}
           flexDirection="column"
+          maxHeight={isMobile ? "35vh" : "auto"}
           // sx={{
           //   maxHeight: {
           //     xs: "33vh",
@@ -94,14 +86,14 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           //   },
           // }}
         >
-          <Grid item flexShrink={0}>
+          <Grid item padding="1rem 0.25rem 0.1rem">
             <form>
               <TextField
                 value=""
                 label="Notes"
                 variant="outlined"
                 multiline
-                rows={isMobile ? 3 : 12} // TODO
+                rows={isMobile ? 2 : 12} // TODO
                 fullWidth
                 onChange={() => {
                   console.log("notes changed");
@@ -109,52 +101,58 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
               />
             </form>
           </Grid>
-          <Grid item flexShrink={0} padding={0.75}>
+          <Grid item padding="0.25rem">
             <div>
-              {(!!actionSchedules.length && (
-                <ActionBox userActionSchedules={actionSchedules} />
-              )) || (
+              {(!!userActions.length && <ActionBox userActions={userActions} />) || (
                 <Typography component="p" textAlign="center">
                   No actions yet.
                 </Typography>
               )}
             </div>
           </Grid>
-          <Grid item flexShrink={0} padding={"0 0.25rem 0.25rem"}>
-            <TextField
-              value=""
-              label="Study theme"
-              sx={{ margin: "0.25rem 0" }}
-              fullWidth
-              onChange={() => {
-                console.log("study theme changed");
-              }}
-            />
-            <TextField
-              value=""
-              label="Other study theme"
-              sx={{ margin: "0.25rem 0" }}
-              fullWidth
-              onChange={() => {
-                console.log("other study theme changed");
-              }}
-            />
-          </Grid>
-          <Grid item flexShrink={0} padding={0.75}>
-            {["...", "..."].map((value, i) => (
+          {!isMobile && (
+            <Grid item padding={"0 0.25rem 0.25rem"}>
               <TextField
-                key={i}
-                value={value}
-                label="KPI"
+                value=""
+                label="Study theme"
+                sx={{ margin: "0.25rem 0" }}
                 variant="outlined"
-                margin="dense"
+                // margin="dense"
                 fullWidth
                 onChange={() => {
-                  console.log("KPI changed");
+                  console.log("study theme changed");
                 }}
               />
-            ))}
-          </Grid>
+              <TextField
+                value=""
+                label="Other study theme"
+                sx={{ margin: "0.25rem 0" }}
+                variant="outlined"
+                // margin="dense"
+                fullWidth
+                onChange={() => {
+                  console.log("other study theme changed");
+                }}
+              />
+            </Grid>
+          )}
+          {!isMobile && (
+            <Grid item padding={0.75}>
+              {["", ""].map((value, i) => (
+                <TextField
+                  key={i}
+                  value={value}
+                  label="KPI"
+                  variant="outlined"
+                  margin="dense"
+                  fullWidth
+                  onChange={() => {
+                    console.log("KPI changed");
+                  }}
+                />
+              ))}
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Layout>
@@ -176,61 +174,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const today = new Date();
   const props: PlannerPageProps = {
     dateISO: today.toISOString(),
-    actionSchedules: [],
     session,
   };
-
   await apolloClient
     .query({
-      query: GET_CALENDAR_EVENTS,
+      query: GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
       variables: {
         userId: session.user.id,
       },
     })
     .catch((e) => {
       console.error(e.networkError?.result?.errors);
-    });
-
-  await apolloClient
-    .query({
-      query: gql`
-          query Selections {
-            calendars (where: {userId: {equals: "${session.user.id}"}}) {
-              id
-              color
-              events {
-                id
-                title
-                start
-                end
-              }
-            }
-            userActionSchedules (where: {
-              userAction: {
-                is: {
-                  userId: {
-                    equals: "${session.user.id}"
-                  }
-                }
-              }
-            }) {
-              userAction {
-                action {
-                  name
-                  slug
-                }
-              }
-              frequency
-              multiplier
-            }
-          }
-        `,
-    })
-    .then((result) => {
-      props.actionSchedules = result.data?.userActionSchedules;
-    })
-    .catch((error) => {
-      console.error(error);
     });
   return addApolloState(apolloClient, { props });
 };

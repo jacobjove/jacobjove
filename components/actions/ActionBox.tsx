@@ -1,28 +1,25 @@
 import ActionChip from "@/components/actions/ActionChip";
-import { Action, UserAction, UserActionSchedule as _UserActionSchedule } from "@/graphql/schema";
+import { Action, UserAction as _UserAction, UserActionSchedule } from "@/graphql/schema";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Link from "next/link";
 import { FC } from "react";
-type UserActionSchedule = _UserActionSchedule & {
-  userAction: UserAction & {
-    action: Action;
-  };
+
+type UserAction = _UserAction & {
+  action: Action;
+  schedules: UserActionSchedule[];
 };
 
 interface ActionBoxProps {
-  userActionSchedules: UserActionSchedule[];
+  userActions: UserAction[];
 }
 
 const ActionBox: FC<ActionBoxProps> = (props: ActionBoxProps) => {
-  const { userActionSchedules } = props;
+  const { userActions } = props;
   return (
     <div>
-      {userActionSchedules.map((userActionSchedule: UserActionSchedule) => (
-        <ActionChip
-          key={userActionSchedule.userAction.action.name}
-          userActionSchedule={userActionSchedule}
-        />
+      {userActions.map((userAction: UserAction) => (
+        <ActionChip key={userAction.action.name} userAction={userAction} />
       ))}
       <Link href="/actions" passHref>
         <IconButton component={"a"} color="info" style={{ marginLeft: 3 }}>

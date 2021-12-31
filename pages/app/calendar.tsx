@@ -32,7 +32,6 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
   if (loadingItems) return <p>{"Loading..."}</p>;
   if (error) return <p>{"Error loading data."}</p>;
   const { calendarEvents } = data;
-  console.log("Rendering calendar page ...");
   return (
     <Layout>
       <NextSeo

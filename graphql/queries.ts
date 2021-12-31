@@ -1,42 +1,31 @@
+import { calendarEventFragment, userActionFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
 
 export const GET_CALENDAR_EVENTS = gql`
   query GetCalendarEvents($userId: String!) {
     calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
-      id
-      scheduleId
-      calendarId
-      title
-      start
-      end
+      ...CalendarEventFragment
     }
   }
+  ${calendarEventFragment}
 `;
 
 export const SCHEDULE_ACTION = gql`
   mutation ScheduleAction($data: CalendarEventCreateInput!) {
     createCalendarEvent(data: $data) {
-      id
-      scheduleId
-      calendarId
-      title
-      start
-      end
+      ...CalendarEventFragment
     }
   }
+  ${calendarEventFragment}
 `;
 
 export const CREATE_CALENDAR_EVENT = gql`
   mutation CreateCalendarEvent($data: CalendarEventCreateInput!) {
     createCalendarEvent(data: $data) {
-      id
-      scheduleId
-      calendarId
-      title
-      start
-      end
+      ...CalendarEventFragment
     }
   }
+  ${calendarEventFragment}
 `;
 
 export const DELETE_CALENDAR_EVENT = gql`
@@ -53,14 +42,10 @@ export const MODIFY_CALENDAR_EVENT = gql`
     $where: CalendarEventWhereUniqueInput!
   ) {
     updateCalendarEvent(data: $data, where: $where) {
-      id
-      scheduleId
-      calendarId
-      title
-      start
-      end
+      ...CalendarEventFragment
     }
   }
+  ${calendarEventFragment}
 `;
 
 // export const GET_CALENDAR_EVENTS = gql`
@@ -84,3 +69,25 @@ export const MODIFY_CALENDAR_EVENT = gql`
 //     }
 //   }
 // `;
+
+export const GET_USER_ACTIONS = gql`
+  query GetUserActions($userId: String!) {
+    userActions(where: { userId: { equals: $userId } }) {
+      ...UserActionFragment
+    }
+  }
+  ${userActionFragment}
+`;
+
+export const GET_USER_ACTIONS_AND_CALENDAR_EVENTS = gql`
+  query GetUserActionsAndCalendarEvents($userId: String!) {
+    userActions(where: { userId: { equals: $userId } }) {
+      ...UserActionFragment
+    }
+    calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
+      ...CalendarEventFragment
+    }
+  }
+  ${userActionFragment}
+  ${calendarEventFragment}
+`;

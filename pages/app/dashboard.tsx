@@ -2,12 +2,16 @@ import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/Calendar";
 import IdentityTable from "@/components/identities/IdentityTable";
 import Layout from "@/components/Layout";
-import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
 import {
-  Action,
+  // GET_CALENDAR_EVENTS,
+  // GET_USER_ACTIONS,
+  GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
+} from "@/graphql/queries";
+import {
+  // Action,
   Identity,
-  UserAction,
-  UserActionSchedule,
+  // UserAction,
+  // UserActionSchedule,
   UserIdentity,
   Value,
   ValueSelection,
@@ -31,11 +35,11 @@ import { useState } from "react";
 
 interface DefaultPageProps {
   dateISO: string;
-  actionSchedules: (UserActionSchedule & {
-    userAction: UserAction & {
-      action: Action;
-    };
-  })[];
+  // actionSchedules: (UserActionSchedule & {
+  //   userAction: UserAction & {
+  //     action: Action;
+  //   };
+  // })[];
   identitySelections: (UserIdentity & {
     identity: Identity;
   })[];
@@ -46,18 +50,22 @@ interface DefaultPageProps {
 }
 
 const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
-  const { dateISO, actionSchedules, identitySelections, valueSelections } = props;
+  const { dateISO, identitySelections, valueSelections } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_CALENDAR_EVENTS, {
-    variables: {
-      userId: session?.user?.id,
-    },
-  });
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(
+    GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
+    {
+      variables: {
+        userId: session?.user?.id,
+      },
+    }
+  );
   if (!session) {
     return null;
   }
-  const { calendarEvents } = data;
+  console.log(data);
+  const { calendarEvents, userActions } = data;
   return (
     <Layout>
       <NextSeo
@@ -86,9 +94,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             <Card sx={{ height: "100%" }}>
               <CardHeader title="Actions" />
               <CardContent>
-                {(!!actionSchedules.length && (
-                  <ActionBox userActionSchedules={actionSchedules} />
-                )) || (
+                {(!!userActions.length && <ActionBox userActions={userActions} />) || (
                   <Typography component="p" textAlign="center">
                     No actions yet.
                   </Typography>
@@ -169,50 +175,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const today = new Date();
-  const ototoi = new Date(today);
-  const itsukago = new Date(today);
-  ototoi.setDate(today.getDate() - 2);
-  itsukago.setDate(today.getDate() + 5);
   const props: DefaultPageProps = {
     dateISO: today.toISOString(),
-    actionSchedules: [],
     identitySelections: [],
     valueSelections: [],
     session,
   };
-  let data;
-  await apolloClient
-    .query({
-      query: GET_CALENDAR_EVENTS,
-      variables: {
-        userId: session.user.id,
-      },
-    })
-    .catch((e) => {
-      console.error(e.networkError?.result?.errors);
-    });
+  await apolloClient.query({
+    query: GET_USER_ACTIONS_AND_CALENDAR_EVENTS,
+    variables: {
+      userId: session?.user?.id,
+    },
+  });
   await apolloClient
     .query({
       query: gql`
         query Selections {
-          userActionSchedules (where: {
-            userAction: {
-              is: {
-                userId: {
-                  equals: "${session.user.id}"
-                }
-              }
-            }
-          }) {
-            userAction {
-              action {
-                name
-                slug
-              }
-            }
-            frequency
-            multiplier
-          }
           identitySelections (where: {userId: {equals: "${session.user.id}"}}) {
             identity {
               name
@@ -229,10 +207,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       `,
     })
     .then((result) => {
-      data = result.data;
-      props.actionSchedules = result.data?.userActionSchedules;
-      props.identitySelections = data?.identitySelections;
-      props.valueSelections = data?.valueSelections;
+      props.identitySelections = result.data?.identitySelections;
+      props.valueSelections = result.data?.valueSelections;
+      console.log(result.data);
     })
     .catch((error) => {
       console.error(error);

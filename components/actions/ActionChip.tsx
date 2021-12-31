@@ -8,19 +8,19 @@ import { FC } from "react";
 import { useDrag } from "react-dnd";
 
 interface ActionChipProps {
-  userActionSchedule: UserActionSchedule & {
-    userAction: UserAction & {
-      action: Action;
-    };
+  userAction: UserAction & {
+    action: Action;
+    schedules: UserActionSchedule[];
   };
 }
 
-const ActionChip: FC<ActionChipProps> = ({ userActionSchedule }: ActionChipProps) => {
+const ActionChip: FC<ActionChipProps> = ({ userAction }: ActionChipProps) => {
+  const schedule = userAction.schedules[0]; // TODO
   const [{ opacity }, dragRef] = useDrag(() => ({
     type: "action",
     item: {
-      title: userActionSchedule.userAction.action.name,
-      scheduleId: userActionSchedule.id,
+      title: userAction.action.name,
+      scheduleId: schedule.id,
       calendarId: 1, // TODO: get calendar id from userActionSchedule
     },
     collect: (monitor) => ({
@@ -31,7 +31,7 @@ const ActionChip: FC<ActionChipProps> = ({ userActionSchedule }: ActionChipProps
     console.info("You clicked the delete icon.");
   };
   return (
-    <Link href={`/actions/${userActionSchedule.userAction.action.slug}`} passHref>
+    <Link href={`/actions/${userAction.action.slug}`} passHref>
       <StyledAnchor>
         <Chip
           ref={dragRef}
@@ -47,9 +47,9 @@ const ActionChip: FC<ActionChipProps> = ({ userActionSchedule }: ActionChipProps
             maxHeight: "auto",
             borderRadius: "3px",
           }}
-          label={`${userActionSchedule.userAction.action.name}`}
+          label={`${userAction.action.name}`}
           deleteIcon={
-            <IconButton title={`every ${userActionSchedule.frequency.toLowerCase()}`}>
+            <IconButton title={`every ${schedule.frequency.toLowerCase()}`}>
               <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
             </IconButton>
           }

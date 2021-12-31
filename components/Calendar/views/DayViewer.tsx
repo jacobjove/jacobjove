@@ -101,7 +101,6 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
   if (!session?.user) {
     return <Skeleton sx={{ height: "100%", maxHeight: "80vh" }} variant="rectangular" />;
   }
-  console.log("Rendering calendar viewer...");
   return (
     <Root hidden={hidden}>
       <Box
