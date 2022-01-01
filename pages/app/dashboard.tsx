@@ -15,21 +15,29 @@ import {
 } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { useQuery } from "@apollo/client";
+import DoneIcon from "@mui/icons-material/Done";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import NativeSelect from "@mui/material/NativeSelect";
+import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import { FC, useMemo, useState } from "react";
+import { Layout as LayoutItem, Responsive, WidthProvider } from "react-grid-layout";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -46,13 +54,15 @@ interface DashboardPageProps {
 }
 
 // https://github.com/react-grid-layout/react-grid-layout#grid-item-props
-interface DashboardComponent {
+interface DashboardComponent extends LayoutItem {
   i: "calendar" | "identities" | "actions" | "values";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
 }
+
+const CardTitle: FC<{ title: string }> = ({ title }) => (
+  <Typography fontSize="0.8rem" m="0.25rem 0.5rem" fontWeight="bold">
+    {title}
+  </Typography>
+);
 
 interface DashboardPageData {
   calendarEvents: CalendarEvent[];
@@ -72,6 +82,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
   const { dateISO, layouts } = props;
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
+  const [editing, setEditing] = useState(false);
   const { loading, error, data, fetchMore, networkStatus } = useQuery<DashboardPageData>(
     GET_DASHBOARD_DATA,
     {
@@ -80,13 +91,25 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
       },
     }
   );
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const children = useMemo(() => {
     if (!data || !session) return [];
     const { calendarEvents, userActions, userIdentities, userValues } = data;
     const componentMap = {
       calendar: (
         <Card sx={{ height: "100%", maxHeight: "100%" }}>
-          <CardHeader title="Calendar" style={{ display: "none" }} />
+          <CardHeader
+            title={<CardTitle title="Calendar" />}
+            style={{ padding: 0 }}
+            action={
+              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
+                <IconButton>
+                  {/* <MoreVertIcon /> */}
+                  <DragIndicatorIcon />
+                </IconButton>
+              </span>
+            }
+          />
           <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {loading ? (
               <div>Loading...</div>
@@ -103,8 +126,19 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
       ),
       actions: (
         <Card sx={{ height: "100%" }}>
-          <CardHeader title="Actions" style={{ display: "none" }} />
-          <CardContent>
+          <CardHeader
+            title={<CardTitle title="Actions" />}
+            style={{ padding: 0 }}
+            action={
+              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
+                <IconButton>
+                  {/* <MoreVertIcon /> */}
+                  <DragIndicatorIcon />
+                </IconButton>
+              </span>
+            }
+          />
+          <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {(!!userActions.length && <ActionBox userActions={userActions} />) || (
               <Typography component="p" textAlign="center">
                 No actions yet.
@@ -115,8 +149,19 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
       ),
       identities: (
         <Card sx={{ height: "100%" }}>
-          <CardHeader title="Identities" style={{ display: "none" }} />
-          <CardContent>
+          <CardHeader
+            title={<CardTitle title="Identities" />}
+            style={{ padding: 0 }}
+            action={
+              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
+                <IconButton>
+                  {/* <MoreVertIcon /> */}
+                  <DragIndicatorIcon />
+                </IconButton>
+              </span>
+            }
+          />
+          <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {(!!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
               <Typography component="p" textAlign="center">
                 No identities yet.
@@ -139,8 +184,19 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
       ),
       values: (
         <Card sx={{ height: "100%" }}>
-          <CardHeader title="Values" style={{ display: "none" }} />
-          <CardContent>
+          <CardHeader
+            title={<CardTitle title="Values" />}
+            style={{ padding: 0 }}
+            action={
+              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
+                <IconButton>
+                  {/* <MoreVertIcon /> */}
+                  <DragIndicatorIcon />
+                </IconButton>
+              </span>
+            }
+          />
+          <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {(!!userValues.length &&
               userValues.map((userValue, index) => (
                 <p key={index}>
@@ -170,9 +226,13 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
       ),
     };
     return layouts.xs.map((component) => {
-      return <div key={component.i}>{componentMap[component.i]}</div>;
+      return (
+        <div key={component.i} className={`${editing ? "editing" : "not-editing"}`}>
+          {componentMap[component.i]}
+        </div>
+      );
     });
-  }, [layouts, data, loading, session, date]);
+  }, [layouts, editing, data, loading, session, date]);
   if (!session || !data) {
     console.error(error);
     return null;
@@ -186,16 +246,66 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
         noindex
         nofollow
       />
-      <Container maxWidth={"xl"}>
-        <ResponsiveGridLayout
-          className="layout"
-          layouts={layouts}
-          breakpoints={{ xl: 1200, lg: 1200, md: 996, sm: 768, xs: 480 }} // TODO
-          cols={{ lg: 12, md: 10, sm: 6, xs: 2 }}
+      <Box display="flex" marginTop="0.8rem" paddingX="0.75rem">
+        <Box flexGrow={1} paddingX="0.75rem">
+          {isMobile ? (
+            <NativeSelect
+              defaultValue={"Default Dashboard"}
+              inputProps={{
+                name: "dashboard",
+                id: "uncontrolled-dashboard",
+              }}
+            >
+              <option value={"Default Dashboard"}>Default Dashboard</option>
+            </NativeSelect>
+          ) : (
+            <Select variant="standard" value="Default Dashboard">
+              <MenuItem value="Default Dashboard">Default Dashboard</MenuItem>
+            </Select>
+          )}
+        </Box>
+        {editing ? (
+          <Button
+            variant="text"
+            onClick={() => {
+              console.log("setting editing mode false");
+              setEditing(false);
+            }}
+          >
+            <DoneIcon />
+          </Button>
+        ) : (
+          <IconButton
+            onClick={() => {
+              console.log("setting editing mode true");
+              setEditing(true);
+            }}
+          >
+            <ModeEditIcon />
+          </IconButton>
+        )}
+        <IconButton
+          onClick={() => {
+            console.log(
+              "Open dropdown for renaming, sharing, creating new dashboard, viewing all dashboards, etc."
+            );
+          }}
         >
-          {children}
-        </ResponsiveGridLayout>
-      </Container>
+          <MoreHorizIcon />
+        </IconButton>
+      </Box>
+      <ResponsiveGridLayout
+        className="layout"
+        layouts={layouts}
+        breakpoints={{ xl: 1200, lg: 1200, md: 996, sm: 768, xs: 480 }} // TODO
+        cols={{ lg: 12, md: 10, sm: 6, xs: 2 }}
+        draggableHandle="span.drag-anchor"
+        onLayoutChange={(layout) => {
+          console.log("Save the layout!!!", layout);
+        }}
+      >
+        {children}
+      </ResponsiveGridLayout>
     </Layout>
   );
 };
@@ -217,34 +327,34 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     dateISO: today.toISOString(),
     layouts: {
       xs: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 3 },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1 },
-        { i: "identities", x: 7, y: 3, w: 2, h: 1 },
-        { i: "values", x: 7, y: 7, w: 2, h: 1 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 3, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 7, y: 3, w: 2, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 7, y: 7, w: 2, h: 1, resizeHandles: ["se", "sw"] },
       ],
       sm: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 4 },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1 },
-        { i: "identities", x: 7, y: 3, w: 2, h: 1 },
-        { i: "values", x: 7, y: 7, w: 2, h: 1 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 7, y: 3, w: 2, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 7, y: 7, w: 2, h: 1, resizeHandles: ["se", "sw"] },
       ],
       md: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 4 },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1 },
-        { i: "identities", x: 7, y: 3, w: 2, h: 1 },
-        { i: "values", x: 7, y: 7, w: 2, h: 1 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
       ],
       lg: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 4 },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1 },
-        { i: "identities", x: 7, y: 3, w: 2, h: 1 },
-        { i: "values", x: 7, y: 7, w: 2, h: 1 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
       ],
       xl: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 4 },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1 },
-        { i: "identities", x: 7, y: 3, w: 2, h: 1 },
-        { i: "values", x: 7, y: 7, w: 2, h: 1 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
       ],
     },
     session,

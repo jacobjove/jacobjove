@@ -96,13 +96,13 @@ const Header: FC = () => {
         <Toolbar disableGutters>
           <Link href={`${router.pathname.includes("/app/") ? "/app" : "/"}`}>
             <a style={{ display: "flex", alignItems: "center" }}>
-              <Image alt="HabitBuilder logo" src="/logo.png" width={40} height={40} />
+              <Image alt="SelfBuilder logo" src="/logo.png" width={40} height={40} />
               <Typography
                 noWrap
                 component="span"
                 sx={{ ml: 0.5, mr: 2, display: { xs: "none", md: "inline" } }}
               >
-                HabitBuilder
+                SelfBuilder
                 {process.env.NODE_ENV !== "production" && (
                   <sup>
                     <small>{"dev"}</small>

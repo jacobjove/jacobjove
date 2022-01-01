@@ -30,7 +30,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
       <NextSeo
         title={"Sign in"}
         canonical={"/auth/signin"}
-        description={"Sign in to your HabitBuilder account, or create a free account now."}
+        description={"Sign in to your SelfBuilder account, or create a free account now."}
       />
       <Container>
         <Box m={"auto"} p={4} style={{ maxWidth: "40rem" }}>

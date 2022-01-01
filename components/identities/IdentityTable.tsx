@@ -1,5 +1,5 @@
 import { Identity, UserIdentity as _UserIdentity } from "@/graphql/schema";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -17,14 +17,20 @@ interface IdentityTableProps {
   userIdentities: UserIdentity[];
 }
 
+// TODO: https://mui.com/components/tables/#sorting-amp-selecting
 const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   const { userIdentities } = props;
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+    <TableContainer>
+      <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Identity</TableCell>
+            <TableCell component="th" scope="col">
+              Identity
+            </TableCell>
+            <TableCell component="th" scope="col">
+              Health
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -37,6 +43,11 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
                 <Link href={`/identities/${userIdentity.identity.slug}`}>
                   <a>{userIdentity.identity.name}</a>
                 </Link>
+              </TableCell>
+              <TableCell component="td">
+                <Box display="flex" alignItems="center">
+                  <progress value="100" max="100" style={{ flexGrow: 1 }}></progress>
+                </Box>
               </TableCell>
             </TableRow>
           ))}

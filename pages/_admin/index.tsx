@@ -12,7 +12,7 @@ const ADMIN_PAGES = [
 const AdminLandingPage: NextPage = () => {
   return (
     <Layout>
-      <NextSeo title={"HabitBuilder"} canonical={"/"} description={"Be your best self."} />
+      <NextSeo title={"SelfBuilder"} canonical={"/"} description={"Be your best self."} />
       <ul>
         {ADMIN_PAGES.map(([path, label]) => (
           <li key={path}>

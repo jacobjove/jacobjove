@@ -18,7 +18,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
   // const currentDate = props.date;
   return (
     <Layout>
-      <NextSeo title={"HabitBuilder"} canonical={"/"} description={"Be your best self."} />
+      <NextSeo title={"SelfBuilder"} canonical={"/"} description={"Be your best self."} />
       <Container maxWidth={"lg"}>
         <Grid container spacing={2}>
           <Grid item xs={12} lg={8}>

@@ -1,0 +1,15 @@
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.not-editing .react-resizable-handle {
+  display: none !important;
+}

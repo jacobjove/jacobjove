@@ -25,9 +25,6 @@ const HALF_HOUR_HEIGHT = 48; // Must be divisible by 2.
 const HOUR_HEIGHT = HALF_HOUR_HEIGHT * 2;
 
 const Root = styled("div")(() => ({
-  "&.hidden": {
-    display: "none",
-  },
   "& *": {
     boxSizing: "border-box",
   },
@@ -62,7 +59,6 @@ const Root = styled("div")(() => ({
 
 const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const { date, setDate, selectedDate, hidden, calendarEvents, session } = props;
-  console.log(`Rendering week viewer with hidden `, hidden);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({

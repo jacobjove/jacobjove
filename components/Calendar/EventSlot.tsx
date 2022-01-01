@@ -38,14 +38,30 @@ const Root = styled("div")(() => ({
 
 const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
+type GetCalendarEvents = any; // TODO: https://www.apollographql.com/blog/apollo-client/caching/when-to-use-refetch-queries/
+
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, view, events, onClick, past } = props;
   const [hovered, setHovered] = useState(false);
   const [addEvent, { loading }] = useMutation(SCHEDULE_ACTION, {
-    refetchQueries: [
-      GET_CALENDAR_EVENTS, // DocumentNode object parsed with gql
-      "GetCalendarEvents", // Query name
-    ],
+    // refetchQueries: [
+    //   GET_CALENDAR_EVENTS, // DocumentNode object parsed with gql
+    //   "GetCalendarEvents", // Query name
+    // ],
+    update(cache, { data }) {
+      const newEvent = data?.addEvent?.calendarEvent;
+      const existingEvents = cache.readQuery<GetCalendarEvents>({
+        query: GET_CALENDAR_EVENTS,
+      });
+      if (existingEvents && newEvent) {
+        cache.writeQuery({
+          query: GET_CALENDAR_EVENTS,
+          data: {
+            calendarEvents: [...(existingEvents?.calendarEvents ?? []), newEvent],
+          },
+        });
+      }
+    },
   });
   const numEvents = events?.length ?? 0;
   const [{ isOver, canDrop }, dropRef] = useDrop(

@@ -2,6 +2,7 @@ import { PageTransitionContextProvider } from "@/components/PageTransitionContex
 import { useApollo } from "@/lib/apollo/apolloClient";
 import "@/node_modules/react-grid-layout/css/styles.css";
 import "@/node_modules/react-resizable/css/styles.css";
+import "@/public/styles/global.css";
 import { ApolloProvider } from "@apollo/client";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -61,7 +62,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                   openGraph={{
                     type: "website",
                     url: "https://www.habitbuilder.com/",
-                    site_name: "HabitBuilder",
+                    site_name: "SelfBuilder",
                     // images: [
                     //   {
                     //     url: 'https://www.example.ie/og-image.jpg',
@@ -81,8 +82,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                   facebook={{
                     appId: `${process.env.FACEBOOK_APP_ID}`,
                   }}
-                  titleTemplate="%s | HabitBuilder" // https://github.com/garmeeh/next-seo#title-template
-                  defaultTitle="HabitBuilder" // https://github.com/garmeeh/next-seo#default-title
+                  titleTemplate="%s | SelfBuilder" // https://github.com/garmeeh/next-seo#title-template
+                  defaultTitle="SelfBuilder" // https://github.com/garmeeh/next-seo#default-title
                   additionalMetaTags={[
                     {
                       httpEquiv: "content-type",
@@ -90,7 +91,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                     },
                     {
                       name: "application-name",
-                      content: "HabitBuilder",
+                      content: "SelfBuilder",
                     },
                   ]}
                   additionalLinkTags={

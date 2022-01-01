@@ -18,9 +18,6 @@ const grey = {
 };
 
 const Root = styled("div")(({ theme }) => ({
-  "&.hidden": {
-    display: "none",
-  },
   "& table": {
     fontSize: "0.875rem",
     width: "100%",

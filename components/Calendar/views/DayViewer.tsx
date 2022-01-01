@@ -28,9 +28,6 @@ const TIME_MARKER_JUT_PX = 8;
 
 const Root = styled("div")(() => ({
   display: "flex",
-  "&.hidden": {
-    display: "none",
-  },
   flexDirection: "column",
   height: "100%",
   "& *": {
@@ -79,7 +76,6 @@ const Root = styled("div")(() => ({
 
 const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const { date, setDate, selectedDate, setSelectedDate, hidden, calendarEvents, session } = props;
-  console.log("DayViewer hidden", hidden);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({
@@ -105,10 +101,10 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
     // Scroll to the current time.
     const scrollableDiv = scrollableDivRef.current;
     if (scrollableDiv) {
-      // console.log('Scrolling to', currentTimeOffsetPx);
-      // console.log('Before', scrollableDiv.scrollTop);
-      scrollableDiv.scrollTo({ top: currentTimeOffsetPx - HOUR_HEIGHT, behavior: "smooth" });
-      // console.log('After', scrollableDiv.scrollTop);
+      scrollableDiv.scrollTo({
+        top: currentTimeOffsetPx - HOUR_HEIGHT * 1.5,
+        behavior: "smooth",
+      });
     }
   }, [currentTimeOffsetPx]);
   useEffect(() => {

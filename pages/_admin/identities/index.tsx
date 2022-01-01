@@ -6,7 +6,7 @@ import { NextSeo } from "next-seo";
 const AdminLandingPage: NextPage = () => {
   return (
     <Layout>
-      <NextSeo title={"HabitBuilder"} canonical={"/"} description={"Be your best self."} />
+      <NextSeo title={"SelfBuilder"} canonical={"/"} description={"Be your best self."} />
       <ActionAdmin />
     </Layout>
   );
