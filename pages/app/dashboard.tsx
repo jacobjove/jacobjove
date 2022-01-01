@@ -85,9 +85,9 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
     const { calendarEvents, userActions, userIdentities, userValues } = data;
     const componentMap = {
       calendar: (
-        <Card sx={{ marginY: "1rem" }}>
+        <Card sx={{ marginY: "1rem", height: "100%", maxHeight: "100%", boxSizing: "border-box" }}>
           <CardHeader title="Calendar" style={{ display: "none" }} />
-          <CardContent style={{ paddingTop: "0.25rem" }}>
+          <CardContent style={{ paddingTop: "0.25rem", height: "100%" }}>
             {loading ? (
               <div>Loading...</div>
             ) : (
@@ -223,25 +223,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         { i: "values", x: 7, y: 7, w: 2, h: 1 },
       ],
       sm: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 3 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 4 },
         { i: "actions", x: 7, y: 1, w: 4, h: 1 },
         { i: "identities", x: 7, y: 3, w: 2, h: 1 },
         { i: "values", x: 7, y: 7, w: 2, h: 1 },
       ],
       md: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 3 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 4 },
         { i: "actions", x: 7, y: 1, w: 4, h: 1 },
         { i: "identities", x: 7, y: 3, w: 2, h: 1 },
         { i: "values", x: 7, y: 7, w: 2, h: 1 },
       ],
       lg: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 3 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 4 },
         { i: "actions", x: 7, y: 1, w: 4, h: 1 },
         { i: "identities", x: 7, y: 3, w: 2, h: 1 },
         { i: "values", x: 7, y: 7, w: 2, h: 1 },
       ],
       xl: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 3 },
+        { i: "calendar", x: 1, y: 1, w: 6, h: 4 },
         { i: "actions", x: 7, y: 1, w: 4, h: 1 },
         { i: "identities", x: 7, y: 3, w: 2, h: 1 },
         { i: "values", x: 7, y: 7, w: 2, h: 1 },

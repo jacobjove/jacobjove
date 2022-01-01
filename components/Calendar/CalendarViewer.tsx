@@ -8,7 +8,7 @@ import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
 import CalendarViewMonthIcon from "@mui/icons-material/CalendarViewMonth";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 import GoogleIcon from "@mui/icons-material/Google";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -42,13 +42,13 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
   const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
   const isMobile = useMediaQuery("(max-width: 600px)");
   return (
-    <>
+    <Box display="flex" flexDirection={"column"} height={"100%"}>
       {!props.collapseViewMenu && (
         <Grid
           container
-          spacing={1}
-          alignItems="end"
+          flex={"0 0 auto"}
           justifyContent={"space-between"}
+          width={"100%"}
           sx={{
             borderBottom: "1px solid rgba(224, 224, 224, 1)",
             display: props.collapseViewMenu ? "none" : "flex",
@@ -96,7 +96,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
           </Grid>
         </Grid>
       )}
-      <div>
+      <Box flex={"1 1 auto"} minHeight={0}>
         <DayViewer
           {...props}
           selectedDate={selectedDate || props.date}
@@ -115,8 +115,8 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
           setSelectedDate={setSelectedDate}
           hidden={view != "month"}
         />
-      </div>
-    </>
+      </Box>
+    </Box>
   );
 };
 

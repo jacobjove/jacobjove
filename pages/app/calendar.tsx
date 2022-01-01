@@ -42,9 +42,9 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
         nofollow
       />
       <Grid container justifyContent="center">
-        <Grid item xs={12} lg={9}>
+        <Grid item xs={12} lg={9} maxHeight={"80vh"}>
           <Card sx={{ height: "100%" }}>
-            <Box sx={{ padding: "0.2rem 0.2rem 0.5rem" }}>
+            <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
               <CalendarViewer
                 date={date}
                 setDate={setDate}

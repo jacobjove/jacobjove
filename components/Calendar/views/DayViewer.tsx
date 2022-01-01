@@ -27,6 +27,9 @@ const HOUR_HEIGHT = HALF_HOUR_HEIGHT * 2;
 const TIME_MARKER_JUT_PX = 8;
 
 const Root = styled("div")(() => ({
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
   "& *": {
     boxSizing: "border-box",
   },
@@ -131,7 +134,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
           onDateChange={setSelectedDate}
         />
       </Box>
-      <Box display="flex" position="relative">
+      <Box display="flex" position="relative" flex="0 0 auto">
         <div className="time-labels-column">
           <Box
             className="time-label"
@@ -154,7 +157,6 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
       </Box>
       <Box
         display="flex"
-        maxHeight="90vh"
         ref={scrollableDivRef}
         position="relative"
         sx={{
