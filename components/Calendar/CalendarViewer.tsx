@@ -41,6 +41,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
   };
   const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
   const isMobile = useMediaQuery("(max-width: 600px)");
+  console.log(`Rendering calendar viewer with ${view} view ...`);
   return (
     <Box display="flex" flexDirection={"column"} height={"100%"}>
       {!props.collapseViewMenu && (

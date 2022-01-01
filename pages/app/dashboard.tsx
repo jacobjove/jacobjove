@@ -85,9 +85,9 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
     const { calendarEvents, userActions, userIdentities, userValues } = data;
     const componentMap = {
       calendar: (
-        <Card sx={{ marginY: "1rem", height: "100%", maxHeight: "100%", boxSizing: "border-box" }}>
+        <Card sx={{ height: "100%", maxHeight: "100%" }}>
           <CardHeader title="Calendar" style={{ display: "none" }} />
-          <CardContent style={{ paddingTop: "0.25rem", height: "100%" }}>
+          <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {loading ? (
               <div>Loading...</div>
             ) : (
@@ -102,7 +102,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
         </Card>
       ),
       actions: (
-        <Card sx={{ marginY: "1rem" }}>
+        <Card sx={{ height: "100%" }}>
           <CardHeader title="Actions" style={{ display: "none" }} />
           <CardContent>
             {(!!userActions.length && <ActionBox userActions={userActions} />) || (
@@ -114,7 +114,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
         </Card>
       ),
       identities: (
-        <Card sx={{ marginY: "1rem" }}>
+        <Card sx={{ height: "100%" }}>
           <CardHeader title="Identities" style={{ display: "none" }} />
           <CardContent>
             {(!!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
@@ -138,7 +138,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
         </Card>
       ),
       values: (
-        <Card sx={{ marginY: "1rem" }}>
+        <Card sx={{ height: "100%" }}>
           <CardHeader title="Values" style={{ display: "none" }} />
           <CardContent>
             {(!!userValues.length &&
