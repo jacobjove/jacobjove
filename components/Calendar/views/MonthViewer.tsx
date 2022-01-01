@@ -18,6 +18,9 @@ const grey = {
 };
 
 const Root = styled("div")(({ theme }) => ({
+  "&.hidden": {
+    display: "none",
+  },
   "& table": {
     fontSize: "0.875rem",
     width: "100%",
@@ -63,7 +66,7 @@ const MonthViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayIndex = getDay(firstDayOfMonth);
   return (
-    <Root hidden={hidden}>
+    <Root className={`${hidden ? "hidden" : ""}`}>
       <table>
         <thead>
           <tr>

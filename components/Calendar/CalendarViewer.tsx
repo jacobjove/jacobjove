@@ -37,6 +37,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(props.date);
   const [calendars, setCalendars] = useState<Calendar[]>([]);
   const handleViewTabChange = (event: React.SyntheticEvent, newValue: 0 | 1 | 2) => {
+    console.log("handleViewTabChange", newValue);
     setView(newValue === 0 ? "day" : newValue === 1 ? "week" : "month");
   };
   const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
