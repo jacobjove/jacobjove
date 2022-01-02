@@ -1,4 +1,4 @@
-import Calendar from "@/components/Calendar/CalendarViewer";
+import Calendar from "@/components/calendar/CalendarViewer";
 // import dynamic from "next/dynamic";
 // const Calendar = dynamic(() => import("@/components/Calendar/_Calendar"), { ssr: false });
 

@@ -1,4 +1,4 @@
-import EventEditingDialog from "@/components/Calendar/EventEditingDialog";
+import EventEditingDialog from "@/components/calendar/EventEditingDialog";
 import { DELETE_CALENDAR_EVENT, GET_CALENDAR_EVENTS } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";

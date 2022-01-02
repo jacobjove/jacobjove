@@ -2,8 +2,6 @@ import { CalendarEvent } from "@/graphql/schema";
 import { Session } from "next-auth";
 
 export interface CalendarProps {
-  date: Date;
-  setDate: (date: Date) => void;
   collapseViewMenu?: boolean;
   calendarEvents: CalendarEvent[];
   session: Session;

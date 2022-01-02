@@ -1,6 +1,7 @@
-import EventEditingDialog from "@/components/Calendar/EventEditingDialog";
-import EventSlot from "@/components/Calendar/EventSlot";
-import { ViewerProps } from "@/components/Calendar/views/props";
+import EventEditingDialog from "@/components/calendar/EventEditingDialog";
+import EventSlot from "@/components/calendar/EventSlot";
+import { ViewerProps } from "@/components/calendar/views/props";
+import DateContext from "@/components/DateContext";
 import { CalendarEvent } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -16,7 +17,7 @@ import {
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { FC, Fragment, useEffect, useRef, useState } from "react";
+import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
 
 const START_HOUR = 7;
 const END_HOUR = 23;
@@ -58,7 +59,8 @@ const Root = styled("div")(() => ({
 }));
 
 const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { date, setDate, selectedDate, hidden, calendarEvents, session } = props;
+  const { selectedDate, hidden, calendarEvents, session } = props;
+  const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({
@@ -88,16 +90,6 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
       // console.log('After', scrollableDiv.scrollTop);
     }
   }, [currentTimeOffsetPx]);
-  useEffect(() => {
-    // Update the current time every minute.
-    const intervalId = setInterval(function () {
-      setDate(new Date());
-    }, 1000 * 60);
-    // Clean up when the component unmounts.
-    return function cleanup() {
-      clearInterval(intervalId);
-    };
-  }, [setDate]);
   if (!session?.user) {
     return <Skeleton sx={{ height: "100%", maxHeight: "80vh" }} variant="rectangular" />;
   }

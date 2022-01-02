@@ -1,7 +1,7 @@
-import DateSelector from "@/components/Calendar/DateSelector";
-import EventEditingDialog from "@/components/Calendar/EventEditingDialog";
-import EventSlot from "@/components/Calendar/EventSlot";
-import { ViewerProps } from "@/components/Calendar/views/props";
+import DateSelector from "@/components/calendar/DateSelector";
+import EventEditingDialog from "@/components/calendar/EventEditingDialog";
+import EventSlot from "@/components/calendar/EventSlot";
+import { ViewerProps } from "@/components/calendar/views/props";
 import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -75,7 +75,7 @@ const Root = styled("div")(() => ({
 }));
 
 const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { date, setDate, selectedDate, setSelectedDate, hidden, calendarEvents, session } = props;
+  const { date, selectedDate, setSelectedDate, hidden, calendarEvents, session } = props;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({
@@ -107,16 +107,6 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
       });
     }
   }, [currentTimeOffsetPx]);
-  useEffect(() => {
-    // Update the current time every minute.
-    const intervalId = setInterval(function () {
-      setDate(new Date());
-    }, 1000 * 60);
-    // Clean up when the component unmounts.
-    return function cleanup() {
-      clearInterval(intervalId);
-    };
-  }, [setDate]);
   if (!session?.user) {
     return <Skeleton sx={{ height: "100%", maxHeight: "80vh" }} variant="rectangular" />;
   }

@@ -1,5 +1,5 @@
-import Footer from "@/components/Layout/Footer";
-import Header from "@/components/Layout/Header";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { FunctionComponent } from "react";
 
 const Layout: FunctionComponent = ({ children }) => {

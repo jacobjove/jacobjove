@@ -1,5 +1,5 @@
 import ActionBox from "@/components/actions/ActionBox";
-import CalendarViewer from "@/components/Calendar";
+import CalendarViewer from "@/components/calendar";
 import Layout from "@/components/Layout";
 import { GET_DASHBOARD_DATA } from "@/graphql/queries";
 // import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
@@ -60,7 +60,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
               <CalendarViewer
                 calendarEvents={calendarEvents}
                 date={date}
-                setDate={setDate}
                 collapseViewMenu={true}
                 session={session}
               />

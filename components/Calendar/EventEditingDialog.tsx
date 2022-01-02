@@ -1,4 +1,4 @@
-import EventFormFields from "@/components/Calendar/EventFormFields";
+import EventFormFields from "@/components/calendar/EventFormFields";
 import { CREATE_CALENDAR_EVENT, MODIFY_CALENDAR_EVENT } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import {

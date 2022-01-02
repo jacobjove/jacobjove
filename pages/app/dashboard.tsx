@@ -1,6 +1,4 @@
-import ActionBox from "@/components/actions/ActionBox";
-import CalendarViewer from "@/components/Calendar";
-import IdentityTable from "@/components/identities/IdentityTable";
+import Dashboard from "@/components/dashboard/Dashboard";
 import Layout from "@/components/Layout";
 import { GET_DASHBOARD_DATA } from "@/graphql/queries";
 import {
@@ -16,15 +14,10 @@ import {
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { useQuery } from "@apollo/client";
 import DoneIcon from "@mui/icons-material/Done";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
@@ -35,8 +28,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import Link from "next/link";
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import { Layout as LayoutItem, Responsive, WidthProvider } from "react-grid-layout";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -79,9 +71,8 @@ interface DashboardPageData {
 }
 
 const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) => {
-  const { dateISO, layouts } = props;
+  const { layouts } = props;
   const { data: session } = useSession();
-  const [date, setDate] = useState(new Date(dateISO));
   const [editing, setEditing] = useState(false);
   const { loading, error, data, fetchMore, networkStatus } = useQuery<DashboardPageData>(
     GET_DASHBOARD_DATA,
@@ -92,151 +83,6 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
     }
   );
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const children = useMemo(() => {
-    if (!data || !session) return [];
-    const { calendarEvents, userActions, userIdentities, userValues } = data;
-    const componentMap = {
-      calendar: (
-        <Card sx={{ height: "100%", maxHeight: "100%" }}>
-          <CardHeader
-            title={<CardTitle title="Calendar" />}
-            style={{ padding: 0 }}
-            action={
-              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
-                <IconButton>
-                  {/* <MoreVertIcon /> */}
-                  <DragIndicatorIcon />
-                </IconButton>
-              </span>
-            }
-          />
-          <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
-            {loading ? (
-              <div>Loading...</div>
-            ) : (
-              <CalendarViewer
-                calendarEvents={calendarEvents}
-                date={date}
-                setDate={setDate}
-                session={session}
-              />
-            )}
-          </CardContent>
-        </Card>
-      ),
-      actions: (
-        <Card sx={{ height: "100%" }}>
-          <CardHeader
-            title={<CardTitle title="Actions" />}
-            style={{ padding: 0 }}
-            action={
-              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
-                <IconButton>
-                  {/* <MoreVertIcon /> */}
-                  <DragIndicatorIcon />
-                </IconButton>
-              </span>
-            }
-          />
-          <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
-            {(!!userActions.length && <ActionBox userActions={userActions} />) || (
-              <Typography component="p" textAlign="center">
-                No actions yet.
-              </Typography>
-            )}
-          </CardContent>
-        </Card>
-      ),
-      identities: (
-        <Card sx={{ height: "100%" }}>
-          <CardHeader
-            title={<CardTitle title="Identities" />}
-            style={{ padding: 0 }}
-            action={
-              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
-                <IconButton>
-                  {/* <MoreVertIcon /> */}
-                  <DragIndicatorIcon />
-                </IconButton>
-              </span>
-            }
-          />
-          <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
-            {(!!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
-              <Typography component="p" textAlign="center">
-                No identities yet.
-              </Typography>
-            )}
-            <Box textAlign="center" marginTop="1rem">
-              <Link href="/identities" passHref>
-                <IconButton
-                  component={"a"}
-                  color="info"
-                  style={{ marginLeft: 3 }}
-                  title="Explore identities"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Link>
-            </Box>
-          </CardContent>
-        </Card>
-      ),
-      values: (
-        <Card sx={{ height: "100%" }}>
-          <CardHeader
-            title={<CardTitle title="Values" />}
-            style={{ padding: 0 }}
-            action={
-              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
-                <IconButton>
-                  {/* <MoreVertIcon /> */}
-                  <DragIndicatorIcon />
-                </IconButton>
-              </span>
-            }
-          />
-          <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
-            {(!!userValues.length &&
-              userValues.map((userValue, index) => (
-                <p key={index}>
-                  <Link href={`/userValues/${userValue.value.slug}`}>
-                    <a>{userValue.value.name}</a>
-                  </Link>
-                </p>
-              ))) || (
-              <Typography component="p" textAlign="center">
-                No values yet.
-              </Typography>
-            )}
-            <Box textAlign="center" marginTop="1rem">
-              <Link href="/values" passHref>
-                <IconButton
-                  component={"a"}
-                  color="info"
-                  style={{ marginLeft: 3 }}
-                  title="Explore values"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Link>
-            </Box>
-          </CardContent>
-        </Card>
-      ),
-    };
-    return layouts.xs.map((component) => {
-      return (
-        <div key={component.i} className={`${editing ? "editing" : "not-editing"}`}>
-          {componentMap[component.i]}
-        </div>
-      );
-    });
-  }, [layouts, editing, data, loading, session, date]);
-  if (!session || !data) {
-    console.error(error);
-    return null;
-  }
   return (
     <Layout>
       <NextSeo
@@ -294,18 +140,14 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
           <MoreHorizIcon />
         </IconButton>
       </Box>
-      <ResponsiveGridLayout
-        className="layout"
+      <Dashboard
+        data={data}
+        loading={loading}
+        error={error}
         layouts={layouts}
-        breakpoints={{ xl: 1200, lg: 1200, md: 996, sm: 768, xs: 480 }} // TODO
-        cols={{ lg: 12, md: 10, sm: 6, xs: 2 }}
-        draggableHandle="span.drag-anchor"
-        onLayoutChange={(layout) => {
-          console.log("Save the layout!!!", layout);
-        }}
-      >
-        {children}
-      </ResponsiveGridLayout>
+        editing={editing}
+        session={session}
+      />
     </Layout>
   );
 };

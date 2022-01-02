@@ -1,4 +1,4 @@
-import EventBox from "@/components/Calendar/EventBox";
+import EventBox from "@/components/calendar/EventBox";
 import { GET_CALENDAR_EVENTS, SCHEDULE_ACTION } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";

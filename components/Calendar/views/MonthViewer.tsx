@@ -1,8 +1,9 @@
-import { ViewerProps } from "@/components/Calendar/views/props";
+import { ViewerProps } from "@/components/calendar/views/props";
+import DateContext from "@/components/DateContext";
 import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { addDays, getDay, getWeeksInMonth } from "date-fns";
-import { FC } from "react";
+import { FC, useContext } from "react";
 
 const grey = {
   50: "#F3F6F9",
@@ -59,7 +60,8 @@ const Root = styled("div")(({ theme }) => ({
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const MonthViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { date, setDate, selectedDate, hidden, calendarEvents, session } = props;
+  const date = useContext(DateContext);
+  const { selectedDate, hidden, calendarEvents, session } = props;
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayIndex = getDay(firstDayOfMonth);
   return (

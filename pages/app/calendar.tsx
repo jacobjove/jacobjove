@@ -1,4 +1,4 @@
-import CalendarViewer from "@/components/Calendar";
+import CalendarViewer from "@/components/calendar";
 import Layout from "@/components/Layout";
 import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
 // import { Calendar, CalendarEvent } from "@/graphql/schema";
@@ -11,7 +11,6 @@ import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { useState } from "react";
 
 interface CalendarPageProps {
   dateISO: string;
@@ -21,7 +20,6 @@ interface CalendarPageProps {
 const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => {
   const { dateISO } = props;
   const { data: session } = useSession();
-  const [date, setDate] = useState(new Date(dateISO));
   const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_CALENDAR_EVENTS, {
     variables: {
       userId: session?.user?.id,
@@ -46,8 +44,6 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
           <Card sx={{ height: "100%" }}>
             <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
               <CalendarViewer
-                date={date}
-                setDate={setDate}
                 // calendars={calendars}
                 calendarEvents={calendarEvents}
                 session={session}

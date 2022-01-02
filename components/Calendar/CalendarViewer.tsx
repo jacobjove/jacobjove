@@ -1,7 +1,8 @@
-import DayViewer from "@/components/Calendar/views/DayViewer";
-import MonthViewer from "@/components/Calendar/views/MonthViewer";
-import { CalendarProps } from "@/components/Calendar/views/props";
-import WeekViewer from "@/components/Calendar/views/WeekViewer";
+import DayViewer from "@/components/calendar/views/DayViewer";
+import MonthViewer from "@/components/calendar/views/MonthViewer";
+import { CalendarProps } from "@/components/calendar/views/props";
+import WeekViewer from "@/components/calendar/views/WeekViewer";
+import DateContext from "@/components/DateContext";
 import { Calendar } from "@/graphql/schema";
 import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
@@ -13,7 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 
 // TODO?  https://mui.com/components/tabs/#unstyled
 // import TabsUnstyled from '@mui/base/TabsUnstyled';
@@ -33,8 +34,9 @@ const HOUR_HEIGHT = HALF_HOUR_HEIGHT * 2;
 type ViewMode = "day" | "week" | "month";
 
 const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
+  const date = useContext(DateContext);
   const [view, setView] = useState<ViewMode>("day");
-  const [selectedDate, setSelectedDate] = useState<Date | null>(props.date);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(date);
   const [calendars, setCalendars] = useState<Calendar[]>([]);
   const handleViewTabChange = (event: React.SyntheticEvent, newValue: 0 | 1 | 2) => {
     console.log("handleViewTabChange", newValue);
@@ -101,19 +103,19 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
       <Box flex={"1 1 auto"} minHeight={0}>
         <DayViewer
           {...props}
-          selectedDate={selectedDate || props.date}
+          selectedDate={selectedDate || date}
           setSelectedDate={setSelectedDate}
           hidden={view != "day"}
         />
         <WeekViewer
           {...props}
-          selectedDate={selectedDate || props.date}
+          selectedDate={selectedDate || date}
           setSelectedDate={setSelectedDate}
           hidden={view != "week"}
         />
         <MonthViewer
           {...props}
-          selectedDate={selectedDate || props.date}
+          selectedDate={selectedDate || date}
           setSelectedDate={setSelectedDate}
           hidden={view != "month"}
         />

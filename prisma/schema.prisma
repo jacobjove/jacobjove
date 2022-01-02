@@ -41,12 +41,13 @@ model User {
   image             String?
   isAdmin           Boolean            @default(false)
   accounts          Account[]
+  calendars         Calendar[]
+  actionCompletions ActionCompletion[]
   userIdentities    UserIdentity[]
   userValues        UserValue[]
   userBeliefs       UserBelief[]
   userActions       UserAction[]
-  actionCompletions ActionCompletion[]
-  calendars         Calendar[]
+  userRoutines      UserRoutine[]
 }
 
 enum Color {
@@ -101,6 +102,7 @@ model Action {
   scheduleTemplates ActionScheduleTemplate[]
   completions       ActionCompletion[]
   userActions       UserAction[]
+  routineActions    RoutineAction[]
 }
 
 model UserAction {
@@ -266,6 +268,47 @@ model UserValue {
   deletedAt DateTime?
 
   @@unique([userId, valueId])
+}
+
+model Routine {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime?
+
+  userRoutines   UserRoutine[]
+  routineActions RoutineAction[]
+
+  @@map(name: "routines")
+}
+
+model RoutineAction {
+  id        Int       @id @default(autoincrement())
+  position  Int
+  duration  Int
+  routine   Routine   @relation(fields: [routineId], references: [id])
+  routineId Int
+  action    Action    @relation(fields: [actionId], references: [id])
+  actionId  Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  @@unique([routineId, actionId])
+}
+
+model UserRoutine {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  routine   Routine   @relation(fields: [routineId], references: [id])
+  routineId Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+
+  @@unique([userId, routineId])
 }
 
 // model Post {
