@@ -1,9 +1,8 @@
 import CalendarViewer from "@/components/calendar";
 import Layout from "@/components/Layout";
 import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
-// import { Calendar, CalendarEvent } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -20,14 +19,13 @@ interface CalendarPageProps {
 const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => {
   const { dateISO } = props;
   const { data: session } = useSession();
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_CALENDAR_EVENTS, {
+  const { loading, error, data } = useQuery(GET_CALENDAR_EVENTS, {
     variables: {
       userId: session?.user?.id,
     },
   });
-  const loadingItems = networkStatus === NetworkStatus.fetchMore;
   if (!session) return null;
-  if (loadingItems) return <p>{"Loading..."}</p>;
+  if (loading) return <p>{"Loading..."}</p>;
   if (error) return <p>{"Error loading data."}</p>;
   const { calendarEvents } = data;
   return (
@@ -44,8 +42,9 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
           <Card sx={{ height: "100%" }}>
             <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
               <CalendarViewer
-                // calendars={calendars}
-                calendarEvents={calendarEvents}
+                data={calendarEvents}
+                loading={loading}
+                error={error}
                 session={session}
               />
             </Box>

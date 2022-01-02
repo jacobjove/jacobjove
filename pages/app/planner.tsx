@@ -57,12 +57,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         <Grid item xs={12} md={8} lg={6} order={{ xs: 2, sm: 1 }}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
-              <CalendarViewer
-                calendarEvents={calendarEvents}
-                date={date}
-                collapseViewMenu={true}
-                session={session}
-              />
+              <CalendarViewer data={calendarEvents} collapseViewMenu={true} session={session} />
             </CardContent>
           </Card>
         </Grid>

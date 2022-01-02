@@ -59,7 +59,7 @@ const Root = styled("div")(() => ({
 }));
 
 const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { selectedDate, hidden, calendarEvents, session } = props;
+  const { selectedDate, hidden, data: calendarEvents, session } = props;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
@@ -78,7 +78,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
     (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = calendarEvents[0].calendarId; // calendars.find((c) => c.isPrimary);
+  const primaryCalendarId = calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
 
   useEffect(() => {
     // Scroll to the current time.

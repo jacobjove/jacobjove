@@ -2,6 +2,7 @@ import DateSelector from "@/components/calendar/DateSelector";
 import EventEditingDialog from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import { ViewerProps } from "@/components/calendar/views/props";
+import DateContext from "@/components/DateContext";
 import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -16,7 +17,7 @@ import {
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { FC, Fragment, useEffect, useRef, useState } from "react";
+import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
 
 const START_HOUR = 7;
 const END_HOUR = 23;
@@ -75,7 +76,8 @@ const Root = styled("div")(() => ({
 }));
 
 const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { date, selectedDate, setSelectedDate, hidden, calendarEvents, session } = props;
+  const { selectedDate, setSelectedDate, hidden, data: calendarEvents, session } = props;
+  const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
   const [initialEventFormData, setInitialEventFormData] = useState({
@@ -84,8 +86,10 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
     end: date ? addMinutes(date, 29) : null,
     allDay: false,
     notes: "",
-    calendarId: calendarEvents[0]?.calendarId ?? 1, // TODO: Get this from the user's default calendar.
+    calendarId: calendarEvents?.[0]?.calendarId ?? 1, // TODO: Get this from the user's default calendar.
   });
+
+  console.log("calendarEvents", calendarEvents);
 
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
@@ -93,7 +97,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
     (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = calendarEvents[0].calendarId; // calendars.find((c) => c.isPrimary);
+  const primaryCalendarId = calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
 
   const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
 

@@ -26,6 +26,14 @@ import { Layout as LayoutItem, Responsive, WidthProvider } from "react-grid-layo
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
+export interface DashboardLayouts {
+  xs: DashboardComponent[];
+  sm?: DashboardComponent[];
+  md?: DashboardComponent[];
+  lg?: DashboardComponent[];
+  xl?: DashboardComponent[];
+}
+
 // https://github.com/react-grid-layout/react-grid-layout#grid-item-props
 interface DashboardComponent extends LayoutItem {
   i: "calendar" | "identities" | "actions" | "values";
@@ -37,7 +45,7 @@ const CardTitle: FC<{ title: string }> = ({ title }) => (
   </Typography>
 );
 
-interface DashboardData {
+export interface DashboardData {
   calendarEvents: CalendarEvent[];
   userActions: (UserAction & {
     action: Action;
@@ -51,16 +59,18 @@ interface DashboardData {
   })[];
 }
 
+// export interface DashboardLayouts {
+//     xs: DashboardComponent[];
+//     sm?: DashboardComponent[];
+//     md?: DashboardComponent[];
+//     lg?: DashboardComponent[];
+//     xl?: DashboardComponent[];
+// }
+
 interface DashboardProps {
   data: DashboardData | undefined;
   loading: boolean;
-  layouts: {
-    xs: DashboardComponent[];
-    sm?: DashboardComponent[];
-    md?: DashboardComponent[];
-    lg?: DashboardComponent[];
-    xl?: DashboardComponent[];
-  };
+  layouts: DashboardLayouts;
   editing?: boolean;
   session: Session | null;
   error?: Error;
@@ -90,7 +100,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             {loading ? (
               <div>Loading...</div>
             ) : (
-              <CalendarViewer calendarEvents={calendarEvents} session={session} />
+              <CalendarViewer data={calendarEvents} session={session} />
             )}
           </CardContent>
         </Card>
@@ -196,7 +206,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         </Card>
       ),
     };
-    return layouts.xs.map((component) => {
+    return layouts.xs.map((component: DashboardComponent) => {
       return (
         <div key={component.i} className={`${editing ? "editing" : "not-editing"}`}>
           {componentMap[component.i]}
