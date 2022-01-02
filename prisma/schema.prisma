@@ -43,7 +43,7 @@ model User {
   accounts          Account[]
   userIdentities    UserIdentity[]
   userValues        UserValue[]
-  beliefSelections  BeliefSelection[]
+  userBeliefs       UserBelief[]
   userActions       UserAction[]
   actionCompletions ActionCompletion[]
   calendars         Calendar[]
@@ -224,12 +224,12 @@ model Belief {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
 
-  beliefSelection BeliefSelection[]
+  userBelief UserBelief[]
 
   @@map(name: "beliefs")
 }
 
-model BeliefSelection {
+model UserBelief {
   id        Int       @id @default(autoincrement())
   user      User      @relation(fields: [userId], references: [id])
   userId    String

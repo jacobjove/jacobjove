@@ -1,4 +1,4 @@
-import { Identity, UserIdentity as _UserIdentity } from "@/graphql/schema";
+import { Belief, UserBelief as _UserBelief } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,47 +6,42 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { FC } from "react";
 
-type UserIdentity = _UserIdentity & {
-  identity: Identity;
+type UserBelief = _UserBelief & {
+  belief: Belief;
 };
 
-interface IdentityTableProps {
-  userIdentities: UserIdentity[];
+interface BeliefTableProps {
+  userBeliefs: UserBelief[];
 }
 
 // TODO: https://mui.com/components/tables/#sorting-amp-selecting
-const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
-  const { userIdentities } = props;
+const BeliefTable: FC<BeliefTableProps> = (props: BeliefTableProps) => {
+  const { userBeliefs } = props;
   return (
     <TableContainer>
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell component="th" scope="col">
-              <Typography fontWeight="normal" fontSize="0.7rem">
-                Identity
-              </Typography>
+              Belief
             </TableCell>
             <TableCell component="th" scope="col">
-              <Typography fontWeight="normal" fontSize="0.7rem">
-                Health
-              </Typography>
+              Health
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {userIdentities.map((userIdentity: UserIdentity) => (
+          {userBeliefs.map((userBelief: UserBelief) => (
             <TableRow
-              key={userIdentity.identity.name}
+              key={userBelief.belief.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                <Link href={`/identities/${userIdentity.identity.slug}`}>
-                  <a>{userIdentity.identity.name}</a>
+                <Link href={`/identities/${userBelief.belief.slug}`}>
+                  <a>{userBelief.belief.name}</a>
                 </Link>
               </TableCell>
               <TableCell component="td">
@@ -62,4 +57,4 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   );
 };
 
-export default IdentityTable;
+export default BeliefTable;

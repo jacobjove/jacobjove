@@ -136,7 +136,7 @@ CREATE TABLE "beliefs" (
 );
 
 -- CreateTable
-CREATE TABLE "BeliefSelection" (
+CREATE TABLE "UserBelief" (
     "id" SERIAL NOT NULL,
     "userId" TEXT NOT NULL,
     "beliefId" INTEGER NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE "BeliefSelection" (
     "updatedAt" TIMESTAMP(3),
     "deletedAt" TIMESTAMP(3),
 
-    CONSTRAINT "BeliefSelection_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UserBelief_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -196,7 +196,7 @@ CREATE UNIQUE INDEX "Schedule_userId_actionId_key" ON "Schedule"("userId", "acti
 CREATE UNIQUE INDEX "beliefs_slug_key" ON "beliefs"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "BeliefSelection_userId_beliefId_key" ON "BeliefSelection"("userId", "beliefId");
+CREATE UNIQUE INDEX "UserBelief_userId_beliefId_key" ON "UserBelief"("userId", "beliefId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "values_slug_key" ON "values"("slug");
@@ -241,10 +241,10 @@ ALTER TABLE "Schedule" ADD CONSTRAINT "Schedule_userId_fkey" FOREIGN KEY ("userI
 ALTER TABLE "Schedule" ADD CONSTRAINT "Schedule_actionId_fkey" FOREIGN KEY ("actionId") REFERENCES "Action"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BeliefSelection" ADD CONSTRAINT "BeliefSelection_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserBelief" ADD CONSTRAINT "UserBelief_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "BeliefSelection" ADD CONSTRAINT "BeliefSelection_beliefId_fkey" FOREIGN KEY ("beliefId") REFERENCES "beliefs"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserBelief" ADD CONSTRAINT "UserBelief_beliefId_fkey" FOREIGN KEY ("beliefId") REFERENCES "beliefs"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserValue" ADD CONSTRAINT "UserValue_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

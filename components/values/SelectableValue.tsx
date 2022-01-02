@@ -1,0 +1,83 @@
+import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
+import { Value } from "@/graphql/schema";
+import { gql, useMutation } from "@apollo/client";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import React, { FC, MouseEvent } from "react";
+
+const TOGGLE_IDENTIFICATION = gql`
+  mutation ToggleUserValue($valueId: Int!, $userId: String!, $deletedAt: DateTime) {
+    toggleUserValue(valueId: $valueId, userId: $userId, deletedAt: $deletedAt) {
+      valueId
+      userId
+      deletedAt
+    }
+  }
+`;
+
+interface SelectableValueProps {
+  value: Value;
+  selected: boolean;
+}
+
+const SelectableValue: FC<SelectableValueProps> = ({
+  value,
+  selected: initiallySelected,
+}: SelectableValueProps) => {
+  const { data: session } = useSession();
+  const [mutate] = useMutation(TOGGLE_IDENTIFICATION);
+  const [selected, setSelected] = React.useState(initiallySelected);
+  const toggleUserValue = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (session?.user) {
+      let deletedAt = null;
+      if (selected) {
+        deletedAt = new Date().toISOString();
+      }
+      mutate({
+        variables: { valueId: value.id, userId: session.user.id, deletedAt },
+        optimisticResponse: {
+          __typename: "Mutation",
+          toggleUserValue: {
+            __typename: "ToggleUserValuePayload",
+            valueId: value.id,
+            userId: session.user.id,
+            deletedAt,
+          },
+        },
+      });
+      setSelected(!selected);
+    }
+  };
+  return (
+    <Box key={value.name} position="relative" display="inline-block">
+      <Link href={`/values/${value.slug}`} key={value.name} passHref prefetch={false}>
+        <Button
+          component="a"
+          variant="outlined"
+          size="small"
+          sx={{
+            color: "black",
+            margin: "0.6rem 1.2rem",
+            display: "inline-block",
+            fontSize: "1rem",
+            border: ".08rem solid black",
+            paddingRight: "2.1rem",
+          }}
+        >
+          {value.name}
+        </Button>
+      </Link>
+      <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
+        <a href={`/values/${value.slug}`} onClick={toggleUserValue}>
+          <SelectionToggleIcon positive={selected} />
+        </a>
+      </Box>
+    </Box>
+  );
+};
+
+export default SelectableValue;

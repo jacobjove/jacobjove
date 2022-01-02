@@ -1439,14 +1439,6 @@ type AggregateBelief {
   _sum: BeliefSumAggregate
 }
 
-type AggregateBeliefSelection {
-  _avg: BeliefSelectionAvgAggregate
-  _count: BeliefSelectionCountAggregate
-  _max: BeliefSelectionMaxAggregate
-  _min: BeliefSelectionMinAggregate
-  _sum: BeliefSelectionSumAggregate
-}
-
 type AggregateCalendar {
   _avg: CalendarAvgAggregate
   _count: CalendarCountAggregate
@@ -1517,6 +1509,14 @@ type AggregateUserActionSchedule {
   _sum: UserActionScheduleSumAggregate
 }
 
+type AggregateUserBelief {
+  _avg: UserBeliefAvgAggregate
+  _count: UserBeliefCountAggregate
+  _max: UserBeliefMaxAggregate
+  _min: UserBeliefMinAggregate
+  _sum: UserBeliefSumAggregate
+}
+
 type AggregateUserIdentity {
   _avg: UserIdentityAvgAggregate
   _count: UserIdentityCountAggregate
@@ -1543,13 +1543,13 @@ type AggregateValue {
 
 type Belief {
   _count: BeliefCount!
-  beliefSelection(cursor: BeliefSelectionWhereUniqueInput, distinct: [BeliefSelectionScalarFieldEnum!], orderBy: [BeliefSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefSelectionWhereInput): [BeliefSelection!]!
   createdAt: DateTime!
   description: String
   id: Int!
   name: String!
   slug: String!
   updatedAt: DateTime
+  userBelief(cursor: UserBeliefWhereUniqueInput, distinct: [UserBeliefScalarFieldEnum!], orderBy: [UserBeliefOrderByWithRelationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): [UserBelief!]!
 }
 
 type BeliefAvgAggregate {
@@ -1561,7 +1561,7 @@ input BeliefAvgOrderByAggregateInput {
 }
 
 type BeliefCount {
-  beliefSelection: Int!
+  userBelief: Int!
 }
 
 type BeliefCountAggregate {
@@ -1584,12 +1584,12 @@ input BeliefCountOrderByAggregateInput {
 }
 
 input BeliefCreateInput {
-  beliefSelection: BeliefSelectionCreateNestedManyWithoutBeliefInput
   createdAt: DateTime
   description: String
   name: String!
   slug: String!
   updatedAt: DateTime
+  userBelief: UserBeliefCreateNestedManyWithoutBeliefInput
 }
 
 input BeliefCreateManyInput {
@@ -1601,18 +1601,18 @@ input BeliefCreateManyInput {
   updatedAt: DateTime
 }
 
-input BeliefCreateNestedOneWithoutBeliefSelectionInput {
+input BeliefCreateNestedOneWithoutUserBeliefInput {
   connect: BeliefWhereUniqueInput
-  connectOrCreate: BeliefCreateOrConnectWithoutBeliefSelectionInput
-  create: BeliefCreateWithoutBeliefSelectionInput
+  connectOrCreate: BeliefCreateOrConnectWithoutUserBeliefInput
+  create: BeliefCreateWithoutUserBeliefInput
 }
 
-input BeliefCreateOrConnectWithoutBeliefSelectionInput {
-  create: BeliefCreateWithoutBeliefSelectionInput!
+input BeliefCreateOrConnectWithoutUserBeliefInput {
+  create: BeliefCreateWithoutUserBeliefInput!
   where: BeliefWhereUniqueInput!
 }
 
-input BeliefCreateWithoutBeliefSelectionInput {
+input BeliefCreateWithoutUserBeliefInput {
   createdAt: DateTime
   description: String
   name: String!
@@ -1685,13 +1685,13 @@ input BeliefOrderByWithAggregationInput {
 }
 
 input BeliefOrderByWithRelationInput {
-  beliefSelection: BeliefSelectionOrderByRelationAggregateInput
   createdAt: SortOrder
   description: SortOrder
   id: SortOrder
   name: SortOrder
   slug: SortOrder
   updatedAt: SortOrder
+  userBelief: UserBeliefOrderByRelationAggregateInput
 }
 
 input BeliefRelationFilter {
@@ -1720,367 +1720,6 @@ input BeliefScalarWhereWithAggregatesInput {
   updatedAt: DateTimeNullableWithAggregatesFilter
 }
 
-type BeliefSelection {
-  belief: Belief!
-  beliefId: Int!
-  createdAt: DateTime!
-  deletedAt: DateTime
-  id: Int!
-  updatedAt: DateTime
-  user: User!
-  userId: String!
-}
-
-type BeliefSelectionAvgAggregate {
-  beliefId: Float
-  id: Float
-}
-
-input BeliefSelectionAvgOrderByAggregateInput {
-  beliefId: SortOrder
-  id: SortOrder
-}
-
-type BeliefSelectionCountAggregate {
-  _all: Int!
-  beliefId: Int!
-  createdAt: Int!
-  deletedAt: Int!
-  id: Int!
-  updatedAt: Int!
-  userId: Int!
-}
-
-input BeliefSelectionCountOrderByAggregateInput {
-  beliefId: SortOrder
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-}
-
-input BeliefSelectionCreateInput {
-  belief: BeliefCreateNestedOneWithoutBeliefSelectionInput!
-  createdAt: DateTime
-  deletedAt: DateTime
-  updatedAt: DateTime
-  user: UserCreateNestedOneWithoutBeliefSelectionsInput!
-}
-
-input BeliefSelectionCreateManyBeliefInput {
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  userId: String!
-}
-
-input BeliefSelectionCreateManyBeliefInputEnvelope {
-  data: [BeliefSelectionCreateManyBeliefInput!]!
-  skipDuplicates: Boolean
-}
-
-input BeliefSelectionCreateManyInput {
-  beliefId: Int!
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  userId: String!
-}
-
-input BeliefSelectionCreateManyUserInput {
-  beliefId: Int!
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-}
-
-input BeliefSelectionCreateManyUserInputEnvelope {
-  data: [BeliefSelectionCreateManyUserInput!]!
-  skipDuplicates: Boolean
-}
-
-input BeliefSelectionCreateNestedManyWithoutBeliefInput {
-  connect: [BeliefSelectionWhereUniqueInput!]
-  connectOrCreate: [BeliefSelectionCreateOrConnectWithoutBeliefInput!]
-  create: [BeliefSelectionCreateWithoutBeliefInput!]
-  createMany: BeliefSelectionCreateManyBeliefInputEnvelope
-}
-
-input BeliefSelectionCreateNestedManyWithoutUserInput {
-  connect: [BeliefSelectionWhereUniqueInput!]
-  connectOrCreate: [BeliefSelectionCreateOrConnectWithoutUserInput!]
-  create: [BeliefSelectionCreateWithoutUserInput!]
-  createMany: BeliefSelectionCreateManyUserInputEnvelope
-}
-
-input BeliefSelectionCreateOrConnectWithoutBeliefInput {
-  create: BeliefSelectionCreateWithoutBeliefInput!
-  where: BeliefSelectionWhereUniqueInput!
-}
-
-input BeliefSelectionCreateOrConnectWithoutUserInput {
-  create: BeliefSelectionCreateWithoutUserInput!
-  where: BeliefSelectionWhereUniqueInput!
-}
-
-input BeliefSelectionCreateWithoutBeliefInput {
-  createdAt: DateTime
-  deletedAt: DateTime
-  updatedAt: DateTime
-  user: UserCreateNestedOneWithoutBeliefSelectionsInput!
-}
-
-input BeliefSelectionCreateWithoutUserInput {
-  belief: BeliefCreateNestedOneWithoutBeliefSelectionInput!
-  createdAt: DateTime
-  deletedAt: DateTime
-  updatedAt: DateTime
-}
-
-type BeliefSelectionGroupBy {
-  _avg: BeliefSelectionAvgAggregate
-  _count: BeliefSelectionCountAggregate
-  _max: BeliefSelectionMaxAggregate
-  _min: BeliefSelectionMinAggregate
-  _sum: BeliefSelectionSumAggregate
-  beliefId: Int!
-  createdAt: DateTime!
-  deletedAt: DateTime
-  id: Int!
-  updatedAt: DateTime
-  userId: String!
-}
-
-input BeliefSelectionListRelationFilter {
-  every: BeliefSelectionWhereInput
-  none: BeliefSelectionWhereInput
-  some: BeliefSelectionWhereInput
-}
-
-type BeliefSelectionMaxAggregate {
-  beliefId: Int
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  userId: String
-}
-
-input BeliefSelectionMaxOrderByAggregateInput {
-  beliefId: SortOrder
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-}
-
-type BeliefSelectionMinAggregate {
-  beliefId: Int
-  createdAt: DateTime
-  deletedAt: DateTime
-  id: Int
-  updatedAt: DateTime
-  userId: String
-}
-
-input BeliefSelectionMinOrderByAggregateInput {
-  beliefId: SortOrder
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-}
-
-input BeliefSelectionOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input BeliefSelectionOrderByWithAggregationInput {
-  _avg: BeliefSelectionAvgOrderByAggregateInput
-  _count: BeliefSelectionCountOrderByAggregateInput
-  _max: BeliefSelectionMaxOrderByAggregateInput
-  _min: BeliefSelectionMinOrderByAggregateInput
-  _sum: BeliefSelectionSumOrderByAggregateInput
-  beliefId: SortOrder
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-}
-
-input BeliefSelectionOrderByWithRelationInput {
-  belief: BeliefOrderByWithRelationInput
-  beliefId: SortOrder
-  createdAt: SortOrder
-  deletedAt: SortOrder
-  id: SortOrder
-  updatedAt: SortOrder
-  user: UserOrderByWithRelationInput
-  userId: SortOrder
-}
-
-enum BeliefSelectionScalarFieldEnum {
-  beliefId
-  createdAt
-  deletedAt
-  id
-  updatedAt
-  userId
-}
-
-input BeliefSelectionScalarWhereInput {
-  AND: [BeliefSelectionScalarWhereInput!]
-  NOT: [BeliefSelectionScalarWhereInput!]
-  OR: [BeliefSelectionScalarWhereInput!]
-  beliefId: IntFilter
-  createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
-  id: IntFilter
-  updatedAt: DateTimeNullableFilter
-  userId: StringFilter
-}
-
-input BeliefSelectionScalarWhereWithAggregatesInput {
-  AND: [BeliefSelectionScalarWhereWithAggregatesInput!]
-  NOT: [BeliefSelectionScalarWhereWithAggregatesInput!]
-  OR: [BeliefSelectionScalarWhereWithAggregatesInput!]
-  beliefId: IntWithAggregatesFilter
-  createdAt: DateTimeWithAggregatesFilter
-  deletedAt: DateTimeNullableWithAggregatesFilter
-  id: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
-  userId: StringWithAggregatesFilter
-}
-
-type BeliefSelectionSumAggregate {
-  beliefId: Int
-  id: Int
-}
-
-input BeliefSelectionSumOrderByAggregateInput {
-  beliefId: SortOrder
-  id: SortOrder
-}
-
-input BeliefSelectionUpdateInput {
-  belief: BeliefUpdateOneRequiredWithoutBeliefSelectionInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutBeliefSelectionsInput
-}
-
-input BeliefSelectionUpdateManyMutationInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-}
-
-input BeliefSelectionUpdateManyWithWhereWithoutBeliefInput {
-  data: BeliefSelectionUpdateManyMutationInput!
-  where: BeliefSelectionScalarWhereInput!
-}
-
-input BeliefSelectionUpdateManyWithWhereWithoutUserInput {
-  data: BeliefSelectionUpdateManyMutationInput!
-  where: BeliefSelectionScalarWhereInput!
-}
-
-input BeliefSelectionUpdateManyWithoutBeliefInput {
-  connect: [BeliefSelectionWhereUniqueInput!]
-  connectOrCreate: [BeliefSelectionCreateOrConnectWithoutBeliefInput!]
-  create: [BeliefSelectionCreateWithoutBeliefInput!]
-  createMany: BeliefSelectionCreateManyBeliefInputEnvelope
-  delete: [BeliefSelectionWhereUniqueInput!]
-  deleteMany: [BeliefSelectionScalarWhereInput!]
-  disconnect: [BeliefSelectionWhereUniqueInput!]
-  set: [BeliefSelectionWhereUniqueInput!]
-  update: [BeliefSelectionUpdateWithWhereUniqueWithoutBeliefInput!]
-  updateMany: [BeliefSelectionUpdateManyWithWhereWithoutBeliefInput!]
-  upsert: [BeliefSelectionUpsertWithWhereUniqueWithoutBeliefInput!]
-}
-
-input BeliefSelectionUpdateManyWithoutUserInput {
-  connect: [BeliefSelectionWhereUniqueInput!]
-  connectOrCreate: [BeliefSelectionCreateOrConnectWithoutUserInput!]
-  create: [BeliefSelectionCreateWithoutUserInput!]
-  createMany: BeliefSelectionCreateManyUserInputEnvelope
-  delete: [BeliefSelectionWhereUniqueInput!]
-  deleteMany: [BeliefSelectionScalarWhereInput!]
-  disconnect: [BeliefSelectionWhereUniqueInput!]
-  set: [BeliefSelectionWhereUniqueInput!]
-  update: [BeliefSelectionUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [BeliefSelectionUpdateManyWithWhereWithoutUserInput!]
-  upsert: [BeliefSelectionUpsertWithWhereUniqueWithoutUserInput!]
-}
-
-input BeliefSelectionUpdateWithWhereUniqueWithoutBeliefInput {
-  data: BeliefSelectionUpdateWithoutBeliefInput!
-  where: BeliefSelectionWhereUniqueInput!
-}
-
-input BeliefSelectionUpdateWithWhereUniqueWithoutUserInput {
-  data: BeliefSelectionUpdateWithoutUserInput!
-  where: BeliefSelectionWhereUniqueInput!
-}
-
-input BeliefSelectionUpdateWithoutBeliefInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutBeliefSelectionsInput
-}
-
-input BeliefSelectionUpdateWithoutUserInput {
-  belief: BeliefUpdateOneRequiredWithoutBeliefSelectionInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
-}
-
-input BeliefSelectionUpsertWithWhereUniqueWithoutBeliefInput {
-  create: BeliefSelectionCreateWithoutBeliefInput!
-  update: BeliefSelectionUpdateWithoutBeliefInput!
-  where: BeliefSelectionWhereUniqueInput!
-}
-
-input BeliefSelectionUpsertWithWhereUniqueWithoutUserInput {
-  create: BeliefSelectionCreateWithoutUserInput!
-  update: BeliefSelectionUpdateWithoutUserInput!
-  where: BeliefSelectionWhereUniqueInput!
-}
-
-input BeliefSelectionUserIdBeliefIdCompoundUniqueInput {
-  beliefId: Int!
-  userId: String!
-}
-
-input BeliefSelectionWhereInput {
-  AND: [BeliefSelectionWhereInput!]
-  NOT: [BeliefSelectionWhereInput!]
-  OR: [BeliefSelectionWhereInput!]
-  belief: BeliefRelationFilter
-  beliefId: IntFilter
-  createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
-  id: IntFilter
-  updatedAt: DateTimeNullableFilter
-  user: UserRelationFilter
-  userId: StringFilter
-}
-
-input BeliefSelectionWhereUniqueInput {
-  id: Int
-  userId_beliefId: BeliefSelectionUserIdBeliefIdCompoundUniqueInput
-}
-
 type BeliefSumAggregate {
   id: Int
 }
@@ -2090,12 +1729,12 @@ input BeliefSumOrderByAggregateInput {
 }
 
 input BeliefUpdateInput {
-  beliefSelection: BeliefSelectionUpdateManyWithoutBeliefInput
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  userBelief: UserBeliefUpdateManyWithoutBeliefInput
 }
 
 input BeliefUpdateManyMutationInput {
@@ -2106,15 +1745,15 @@ input BeliefUpdateManyMutationInput {
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
-input BeliefUpdateOneRequiredWithoutBeliefSelectionInput {
+input BeliefUpdateOneRequiredWithoutUserBeliefInput {
   connect: BeliefWhereUniqueInput
-  connectOrCreate: BeliefCreateOrConnectWithoutBeliefSelectionInput
-  create: BeliefCreateWithoutBeliefSelectionInput
-  update: BeliefUpdateWithoutBeliefSelectionInput
-  upsert: BeliefUpsertWithoutBeliefSelectionInput
+  connectOrCreate: BeliefCreateOrConnectWithoutUserBeliefInput
+  create: BeliefCreateWithoutUserBeliefInput
+  update: BeliefUpdateWithoutUserBeliefInput
+  upsert: BeliefUpsertWithoutUserBeliefInput
 }
 
-input BeliefUpdateWithoutBeliefSelectionInput {
+input BeliefUpdateWithoutUserBeliefInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
@@ -2122,22 +1761,22 @@ input BeliefUpdateWithoutBeliefSelectionInput {
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
-input BeliefUpsertWithoutBeliefSelectionInput {
-  create: BeliefCreateWithoutBeliefSelectionInput!
-  update: BeliefUpdateWithoutBeliefSelectionInput!
+input BeliefUpsertWithoutUserBeliefInput {
+  create: BeliefCreateWithoutUserBeliefInput!
+  update: BeliefUpdateWithoutUserBeliefInput!
 }
 
 input BeliefWhereInput {
   AND: [BeliefWhereInput!]
   NOT: [BeliefWhereInput!]
   OR: [BeliefWhereInput!]
-  beliefSelection: BeliefSelectionListRelationFilter
   createdAt: DateTimeFilter
   description: StringNullableFilter
   id: IntFilter
   name: StringFilter
   slug: StringFilter
   updatedAt: DateTimeNullableFilter
+  userBelief: UserBeliefListRelationFilter
 }
 
 input BeliefWhereUniqueInput {
@@ -4213,7 +3852,6 @@ type Mutation {
   createActionCompletion(data: ActionCompletionCreateInput!): ActionCompletion!
   createActionScheduleTemplate(data: ActionScheduleTemplateCreateInput!): ActionScheduleTemplate!
   createBelief(data: BeliefCreateInput!): Belief!
-  createBeliefSelection(data: BeliefSelectionCreateInput!): BeliefSelection!
   createCalendar(data: CalendarCreateInput!): Calendar!
   createCalendarEvent(data: CalendarEventCreateInput!): CalendarEvent!
   createGoal(data: GoalCreateInput!): Goal!
@@ -4224,7 +3862,6 @@ type Mutation {
   createManyActionCompletion(data: [ActionCompletionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyActionScheduleTemplate(data: [ActionScheduleTemplateCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyBelief(data: [BeliefCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
-  createManyBeliefSelection(data: [BeliefSelectionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyCalendar(data: [CalendarCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyCalendarEvent(data: [CalendarEventCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyGoal(data: [GoalCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -4234,6 +3871,7 @@ type Mutation {
   createManyUser(data: [UserCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserAction(data: [UserActionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserActionSchedule(data: [UserActionScheduleCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyUserBelief(data: [UserBeliefCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserIdentity(data: [UserIdentityCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserValue(data: [UserValueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyValue(data: [ValueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -4241,6 +3879,7 @@ type Mutation {
   createUser(data: UserCreateInput!): User!
   createUserAction(data: UserActionCreateInput!): UserAction!
   createUserActionSchedule(data: UserActionScheduleCreateInput!): UserActionSchedule!
+  createUserBelief(data: UserBeliefCreateInput!): UserBelief!
   createUserIdentity(data: UserIdentityCreateInput!): UserIdentity!
   createUserValue(data: UserValueCreateInput!): UserValue!
   createValue(data: ValueCreateInput!): Value!
@@ -4249,7 +3888,6 @@ type Mutation {
   deleteActionCompletion(where: ActionCompletionWhereUniqueInput!): ActionCompletion
   deleteActionScheduleTemplate(where: ActionScheduleTemplateWhereUniqueInput!): ActionScheduleTemplate
   deleteBelief(where: BeliefWhereUniqueInput!): Belief
-  deleteBeliefSelection(where: BeliefSelectionWhereUniqueInput!): BeliefSelection
   deleteCalendar(where: CalendarWhereUniqueInput!): Calendar
   deleteCalendarEvent(where: CalendarEventWhereUniqueInput!): CalendarEvent
   deleteGoal(where: GoalWhereUniqueInput!): Goal
@@ -4260,7 +3898,6 @@ type Mutation {
   deleteManyActionCompletion(where: ActionCompletionWhereInput): AffectedRowsOutput!
   deleteManyActionScheduleTemplate(where: ActionScheduleTemplateWhereInput): AffectedRowsOutput!
   deleteManyBelief(where: BeliefWhereInput): AffectedRowsOutput!
-  deleteManyBeliefSelection(where: BeliefSelectionWhereInput): AffectedRowsOutput!
   deleteManyCalendar(where: CalendarWhereInput): AffectedRowsOutput!
   deleteManyCalendarEvent(where: CalendarEventWhereInput): AffectedRowsOutput!
   deleteManyGoal(where: GoalWhereInput): AffectedRowsOutput!
@@ -4270,6 +3907,7 @@ type Mutation {
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
   deleteManyUserAction(where: UserActionWhereInput): AffectedRowsOutput!
   deleteManyUserActionSchedule(where: UserActionScheduleWhereInput): AffectedRowsOutput!
+  deleteManyUserBelief(where: UserBeliefWhereInput): AffectedRowsOutput!
   deleteManyUserIdentity(where: UserIdentityWhereInput): AffectedRowsOutput!
   deleteManyUserValue(where: UserValueWhereInput): AffectedRowsOutput!
   deleteManyValue(where: ValueWhereInput): AffectedRowsOutput!
@@ -4277,17 +3915,19 @@ type Mutation {
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUserAction(where: UserActionWhereUniqueInput!): UserAction
   deleteUserActionSchedule(where: UserActionScheduleWhereUniqueInput!): UserActionSchedule
+  deleteUserBelief(where: UserBeliefWhereUniqueInput!): UserBelief
   deleteUserIdentity(where: UserIdentityWhereUniqueInput!): UserIdentity
   deleteUserValue(where: UserValueWhereUniqueInput!): UserValue
   deleteValue(where: ValueWhereUniqueInput!): Value
   toggleUserActionAdoption(abandonedAt: DateTime, actionId: Int!, userId: String!): UserAction!
+  toggleUserBelief(beliefId: Int!, deleted: DateTime, userId: String!): UserBelief!
   toggleUserIdentity(deleted: DateTime, identityId: Int!, userId: String!): UserIdentity!
+  toggleUserValue(deletedAt: DateTime, userId: String!, valueId: Int!): UserValue!
   updateAccount(data: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account
   updateAction(data: ActionUpdateInput!, where: ActionWhereUniqueInput!): Action
   updateActionCompletion(data: ActionCompletionUpdateInput!, where: ActionCompletionWhereUniqueInput!): ActionCompletion
   updateActionScheduleTemplate(data: ActionScheduleTemplateUpdateInput!, where: ActionScheduleTemplateWhereUniqueInput!): ActionScheduleTemplate
   updateBelief(data: BeliefUpdateInput!, where: BeliefWhereUniqueInput!): Belief
-  updateBeliefSelection(data: BeliefSelectionUpdateInput!, where: BeliefSelectionWhereUniqueInput!): BeliefSelection
   updateCalendar(data: CalendarUpdateInput!, where: CalendarWhereUniqueInput!): Calendar
   updateCalendarEvent(data: CalendarEventUpdateInput!, where: CalendarEventWhereUniqueInput!): CalendarEvent
   updateGoal(data: GoalUpdateInput!, where: GoalWhereUniqueInput!): Goal
@@ -4298,7 +3938,6 @@ type Mutation {
   updateManyActionCompletion(data: ActionCompletionUpdateManyMutationInput!, where: ActionCompletionWhereInput): AffectedRowsOutput!
   updateManyActionScheduleTemplate(data: ActionScheduleTemplateUpdateManyMutationInput!, where: ActionScheduleTemplateWhereInput): AffectedRowsOutput!
   updateManyBelief(data: BeliefUpdateManyMutationInput!, where: BeliefWhereInput): AffectedRowsOutput!
-  updateManyBeliefSelection(data: BeliefSelectionUpdateManyMutationInput!, where: BeliefSelectionWhereInput): AffectedRowsOutput!
   updateManyCalendar(data: CalendarUpdateManyMutationInput!, where: CalendarWhereInput): AffectedRowsOutput!
   updateManyCalendarEvent(data: CalendarEventUpdateManyMutationInput!, where: CalendarEventWhereInput): AffectedRowsOutput!
   updateManyGoal(data: GoalUpdateManyMutationInput!, where: GoalWhereInput): AffectedRowsOutput!
@@ -4308,6 +3947,7 @@ type Mutation {
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!
   updateManyUserAction(data: UserActionUpdateManyMutationInput!, where: UserActionWhereInput): AffectedRowsOutput!
   updateManyUserActionSchedule(data: UserActionScheduleUpdateManyMutationInput!, where: UserActionScheduleWhereInput): AffectedRowsOutput!
+  updateManyUserBelief(data: UserBeliefUpdateManyMutationInput!, where: UserBeliefWhereInput): AffectedRowsOutput!
   updateManyUserIdentity(data: UserIdentityUpdateManyMutationInput!, where: UserIdentityWhereInput): AffectedRowsOutput!
   updateManyUserValue(data: UserValueUpdateManyMutationInput!, where: UserValueWhereInput): AffectedRowsOutput!
   updateManyValue(data: ValueUpdateManyMutationInput!, where: ValueWhereInput): AffectedRowsOutput!
@@ -4315,6 +3955,7 @@ type Mutation {
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateUserAction(data: UserActionUpdateInput!, where: UserActionWhereUniqueInput!): UserAction
   updateUserActionSchedule(data: UserActionScheduleUpdateInput!, where: UserActionScheduleWhereUniqueInput!): UserActionSchedule
+  updateUserBelief(data: UserBeliefUpdateInput!, where: UserBeliefWhereUniqueInput!): UserBelief
   updateUserIdentity(data: UserIdentityUpdateInput!, where: UserIdentityWhereUniqueInput!): UserIdentity
   updateUserValue(data: UserValueUpdateInput!, where: UserValueWhereUniqueInput!): UserValue
   updateValue(data: ValueUpdateInput!, where: ValueWhereUniqueInput!): Value
@@ -4323,7 +3964,6 @@ type Mutation {
   upsertActionCompletion(create: ActionCompletionCreateInput!, update: ActionCompletionUpdateInput!, where: ActionCompletionWhereUniqueInput!): ActionCompletion!
   upsertActionScheduleTemplate(create: ActionScheduleTemplateCreateInput!, update: ActionScheduleTemplateUpdateInput!, where: ActionScheduleTemplateWhereUniqueInput!): ActionScheduleTemplate!
   upsertBelief(create: BeliefCreateInput!, update: BeliefUpdateInput!, where: BeliefWhereUniqueInput!): Belief!
-  upsertBeliefSelection(create: BeliefSelectionCreateInput!, update: BeliefSelectionUpdateInput!, where: BeliefSelectionWhereUniqueInput!): BeliefSelection!
   upsertCalendar(create: CalendarCreateInput!, update: CalendarUpdateInput!, where: CalendarWhereUniqueInput!): Calendar!
   upsertCalendarEvent(create: CalendarEventCreateInput!, update: CalendarEventUpdateInput!, where: CalendarEventWhereUniqueInput!): CalendarEvent!
   upsertGoal(create: GoalCreateInput!, update: GoalUpdateInput!, where: GoalWhereUniqueInput!): Goal!
@@ -4333,6 +3973,7 @@ type Mutation {
   upsertUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   upsertUserAction(create: UserActionCreateInput!, update: UserActionUpdateInput!, where: UserActionWhereUniqueInput!): UserAction!
   upsertUserActionSchedule(create: UserActionScheduleCreateInput!, update: UserActionScheduleUpdateInput!, where: UserActionScheduleWhereUniqueInput!): UserActionSchedule!
+  upsertUserBelief(create: UserBeliefCreateInput!, update: UserBeliefUpdateInput!, where: UserBeliefWhereUniqueInput!): UserBelief!
   upsertUserIdentity(create: UserIdentityCreateInput!, update: UserIdentityUpdateInput!, where: UserIdentityWhereUniqueInput!): UserIdentity!
   upsertUserValue(create: UserValueCreateInput!, update: UserValueUpdateInput!, where: UserValueWhereUniqueInput!): UserValue!
   upsertValue(create: ValueCreateInput!, update: ValueUpdateInput!, where: ValueWhereUniqueInput!): Value!
@@ -4599,7 +4240,6 @@ type Query {
   aggregateActionCompletion(cursor: ActionCompletionWhereUniqueInput, orderBy: [ActionCompletionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionCompletionWhereInput): AggregateActionCompletion!
   aggregateActionScheduleTemplate(cursor: ActionScheduleTemplateWhereUniqueInput, orderBy: [ActionScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): AggregateActionScheduleTemplate!
   aggregateBelief(cursor: BeliefWhereUniqueInput, orderBy: [BeliefOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefWhereInput): AggregateBelief!
-  aggregateBeliefSelection(cursor: BeliefSelectionWhereUniqueInput, orderBy: [BeliefSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefSelectionWhereInput): AggregateBeliefSelection!
   aggregateCalendar(cursor: CalendarWhereUniqueInput, orderBy: [CalendarOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarWhereInput): AggregateCalendar!
   aggregateCalendarEvent(cursor: CalendarEventWhereUniqueInput, orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): AggregateCalendarEvent!
   aggregateGoal(cursor: GoalWhereUniqueInput, orderBy: [GoalOrderByWithRelationInput!], skip: Int, take: Int, where: GoalWhereInput): AggregateGoal!
@@ -4609,12 +4249,11 @@ type Query {
   aggregateUser(cursor: UserWhereUniqueInput, orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): AggregateUser!
   aggregateUserAction(cursor: UserActionWhereUniqueInput, orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): AggregateUserAction!
   aggregateUserActionSchedule(cursor: UserActionScheduleWhereUniqueInput, orderBy: [UserActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): AggregateUserActionSchedule!
+  aggregateUserBelief(cursor: UserBeliefWhereUniqueInput, orderBy: [UserBeliefOrderByWithRelationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): AggregateUserBelief!
   aggregateUserIdentity(cursor: UserIdentityWhereUniqueInput, orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): AggregateUserIdentity!
   aggregateUserValue(cursor: UserValueWhereUniqueInput, orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): AggregateUserValue!
   aggregateValue(cursor: ValueWhereUniqueInput, orderBy: [ValueOrderByWithRelationInput!], skip: Int, take: Int, where: ValueWhereInput): AggregateValue!
   belief(where: BeliefWhereUniqueInput!): Belief
-  beliefSelection(where: BeliefSelectionWhereUniqueInput!): BeliefSelection
-  beliefSelections(cursor: BeliefSelectionWhereUniqueInput, distinct: [BeliefSelectionScalarFieldEnum!], orderBy: [BeliefSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefSelectionWhereInput): [BeliefSelection!]!
   beliefs(cursor: BeliefWhereUniqueInput, distinct: [BeliefScalarFieldEnum!], orderBy: [BeliefOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefWhereInput): [Belief!]!
   calendar(where: CalendarWhereUniqueInput!): Calendar
   calendarEvent(where: CalendarEventWhereUniqueInput!): CalendarEvent
@@ -4625,7 +4264,6 @@ type Query {
   findFirstActionCompletion(cursor: ActionCompletionWhereUniqueInput, distinct: [ActionCompletionScalarFieldEnum!], orderBy: [ActionCompletionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionCompletionWhereInput): ActionCompletion
   findFirstActionScheduleTemplate(cursor: ActionScheduleTemplateWhereUniqueInput, distinct: [ActionScheduleTemplateScalarFieldEnum!], orderBy: [ActionScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): ActionScheduleTemplate
   findFirstBelief(cursor: BeliefWhereUniqueInput, distinct: [BeliefScalarFieldEnum!], orderBy: [BeliefOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefWhereInput): Belief
-  findFirstBeliefSelection(cursor: BeliefSelectionWhereUniqueInput, distinct: [BeliefSelectionScalarFieldEnum!], orderBy: [BeliefSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefSelectionWhereInput): BeliefSelection
   findFirstCalendar(cursor: CalendarWhereUniqueInput, distinct: [CalendarScalarFieldEnum!], orderBy: [CalendarOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarWhereInput): Calendar
   findFirstCalendarEvent(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): CalendarEvent
   findFirstGoal(cursor: GoalWhereUniqueInput, distinct: [GoalScalarFieldEnum!], orderBy: [GoalOrderByWithRelationInput!], skip: Int, take: Int, where: GoalWhereInput): Goal
@@ -4635,6 +4273,7 @@ type Query {
   findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): User
   findFirstUserAction(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): UserAction
   findFirstUserActionSchedule(cursor: UserActionScheduleWhereUniqueInput, distinct: [UserActionScheduleScalarFieldEnum!], orderBy: [UserActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): UserActionSchedule
+  findFirstUserBelief(cursor: UserBeliefWhereUniqueInput, distinct: [UserBeliefScalarFieldEnum!], orderBy: [UserBeliefOrderByWithRelationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): UserBelief
   findFirstUserIdentity(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): UserIdentity
   findFirstUserValue(cursor: UserValueWhereUniqueInput, distinct: [UserValueScalarFieldEnum!], orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): UserValue
   findFirstValue(cursor: ValueWhereUniqueInput, distinct: [ValueScalarFieldEnum!], orderBy: [ValueOrderByWithRelationInput!], skip: Int, take: Int, where: ValueWhereInput): Value
@@ -4645,7 +4284,6 @@ type Query {
   groupByActionCompletion(by: [ActionCompletionScalarFieldEnum!]!, having: ActionCompletionScalarWhereWithAggregatesInput, orderBy: [ActionCompletionOrderByWithAggregationInput!], skip: Int, take: Int, where: ActionCompletionWhereInput): [ActionCompletionGroupBy!]!
   groupByActionScheduleTemplate(by: [ActionScheduleTemplateScalarFieldEnum!]!, having: ActionScheduleTemplateScalarWhereWithAggregatesInput, orderBy: [ActionScheduleTemplateOrderByWithAggregationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): [ActionScheduleTemplateGroupBy!]!
   groupByBelief(by: [BeliefScalarFieldEnum!]!, having: BeliefScalarWhereWithAggregatesInput, orderBy: [BeliefOrderByWithAggregationInput!], skip: Int, take: Int, where: BeliefWhereInput): [BeliefGroupBy!]!
-  groupByBeliefSelection(by: [BeliefSelectionScalarFieldEnum!]!, having: BeliefSelectionScalarWhereWithAggregatesInput, orderBy: [BeliefSelectionOrderByWithAggregationInput!], skip: Int, take: Int, where: BeliefSelectionWhereInput): [BeliefSelectionGroupBy!]!
   groupByCalendar(by: [CalendarScalarFieldEnum!]!, having: CalendarScalarWhereWithAggregatesInput, orderBy: [CalendarOrderByWithAggregationInput!], skip: Int, take: Int, where: CalendarWhereInput): [CalendarGroupBy!]!
   groupByCalendarEvent(by: [CalendarEventScalarFieldEnum!]!, having: CalendarEventScalarWhereWithAggregatesInput, orderBy: [CalendarEventOrderByWithAggregationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEventGroupBy!]!
   groupByGoal(by: [GoalScalarFieldEnum!]!, having: GoalScalarWhereWithAggregatesInput, orderBy: [GoalOrderByWithAggregationInput!], skip: Int, take: Int, where: GoalWhereInput): [GoalGroupBy!]!
@@ -4655,6 +4293,7 @@ type Query {
   groupByUser(by: [UserScalarFieldEnum!]!, having: UserScalarWhereWithAggregatesInput, orderBy: [UserOrderByWithAggregationInput!], skip: Int, take: Int, where: UserWhereInput): [UserGroupBy!]!
   groupByUserAction(by: [UserActionScalarFieldEnum!]!, having: UserActionScalarWhereWithAggregatesInput, orderBy: [UserActionOrderByWithAggregationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserActionGroupBy!]!
   groupByUserActionSchedule(by: [UserActionScheduleScalarFieldEnum!]!, having: UserActionScheduleScalarWhereWithAggregatesInput, orderBy: [UserActionScheduleOrderByWithAggregationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): [UserActionScheduleGroupBy!]!
+  groupByUserBelief(by: [UserBeliefScalarFieldEnum!]!, having: UserBeliefScalarWhereWithAggregatesInput, orderBy: [UserBeliefOrderByWithAggregationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): [UserBeliefGroupBy!]!
   groupByUserIdentity(by: [UserIdentityScalarFieldEnum!]!, having: UserIdentityScalarWhereWithAggregatesInput, orderBy: [UserIdentityOrderByWithAggregationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentityGroupBy!]!
   groupByUserValue(by: [UserValueScalarFieldEnum!]!, having: UserValueScalarWhereWithAggregatesInput, orderBy: [UserValueOrderByWithAggregationInput!], skip: Int, take: Int, where: UserValueWhereInput): [UserValueGroupBy!]!
   groupByValue(by: [ValueScalarFieldEnum!]!, having: ValueScalarWhereWithAggregatesInput, orderBy: [ValueOrderByWithAggregationInput!], skip: Int, take: Int, where: ValueWhereInput): [ValueGroupBy!]!
@@ -4669,6 +4308,8 @@ type Query {
   userActionSchedule(where: UserActionScheduleWhereUniqueInput!): UserActionSchedule
   userActionSchedules(cursor: UserActionScheduleWhereUniqueInput, distinct: [UserActionScheduleScalarFieldEnum!], orderBy: [UserActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): [UserActionSchedule!]!
   userActions(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserAction!]!
+  userBelief(where: UserBeliefWhereUniqueInput!): UserBelief
+  userBeliefs(cursor: UserBeliefWhereUniqueInput, distinct: [UserBeliefScalarFieldEnum!], orderBy: [UserBeliefOrderByWithRelationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): [UserBelief!]!
   userIdentities(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
   userIdentity(where: UserIdentityWhereUniqueInput!): UserIdentity
   userValue(where: UserValueWhereUniqueInput!): UserValue
@@ -4970,7 +4611,6 @@ type User {
   _count: UserCount!
   accounts(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], skip: Int, take: Int, where: AccountWhereInput): [Account!]!
   actionCompletions(cursor: ActionCompletionWhereUniqueInput, distinct: [ActionCompletionScalarFieldEnum!], orderBy: [ActionCompletionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionCompletionWhereInput): [ActionCompletion!]!
-  beliefSelections(cursor: BeliefSelectionWhereUniqueInput, distinct: [BeliefSelectionScalarFieldEnum!], orderBy: [BeliefSelectionOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefSelectionWhereInput): [BeliefSelection!]!
   calendars(cursor: CalendarWhereUniqueInput, distinct: [CalendarScalarFieldEnum!], orderBy: [CalendarOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarWhereInput): [Calendar!]!
   email: String!
   emailVerified: DateTime
@@ -4979,6 +4619,7 @@ type User {
   isAdmin: Boolean!
   name: String
   userActions(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserAction!]!
+  userBeliefs(cursor: UserBeliefWhereUniqueInput, distinct: [UserBeliefScalarFieldEnum!], orderBy: [UserBeliefOrderByWithRelationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): [UserBelief!]!
   userIdentities(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
   userValues(cursor: UserValueWhereUniqueInput, distinct: [UserValueScalarFieldEnum!], orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): [UserValue!]!
 }
@@ -5995,12 +5636,373 @@ input UserActionWhereUniqueInput {
   userId_actionId: UserActionUserIdActionIdCompoundUniqueInput
 }
 
+type UserBelief {
+  belief: Belief!
+  beliefId: Int!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: Int!
+  updatedAt: DateTime
+  user: User!
+  userId: String!
+}
+
+type UserBeliefAvgAggregate {
+  beliefId: Float
+  id: Float
+}
+
+input UserBeliefAvgOrderByAggregateInput {
+  beliefId: SortOrder
+  id: SortOrder
+}
+
+type UserBeliefCountAggregate {
+  _all: Int!
+  beliefId: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+input UserBeliefCountOrderByAggregateInput {
+  beliefId: SortOrder
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input UserBeliefCreateInput {
+  belief: BeliefCreateNestedOneWithoutUserBeliefInput!
+  createdAt: DateTime
+  deletedAt: DateTime
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutUserBeliefsInput!
+}
+
+input UserBeliefCreateManyBeliefInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  userId: String!
+}
+
+input UserBeliefCreateManyBeliefInputEnvelope {
+  data: [UserBeliefCreateManyBeliefInput!]!
+  skipDuplicates: Boolean
+}
+
+input UserBeliefCreateManyInput {
+  beliefId: Int!
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  userId: String!
+}
+
+input UserBeliefCreateManyUserInput {
+  beliefId: Int!
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+}
+
+input UserBeliefCreateManyUserInputEnvelope {
+  data: [UserBeliefCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input UserBeliefCreateNestedManyWithoutBeliefInput {
+  connect: [UserBeliefWhereUniqueInput!]
+  connectOrCreate: [UserBeliefCreateOrConnectWithoutBeliefInput!]
+  create: [UserBeliefCreateWithoutBeliefInput!]
+  createMany: UserBeliefCreateManyBeliefInputEnvelope
+}
+
+input UserBeliefCreateNestedManyWithoutUserInput {
+  connect: [UserBeliefWhereUniqueInput!]
+  connectOrCreate: [UserBeliefCreateOrConnectWithoutUserInput!]
+  create: [UserBeliefCreateWithoutUserInput!]
+  createMany: UserBeliefCreateManyUserInputEnvelope
+}
+
+input UserBeliefCreateOrConnectWithoutBeliefInput {
+  create: UserBeliefCreateWithoutBeliefInput!
+  where: UserBeliefWhereUniqueInput!
+}
+
+input UserBeliefCreateOrConnectWithoutUserInput {
+  create: UserBeliefCreateWithoutUserInput!
+  where: UserBeliefWhereUniqueInput!
+}
+
+input UserBeliefCreateWithoutBeliefInput {
+  createdAt: DateTime
+  deletedAt: DateTime
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutUserBeliefsInput!
+}
+
+input UserBeliefCreateWithoutUserInput {
+  belief: BeliefCreateNestedOneWithoutUserBeliefInput!
+  createdAt: DateTime
+  deletedAt: DateTime
+  updatedAt: DateTime
+}
+
+type UserBeliefGroupBy {
+  _avg: UserBeliefAvgAggregate
+  _count: UserBeliefCountAggregate
+  _max: UserBeliefMaxAggregate
+  _min: UserBeliefMinAggregate
+  _sum: UserBeliefSumAggregate
+  beliefId: Int!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: Int!
+  updatedAt: DateTime
+  userId: String!
+}
+
+input UserBeliefListRelationFilter {
+  every: UserBeliefWhereInput
+  none: UserBeliefWhereInput
+  some: UserBeliefWhereInput
+}
+
+type UserBeliefMaxAggregate {
+  beliefId: Int
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  userId: String
+}
+
+input UserBeliefMaxOrderByAggregateInput {
+  beliefId: SortOrder
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+type UserBeliefMinAggregate {
+  beliefId: Int
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: Int
+  updatedAt: DateTime
+  userId: String
+}
+
+input UserBeliefMinOrderByAggregateInput {
+  beliefId: SortOrder
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input UserBeliefOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input UserBeliefOrderByWithAggregationInput {
+  _avg: UserBeliefAvgOrderByAggregateInput
+  _count: UserBeliefCountOrderByAggregateInput
+  _max: UserBeliefMaxOrderByAggregateInput
+  _min: UserBeliefMinOrderByAggregateInput
+  _sum: UserBeliefSumOrderByAggregateInput
+  beliefId: SortOrder
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input UserBeliefOrderByWithRelationInput {
+  belief: BeliefOrderByWithRelationInput
+  beliefId: SortOrder
+  createdAt: SortOrder
+  deletedAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum UserBeliefScalarFieldEnum {
+  beliefId
+  createdAt
+  deletedAt
+  id
+  updatedAt
+  userId
+}
+
+input UserBeliefScalarWhereInput {
+  AND: [UserBeliefScalarWhereInput!]
+  NOT: [UserBeliefScalarWhereInput!]
+  OR: [UserBeliefScalarWhereInput!]
+  beliefId: IntFilter
+  createdAt: DateTimeFilter
+  deletedAt: DateTimeNullableFilter
+  id: IntFilter
+  updatedAt: DateTimeNullableFilter
+  userId: StringFilter
+}
+
+input UserBeliefScalarWhereWithAggregatesInput {
+  AND: [UserBeliefScalarWhereWithAggregatesInput!]
+  NOT: [UserBeliefScalarWhereWithAggregatesInput!]
+  OR: [UserBeliefScalarWhereWithAggregatesInput!]
+  beliefId: IntWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  deletedAt: DateTimeNullableWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
+  userId: StringWithAggregatesFilter
+}
+
+type UserBeliefSumAggregate {
+  beliefId: Int
+  id: Int
+}
+
+input UserBeliefSumOrderByAggregateInput {
+  beliefId: SortOrder
+  id: SortOrder
+}
+
+input UserBeliefUpdateInput {
+  belief: BeliefUpdateOneRequiredWithoutUserBeliefInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutUserBeliefsInput
+}
+
+input UserBeliefUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserBeliefUpdateManyWithWhereWithoutBeliefInput {
+  data: UserBeliefUpdateManyMutationInput!
+  where: UserBeliefScalarWhereInput!
+}
+
+input UserBeliefUpdateManyWithWhereWithoutUserInput {
+  data: UserBeliefUpdateManyMutationInput!
+  where: UserBeliefScalarWhereInput!
+}
+
+input UserBeliefUpdateManyWithoutBeliefInput {
+  connect: [UserBeliefWhereUniqueInput!]
+  connectOrCreate: [UserBeliefCreateOrConnectWithoutBeliefInput!]
+  create: [UserBeliefCreateWithoutBeliefInput!]
+  createMany: UserBeliefCreateManyBeliefInputEnvelope
+  delete: [UserBeliefWhereUniqueInput!]
+  deleteMany: [UserBeliefScalarWhereInput!]
+  disconnect: [UserBeliefWhereUniqueInput!]
+  set: [UserBeliefWhereUniqueInput!]
+  update: [UserBeliefUpdateWithWhereUniqueWithoutBeliefInput!]
+  updateMany: [UserBeliefUpdateManyWithWhereWithoutBeliefInput!]
+  upsert: [UserBeliefUpsertWithWhereUniqueWithoutBeliefInput!]
+}
+
+input UserBeliefUpdateManyWithoutUserInput {
+  connect: [UserBeliefWhereUniqueInput!]
+  connectOrCreate: [UserBeliefCreateOrConnectWithoutUserInput!]
+  create: [UserBeliefCreateWithoutUserInput!]
+  createMany: UserBeliefCreateManyUserInputEnvelope
+  delete: [UserBeliefWhereUniqueInput!]
+  deleteMany: [UserBeliefScalarWhereInput!]
+  disconnect: [UserBeliefWhereUniqueInput!]
+  set: [UserBeliefWhereUniqueInput!]
+  update: [UserBeliefUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [UserBeliefUpdateManyWithWhereWithoutUserInput!]
+  upsert: [UserBeliefUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input UserBeliefUpdateWithWhereUniqueWithoutBeliefInput {
+  data: UserBeliefUpdateWithoutBeliefInput!
+  where: UserBeliefWhereUniqueInput!
+}
+
+input UserBeliefUpdateWithWhereUniqueWithoutUserInput {
+  data: UserBeliefUpdateWithoutUserInput!
+  where: UserBeliefWhereUniqueInput!
+}
+
+input UserBeliefUpdateWithoutBeliefInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutUserBeliefsInput
+}
+
+input UserBeliefUpdateWithoutUserInput {
+  belief: BeliefUpdateOneRequiredWithoutUserBeliefInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input UserBeliefUpsertWithWhereUniqueWithoutBeliefInput {
+  create: UserBeliefCreateWithoutBeliefInput!
+  update: UserBeliefUpdateWithoutBeliefInput!
+  where: UserBeliefWhereUniqueInput!
+}
+
+input UserBeliefUpsertWithWhereUniqueWithoutUserInput {
+  create: UserBeliefCreateWithoutUserInput!
+  update: UserBeliefUpdateWithoutUserInput!
+  where: UserBeliefWhereUniqueInput!
+}
+
+input UserBeliefUserIdBeliefIdCompoundUniqueInput {
+  beliefId: Int!
+  userId: String!
+}
+
+input UserBeliefWhereInput {
+  AND: [UserBeliefWhereInput!]
+  NOT: [UserBeliefWhereInput!]
+  OR: [UserBeliefWhereInput!]
+  belief: BeliefRelationFilter
+  beliefId: IntFilter
+  createdAt: DateTimeFilter
+  deletedAt: DateTimeNullableFilter
+  id: IntFilter
+  updatedAt: DateTimeNullableFilter
+  user: UserRelationFilter
+  userId: StringFilter
+}
+
+input UserBeliefWhereUniqueInput {
+  id: Int
+  userId_beliefId: UserBeliefUserIdBeliefIdCompoundUniqueInput
+}
+
 type UserCount {
   accounts: Int!
   actionCompletions: Int!
-  beliefSelections: Int!
   calendars: Int!
   userActions: Int!
+  userBeliefs: Int!
   userIdentities: Int!
   userValues: Int!
 }
@@ -6027,7 +6029,6 @@ input UserCountOrderByAggregateInput {
 input UserCreateInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
-  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
   calendars: CalendarCreateNestedManyWithoutUserInput
   email: String!
   emailVerified: DateTime
@@ -6036,6 +6037,7 @@ input UserCreateInput {
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
 }
@@ -6061,12 +6063,6 @@ input UserCreateNestedOneWithoutActionCompletionsInput {
   create: UserCreateWithoutActionCompletionsInput
 }
 
-input UserCreateNestedOneWithoutBeliefSelectionsInput {
-  connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutBeliefSelectionsInput
-  create: UserCreateWithoutBeliefSelectionsInput
-}
-
 input UserCreateNestedOneWithoutCalendarsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutCalendarsInput
@@ -6077,6 +6073,12 @@ input UserCreateNestedOneWithoutUserActionsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutUserActionsInput
   create: UserCreateWithoutUserActionsInput
+}
+
+input UserCreateNestedOneWithoutUserBeliefsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutUserBeliefsInput
+  create: UserCreateWithoutUserBeliefsInput
 }
 
 input UserCreateNestedOneWithoutUserIdentitiesInput {
@@ -6101,11 +6103,6 @@ input UserCreateOrConnectWithoutActionCompletionsInput {
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutBeliefSelectionsInput {
-  create: UserCreateWithoutBeliefSelectionsInput!
-  where: UserWhereUniqueInput!
-}
-
 input UserCreateOrConnectWithoutCalendarsInput {
   create: UserCreateWithoutCalendarsInput!
   where: UserWhereUniqueInput!
@@ -6113,6 +6110,11 @@ input UserCreateOrConnectWithoutCalendarsInput {
 
 input UserCreateOrConnectWithoutUserActionsInput {
   create: UserCreateWithoutUserActionsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutUserBeliefsInput {
+  create: UserCreateWithoutUserBeliefsInput!
   where: UserWhereUniqueInput!
 }
 
@@ -6128,7 +6130,6 @@ input UserCreateOrConnectWithoutUserValuesInput {
 
 input UserCreateWithoutAccountsInput {
   actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
-  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
   calendars: CalendarCreateNestedManyWithoutUserInput
   email: String!
   emailVerified: DateTime
@@ -6137,13 +6138,13 @@ input UserCreateWithoutAccountsInput {
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
 }
 
 input UserCreateWithoutActionCompletionsInput {
   accounts: AccountCreateNestedManyWithoutUserInput
-  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
   calendars: CalendarCreateNestedManyWithoutUserInput
   email: String!
   emailVerified: DateTime
@@ -6152,21 +6153,7 @@ input UserCreateWithoutActionCompletionsInput {
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
-  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
-  userValues: UserValueCreateNestedManyWithoutUserInput
-}
-
-input UserCreateWithoutBeliefSelectionsInput {
-  accounts: AccountCreateNestedManyWithoutUserInput
-  actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
-  calendars: CalendarCreateNestedManyWithoutUserInput
-  email: String!
-  emailVerified: DateTime
-  id: String
-  image: String
-  isAdmin: Boolean
-  name: String
-  userActions: UserActionCreateNestedManyWithoutUserInput
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
 }
@@ -6174,7 +6161,6 @@ input UserCreateWithoutBeliefSelectionsInput {
 input UserCreateWithoutCalendarsInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
-  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
   email: String!
   emailVerified: DateTime
   id: String
@@ -6182,6 +6168,7 @@ input UserCreateWithoutCalendarsInput {
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
 }
@@ -6189,7 +6176,6 @@ input UserCreateWithoutCalendarsInput {
 input UserCreateWithoutUserActionsInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
-  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
   calendars: CalendarCreateNestedManyWithoutUserInput
   email: String!
   emailVerified: DateTime
@@ -6197,6 +6183,22 @@ input UserCreateWithoutUserActionsInput {
   image: String
   isAdmin: Boolean
   name: String
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutUserBeliefsInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
+  actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
+  calendars: CalendarCreateNestedManyWithoutUserInput
+  email: String!
+  emailVerified: DateTime
+  id: String
+  image: String
+  isAdmin: Boolean
+  name: String
+  userActions: UserActionCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
 }
@@ -6204,7 +6206,6 @@ input UserCreateWithoutUserActionsInput {
 input UserCreateWithoutUserIdentitiesInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
-  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
   calendars: CalendarCreateNestedManyWithoutUserInput
   email: String!
   emailVerified: DateTime
@@ -6213,13 +6214,13 @@ input UserCreateWithoutUserIdentitiesInput {
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
 }
 
 input UserCreateWithoutUserValuesInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
-  beliefSelections: BeliefSelectionCreateNestedManyWithoutUserInput
   calendars: CalendarCreateNestedManyWithoutUserInput
   email: String!
   emailVerified: DateTime
@@ -6228,6 +6229,7 @@ input UserCreateWithoutUserValuesInput {
   isAdmin: Boolean
   name: String
   userActions: UserActionCreateNestedManyWithoutUserInput
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
 }
 
@@ -6607,7 +6609,6 @@ input UserOrderByWithAggregationInput {
 input UserOrderByWithRelationInput {
   accounts: AccountOrderByRelationAggregateInput
   actionCompletions: ActionCompletionOrderByRelationAggregateInput
-  beliefSelections: BeliefSelectionOrderByRelationAggregateInput
   calendars: CalendarOrderByRelationAggregateInput
   email: SortOrder
   emailVerified: SortOrder
@@ -6616,6 +6617,7 @@ input UserOrderByWithRelationInput {
   isAdmin: SortOrder
   name: SortOrder
   userActions: UserActionOrderByRelationAggregateInput
+  userBeliefs: UserBeliefOrderByRelationAggregateInput
   userIdentities: UserIdentityOrderByRelationAggregateInput
   userValues: UserValueOrderByRelationAggregateInput
 }
@@ -6649,7 +6651,6 @@ input UserScalarWhereWithAggregatesInput {
 input UserUpdateInput {
   accounts: AccountUpdateManyWithoutUserInput
   actionCompletions: ActionCompletionUpdateManyWithoutUserInput
-  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
   calendars: CalendarUpdateManyWithoutUserInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
@@ -6658,6 +6659,7 @@ input UserUpdateInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
 }
@@ -6687,14 +6689,6 @@ input UserUpdateOneRequiredWithoutActionCompletionsInput {
   upsert: UserUpsertWithoutActionCompletionsInput
 }
 
-input UserUpdateOneRequiredWithoutBeliefSelectionsInput {
-  connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutBeliefSelectionsInput
-  create: UserCreateWithoutBeliefSelectionsInput
-  update: UserUpdateWithoutBeliefSelectionsInput
-  upsert: UserUpsertWithoutBeliefSelectionsInput
-}
-
 input UserUpdateOneRequiredWithoutCalendarsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutCalendarsInput
@@ -6709,6 +6703,14 @@ input UserUpdateOneRequiredWithoutUserActionsInput {
   create: UserCreateWithoutUserActionsInput
   update: UserUpdateWithoutUserActionsInput
   upsert: UserUpsertWithoutUserActionsInput
+}
+
+input UserUpdateOneRequiredWithoutUserBeliefsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutUserBeliefsInput
+  create: UserCreateWithoutUserBeliefsInput
+  update: UserUpdateWithoutUserBeliefsInput
+  upsert: UserUpsertWithoutUserBeliefsInput
 }
 
 input UserUpdateOneRequiredWithoutUserIdentitiesInput {
@@ -6729,7 +6731,6 @@ input UserUpdateOneRequiredWithoutUserValuesInput {
 
 input UserUpdateWithoutAccountsInput {
   actionCompletions: ActionCompletionUpdateManyWithoutUserInput
-  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
   calendars: CalendarUpdateManyWithoutUserInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
@@ -6738,13 +6739,13 @@ input UserUpdateWithoutAccountsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutActionCompletionsInput {
   accounts: AccountUpdateManyWithoutUserInput
-  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
   calendars: CalendarUpdateManyWithoutUserInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
@@ -6753,21 +6754,7 @@ input UserUpdateWithoutActionCompletionsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
-  userIdentities: UserIdentityUpdateManyWithoutUserInput
-  userValues: UserValueUpdateManyWithoutUserInput
-}
-
-input UserUpdateWithoutBeliefSelectionsInput {
-  accounts: AccountUpdateManyWithoutUserInput
-  actionCompletions: ActionCompletionUpdateManyWithoutUserInput
-  calendars: CalendarUpdateManyWithoutUserInput
-  email: StringFieldUpdateOperationsInput
-  emailVerified: NullableDateTimeFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  image: NullableStringFieldUpdateOperationsInput
-  isAdmin: BoolFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  userActions: UserActionUpdateManyWithoutUserInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
 }
@@ -6775,7 +6762,6 @@ input UserUpdateWithoutBeliefSelectionsInput {
 input UserUpdateWithoutCalendarsInput {
   accounts: AccountUpdateManyWithoutUserInput
   actionCompletions: ActionCompletionUpdateManyWithoutUserInput
-  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
@@ -6783,6 +6769,7 @@ input UserUpdateWithoutCalendarsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
 }
@@ -6790,7 +6777,6 @@ input UserUpdateWithoutCalendarsInput {
 input UserUpdateWithoutUserActionsInput {
   accounts: AccountUpdateManyWithoutUserInput
   actionCompletions: ActionCompletionUpdateManyWithoutUserInput
-  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
   calendars: CalendarUpdateManyWithoutUserInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
@@ -6798,6 +6784,22 @@ input UserUpdateWithoutUserActionsInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutUserBeliefsInput {
+  accounts: AccountUpdateManyWithoutUserInput
+  actionCompletions: ActionCompletionUpdateManyWithoutUserInput
+  calendars: CalendarUpdateManyWithoutUserInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  image: NullableStringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  userActions: UserActionUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
 }
@@ -6805,7 +6807,6 @@ input UserUpdateWithoutUserActionsInput {
 input UserUpdateWithoutUserIdentitiesInput {
   accounts: AccountUpdateManyWithoutUserInput
   actionCompletions: ActionCompletionUpdateManyWithoutUserInput
-  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
   calendars: CalendarUpdateManyWithoutUserInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
@@ -6814,13 +6815,13 @@ input UserUpdateWithoutUserIdentitiesInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutUserValuesInput {
   accounts: AccountUpdateManyWithoutUserInput
   actionCompletions: ActionCompletionUpdateManyWithoutUserInput
-  beliefSelections: BeliefSelectionUpdateManyWithoutUserInput
   calendars: CalendarUpdateManyWithoutUserInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
@@ -6829,6 +6830,7 @@ input UserUpdateWithoutUserValuesInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutUserInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
 }
 
@@ -6842,11 +6844,6 @@ input UserUpsertWithoutActionCompletionsInput {
   update: UserUpdateWithoutActionCompletionsInput!
 }
 
-input UserUpsertWithoutBeliefSelectionsInput {
-  create: UserCreateWithoutBeliefSelectionsInput!
-  update: UserUpdateWithoutBeliefSelectionsInput!
-}
-
 input UserUpsertWithoutCalendarsInput {
   create: UserCreateWithoutCalendarsInput!
   update: UserUpdateWithoutCalendarsInput!
@@ -6855,6 +6852,11 @@ input UserUpsertWithoutCalendarsInput {
 input UserUpsertWithoutUserActionsInput {
   create: UserCreateWithoutUserActionsInput!
   update: UserUpdateWithoutUserActionsInput!
+}
+
+input UserUpsertWithoutUserBeliefsInput {
+  create: UserCreateWithoutUserBeliefsInput!
+  update: UserUpdateWithoutUserBeliefsInput!
 }
 
 input UserUpsertWithoutUserIdentitiesInput {
@@ -7234,7 +7236,6 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   accounts: AccountListRelationFilter
   actionCompletions: ActionCompletionListRelationFilter
-  beliefSelections: BeliefSelectionListRelationFilter
   calendars: CalendarListRelationFilter
   email: StringFilter
   emailVerified: DateTimeNullableFilter
@@ -7243,6 +7244,7 @@ input UserWhereInput {
   isAdmin: BoolFilter
   name: StringNullableFilter
   userActions: UserActionListRelationFilter
+  userBeliefs: UserBeliefListRelationFilter
   userIdentities: UserIdentityListRelationFilter
   userValues: UserValueListRelationFilter
 }
