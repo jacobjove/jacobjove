@@ -71,7 +71,10 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
               <option value={"Default Dashboard"}>Default Dashboard</option>
             </NativeSelect>
           ) : (
-            <Select variant="standard" value="Default Dashboard">
+            <Select
+              value="Default Dashboard"
+              SelectDisplayProps={{ style: { paddingTop: "0.4rem", paddingBottom: "0.4rem" } }}
+            >
               <MenuItem value="Default Dashboard">Default Dashboard</MenuItem>
             </Select>
           )}
@@ -166,25 +169,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       ],
       sm: [
         { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
         { i: "identities", x: 7, y: 3, w: 2, h: 1, resizeHandles: ["se", "sw"] },
         { i: "values", x: 7, y: 7, w: 2, h: 1, resizeHandles: ["se", "sw"] },
       ],
       md: [
         { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
         { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
         { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
       ],
       lg: [
         { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
         { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
         { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
       ],
       xl: [
         { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
         { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
         { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
       ],

@@ -1,4 +1,5 @@
 import AdjustIcon from "@mui/icons-material/Adjust";
+import BentoIcon from "@mui/icons-material/Bento";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -114,7 +115,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
       <Divider />
       <List>
         <Link href="/app/calendar" passHref>
-          <ListItem button component={"a"}>
+          <ListItem button component={"a"} title={"Calendar"}>
             <ListItemIcon>
               <TodayIcon />
             </ListItemIcon>
@@ -122,15 +123,23 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
           </ListItem>
         </Link>
         <Link href="/app/journal" passHref>
-          <ListItem button component={"a"}>
+          <ListItem button component={"a"} title={"Notebook"}>
             <ListItemIcon>
               <NotesIcon />
             </ListItemIcon>
             <ListItemText primary={"Notebook"} />
           </ListItem>
         </Link>
+        <Link href="/app/routines" passHref>
+          <ListItem button component={"a"} title={"Routines"}>
+            <ListItemIcon>
+              <BentoIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Routines"} />
+          </ListItem>
+        </Link>
         <Link href="/app/experiments" passHref>
-          <ListItem button component={"a"}>
+          <ListItem button component={"a"} title={"Experiments"}>
             <ListItemIcon>
               <ScienceIcon />
             </ListItemIcon>
@@ -141,7 +150,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
       <Divider />
       <List>
         <Link href="/app/notifications" passHref>
-          <ListItem button component={"a"}>
+          <ListItem button component={"a"} title={"Notifications"}>
             <ListItemIcon>
               <NotificationsIcon />
             </ListItemIcon>
@@ -149,7 +158,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
           </ListItem>
         </Link>
         <Link href="/app/focus" passHref>
-          <ListItem button component={"a"}>
+          <ListItem button component={"a"} title={"Focus"}>
             <ListItemIcon>
               <AdjustIcon />
             </ListItemIcon>
@@ -159,7 +168,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
+        {["All mail", "Trash"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
