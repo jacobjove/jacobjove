@@ -281,6 +281,7 @@ type Action {
   id: Int!
   identityRelations(cursor: IdentityActionRelationWhereUniqueInput, distinct: [IdentityActionRelationScalarFieldEnum!], orderBy: [IdentityActionRelationOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityActionRelationWhereInput): [IdentityActionRelation!]!
   name: String!
+  routineActions(cursor: RoutineActionWhereUniqueInput, distinct: [RoutineActionScalarFieldEnum!], orderBy: [RoutineActionOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineActionWhereInput): [RoutineAction!]!
   scheduleTemplates(cursor: ActionScheduleTemplateWhereUniqueInput, distinct: [ActionScheduleTemplateScalarFieldEnum!], orderBy: [ActionScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): [ActionScheduleTemplate!]!
   slug: String!
   userActions(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserAction!]!
@@ -604,6 +605,7 @@ input ActionCompletionWhereUniqueInput {
 type ActionCount {
   completions: Int!
   identityRelations: Int!
+  routineActions: Int!
   scheduleTemplates: Int!
   userActions: Int!
 }
@@ -628,6 +630,7 @@ input ActionCreateInput {
   description: String
   identityRelations: IdentityActionRelationCreateNestedManyWithoutActionInput
   name: String!
+  routineActions: RoutineActionCreateNestedManyWithoutActionInput
   scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionInput
   slug: String!
   userActions: UserActionCreateNestedManyWithoutActionInput
@@ -652,6 +655,12 @@ input ActionCreateNestedOneWithoutIdentityRelationsInput {
   create: ActionCreateWithoutIdentityRelationsInput
 }
 
+input ActionCreateNestedOneWithoutRoutineActionsInput {
+  connect: ActionWhereUniqueInput
+  connectOrCreate: ActionCreateOrConnectWithoutRoutineActionsInput
+  create: ActionCreateWithoutRoutineActionsInput
+}
+
 input ActionCreateNestedOneWithoutScheduleTemplatesInput {
   connect: ActionWhereUniqueInput
   connectOrCreate: ActionCreateOrConnectWithoutScheduleTemplatesInput
@@ -674,6 +683,11 @@ input ActionCreateOrConnectWithoutIdentityRelationsInput {
   where: ActionWhereUniqueInput!
 }
 
+input ActionCreateOrConnectWithoutRoutineActionsInput {
+  create: ActionCreateWithoutRoutineActionsInput!
+  where: ActionWhereUniqueInput!
+}
+
 input ActionCreateOrConnectWithoutScheduleTemplatesInput {
   create: ActionCreateWithoutScheduleTemplatesInput!
   where: ActionWhereUniqueInput!
@@ -688,6 +702,7 @@ input ActionCreateWithoutCompletionsInput {
   description: String
   identityRelations: IdentityActionRelationCreateNestedManyWithoutActionInput
   name: String!
+  routineActions: RoutineActionCreateNestedManyWithoutActionInput
   scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionInput
   slug: String!
   userActions: UserActionCreateNestedManyWithoutActionInput
@@ -696,6 +711,17 @@ input ActionCreateWithoutCompletionsInput {
 input ActionCreateWithoutIdentityRelationsInput {
   completions: ActionCompletionCreateNestedManyWithoutActionInput
   description: String
+  name: String!
+  routineActions: RoutineActionCreateNestedManyWithoutActionInput
+  scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionInput
+  slug: String!
+  userActions: UserActionCreateNestedManyWithoutActionInput
+}
+
+input ActionCreateWithoutRoutineActionsInput {
+  completions: ActionCompletionCreateNestedManyWithoutActionInput
+  description: String
+  identityRelations: IdentityActionRelationCreateNestedManyWithoutActionInput
   name: String!
   scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionInput
   slug: String!
@@ -707,6 +733,7 @@ input ActionCreateWithoutScheduleTemplatesInput {
   description: String
   identityRelations: IdentityActionRelationCreateNestedManyWithoutActionInput
   name: String!
+  routineActions: RoutineActionCreateNestedManyWithoutActionInput
   slug: String!
   userActions: UserActionCreateNestedManyWithoutActionInput
 }
@@ -716,6 +743,7 @@ input ActionCreateWithoutUserActionsInput {
   description: String
   identityRelations: IdentityActionRelationCreateNestedManyWithoutActionInput
   name: String!
+  routineActions: RoutineActionCreateNestedManyWithoutActionInput
   scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionInput
   slug: String!
 }
@@ -778,6 +806,7 @@ input ActionOrderByWithRelationInput {
   id: SortOrder
   identityRelations: IdentityActionRelationOrderByRelationAggregateInput
   name: SortOrder
+  routineActions: RoutineActionOrderByRelationAggregateInput
   scheduleTemplates: ActionScheduleTemplateOrderByRelationAggregateInput
   slug: SortOrder
   userActions: UserActionOrderByRelationAggregateInput
@@ -1279,6 +1308,7 @@ input ActionUpdateInput {
   description: NullableStringFieldUpdateOperationsInput
   identityRelations: IdentityActionRelationUpdateManyWithoutActionInput
   name: StringFieldUpdateOperationsInput
+  routineActions: RoutineActionUpdateManyWithoutActionInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionInput
   slug: StringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutActionInput
@@ -1306,6 +1336,14 @@ input ActionUpdateOneRequiredWithoutIdentityRelationsInput {
   upsert: ActionUpsertWithoutIdentityRelationsInput
 }
 
+input ActionUpdateOneRequiredWithoutRoutineActionsInput {
+  connect: ActionWhereUniqueInput
+  connectOrCreate: ActionCreateOrConnectWithoutRoutineActionsInput
+  create: ActionCreateWithoutRoutineActionsInput
+  update: ActionUpdateWithoutRoutineActionsInput
+  upsert: ActionUpsertWithoutRoutineActionsInput
+}
+
 input ActionUpdateOneRequiredWithoutScheduleTemplatesInput {
   connect: ActionWhereUniqueInput
   connectOrCreate: ActionCreateOrConnectWithoutScheduleTemplatesInput
@@ -1326,6 +1364,7 @@ input ActionUpdateWithoutCompletionsInput {
   description: NullableStringFieldUpdateOperationsInput
   identityRelations: IdentityActionRelationUpdateManyWithoutActionInput
   name: StringFieldUpdateOperationsInput
+  routineActions: RoutineActionUpdateManyWithoutActionInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionInput
   slug: StringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutActionInput
@@ -1334,6 +1373,17 @@ input ActionUpdateWithoutCompletionsInput {
 input ActionUpdateWithoutIdentityRelationsInput {
   completions: ActionCompletionUpdateManyWithoutActionInput
   description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  routineActions: RoutineActionUpdateManyWithoutActionInput
+  scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionInput
+  slug: StringFieldUpdateOperationsInput
+  userActions: UserActionUpdateManyWithoutActionInput
+}
+
+input ActionUpdateWithoutRoutineActionsInput {
+  completions: ActionCompletionUpdateManyWithoutActionInput
+  description: NullableStringFieldUpdateOperationsInput
+  identityRelations: IdentityActionRelationUpdateManyWithoutActionInput
   name: StringFieldUpdateOperationsInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionInput
   slug: StringFieldUpdateOperationsInput
@@ -1345,6 +1395,7 @@ input ActionUpdateWithoutScheduleTemplatesInput {
   description: NullableStringFieldUpdateOperationsInput
   identityRelations: IdentityActionRelationUpdateManyWithoutActionInput
   name: StringFieldUpdateOperationsInput
+  routineActions: RoutineActionUpdateManyWithoutActionInput
   slug: StringFieldUpdateOperationsInput
   userActions: UserActionUpdateManyWithoutActionInput
 }
@@ -1354,6 +1405,7 @@ input ActionUpdateWithoutUserActionsInput {
   description: NullableStringFieldUpdateOperationsInput
   identityRelations: IdentityActionRelationUpdateManyWithoutActionInput
   name: StringFieldUpdateOperationsInput
+  routineActions: RoutineActionUpdateManyWithoutActionInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionInput
   slug: StringFieldUpdateOperationsInput
 }
@@ -1366,6 +1418,11 @@ input ActionUpsertWithoutCompletionsInput {
 input ActionUpsertWithoutIdentityRelationsInput {
   create: ActionCreateWithoutIdentityRelationsInput!
   update: ActionUpdateWithoutIdentityRelationsInput!
+}
+
+input ActionUpsertWithoutRoutineActionsInput {
+  create: ActionCreateWithoutRoutineActionsInput!
+  update: ActionUpdateWithoutRoutineActionsInput!
 }
 
 input ActionUpsertWithoutScheduleTemplatesInput {
@@ -1387,6 +1444,7 @@ input ActionWhereInput {
   id: IntFilter
   identityRelations: IdentityActionRelationListRelationFilter
   name: StringFilter
+  routineActions: RoutineActionListRelationFilter
   scheduleTemplates: ActionScheduleTemplateListRelationFilter
   slug: StringFilter
   userActions: UserActionListRelationFilter
@@ -1477,6 +1535,22 @@ type AggregateIdentityActionRelation {
   _max: IdentityActionRelationMaxAggregate
   _min: IdentityActionRelationMinAggregate
   _sum: IdentityActionRelationSumAggregate
+}
+
+type AggregateRoutine {
+  _avg: RoutineAvgAggregate
+  _count: RoutineCountAggregate
+  _max: RoutineMaxAggregate
+  _min: RoutineMinAggregate
+  _sum: RoutineSumAggregate
+}
+
+type AggregateRoutineAction {
+  _avg: RoutineActionAvgAggregate
+  _count: RoutineActionCountAggregate
+  _max: RoutineActionMaxAggregate
+  _min: RoutineActionMinAggregate
+  _sum: RoutineActionSumAggregate
 }
 
 type AggregateScheduleTemplate {
@@ -3867,6 +3941,8 @@ type Mutation {
   createManyGoal(data: [GoalCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyIdentity(data: [IdentityCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyIdentityActionRelation(data: [IdentityActionRelationCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyRoutine(data: [RoutineCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyRoutineAction(data: [RoutineActionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyScheduleTemplate(data: [ScheduleTemplateCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUser(data: [UserCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserAction(data: [UserActionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -3875,6 +3951,8 @@ type Mutation {
   createManyUserIdentity(data: [UserIdentityCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserValue(data: [UserValueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyValue(data: [ValueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createRoutine(data: RoutineCreateInput!): Routine!
+  createRoutineAction(data: RoutineActionCreateInput!): RoutineAction!
   createScheduleTemplate(data: ScheduleTemplateCreateInput!): ScheduleTemplate!
   createUser(data: UserCreateInput!): User!
   createUserAction(data: UserActionCreateInput!): UserAction!
@@ -3903,6 +3981,8 @@ type Mutation {
   deleteManyGoal(where: GoalWhereInput): AffectedRowsOutput!
   deleteManyIdentity(where: IdentityWhereInput): AffectedRowsOutput!
   deleteManyIdentityActionRelation(where: IdentityActionRelationWhereInput): AffectedRowsOutput!
+  deleteManyRoutine(where: RoutineWhereInput): AffectedRowsOutput!
+  deleteManyRoutineAction(where: RoutineActionWhereInput): AffectedRowsOutput!
   deleteManyScheduleTemplate(where: ScheduleTemplateWhereInput): AffectedRowsOutput!
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
   deleteManyUserAction(where: UserActionWhereInput): AffectedRowsOutput!
@@ -3911,6 +3991,8 @@ type Mutation {
   deleteManyUserIdentity(where: UserIdentityWhereInput): AffectedRowsOutput!
   deleteManyUserValue(where: UserValueWhereInput): AffectedRowsOutput!
   deleteManyValue(where: ValueWhereInput): AffectedRowsOutput!
+  deleteRoutine(where: RoutineWhereUniqueInput!): Routine
+  deleteRoutineAction(where: RoutineActionWhereUniqueInput!): RoutineAction
   deleteScheduleTemplate(where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUserAction(where: UserActionWhereUniqueInput!): UserAction
@@ -3943,6 +4025,8 @@ type Mutation {
   updateManyGoal(data: GoalUpdateManyMutationInput!, where: GoalWhereInput): AffectedRowsOutput!
   updateManyIdentity(data: IdentityUpdateManyMutationInput!, where: IdentityWhereInput): AffectedRowsOutput!
   updateManyIdentityActionRelation(data: IdentityActionRelationUpdateManyMutationInput!, where: IdentityActionRelationWhereInput): AffectedRowsOutput!
+  updateManyRoutine(data: RoutineUpdateManyMutationInput!, where: RoutineWhereInput): AffectedRowsOutput!
+  updateManyRoutineAction(data: RoutineActionUpdateManyMutationInput!, where: RoutineActionWhereInput): AffectedRowsOutput!
   updateManyScheduleTemplate(data: ScheduleTemplateUpdateManyMutationInput!, where: ScheduleTemplateWhereInput): AffectedRowsOutput!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!
   updateManyUserAction(data: UserActionUpdateManyMutationInput!, where: UserActionWhereInput): AffectedRowsOutput!
@@ -3951,6 +4035,8 @@ type Mutation {
   updateManyUserIdentity(data: UserIdentityUpdateManyMutationInput!, where: UserIdentityWhereInput): AffectedRowsOutput!
   updateManyUserValue(data: UserValueUpdateManyMutationInput!, where: UserValueWhereInput): AffectedRowsOutput!
   updateManyValue(data: ValueUpdateManyMutationInput!, where: ValueWhereInput): AffectedRowsOutput!
+  updateRoutine(data: RoutineUpdateInput!, where: RoutineWhereUniqueInput!): Routine
+  updateRoutineAction(data: RoutineActionUpdateInput!, where: RoutineActionWhereUniqueInput!): RoutineAction
   updateScheduleTemplate(data: ScheduleTemplateUpdateInput!, where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateUserAction(data: UserActionUpdateInput!, where: UserActionWhereUniqueInput!): UserAction
@@ -3969,6 +4055,8 @@ type Mutation {
   upsertGoal(create: GoalCreateInput!, update: GoalUpdateInput!, where: GoalWhereUniqueInput!): Goal!
   upsertIdentity(create: IdentityCreateInput!, update: IdentityUpdateInput!, where: IdentityWhereUniqueInput!): Identity!
   upsertIdentityActionRelation(create: IdentityActionRelationCreateInput!, update: IdentityActionRelationUpdateInput!, where: IdentityActionRelationWhereUniqueInput!): IdentityActionRelation!
+  upsertRoutine(create: RoutineCreateInput!, update: RoutineUpdateInput!, where: RoutineWhereUniqueInput!): Routine!
+  upsertRoutineAction(create: RoutineActionCreateInput!, update: RoutineActionUpdateInput!, where: RoutineActionWhereUniqueInput!): RoutineAction!
   upsertScheduleTemplate(create: ScheduleTemplateCreateInput!, update: ScheduleTemplateUpdateInput!, where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate!
   upsertUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   upsertUserAction(create: UserActionCreateInput!, update: UserActionUpdateInput!, where: UserActionWhereUniqueInput!): UserAction!
@@ -4245,6 +4333,8 @@ type Query {
   aggregateGoal(cursor: GoalWhereUniqueInput, orderBy: [GoalOrderByWithRelationInput!], skip: Int, take: Int, where: GoalWhereInput): AggregateGoal!
   aggregateIdentity(cursor: IdentityWhereUniqueInput, orderBy: [IdentityOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityWhereInput): AggregateIdentity!
   aggregateIdentityActionRelation(cursor: IdentityActionRelationWhereUniqueInput, orderBy: [IdentityActionRelationOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityActionRelationWhereInput): AggregateIdentityActionRelation!
+  aggregateRoutine(cursor: RoutineWhereUniqueInput, orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): AggregateRoutine!
+  aggregateRoutineAction(cursor: RoutineActionWhereUniqueInput, orderBy: [RoutineActionOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineActionWhereInput): AggregateRoutineAction!
   aggregateScheduleTemplate(cursor: ScheduleTemplateWhereUniqueInput, orderBy: [ScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ScheduleTemplateWhereInput): AggregateScheduleTemplate!
   aggregateUser(cursor: UserWhereUniqueInput, orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): AggregateUser!
   aggregateUserAction(cursor: UserActionWhereUniqueInput, orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): AggregateUserAction!
@@ -4269,6 +4359,8 @@ type Query {
   findFirstGoal(cursor: GoalWhereUniqueInput, distinct: [GoalScalarFieldEnum!], orderBy: [GoalOrderByWithRelationInput!], skip: Int, take: Int, where: GoalWhereInput): Goal
   findFirstIdentity(cursor: IdentityWhereUniqueInput, distinct: [IdentityScalarFieldEnum!], orderBy: [IdentityOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityWhereInput): Identity
   findFirstIdentityActionRelation(cursor: IdentityActionRelationWhereUniqueInput, distinct: [IdentityActionRelationScalarFieldEnum!], orderBy: [IdentityActionRelationOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityActionRelationWhereInput): IdentityActionRelation
+  findFirstRoutine(cursor: RoutineWhereUniqueInput, distinct: [RoutineScalarFieldEnum!], orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): Routine
+  findFirstRoutineAction(cursor: RoutineActionWhereUniqueInput, distinct: [RoutineActionScalarFieldEnum!], orderBy: [RoutineActionOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineActionWhereInput): RoutineAction
   findFirstScheduleTemplate(cursor: ScheduleTemplateWhereUniqueInput, distinct: [ScheduleTemplateScalarFieldEnum!], orderBy: [ScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ScheduleTemplateWhereInput): ScheduleTemplate
   findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): User
   findFirstUserAction(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): UserAction
@@ -4289,6 +4381,8 @@ type Query {
   groupByGoal(by: [GoalScalarFieldEnum!]!, having: GoalScalarWhereWithAggregatesInput, orderBy: [GoalOrderByWithAggregationInput!], skip: Int, take: Int, where: GoalWhereInput): [GoalGroupBy!]!
   groupByIdentity(by: [IdentityScalarFieldEnum!]!, having: IdentityScalarWhereWithAggregatesInput, orderBy: [IdentityOrderByWithAggregationInput!], skip: Int, take: Int, where: IdentityWhereInput): [IdentityGroupBy!]!
   groupByIdentityActionRelation(by: [IdentityActionRelationScalarFieldEnum!]!, having: IdentityActionRelationScalarWhereWithAggregatesInput, orderBy: [IdentityActionRelationOrderByWithAggregationInput!], skip: Int, take: Int, where: IdentityActionRelationWhereInput): [IdentityActionRelationGroupBy!]!
+  groupByRoutine(by: [RoutineScalarFieldEnum!]!, having: RoutineScalarWhereWithAggregatesInput, orderBy: [RoutineOrderByWithAggregationInput!], skip: Int, take: Int, where: RoutineWhereInput): [RoutineGroupBy!]!
+  groupByRoutineAction(by: [RoutineActionScalarFieldEnum!]!, having: RoutineActionScalarWhereWithAggregatesInput, orderBy: [RoutineActionOrderByWithAggregationInput!], skip: Int, take: Int, where: RoutineActionWhereInput): [RoutineActionGroupBy!]!
   groupByScheduleTemplate(by: [ScheduleTemplateScalarFieldEnum!]!, having: ScheduleTemplateScalarWhereWithAggregatesInput, orderBy: [ScheduleTemplateOrderByWithAggregationInput!], skip: Int, take: Int, where: ScheduleTemplateWhereInput): [ScheduleTemplateGroupBy!]!
   groupByUser(by: [UserScalarFieldEnum!]!, having: UserScalarWhereWithAggregatesInput, orderBy: [UserOrderByWithAggregationInput!], skip: Int, take: Int, where: UserWhereInput): [UserGroupBy!]!
   groupByUserAction(by: [UserActionScalarFieldEnum!]!, having: UserActionScalarWhereWithAggregatesInput, orderBy: [UserActionOrderByWithAggregationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserActionGroupBy!]!
@@ -4301,6 +4395,10 @@ type Query {
   identity(where: IdentityWhereUniqueInput!): Identity
   identityActionRelation(where: IdentityActionRelationWhereUniqueInput!): IdentityActionRelation
   identityActionRelations(cursor: IdentityActionRelationWhereUniqueInput, distinct: [IdentityActionRelationScalarFieldEnum!], orderBy: [IdentityActionRelationOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityActionRelationWhereInput): [IdentityActionRelation!]!
+  routine(where: RoutineWhereUniqueInput!): Routine
+  routineAction(where: RoutineActionWhereUniqueInput!): RoutineAction
+  routineActions(cursor: RoutineActionWhereUniqueInput, distinct: [RoutineActionScalarFieldEnum!], orderBy: [RoutineActionOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineActionWhereInput): [RoutineAction!]!
+  routines(cursor: RoutineWhereUniqueInput, distinct: [RoutineScalarFieldEnum!], orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): [Routine!]!
   scheduleTemplate(where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate
   scheduleTemplates(cursor: ScheduleTemplateWhereUniqueInput, distinct: [ScheduleTemplateScalarFieldEnum!], orderBy: [ScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ScheduleTemplateWhereInput): [ScheduleTemplate!]!
   user(where: UserWhereUniqueInput!): User
@@ -4322,6 +4420,740 @@ type Query {
 enum QueryMode {
   default
   insensitive
+}
+
+type Routine {
+  _count: RoutineCount!
+  createdAt: DateTime!
+  description: String
+  id: Int!
+  name: String!
+  routineActions(cursor: RoutineActionWhereUniqueInput, distinct: [RoutineActionScalarFieldEnum!], orderBy: [RoutineActionOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineActionWhereInput): [RoutineAction!]!
+  updatedAt: DateTime
+  user: User!
+  userId: String!
+}
+
+type RoutineAction {
+  action: Action!
+  actionId: Int!
+  createdAt: DateTime!
+  durationInMin: Int!
+  id: Int!
+  position: Int!
+  routine: Routine!
+  routineId: Int!
+  updatedAt: DateTime
+}
+
+type RoutineActionAvgAggregate {
+  actionId: Float
+  durationInMin: Float
+  id: Float
+  position: Float
+  routineId: Float
+}
+
+input RoutineActionAvgOrderByAggregateInput {
+  actionId: SortOrder
+  durationInMin: SortOrder
+  id: SortOrder
+  position: SortOrder
+  routineId: SortOrder
+}
+
+type RoutineActionCountAggregate {
+  _all: Int!
+  actionId: Int!
+  createdAt: Int!
+  durationInMin: Int!
+  id: Int!
+  position: Int!
+  routineId: Int!
+  updatedAt: Int!
+}
+
+input RoutineActionCountOrderByAggregateInput {
+  actionId: SortOrder
+  createdAt: SortOrder
+  durationInMin: SortOrder
+  id: SortOrder
+  position: SortOrder
+  routineId: SortOrder
+  updatedAt: SortOrder
+}
+
+input RoutineActionCreateInput {
+  action: ActionCreateNestedOneWithoutRoutineActionsInput!
+  createdAt: DateTime
+  durationInMin: Int!
+  position: Int!
+  routine: RoutineCreateNestedOneWithoutRoutineActionsInput!
+  updatedAt: DateTime
+}
+
+input RoutineActionCreateManyActionInput {
+  createdAt: DateTime
+  durationInMin: Int!
+  id: Int
+  position: Int!
+  routineId: Int!
+  updatedAt: DateTime
+}
+
+input RoutineActionCreateManyActionInputEnvelope {
+  data: [RoutineActionCreateManyActionInput!]!
+  skipDuplicates: Boolean
+}
+
+input RoutineActionCreateManyInput {
+  actionId: Int!
+  createdAt: DateTime
+  durationInMin: Int!
+  id: Int
+  position: Int!
+  routineId: Int!
+  updatedAt: DateTime
+}
+
+input RoutineActionCreateManyRoutineInput {
+  actionId: Int!
+  createdAt: DateTime
+  durationInMin: Int!
+  id: Int
+  position: Int!
+  updatedAt: DateTime
+}
+
+input RoutineActionCreateManyRoutineInputEnvelope {
+  data: [RoutineActionCreateManyRoutineInput!]!
+  skipDuplicates: Boolean
+}
+
+input RoutineActionCreateNestedManyWithoutActionInput {
+  connect: [RoutineActionWhereUniqueInput!]
+  connectOrCreate: [RoutineActionCreateOrConnectWithoutActionInput!]
+  create: [RoutineActionCreateWithoutActionInput!]
+  createMany: RoutineActionCreateManyActionInputEnvelope
+}
+
+input RoutineActionCreateNestedManyWithoutRoutineInput {
+  connect: [RoutineActionWhereUniqueInput!]
+  connectOrCreate: [RoutineActionCreateOrConnectWithoutRoutineInput!]
+  create: [RoutineActionCreateWithoutRoutineInput!]
+  createMany: RoutineActionCreateManyRoutineInputEnvelope
+}
+
+input RoutineActionCreateOrConnectWithoutActionInput {
+  create: RoutineActionCreateWithoutActionInput!
+  where: RoutineActionWhereUniqueInput!
+}
+
+input RoutineActionCreateOrConnectWithoutRoutineInput {
+  create: RoutineActionCreateWithoutRoutineInput!
+  where: RoutineActionWhereUniqueInput!
+}
+
+input RoutineActionCreateWithoutActionInput {
+  createdAt: DateTime
+  durationInMin: Int!
+  position: Int!
+  routine: RoutineCreateNestedOneWithoutRoutineActionsInput!
+  updatedAt: DateTime
+}
+
+input RoutineActionCreateWithoutRoutineInput {
+  action: ActionCreateNestedOneWithoutRoutineActionsInput!
+  createdAt: DateTime
+  durationInMin: Int!
+  position: Int!
+  updatedAt: DateTime
+}
+
+type RoutineActionGroupBy {
+  _avg: RoutineActionAvgAggregate
+  _count: RoutineActionCountAggregate
+  _max: RoutineActionMaxAggregate
+  _min: RoutineActionMinAggregate
+  _sum: RoutineActionSumAggregate
+  actionId: Int!
+  createdAt: DateTime!
+  durationInMin: Int!
+  id: Int!
+  position: Int!
+  routineId: Int!
+  updatedAt: DateTime
+}
+
+input RoutineActionListRelationFilter {
+  every: RoutineActionWhereInput
+  none: RoutineActionWhereInput
+  some: RoutineActionWhereInput
+}
+
+type RoutineActionMaxAggregate {
+  actionId: Int
+  createdAt: DateTime
+  durationInMin: Int
+  id: Int
+  position: Int
+  routineId: Int
+  updatedAt: DateTime
+}
+
+input RoutineActionMaxOrderByAggregateInput {
+  actionId: SortOrder
+  createdAt: SortOrder
+  durationInMin: SortOrder
+  id: SortOrder
+  position: SortOrder
+  routineId: SortOrder
+  updatedAt: SortOrder
+}
+
+type RoutineActionMinAggregate {
+  actionId: Int
+  createdAt: DateTime
+  durationInMin: Int
+  id: Int
+  position: Int
+  routineId: Int
+  updatedAt: DateTime
+}
+
+input RoutineActionMinOrderByAggregateInput {
+  actionId: SortOrder
+  createdAt: SortOrder
+  durationInMin: SortOrder
+  id: SortOrder
+  position: SortOrder
+  routineId: SortOrder
+  updatedAt: SortOrder
+}
+
+input RoutineActionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input RoutineActionOrderByWithAggregationInput {
+  _avg: RoutineActionAvgOrderByAggregateInput
+  _count: RoutineActionCountOrderByAggregateInput
+  _max: RoutineActionMaxOrderByAggregateInput
+  _min: RoutineActionMinOrderByAggregateInput
+  _sum: RoutineActionSumOrderByAggregateInput
+  actionId: SortOrder
+  createdAt: SortOrder
+  durationInMin: SortOrder
+  id: SortOrder
+  position: SortOrder
+  routineId: SortOrder
+  updatedAt: SortOrder
+}
+
+input RoutineActionOrderByWithRelationInput {
+  action: ActionOrderByWithRelationInput
+  actionId: SortOrder
+  createdAt: SortOrder
+  durationInMin: SortOrder
+  id: SortOrder
+  position: SortOrder
+  routine: RoutineOrderByWithRelationInput
+  routineId: SortOrder
+  updatedAt: SortOrder
+}
+
+input RoutineActionRoutineIdActionIdCompoundUniqueInput {
+  actionId: Int!
+  routineId: Int!
+}
+
+enum RoutineActionScalarFieldEnum {
+  actionId
+  createdAt
+  durationInMin
+  id
+  position
+  routineId
+  updatedAt
+}
+
+input RoutineActionScalarWhereInput {
+  AND: [RoutineActionScalarWhereInput!]
+  NOT: [RoutineActionScalarWhereInput!]
+  OR: [RoutineActionScalarWhereInput!]
+  actionId: IntFilter
+  createdAt: DateTimeFilter
+  durationInMin: IntFilter
+  id: IntFilter
+  position: IntFilter
+  routineId: IntFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input RoutineActionScalarWhereWithAggregatesInput {
+  AND: [RoutineActionScalarWhereWithAggregatesInput!]
+  NOT: [RoutineActionScalarWhereWithAggregatesInput!]
+  OR: [RoutineActionScalarWhereWithAggregatesInput!]
+  actionId: IntWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  durationInMin: IntWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  position: IntWithAggregatesFilter
+  routineId: IntWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
+}
+
+type RoutineActionSumAggregate {
+  actionId: Int
+  durationInMin: Int
+  id: Int
+  position: Int
+  routineId: Int
+}
+
+input RoutineActionSumOrderByAggregateInput {
+  actionId: SortOrder
+  durationInMin: SortOrder
+  id: SortOrder
+  position: SortOrder
+  routineId: SortOrder
+}
+
+input RoutineActionUpdateInput {
+  action: ActionUpdateOneRequiredWithoutRoutineActionsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  durationInMin: IntFieldUpdateOperationsInput
+  position: IntFieldUpdateOperationsInput
+  routine: RoutineUpdateOneRequiredWithoutRoutineActionsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input RoutineActionUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  durationInMin: IntFieldUpdateOperationsInput
+  position: IntFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input RoutineActionUpdateManyWithWhereWithoutActionInput {
+  data: RoutineActionUpdateManyMutationInput!
+  where: RoutineActionScalarWhereInput!
+}
+
+input RoutineActionUpdateManyWithWhereWithoutRoutineInput {
+  data: RoutineActionUpdateManyMutationInput!
+  where: RoutineActionScalarWhereInput!
+}
+
+input RoutineActionUpdateManyWithoutActionInput {
+  connect: [RoutineActionWhereUniqueInput!]
+  connectOrCreate: [RoutineActionCreateOrConnectWithoutActionInput!]
+  create: [RoutineActionCreateWithoutActionInput!]
+  createMany: RoutineActionCreateManyActionInputEnvelope
+  delete: [RoutineActionWhereUniqueInput!]
+  deleteMany: [RoutineActionScalarWhereInput!]
+  disconnect: [RoutineActionWhereUniqueInput!]
+  set: [RoutineActionWhereUniqueInput!]
+  update: [RoutineActionUpdateWithWhereUniqueWithoutActionInput!]
+  updateMany: [RoutineActionUpdateManyWithWhereWithoutActionInput!]
+  upsert: [RoutineActionUpsertWithWhereUniqueWithoutActionInput!]
+}
+
+input RoutineActionUpdateManyWithoutRoutineInput {
+  connect: [RoutineActionWhereUniqueInput!]
+  connectOrCreate: [RoutineActionCreateOrConnectWithoutRoutineInput!]
+  create: [RoutineActionCreateWithoutRoutineInput!]
+  createMany: RoutineActionCreateManyRoutineInputEnvelope
+  delete: [RoutineActionWhereUniqueInput!]
+  deleteMany: [RoutineActionScalarWhereInput!]
+  disconnect: [RoutineActionWhereUniqueInput!]
+  set: [RoutineActionWhereUniqueInput!]
+  update: [RoutineActionUpdateWithWhereUniqueWithoutRoutineInput!]
+  updateMany: [RoutineActionUpdateManyWithWhereWithoutRoutineInput!]
+  upsert: [RoutineActionUpsertWithWhereUniqueWithoutRoutineInput!]
+}
+
+input RoutineActionUpdateWithWhereUniqueWithoutActionInput {
+  data: RoutineActionUpdateWithoutActionInput!
+  where: RoutineActionWhereUniqueInput!
+}
+
+input RoutineActionUpdateWithWhereUniqueWithoutRoutineInput {
+  data: RoutineActionUpdateWithoutRoutineInput!
+  where: RoutineActionWhereUniqueInput!
+}
+
+input RoutineActionUpdateWithoutActionInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  durationInMin: IntFieldUpdateOperationsInput
+  position: IntFieldUpdateOperationsInput
+  routine: RoutineUpdateOneRequiredWithoutRoutineActionsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input RoutineActionUpdateWithoutRoutineInput {
+  action: ActionUpdateOneRequiredWithoutRoutineActionsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  durationInMin: IntFieldUpdateOperationsInput
+  position: IntFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input RoutineActionUpsertWithWhereUniqueWithoutActionInput {
+  create: RoutineActionCreateWithoutActionInput!
+  update: RoutineActionUpdateWithoutActionInput!
+  where: RoutineActionWhereUniqueInput!
+}
+
+input RoutineActionUpsertWithWhereUniqueWithoutRoutineInput {
+  create: RoutineActionCreateWithoutRoutineInput!
+  update: RoutineActionUpdateWithoutRoutineInput!
+  where: RoutineActionWhereUniqueInput!
+}
+
+input RoutineActionWhereInput {
+  AND: [RoutineActionWhereInput!]
+  NOT: [RoutineActionWhereInput!]
+  OR: [RoutineActionWhereInput!]
+  action: ActionRelationFilter
+  actionId: IntFilter
+  createdAt: DateTimeFilter
+  durationInMin: IntFilter
+  id: IntFilter
+  position: IntFilter
+  routine: RoutineRelationFilter
+  routineId: IntFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input RoutineActionWhereUniqueInput {
+  id: Int
+  routineId_actionId: RoutineActionRoutineIdActionIdCompoundUniqueInput
+}
+
+type RoutineAvgAggregate {
+  id: Float
+}
+
+input RoutineAvgOrderByAggregateInput {
+  id: SortOrder
+}
+
+type RoutineCount {
+  routineActions: Int!
+}
+
+type RoutineCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  description: Int!
+  id: Int!
+  name: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+input RoutineCountOrderByAggregateInput {
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input RoutineCreateInput {
+  createdAt: DateTime
+  description: String
+  name: String!
+  routineActions: RoutineActionCreateNestedManyWithoutRoutineInput
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutRoutinesInput!
+}
+
+input RoutineCreateManyInput {
+  createdAt: DateTime
+  description: String
+  id: Int
+  name: String!
+  updatedAt: DateTime
+  userId: String!
+}
+
+input RoutineCreateManyUserInput {
+  createdAt: DateTime
+  description: String
+  id: Int
+  name: String!
+  updatedAt: DateTime
+}
+
+input RoutineCreateManyUserInputEnvelope {
+  data: [RoutineCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input RoutineCreateNestedManyWithoutUserInput {
+  connect: [RoutineWhereUniqueInput!]
+  connectOrCreate: [RoutineCreateOrConnectWithoutUserInput!]
+  create: [RoutineCreateWithoutUserInput!]
+  createMany: RoutineCreateManyUserInputEnvelope
+}
+
+input RoutineCreateNestedOneWithoutRoutineActionsInput {
+  connect: RoutineWhereUniqueInput
+  connectOrCreate: RoutineCreateOrConnectWithoutRoutineActionsInput
+  create: RoutineCreateWithoutRoutineActionsInput
+}
+
+input RoutineCreateOrConnectWithoutRoutineActionsInput {
+  create: RoutineCreateWithoutRoutineActionsInput!
+  where: RoutineWhereUniqueInput!
+}
+
+input RoutineCreateOrConnectWithoutUserInput {
+  create: RoutineCreateWithoutUserInput!
+  where: RoutineWhereUniqueInput!
+}
+
+input RoutineCreateWithoutRoutineActionsInput {
+  createdAt: DateTime
+  description: String
+  name: String!
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutRoutinesInput!
+}
+
+input RoutineCreateWithoutUserInput {
+  createdAt: DateTime
+  description: String
+  name: String!
+  routineActions: RoutineActionCreateNestedManyWithoutRoutineInput
+  updatedAt: DateTime
+}
+
+type RoutineGroupBy {
+  _avg: RoutineAvgAggregate
+  _count: RoutineCountAggregate
+  _max: RoutineMaxAggregate
+  _min: RoutineMinAggregate
+  _sum: RoutineSumAggregate
+  createdAt: DateTime!
+  description: String
+  id: Int!
+  name: String!
+  updatedAt: DateTime
+  userId: String!
+}
+
+input RoutineListRelationFilter {
+  every: RoutineWhereInput
+  none: RoutineWhereInput
+  some: RoutineWhereInput
+}
+
+type RoutineMaxAggregate {
+  createdAt: DateTime
+  description: String
+  id: Int
+  name: String
+  updatedAt: DateTime
+  userId: String
+}
+
+input RoutineMaxOrderByAggregateInput {
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+type RoutineMinAggregate {
+  createdAt: DateTime
+  description: String
+  id: Int
+  name: String
+  updatedAt: DateTime
+  userId: String
+}
+
+input RoutineMinOrderByAggregateInput {
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input RoutineOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input RoutineOrderByWithAggregationInput {
+  _avg: RoutineAvgOrderByAggregateInput
+  _count: RoutineCountOrderByAggregateInput
+  _max: RoutineMaxOrderByAggregateInput
+  _min: RoutineMinOrderByAggregateInput
+  _sum: RoutineSumOrderByAggregateInput
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input RoutineOrderByWithRelationInput {
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  routineActions: RoutineActionOrderByRelationAggregateInput
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+input RoutineRelationFilter {
+  is: RoutineWhereInput
+  isNot: RoutineWhereInput
+}
+
+enum RoutineScalarFieldEnum {
+  createdAt
+  description
+  id
+  name
+  updatedAt
+  userId
+}
+
+input RoutineScalarWhereInput {
+  AND: [RoutineScalarWhereInput!]
+  NOT: [RoutineScalarWhereInput!]
+  OR: [RoutineScalarWhereInput!]
+  createdAt: DateTimeFilter
+  description: StringNullableFilter
+  id: IntFilter
+  name: StringFilter
+  updatedAt: DateTimeNullableFilter
+  userId: StringFilter
+}
+
+input RoutineScalarWhereWithAggregatesInput {
+  AND: [RoutineScalarWhereWithAggregatesInput!]
+  NOT: [RoutineScalarWhereWithAggregatesInput!]
+  OR: [RoutineScalarWhereWithAggregatesInput!]
+  createdAt: DateTimeWithAggregatesFilter
+  description: StringNullableWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  name: StringWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
+  userId: StringWithAggregatesFilter
+}
+
+type RoutineSumAggregate {
+  id: Int
+}
+
+input RoutineSumOrderByAggregateInput {
+  id: SortOrder
+}
+
+input RoutineUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  routineActions: RoutineActionUpdateManyWithoutRoutineInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutRoutinesInput
+}
+
+input RoutineUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input RoutineUpdateManyWithWhereWithoutUserInput {
+  data: RoutineUpdateManyMutationInput!
+  where: RoutineScalarWhereInput!
+}
+
+input RoutineUpdateManyWithoutUserInput {
+  connect: [RoutineWhereUniqueInput!]
+  connectOrCreate: [RoutineCreateOrConnectWithoutUserInput!]
+  create: [RoutineCreateWithoutUserInput!]
+  createMany: RoutineCreateManyUserInputEnvelope
+  delete: [RoutineWhereUniqueInput!]
+  deleteMany: [RoutineScalarWhereInput!]
+  disconnect: [RoutineWhereUniqueInput!]
+  set: [RoutineWhereUniqueInput!]
+  update: [RoutineUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [RoutineUpdateManyWithWhereWithoutUserInput!]
+  upsert: [RoutineUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input RoutineUpdateOneRequiredWithoutRoutineActionsInput {
+  connect: RoutineWhereUniqueInput
+  connectOrCreate: RoutineCreateOrConnectWithoutRoutineActionsInput
+  create: RoutineCreateWithoutRoutineActionsInput
+  update: RoutineUpdateWithoutRoutineActionsInput
+  upsert: RoutineUpsertWithoutRoutineActionsInput
+}
+
+input RoutineUpdateWithWhereUniqueWithoutUserInput {
+  data: RoutineUpdateWithoutUserInput!
+  where: RoutineWhereUniqueInput!
+}
+
+input RoutineUpdateWithoutRoutineActionsInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutRoutinesInput
+}
+
+input RoutineUpdateWithoutUserInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  routineActions: RoutineActionUpdateManyWithoutRoutineInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input RoutineUpsertWithWhereUniqueWithoutUserInput {
+  create: RoutineCreateWithoutUserInput!
+  update: RoutineUpdateWithoutUserInput!
+  where: RoutineWhereUniqueInput!
+}
+
+input RoutineUpsertWithoutRoutineActionsInput {
+  create: RoutineCreateWithoutRoutineActionsInput!
+  update: RoutineUpdateWithoutRoutineActionsInput!
+}
+
+input RoutineWhereInput {
+  AND: [RoutineWhereInput!]
+  NOT: [RoutineWhereInput!]
+  OR: [RoutineWhereInput!]
+  createdAt: DateTimeFilter
+  description: StringNullableFilter
+  id: IntFilter
+  name: StringFilter
+  routineActions: RoutineActionListRelationFilter
+  updatedAt: DateTimeNullableFilter
+  user: UserRelationFilter
+  userId: StringFilter
+}
+
+input RoutineWhereUniqueInput {
+  id: Int
 }
 
 type ScheduleTemplate {
@@ -4618,6 +5450,7 @@ type User {
   image: String
   isAdmin: Boolean!
   name: String
+  routines(cursor: RoutineWhereUniqueInput, distinct: [RoutineScalarFieldEnum!], orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): [Routine!]!
   userActions(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserAction!]!
   userBeliefs(cursor: UserBeliefWhereUniqueInput, distinct: [UserBeliefScalarFieldEnum!], orderBy: [UserBeliefOrderByWithRelationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): [UserBelief!]!
   userIdentities(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
@@ -6001,6 +6834,7 @@ type UserCount {
   accounts: Int!
   actionCompletions: Int!
   calendars: Int!
+  routines: Int!
   userActions: Int!
   userBeliefs: Int!
   userIdentities: Int!
@@ -6036,6 +6870,7 @@ input UserCreateInput {
   image: String
   isAdmin: Boolean
   name: String
+  routines: RoutineCreateNestedManyWithoutUserInput
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -6067,6 +6902,12 @@ input UserCreateNestedOneWithoutCalendarsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutCalendarsInput
   create: UserCreateWithoutCalendarsInput
+}
+
+input UserCreateNestedOneWithoutRoutinesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutRoutinesInput
+  create: UserCreateWithoutRoutinesInput
 }
 
 input UserCreateNestedOneWithoutUserActionsInput {
@@ -6108,6 +6949,11 @@ input UserCreateOrConnectWithoutCalendarsInput {
   where: UserWhereUniqueInput!
 }
 
+input UserCreateOrConnectWithoutRoutinesInput {
+  create: UserCreateWithoutRoutinesInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateOrConnectWithoutUserActionsInput {
   create: UserCreateWithoutUserActionsInput!
   where: UserWhereUniqueInput!
@@ -6137,6 +6983,7 @@ input UserCreateWithoutAccountsInput {
   image: String
   isAdmin: Boolean
   name: String
+  routines: RoutineCreateNestedManyWithoutUserInput
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -6152,6 +6999,7 @@ input UserCreateWithoutActionCompletionsInput {
   image: String
   isAdmin: Boolean
   name: String
+  routines: RoutineCreateNestedManyWithoutUserInput
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -6161,6 +7009,23 @@ input UserCreateWithoutActionCompletionsInput {
 input UserCreateWithoutCalendarsInput {
   accounts: AccountCreateNestedManyWithoutUserInput
   actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
+  email: String!
+  emailVerified: DateTime
+  id: String
+  image: String
+  isAdmin: Boolean
+  name: String
+  routines: RoutineCreateNestedManyWithoutUserInput
+  userActions: UserActionCreateNestedManyWithoutUserInput
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
+  userIdentities: UserIdentityCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutRoutinesInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
+  actionCompletions: ActionCompletionCreateNestedManyWithoutUserInput
+  calendars: CalendarCreateNestedManyWithoutUserInput
   email: String!
   emailVerified: DateTime
   id: String
@@ -6183,6 +7048,7 @@ input UserCreateWithoutUserActionsInput {
   image: String
   isAdmin: Boolean
   name: String
+  routines: RoutineCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
@@ -6198,6 +7064,7 @@ input UserCreateWithoutUserBeliefsInput {
   image: String
   isAdmin: Boolean
   name: String
+  routines: RoutineCreateNestedManyWithoutUserInput
   userActions: UserActionCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
@@ -6213,6 +7080,7 @@ input UserCreateWithoutUserIdentitiesInput {
   image: String
   isAdmin: Boolean
   name: String
+  routines: RoutineCreateNestedManyWithoutUserInput
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
@@ -6228,6 +7096,7 @@ input UserCreateWithoutUserValuesInput {
   image: String
   isAdmin: Boolean
   name: String
+  routines: RoutineCreateNestedManyWithoutUserInput
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -6616,6 +7485,7 @@ input UserOrderByWithRelationInput {
   image: SortOrder
   isAdmin: SortOrder
   name: SortOrder
+  routines: RoutineOrderByRelationAggregateInput
   userActions: UserActionOrderByRelationAggregateInput
   userBeliefs: UserBeliefOrderByRelationAggregateInput
   userIdentities: UserIdentityOrderByRelationAggregateInput
@@ -6658,6 +7528,7 @@ input UserUpdateInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  routines: RoutineUpdateManyWithoutUserInput
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -6695,6 +7566,14 @@ input UserUpdateOneRequiredWithoutCalendarsInput {
   create: UserCreateWithoutCalendarsInput
   update: UserUpdateWithoutCalendarsInput
   upsert: UserUpsertWithoutCalendarsInput
+}
+
+input UserUpdateOneRequiredWithoutRoutinesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutRoutinesInput
+  create: UserCreateWithoutRoutinesInput
+  update: UserUpdateWithoutRoutinesInput
+  upsert: UserUpsertWithoutRoutinesInput
 }
 
 input UserUpdateOneRequiredWithoutUserActionsInput {
@@ -6738,6 +7617,7 @@ input UserUpdateWithoutAccountsInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  routines: RoutineUpdateManyWithoutUserInput
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -6753,6 +7633,7 @@ input UserUpdateWithoutActionCompletionsInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  routines: RoutineUpdateManyWithoutUserInput
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -6762,6 +7643,23 @@ input UserUpdateWithoutActionCompletionsInput {
 input UserUpdateWithoutCalendarsInput {
   accounts: AccountUpdateManyWithoutUserInput
   actionCompletions: ActionCompletionUpdateManyWithoutUserInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  image: NullableStringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  routines: RoutineUpdateManyWithoutUserInput
+  userActions: UserActionUpdateManyWithoutUserInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
+  userIdentities: UserIdentityUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutRoutinesInput {
+  accounts: AccountUpdateManyWithoutUserInput
+  actionCompletions: ActionCompletionUpdateManyWithoutUserInput
+  calendars: CalendarUpdateManyWithoutUserInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
@@ -6784,6 +7682,7 @@ input UserUpdateWithoutUserActionsInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  routines: RoutineUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
@@ -6799,6 +7698,7 @@ input UserUpdateWithoutUserBeliefsInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  routines: RoutineUpdateManyWithoutUserInput
   userActions: UserActionUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
@@ -6814,6 +7714,7 @@ input UserUpdateWithoutUserIdentitiesInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  routines: RoutineUpdateManyWithoutUserInput
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
@@ -6829,6 +7730,7 @@ input UserUpdateWithoutUserValuesInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  routines: RoutineUpdateManyWithoutUserInput
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -6847,6 +7749,11 @@ input UserUpsertWithoutActionCompletionsInput {
 input UserUpsertWithoutCalendarsInput {
   create: UserCreateWithoutCalendarsInput!
   update: UserUpdateWithoutCalendarsInput!
+}
+
+input UserUpsertWithoutRoutinesInput {
+  create: UserCreateWithoutRoutinesInput!
+  update: UserUpdateWithoutRoutinesInput!
 }
 
 input UserUpsertWithoutUserActionsInput {
@@ -7243,6 +8150,7 @@ input UserWhereInput {
   image: StringNullableFilter
   isAdmin: BoolFilter
   name: StringNullableFilter
+  routines: RoutineListRelationFilter
   userActions: UserActionListRelationFilter
   userBeliefs: UserBeliefListRelationFilter
   userIdentities: UserIdentityListRelationFilter

@@ -58,6 +58,7 @@ const PageTransitionProgressBar: FC = () => {
   }, [events]);
 
   return (
+    // <Box position={"sticky"} width={"100%"} top={0} left={0} zIndex={10}></Box>
     <Box position={"fixed"} width={"100%"} top={-1} left={0} zIndex={10}>
       <Fade
         in={![0, constants.finalCompleteValue].includes(loadingProgress)}

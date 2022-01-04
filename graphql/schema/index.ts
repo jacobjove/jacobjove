@@ -8,6 +8,8 @@ import {
   Calendar as _Calendar,
   CalendarEvent as _CalendarEvent,
   Identity as _Identity,
+  Routine as _Routine,
+  RoutineAction as _RoutineAction,
   ScheduleTemplate as _ScheduleTemplate,
   UserAction as _UserAction,
   UserActionSchedule as _UserActionSchedule,
@@ -40,6 +42,8 @@ export type ScheduleTemplate = Omit<_ScheduleTemplate, "_count">;
 export type Identity = Omit<_Identity, "_count">;
 export type Value = Omit<_Value, "_count">;
 export type Belief = Omit<_Belief, "_count">;
+export type Routine = Omit<_Routine, "_count">;
+export type RoutineAction = Omit<_RoutineAction, "_count">;
 export type UserBelief = Omit<_UserBelief, "_count">;
 export type UserIdentity = Omit<_UserIdentity, "_count">;
 export type Calendar = Omit<_Calendar, "_count">;

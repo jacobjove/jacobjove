@@ -76,7 +76,8 @@ const Root = styled("div")(() => ({
 }));
 
 const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { selectedDate, setSelectedDate, hidden, data: calendarEvents, session } = props;
+  const { selectedDate, setSelectedDate, hidden, data, session } = props;
+  const { calendarEvents } = data;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
@@ -88,8 +89,6 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
     notes: "",
     calendarId: calendarEvents?.[0]?.calendarId ?? 1, // TODO: Get this from the user's default calendar.
   });
-
-  console.log("calendarEvents", calendarEvents);
 
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
@@ -155,6 +154,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
         position="relative"
         sx={{
           overflowY: "scroll",
+          overflowX: "hidden",
         }}
       >
         <div className="time-labels-column">

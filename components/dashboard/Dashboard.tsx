@@ -2,6 +2,12 @@ import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/calendar";
 import IdentityTable from "@/components/identities/IdentityTable";
 import {
+  calendarEventFragment,
+  userActionFragment,
+  userIdentityFragment,
+  userValueFragment,
+} from "@/graphql/fragments";
+import {
   Action,
   CalendarEvent,
   Identity,
@@ -11,18 +17,44 @@ import {
   UserValue,
   Value,
 } from "@/graphql/schema";
+import { gql } from "@apollo/client";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { FC, useMemo } from "react";
 import { Layout as LayoutItem, Responsive, WidthProvider } from "react-grid-layout";
+
+export const fragment = gql`
+  fragment Dashboard on Query {
+    calendars(where: { userId: { equals: $userId } }) {
+      id
+    }
+    calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
+      ...CalendarEventFragment
+    }
+    userActions(where: { userId: { equals: $userId } }) {
+      ...UserActionFragment
+    }
+    userValues(where: { userId: { equals: $userId } }) {
+      ...UserValueFragment
+    }
+    userIdentities(where: { userId: { equals: $userId } }) {
+      ...UserIdentityFragment
+    }
+  }
+  ${calendarEventFragment}
+  ${userActionFragment}
+  ${userValueFragment}
+  ${userIdentityFragment}
+`;
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -84,41 +116,45 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     const componentMap = {
       calendar: (
         <Card sx={{ height: "100%", maxHeight: "100%" }}>
-          <CardHeader
-            title={<CardTitle title="Calendar" />}
-            style={{ padding: 0 }}
-            action={
-              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
-                <IconButton>
-                  {/* <MoreVertIcon /> */}
-                  <DragIndicatorIcon />
-                </IconButton>
-              </span>
-            }
-          />
+          <Collapse in={editing}>
+            <CardHeader
+              title={<CardTitle title="Calendar" />}
+              style={{ padding: 0 }}
+              action={
+                <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
+                  <IconButton>
+                    {/* <MoreVertIcon /> */}
+                    <DragIndicatorIcon />
+                  </IconButton>
+                </span>
+              }
+            />
+          </Collapse>
           <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {loading ? (
               <div>Loading...</div>
             ) : (
-              <CalendarViewer data={calendarEvents} session={session} />
+              <CalendarViewer data={{ calendarEvents }} loading={loading} session={session} />
             )}
           </CardContent>
         </Card>
       ),
       actions: (
         <Card sx={{ height: "100%" }}>
-          <CardHeader
-            title={<CardTitle title="Actions" />}
-            style={{ padding: 0 }}
-            action={
-              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
-                <IconButton>
-                  {/* <MoreVertIcon /> */}
-                  <DragIndicatorIcon />
-                </IconButton>
-              </span>
-            }
-          />
+          <Collapse in={editing}>
+            <CardHeader
+              title={<CardTitle title="Actions" />}
+              style={{ padding: 0 }}
+              action={
+                <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
+                  <IconButton>
+                    {/* <MoreVertIcon /> */}
+                    <DragIndicatorIcon />
+                  </IconButton>
+                </span>
+              }
+            />
+          </Collapse>
           <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {(!!userActions.length && <ActionBox userActions={userActions} />) || (
               <Typography component="p" textAlign="center">
@@ -130,18 +166,20 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       ),
       identities: (
         <Card sx={{ height: "100%" }}>
-          <CardHeader
-            title={<CardTitle title="Identities" />}
-            style={{ padding: 0 }}
-            action={
-              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
-                <IconButton>
-                  {/* <MoreVertIcon /> */}
-                  <DragIndicatorIcon />
-                </IconButton>
-              </span>
-            }
-          />
+          <Collapse in={editing}>
+            <CardHeader
+              title={<CardTitle title="Identities" />}
+              style={{ padding: 0 }}
+              action={
+                <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
+                  <IconButton>
+                    {/* <MoreVertIcon /> */}
+                    <DragIndicatorIcon />
+                  </IconButton>
+                </span>
+              }
+            />
+          </Collapse>
           <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {(!!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
               <Typography component="p" textAlign="center">
@@ -165,18 +203,20 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       ),
       values: (
         <Card sx={{ height: "100%" }}>
-          <CardHeader
-            title={<CardTitle title="Values" />}
-            style={{ padding: 0 }}
-            action={
-              <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
-                <IconButton>
-                  {/* <MoreVertIcon /> */}
-                  <DragIndicatorIcon />
-                </IconButton>
-              </span>
-            }
-          />
+          <Collapse in={editing}>
+            <CardHeader
+              title={<CardTitle title="Values" />}
+              style={{ padding: 0 }}
+              action={
+                <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
+                  <IconButton>
+                    {/* <MoreVertIcon /> */}
+                    <DragIndicatorIcon />
+                  </IconButton>
+                </span>
+              }
+            />
+          </Collapse>
           <CardContent style={{ paddingTop: "0.25rem", height: "100%", maxHeight: "100%" }}>
             {(!!userValues.length &&
               userValues.map((userValue, index) => (

@@ -1,9 +1,13 @@
 import { CalendarEvent } from "@/graphql/schema";
 import { Session } from "next-auth";
 
+export type CalendarData = {
+  calendarEvents: CalendarEvent[];
+};
+
 export interface CalendarProps {
   collapseViewMenu?: boolean;
-  data: CalendarEvent[];
+  data: CalendarData;
   loading: boolean;
   error?: Error;
   session: Session;

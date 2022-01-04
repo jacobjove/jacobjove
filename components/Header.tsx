@@ -10,8 +10,6 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
@@ -28,19 +26,13 @@ const DynamicPageTransitionProgressBar = dynamic(
 
 const pages = [["About", "/about"]];
 
-const APP_PAGES = [
-  ["Dashboard", "/app/dashboard"],
-  ["Calendar", "/app/calendar"],
-  ["Planner", "/app/planner"],
-  ["Table", "/app/spreadsheet"],
-];
-
 const settings = [
   ["Profile", "/profile"],
   ["Settings", "/settings"],
 ];
 
-const AppBar = styled(_AppBar)(() => ({
+const AppBar = styled(_AppBar)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
   color: "whitesmoke",
   "& a": {
     color: "whitesmoke",
@@ -63,20 +55,20 @@ const AppBar = styled(_AppBar)(() => ({
   },
 }));
 
-const Header: FC = () => {
+interface HeaderProps {
+  heightInPx?: number;
+}
+
+const Header: FC<HeaderProps> = (props: HeaderProps) => {
+  const heightInPx = props.heightInPx ?? 60;
+
   const router = useRouter();
   const { data: session } = useSession();
+
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const isActive = (pathname: string) => router.pathname === pathname;
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -85,15 +77,22 @@ const Header: FC = () => {
     setAnchorElUser(null);
   };
 
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
   const logout: React.MouseEventHandler = (e) => {
     e.preventDefault();
     session && handleLogout(session);
   };
-
   return (
     <AppBar position="sticky">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        {/* Default toolbar height is 64px. */}
+        <Toolbar disableGutters style={{ height: `${heightInPx}px`, minHeight: `${heightInPx}px` }}>
           <Link href={`${router.pathname.includes("/app/") ? "/app" : "/"}`}>
             <a style={{ display: "flex", alignItems: "center" }}>
               <Image alt="SelfBuilder logo" src="/logo.png" width={40} height={40} />
@@ -228,22 +227,6 @@ const Header: FC = () => {
           </Box>
         </Toolbar>
       </Container>
-      {router.pathname.includes("/app/") && (
-        <Box id="appTabs" sx={{ width: "100%" }}>
-          <Container maxWidth="xl">
-            <Tabs
-              aria-label="nav tabs"
-              value={APP_PAGES.findIndex((item) => item[1] === router.pathname)}
-            >
-              {APP_PAGES.map(([name, path]) => (
-                <Link key={name} href={path} passHref>
-                  <Tab component="a" label={name} />
-                </Link>
-              ))}
-            </Tabs>
-          </Container>
-        </Box>
-      )}
       <DynamicPageTransitionProgressBar />
     </AppBar>
   );

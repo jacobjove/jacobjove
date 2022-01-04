@@ -1,7 +1,8 @@
 import EventBox from "@/components/calendar/EventBox";
-import { GET_CALENDAR_EVENTS, SCHEDULE_ACTION } from "@/graphql/queries";
+import { calendarEventFragment } from "@/graphql/fragments";
+import { SCHEDULE_ACTION } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
-import { useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes, parseISO } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
@@ -44,20 +45,25 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, view, events, onClick, past } = props;
   const [hovered, setHovered] = useState(false);
   const [addEvent, { loading }] = useMutation(SCHEDULE_ACTION, {
-    // refetchQueries: [
-    //   GET_CALENDAR_EVENTS, // DocumentNode object parsed with gql
-    //   "GetCalendarEvents", // Query name
-    // ],
-    update(cache, { data }) {
-      const newEvent = data?.addEvent?.calendarEvent;
-      const existingEvents = cache.readQuery<GetCalendarEvents>({
-        query: GET_CALENDAR_EVENTS,
-      });
-      if (existingEvents && newEvent) {
-        cache.writeQuery({
-          query: GET_CALENDAR_EVENTS,
-          data: {
-            calendarEvents: [...(existingEvents?.calendarEvents ?? []), newEvent],
+    update(cache, { data: { createCalendarEvent } }) {
+      // const { createCalendarEvent } = data;
+      if (createCalendarEvent) {
+        cache.modify({
+          fields: {
+            calendarEvents(existingEvents = []) {
+              const newCalendarEventRef = cache.writeFragment({
+                data: createCalendarEvent,
+                fragment: gql`
+                  fragment NewCalendarEvent on CalendarEvent {
+                    ...CalendarEventFragment
+                  }
+                  ${calendarEventFragment}
+                `,
+                fragmentName: "NewCalendarEvent",
+              });
+              console.log("New calendar event ref", newCalendarEventRef);
+              return [...existingEvents, newCalendarEventRef];
+            },
           },
         });
       }

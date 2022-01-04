@@ -1,14 +1,18 @@
-import Dashboard, { DashboardData, DashboardLayouts } from "@/components/dashboard/Dashboard";
+import Dashboard, {
+  DashboardData,
+  DashboardLayouts,
+  fragment as dashboardFragment,
+} from "@/components/dashboard/Dashboard";
 import Layout from "@/components/Layout";
-import { GET_DASHBOARD_DATA } from "@/graphql/queries";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
-import { useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import DoneIcon from "@mui/icons-material/Done";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
 import Select from "@mui/material/Select";
@@ -17,6 +21,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 import { useState } from "react";
 
 interface DashboardPageProps {
@@ -25,11 +30,20 @@ interface DashboardPageProps {
   layouts: DashboardLayouts;
 }
 
+const QUERY = gql`
+  query DashboardPage($userId: String!) {
+    ...Dashboard
+  }
+  ${dashboardFragment}
+`;
+
 const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) => {
   const { layouts } = props;
   const { data: session } = useSession();
   const [editing, setEditing] = useState(false);
-  const { loading, error, data } = useQuery<DashboardData>(GET_DASHBOARD_DATA, {
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { loading, error, data } = useQuery<DashboardData>(QUERY, {
     variables: {
       userId: session?.user?.id,
     },
@@ -63,19 +77,16 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
           )}
         </Box>
         {editing ? (
-          <Button
-            variant="text"
+          <IconButton
             onClick={() => {
-              console.log("setting editing mode false");
               setEditing(false);
             }}
           >
             <DoneIcon />
-          </Button>
+          </IconButton>
         ) : (
           <IconButton
             onClick={() => {
-              console.log("setting editing mode true");
               setEditing(true);
             }}
           >
@@ -83,14 +94,41 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
           </IconButton>
         )}
         <IconButton
-          onClick={() => {
+          id="menu-button-x"
+          onClick={(e) => {
             console.log(
               "Open dropdown for renaming, sharing, creating new dashboard, viewing all dashboards, etc."
             );
+            setMenuAnchorEl(e.currentTarget);
+            setMenuOpen(true);
           }}
         >
           <MoreHorizIcon />
         </IconButton>
+        <Menu
+          anchorEl={menuAnchorEl}
+          open={menuOpen}
+          onClose={() => {
+            setMenuOpen(false);
+          }}
+          MenuListProps={{
+            "aria-labelledby": "menu-button-x",
+          }}
+          keepMounted
+        >
+          <Link href="/app/routines">
+            <a>
+              <MenuItem>Routines</MenuItem>
+            </a>
+          </Link>
+          <MenuItem
+            onClick={() => {
+              setMenuOpen(false);
+            }}
+          >
+            Close
+          </MenuItem>
+        </Menu>
       </Box>
       <Dashboard
         data={data}
@@ -154,7 +192,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     session,
   };
   await apolloClient.query({
-    query: GET_DASHBOARD_DATA,
+    query: QUERY,
     variables: {
       userId: session?.user?.id,
     },

@@ -1,8 +1,6 @@
 import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/calendar";
 import Layout from "@/components/Layout";
-import { GET_DASHBOARD_DATA } from "@/graphql/queries";
-// import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
@@ -19,11 +17,6 @@ import { useState } from "react";
 
 interface PlannerPageProps {
   dateISO: string;
-  // actionSchedules: (UserActionSchedule & {
-  //   userAction: UserAction & {
-  //     action: Action;
-  //   };
-  // })[];
   session: Session;
 }
 
@@ -32,7 +25,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { data: session } = useSession();
   const [date, setDate] = useState(new Date(dateISO));
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_DASHBOARD_DATA, {
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(QUERY, {
     variables: {
       userId: session?.user?.id,
     },
@@ -169,7 +162,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
   await apolloClient
     .query({
-      query: GET_DASHBOARD_DATA,
+      query: QUERY,
       variables: {
         userId: session.user.id,
       },

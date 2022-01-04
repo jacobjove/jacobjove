@@ -1,3 +1,4 @@
+import Typography from "@mui/material/Typography";
 import { FC, ReactNode } from "react";
 
 interface PageHeaderProps {
@@ -6,10 +7,17 @@ interface PageHeaderProps {
 
 const PageHeader: FC<PageHeaderProps> = ({ children }: PageHeaderProps) => {
   return (
-    <>
-      <h1 className="page-header text-center my-3">{children}</h1>
-      <hr />
-    </>
+    <Typography
+      variant="h1"
+      component="h1"
+      marginY="1rem"
+      paddingBottom="0.5rem"
+      marginX="20%"
+      textAlign={"center"}
+      borderBottom={"1px solid lightgray"}
+    >
+      {children}
+    </Typography>
   );
 };
 

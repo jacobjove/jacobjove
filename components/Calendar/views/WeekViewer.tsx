@@ -59,7 +59,8 @@ const Root = styled("div")(() => ({
 }));
 
 const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { selectedDate, hidden, data: calendarEvents, session } = props;
+  const { selectedDate, hidden, data, session } = props;
+  const { calendarEvents } = data;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);

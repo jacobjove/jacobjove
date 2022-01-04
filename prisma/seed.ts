@@ -74,6 +74,18 @@ async function main() {
         console.log(e);
       }
     });
+    sampleSize(values, Math.floor(Math.random() * values.length)).forEach((value) => {
+      try {
+        prisma.userValue.create({
+          data: {
+            userId: user.id,
+            valueId: value.id,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    });
     try {
       await prisma.calendar.create({
         data: {
@@ -84,6 +96,64 @@ async function main() {
     } catch (e) {
       console.log(e);
     }
+    actions.forEach(async (action) => {
+      try {
+        const userAction = await prisma.userAction.create({
+          data: {
+            userId: user.id,
+            actionId: action.id,
+          },
+        });
+        await prisma.userActionSchedule.create({
+          data: {
+            userActionId: userAction.id,
+            frequency: "DAY",
+            multiplier: 1,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    });
+    const userActions = await prisma.userAction.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        action: true,
+      },
+    });
+    [...Array(2)].map(async (_, i) => {
+      try {
+        const routine = await prisma.routine.create({
+          data: {
+            userId: user.id,
+            name: `Routine ${i}`,
+            description:
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          },
+        });
+        userActions.forEach(async (userAction, i) => {
+          const doIt = true;
+          if (doIt) {
+            try {
+              await prisma.routineAction.create({
+                data: {
+                  routineId: routine.id,
+                  actionId: userAction.action.id,
+                  position: i,
+                  durationInMin: 10,
+                },
+              });
+            } catch (e) {
+              console.log(e);
+            }
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    });
     const calendar = await prisma.calendar.findFirst({
       where: {
         userId: user.id,
@@ -91,14 +161,8 @@ async function main() {
       },
     });
     if (calendar) {
-      actions.forEach(async (action) => {
+      userActions.forEach(async (userAction) => {
         try {
-          const userAction = await prisma.userAction.create({
-            data: {
-              userId: user.id,
-              actionId: action.id,
-            },
-          });
           await prisma.userActionSchedule.create({
             data: {
               userActionId: userAction.id,
@@ -115,15 +179,17 @@ async function main() {
             const start = new Date(today);
             start.setDate(start.getDate() + i);
             const end = new Date(start);
-            end.setTime(end.getTime() + 60 * 60 * 1000);
-            // await prisma.calendarEvent.create({
-            //   data: {
-            //     calendarId: calendar.id,
-            //     start: start.toISOString(),
-            //     end: end.toISOString(),
-            //     title: `${action.name} event ${i}`,
-            //   },
-            // });
+            end.setTime(end.getTime() + 30 * 60 * 1000);
+            if (i % 2 == 0) {
+              await prisma.calendarEvent.create({
+                data: {
+                  calendarId: calendar.id,
+                  start: start.toISOString(),
+                  end: end.toISOString(),
+                  title: `${userAction.action.name} event ${i}`,
+                },
+              });
+            }
           } catch (e) {
             console.log(e);
           }

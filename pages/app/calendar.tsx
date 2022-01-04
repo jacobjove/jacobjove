@@ -1,8 +1,11 @@
-import CalendarViewer from "@/components/calendar";
+import CalendarViewer, {
+  fragment as calendarViewerFragment,
+} from "@/components/calendar/CalendarViewer";
+import { CalendarData } from "@/components/calendar/views/props";
 import Layout from "@/components/Layout";
 import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
-import { useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -12,22 +15,28 @@ import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 
 interface CalendarPageProps {
-  dateISO: string;
   session: Session;
 }
 
+const QUERY = gql`
+  query CalendarPage($userId: String!) {
+    ...CalendarViewer
+  }
+  ${calendarViewerFragment}
+`;
+
 const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => {
-  const { dateISO } = props;
   const { data: session } = useSession();
-  const { loading, error, data } = useQuery(GET_CALENDAR_EVENTS, {
+  const { loading, error, data } = useQuery<CalendarData>(QUERY, {
     variables: {
       userId: session?.user?.id,
     },
   });
+  console.log(QUERY);
   if (!session) return null;
   if (loading) return <p>{"Loading..."}</p>;
   if (error) return <p>{"Error loading data."}</p>;
-  const { calendarEvents } = data;
+  if (!data) return null;
   return (
     <Layout>
       <NextSeo
@@ -41,12 +50,7 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
         <Grid item xs={12} lg={9} maxHeight={"80vh"}>
           <Card sx={{ height: "100%" }}>
             <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
-              <CalendarViewer
-                data={calendarEvents}
-                loading={loading}
-                error={error}
-                session={session}
-              />
+              <CalendarViewer data={data} loading={loading} error={error} session={session} />
             </Box>
           </Card>
         </Grid>
@@ -67,11 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const today = new Date();
-  const props: CalendarPageProps = {
-    dateISO: today.toISOString(),
-    session,
-  };
+  const props: CalendarPageProps = { session };
   await apolloClient
     .query({
       query: GET_CALENDAR_EVENTS,
