@@ -3,6 +3,7 @@ import BentoIcon from "@mui/icons-material/Bento";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import MailIcon from "@mui/icons-material/Mail";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import NotesIcon from "@mui/icons-material/Notes";
@@ -122,12 +123,12 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
             <ListItemText primary={"Calendar"} />
           </ListItem>
         </Link>
-        <Link href="/app/journal" passHref>
-          <ListItem button component={"a"} title={"Notebook"}>
+        <Link href="/app/tasks" passHref>
+          <ListItem button component={"a"} title={"Tasks"}>
             <ListItemIcon>
-              <NotesIcon />
+              <FormatListBulletedIcon />
             </ListItemIcon>
-            <ListItemText primary={"Notebook"} />
+            <ListItemText primary={"Tasks"} />
           </ListItem>
         </Link>
         <Link href="/app/routines" passHref>
@@ -138,23 +139,31 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
             <ListItemText primary={"Routines"} />
           </ListItem>
         </Link>
-        <Link href="/app/experiments" passHref>
-          <ListItem button component={"a"} title={"Experiments"}>
-            <ListItemIcon>
-              <ScienceIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Experiments"} />
-          </ListItem>
-        </Link>
-      </List>
-      <Divider />
-      <List>
         <Link href="/app/notifications" passHref>
           <ListItem button component={"a"} title={"Notifications"}>
             <ListItemIcon>
               <NotificationsIcon />
             </ListItemIcon>
             <ListItemText primary={"Notifications"} />
+          </ListItem>
+        </Link>
+      </List>
+      <Divider />
+      <List>
+        <Link href="/app/journal" passHref>
+          <ListItem button component={"a"} title={"Notebook"}>
+            <ListItemIcon>
+              <NotesIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Notebook"} />
+          </ListItem>
+        </Link>
+        <Link href="/app/experiments" passHref>
+          <ListItem button component={"a"} title={"Experiments"}>
+            <ListItemIcon>
+              <ScienceIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Experiments"} />
           </ListItem>
         </Link>
         <Link href="/app/focus" passHref>

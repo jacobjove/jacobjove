@@ -35,7 +35,10 @@ export const resolvers = [
 ] as unknown as NonEmptyArray<Function>;
 
 export type Action = Omit<_Action, "_count">;
-export type UserAction = Omit<_UserAction, "_count">;
+export type UserAction = Omit<_UserAction, "_count" | "action"> & {
+  action: Action;
+  schedules: UserActionSchedule[];
+};
 export type UserActionSchedule = Omit<_UserActionSchedule, "_count">;
 export type ActionScheduleTemplate = Omit<_ActionScheduleTemplate, "_count">;
 export type ScheduleTemplate = Omit<_ScheduleTemplate, "_count">;
@@ -44,8 +47,8 @@ export type Value = Omit<_Value, "_count">;
 export type Belief = Omit<_Belief, "_count">;
 export type Routine = Omit<_Routine, "_count">;
 export type RoutineAction = Omit<_RoutineAction, "_count">;
-export type UserBelief = Omit<_UserBelief, "_count">;
-export type UserIdentity = Omit<_UserIdentity, "_count">;
+export type UserBelief = Omit<_UserBelief, "_count" | "belief"> & { belief: Belief };
+export type UserIdentity = Omit<_UserIdentity, "_count" | "identity"> & { identity: Identity };
 export type Calendar = Omit<_Calendar, "_count">;
 export type CalendarEvent = Omit<_CalendarEvent, "_count" | "start" | "end"> & {
   start: string;

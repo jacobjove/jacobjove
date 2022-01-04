@@ -1,16 +1,15 @@
 import ActionChip from "@/components/actions/ActionChip";
-import { Action, UserAction as _UserAction, UserActionSchedule } from "@/graphql/schema";
+import { UserAction as _UserAction, UserActionSchedule } from "@/graphql/schema";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Link from "next/link";
 import { FC } from "react";
 
 type UserAction = _UserAction & {
-  action: Action;
   schedules: UserActionSchedule[];
 };
 
-interface ActionBoxProps {
+export interface ActionBoxProps {
   userActions: UserAction[];
 }
 
