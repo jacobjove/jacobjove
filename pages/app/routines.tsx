@@ -71,7 +71,7 @@ const RoutinesPage: NextPage<RoutinesPageProps> = (props: RoutinesPageProps) => 
                   {routine.routineActions.length ? (
                     routine.routineActions.map((routineAction) => (
                       <div key={routineAction.id}>
-                        {routineAction.action.name}, {routineAction.durationInMin} minutes
+                        {routineAction.action.name}, {routineAction.durationInMinutes} minutes
                       </div>
                     ))
                   ) : (

@@ -1,9 +1,9 @@
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
-import { CalendarProps } from "@/components/calendar/views/props";
+import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
 import DateContext from "@/components/DateContext";
-import { calendarEventFragment } from "@/graphql/fragments";
+import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { Calendar } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -11,20 +11,19 @@ import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
 import CalendarViewMonthIcon from "@mui/icons-material/CalendarViewMonth";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 import GoogleIcon from "@mui/icons-material/Google";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { Box, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { addMinutes } from "date-fns";
+import Link from "next/link";
 import { FC, useContext, useState } from "react";
-
-// TODO?  https://mui.com/components/tabs/#unstyled
-// import TabsUnstyled from '@mui/base/TabsUnstyled';
-// import TabsListUnstyled from '@mui/base/TabUnstyled';
-// import TabUnstyled from '@mui/base/TabUnstyled';
-// import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 
 // import { google } from 'googleapis';
 // const googleCalendarClient = google.calendar('v3');
@@ -40,30 +39,52 @@ type ViewMode = "day" | "week" | "month";
 export const fragment = gql`
   fragment CalendarViewer on Query {
     calendars(where: { userId: { equals: $userId } }) {
-      id
+      ...CalendarFragment
     }
     calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
       ...CalendarEventFragment
     }
   }
+  ${calendarFragment}
   ${calendarEventFragment}
 `;
 
-const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
+interface CalendarViewerData extends CalendarData {
+  calendars: Calendar[];
+}
+
+type CalendarViewerProps = Omit<CalendarProps, "data"> & {
+  data: CalendarViewerData;
+};
+
+const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
   const { data, ...rest } = props;
+  const { calendars, calendarEvents } = data;
+  const defaultCalendar = calendars[0]; // TODO
   const date = useContext(DateContext);
+  const isMobile = useMediaQuery("(max-width: 600px)");
+
   const [view, setView] = useState<ViewMode>("day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
-  const [calendars, setCalendars] = useState<Calendar[]>([]);
+  const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
+    calendars.map((calendar) => calendar.id)
+  );
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [initialEventFormData, setInitialEventFormData] = useState({
+    title: "",
+    start: date,
+    end: date ? addMinutes(date, 29) : null,
+    allDay: false,
+    notes: "",
+    calendarId: defaultCalendar.id,
+  });
+
   const handleViewTabChange = (event: React.SyntheticEvent, newValue: 0 | 1 | 2) => {
-    console.log("handleViewTabChange", newValue);
     setView(newValue === 0 ? "day" : newValue === 1 ? "week" : "month");
   };
   const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
-  const isMobile = useMediaQuery("(max-width: 600px)");
-  console.log(`Rendering calendar viewer with ${view} view ...`);
   const displayCalendarViewLabels = !isMobile && false;
-  console.log("displayCalendarViewLabels", displayCalendarViewLabels);
   return (
     <Box display="flex" flexDirection={"column"} height={"100%"}>
       {!props.collapseViewMenu && (
@@ -77,7 +98,7 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
             display: props.collapseViewMenu ? "none" : "flex",
           }}
         >
-          <Grid item justifyContent={"center"}>
+          <Grid item justifyContent={"center"} alignItems={"end"} display={"flex"}>
             <Tabs value={viewTabIndex} onChange={handleViewTabChange} sx={{ minHeight: "auto" }}>
               <Tab
                 icon={<CalendarViewDayIcon />}
@@ -99,33 +120,103 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
               />
             </Tabs>
           </Grid>
-          <Grid item justifyContent={"center"}>
+          <Grid
+            item
+            display={"flex"}
+            alignItems={"start"}
+            justifyContent={"center"}
+            position="relative"
+            right="-0.6rem"
+            sx={{
+              "& button svg": {
+                fontSize: "1.25rem",
+              },
+            }}
+          >
             <IconButton
-              title={`Connect Google Calendar`}
-              onClick={() => {
-                console.log("connecting to google calendar...");
+              title={`Display calendar menu`}
+              id="calendar-menu-button-x"
+              onClick={(e) => {
+                console.log(
+                  "Open dropdown for renaming, sharing, creating new dashboard, viewing all dashboards, etc."
+                );
+                setMenuAnchorEl(e.currentTarget);
+                setMenuOpen(true);
               }}
             >
-              <GoogleIcon sx={{ color: "lightgray", fontSize: "1rem" }} />
+              <MoreVertIcon />
             </IconButton>
-            <IconButton
-              title={`Connect Apple Calendar`}
-              onClick={() => {
-                console.log("connecting to apple calendar...");
+            <Menu
+              anchorEl={menuAnchorEl}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
               }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              open={menuOpen}
+              onClose={() => {
+                setMenuOpen(false);
+              }}
+              MenuListProps={{
+                "aria-labelledby": "calendar-menu-button-x",
+              }}
+              keepMounted
             >
-              <AppleIcon sx={{ color: "lightgray", fontSize: "1.1rem" }} />
-            </IconButton>
-            <Button
-              component="span"
+              <Link href="/app/routines">
+                <a>
+                  <MenuItem>
+                    <IconButton
+                      title={`Connect Google Calendar`}
+                      onClick={() => {
+                        console.log("connecting to google calendar...");
+                      }}
+                    >
+                      <GoogleIcon sx={{ color: "lightgray" }} />
+                    </IconButton>
+                  </MenuItem>
+                </a>
+              </Link>
+              <MenuItem>
+                <IconButton
+                  title={`Connect Apple Calendar`}
+                  onClick={() => {
+                    console.log("connecting to apple calendar...");
+                  }}
+                >
+                  <AppleIcon sx={{ color: "lightgray" }} />
+                </IconButton>
+              </MenuItem>
+              {calendars?.map((calendar) => (
+                <MenuItem key={calendar.id}>
+                  <Button
+                    title={`Connect ${calendar.name}`}
+                    onClick={() => {
+                      console.log("connecting to calendar...");
+                    }}
+                  >
+                    {calendar.name} {calendar.id}
+                  </Button>
+                </MenuItem>
+              ))}
+              <MenuItem
+                onClick={() => {
+                  setMenuOpen(false);
+                }}
+              >
+                Close
+              </MenuItem>
+            </Menu>
+            <IconButton
               title={`Expand to full screen`}
-              sx={{ marginLeft: "1rem", padding: 0, minWidth: 0, color: "gray" }}
               onClick={() => {
                 console.log("Expanding calendar widget to full screen...");
               }}
             >
-              <ZoomOutMapIcon sx={{ fontSize: "1.1rem" }} />
-            </Button>
+              <ZoomOutMapIcon />
+            </IconButton>
           </Grid>
         </Grid>
       )}
@@ -135,6 +226,9 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
           {...rest}
           selectedDate={selectedDate || date}
           setSelectedDate={setSelectedDate}
+          initialEventFormData={initialEventFormData}
+          setInitialEventFormData={setInitialEventFormData}
+          defaultCalendar={defaultCalendar}
           hidden={view != "day"}
         />
         <WeekViewer
@@ -142,6 +236,9 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
           {...rest}
           selectedDate={selectedDate || date}
           setSelectedDate={setSelectedDate}
+          initialEventFormData={initialEventFormData}
+          setInitialEventFormData={setInitialEventFormData}
+          defaultCalendar={defaultCalendar}
           hidden={view != "week"}
         />
         <MonthViewer
@@ -149,6 +246,9 @@ const CalendarViewer: FC<CalendarProps> = (props: CalendarProps) => {
           {...rest}
           selectedDate={selectedDate || date}
           setSelectedDate={setSelectedDate}
+          initialEventFormData={initialEventFormData}
+          setInitialEventFormData={setInitialEventFormData}
+          defaultCalendar={defaultCalendar}
           hidden={view != "month"}
         />
       </Box>

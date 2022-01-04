@@ -133,22 +133,33 @@ async function main() {
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
           },
         });
+        let routineDurationInMinutes = 0;
         userActions.forEach(async (userAction, i) => {
           const doIt = true;
           if (doIt) {
+            const actionDurationInMinutes = 10;
             try {
               await prisma.routineAction.create({
                 data: {
                   routineId: routine.id,
                   actionId: userAction.action.id,
                   position: i,
-                  durationInMin: 10,
+                  durationInMinutes: actionDurationInMinutes,
                 },
               });
+              routineDurationInMinutes += actionDurationInMinutes;
             } catch (e) {
               console.log(e);
             }
           }
+          await prisma.routine.update({
+            where: {
+              id: routine.id,
+            },
+            data: {
+              durationInMinutes: routineDurationInMinutes,
+            },
+          });
         });
       } catch (e) {
         console.log(e);

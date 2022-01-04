@@ -11,10 +11,11 @@ import { createTheme } from "@mui/material";
 import { blue, orange } from "@mui/material/colors";
 import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { SessionProvider } from "next-auth/react";
+import { NextPage } from "next";
+import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
-import { useEffect, useState } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
@@ -44,6 +45,10 @@ const theme = createTheme({
     },
   },
 });
+
+export type ComponentWithAuth = NextPage & {
+  auth?: boolean;
+};
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
@@ -116,7 +121,13 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                       ]
                     }
                   />
-                  <Component {...pageProps} />
+                  {(Component as ComponentWithAuth).auth ? (
+                    <Auth>
+                      <Component {...pageProps} />
+                    </Auth>
+                  ) : (
+                    <Component {...pageProps} />
+                  )}
                 </DateContext.Provider>
               </DndProvider>
             </LocalizationProvider>
@@ -126,3 +137,18 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     </SessionProvider>
   );
 }
+
+const Auth: FC<{ children: ReactElement }> = ({ children }: { children: ReactElement }) => {
+  const { data: session, status } = useSession();
+  const isUser = !!session?.user;
+  useEffect(() => {
+    if (status === "loading") return; // Do nothing while loading
+    if (!isUser) signIn(); // If not authenticated, force log in
+  }, [isUser, status]);
+  if (isUser) {
+    return children;
+  }
+  // Session is being fetched, or no user.
+  // If no user, useEffect() will redirect.
+  return <div>Loading...</div>;
+};

@@ -84,7 +84,6 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  console.log("open", open);
   return (
     <Drawer variant="permanent" open={open} PaperProps={{ style: { top: "auto" } }}>
       <DrawerHeader>

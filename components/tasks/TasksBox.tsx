@@ -1,11 +1,12 @@
 import ActionBox, { ActionBoxProps } from "@/components/actions/ActionBox";
+import RoutineChip from "@/components/routines/RoutineChip";
 import { routineFragment, userActionFragment } from "@/graphql/fragments";
 import { Routine, UserAction } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import { FC } from "react";
 
 export const fragment = gql`
-  fragment TaskBox on Query {
+  fragment TasksBox on Query {
     routines(where: { userId: { equals: $userId } }) {
       ...RoutineFragment
     }
@@ -17,21 +18,21 @@ export const fragment = gql`
   ${routineFragment}
 `;
 
-type TaskBoxProps = Omit<ActionBoxProps, "userActions"> & {
+type TasksBoxProps = Omit<ActionBoxProps, "userActions"> & {
   data: {
     routines: Routine[];
     userActions: UserAction[];
   };
 };
 
-const TaskBox: FC<TaskBoxProps> = (props: TaskBoxProps) => {
+const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const { data, ...rest } = props;
   const { routines, userActions } = data;
   return (
     <div>
       <div>
         {routines.map((routine: Routine) => (
-          <p key={routine.id}>{routine.name}</p>
+          <RoutineChip key={routine.id} routine={routine} />
         ))}
       </div>
       <ActionBox userActions={userActions} {...rest} />
@@ -39,4 +40,4 @@ const TaskBox: FC<TaskBoxProps> = (props: TaskBoxProps) => {
   );
 };
 
-export default TaskBox;
+export default TasksBox;

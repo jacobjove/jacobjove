@@ -1,18 +1,18 @@
-import { calendarEventFragment, userActionFragment } from "@/graphql/fragments";
+import { calendarEventFragment, calendarFragment, userActionFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
+
+export const GET_DEFAULT_CALENDAR = gql`
+  query GetDefaultCalendar {
+    calendar(id: "default") {
+      ...calendarFragment
+    }
+  }
+  ${calendarFragment}
+`;
 
 export const GET_CALENDAR_EVENTS = gql`
   query GetCalendarEvents($userId: String!) {
     calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
-      ...CalendarEventFragment
-    }
-  }
-  ${calendarEventFragment}
-`;
-
-export const SCHEDULE_ACTION = gql`
-  mutation ScheduleAction($data: CalendarEventCreateInput!) {
-    createCalendarEvent(data: $data) {
       ...CalendarEventFragment
     }
   }
@@ -28,15 +28,7 @@ export const CREATE_CALENDAR_EVENT = gql`
   ${calendarEventFragment}
 `;
 
-export const DELETE_CALENDAR_EVENT = gql`
-  mutation DeleteCalendarEvent($id: Int!) {
-    deleteCalendarEvent(where: { id: $id }) {
-      id
-    }
-  }
-`;
-
-export const MODIFY_CALENDAR_EVENT = gql`
+export const UPDATE_CALENDAR_EVENT = gql`
   mutation UpdateCalendarEvent(
     $data: CalendarEventUpdateInput!
     $where: CalendarEventWhereUniqueInput!
@@ -48,27 +40,13 @@ export const MODIFY_CALENDAR_EVENT = gql`
   ${calendarEventFragment}
 `;
 
-// export const GET_CALENDAR_EVENTS = gql`
-//   query GetCalendarEvents($userId: String!, $gt: DateTime!, $lt: DateTime!) {
-//     calendars (where: {userId: {equals: $userId}}) {
-//       id
-//       color
-//       events (
-//         where: {
-//           start: {
-//             gt: $gt
-//             lt: $lt
-//           }
-//         }
-//       ) {
-//         id
-//         title
-//         start
-//         end
-//       }
-//     }
-//   }
-// `;
+export const DELETE_CALENDAR_EVENT = gql`
+  mutation DeleteCalendarEvent($id: Int!) {
+    deleteCalendarEvent(where: { id: $id }) {
+      id
+    }
+  }
+`;
 
 export const GET_USER_ACTIONS = gql`
   query GetUserActions($userId: String!) {

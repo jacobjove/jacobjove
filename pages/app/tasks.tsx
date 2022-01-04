@@ -1,7 +1,6 @@
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
-import DateContext from "@/components/DateContext";
 import Layout from "@/components/Layout";
-import TaskBox, { fragment as taskBoxFragment } from "@/components/tasks/TaskBox";
+import TasksBox, { fragment as taskBoxFragment } from "@/components/tasks/TasksBox";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
@@ -14,7 +13,6 @@ import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { useContext } from "react";
 
 interface PlannerPageProps {
   session: Session;
@@ -23,7 +21,7 @@ interface PlannerPageProps {
 const QUERY = gql`
   query TasksPage($userId: String!) {
     ...CalendarViewer
-    ...TaskBox
+    ...TasksBox
   }
   ${calendarViewerFragment}
   ${taskBoxFragment}
@@ -31,7 +29,6 @@ const QUERY = gql`
 
 const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { data: session } = useSession();
-  const date = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
@@ -44,7 +41,10 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session) {
     return null;
   }
-  const { calendarEvents, userActions, routines } = data;
+  if (!data) {
+    return null;
+  }
+  const { calendarEvents, calendars, userActions, routines } = data;
   return (
     <Layout>
       <NextSeo
@@ -60,7 +60,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             <CardContent>
               <CalendarViewer
                 loading={loading}
-                data={{ calendarEvents }}
+                data={{ calendarEvents, calendars }}
                 error={error}
                 collapseViewMenu={true}
                 session={session}
@@ -77,12 +77,6 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           order={{ xs: 1, sm: 2 }}
           flexDirection="column"
           maxHeight={isMobile ? "35vh" : "auto"}
-          // sx={{
-          //   maxHeight: {
-          //     xs: "33vh",
-          //     sm: "auto",
-          //   },
-          // }}
         >
           <Grid item padding="1rem 0.25rem 0.1rem">
             <form>
@@ -101,7 +95,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           </Grid>
           <Grid item padding="0.25rem">
             <div>
-              {(!!userActions.length && <TaskBox data={{ userActions, routines }} />) || (
+              {(!!userActions.length && <TasksBox data={{ userActions, routines }} />) || (
                 <Typography component="p" textAlign="center">
                   No actions yet.
                 </Typography>
@@ -164,7 +158,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!session?.user?.id) {
     return {
       redirect: {
-        destination: "/auth/signin?callbackUrl=/app/planner",
+        destination: "/auth/signin?callbackUrl=/app/tasks",
         permanent: false,
       },
     };

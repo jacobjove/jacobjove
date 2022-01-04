@@ -3,6 +3,7 @@ import RepeatIcon from "@mui/icons-material/Repeat";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC } from "react";
 import { useDrag } from "react-dnd";
@@ -15,13 +16,15 @@ interface ActionChipProps {
 }
 
 const ActionChip: FC<ActionChipProps> = ({ userAction }: ActionChipProps) => {
+  const { data: session } = useSession();
   const schedule = userAction.schedules[0]; // TODO
   const [{ opacity }, dragRef] = useDrag(() => ({
     type: "action",
     item: {
+      type: "action",
       title: userAction.action.name,
       scheduleId: schedule.id,
-      calendarId: 1, // TODO: get calendar id from userActionSchedule
+      calendarId: session?.user?.settings?.defaultCalendarId,
     },
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,

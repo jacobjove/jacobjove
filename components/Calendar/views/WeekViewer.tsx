@@ -59,19 +59,20 @@ const Root = styled("div")(() => ({
 }));
 
 const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { selectedDate, hidden, data, session } = props;
+  const {
+    selectedDate,
+    initialEventFormData,
+    setInitialEventFormData,
+    defaultCalendar,
+    hidden,
+    data,
+    session,
+  } = props;
   const { calendarEvents } = data;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
-  const [initialEventFormData, setInitialEventFormData] = useState({
-    title: "",
-    start: date,
-    end: date ? addMinutes(date, 29) : null,
-    allDay: false,
-    notes: "",
-    calendarId: calendarEvents[0]?.calendarId ?? 1, // TODO: Get this from the user's default calendar.
-  });
+
   const selectedDayIndex = getDay(selectedDate);
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
@@ -79,7 +80,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
     (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
+  const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
 
   useEffect(() => {
     // Scroll to the current time.
@@ -197,7 +198,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                               date={eventSlotDate}
                               view="week"
                               events={eventSlotEvents}
-                              calendarId={primaryCalendarId}
+                              defaultCalendarId={primaryCalendarId}
                               onClick={(e) => {
                                 // Only trigger if the click was actually on the slot. This check
                                 // allows us to avoid stopping propagation on click events for

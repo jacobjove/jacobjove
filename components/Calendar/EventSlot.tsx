@@ -1,10 +1,11 @@
 import EventBox from "@/components/calendar/EventBox";
 import { calendarEventFragment } from "@/graphql/fragments";
-import { SCHEDULE_ACTION } from "@/graphql/queries";
+import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes, parseISO } from "date-fns";
+import { useSession } from "next-auth/react";
 import { FC, MouseEventHandler, useState } from "react";
 import { useDrop } from "react-dnd";
 
@@ -12,7 +13,7 @@ interface EventSlotProps {
   date: Date;
   view: "day" | "week";
   events?: CalendarEvent[];
-  calendarId: number;
+  defaultCalendarId: number;
   onClick?: MouseEventHandler<HTMLDivElement>;
   past?: boolean;
 }
@@ -32,21 +33,32 @@ const Root = styled("div")(() => ({
     position: "absolute",
     border: "1px solid white",
     borderRadius: "3px",
-    padding: "0.25rem 0.5rem",
+    paddingTop: "0.25rem",
+    paddingBottom: "0.25rem",
+    paddingLeft: "0.5rem",
     maxWidth: "92%",
+    "& *": {
+      lineHeight: "1.1",
+    },
   },
 }));
 
 const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
-type GetCalendarEvents = any; // TODO: https://www.apollographql.com/blog/apollo-client/caching/when-to-use-refetch-queries/
+// TODO: https://www.apollographql.com/blog/apollo-client/caching/when-to-use-refetch-queries/
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
-  const { date, view, events, onClick, past } = props;
+  const { date, view, events, defaultCalendarId, onClick, past } = props;
+  const { data: session } = useSession();
   const [hovered, setHovered] = useState(false);
-  const [addEvent, { loading }] = useMutation(SCHEDULE_ACTION, {
-    update(cache, { data: { createCalendarEvent } }) {
-      // const { createCalendarEvent } = data;
+  const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
+    updateCalendarEvent: CalendarEvent;
+  }>(UPDATE_CALENDAR_EVENT);
+  const [addEvent, { loading: loadingCreateCalendarEvent }] = useMutation<{
+    createCalendarEvent: CalendarEvent;
+  }>(CREATE_CALENDAR_EVENT, {
+    update(cache, { data }) {
+      const { createCalendarEvent } = data || {};
       if (createCalendarEvent) {
         cache.modify({
           fields: {
@@ -61,7 +73,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
                 `,
                 fragmentName: "NewCalendarEvent",
               });
-              console.log("New calendar event ref", newCalendarEventRef);
               return [...existingEvents, newCalendarEventRef];
             },
           },
@@ -69,53 +80,95 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
       }
     },
   });
+  const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
   const numEvents = events?.length ?? 0;
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
-      accept: "action",
+      accept: ["event", "action", "routine", "task"],
       canDrop: () => !loading,
-      drop: (item: Partial<CalendarEvent>) => {
-        const start = date;
-        const end = addMinutes(date, DEFAULT_EVENT_LENGTH_IN_MINUTES);
-        const scheduleId = item.scheduleId ?? null;
-        const calendarId = item.calendarId ?? 1; // TODO
-        const calendarEventData = {
-          title: item.title ?? "Untitled Event",
-          start: start.toISOString(),
-          end: end.toISOString(),
-          allDay: false,
-        };
-        const tmpEvent: CalendarEvent = {
-          id: -1,
-          uid: "tmp-id",
-          calendarId,
-          scheduleId,
-          createdAt: new Date(),
-          ...calendarEventData,
-        };
-        addEvent({
-          variables: {
-            data: {
-              calendar: {
-                connect: {
-                  id: calendarId,
+      drop: (
+        item: Partial<CalendarEvent> & {
+          durationInMinutes?: number;
+          type: "event" | "action" | "routine" | "task";
+        } & Pick<CalendarEvent, "title">
+      ) => {
+        if (!session) return;
+        const { type, durationInMinutes, ...itemData } = item;
+        if (type === "event" && itemData.start && itemData.end) {
+          const oldStart = parseISO(itemData.start);
+          const oldEnd = parseISO(itemData.end);
+          const newStart = date.toISOString();
+          const newEnd = addMinutes(
+            date,
+            durationInMinutes ?? differenceInMinutes(oldEnd, oldStart)
+          ).toISOString();
+          console.log("event itemData", itemData);
+          if (itemData.id) {
+            rescheduleEvent({
+              variables: {
+                where: {
+                  id: itemData.id,
+                },
+                data: {
+                  start: { set: newStart },
+                  end: { set: newEnd || undefined },
                 },
               },
-              schedule: scheduleId
-                ? {
-                    connect: { id: scheduleId },
-                  }
-                : undefined,
-              ...calendarEventData,
+              optimisticResponse: {
+                updateCalendarEvent: {
+                  __typename: "CalendarEvent",
+                  ...(itemData as CalendarEvent),
+                },
+              },
+            });
+          }
+        } else {
+          const start = date;
+          const end = addMinutes(date, durationInMinutes ?? DEFAULT_EVENT_LENGTH_IN_MINUTES);
+          let { scheduleId, calendarId, ...calendarEventData } = itemData;
+          calendarId = calendarId ?? defaultCalendarId;
+          scheduleId = scheduleId ?? null;
+          if (!calendarId) {
+            try {
+              calendarId = session.user.settings.defaultCalendarId;
+            } catch (err) {
+              console.error(err);
+              if (events?.length) {
+                calendarId = events[0].calendarId;
+              }
+            }
+          }
+          calendarEventData = {
+            start: start.toISOString(),
+            end: end.toISOString(),
+            allDay: false,
+            ...calendarEventData, // This overrides the default values specified above.
+          };
+          const calendarEventDataWithConnections = {
+            ...calendarEventData,
+            calendar: { connect: { id: calendarId } },
+            schedule: scheduleId ? { connect: { id: scheduleId } } : undefined,
+          };
+          addEvent({
+            variables: {
+              data: calendarEventDataWithConnections,
             },
-          },
-          optimisticResponse: {
-            createCalendarEvent: {
-              ...tmpEvent,
-              __typename: "CalendarEvent",
+            optimisticResponse: {
+              createCalendarEvent: {
+                __typename: "CalendarEvent",
+                id: -1,
+                uid: "tmp-id",
+                calendarId,
+                scheduleId,
+                createdAt: new Date(),
+                ...(calendarEventData as Omit<
+                  CalendarEvent,
+                  "__typename" | "id" | "uid" | "calendarId" | "createdAt"
+                >),
+              },
             },
-          },
-        });
+          });
+        }
         // TODO: open event dialog
       },
       collect: (monitor) => ({

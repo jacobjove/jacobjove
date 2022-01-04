@@ -17,6 +17,15 @@ export const userActionFragment = gql`
   }
 `;
 
+export const calendarFragment = gql`
+  fragment calendarFragment on Calendar {
+    __typename
+    id
+    name
+    color
+  }
+`;
+
 export const calendarEventFragment = gql`
   fragment CalendarEventFragment on CalendarEvent {
     __typename
@@ -58,7 +67,7 @@ export const routineActionFragment = gql`
     __typename
     id
     position
-    durationInMin
+    durationInMinutes
     action {
       id
       name

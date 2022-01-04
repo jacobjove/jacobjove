@@ -11,6 +11,7 @@ import {
   Routine as _Routine,
   RoutineAction as _RoutineAction,
   ScheduleTemplate as _ScheduleTemplate,
+  User as _User,
   UserAction as _UserAction,
   UserActionSchedule as _UserActionSchedule,
   UserBelief as _UserBelief,
@@ -45,13 +46,26 @@ export type ScheduleTemplate = Omit<_ScheduleTemplate, "_count">;
 export type Identity = Omit<_Identity, "_count">;
 export type Value = Omit<_Value, "_count">;
 export type Belief = Omit<_Belief, "_count">;
-export type Routine = Omit<_Routine, "_count">;
-export type RoutineAction = Omit<_RoutineAction, "_count">;
+export type Routine = Omit<_Routine, "_count" | "routineActions"> & {
+  routineActions: RoutineAction[];
+};
+export type RoutineAction = Omit<_RoutineAction, "_count"> & { action: Action };
 export type UserBelief = Omit<_UserBelief, "_count" | "belief"> & { belief: Belief };
 export type UserIdentity = Omit<_UserIdentity, "_count" | "identity"> & { identity: Identity };
 export type Calendar = Omit<_Calendar, "_count">;
 export type CalendarEvent = Omit<_CalendarEvent, "_count" | "start" | "end"> & {
   start: string;
   end?: string | null;
+  __typename?: "CalendarEvent";
 };
 export type UserValue = Omit<_UserValue, "_count">;
+export type User = Omit<_User, "_count" | "settings"> & {
+  settings: {
+    defaultCalendarId: number;
+    dashboard?: {
+      layouts: {
+        xs?: any;
+      };
+    };
+  };
+};

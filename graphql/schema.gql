@@ -3920,6 +3920,22 @@ input IntWithAggregatesFilter {
   notIn: [Int!]
 }
 
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+input JsonFilter {
+  equals: JSON
+  not: JSON
+}
+
+input JsonWithAggregatesFilter {
+  _count: NestedIntFilter
+  _max: NestedJsonFilter
+  _min: NestedJsonFilter
+  equals: JSON
+  not: JSON
+}
+
 type Mutation {
   createAccount(data: AccountCreateInput!): Account!
   createAction(data: ActionCreateInput!): Action!
@@ -4240,6 +4256,11 @@ input NestedIntWithAggregatesFilter {
   notIn: [Int!]
 }
 
+input NestedJsonFilter {
+  equals: JSON
+  not: JSON
+}
+
 input NestedStringFilter {
   contains: String
   endsWith: String
@@ -4308,6 +4329,14 @@ input NullableDateTimeFieldUpdateOperationsInput {
 
 input NullableEnumColorFieldUpdateOperationsInput {
   set: Color
+}
+
+input NullableIntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
 }
 
 input NullableStringFieldUpdateOperationsInput {
@@ -4426,6 +4455,7 @@ type Routine {
   _count: RoutineCount!
   createdAt: DateTime!
   description: String
+  durationInMinutes: Int
   id: Int!
   name: String!
   routineActions(cursor: RoutineActionWhereUniqueInput, distinct: [RoutineActionScalarFieldEnum!], orderBy: [RoutineActionOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineActionWhereInput): [RoutineAction!]!
@@ -4438,7 +4468,7 @@ type RoutineAction {
   action: Action!
   actionId: Int!
   createdAt: DateTime!
-  durationInMin: Int!
+  durationInMinutes: Int!
   id: Int!
   position: Int!
   routine: Routine!
@@ -4448,7 +4478,7 @@ type RoutineAction {
 
 type RoutineActionAvgAggregate {
   actionId: Float
-  durationInMin: Float
+  durationInMinutes: Float
   id: Float
   position: Float
   routineId: Float
@@ -4456,7 +4486,7 @@ type RoutineActionAvgAggregate {
 
 input RoutineActionAvgOrderByAggregateInput {
   actionId: SortOrder
-  durationInMin: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   position: SortOrder
   routineId: SortOrder
@@ -4466,7 +4496,7 @@ type RoutineActionCountAggregate {
   _all: Int!
   actionId: Int!
   createdAt: Int!
-  durationInMin: Int!
+  durationInMinutes: Int!
   id: Int!
   position: Int!
   routineId: Int!
@@ -4476,7 +4506,7 @@ type RoutineActionCountAggregate {
 input RoutineActionCountOrderByAggregateInput {
   actionId: SortOrder
   createdAt: SortOrder
-  durationInMin: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   position: SortOrder
   routineId: SortOrder
@@ -4486,7 +4516,7 @@ input RoutineActionCountOrderByAggregateInput {
 input RoutineActionCreateInput {
   action: ActionCreateNestedOneWithoutRoutineActionsInput!
   createdAt: DateTime
-  durationInMin: Int!
+  durationInMinutes: Int!
   position: Int!
   routine: RoutineCreateNestedOneWithoutRoutineActionsInput!
   updatedAt: DateTime
@@ -4494,7 +4524,7 @@ input RoutineActionCreateInput {
 
 input RoutineActionCreateManyActionInput {
   createdAt: DateTime
-  durationInMin: Int!
+  durationInMinutes: Int!
   id: Int
   position: Int!
   routineId: Int!
@@ -4509,7 +4539,7 @@ input RoutineActionCreateManyActionInputEnvelope {
 input RoutineActionCreateManyInput {
   actionId: Int!
   createdAt: DateTime
-  durationInMin: Int!
+  durationInMinutes: Int!
   id: Int
   position: Int!
   routineId: Int!
@@ -4519,7 +4549,7 @@ input RoutineActionCreateManyInput {
 input RoutineActionCreateManyRoutineInput {
   actionId: Int!
   createdAt: DateTime
-  durationInMin: Int!
+  durationInMinutes: Int!
   id: Int
   position: Int!
   updatedAt: DateTime
@@ -4556,7 +4586,7 @@ input RoutineActionCreateOrConnectWithoutRoutineInput {
 
 input RoutineActionCreateWithoutActionInput {
   createdAt: DateTime
-  durationInMin: Int!
+  durationInMinutes: Int!
   position: Int!
   routine: RoutineCreateNestedOneWithoutRoutineActionsInput!
   updatedAt: DateTime
@@ -4565,7 +4595,7 @@ input RoutineActionCreateWithoutActionInput {
 input RoutineActionCreateWithoutRoutineInput {
   action: ActionCreateNestedOneWithoutRoutineActionsInput!
   createdAt: DateTime
-  durationInMin: Int!
+  durationInMinutes: Int!
   position: Int!
   updatedAt: DateTime
 }
@@ -4578,7 +4608,7 @@ type RoutineActionGroupBy {
   _sum: RoutineActionSumAggregate
   actionId: Int!
   createdAt: DateTime!
-  durationInMin: Int!
+  durationInMinutes: Int!
   id: Int!
   position: Int!
   routineId: Int!
@@ -4594,7 +4624,7 @@ input RoutineActionListRelationFilter {
 type RoutineActionMaxAggregate {
   actionId: Int
   createdAt: DateTime
-  durationInMin: Int
+  durationInMinutes: Int
   id: Int
   position: Int
   routineId: Int
@@ -4604,7 +4634,7 @@ type RoutineActionMaxAggregate {
 input RoutineActionMaxOrderByAggregateInput {
   actionId: SortOrder
   createdAt: SortOrder
-  durationInMin: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   position: SortOrder
   routineId: SortOrder
@@ -4614,7 +4644,7 @@ input RoutineActionMaxOrderByAggregateInput {
 type RoutineActionMinAggregate {
   actionId: Int
   createdAt: DateTime
-  durationInMin: Int
+  durationInMinutes: Int
   id: Int
   position: Int
   routineId: Int
@@ -4624,7 +4654,7 @@ type RoutineActionMinAggregate {
 input RoutineActionMinOrderByAggregateInput {
   actionId: SortOrder
   createdAt: SortOrder
-  durationInMin: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   position: SortOrder
   routineId: SortOrder
@@ -4643,7 +4673,7 @@ input RoutineActionOrderByWithAggregationInput {
   _sum: RoutineActionSumOrderByAggregateInput
   actionId: SortOrder
   createdAt: SortOrder
-  durationInMin: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   position: SortOrder
   routineId: SortOrder
@@ -4654,7 +4684,7 @@ input RoutineActionOrderByWithRelationInput {
   action: ActionOrderByWithRelationInput
   actionId: SortOrder
   createdAt: SortOrder
-  durationInMin: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   position: SortOrder
   routine: RoutineOrderByWithRelationInput
@@ -4670,7 +4700,7 @@ input RoutineActionRoutineIdActionIdCompoundUniqueInput {
 enum RoutineActionScalarFieldEnum {
   actionId
   createdAt
-  durationInMin
+  durationInMinutes
   id
   position
   routineId
@@ -4683,7 +4713,7 @@ input RoutineActionScalarWhereInput {
   OR: [RoutineActionScalarWhereInput!]
   actionId: IntFilter
   createdAt: DateTimeFilter
-  durationInMin: IntFilter
+  durationInMinutes: IntFilter
   id: IntFilter
   position: IntFilter
   routineId: IntFilter
@@ -4696,7 +4726,7 @@ input RoutineActionScalarWhereWithAggregatesInput {
   OR: [RoutineActionScalarWhereWithAggregatesInput!]
   actionId: IntWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
-  durationInMin: IntWithAggregatesFilter
+  durationInMinutes: IntWithAggregatesFilter
   id: IntWithAggregatesFilter
   position: IntWithAggregatesFilter
   routineId: IntWithAggregatesFilter
@@ -4705,7 +4735,7 @@ input RoutineActionScalarWhereWithAggregatesInput {
 
 type RoutineActionSumAggregate {
   actionId: Int
-  durationInMin: Int
+  durationInMinutes: Int
   id: Int
   position: Int
   routineId: Int
@@ -4713,7 +4743,7 @@ type RoutineActionSumAggregate {
 
 input RoutineActionSumOrderByAggregateInput {
   actionId: SortOrder
-  durationInMin: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   position: SortOrder
   routineId: SortOrder
@@ -4722,7 +4752,7 @@ input RoutineActionSumOrderByAggregateInput {
 input RoutineActionUpdateInput {
   action: ActionUpdateOneRequiredWithoutRoutineActionsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  durationInMin: IntFieldUpdateOperationsInput
+  durationInMinutes: IntFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
   routine: RoutineUpdateOneRequiredWithoutRoutineActionsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -4730,7 +4760,7 @@ input RoutineActionUpdateInput {
 
 input RoutineActionUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
-  durationInMin: IntFieldUpdateOperationsInput
+  durationInMinutes: IntFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
@@ -4785,7 +4815,7 @@ input RoutineActionUpdateWithWhereUniqueWithoutRoutineInput {
 
 input RoutineActionUpdateWithoutActionInput {
   createdAt: DateTimeFieldUpdateOperationsInput
-  durationInMin: IntFieldUpdateOperationsInput
+  durationInMinutes: IntFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
   routine: RoutineUpdateOneRequiredWithoutRoutineActionsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -4794,7 +4824,7 @@ input RoutineActionUpdateWithoutActionInput {
 input RoutineActionUpdateWithoutRoutineInput {
   action: ActionUpdateOneRequiredWithoutRoutineActionsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  durationInMin: IntFieldUpdateOperationsInput
+  durationInMinutes: IntFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
@@ -4818,7 +4848,7 @@ input RoutineActionWhereInput {
   action: ActionRelationFilter
   actionId: IntFilter
   createdAt: DateTimeFilter
-  durationInMin: IntFilter
+  durationInMinutes: IntFilter
   id: IntFilter
   position: IntFilter
   routine: RoutineRelationFilter
@@ -4832,10 +4862,12 @@ input RoutineActionWhereUniqueInput {
 }
 
 type RoutineAvgAggregate {
+  durationInMinutes: Float
   id: Float
 }
 
 input RoutineAvgOrderByAggregateInput {
+  durationInMinutes: SortOrder
   id: SortOrder
 }
 
@@ -4847,6 +4879,7 @@ type RoutineCountAggregate {
   _all: Int!
   createdAt: Int!
   description: Int!
+  durationInMinutes: Int!
   id: Int!
   name: Int!
   updatedAt: Int!
@@ -4856,6 +4889,7 @@ type RoutineCountAggregate {
 input RoutineCountOrderByAggregateInput {
   createdAt: SortOrder
   description: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
@@ -4865,6 +4899,7 @@ input RoutineCountOrderByAggregateInput {
 input RoutineCreateInput {
   createdAt: DateTime
   description: String
+  durationInMinutes: Int
   name: String!
   routineActions: RoutineActionCreateNestedManyWithoutRoutineInput
   updatedAt: DateTime
@@ -4874,6 +4909,7 @@ input RoutineCreateInput {
 input RoutineCreateManyInput {
   createdAt: DateTime
   description: String
+  durationInMinutes: Int
   id: Int
   name: String!
   updatedAt: DateTime
@@ -4883,6 +4919,7 @@ input RoutineCreateManyInput {
 input RoutineCreateManyUserInput {
   createdAt: DateTime
   description: String
+  durationInMinutes: Int
   id: Int
   name: String!
   updatedAt: DateTime
@@ -4919,6 +4956,7 @@ input RoutineCreateOrConnectWithoutUserInput {
 input RoutineCreateWithoutRoutineActionsInput {
   createdAt: DateTime
   description: String
+  durationInMinutes: Int
   name: String!
   updatedAt: DateTime
   user: UserCreateNestedOneWithoutRoutinesInput!
@@ -4927,6 +4965,7 @@ input RoutineCreateWithoutRoutineActionsInput {
 input RoutineCreateWithoutUserInput {
   createdAt: DateTime
   description: String
+  durationInMinutes: Int
   name: String!
   routineActions: RoutineActionCreateNestedManyWithoutRoutineInput
   updatedAt: DateTime
@@ -4940,6 +4979,7 @@ type RoutineGroupBy {
   _sum: RoutineSumAggregate
   createdAt: DateTime!
   description: String
+  durationInMinutes: Int
   id: Int!
   name: String!
   updatedAt: DateTime
@@ -4955,6 +4995,7 @@ input RoutineListRelationFilter {
 type RoutineMaxAggregate {
   createdAt: DateTime
   description: String
+  durationInMinutes: Int
   id: Int
   name: String
   updatedAt: DateTime
@@ -4964,6 +5005,7 @@ type RoutineMaxAggregate {
 input RoutineMaxOrderByAggregateInput {
   createdAt: SortOrder
   description: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
@@ -4973,6 +5015,7 @@ input RoutineMaxOrderByAggregateInput {
 type RoutineMinAggregate {
   createdAt: DateTime
   description: String
+  durationInMinutes: Int
   id: Int
   name: String
   updatedAt: DateTime
@@ -4982,6 +5025,7 @@ type RoutineMinAggregate {
 input RoutineMinOrderByAggregateInput {
   createdAt: SortOrder
   description: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
@@ -5000,6 +5044,7 @@ input RoutineOrderByWithAggregationInput {
   _sum: RoutineSumOrderByAggregateInput
   createdAt: SortOrder
   description: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   name: SortOrder
   updatedAt: SortOrder
@@ -5009,6 +5054,7 @@ input RoutineOrderByWithAggregationInput {
 input RoutineOrderByWithRelationInput {
   createdAt: SortOrder
   description: SortOrder
+  durationInMinutes: SortOrder
   id: SortOrder
   name: SortOrder
   routineActions: RoutineActionOrderByRelationAggregateInput
@@ -5025,6 +5071,7 @@ input RoutineRelationFilter {
 enum RoutineScalarFieldEnum {
   createdAt
   description
+  durationInMinutes
   id
   name
   updatedAt
@@ -5037,6 +5084,7 @@ input RoutineScalarWhereInput {
   OR: [RoutineScalarWhereInput!]
   createdAt: DateTimeFilter
   description: StringNullableFilter
+  durationInMinutes: IntNullableFilter
   id: IntFilter
   name: StringFilter
   updatedAt: DateTimeNullableFilter
@@ -5049,6 +5097,7 @@ input RoutineScalarWhereWithAggregatesInput {
   OR: [RoutineScalarWhereWithAggregatesInput!]
   createdAt: DateTimeWithAggregatesFilter
   description: StringNullableWithAggregatesFilter
+  durationInMinutes: IntNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   name: StringWithAggregatesFilter
   updatedAt: DateTimeNullableWithAggregatesFilter
@@ -5056,16 +5105,19 @@ input RoutineScalarWhereWithAggregatesInput {
 }
 
 type RoutineSumAggregate {
+  durationInMinutes: Int
   id: Int
 }
 
 input RoutineSumOrderByAggregateInput {
+  durationInMinutes: SortOrder
   id: SortOrder
 }
 
 input RoutineUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
+  durationInMinutes: NullableIntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   routineActions: RoutineActionUpdateManyWithoutRoutineInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -5075,6 +5127,7 @@ input RoutineUpdateInput {
 input RoutineUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
+  durationInMinutes: NullableIntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
@@ -5114,6 +5167,7 @@ input RoutineUpdateWithWhereUniqueWithoutUserInput {
 input RoutineUpdateWithoutRoutineActionsInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
+  durationInMinutes: NullableIntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutRoutinesInput
@@ -5122,6 +5176,7 @@ input RoutineUpdateWithoutRoutineActionsInput {
 input RoutineUpdateWithoutUserInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
+  durationInMinutes: NullableIntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   routineActions: RoutineActionUpdateManyWithoutRoutineInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -5144,6 +5199,7 @@ input RoutineWhereInput {
   OR: [RoutineWhereInput!]
   createdAt: DateTimeFilter
   description: StringNullableFilter
+  durationInMinutes: IntNullableFilter
   id: IntFilter
   name: StringFilter
   routineActions: RoutineActionListRelationFilter
@@ -5451,6 +5507,7 @@ type User {
   isAdmin: Boolean!
   name: String
   routines(cursor: RoutineWhereUniqueInput, distinct: [RoutineScalarFieldEnum!], orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): [Routine!]!
+  settings: JSON!
   userActions(cursor: UserActionWhereUniqueInput, distinct: [UserActionScalarFieldEnum!], orderBy: [UserActionOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionWhereInput): [UserAction!]!
   userBeliefs(cursor: UserBeliefWhereUniqueInput, distinct: [UserBeliefScalarFieldEnum!], orderBy: [UserBeliefOrderByWithRelationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): [UserBelief!]!
   userIdentities(cursor: UserIdentityWhereUniqueInput, distinct: [UserIdentityScalarFieldEnum!], orderBy: [UserIdentityOrderByWithRelationInput!], skip: Int, take: Int, where: UserIdentityWhereInput): [UserIdentity!]!
@@ -6849,6 +6906,7 @@ type UserCountAggregate {
   image: Int!
   isAdmin: Int!
   name: Int!
+  settings: Int!
 }
 
 input UserCountOrderByAggregateInput {
@@ -6858,6 +6916,7 @@ input UserCountOrderByAggregateInput {
   image: SortOrder
   isAdmin: SortOrder
   name: SortOrder
+  settings: SortOrder
 }
 
 input UserCreateInput {
@@ -6871,6 +6930,7 @@ input UserCreateInput {
   isAdmin: Boolean
   name: String
   routines: RoutineCreateNestedManyWithoutUserInput
+  settings: JSON
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -6884,6 +6944,7 @@ input UserCreateManyInput {
   image: String
   isAdmin: Boolean
   name: String
+  settings: JSON
 }
 
 input UserCreateNestedOneWithoutAccountsInput {
@@ -6984,6 +7045,7 @@ input UserCreateWithoutAccountsInput {
   isAdmin: Boolean
   name: String
   routines: RoutineCreateNestedManyWithoutUserInput
+  settings: JSON
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -7000,6 +7062,7 @@ input UserCreateWithoutActionCompletionsInput {
   isAdmin: Boolean
   name: String
   routines: RoutineCreateNestedManyWithoutUserInput
+  settings: JSON
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -7016,6 +7079,7 @@ input UserCreateWithoutCalendarsInput {
   isAdmin: Boolean
   name: String
   routines: RoutineCreateNestedManyWithoutUserInput
+  settings: JSON
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -7032,6 +7096,7 @@ input UserCreateWithoutRoutinesInput {
   image: String
   isAdmin: Boolean
   name: String
+  settings: JSON
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -7049,6 +7114,7 @@ input UserCreateWithoutUserActionsInput {
   isAdmin: Boolean
   name: String
   routines: RoutineCreateNestedManyWithoutUserInput
+  settings: JSON
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
@@ -7065,6 +7131,7 @@ input UserCreateWithoutUserBeliefsInput {
   isAdmin: Boolean
   name: String
   routines: RoutineCreateNestedManyWithoutUserInput
+  settings: JSON
   userActions: UserActionCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
@@ -7081,6 +7148,7 @@ input UserCreateWithoutUserIdentitiesInput {
   isAdmin: Boolean
   name: String
   routines: RoutineCreateNestedManyWithoutUserInput
+  settings: JSON
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userValues: UserValueCreateNestedManyWithoutUserInput
@@ -7097,6 +7165,7 @@ input UserCreateWithoutUserValuesInput {
   isAdmin: Boolean
   name: String
   routines: RoutineCreateNestedManyWithoutUserInput
+  settings: JSON
   userActions: UserActionCreateNestedManyWithoutUserInput
   userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
   userIdentities: UserIdentityCreateNestedManyWithoutUserInput
@@ -7112,6 +7181,7 @@ type UserGroupBy {
   image: String
   isAdmin: Boolean!
   name: String
+  settings: JSON!
 }
 
 type UserIdentity {
@@ -7473,6 +7543,7 @@ input UserOrderByWithAggregationInput {
   image: SortOrder
   isAdmin: SortOrder
   name: SortOrder
+  settings: SortOrder
 }
 
 input UserOrderByWithRelationInput {
@@ -7486,6 +7557,7 @@ input UserOrderByWithRelationInput {
   isAdmin: SortOrder
   name: SortOrder
   routines: RoutineOrderByRelationAggregateInput
+  settings: SortOrder
   userActions: UserActionOrderByRelationAggregateInput
   userBeliefs: UserBeliefOrderByRelationAggregateInput
   userIdentities: UserIdentityOrderByRelationAggregateInput
@@ -7504,6 +7576,7 @@ enum UserScalarFieldEnum {
   image
   isAdmin
   name
+  settings
 }
 
 input UserScalarWhereWithAggregatesInput {
@@ -7516,6 +7589,7 @@ input UserScalarWhereWithAggregatesInput {
   image: StringNullableWithAggregatesFilter
   isAdmin: BoolWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
+  settings: JsonWithAggregatesFilter
 }
 
 input UserUpdateInput {
@@ -7529,6 +7603,7 @@ input UserUpdateInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   routines: RoutineUpdateManyWithoutUserInput
+  settings: JSON
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -7542,6 +7617,7 @@ input UserUpdateManyMutationInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  settings: JSON
 }
 
 input UserUpdateOneRequiredWithoutAccountsInput {
@@ -7618,6 +7694,7 @@ input UserUpdateWithoutAccountsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   routines: RoutineUpdateManyWithoutUserInput
+  settings: JSON
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -7634,6 +7711,7 @@ input UserUpdateWithoutActionCompletionsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   routines: RoutineUpdateManyWithoutUserInput
+  settings: JSON
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -7650,6 +7728,7 @@ input UserUpdateWithoutCalendarsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   routines: RoutineUpdateManyWithoutUserInput
+  settings: JSON
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -7666,6 +7745,7 @@ input UserUpdateWithoutRoutinesInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  settings: JSON
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -7683,6 +7763,7 @@ input UserUpdateWithoutUserActionsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   routines: RoutineUpdateManyWithoutUserInput
+  settings: JSON
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
@@ -7699,6 +7780,7 @@ input UserUpdateWithoutUserBeliefsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   routines: RoutineUpdateManyWithoutUserInput
+  settings: JSON
   userActions: UserActionUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
@@ -7715,6 +7797,7 @@ input UserUpdateWithoutUserIdentitiesInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   routines: RoutineUpdateManyWithoutUserInput
+  settings: JSON
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userValues: UserValueUpdateManyWithoutUserInput
@@ -7731,6 +7814,7 @@ input UserUpdateWithoutUserValuesInput {
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   routines: RoutineUpdateManyWithoutUserInput
+  settings: JSON
   userActions: UserActionUpdateManyWithoutUserInput
   userBeliefs: UserBeliefUpdateManyWithoutUserInput
   userIdentities: UserIdentityUpdateManyWithoutUserInput
@@ -8151,6 +8235,7 @@ input UserWhereInput {
   isAdmin: BoolFilter
   name: StringNullableFilter
   routines: RoutineListRelationFilter
+  settings: JsonFilter
   userActions: UserActionListRelationFilter
   userBeliefs: UserBeliefListRelationFilter
   userIdentities: UserIdentityListRelationFilter

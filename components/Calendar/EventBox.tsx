@@ -1,8 +1,9 @@
 import EventEditingDialog from "@/components/calendar/EventEditingDialog";
-import { DELETE_CALENDAR_EVENT, GET_CALENDAR_EVENTS } from "@/graphql/queries";
+import { DELETE_CALENDAR_EVENT } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -15,6 +16,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import { format, parseISO } from "date-fns";
 import { ComponentProps, FC, useState } from "react";
+import { useDrag } from "react-dnd";
 
 interface EventBoxProps extends ComponentProps<typeof Box> {
   event: CalendarEvent;
@@ -25,7 +27,13 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   const [hovered, setHovered] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [eventEditingDialogOpen, setEventEditingDialogOpen] = useState(false);
-
+  const [{ opacity }, dragRef] = useDrag(() => ({
+    type: "event",
+    item: { type: "event", ...event },
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  }));
   const startTime = parseISO(event.start);
   const endTime = event.end ? parseISO(event.end) : null;
   if (!endTime) {
@@ -41,7 +49,10 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
           bgcolor: "rgb(100, 181, 246)", // or calendar.color
           filter: hovered ? "brightness(1.05)" : null,
           color: "white",
-          fontSize: "0.8rem",
+          fontSize: "0.75rem",
+          display: "flex",
+          alignItems: "start",
+          opacity,
         }}
         onMouseOver={(e) => {
           if (e.target === e.currentTarget) {
@@ -56,13 +67,19 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
           e.stopPropagation();
           setDialogOpen(true);
         }}
+        ref={dragRef}
       >
-        <Typography component="div" fontWeight={"bold"} fontSize={"0.75rem"}>
-          {event.title}
-        </Typography>
-        <Typography component="div" fontSize={"0.6rem"}>
-          {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}
-        </Typography>
+        <div style={{ flexGrow: 1 }}>
+          <Typography component="div" fontWeight={"600"} fontSize={"0.7rem"} marginBottom="0.15rem">
+            {event.title}
+          </Typography>
+          <Typography component="div" fontSize={"0.55rem"}>
+            {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}
+          </Typography>
+        </div>
+        <div style={{ height: "100%", display: "flex", alignItems: "center" }}>
+          <DragIndicatorIcon sx={{ "&:hover": { cursor: "grab" } }} />
+        </div>
       </Box>
       <EventDetailDialog
         event={event}
@@ -166,10 +183,10 @@ const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> 
 ) => {
   const { event, open, setOpen, setDetailDialogOpen } = props;
   const [deleteEvent, { loading }] = useMutation(DELETE_CALENDAR_EVENT, {
-    refetchQueries: [
-      GET_CALENDAR_EVENTS, // DocumentNode object parsed with gql
-      "GetCalendarEvents", // Query name
-    ],
+    // refetchQueries: [
+    //   GET_CALENDAR_EVENTS, // DocumentNode object parsed with gql
+    //   "GetCalendarEvents", // Query name
+    // ],
   });
   const handleClose = () => {
     setOpen(false);

@@ -1,5 +1,5 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
-import { CREATE_CALENDAR_EVENT, MODIFY_CALENDAR_EVENT } from "@/graphql/queries";
+import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/queries";
 import { CalendarEvent } from "@/graphql/schema";
 import {
   CalendarEventCreateInput,
@@ -34,10 +34,10 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     event.end ? new Date(event.end) : start ? addMinutes(start, 29) : null
   );
   const [notes, setNotes] = useState(event.notes ?? "");
-  const [calendarId, setCalendarId] = useState(event.calendarId ?? 1);
+  const [calendarId, setCalendarId] = useState(event.calendarId);
 
   const [mutate, { loading }] = useMutation(
-    event.id ? MODIFY_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
+    event.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
   );
 
   const handleClose = () => {
@@ -80,7 +80,6 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
           },
         },
       });
-      console.log("Updated event");
     } else {
       const mutationVars: {
         data: CalendarEventCreateInput;
@@ -112,7 +111,6 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
           },
         },
       });
-      console.log("Created event");
     }
     setOpen(false);
   };
@@ -121,7 +119,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     setStart(event.start ? new Date(event.start) : null);
     setEnd(event.end ? new Date(event.end) : null);
     setNotes(event.notes ?? "");
-    setCalendarId(event.calendarId ?? 1); // TODO
+    setCalendarId(event.calendarId); // TODO
   }, [event]);
   return (
     <Dialog open={open} onClose={handleClose}>

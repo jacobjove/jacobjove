@@ -36,7 +36,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session) {
     return null;
   }
-  const { calendarEvents, userActions } = data;
+  const { calendarEvents, calendars, userActions } = data;
   return (
     <Layout>
       <NextSeo
@@ -50,7 +50,11 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         <Grid item xs={12} md={8} lg={6} order={{ xs: 2, sm: 1 }}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
-              <CalendarViewer data={calendarEvents} collapseViewMenu={true} session={session} />
+              <CalendarViewer
+                data={(calendarEvents, calendars)}
+                collapseViewMenu={true}
+                session={session}
+              />
             </CardContent>
           </Card>
         </Grid>

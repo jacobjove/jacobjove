@@ -76,19 +76,21 @@ const Root = styled("div")(() => ({
 }));
 
 const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const { selectedDate, setSelectedDate, hidden, data, session } = props;
+  const {
+    selectedDate,
+    setSelectedDate,
+    initialEventFormData,
+    setInitialEventFormData,
+    defaultCalendar,
+    hidden,
+    data,
+    session,
+  } = props;
   const { calendarEvents } = data;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
+
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
-  const [initialEventFormData, setInitialEventFormData] = useState({
-    title: "",
-    start: date,
-    end: date ? addMinutes(date, 29) : null,
-    allDay: false,
-    notes: "",
-    calendarId: calendarEvents?.[0]?.calendarId ?? 1, // TODO: Get this from the user's default calendar.
-  });
 
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
@@ -96,7 +98,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
     (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
+  const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
 
   const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
 
@@ -204,7 +206,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
                         past={isPast}
                         view="day"
                         events={eventSlotEvents}
-                        calendarId={primaryCalendarId}
+                        defaultCalendarId={primaryCalendarId}
                         onClick={(e) => {
                           // Only trigger if the click was actually on the slot. This check
                           // allows us to avoid stopping propagation on click events for

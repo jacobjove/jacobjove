@@ -7,16 +7,22 @@ declare module "next-auth" {
    */
   interface Session {
     user: {
-      name: string
-      email: string
-      image: string
-      id: string
-      isAdmin: boolean
-    }
-    accessToken: string
+      name: string;
+      email: string;
+      image: string;
+      id: string;
+      isAdmin: boolean;
+      settings: {
+        dashboard?: {
+          [key: string]: undefined;
+        };
+        defaultCalendarId: number;
+      };
+    };
+    accessToken: string;
   }
   interface JWT {
-    accessToken: string
+    accessToken: string;
   }
 }
 
@@ -24,6 +30,6 @@ declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   interface JWT {
     /** OpenID ID Token */
-    accessToken?: string
+    accessToken?: string;
   }
 }

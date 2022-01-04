@@ -112,7 +112,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const { data, loading, error, layouts, editing, session } = props;
   const children = useMemo(() => {
     if (!data || !session) return [];
-    const { calendarEvents, userActions, userIdentities, userValues } = data;
+    const { calendarEvents, calendars, userActions, userIdentities, userValues } = data;
     const componentMap = {
       calendar: (
         <Card sx={{ height: "100%", maxHeight: "100%" }}>
@@ -123,7 +123,6 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
               action={
                 <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
                   <IconButton>
-                    {/* <MoreVertIcon /> */}
                     <DragIndicatorIcon />
                   </IconButton>
                 </span>
@@ -134,7 +133,11 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             {loading ? (
               <div>Loading...</div>
             ) : (
-              <CalendarViewer data={{ calendarEvents }} loading={loading} session={session} />
+              <CalendarViewer
+                data={{ calendarEvents, calendars }}
+                loading={loading}
+                session={session}
+              />
             )}
           </CardContent>
         </Card>
@@ -148,7 +151,6 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
               action={
                 <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
                   <IconButton>
-                    {/* <MoreVertIcon /> */}
                     <DragIndicatorIcon />
                   </IconButton>
                 </span>
@@ -173,7 +175,6 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
               action={
                 <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
                   <IconButton>
-                    {/* <MoreVertIcon /> */}
                     <DragIndicatorIcon />
                   </IconButton>
                 </span>
@@ -210,7 +211,6 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
               action={
                 <span className={`drag-anchor${!editing ? " hidden" : ""}`}>
                   <IconButton>
-                    {/* <MoreVertIcon /> */}
                     <DragIndicatorIcon />
                   </IconButton>
                 </span>
