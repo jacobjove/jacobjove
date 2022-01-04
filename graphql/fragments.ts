@@ -35,6 +35,9 @@ export const calendarEventFragment = gql`
     title
     start
     end
+    createdAt
+    updatedAt
+    deletedAt
   }
 `;
 

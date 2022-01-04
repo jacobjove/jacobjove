@@ -49,6 +49,9 @@ const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, view, events, defaultCalendarId, onClick, past } = props;
+  const filteredEvents = events?.filter((event) => {
+    return !event.deletedAt;
+  });
   const { data: session } = useSession();
   const [hovered, setHovered] = useState(false);
   const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
@@ -81,7 +84,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
     },
   });
   const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
-  const numEvents = events?.length ?? 0;
+  const numEvents = filteredEvents?.length ?? 0;
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
       accept: ["event", "action", "routine", "task"],
@@ -202,8 +205,8 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
         setHovered(false);
       }}
     >
-      {!!events?.length &&
-        events.map((event, index) => {
+      {!!filteredEvents?.length &&
+        filteredEvents.map((event, index) => {
           if (!event.start || !event.end) {
             console.error("Event missing start or end time: ", event);
             return null;

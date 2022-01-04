@@ -9,6 +9,7 @@ import {
 } from "@/graphql/fragments";
 import {
   Action,
+  Calendar,
   CalendarEvent,
   Identity,
   UserAction,
@@ -78,6 +79,7 @@ const CardTitle: FC<{ title: string }> = ({ title }) => (
 );
 
 export interface DashboardData {
+  calendars: Calendar[];
   calendarEvents: CalendarEvent[];
   userActions: (UserAction & {
     action: Action;

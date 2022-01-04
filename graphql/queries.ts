@@ -40,14 +40,6 @@ export const UPDATE_CALENDAR_EVENT = gql`
   ${calendarEventFragment}
 `;
 
-export const DELETE_CALENDAR_EVENT = gql`
-  mutation DeleteCalendarEvent($id: Int!) {
-    deleteCalendarEvent(where: { id: $id }) {
-      id
-    }
-  }
-`;
-
 export const GET_USER_ACTIONS = gql`
   query GetUserActions($userId: String!) {
     userActions(where: { userId: { equals: $userId } }) {

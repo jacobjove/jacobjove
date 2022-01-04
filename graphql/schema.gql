@@ -1993,6 +1993,7 @@ type CalendarEvent {
   calendar: Calendar!
   calendarId: Int!
   createdAt: DateTime!
+  deletedAt: DateTime
   end: DateTime
   id: Int!
   notes: String
@@ -2025,6 +2026,7 @@ type CalendarEventCountAggregate {
   allDay: Int!
   calendarId: Int!
   createdAt: Int!
+  deletedAt: Int!
   end: Int!
   id: Int!
   notes: Int!
@@ -2040,6 +2042,7 @@ input CalendarEventCountOrderByAggregateInput {
   allDay: SortOrder
   calendarId: SortOrder
   createdAt: SortOrder
+  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2055,6 +2058,7 @@ input CalendarEventCreateInput {
   allDay: Boolean
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   notes: String
   schedule: UserActionScheduleCreateNestedOneWithoutCalendarEventsInput
@@ -2068,6 +2072,7 @@ input CalendarEventCreateInput {
 input CalendarEventCreateManyCalendarInput {
   allDay: Boolean
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2088,6 +2093,7 @@ input CalendarEventCreateManyInput {
   allDay: Boolean
   calendarId: Int!
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2103,6 +2109,7 @@ input CalendarEventCreateManyScheduleInput {
   allDay: Boolean
   calendarId: Int!
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2122,6 +2129,7 @@ input CalendarEventCreateManyUserActionInput {
   allDay: Boolean
   calendarId: Int!
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2176,6 +2184,7 @@ input CalendarEventCreateOrConnectWithoutUserActionInput {
 input CalendarEventCreateWithoutCalendarInput {
   allDay: Boolean
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   notes: String
   schedule: UserActionScheduleCreateNestedOneWithoutCalendarEventsInput
@@ -2190,6 +2199,7 @@ input CalendarEventCreateWithoutScheduleInput {
   allDay: Boolean
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   notes: String
   start: DateTime!
@@ -2203,6 +2213,7 @@ input CalendarEventCreateWithoutUserActionInput {
   allDay: Boolean
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   notes: String
   schedule: UserActionScheduleCreateNestedOneWithoutCalendarEventsInput
@@ -2221,6 +2232,7 @@ type CalendarEventGroupBy {
   allDay: Boolean!
   calendarId: Int!
   createdAt: DateTime!
+  deletedAt: DateTime
   end: DateTime
   id: Int!
   notes: String
@@ -2242,6 +2254,7 @@ type CalendarEventMaxAggregate {
   allDay: Boolean
   calendarId: Int
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2257,6 +2270,7 @@ input CalendarEventMaxOrderByAggregateInput {
   allDay: SortOrder
   calendarId: SortOrder
   createdAt: SortOrder
+  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2272,6 +2286,7 @@ type CalendarEventMinAggregate {
   allDay: Boolean
   calendarId: Int
   createdAt: DateTime
+  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2287,6 +2302,7 @@ input CalendarEventMinOrderByAggregateInput {
   allDay: SortOrder
   calendarId: SortOrder
   createdAt: SortOrder
+  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2311,6 +2327,7 @@ input CalendarEventOrderByWithAggregationInput {
   allDay: SortOrder
   calendarId: SortOrder
   createdAt: SortOrder
+  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2327,6 +2344,7 @@ input CalendarEventOrderByWithRelationInput {
   calendar: CalendarOrderByWithRelationInput
   calendarId: SortOrder
   createdAt: SortOrder
+  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2344,6 +2362,7 @@ enum CalendarEventScalarFieldEnum {
   allDay
   calendarId
   createdAt
+  deletedAt
   end
   id
   notes
@@ -2362,6 +2381,7 @@ input CalendarEventScalarWhereInput {
   allDay: BoolFilter
   calendarId: IntFilter
   createdAt: DateTimeFilter
+  deletedAt: DateTimeNullableFilter
   end: DateTimeNullableFilter
   id: IntFilter
   notes: StringNullableFilter
@@ -2380,6 +2400,7 @@ input CalendarEventScalarWhereWithAggregatesInput {
   allDay: BoolWithAggregatesFilter
   calendarId: IntWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
+  deletedAt: DateTimeNullableWithAggregatesFilter
   end: DateTimeNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   notes: StringNullableWithAggregatesFilter
@@ -2409,6 +2430,7 @@ input CalendarEventUpdateInput {
   allDay: BoolFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: UserActionScheduleUpdateOneWithoutCalendarEventsInput
@@ -2422,6 +2444,7 @@ input CalendarEventUpdateInput {
 input CalendarEventUpdateManyMutationInput {
   allDay: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
@@ -2505,6 +2528,7 @@ input CalendarEventUpdateWithWhereUniqueWithoutUserActionInput {
 input CalendarEventUpdateWithoutCalendarInput {
   allDay: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: UserActionScheduleUpdateOneWithoutCalendarEventsInput
@@ -2519,6 +2543,7 @@ input CalendarEventUpdateWithoutScheduleInput {
   allDay: BoolFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
@@ -2532,6 +2557,7 @@ input CalendarEventUpdateWithoutUserActionInput {
   allDay: BoolFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: UserActionScheduleUpdateOneWithoutCalendarEventsInput
@@ -2567,6 +2593,7 @@ input CalendarEventWhereInput {
   calendar: CalendarRelationFilter
   calendarId: IntFilter
   createdAt: DateTimeFilter
+  deletedAt: DateTimeNullableFilter
   end: DateTimeNullableFilter
   id: IntFilter
   notes: StringNullableFilter
