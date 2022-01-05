@@ -49,7 +49,7 @@ export type Belief = Omit<_Belief, "_count">;
 export type Routine = Omit<_Routine, "_count" | "routineActions"> & {
   routineActions: RoutineAction[];
 };
-export type RoutineAction = Omit<_RoutineAction, "_count"> & { action: Action };
+export type RoutineAction = Omit<_RoutineAction, "_count" | "action"> & { action: Action };
 export type UserBelief = Omit<_UserBelief, "_count" | "belief"> & { belief: Belief };
 export type UserIdentity = Omit<_UserIdentity, "_count" | "identity"> & { identity: Identity };
 export type Calendar = Omit<_Calendar, "_count">;

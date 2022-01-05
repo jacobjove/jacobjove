@@ -1,10 +1,10 @@
 import { calendarEventFragment, calendarFragment, userActionFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
 
-export const GET_DEFAULT_CALENDAR = gql`
-  query GetDefaultCalendar {
-    calendar(id: "default") {
-      ...calendarFragment
+export const GET_CALENDARS = gql`
+  query GetCalendars($userId: String!) {
+    calendars(where: { userId: { equals: $userId } }) {
+      ...CalendarEventFragment
     }
   }
   ${calendarFragment}

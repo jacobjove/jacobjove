@@ -238,6 +238,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
               borderBottom={`1px solid red`}
               top={0}
               height={`${currentTimeOffsetPx}px`}
+              maxHeight={"100%"}
               left={`${TIME_MARKER_JUT_PX}px`}
               zIndex={1}
             />

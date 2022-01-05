@@ -18,7 +18,7 @@ export const userActionFragment = gql`
 `;
 
 export const calendarFragment = gql`
-  fragment calendarFragment on Calendar {
+  fragment CalendarFragment on Calendar {
     __typename
     id
     name

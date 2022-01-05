@@ -6,7 +6,6 @@ import { gql, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { GetServerSideProps, NextPage } from "next";
@@ -54,10 +53,18 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         noindex
         nofollow
       />
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} md={8} lg={6} order={{ xs: 2, sm: 1 }}>
-          <Card sx={{ height: "100%" }}>
-            <CardContent>
+      <Grid container spacing={2} justifyContent="center" height={"100%"} maxHeight={"100%"}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          lg={6}
+          order={{ xs: 2, sm: 1 }}
+          height={"100%"}
+          maxHeight={"100%"}
+        >
+          <Card sx={{ height: "100%", maxHeight: "100%" }}>
+            <CardContent sx={{ height: "100%", maxHeight: "100%" }}>
               <CalendarViewer
                 loading={loading}
                 data={{ calendarEvents, calendars }}
@@ -78,21 +85,6 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           flexDirection="column"
           maxHeight={isMobile ? "35vh" : "auto"}
         >
-          <Grid item padding="1rem 0.25rem 0.1rem">
-            <form>
-              <TextField
-                value=""
-                label="Notes"
-                variant="outlined"
-                multiline
-                rows={isMobile ? 2 : 12} // TODO
-                fullWidth
-                onChange={() => {
-                  console.log("notes changed");
-                }}
-              />
-            </form>
-          </Grid>
           <Grid item padding="0.25rem">
             <div>
               {(!!userActions.length && <TasksBox data={{ userActions, routines }} />) || (
@@ -102,49 +94,6 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
               )}
             </div>
           </Grid>
-          {!isMobile && (
-            <Grid item padding={"0 0.25rem 0.25rem"}>
-              <TextField
-                value=""
-                label="Study theme"
-                sx={{ margin: "0.25rem 0" }}
-                variant="outlined"
-                // margin="dense"
-                fullWidth
-                onChange={() => {
-                  console.log("study theme changed");
-                }}
-              />
-              <TextField
-                value=""
-                label="Other study theme"
-                sx={{ margin: "0.25rem 0" }}
-                variant="outlined"
-                // margin="dense"
-                fullWidth
-                onChange={() => {
-                  console.log("other study theme changed");
-                }}
-              />
-            </Grid>
-          )}
-          {!isMobile && (
-            <Grid item padding={0.75}>
-              {["", ""].map((value, i) => (
-                <TextField
-                  key={i}
-                  value={value}
-                  label="KPI"
-                  variant="outlined"
-                  margin="dense"
-                  fullWidth
-                  onChange={() => {
-                    console.log("KPI changed");
-                  }}
-                />
-              ))}
-            </Grid>
-          )}
         </Grid>
       </Grid>
     </Layout>

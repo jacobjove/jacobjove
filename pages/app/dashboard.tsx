@@ -24,7 +24,6 @@ import Link from "next/link";
 import { useState } from "react";
 
 interface DashboardPageProps {
-  dateISO: string;
   session: Session;
   layouts: DashboardLayouts;
 }
@@ -37,8 +36,9 @@ const QUERY = gql`
 `;
 
 const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) => {
-  const { layouts } = props;
+  const { layouts: initialLayouts } = props;
   const { data: session } = useSession();
+  const [layouts, setLayouts] = useState(initialLayouts);
   const [editing, setEditing] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -137,6 +137,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
         loading={loading}
         error={error}
         layouts={layouts}
+        setLayouts={setLayouts}
         editing={editing}
         session={session}
       />
@@ -156,40 +157,42 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const today = new Date();
   const props: DashboardPageProps = {
-    dateISO: today.toISOString(),
     layouts: {
       xs: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 3, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
-        { i: "identities", x: 7, y: 3, w: 2, h: 1, resizeHandles: ["se", "sw"] },
-        { i: "values", x: 7, y: 7, w: 2, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "calendar", x: 0, y: 0, w: 4, h: 3, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 0, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 0, y: 2, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 0, y: 3, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "topics", x: 0, y: 4, w: 4, h: 1, resizeHandles: ["se", "sw"] },
       ],
       sm: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
-        { i: "identities", x: 7, y: 3, w: 2, h: 1, resizeHandles: ["se", "sw"] },
-        { i: "values", x: 7, y: 7, w: 2, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "calendar", x: 0, y: 0, w: 4, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 6, y: 3, w: 2, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 9, y: 4, w: 2, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 6, y: 5, w: 2, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "topics", x: 9, y: 6, w: 2, h: 2, resizeHandles: ["se", "sw"] },
       ],
       md: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
-        { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
-        { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "calendar", x: 0, y: 0, w: 6, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 6, y: 0, w: 3, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 9, y: 0, w: 3, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 6, y: 2, w: 3, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "topics", x: 9, y: 2, w: 3, h: 2, resizeHandles: ["se", "sw"] },
       ],
       lg: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
-        { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
-        { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "calendar", x: 1, y: 0, w: 8, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 9, y: 0, w: 4, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "identities", x: 13, y: 2, w: 4, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "values", x: 9, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
+        { i: "topics", x: 13, y: 4, w: 4, h: 2, resizeHandles: ["se", "sw"] },
       ],
-      xl: [
-        { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
-        { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
-        { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
-      ],
+      // xl: [
+      //   { i: "calendar", x: 1, y: 1, w: 6, h: 4, resizeHandles: ["se", "sw"] },
+      //   { i: "actions", x: 7, y: 1, w: 4, h: 2, resizeHandles: ["se", "sw"] },
+      //   { i: "identities", x: 7, y: 3, w: 4, h: 2, resizeHandles: ["se", "sw"] },
+      //   { i: "values", x: 7, y: 7, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+      // ],
     },
     session,
   };

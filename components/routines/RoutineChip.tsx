@@ -18,6 +18,11 @@ const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
       title: routine.name,
       duration: routine.durationInMinutes,
       calendarId: session?.user?.settings?.defaultCalendarId,
+      notes: `
+        ${routine.routineActions.map((routineAction) => {
+          return routineAction.action.name;
+        })}
+      `,
     },
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,

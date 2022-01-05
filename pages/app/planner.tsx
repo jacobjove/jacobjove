@@ -1,8 +1,9 @@
 import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/calendar";
+import { fragment as dashboardFragment } from "@/components/dashboard/Dashboard";
 import Layout from "@/components/Layout";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
-import { useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -13,25 +14,27 @@ import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { useState } from "react";
 
 interface PlannerPageProps {
   dateISO: string;
   session: Session;
 }
 
+const QUERY = gql`
+  query PlannerPage($userId: String!) {
+    ...Dashboard
+  }
+  ${dashboardFragment}
+`;
+
 const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { dateISO } = props;
   const { data: session } = useSession();
-  const [date, setDate] = useState(new Date(dateISO));
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(QUERY, {
+  const { loading, error, data } = useQuery(QUERY, {
     variables: {
       userId: session?.user?.id,
     },
-    // Setting this value to true makes the component rerender when "networkStatus" changes,
-    // so we are able to know if it is fetching more data.
-    // notifyOnNetworkStatusChange: true,
   });
   if (!session) {
     return null;
@@ -51,7 +54,9 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <CalendarViewer
-                data={(calendarEvents, calendars)}
+                loading={loading}
+                data={{ calendarEvents, calendars }}
+                error={error}
                 collapseViewMenu={true}
                 session={session}
               />
