@@ -3,6 +3,7 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -39,7 +40,6 @@ const ActionChip: FC<ActionChipProps> = ({ userAction }: ActionChipProps) => {
       ref={dragRef}
       sx={{
         opacity,
-        cursor: "grab",
         position: "relative",
         margin: "0.25rem",
         paddingX: "0.5rem",
@@ -53,7 +53,7 @@ const ActionChip: FC<ActionChipProps> = ({ userAction }: ActionChipProps) => {
     >
       <Typography fontSize="0.9rem">
         <Link href={`/actions/${userAction.action.slug}`} passHref>
-          <a>{`${userAction.action.name}`}</a>
+          <StyledAnchor>{`${userAction.action.name}`}</StyledAnchor>
         </Link>
       </Typography>
       <IconButton
@@ -74,3 +74,11 @@ const ActionChip: FC<ActionChipProps> = ({ userAction }: ActionChipProps) => {
 };
 
 export default ActionChip;
+
+const StyledAnchor = styled("a")(() => ({
+  textDecoration: "none",
+  color: "inherit",
+  "&:hover": {
+    textDecoration: "none",
+  },
+}));

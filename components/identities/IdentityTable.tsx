@@ -1,7 +1,12 @@
 import { Identity, UserIdentity as _UserIdentity } from "@/graphql/schema";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import Step from "@mui/material/Step";
+import StepContent from "@mui/material/StepContent";
+import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,7 +15,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 type UserIdentity = _UserIdentity & {
   identity: Identity;
@@ -26,11 +31,7 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   const { userIdentities } = props;
   let content;
   if (!userIdentities.length) {
-    content = (
-      <Typography component="p" textAlign="center">
-        No identities yet.
-      </Typography>
-    );
+    content = <IdentitiesOnboarder />;
   } else {
     content = (
       <TableContainer>
@@ -92,3 +93,52 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
 };
 
 export default IdentityTable;
+
+const steps = [
+  {
+    label: "Select identities",
+    description: `Select one or more identities.`,
+  },
+  {
+    label: "Link actions to identities",
+    description: "Add actions for your selected identities.",
+  },
+];
+
+export const IdentitiesOnboarder: FC = () => {
+  const [activeStep, setActiveStep] = useState(0);
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+  return (
+    <Box padding={"0.75rem"}>
+      <Stepper activeStep={activeStep} orientation="vertical">
+        {steps.map((step, index) => (
+          <Step key={step.label}>
+            <StepLabel
+              optional={index === 2 ? <Typography variant="caption">Last step</Typography> : null}
+            >
+              {step.label}
+            </StepLabel>
+            <StepContent>
+              <Typography>{step.description}</Typography>
+              <Box sx={{ mb: 2 }}>
+                <div>
+                  <Button variant="contained" onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
+                    {index === steps.length - 1 ? "Finish" : "Continue"}
+                  </Button>
+                  <Button disabled={index === 0} onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
+                    Back
+                  </Button>
+                </div>
+              </Box>
+            </StepContent>
+          </Step>
+        ))}
+      </Stepper>
+    </Box>
+  );
+};
