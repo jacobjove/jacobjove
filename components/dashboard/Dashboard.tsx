@@ -1,5 +1,6 @@
 import CalendarViewer from "@/components/calendar";
 import DashboardCard from "@/components/dashboard/components/DashboardCard";
+import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
 import IdentityTable from "@/components/identities/IdentityTable";
 import TasksBox from "@/components/tasks/TasksBox";
 import {
@@ -36,7 +37,7 @@ import Typography from "@mui/material/Typography";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { FC, useEffect, useMemo, useState } from "react";
-import { ItemCallback, Layout as LayoutItem, Responsive, WidthProvider } from "react-grid-layout";
+import { ItemCallback, Responsive, WidthProvider } from "react-grid-layout";
 
 export const fragment = gql`
   fragment Dashboard on Query {
@@ -68,32 +69,6 @@ export const fragment = gql`
 `;
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
-
-type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
-
-export interface CompleteDashboardLayouts {
-  xs: DashboardComponent[];
-  sm: DashboardComponent[];
-  md: DashboardComponent[];
-  lg: DashboardComponent[];
-  xl: DashboardComponent[];
-}
-
-export type DashboardLayouts = AtLeastOne<CompleteDashboardLayouts>;
-
-type DashboardComponentKey =
-  | "calendar"
-  | "identities"
-  | "actions"
-  // | "tasks"
-  | "values"
-  | "topics"
-  | "routines";
-
-// https://github.com/react-grid-layout/react-grid-layout#grid-item-props
-interface DashboardComponent extends LayoutItem {
-  i: DashboardComponentKey;
-}
 
 export interface DashboardData {
   calendars: Calendar[];
@@ -413,9 +388,17 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             alignItems: "end",
           }}
           icon={<SpeedDialIcon />}
+          onClose={handleSpeedDialClose}
+          onOpen={handleSpeedDialOpen}
         >
           {speedDialActions.map((action) => (
-            <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} />
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              tooltipOpen // TODO: on mobile only?
+              onClick={handleSpeedDialClose}
+            />
           ))}
         </SpeedDial>
       </div>
