@@ -49,10 +49,10 @@ const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, view, events, defaultCalendarId, onClick, past } = props;
+  const { data: session } = useSession();
   const filteredEvents = events?.filter((event) => {
     return !event.deletedAt;
   });
-  const { data: session } = useSession();
   const [hovered, setHovered] = useState(false);
   const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
     updateCalendarEvent: CalendarEvent;

@@ -5,7 +5,6 @@ import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/DateContext";
 import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import {
   addMinutes,
@@ -84,7 +83,6 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
     defaultCalendar,
     hidden,
     data,
-    session,
   } = props;
   const { calendarEvents } = data;
   const date = useContext(DateContext);
@@ -112,9 +110,6 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
       });
     }
   }, [currentTimeOffsetPx]);
-  if (!session?.user) {
-    return <Skeleton sx={{ height: "100%", maxHeight: "80vh" }} variant="rectangular" />;
-  }
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
       <Box

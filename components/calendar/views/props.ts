@@ -1,5 +1,4 @@
 import { Calendar, CalendarEvent } from "@/graphql/schema";
-import { Session } from "next-auth";
 import { Dispatch, SetStateAction } from "react";
 
 export type CalendarData = {
@@ -12,7 +11,6 @@ export interface CalendarProps {
   data: CalendarData;
   loading: boolean;
   error?: Error;
-  session: Session;
 }
 
 interface EventFormData {

@@ -5,7 +5,6 @@ import DateContext from "@/components/DateContext";
 import { CalendarEvent } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import {
   addMinutes,
@@ -66,7 +65,6 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
     defaultCalendar,
     hidden,
     data,
-    session,
   } = props;
   const { calendarEvents } = data;
   const date = useContext(DateContext);
@@ -92,9 +90,6 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
       // console.log('After', scrollableDiv.scrollTop);
     }
   }, [currentTimeOffsetPx]);
-  if (!session?.user) {
-    return <Skeleton sx={{ height: "100%", maxHeight: "80vh" }} variant="rectangular" />;
-  }
   const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>

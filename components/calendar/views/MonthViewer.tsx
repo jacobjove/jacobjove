@@ -61,12 +61,11 @@ const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const MonthViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const date = useContext(DateContext);
-  const { selectedDate, hidden, data, session } = props;
+  const { selectedDate, hidden, data } = props;
   const { calendarEvents } = data;
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayIndex = getDay(firstDayOfMonth);
   // console.log(calendarEvents);
-  if (!session) return null;
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
       <table>
