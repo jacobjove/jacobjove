@@ -76,7 +76,7 @@ export interface CompleteDashboardLayouts {
   xl: DashboardComponent[];
 }
 
-type DashboardLayouts = AtLeastOne<CompleteDashboardLayouts>;
+export type DashboardLayouts = AtLeastOne<CompleteDashboardLayouts>;
 
 type DashboardComponentKey =
   | "calendar"

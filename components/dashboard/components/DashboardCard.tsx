@@ -26,7 +26,7 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
     <Card sx={{ height: "100%" }}>
       <Collapse in={props.editing}>
         <CardHeader
-          title={<CardTitle title="Dashboard" />}
+          title={<CardTitle title={props.title} />}
           style={{ padding: 0 }}
           action={
             <span className={`drag-anchor${!props.editing ? " hidden" : ""}`}>
@@ -39,7 +39,7 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
       </Collapse>
       <CardContent
         style={{
-          paddingTop: "0.25rem",
+          padding: "0.5rem",
           height: "100%",
           maxHeight: "100%",
           overflow: "scroll",

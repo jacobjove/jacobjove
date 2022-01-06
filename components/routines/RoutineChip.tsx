@@ -32,14 +32,22 @@ const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
     <Box
       bgcolor={"rgba(0, 0, 0, 0.08)"}
       borderRadius="3px"
-      padding="0.5rem"
+      padding="0.25rem"
       margin="0.25rem"
       ref={dragRef}
       sx={{ opacity }}
     >
-      <Typography variant="h5" title={routine.description ?? ""}>
+      <Typography
+        variant="h5"
+        fontSize="1.1rem"
+        marginLeft="0.25rem"
+        title={routine.description ?? ""}
+      >
         {routine.name}
       </Typography>
+      {routine.durationInMinutes && (
+        <Typography component={"small"}>{routine.durationInMinutes} min</Typography>
+      )}
       <div>
         {routine.routineActions.length ? (
           routine.routineActions.map((routineAction) => (
@@ -48,10 +56,12 @@ const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
               bgcolor={"rgba(255, 255, 255, 0.5);"}
               border={"1px solid rgba(255, 255, 255, 0.2);"}
               borderRadius="3px"
-              padding="0.5rem"
+              padding="0.25rem 0.5rem"
               margin="0.25rem"
             >
-              {routineAction.action.name}, {routineAction.durationInMinutes} minutes
+              <Typography fontSize="0.8rem">
+                {routineAction.action.name}, {routineAction.durationInMinutes} minutes
+              </Typography>
             </Box>
           ))
         ) : (

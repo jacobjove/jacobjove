@@ -1,8 +1,11 @@
 import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import RepeatIcon from "@mui/icons-material/Repeat";
-import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
+// import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC } from "react";
@@ -30,34 +33,42 @@ const ActionChip: FC<ActionChipProps> = ({ userAction }: ActionChipProps) => {
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   }));
-  const handleDelete = () => {
-    console.info("You clicked the delete icon.");
+  const handleScheduleIconClick = () => {
+    console.info("You clicked the schedule icon.");
   };
   return (
     <Link href={`/actions/${userAction.action.slug}`} passHref>
       <StyledAnchor>
-        <Chip
+        <Box
           ref={dragRef}
           sx={{
             opacity,
             cursor: "grab",
             position: "relative",
-            // paddingRight: "2rem",
-            margin: "0.15rem",
-            paddingX: "0.3rem",
-            paddingY: "0.3rem",
+            margin: "0.25rem",
+            paddingX: "0.5rem",
             height: "auto",
             maxHeight: "auto",
             borderRadius: "3px",
+            backgroundColor: "rgba(0, 0, 0, 0.08)",
+            display: "flex",
+            alignItems: "center",
           }}
-          label={`${userAction.action.name}`}
-          deleteIcon={
-            <IconButton title={`every ${schedule.frequency.toLowerCase()}`}>
-              <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
-            </IconButton>
-          }
-          onDelete={handleDelete}
-        />
+        >
+          <Typography fontSize="0.9rem">
+            <Link href={`/actions/${userAction.action.slug}`} passHref>
+              <a>{`${userAction.action.name}`}</a>
+            </Link>
+          </Typography>
+          <IconButton
+            title={`every ${schedule.frequency.toLowerCase()}`}
+            onClick={handleScheduleIconClick}
+            style={{ marginLeft: "auto" }}
+          >
+            <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
+          </IconButton>
+          <DragIndicatorIcon sx={{ "&:hover": { cursor: "grab" } }} />
+        </Box>
       </StyledAnchor>
     </Link>
   );
