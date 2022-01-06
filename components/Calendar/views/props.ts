@@ -3,6 +3,7 @@ import { Session } from "next-auth";
 import { Dispatch, SetStateAction } from "react";
 
 export type CalendarData = {
+  calendars: Calendar[];
   calendarEvents: CalendarEvent[];
 };
 

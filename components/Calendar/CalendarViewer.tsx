@@ -4,7 +4,6 @@ import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
 import DateContext from "@/components/DateContext";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
-import { Calendar } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
@@ -49,12 +48,8 @@ export const fragment = gql`
   ${calendarEventFragment}
 `;
 
-interface CalendarViewerData extends CalendarData {
-  calendars: Calendar[];
-}
-
 type CalendarViewerProps = Omit<CalendarProps, "data"> & {
-  data: CalendarViewerData;
+  data: CalendarData;
 };
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
