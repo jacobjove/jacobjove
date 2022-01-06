@@ -27,7 +27,11 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
       <Collapse in={props.editing}>
         <CardHeader
           title={<CardTitle title={props.title} />}
-          style={{ padding: 0 }}
+          style={{
+            padding: 0,
+            backgroundColor: "whitesmoke",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+          }}
           action={
             <span className={`drag-anchor${!props.editing ? " hidden" : ""}`}>
               <IconButton>

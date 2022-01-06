@@ -218,7 +218,8 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
                 label="Study theme"
                 sx={{ margin: "0.25rem 0" }}
                 variant="outlined"
-                // margin="dense"
+                size="small"
+                margin="dense"
                 fullWidth
                 onChange={() => {
                   console.log("study theme changed");
@@ -229,7 +230,8 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
                 label="Other study theme"
                 sx={{ margin: "0.25rem 0" }}
                 variant="outlined"
-                // margin="dense"
+                size="small"
+                margin="dense"
                 fullWidth
                 onChange={() => {
                   console.log("other study theme changed");
