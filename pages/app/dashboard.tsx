@@ -1,7 +1,4 @@
-import Dashboard, {
-  DashboardData,
-  fragment as dashboardFragment,
-} from "@/components/dashboard/Dashboard";
+import Dashboard, { DashboardData, fragment as dashboardFragment } from "@/components/dashboard/Dashboard";
 import { DashboardLayouts } from "@/components/dashboard/types";
 import Layout from "@/components/Layout";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
