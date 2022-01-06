@@ -1,5 +1,7 @@
 import { Identity, UserIdentity as _UserIdentity } from "@/graphql/schema";
+import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -23,6 +25,11 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   const { userIdentities } = props;
   return (
     <TableContainer>
+      {(!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
+        <Typography component="p" textAlign="center">
+          No identities yet.
+        </Typography>
+      )}
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -58,6 +65,18 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
           ))}
         </TableBody>
       </Table>
+      <Box textAlign="center" marginTop="1rem">
+        <Link href="/identities" passHref>
+          <IconButton
+            component={"a"}
+            color="info"
+            style={{ marginLeft: 3 }}
+            title="Explore identities"
+          >
+            <SearchIcon />
+          </IconButton>
+        </Link>
+      </Box>
     </TableContainer>
   );
 };

@@ -1,7 +1,7 @@
 import { UserBelief } from ".prisma/client";
 import SelectableBelief from "@/components/beliefs/SelectableBelief";
 import Layout from "@/components/Layout";
-import PageHeader from "@/components/Layout/PageHeader";
+import PageHeader from "@/components/PageHeader";
 import { Belief } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";

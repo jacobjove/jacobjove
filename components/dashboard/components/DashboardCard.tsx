@@ -1,9 +1,9 @@
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import DragHandle from "@/components/dashboard/components/DragHandle";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { FC, ReactNode } from "react";
 
@@ -21,10 +21,20 @@ interface DashboardCardProps {
   children?: ReactNode;
 }
 
+const StyledCard = styled(Card)(() => ({
+  height: "100%",
+  "& .MuiCardHeader-action": {
+    display: "flex",
+    alignItems: "center",
+    margin: 0,
+  },
+}));
+
 const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
+  const displayCardHeader = props.editing || true;
   return (
-    <Card sx={{ height: "100%" }}>
-      <Collapse in={props.editing}>
+    <StyledCard>
+      <Collapse in={displayCardHeader}>
         <CardHeader
           title={<CardTitle title={props.title} />}
           style={{
@@ -32,13 +42,7 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
             backgroundColor: "whitesmoke",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
           }}
-          action={
-            <span className={`drag-anchor${!props.editing ? " hidden" : ""}`}>
-              <IconButton>
-                <DragIndicatorIcon />
-              </IconButton>
-            </span>
-          }
+          action={<DragHandle className={`drag-anchor${!props.editing ? " hidden" : ""}`} />}
         />
       </Collapse>
       <CardContent
@@ -51,7 +55,7 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
       >
         {props.loading ? <div>Loading...</div> : props.children}
       </CardContent>
-    </Card>
+    </StyledCard>
   );
 };
 

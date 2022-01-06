@@ -1,54 +1,38 @@
 {
-  "auto-rename-tag.activationOnLanguage": [
-      "html",
-      "*"
-  ],
-  "auto-close-tag.activationOnLanguage": [
-      "html",
-  ],
+  "auto-rename-tag.activationOnLanguage": ["html", "*"],
+  "auto-close-tag.activationOnLanguage": ["html"],
   "debug.console.fontSize": 11,
   "debug.javascript.unmapMissingSources": true,
   "editor.detectIndentation": true,
   "editor.formatOnSave": true,
   "editor.linkedEditing": true,
-  "editor.rulers": [
-      94,
-      120
-  ],
+  "editor.rulers": [94, 120],
   "editor.suggestSelection": "first",
-  "eslint.validate": [
-      "javascript",
-      "javascriptreact",
-      "typescript",
-      "typescriptreact"
-  ],
-  "eslint.workingDirectories": [
-    "./components",
-    "./pages",
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.workingDirectories": ["./components", "./pages"],
   "explorer.autoReveal": false,
   "explorer.confirmDragAndDrop": false,
   "files.associations": {
-      "**/*.html": "html",
-      "**/*.htm": "html",
+    "**/*.html": "html",
+    "**/*.htm": "html"
   },
   "files.autoSave": "onFocusChange",
   "files.autoSaveDelay": 3000,
   "files.eol": "\n",
   "files.exclude": {
-      "**/.git": true,
-      "**/.svn": true,
-      "**/.hg": true,
-      "**/CVS": true,
-      "**/.DS_Store": true,
-      "**/*.pyc": true,
-      "**/__pycache__": true
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.pyc": true,
+    "**/__pycache__": true
   },
   "gitlens.currentLine.scrollable": false,
   "php.suggest.basic": false,
   "php.validate.enable": false,
   "search.exclude": {
-      ".venv": true
+    ".venv": true
   },
   "terminal.integrated.cursorWidth": 4,
   "terminal.integrated.cursorStyle": "line",
@@ -60,4 +44,5 @@
   "shellcheck.ignorePatterns": {
     "*.*ignore": true
   },
+  "editor.tabSize": 2
 }

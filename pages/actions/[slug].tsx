@@ -1,6 +1,6 @@
-import { Action } from "@/graphql/schema";
 import Layout from "@/components/Layout";
-import PageHeader from "@/components/Layout/PageHeader";
+import PageHeader from "@/components/PageHeader";
+import { Action } from "@/graphql/schema";
 import prisma from "@/lib/prisma";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";

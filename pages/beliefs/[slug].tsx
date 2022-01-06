@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import PageHeader from "@/components/Layout/PageHeader";
+import PageHeader from "@/components/PageHeader";
 import { Belief } from "@/graphql/schema";
 import prisma from "@/lib/prisma";
 import { Container } from "@mui/material";

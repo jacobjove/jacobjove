@@ -1,6 +1,6 @@
 import { UserValue } from ".prisma/client";
 import Layout from "@/components/Layout";
-import PageHeader from "@/components/Layout/PageHeader";
+import PageHeader from "@/components/PageHeader";
 import SelectableValue from "@/components/values/SelectableValue";
 import { Value } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";

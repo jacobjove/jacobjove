@@ -1,7 +1,7 @@
 import { UserIdentity } from ".prisma/client";
 import SelectableIdentity from "@/components/identities/SelectableIdentity";
 import Layout from "@/components/Layout";
-import PageHeader from "@/components/Layout/PageHeader";
+import PageHeader from "@/components/PageHeader";
 import { Identity } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";

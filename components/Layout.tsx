@@ -19,7 +19,7 @@ const Layout: FC = ({ children }) => {
         style={{
           display: "flex",
           position: "relative",
-          paddingBottom: `${footerHeightRem + 2.5}rem`,
+          paddingBottom: `${footerHeightRem}rem`,
           flexGrow: 1,
           overflow: "hidden",
         }}

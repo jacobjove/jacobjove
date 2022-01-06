@@ -1,6 +1,6 @@
 import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
-import PageHeader from "@/components/Layout/PageHeader";
+import PageHeader from "@/components/PageHeader";
 import { Action, UserAction as _UserAction } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";

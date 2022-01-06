@@ -1,4 +1,3 @@
-import ActionBox from "@/components/actions/ActionBox";
 import CalendarViewer from "@/components/calendar";
 import DashboardCard from "@/components/dashboard/components/DashboardCard";
 import IdentityTable from "@/components/identities/IdentityTable";
@@ -26,8 +25,12 @@ import {
 import { gql } from "@apollo/client";
 import SearchIcon from "@mui/icons-material/Search";
 import { Breakpoint } from "@mui/material";
+import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Session } from "next-auth";
@@ -82,9 +85,9 @@ type DashboardComponentKey =
   | "calendar"
   | "identities"
   | "actions"
+  // | "tasks"
   | "values"
   | "topics"
-  | "tasks"
   | "routines";
 
 // https://github.com/react-grid-layout/react-grid-layout#grid-item-props
@@ -123,6 +126,15 @@ interface DashboardProps {
 const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const { data, loading, error, layouts, setLayouts, editing, session } = props;
   const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xs");
+  const [speedDialOpen, setSpeedDialOpen] = useState(false);
+  const handleSpeedDialOpen = () => setSpeedDialOpen(true);
+  const handleSpeedDialClose = () => setSpeedDialOpen(false);
+  const speedDialActions: { name: string; icon: FC }[] = [
+    // { icon: <FileCopyIcon />, name: 'Copy' },
+    // { icon: <SaveIcon />, name: 'Save' },
+    // { icon: <PrintIcon />, name: 'Print' },
+    // { icon: <ShareIcon />, name: 'Share' },
+  ];
   const children = useMemo(() => {
     if (!data || !session) return [];
     const { calendarEvents, calendars, routines, userActions, userIdentities, userValues } = data;
@@ -142,43 +154,13 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "actions":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              {(!!userActions.length && <ActionBox userActions={userActions} />) || (
-                <Typography component="p" textAlign="center">
-                  No actions yet.
-                </Typography>
-              )}
-            </DashboardCard>
-          );
-        case "tasks":
-          return (
-            <DashboardCard title={"Tasks"} editing={editing} loading={loading}>
-              {(!!userActions.length && <TasksBox data={{ userActions, routines }} />) || (
-                <Typography component="p" textAlign="center">
-                  No actions yet.
-                </Typography>
-              )}
+              <TasksBox data={{ userActions, routines }} />
             </DashboardCard>
           );
         case "identities":
           return (
             <DashboardCard title={"Identities"} editing={editing} loading={loading}>
-              {(!!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
-                <Typography component="p" textAlign="center">
-                  No identities yet.
-                </Typography>
-              )}
-              <Box textAlign="center" marginTop="1rem">
-                <Link href="/identities" passHref>
-                  <IconButton
-                    component={"a"}
-                    color="info"
-                    style={{ marginLeft: 3 }}
-                    title="Explore identities"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Link>
-              </Box>
+              <IdentityTable userIdentities={userIdentities} />
             </DashboardCard>
           );
         case "values":
@@ -395,28 +377,48 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     }
   };
   return (
-    <div>
-      <ResponsiveGridLayout
-        className="layout"
-        layouts={layouts}
-        // TODO: make sure this plays nicely with MUI theme breakpoints:
-        breakpoints={BREAKPOINTS}
-        containerPadding={{ xl: [24, 12] }}
-        margin={{ xl: [24, 24] }}
-        cols={{ xl: 24, lg: 18, md: 12, sm: 6, xs: 4, xxs: 2 }}
-        draggableHandle="span.drag-anchor"
-        onLayoutChange={(components) => {
-          console.log("onLayoutChange...", components);
-        }}
-        onBreakpointChange={(breakpoint) => {
-          console.log("Breakpoint changed to", breakpoint);
-          setCurrentBreakpoint(breakpoint as Breakpoint);
-        }}
-        onDragStop={handleLayoutChange}
-        onResizeStop={handleLayoutChange}
-      >
-        {children}
-      </ResponsiveGridLayout>
+    <div style={{ position: "relative" }}>
+      <Backdrop open={speedDialOpen} />
+      <div style={{ position: "relative" }}>
+        <ResponsiveGridLayout
+          className="layout"
+          layouts={layouts}
+          // TODO: make sure this plays nicely with MUI theme breakpoints:
+          breakpoints={BREAKPOINTS}
+          containerPadding={{ xl: [24, 12] }}
+          margin={{ md: [18, 18], lg: [24, 24], xl: [24, 24] }}
+          cols={{ xl: 24, lg: 18, md: 12, sm: 6, xs: 4, xxs: 2 }}
+          draggableHandle=".drag-anchor"
+          onLayoutChange={(components) => {
+            console.log("onLayoutChange...", components);
+          }}
+          onBreakpointChange={(breakpoint) => {
+            console.log("Breakpoint changed to", breakpoint);
+            setCurrentBreakpoint(breakpoint as Breakpoint);
+          }}
+          onDragStop={handleLayoutChange}
+          onResizeStop={handleLayoutChange}
+        >
+          {children}
+        </ResponsiveGridLayout>
+      </div>
+      <div style={{ position: "relative" }}>
+        <SpeedDial
+          ariaLabel="Dashboard speed dial"
+          sx={{
+            position: "sticky",
+            bottom: 16,
+            right: 0,
+            marginRight: "16px",
+            alignItems: "end",
+          }}
+          icon={<SpeedDialIcon />}
+        >
+          {speedDialActions.map((action) => (
+            <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} />
+          ))}
+        </SpeedDial>
+      </div>
     </div>
   );
 };

@@ -67,7 +67,12 @@ const ActionChip: FC<ActionChipProps> = ({ userAction }: ActionChipProps) => {
           >
             <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
           </IconButton>
-          <DragIndicatorIcon sx={{ "&:hover": { cursor: "grab" } }} />
+          <DragIndicatorIcon
+            sx={{
+              "&:hover": { cursor: "grab" },
+              color: "gray",
+            }}
+          />
         </Box>
       </StyledAnchor>
     </Link>

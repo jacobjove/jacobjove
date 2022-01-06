@@ -161,28 +161,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     layouts: {
       xs: [
         { i: "calendar", x: 0, y: 0, w: 4, h: 3, resizeHandles: ["se", "sw"] },
-        { i: "tasks", x: 0, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 0, y: 1, w: 4, h: 1, resizeHandles: ["se", "sw"] },
         { i: "identities", x: 0, y: 2, w: 4, h: 1, resizeHandles: ["se", "sw"] },
         { i: "values", x: 0, y: 3, w: 4, h: 1, resizeHandles: ["se", "sw"] },
         { i: "topics", x: 0, y: 4, w: 4, h: 1, resizeHandles: ["se", "sw"] },
       ],
       sm: [
         { i: "calendar", x: 0, y: 0, w: 4, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "tasks", x: 6, y: 3, w: 2, h: 3, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 6, y: 3, w: 2, h: 3, resizeHandles: ["se", "sw"] },
         { i: "identities", x: 9, y: 4, w: 2, h: 2, resizeHandles: ["se", "sw"] },
         { i: "values", x: 6, y: 5, w: 2, h: 1, resizeHandles: ["se", "sw"] },
         { i: "topics", x: 9, y: 6, w: 2, h: 2, resizeHandles: ["se", "sw"] },
       ],
       md: [
         { i: "calendar", x: 0, y: 0, w: 6, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "tasks", x: 6, y: 0, w: 3, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 6, y: 0, w: 3, h: 4, resizeHandles: ["se", "sw"] },
         { i: "identities", x: 9, y: 0, w: 3, h: 2, resizeHandles: ["se", "sw"] },
         { i: "values", x: 9, y: 2, w: 3, h: 1, resizeHandles: ["se", "sw"] },
         { i: "topics", x: 9, y: 2, w: 3, h: 1, resizeHandles: ["se", "sw"] },
       ],
       lg: [
         { i: "calendar", x: 1, y: 0, w: 8, h: 4, resizeHandles: ["se", "sw"] },
-        { i: "tasks", x: 9, y: 0, w: 4, h: 4, resizeHandles: ["se", "sw"] },
+        { i: "actions", x: 9, y: 0, w: 4, h: 4, resizeHandles: ["se", "sw"] },
         { i: "identities", x: 13, y: 2, w: 4, h: 2, resizeHandles: ["se", "sw"] },
         { i: "values", x: 13, y: 3, w: 4, h: 1, resizeHandles: ["se", "sw"] },
         { i: "topics", x: 13, y: 4, w: 4, h: 1, resizeHandles: ["se", "sw"] },
