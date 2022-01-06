@@ -164,6 +164,8 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
                 calendarId,
                 scheduleId,
                 createdAt: new Date(),
+                updatedAt: new Date(),
+                deletedAt: null,
                 ...(calendarEventData as Omit<
                   CalendarEvent,
                   "__typename" | "id" | "uid" | "calendarId" | "createdAt"
