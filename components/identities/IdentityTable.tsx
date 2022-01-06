@@ -22,49 +22,59 @@ interface IdentityTableProps {
 
 // TODO: https://mui.com/components/tables/#sorting-amp-selecting
 const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
+  console.log("IdentityTable", props);
   const { userIdentities } = props;
-  return (
-    <TableContainer>
-      {(!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
-        <Typography component="p" textAlign="center">
-          No identities yet.
-        </Typography>
-      )}
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell component="th" scope="col">
-              <Typography fontWeight="normal" fontSize="0.7rem">
-                Identity
-              </Typography>
-            </TableCell>
-            <TableCell component="th" scope="col">
-              <Typography fontWeight="normal" fontSize="0.7rem">
-                Health
-              </Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {userIdentities.map((userIdentity: UserIdentity) => (
-            <TableRow
-              key={userIdentity.identity.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                <Link href={`/identities/${userIdentity.identity.slug}`}>
-                  <a>{userIdentity.identity.name}</a>
-                </Link>
+  let content;
+  if (!userIdentities.length) {
+    content = (
+      <Typography component="p" textAlign="center">
+        No identities yet.
+      </Typography>
+    );
+  } else {
+    content = (
+      <TableContainer>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell component="th" scope="col">
+                <Typography fontWeight="normal" fontSize="0.7rem">
+                  Identity
+                </Typography>
               </TableCell>
-              <TableCell component="td">
-                <Box display="flex" alignItems="center">
-                  <progress value="100" max="100" style={{ flexGrow: 1 }}></progress>
-                </Box>
+              <TableCell component="th" scope="col">
+                <Typography fontWeight="normal" fontSize="0.7rem">
+                  Health
+                </Typography>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {userIdentities.map((userIdentity: UserIdentity) => (
+              <TableRow
+                key={userIdentity.identity.name}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  <Link href={`/identities/${userIdentity.identity.slug}`}>
+                    <a>{userIdentity.identity.name}</a>
+                  </Link>
+                </TableCell>
+                <TableCell component="td">
+                  <Box display="flex" alignItems="center">
+                    <progress value="100" max="100" style={{ flexGrow: 1 }}></progress>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  }
+  return (
+    <div>
+      {content}
       <Box textAlign="center" marginTop="1rem">
         <Link href="/identities" passHref>
           <IconButton
@@ -77,7 +87,7 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
           </IconButton>
         </Link>
       </Box>
-    </TableContainer>
+    </div>
   );
 };
 

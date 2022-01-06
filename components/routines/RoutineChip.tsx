@@ -1,4 +1,5 @@
 import { Routine } from "@/graphql/schema";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useSession } from "next-auth/react";
@@ -37,14 +38,22 @@ const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
       ref={dragRef}
       sx={{ opacity }}
     >
-      <Typography
-        variant="h5"
-        fontSize="1.1rem"
-        marginLeft="0.25rem"
-        title={routine.description ?? ""}
-      >
-        {routine.name}
-      </Typography>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography
+          variant="h5"
+          fontSize="1.1rem"
+          marginLeft="0.25rem"
+          title={routine.description ?? ""}
+        >
+          {routine.name}
+        </Typography>
+        <DragIndicatorIcon
+          sx={{
+            "&:hover": { cursor: "grab" },
+            color: "gray",
+          }}
+        />
+      </div>
       {routine.durationInMinutes && (
         <Typography component={"small"}>{routine.durationInMinutes} min</Typography>
       )}

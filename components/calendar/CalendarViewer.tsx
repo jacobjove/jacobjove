@@ -54,6 +54,7 @@ type CalendarViewerProps = Omit<CalendarProps, "data"> & {
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
   const { data, ...rest } = props;
+
   const { calendars, calendarEvents } = data;
   const defaultCalendar = calendars[0]; // TODO
   const date = useContext(DateContext);

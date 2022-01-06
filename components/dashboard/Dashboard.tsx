@@ -102,8 +102,14 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const { data, loading, error, layouts, setLayouts, editing, session } = props;
   const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xs");
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
-  const handleSpeedDialOpen = () => setSpeedDialOpen(true);
-  const handleSpeedDialClose = () => setSpeedDialOpen(false);
+  const handleSpeedDialOpen = () => {
+    console.log("handleSpeedDialOpen");
+    setSpeedDialOpen(true);
+  };
+  const handleSpeedDialClose = () => {
+    console.log("handleSpeedDialClose");
+    setSpeedDialOpen(false);
+  };
   const speedDialActions: { name: string; icon: FC }[] = [
     // { icon: <FileCopyIcon />, name: 'Copy' },
     // { icon: <SaveIcon />, name: 'Save' },
@@ -112,9 +118,10 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   ];
   const children = useMemo(() => {
     if (!data || !session) return [];
+    console.log("children...");
     const { calendarEvents, calendars, routines, userActions, userIdentities, userValues } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
-      console.log("");
+      console.log("getDashboardComponent", key);
       switch (key) {
         case "calendar":
           return (
@@ -319,6 +326,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     });
   }, [layouts, editing, data, loading, session]);
   useEffect(() => {
+    console.log("Dashboard.tsx: useEffect");
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
       let breakpoint: Breakpoint;
@@ -351,6 +359,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       setLayouts(newLayouts);
     }
   };
+  console.log("Rendering dashboard with children", children);
   return (
     <div style={{ position: "relative" }}>
       <Backdrop open={speedDialOpen} />

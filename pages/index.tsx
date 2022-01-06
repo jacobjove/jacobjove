@@ -21,7 +21,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
       <NextSeo title={"SelfBuilder"} canonical={"/"} description={"Be your best self."} />
       <Container maxWidth={"lg"}>
         <Grid container spacing={2}>
-          <Grid item xs={12} lg={8}>
+          <Grid item xs={12} lg={8} alignItems={"center"}>
             <Box>
               <Typography variant={"h1"}>Be your best self.</Typography>
             </Box>
