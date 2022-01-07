@@ -862,7 +862,6 @@ type ActionScheduleTemplate {
   _count: ActionScheduleTemplateCount!
   action: Action!
   actionId: Int!
-  chron: String
   frequency: FREQUENCY!
   id: Int!
   multiplier: Int!
@@ -901,7 +900,6 @@ type ActionScheduleTemplateCount {
 type ActionScheduleTemplateCountAggregate {
   _all: Int!
   actionId: Int!
-  chron: Int!
   frequency: Int!
   id: Int!
   multiplier: Int!
@@ -911,7 +909,6 @@ type ActionScheduleTemplateCountAggregate {
 
 input ActionScheduleTemplateCountOrderByAggregateInput {
   actionId: SortOrder
-  chron: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -921,7 +918,6 @@ input ActionScheduleTemplateCountOrderByAggregateInput {
 
 input ActionScheduleTemplateCreateInput {
   action: ActionCreateNestedOneWithoutScheduleTemplatesInput!
-  chron: String
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -930,7 +926,6 @@ input ActionScheduleTemplateCreateInput {
 }
 
 input ActionScheduleTemplateCreateManyActionInput {
-  chron: String
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -945,7 +940,6 @@ input ActionScheduleTemplateCreateManyActionInputEnvelope {
 
 input ActionScheduleTemplateCreateManyInput {
   actionId: Int!
-  chron: String
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -955,7 +949,6 @@ input ActionScheduleTemplateCreateManyInput {
 
 input ActionScheduleTemplateCreateManyScheduleTemplateInput {
   actionId: Int!
-  chron: String
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -1003,7 +996,6 @@ input ActionScheduleTemplateCreateOrConnectWithoutUserActionSchedulesInput {
 }
 
 input ActionScheduleTemplateCreateWithoutActionInput {
-  chron: String
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -1013,7 +1005,6 @@ input ActionScheduleTemplateCreateWithoutActionInput {
 
 input ActionScheduleTemplateCreateWithoutScheduleTemplateInput {
   action: ActionCreateNestedOneWithoutScheduleTemplatesInput!
-  chron: String
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -1022,7 +1013,6 @@ input ActionScheduleTemplateCreateWithoutScheduleTemplateInput {
 
 input ActionScheduleTemplateCreateWithoutUserActionSchedulesInput {
   action: ActionCreateNestedOneWithoutScheduleTemplatesInput!
-  chron: String
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -1036,7 +1026,6 @@ type ActionScheduleTemplateGroupBy {
   _min: ActionScheduleTemplateMinAggregate
   _sum: ActionScheduleTemplateSumAggregate
   actionId: Int!
-  chron: String
   frequency: FREQUENCY!
   id: Int!
   multiplier: Int!
@@ -1052,7 +1041,6 @@ input ActionScheduleTemplateListRelationFilter {
 
 type ActionScheduleTemplateMaxAggregate {
   actionId: Int
-  chron: String
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -1062,7 +1050,6 @@ type ActionScheduleTemplateMaxAggregate {
 
 input ActionScheduleTemplateMaxOrderByAggregateInput {
   actionId: SortOrder
-  chron: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1072,7 +1059,6 @@ input ActionScheduleTemplateMaxOrderByAggregateInput {
 
 type ActionScheduleTemplateMinAggregate {
   actionId: Int
-  chron: String
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -1082,7 +1068,6 @@ type ActionScheduleTemplateMinAggregate {
 
 input ActionScheduleTemplateMinOrderByAggregateInput {
   actionId: SortOrder
-  chron: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1101,7 +1086,6 @@ input ActionScheduleTemplateOrderByWithAggregationInput {
   _min: ActionScheduleTemplateMinOrderByAggregateInput
   _sum: ActionScheduleTemplateSumOrderByAggregateInput
   actionId: SortOrder
-  chron: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1112,7 +1096,6 @@ input ActionScheduleTemplateOrderByWithAggregationInput {
 input ActionScheduleTemplateOrderByWithRelationInput {
   action: ActionOrderByWithRelationInput
   actionId: SortOrder
-  chron: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1129,7 +1112,6 @@ input ActionScheduleTemplateRelationFilter {
 
 enum ActionScheduleTemplateScalarFieldEnum {
   actionId
-  chron
   frequency
   id
   multiplier
@@ -1142,7 +1124,6 @@ input ActionScheduleTemplateScalarWhereInput {
   NOT: [ActionScheduleTemplateScalarWhereInput!]
   OR: [ActionScheduleTemplateScalarWhereInput!]
   actionId: IntFilter
-  chron: StringNullableFilter
   frequency: EnumFREQUENCYFilter
   id: IntFilter
   multiplier: IntFilter
@@ -1155,7 +1136,6 @@ input ActionScheduleTemplateScalarWhereWithAggregatesInput {
   NOT: [ActionScheduleTemplateScalarWhereWithAggregatesInput!]
   OR: [ActionScheduleTemplateScalarWhereWithAggregatesInput!]
   actionId: IntWithAggregatesFilter
-  chron: StringNullableWithAggregatesFilter
   frequency: EnumFREQUENCYWithAggregatesFilter
   id: IntWithAggregatesFilter
   multiplier: IntWithAggregatesFilter
@@ -1181,7 +1161,6 @@ input ActionScheduleTemplateSumOrderByAggregateInput {
 
 input ActionScheduleTemplateUpdateInput {
   action: ActionUpdateOneRequiredWithoutScheduleTemplatesInput
-  chron: NullableStringFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -1190,7 +1169,6 @@ input ActionScheduleTemplateUpdateInput {
 }
 
 input ActionScheduleTemplateUpdateManyMutationInput {
-  chron: NullableStringFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -1255,7 +1233,6 @@ input ActionScheduleTemplateUpdateWithWhereUniqueWithoutScheduleTemplateInput {
 }
 
 input ActionScheduleTemplateUpdateWithoutActionInput {
-  chron: NullableStringFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -1265,7 +1242,6 @@ input ActionScheduleTemplateUpdateWithoutActionInput {
 
 input ActionScheduleTemplateUpdateWithoutScheduleTemplateInput {
   action: ActionUpdateOneRequiredWithoutScheduleTemplatesInput
-  chron: NullableStringFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -1274,7 +1250,6 @@ input ActionScheduleTemplateUpdateWithoutScheduleTemplateInput {
 
 input ActionScheduleTemplateUpdateWithoutUserActionSchedulesInput {
   action: ActionUpdateOneRequiredWithoutScheduleTemplatesInput
-  chron: NullableStringFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -1304,7 +1279,6 @@ input ActionScheduleTemplateWhereInput {
   OR: [ActionScheduleTemplateWhereInput!]
   action: ActionRelationFilter
   actionId: IntFilter
-  chron: StringNullableFilter
   frequency: EnumFREQUENCYFilter
   id: IntFilter
   multiplier: IntFilter
@@ -1325,6 +1299,290 @@ type ActionSumAggregate {
 
 input ActionSumOrderByAggregateInput {
   id: SortOrder
+}
+
+type ActionTheme {
+  body: String!
+  end: DateTime
+  id: Int!
+  key: String!
+  start: DateTime!
+  userAction: UserAction
+  userActionId: Int
+}
+
+type ActionThemeAvgAggregate {
+  id: Float
+  userActionId: Float
+}
+
+input ActionThemeAvgOrderByAggregateInput {
+  id: SortOrder
+  userActionId: SortOrder
+}
+
+type ActionThemeCountAggregate {
+  _all: Int!
+  body: Int!
+  end: Int!
+  id: Int!
+  key: Int!
+  start: Int!
+  userActionId: Int!
+}
+
+input ActionThemeCountOrderByAggregateInput {
+  body: SortOrder
+  end: SortOrder
+  id: SortOrder
+  key: SortOrder
+  start: SortOrder
+  userActionId: SortOrder
+}
+
+input ActionThemeCreateInput {
+  body: String!
+  end: DateTime
+  key: String!
+  start: DateTime!
+  userAction: UserActionCreateNestedOneWithoutThemesInput
+}
+
+input ActionThemeCreateManyInput {
+  body: String!
+  end: DateTime
+  id: Int
+  key: String!
+  start: DateTime!
+  userActionId: Int
+}
+
+input ActionThemeCreateManyUserActionInput {
+  body: String!
+  end: DateTime
+  id: Int
+  key: String!
+  start: DateTime!
+}
+
+input ActionThemeCreateManyUserActionInputEnvelope {
+  data: [ActionThemeCreateManyUserActionInput!]!
+  skipDuplicates: Boolean
+}
+
+input ActionThemeCreateNestedManyWithoutUserActionInput {
+  connect: [ActionThemeWhereUniqueInput!]
+  connectOrCreate: [ActionThemeCreateOrConnectWithoutUserActionInput!]
+  create: [ActionThemeCreateWithoutUserActionInput!]
+  createMany: ActionThemeCreateManyUserActionInputEnvelope
+}
+
+input ActionThemeCreateOrConnectWithoutUserActionInput {
+  create: ActionThemeCreateWithoutUserActionInput!
+  where: ActionThemeWhereUniqueInput!
+}
+
+input ActionThemeCreateWithoutUserActionInput {
+  body: String!
+  end: DateTime
+  key: String!
+  start: DateTime!
+}
+
+type ActionThemeGroupBy {
+  _avg: ActionThemeAvgAggregate
+  _count: ActionThemeCountAggregate
+  _max: ActionThemeMaxAggregate
+  _min: ActionThemeMinAggregate
+  _sum: ActionThemeSumAggregate
+  body: String!
+  end: DateTime
+  id: Int!
+  key: String!
+  start: DateTime!
+  userActionId: Int
+}
+
+input ActionThemeListRelationFilter {
+  every: ActionThemeWhereInput
+  none: ActionThemeWhereInput
+  some: ActionThemeWhereInput
+}
+
+type ActionThemeMaxAggregate {
+  body: String
+  end: DateTime
+  id: Int
+  key: String
+  start: DateTime
+  userActionId: Int
+}
+
+input ActionThemeMaxOrderByAggregateInput {
+  body: SortOrder
+  end: SortOrder
+  id: SortOrder
+  key: SortOrder
+  start: SortOrder
+  userActionId: SortOrder
+}
+
+type ActionThemeMinAggregate {
+  body: String
+  end: DateTime
+  id: Int
+  key: String
+  start: DateTime
+  userActionId: Int
+}
+
+input ActionThemeMinOrderByAggregateInput {
+  body: SortOrder
+  end: SortOrder
+  id: SortOrder
+  key: SortOrder
+  start: SortOrder
+  userActionId: SortOrder
+}
+
+input ActionThemeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ActionThemeOrderByWithAggregationInput {
+  _avg: ActionThemeAvgOrderByAggregateInput
+  _count: ActionThemeCountOrderByAggregateInput
+  _max: ActionThemeMaxOrderByAggregateInput
+  _min: ActionThemeMinOrderByAggregateInput
+  _sum: ActionThemeSumOrderByAggregateInput
+  body: SortOrder
+  end: SortOrder
+  id: SortOrder
+  key: SortOrder
+  start: SortOrder
+  userActionId: SortOrder
+}
+
+input ActionThemeOrderByWithRelationInput {
+  body: SortOrder
+  end: SortOrder
+  id: SortOrder
+  key: SortOrder
+  start: SortOrder
+  userAction: UserActionOrderByWithRelationInput
+  userActionId: SortOrder
+}
+
+enum ActionThemeScalarFieldEnum {
+  body
+  end
+  id
+  key
+  start
+  userActionId
+}
+
+input ActionThemeScalarWhereInput {
+  AND: [ActionThemeScalarWhereInput!]
+  NOT: [ActionThemeScalarWhereInput!]
+  OR: [ActionThemeScalarWhereInput!]
+  body: StringFilter
+  end: DateTimeNullableFilter
+  id: IntFilter
+  key: StringFilter
+  start: DateTimeFilter
+  userActionId: IntNullableFilter
+}
+
+input ActionThemeScalarWhereWithAggregatesInput {
+  AND: [ActionThemeScalarWhereWithAggregatesInput!]
+  NOT: [ActionThemeScalarWhereWithAggregatesInput!]
+  OR: [ActionThemeScalarWhereWithAggregatesInput!]
+  body: StringWithAggregatesFilter
+  end: DateTimeNullableWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  key: StringWithAggregatesFilter
+  start: DateTimeWithAggregatesFilter
+  userActionId: IntNullableWithAggregatesFilter
+}
+
+type ActionThemeSumAggregate {
+  id: Int
+  userActionId: Int
+}
+
+input ActionThemeSumOrderByAggregateInput {
+  id: SortOrder
+  userActionId: SortOrder
+}
+
+input ActionThemeUpdateInput {
+  body: StringFieldUpdateOperationsInput
+  end: NullableDateTimeFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
+  userAction: UserActionUpdateOneWithoutThemesInput
+}
+
+input ActionThemeUpdateManyMutationInput {
+  body: StringFieldUpdateOperationsInput
+  end: NullableDateTimeFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
+}
+
+input ActionThemeUpdateManyWithWhereWithoutUserActionInput {
+  data: ActionThemeUpdateManyMutationInput!
+  where: ActionThemeScalarWhereInput!
+}
+
+input ActionThemeUpdateManyWithoutUserActionInput {
+  connect: [ActionThemeWhereUniqueInput!]
+  connectOrCreate: [ActionThemeCreateOrConnectWithoutUserActionInput!]
+  create: [ActionThemeCreateWithoutUserActionInput!]
+  createMany: ActionThemeCreateManyUserActionInputEnvelope
+  delete: [ActionThemeWhereUniqueInput!]
+  deleteMany: [ActionThemeScalarWhereInput!]
+  disconnect: [ActionThemeWhereUniqueInput!]
+  set: [ActionThemeWhereUniqueInput!]
+  update: [ActionThemeUpdateWithWhereUniqueWithoutUserActionInput!]
+  updateMany: [ActionThemeUpdateManyWithWhereWithoutUserActionInput!]
+  upsert: [ActionThemeUpsertWithWhereUniqueWithoutUserActionInput!]
+}
+
+input ActionThemeUpdateWithWhereUniqueWithoutUserActionInput {
+  data: ActionThemeUpdateWithoutUserActionInput!
+  where: ActionThemeWhereUniqueInput!
+}
+
+input ActionThemeUpdateWithoutUserActionInput {
+  body: StringFieldUpdateOperationsInput
+  end: NullableDateTimeFieldUpdateOperationsInput
+  key: StringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
+}
+
+input ActionThemeUpsertWithWhereUniqueWithoutUserActionInput {
+  create: ActionThemeCreateWithoutUserActionInput!
+  update: ActionThemeUpdateWithoutUserActionInput!
+  where: ActionThemeWhereUniqueInput!
+}
+
+input ActionThemeWhereInput {
+  AND: [ActionThemeWhereInput!]
+  NOT: [ActionThemeWhereInput!]
+  OR: [ActionThemeWhereInput!]
+  body: StringFilter
+  end: DateTimeNullableFilter
+  id: IntFilter
+  key: StringFilter
+  start: DateTimeFilter
+  userAction: UserActionRelationFilter
+  userActionId: IntNullableFilter
+}
+
+input ActionThemeWhereUniqueInput {
+  id: Int
 }
 
 input ActionUpdateInput {
@@ -1511,6 +1769,14 @@ type AggregateActionScheduleTemplate {
   _max: ActionScheduleTemplateMaxAggregate
   _min: ActionScheduleTemplateMinAggregate
   _sum: ActionScheduleTemplateSumAggregate
+}
+
+type AggregateActionTheme {
+  _avg: ActionThemeAvgAggregate
+  _count: ActionThemeCountAggregate
+  _max: ActionThemeMaxAggregate
+  _min: ActionThemeMinAggregate
+  _sum: ActionThemeSumAggregate
 }
 
 type AggregateBelief {
@@ -3992,6 +4258,7 @@ type Mutation {
   createAction(data: ActionCreateInput!): Action!
   createActionCompletion(data: ActionCompletionCreateInput!): ActionCompletion!
   createActionScheduleTemplate(data: ActionScheduleTemplateCreateInput!): ActionScheduleTemplate!
+  createActionTheme(data: ActionThemeCreateInput!): ActionTheme!
   createBelief(data: BeliefCreateInput!): Belief!
   createCalendar(data: CalendarCreateInput!): Calendar!
   createCalendarEvent(data: CalendarEventCreateInput!): CalendarEvent!
@@ -4002,6 +4269,7 @@ type Mutation {
   createManyAction(data: [ActionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyActionCompletion(data: [ActionCompletionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyActionScheduleTemplate(data: [ActionScheduleTemplateCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyActionTheme(data: [ActionThemeCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyBelief(data: [BeliefCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyCalendar(data: [CalendarCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyCalendarEvent(data: [CalendarEventCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -4032,6 +4300,7 @@ type Mutation {
   deleteAction(where: ActionWhereUniqueInput!): Action
   deleteActionCompletion(where: ActionCompletionWhereUniqueInput!): ActionCompletion
   deleteActionScheduleTemplate(where: ActionScheduleTemplateWhereUniqueInput!): ActionScheduleTemplate
+  deleteActionTheme(where: ActionThemeWhereUniqueInput!): ActionTheme
   deleteBelief(where: BeliefWhereUniqueInput!): Belief
   deleteCalendar(where: CalendarWhereUniqueInput!): Calendar
   deleteCalendarEvent(where: CalendarEventWhereUniqueInput!): CalendarEvent
@@ -4042,6 +4311,7 @@ type Mutation {
   deleteManyAction(where: ActionWhereInput): AffectedRowsOutput!
   deleteManyActionCompletion(where: ActionCompletionWhereInput): AffectedRowsOutput!
   deleteManyActionScheduleTemplate(where: ActionScheduleTemplateWhereInput): AffectedRowsOutput!
+  deleteManyActionTheme(where: ActionThemeWhereInput): AffectedRowsOutput!
   deleteManyBelief(where: BeliefWhereInput): AffectedRowsOutput!
   deleteManyCalendar(where: CalendarWhereInput): AffectedRowsOutput!
   deleteManyCalendarEvent(where: CalendarEventWhereInput): AffectedRowsOutput!
@@ -4077,6 +4347,7 @@ type Mutation {
   updateAction(data: ActionUpdateInput!, where: ActionWhereUniqueInput!): Action
   updateActionCompletion(data: ActionCompletionUpdateInput!, where: ActionCompletionWhereUniqueInput!): ActionCompletion
   updateActionScheduleTemplate(data: ActionScheduleTemplateUpdateInput!, where: ActionScheduleTemplateWhereUniqueInput!): ActionScheduleTemplate
+  updateActionTheme(data: ActionThemeUpdateInput!, where: ActionThemeWhereUniqueInput!): ActionTheme
   updateBelief(data: BeliefUpdateInput!, where: BeliefWhereUniqueInput!): Belief
   updateCalendar(data: CalendarUpdateInput!, where: CalendarWhereUniqueInput!): Calendar
   updateCalendarEvent(data: CalendarEventUpdateInput!, where: CalendarEventWhereUniqueInput!): CalendarEvent
@@ -4087,6 +4358,7 @@ type Mutation {
   updateManyAction(data: ActionUpdateManyMutationInput!, where: ActionWhereInput): AffectedRowsOutput!
   updateManyActionCompletion(data: ActionCompletionUpdateManyMutationInput!, where: ActionCompletionWhereInput): AffectedRowsOutput!
   updateManyActionScheduleTemplate(data: ActionScheduleTemplateUpdateManyMutationInput!, where: ActionScheduleTemplateWhereInput): AffectedRowsOutput!
+  updateManyActionTheme(data: ActionThemeUpdateManyMutationInput!, where: ActionThemeWhereInput): AffectedRowsOutput!
   updateManyBelief(data: BeliefUpdateManyMutationInput!, where: BeliefWhereInput): AffectedRowsOutput!
   updateManyCalendar(data: CalendarUpdateManyMutationInput!, where: CalendarWhereInput): AffectedRowsOutput!
   updateManyCalendarEvent(data: CalendarEventUpdateManyMutationInput!, where: CalendarEventWhereInput): AffectedRowsOutput!
@@ -4117,6 +4389,7 @@ type Mutation {
   upsertAction(create: ActionCreateInput!, update: ActionUpdateInput!, where: ActionWhereUniqueInput!): Action!
   upsertActionCompletion(create: ActionCompletionCreateInput!, update: ActionCompletionUpdateInput!, where: ActionCompletionWhereUniqueInput!): ActionCompletion!
   upsertActionScheduleTemplate(create: ActionScheduleTemplateCreateInput!, update: ActionScheduleTemplateUpdateInput!, where: ActionScheduleTemplateWhereUniqueInput!): ActionScheduleTemplate!
+  upsertActionTheme(create: ActionThemeCreateInput!, update: ActionThemeUpdateInput!, where: ActionThemeWhereUniqueInput!): ActionTheme!
   upsertBelief(create: BeliefCreateInput!, update: BeliefUpdateInput!, where: BeliefWhereUniqueInput!): Belief!
   upsertCalendar(create: CalendarCreateInput!, update: CalendarUpdateInput!, where: CalendarWhereUniqueInput!): Calendar!
   upsertCalendarEvent(create: CalendarEventCreateInput!, update: CalendarEventUpdateInput!, where: CalendarEventWhereUniqueInput!): CalendarEvent!
@@ -4403,11 +4676,14 @@ type Query {
   actionCompletions(cursor: ActionCompletionWhereUniqueInput, distinct: [ActionCompletionScalarFieldEnum!], orderBy: [ActionCompletionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionCompletionWhereInput): [ActionCompletion!]!
   actionScheduleTemplate(where: ActionScheduleTemplateWhereUniqueInput!): ActionScheduleTemplate
   actionScheduleTemplates(cursor: ActionScheduleTemplateWhereUniqueInput, distinct: [ActionScheduleTemplateScalarFieldEnum!], orderBy: [ActionScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): [ActionScheduleTemplate!]!
+  actionTheme(where: ActionThemeWhereUniqueInput!): ActionTheme
+  actionThemes(cursor: ActionThemeWhereUniqueInput, distinct: [ActionThemeScalarFieldEnum!], orderBy: [ActionThemeOrderByWithRelationInput!], skip: Int, take: Int, where: ActionThemeWhereInput): [ActionTheme!]!
   actions(cursor: ActionWhereUniqueInput, distinct: [ActionScalarFieldEnum!], orderBy: [ActionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionWhereInput): [Action!]!
   aggregateAccount(cursor: AccountWhereUniqueInput, orderBy: [AccountOrderByWithRelationInput!], skip: Int, take: Int, where: AccountWhereInput): AggregateAccount!
   aggregateAction(cursor: ActionWhereUniqueInput, orderBy: [ActionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionWhereInput): AggregateAction!
   aggregateActionCompletion(cursor: ActionCompletionWhereUniqueInput, orderBy: [ActionCompletionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionCompletionWhereInput): AggregateActionCompletion!
   aggregateActionScheduleTemplate(cursor: ActionScheduleTemplateWhereUniqueInput, orderBy: [ActionScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): AggregateActionScheduleTemplate!
+  aggregateActionTheme(cursor: ActionThemeWhereUniqueInput, orderBy: [ActionThemeOrderByWithRelationInput!], skip: Int, take: Int, where: ActionThemeWhereInput): AggregateActionTheme!
   aggregateBelief(cursor: BeliefWhereUniqueInput, orderBy: [BeliefOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefWhereInput): AggregateBelief!
   aggregateCalendar(cursor: CalendarWhereUniqueInput, orderBy: [CalendarOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarWhereInput): AggregateCalendar!
   aggregateCalendarEvent(cursor: CalendarEventWhereUniqueInput, orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): AggregateCalendarEvent!
@@ -4434,6 +4710,7 @@ type Query {
   findFirstAction(cursor: ActionWhereUniqueInput, distinct: [ActionScalarFieldEnum!], orderBy: [ActionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionWhereInput): Action
   findFirstActionCompletion(cursor: ActionCompletionWhereUniqueInput, distinct: [ActionCompletionScalarFieldEnum!], orderBy: [ActionCompletionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionCompletionWhereInput): ActionCompletion
   findFirstActionScheduleTemplate(cursor: ActionScheduleTemplateWhereUniqueInput, distinct: [ActionScheduleTemplateScalarFieldEnum!], orderBy: [ActionScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): ActionScheduleTemplate
+  findFirstActionTheme(cursor: ActionThemeWhereUniqueInput, distinct: [ActionThemeScalarFieldEnum!], orderBy: [ActionThemeOrderByWithRelationInput!], skip: Int, take: Int, where: ActionThemeWhereInput): ActionTheme
   findFirstBelief(cursor: BeliefWhereUniqueInput, distinct: [BeliefScalarFieldEnum!], orderBy: [BeliefOrderByWithRelationInput!], skip: Int, take: Int, where: BeliefWhereInput): Belief
   findFirstCalendar(cursor: CalendarWhereUniqueInput, distinct: [CalendarScalarFieldEnum!], orderBy: [CalendarOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarWhereInput): Calendar
   findFirstCalendarEvent(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): CalendarEvent
@@ -4456,6 +4733,7 @@ type Query {
   groupByAction(by: [ActionScalarFieldEnum!]!, having: ActionScalarWhereWithAggregatesInput, orderBy: [ActionOrderByWithAggregationInput!], skip: Int, take: Int, where: ActionWhereInput): [ActionGroupBy!]!
   groupByActionCompletion(by: [ActionCompletionScalarFieldEnum!]!, having: ActionCompletionScalarWhereWithAggregatesInput, orderBy: [ActionCompletionOrderByWithAggregationInput!], skip: Int, take: Int, where: ActionCompletionWhereInput): [ActionCompletionGroupBy!]!
   groupByActionScheduleTemplate(by: [ActionScheduleTemplateScalarFieldEnum!]!, having: ActionScheduleTemplateScalarWhereWithAggregatesInput, orderBy: [ActionScheduleTemplateOrderByWithAggregationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): [ActionScheduleTemplateGroupBy!]!
+  groupByActionTheme(by: [ActionThemeScalarFieldEnum!]!, having: ActionThemeScalarWhereWithAggregatesInput, orderBy: [ActionThemeOrderByWithAggregationInput!], skip: Int, take: Int, where: ActionThemeWhereInput): [ActionThemeGroupBy!]!
   groupByBelief(by: [BeliefScalarFieldEnum!]!, having: BeliefScalarWhereWithAggregatesInput, orderBy: [BeliefOrderByWithAggregationInput!], skip: Int, take: Int, where: BeliefWhereInput): [BeliefGroupBy!]!
   groupByCalendar(by: [CalendarScalarFieldEnum!]!, having: CalendarScalarWhereWithAggregatesInput, orderBy: [CalendarOrderByWithAggregationInput!], skip: Int, take: Int, where: CalendarWhereInput): [CalendarGroupBy!]!
   groupByCalendarEvent(by: [CalendarEventScalarFieldEnum!]!, having: CalendarEventScalarWhereWithAggregatesInput, orderBy: [CalendarEventOrderByWithAggregationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEventGroupBy!]!
@@ -5576,6 +5854,7 @@ type UserAction {
   goals(cursor: GoalWhereUniqueInput, distinct: [GoalScalarFieldEnum!], orderBy: [GoalOrderByWithRelationInput!], skip: Int, take: Int, where: GoalWhereInput): [Goal!]!
   id: Int!
   schedules(cursor: UserActionScheduleWhereUniqueInput, distinct: [UserActionScheduleScalarFieldEnum!], orderBy: [UserActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): [UserActionSchedule!]!
+  themes(cursor: ActionThemeWhereUniqueInput, distinct: [ActionThemeScalarFieldEnum!], orderBy: [ActionThemeOrderByWithRelationInput!], skip: Int, take: Int, where: ActionThemeWhereInput): [ActionTheme!]!
   user: User!
   userId: String!
 }
@@ -5594,6 +5873,7 @@ type UserActionCount {
   calendarEvents: Int!
   goals: Int!
   schedules: Int!
+  themes: Int!
 }
 
 type UserActionCountAggregate {
@@ -5620,6 +5900,7 @@ input UserActionCreateInput {
   createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
+  themes: ActionThemeCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
@@ -5687,6 +5968,12 @@ input UserActionCreateNestedOneWithoutSchedulesInput {
   create: UserActionCreateWithoutSchedulesInput
 }
 
+input UserActionCreateNestedOneWithoutThemesInput {
+  connect: UserActionWhereUniqueInput
+  connectOrCreate: UserActionCreateOrConnectWithoutThemesInput
+  create: UserActionCreateWithoutThemesInput
+}
+
 input UserActionCreateOrConnectWithoutActionInput {
   create: UserActionCreateWithoutActionInput!
   where: UserActionWhereUniqueInput!
@@ -5707,6 +5994,11 @@ input UserActionCreateOrConnectWithoutSchedulesInput {
   where: UserActionWhereUniqueInput!
 }
 
+input UserActionCreateOrConnectWithoutThemesInput {
+  create: UserActionCreateWithoutThemesInput!
+  where: UserActionWhereUniqueInput!
+}
+
 input UserActionCreateOrConnectWithoutUserInput {
   create: UserActionCreateWithoutUserInput!
   where: UserActionWhereUniqueInput!
@@ -5718,6 +6010,7 @@ input UserActionCreateWithoutActionInput {
   createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
+  themes: ActionThemeCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
@@ -5727,6 +6020,7 @@ input UserActionCreateWithoutCalendarEventsInput {
   createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
+  themes: ActionThemeCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
@@ -5736,6 +6030,7 @@ input UserActionCreateWithoutGoalsInput {
   calendarEvents: CalendarEventCreateNestedManyWithoutUserActionInput
   createdAt: DateTime
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
+  themes: ActionThemeCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
@@ -5745,6 +6040,17 @@ input UserActionCreateWithoutSchedulesInput {
   calendarEvents: CalendarEventCreateNestedManyWithoutUserActionInput
   createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
+  themes: ActionThemeCreateNestedManyWithoutUserActionInput
+  user: UserCreateNestedOneWithoutUserActionsInput!
+}
+
+input UserActionCreateWithoutThemesInput {
+  action: ActionCreateNestedOneWithoutUserActionsInput!
+  archivedAt: DateTime
+  calendarEvents: CalendarEventCreateNestedManyWithoutUserActionInput
+  createdAt: DateTime
+  goals: GoalCreateNestedManyWithoutUserActionInput
+  schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
@@ -5755,6 +6061,7 @@ input UserActionCreateWithoutUserInput {
   createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
+  themes: ActionThemeCreateNestedManyWithoutUserActionInput
 }
 
 type UserActionGroupBy {
@@ -5834,6 +6141,7 @@ input UserActionOrderByWithRelationInput {
   goals: GoalOrderByRelationAggregateInput
   id: SortOrder
   schedules: UserActionScheduleOrderByRelationAggregateInput
+  themes: ActionThemeOrderByRelationAggregateInput
   user: UserOrderByWithRelationInput
   userId: SortOrder
 }
@@ -6396,6 +6704,7 @@ input UserActionUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
+  themes: ActionThemeUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
@@ -6470,6 +6779,16 @@ input UserActionUpdateOneWithoutSchedulesInput {
   upsert: UserActionUpsertWithoutSchedulesInput
 }
 
+input UserActionUpdateOneWithoutThemesInput {
+  connect: UserActionWhereUniqueInput
+  connectOrCreate: UserActionCreateOrConnectWithoutThemesInput
+  create: UserActionCreateWithoutThemesInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserActionUpdateWithoutThemesInput
+  upsert: UserActionUpsertWithoutThemesInput
+}
+
 input UserActionUpdateWithWhereUniqueWithoutActionInput {
   data: UserActionUpdateWithoutActionInput!
   where: UserActionWhereUniqueInput!
@@ -6486,6 +6805,7 @@ input UserActionUpdateWithoutActionInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
+  themes: ActionThemeUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
@@ -6495,6 +6815,7 @@ input UserActionUpdateWithoutCalendarEventsInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
+  themes: ActionThemeUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
@@ -6504,6 +6825,7 @@ input UserActionUpdateWithoutGoalsInput {
   calendarEvents: CalendarEventUpdateManyWithoutUserActionInput
   createdAt: DateTimeFieldUpdateOperationsInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
+  themes: ActionThemeUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
@@ -6513,6 +6835,17 @@ input UserActionUpdateWithoutSchedulesInput {
   calendarEvents: CalendarEventUpdateManyWithoutUserActionInput
   createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
+  themes: ActionThemeUpdateManyWithoutUserActionInput
+  user: UserUpdateOneRequiredWithoutUserActionsInput
+}
+
+input UserActionUpdateWithoutThemesInput {
+  action: ActionUpdateOneRequiredWithoutUserActionsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  calendarEvents: CalendarEventUpdateManyWithoutUserActionInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  goals: GoalUpdateManyWithoutUserActionInput
+  schedules: UserActionScheduleUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
@@ -6523,6 +6856,7 @@ input UserActionUpdateWithoutUserInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
+  themes: ActionThemeUpdateManyWithoutUserActionInput
 }
 
 input UserActionUpsertWithWhereUniqueWithoutActionInput {
@@ -6552,6 +6886,11 @@ input UserActionUpsertWithoutSchedulesInput {
   update: UserActionUpdateWithoutSchedulesInput!
 }
 
+input UserActionUpsertWithoutThemesInput {
+  create: UserActionCreateWithoutThemesInput!
+  update: UserActionUpdateWithoutThemesInput!
+}
+
 input UserActionUserIdActionIdCompoundUniqueInput {
   actionId: Int!
   userId: String!
@@ -6569,6 +6908,7 @@ input UserActionWhereInput {
   goals: GoalListRelationFilter
   id: IntFilter
   schedules: UserActionScheduleListRelationFilter
+  themes: ActionThemeListRelationFilter
   user: UserRelationFilter
   userId: StringFilter
 }

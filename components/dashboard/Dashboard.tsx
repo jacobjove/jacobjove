@@ -29,7 +29,6 @@ import Backdrop from "@mui/material/Backdrop";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import TextField from "@mui/material/TextField";
 import { Session } from "next-auth";
 import { FC, useEffect, useMemo, useState } from "react";
 import { ItemCallback, Responsive, WidthProvider } from "react-grid-layout";
@@ -95,6 +94,7 @@ interface DashboardProps {
 
 const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const { data, loading, error, layouts, setLayouts, editing, session } = props;
+  if (error) console.error("ERROR", error);
   const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xs");
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
   const handleSpeedDialOpen = () => {
@@ -149,34 +149,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             </DashboardCard>
           );
         case "topics":
-          return (
-            <DashboardCard title="Topics" editing={editing} loading={loading}>
-              <TextField
-                value=""
-                label="Study theme"
-                sx={{ margin: "0.25rem 0" }}
-                variant="outlined"
-                size="small"
-                margin="dense"
-                fullWidth
-                onChange={() => {
-                  console.log("study theme changed");
-                }}
-              />
-              <TextField
-                value=""
-                label="Other study theme"
-                sx={{ margin: "0.25rem 0" }}
-                variant="outlined"
-                size="small"
-                margin="dense"
-                fullWidth
-                onChange={() => {
-                  console.log("other study theme changed");
-                }}
-              />
-            </DashboardCard>
-          );
+          return <DashboardCard title="Topics" editing={editing} loading={loading}></DashboardCard>;
         default:
           return (
             <DashboardCard title={""} editing={editing} loading={loading}>

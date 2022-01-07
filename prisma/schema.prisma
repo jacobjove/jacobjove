@@ -114,12 +114,24 @@ model UserAction {
   action         Action               @relation(fields: [actionId], references: [id])
   actionId       Int
   schedules      UserActionSchedule[]
+  themes         ActionTheme[]
   calendarEvents CalendarEvent[]
   goals          Goal[]
   createdAt      DateTime             @default(now())
   archivedAt     DateTime?
 
   @@unique([userId, actionId])
+}
+
+// theme or focus
+model ActionTheme {
+  id           Int         @id @default(autoincrement())
+  userActionId Int?
+  userAction   UserAction? @relation(fields: [userActionId], references: [id])
+  key          String
+  body         String
+  start        DateTime
+  end          DateTime?
 }
 
 model ActionScheduleTemplate {
@@ -131,7 +143,6 @@ model ActionScheduleTemplate {
   frequency           FREQUENCY            @default(DAY)
   multiplier          Int                  @default(1)
   quantity            Int                  @default(1)
-  chron               String?
   // unit                 FREQUENCY                     @default(DAY)
   userActionSchedules UserActionSchedule[]
 

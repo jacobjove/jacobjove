@@ -204,11 +204,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     session,
   };
-  await apolloClient.query({
-    query: QUERY,
-    variables: {
-      userId: session?.user?.id,
-    },
-  });
+  await apolloClient
+    .query({
+      query: QUERY,
+      variables: {
+        userId: session?.user?.id,
+      },
+    })
+    .then()
+    .catch((error) => {
+      console.error(error.networkError?.result?.errors ?? error);
+    });
   return addApolloState(apolloClient, { props });
 };

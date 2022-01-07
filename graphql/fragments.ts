@@ -8,6 +8,17 @@ export const actionFragment = gql`
   }
 `;
 
+export const actionThemeFragment = gql`
+  fragment ActionThemeFragment on ActionTheme {
+    __typename
+    id
+    body
+    start
+    end
+  }
+  ${actionFragment}
+`;
+
 export const userActionFragment = gql`
   fragment UserActionFragment on UserAction {
     __typename
@@ -20,8 +31,12 @@ export const userActionFragment = gql`
       frequency
       multiplier
     }
+    themes {
+      ...ActionThemeFragment
+    }
   }
   ${actionFragment}
+  ${actionThemeFragment}
 `;
 
 export const actionCompletionFragment = gql`

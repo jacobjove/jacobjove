@@ -5,6 +5,7 @@ import {
   Action as _Action,
   ActionCompletion as _ActionCompletion,
   ActionScheduleTemplate as _ActionScheduleTemplate,
+  ActionTheme as _ActionTheme,
   Belief as _Belief,
   Calendar as _Calendar,
   CalendarEvent as _CalendarEvent,
@@ -49,6 +50,7 @@ export type Action = FromPrisma<_Action>;
 export type UserAction = FromPrismaWithOmission<_UserAction, "action"> & {
   action: Action;
   schedules: UserActionSchedule[];
+  themes: ActionTheme[];
 };
 export type ActionCompletion = FromPrismaWithOmission<
   _ActionCompletion,
@@ -76,6 +78,10 @@ export type UserIdentity = FromPrismaWithOmission<_UserIdentity, "identity"> & {
 };
 export type Calendar = Omit<_Calendar, "_count">;
 export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "end"> & {
+  start: string;
+  end?: string | null;
+};
+export type ActionTheme = FromPrismaWithOmission<_ActionTheme, "start" | "end"> & {
   start: string;
   end?: string | null;
 };
