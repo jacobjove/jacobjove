@@ -1,13 +1,19 @@
 import { gql } from "@apollo/client";
 
+export const actionFragment = gql`
+  fragment ActionFragment on Action {
+    id
+    name
+    slug
+  }
+`;
+
 export const userActionFragment = gql`
   fragment UserActionFragment on UserAction {
     __typename
     id
     action {
-      id
-      name
-      slug
+      ...ActionFragment
     }
     schedules {
       id
@@ -15,6 +21,20 @@ export const userActionFragment = gql`
       multiplier
     }
   }
+  ${actionFragment}
+`;
+
+export const actionCompletionFragment = gql`
+  fragment ActionCompletionFragment on ActionCompletion {
+    __typename
+    id
+    action {
+      ...ActionFragment
+    }
+    date
+    archivedAt
+  }
+  ${actionFragment}
 `;
 
 export const calendarFragment = gql`
@@ -37,7 +57,7 @@ export const calendarEventFragment = gql`
     end
     createdAt
     updatedAt
-    deletedAt
+    archivedAt
   }
 `;
 

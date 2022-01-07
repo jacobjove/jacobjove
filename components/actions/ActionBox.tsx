@@ -1,5 +1,5 @@
 import ActionChip from "@/components/actions/ActionChip";
-import { UserAction as _UserAction, UserActionSchedule } from "@/graphql/schema";
+import { ActionCompletion, UserAction } from "@/graphql/schema";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -9,23 +9,33 @@ import StepContent from "@mui/material/StepContent";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
+import { isSameDay, parseISO } from "date-fns";
 import Link from "next/link";
 import { FC, useState } from "react";
 
-type UserAction = _UserAction & {
-  schedules: UserActionSchedule[];
-};
-
 export interface ActionBoxProps {
   userActions: UserAction[];
+  actionCompletions: ActionCompletion[];
 }
 
 const ActionBox: FC<ActionBoxProps> = (props: ActionBoxProps) => {
-  const { userActions } = props;
+  const { userActions, actionCompletions } = props;
+  const today = new Date();
+  const filteredActionCompletions = actionCompletions.filter(
+    (actionCompletion: ActionCompletion) => {
+      return isSameDay(parseISO(actionCompletion.date), today);
+    }
+  );
   let content;
   if (userActions.length) {
     content = userActions.map((userAction: UserAction) => (
-      <ActionChip key={userAction.action.name} userAction={userAction} />
+      <ActionChip
+        key={userAction.action.name}
+        userAction={userAction}
+        actionCompletion={filteredActionCompletions.find((actionCompletion) => {
+          return actionCompletion.action.id === actionCompletion.action.id;
+        })}
+      />
     ));
   } else {
     content = <ActionsOnboarder />;

@@ -8,11 +8,11 @@ import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleUserActionAdoption($actionId: Int!, $userId: String!, $abandonedAt: DateTime) {
-    toggleUserActionAdoption(actionId: $actionId, userId: $userId, abandonedAt: $abandonedAt) {
+  mutation ToggleActionAdoption($actionId: Int!, $userId: String!, $archivedAt: DateTime) {
+    toggleActionAdoption(actionId: $actionId, userId: $userId, archivedAt: $archivedAt) {
       actionId
       userId
-      abandonedAt
+      archivedAt
     }
   }
 `;
@@ -33,19 +33,19 @@ const SelectableAction: FC<SelectableActionProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (session?.user) {
-      let abandonedAt = null;
+      let archivedAt = null;
       if (selected) {
-        abandonedAt = new Date().toISOString();
+        archivedAt = new Date().toISOString();
       }
       mutate({
-        variables: { actionId: action.id, userId: session.user.id, abandonedAt },
+        variables: { actionId: action.id, userId: session.user.id, archivedAt },
         optimisticResponse: {
           __typename: "Mutation",
-          toggleUserActionAdoption: {
-            __typename: "ToggleUserActionAdoptionPayload",
+          toggleActionAdoption: {
+            __typename: "ToggleActionAdoptionPayload",
             actionId: action.id,
             userId: session.user.id,
-            abandonedAt,
+            archivedAt,
           },
         },
       });

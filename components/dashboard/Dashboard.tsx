@@ -3,7 +3,9 @@ import DashboardCard from "@/components/dashboard/components/DashboardCard";
 import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
 import IdentityTable from "@/components/identities/IdentityTable";
 import TasksBox from "@/components/tasks/TasksBox";
+import ValuesTable from "@/components/values/ValuesTable";
 import {
+  actionCompletionFragment,
   calendarEventFragment,
   calendarFragment,
   routineFragment,
@@ -12,30 +14,23 @@ import {
   userValueFragment,
 } from "@/graphql/fragments";
 import {
-  Action,
+  ActionCompletion,
   Calendar,
   CalendarEvent,
-  Identity,
   Routine,
   UserAction,
-  UserActionSchedule,
   UserIdentity,
   UserValue,
   Value,
 } from "@/graphql/schema";
 import { gql } from "@apollo/client";
-import SearchIcon from "@mui/icons-material/Search";
 import { Breakpoint } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import { Session } from "next-auth";
-import Link from "next/link";
 import { FC, useEffect, useMemo, useState } from "react";
 import { ItemCallback, Responsive, WidthProvider } from "react-grid-layout";
 
@@ -50,6 +45,9 @@ export const fragment = gql`
     userActions(where: { userId: { equals: $userId } }) {
       ...UserActionFragment
     }
+    actionCompletions(where: { userId: { equals: $userId } }) {
+      ...ActionCompletionFragment
+    }
     userValues(where: { userId: { equals: $userId } }) {
       ...UserValueFragment
     }
@@ -63,6 +61,7 @@ export const fragment = gql`
   ${calendarFragment}
   ${calendarEventFragment}
   ${userActionFragment}
+  ${actionCompletionFragment}
   ${userValueFragment}
   ${userIdentityFragment}
   ${routineFragment}
@@ -74,13 +73,9 @@ export interface DashboardData {
   calendars: Calendar[];
   calendarEvents: CalendarEvent[];
   routines: Routine[];
-  userActions: (UserAction & {
-    action: Action;
-    schedules: UserActionSchedule[];
-  })[];
-  userIdentities: (UserIdentity & {
-    identity: Identity;
-  })[];
+  userActions: UserAction[];
+  actionCompletions: ActionCompletion[];
+  userIdentities: UserIdentity[];
   userValues: (UserValue & {
     value: Value;
   })[];
@@ -118,25 +113,27 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   ];
   const children = useMemo(() => {
     if (!data || !session) return [];
-    console.log("children...");
-    const { calendarEvents, calendars, routines, userActions, userIdentities, userValues } = data;
+    const {
+      calendarEvents,
+      calendars,
+      routines,
+      userActions,
+      actionCompletions,
+      userIdentities,
+      userValues,
+    } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
-      console.log("getDashboardComponent", key);
       switch (key) {
         case "calendar":
           return (
             <DashboardCard title={"Calendar"} editing={editing} loading={loading}>
-              <CalendarViewer
-                data={{ calendarEvents, calendars }}
-                loading={loading}
-                session={session}
-              />
+              <CalendarViewer data={{ calendarEvents, calendars }} loading={loading} />
             </DashboardCard>
           );
         case "actions":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <TasksBox data={{ userActions, routines }} />
+              <TasksBox data={{ userActions, routines, actionCompletions }} />
             </DashboardCard>
           );
         case "identities":
@@ -148,30 +145,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "values":
           return (
             <DashboardCard title={"Values"} editing={editing} loading={loading}>
-              {(!!userValues.length &&
-                userValues.map((userValue, index) => (
-                  <p key={index}>
-                    <Link href={`/userValues/${userValue.value.slug}`}>
-                      <a>{userValue.value.name}</a>
-                    </Link>
-                  </p>
-                ))) || (
-                <Typography component="p" textAlign="center">
-                  No values yet.
-                </Typography>
-              )}
-              <Box textAlign="center" marginTop="1rem">
-                <Link href="/values" passHref>
-                  <IconButton
-                    component={"a"}
-                    color="info"
-                    style={{ marginLeft: 3 }}
-                    title="Explore values"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Link>
-              </Box>
+              <ValuesTable userValues={userValues} />
             </DashboardCard>
           );
         case "topics":
@@ -228,15 +202,6 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     //           No actions yet.
     //         </Typography>
     //       )}
-    //     </DashboardCard>
-    //   ),
-    //   tasks: (
-    //     <DashboardCard title={"Tasks"} editing={editing} loading={loading}>
-    //     {(!!userActions.length && <TasksBox data={{userActions, routines}} />) || (
-    //       <Typography component="p" textAlign="center">
-    //         No actions yet.
-    //       </Typography>
-    //     )}
     //     </DashboardCard>
     //   ),
     //   identities: (
@@ -326,7 +291,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     });
   }, [layouts, editing, data, loading, session]);
   useEffect(() => {
-    console.log("Dashboard.tsx: useEffect");
+    // console.log("Dashboard.tsx: useEffect");
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
       let breakpoint: Breakpoint;
@@ -359,7 +324,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       setLayouts(newLayouts);
     }
   };
-  console.log("Rendering dashboard with children", children);
+  // console.log("Rendering dashboard with children", children);
   return (
     <div style={{ position: "relative" }}>
       <Backdrop open={speedDialOpen} />
@@ -374,7 +339,12 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
           cols={{ xl: 24, lg: 18, md: 12, sm: 6, xs: 4, xxs: 2 }}
           draggableHandle=".drag-anchor"
           onLayoutChange={(components) => {
-            console.log("onLayoutChange...", components);
+            const layoutIsUnchanged = true;
+            if (layoutIsUnchanged) {
+              console.log("onLayoutChange");
+            } else {
+              console.log("onLayoutChange", components);
+            }
           }}
           onBreakpointChange={(breakpoint) => {
             console.log("Breakpoint changed to", breakpoint);

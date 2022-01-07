@@ -4,16 +4,16 @@ import { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql";
 
 @TypeGraphQL.Resolver((_of) => UserAction)
-export class UserActionToggleResolver {
+export class ActionAdoptionToggleResolver {
   @TypeGraphQL.Mutation((_returns) => UserAction, {
     nullable: false,
   })
-  async toggleUserActionAdoption(
+  async toggleActionAdoption(
     @TypeGraphQL.Ctx() ctx: any,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Arg("userId") userId: string,
     @TypeGraphQL.Arg("actionId", (_type) => TypeGraphQL.Int) actionId: number,
-    @TypeGraphQL.Arg("abandonedAt", { nullable: true }) abandonedAt: null | Date
+    @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<UserAction> {
     const prisma = getPrismaFromContext(ctx);
     const userActionExists = (await prisma.userAction.count({ where: { userId, actionId } })) > 0;
@@ -23,12 +23,12 @@ export class UserActionToggleResolver {
           userId_actionId: { userId, actionId },
         },
         data: {
-          abandonedAt: abandonedAt,
+          archivedAt: archivedAt,
         },
       });
     } else {
       return await prisma.userAction.create({
-        data: { userId: userId, actionId: actionId, abandonedAt: abandonedAt },
+        data: { userId: userId, actionId: actionId, archivedAt: archivedAt },
       });
     }
   }

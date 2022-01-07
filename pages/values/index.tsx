@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           userValues (
             where: {
               userId: {equals: "${session.user.id}"}
-              deletedAt: {equals: null}
+              archivedAt: {equals: null}
             }
           ) {
             value {

@@ -3,6 +3,7 @@
 import * as generatedSchemaExports from "@/prisma/generated";
 import {
   Action as _Action,
+  ActionCompletion as _ActionCompletion,
   ActionScheduleTemplate as _ActionScheduleTemplate,
   Belief as _Belief,
   Calendar as _Calendar,
@@ -20,7 +21,8 @@ import {
   Value as _Value,
 } from "@/prisma/generated";
 import { NonEmptyArray } from "type-graphql";
-import { UserActionToggleResolver } from "./resolvers/UserActionToggleResolver";
+import { ActionAdoptionToggleResolver } from "./resolvers/ActionAdoptionToggleResolver";
+import { ActionCompletionToggleResolver } from "./resolvers/ActionCompletionToggleResolver";
 import { UserBeliefToggleResolver } from "./resolvers/UserBeliefToggleResolver";
 import { UserIdentityToggleResolver } from "./resolvers/UserIdentityToggleResolver";
 import { UserValueToggleResolver } from "./resolvers/UserValueToggleResolver";
@@ -30,36 +32,55 @@ const { resolvers: generatedResolvers, ...generatedSchema } = generatedSchemaExp
 export const resolvers = [
   ...generatedResolvers,
   UserIdentityToggleResolver,
-  UserActionToggleResolver,
+  ActionAdoptionToggleResolver,
+  ActionCompletionToggleResolver,
   UserValueToggleResolver,
   UserBeliefToggleResolver,
 ] as unknown as NonEmptyArray<Function>;
 
-export type Action = Omit<_Action, "_count">;
-export type UserAction = Omit<_UserAction, "_count" | "action"> & {
+type OmitCount<T> = Pick<T, Exclude<keyof T, "_count">>;
+type FromPrisma<T> = OmitCount<T> & { __typename?: string };
+type FromPrismaWithOmission<T, K extends keyof T> = Pick<
+  FromPrisma<T>,
+  Exclude<keyof FromPrisma<T>, K>
+>;
+
+export type Action = FromPrisma<_Action>;
+export type UserAction = FromPrismaWithOmission<_UserAction, "action"> & {
   action: Action;
   schedules: UserActionSchedule[];
 };
-export type UserActionSchedule = Omit<_UserActionSchedule, "_count">;
-export type ActionScheduleTemplate = Omit<_ActionScheduleTemplate, "_count">;
-export type ScheduleTemplate = Omit<_ScheduleTemplate, "_count">;
-export type Identity = Omit<_Identity, "_count">;
-export type Value = Omit<_Value, "_count">;
-export type Belief = Omit<_Belief, "_count">;
-export type Routine = Omit<_Routine, "_count" | "routineActions"> & {
+export type ActionCompletion = FromPrismaWithOmission<
+  _ActionCompletion,
+  "userId" | "date" | "archivedAt" | "action"
+> & {
+  date: string;
+  archivedAt?: string;
+  action: Action;
+};
+export type UserActionSchedule = FromPrismaWithOmission<_UserActionSchedule, "archivedAt"> & {
+  archivedAt?: string;
+};
+export type ActionScheduleTemplate = FromPrisma<_ActionScheduleTemplate>;
+export type ScheduleTemplate = FromPrisma<_ScheduleTemplate>;
+export type Identity = FromPrisma<_Identity>;
+export type Value = FromPrisma<_Value>;
+export type Belief = FromPrisma<_Belief>;
+export type Routine = FromPrismaWithOmission<_Routine, "routineActions"> & {
   routineActions: RoutineAction[];
 };
-export type RoutineAction = Omit<_RoutineAction, "_count" | "action"> & { action: Action };
-export type UserBelief = Omit<_UserBelief, "_count" | "belief"> & { belief: Belief };
-export type UserIdentity = Omit<_UserIdentity, "_count" | "identity"> & { identity: Identity };
+export type RoutineAction = FromPrismaWithOmission<_RoutineAction, "action"> & { action: Action };
+export type UserBelief = FromPrismaWithOmission<_UserBelief, "belief"> & { belief: Belief };
+export type UserIdentity = FromPrismaWithOmission<_UserIdentity, "identity"> & {
+  identity: Identity;
+};
 export type Calendar = Omit<_Calendar, "_count">;
-export type CalendarEvent = Omit<_CalendarEvent, "_count" | "start" | "end"> & {
+export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "end"> & {
   start: string;
   end?: string | null;
-  __typename?: "CalendarEvent";
 };
-export type UserValue = Omit<_UserValue, "_count">;
-export type User = Omit<_User, "_count" | "settings"> & {
+export type UserValue = FromPrisma<_UserValue>;
+export type User = FromPrismaWithOmission<_User, "settings"> & {
   settings: {
     defaultCalendarId: number;
     dashboard?: {

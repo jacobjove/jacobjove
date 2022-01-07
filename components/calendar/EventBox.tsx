@@ -1,5 +1,5 @@
 import EventEditingDialog from "@/components/calendar/EventEditingDialog";
-import { UPDATE_CALENDAR_EVENT } from "@/graphql/queries";
+import { UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -182,22 +182,22 @@ const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> 
   props: EventDeletionConfirmationDialogProps
 ) => {
   const { event, open, setOpen, setDetailDialogOpen } = props;
-  const [deleteCalendarEvent, { loading }] = useMutation(UPDATE_CALENDAR_EVENT);
+  const [updateCalendarEvent, { loading }] = useMutation(UPDATE_CALENDAR_EVENT);
   const handleClose = () => {
     setOpen(false);
   };
   const handleDeletion = () => {
-    const deletedAt = new Date().toISOString();
-    deleteCalendarEvent({
+    const archivedAt = new Date().toISOString();
+    updateCalendarEvent({
       variables: {
         where: { id: event.id },
-        data: { deletedAt: { set: deletedAt } },
+        data: { archivedAt: { set: archivedAt } },
       },
       optimisticResponse: {
         updateCalendarEvent: {
           __typename: "CalendarEvent",
           ...(event as CalendarEvent),
-          deletedAt,
+          archivedAt,
         },
       },
     });

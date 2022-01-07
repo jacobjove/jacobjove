@@ -1,3 +1,4 @@
+import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import { Routine } from "@/graphql/schema";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/material/Box";
@@ -38,15 +39,25 @@ const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
       ref={dragRef}
       sx={{ opacity }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography
-          variant="h5"
-          fontSize="1.1rem"
-          marginLeft="0.25rem"
-          title={routine.description ?? ""}
-        >
-          {routine.name}
-        </Typography>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+          <CompletionCheckbox
+            checked={false}
+            disabled={false}
+            onClick={() => {
+              console.log("checkbox click -->");
+              // toggleActionCompletion(!completed);
+            }}
+          />
+          <Typography
+            variant="h5"
+            fontSize="1.1rem"
+            marginLeft="0.25rem"
+            title={routine.description ?? ""}
+          >
+            {routine.name}
+          </Typography>
+        </div>
         <DragIndicatorIcon
           sx={{
             "&:hover": { cursor: "grab" },

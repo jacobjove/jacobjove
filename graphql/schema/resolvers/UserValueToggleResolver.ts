@@ -13,7 +13,7 @@ export class UserValueToggleResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Arg("userId") userId: string,
     @TypeGraphQL.Arg("valueId", (_type) => TypeGraphQL.Int) valueId: number,
-    @TypeGraphQL.Arg("deletedAt", { nullable: true }) deletedAt: null | Date
+    @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<UserValue> {
     const prisma = getPrismaFromContext(ctx);
     const userValueExists =
@@ -32,7 +32,7 @@ export class UserValueToggleResolver {
           },
         },
         data: {
-          deletedAt: deletedAt,
+          archivedAt: archivedAt,
         },
       });
     } else {
@@ -40,7 +40,7 @@ export class UserValueToggleResolver {
         data: {
           userId: userId,
           valueId: valueId,
-          deletedAt: deletedAt,
+          archivedAt: archivedAt,
         },
       });
     }

@@ -19,27 +19,6 @@ export const GET_CALENDAR_EVENTS = gql`
   ${calendarEventFragment}
 `;
 
-export const CREATE_CALENDAR_EVENT = gql`
-  mutation CreateCalendarEvent($data: CalendarEventCreateInput!) {
-    createCalendarEvent(data: $data) {
-      ...CalendarEventFragment
-    }
-  }
-  ${calendarEventFragment}
-`;
-
-export const UPDATE_CALENDAR_EVENT = gql`
-  mutation UpdateCalendarEvent(
-    $data: CalendarEventUpdateInput!
-    $where: CalendarEventWhereUniqueInput!
-  ) {
-    updateCalendarEvent(data: $data, where: $where) {
-      ...CalendarEventFragment
-    }
-  }
-  ${calendarEventFragment}
-`;
-
 export const GET_USER_ACTIONS = gql`
   query GetUserActions($userId: String!) {
     userActions(where: { userId: { equals: $userId } }) {

@@ -8,11 +8,11 @@ import Link from "next/link";
 import React, { FC, MouseEvent } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleUserValue($valueId: Int!, $userId: String!, $deletedAt: DateTime) {
-    toggleUserValue(valueId: $valueId, userId: $userId, deletedAt: $deletedAt) {
+  mutation ToggleUserValue($valueId: Int!, $userId: String!, $archivedAt: DateTime) {
+    toggleUserValue(valueId: $valueId, userId: $userId, archivedAt: $archivedAt) {
       valueId
       userId
-      deletedAt
+      archivedAt
     }
   }
 `;
@@ -33,19 +33,19 @@ const SelectableValue: FC<SelectableValueProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (session?.user) {
-      let deletedAt = null;
+      let archivedAt = null;
       if (selected) {
-        deletedAt = new Date().toISOString();
+        archivedAt = new Date().toISOString();
       }
       mutate({
-        variables: { valueId: value.id, userId: session.user.id, deletedAt },
+        variables: { valueId: value.id, userId: session.user.id, archivedAt },
         optimisticResponse: {
           __typename: "Mutation",
           toggleUserValue: {
             __typename: "ToggleUserValuePayload",
             valueId: value.id,
             userId: session.user.id,
-            deletedAt,
+            archivedAt,
           },
         },
       });

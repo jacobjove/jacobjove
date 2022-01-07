@@ -1,6 +1,6 @@
 import EventBox from "@/components/calendar/EventBox";
 import { calendarEventFragment } from "@/graphql/fragments";
-import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/queries";
+import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
@@ -51,7 +51,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, view, events, defaultCalendarId, onClick, past } = props;
   const { data: session } = useSession();
   const filteredEvents = events?.filter((event) => {
-    return !event.deletedAt;
+    return !event.archivedAt;
   });
   const [hovered, setHovered] = useState(false);
   const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
@@ -165,7 +165,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
                 scheduleId,
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                deletedAt: null,
+                archivedAt: null,
                 ...(calendarEventData as Omit<
                   CalendarEvent,
                   "__typename" | "id" | "uid" | "calendarId" | "createdAt"

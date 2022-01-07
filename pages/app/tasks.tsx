@@ -6,7 +6,6 @@ import { gql, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
@@ -43,7 +42,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!data) {
     return null;
   }
-  const { calendarEvents, calendars, userActions, routines } = data;
+  const { calendarEvents, calendars, userActions, actionCompletions, routines } = data;
   return (
     <Layout>
       <NextSeo
@@ -70,7 +69,6 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                 data={{ calendarEvents, calendars }}
                 error={error}
                 collapseViewMenu={true}
-                session={session}
               />
             </CardContent>
           </Card>
@@ -87,11 +85,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         >
           <Grid item padding="0.25rem">
             <div>
-              {(!!userActions.length && <TasksBox data={{ userActions, routines }} />) || (
-                <Typography component="p" textAlign="center">
-                  No actions yet.
-                </Typography>
-              )}
+              <TasksBox data={{ userActions, routines, actionCompletions }} />
             </div>
           </Grid>
         </Grid>

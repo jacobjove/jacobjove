@@ -82,7 +82,7 @@ model CalendarEvent {
   notes        String?
   createdAt    DateTime            @default(now())
   updatedAt    DateTime?
-  deletedAt    DateTime?
+  archivedAt   DateTime?
 
   @@map(name: "calendarEvents")
 }
@@ -116,8 +116,8 @@ model UserAction {
   schedules      UserActionSchedule[]
   calendarEvents CalendarEvent[]
   goals          Goal[]
-  adoptedAt      DateTime             @default(now())
-  abandonedAt    DateTime?
+  createdAt      DateTime             @default(now())
+  archivedAt     DateTime?
 
   @@unique([userId, actionId])
 }
@@ -148,18 +148,19 @@ model UserActionSchedule {
   actionScheduleTemplate   ActionScheduleTemplate? @relation(fields: [actionScheduleTemplateId], references: [id])
   actionScheduleTemplateId Int?
   calendarEvents           CalendarEvent[]
-  adoptedAt                DateTime                @default(now())
-  abandonedAt              DateTime?
+  createdAt                DateTime                @default(now())
+  archivedAt               DateTime?
   active                   Boolean                 @default(false)
 }
 
 model ActionCompletion {
-  id       Int      @id @default(autoincrement())
-  action   Action   @relation(fields: [actionId], references: [id])
-  actionId Int
-  user     User     @relation(fields: [userId], references: [id])
-  userId   String
-  date     DateTime @default(now())
+  id         Int       @id @default(autoincrement())
+  action     Action    @relation(fields: [actionId], references: [id])
+  actionId   Int
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  date       DateTime  @default(now())
+  archivedAt DateTime?
 }
 
 enum TYPE {
@@ -234,14 +235,14 @@ model Belief {
 }
 
 model UserBelief {
-  id        Int       @id @default(autoincrement())
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String
-  belief    Belief    @relation(fields: [beliefId], references: [id])
-  beliefId  Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  deletedAt DateTime?
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  belief     Belief    @relation(fields: [beliefId], references: [id])
+  beliefId   Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime?
+  archivedAt DateTime?
 
   @@unique([userId, beliefId])
 }
@@ -260,14 +261,14 @@ model Value {
 }
 
 model UserValue {
-  id        Int       @id @default(autoincrement())
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String
-  value     Value     @relation(fields: [valueId], references: [id])
-  valueId   Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  deletedAt DateTime?
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  value      Value     @relation(fields: [valueId], references: [id])
+  valueId    Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime?
+  archivedAt DateTime?
 
   @@unique([userId, valueId])
 }

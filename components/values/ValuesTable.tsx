@@ -1,5 +1,5 @@
 import Onboarder from "@/components/Onboarder";
-import { Identity, UserIdentity as _UserIdentity } from "@/graphql/schema";
+import { UserValue as _UserValue, Value } from "@/graphql/schema";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -9,35 +9,33 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { FC } from "react";
 
-type UserIdentity = _UserIdentity & {
-  identity: Identity;
+type UserValue = _UserValue & {
+  value: Value;
 };
 
-interface IdentityTableProps {
-  userIdentities: UserIdentity[];
+interface ValueTableProps {
+  userValues: UserValue[];
 }
 
 const ONBOARDING_STEPS = [
   {
-    label: "Select identities",
-    description: `Select one or more identities.`,
+    label: "Select values",
+    description: `Select one or more values.`,
   },
   {
-    label: "Link actions to identities",
-    description: "Add actions for your selected identities.",
+    label: "Link actions to values",
+    description: "Add actions for your selected values.",
   },
 ];
 
 // TODO: https://mui.com/components/tables/#sorting-amp-selecting
-const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
-  // console.log("IdentityTable", props);
-  const { userIdentities } = props;
+const ValueTable: FC<ValueTableProps> = (props: ValueTableProps) => {
+  const { userValues } = props;
   let content;
-  if (!userIdentities.length) {
+  if (!userValues.length) {
     content = <Onboarder steps={ONBOARDING_STEPS} />;
   } else {
     content = (
@@ -46,26 +44,22 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
           <TableHead>
             <TableRow>
               <TableCell component="th" scope="col">
-                <Typography fontWeight="normal" fontSize="0.7rem">
-                  Identity
-                </Typography>
+                Value
               </TableCell>
               <TableCell component="th" scope="col">
-                <Typography fontWeight="normal" fontSize="0.7rem">
-                  Health
-                </Typography>
+                Health
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {userIdentities.map((userIdentity: UserIdentity) => (
+            {userValues.map((userValue: UserValue) => (
               <TableRow
-                key={userIdentity.identity.name}
+                key={userValue.value.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <Link href={`/identities/${userIdentity.identity.slug}`}>
-                    <a>{userIdentity.identity.name}</a>
+                  <Link href={`/identities/${userValue.value.slug}`}>
+                    <a>{userValue.value.name}</a>
                   </Link>
                 </TableCell>
                 <TableCell component="td">
@@ -83,14 +77,10 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   return (
     <div>
       {content}
+
       <Box textAlign="center" marginTop="1rem">
-        <Link href="/identities" passHref>
-          <IconButton
-            component={"a"}
-            color="info"
-            style={{ marginLeft: 3 }}
-            title="Explore identities"
-          >
+        <Link href="/values" passHref>
+          <IconButton component={"a"} color="info" style={{ marginLeft: 3 }} title="Explore values">
             <SearchIcon />
           </IconButton>
         </Link>
@@ -99,4 +89,4 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   );
 };
 
-export default IdentityTable;
+export default ValueTable;

@@ -1,7 +1,7 @@
 import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Action, UserAction as _UserAction } from "@/graphql/schema";
+import { Action, UserAction } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
@@ -10,10 +10,6 @@ import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React from "react";
-
-type UserAction = _UserAction & {
-  action: Action;
-};
 
 interface ActionsPageProps {
   actions: Action[];

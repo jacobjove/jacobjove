@@ -1,7 +1,7 @@
 import ActionBox, { ActionBoxProps } from "@/components/actions/ActionBox";
 import RoutineChip from "@/components/routines/RoutineChip";
-import { routineFragment, userActionFragment } from "@/graphql/fragments";
-import { Routine, UserAction } from "@/graphql/schema";
+import { actionCompletionFragment, routineFragment, userActionFragment } from "@/graphql/fragments";
+import { ActionCompletion, Routine, UserAction } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import { FC } from "react";
 
@@ -13,21 +13,26 @@ export const fragment = gql`
     userActions(where: { userId: { equals: $userId } }) {
       ...UserActionFragment
     }
+    actionCompletions(where: { userId: { equals: $userId } }) {
+      ...ActionCompletionFragment
+    }
   }
   ${userActionFragment}
   ${routineFragment}
+  ${actionCompletionFragment}
 `;
 
-type TasksBoxProps = Omit<ActionBoxProps, "userActions"> & {
+type TasksBoxProps = Omit<ActionBoxProps, "userActions" | "actionCompletions"> & {
   data: {
     routines: Routine[];
     userActions: UserAction[];
+    actionCompletions: ActionCompletion[];
   };
 };
 
 const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const { data, ...rest } = props;
-  const { routines, userActions } = data;
+  const { routines, userActions, actionCompletions } = data;
   return (
     <div>
       <div>
@@ -35,7 +40,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
           <RoutineChip key={routine.id} routine={routine} />
         ))}
       </div>
-      <ActionBox userActions={userActions} {...rest} />
+      <ActionBox userActions={userActions} actionCompletions={actionCompletions} {...rest} />
     </div>
   );
 };

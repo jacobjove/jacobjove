@@ -117,8 +117,8 @@ CREATE TABLE "Schedule" (
     "frequency" "UNIT" NOT NULL DEFAULT E'DAY',
     "multiplier" INTEGER NOT NULL DEFAULT 1,
     "chron" TEXT,
-    "adoptedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "abandonedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "archivedAt" TIMESTAMP(3),
 
     CONSTRAINT "Schedule_pkey" PRIMARY KEY ("id")
 );
@@ -142,7 +142,7 @@ CREATE TABLE "UserBelief" (
     "beliefId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
-    "deletedAt" TIMESTAMP(3),
+    "archivedAt" TIMESTAMP(3),
 
     CONSTRAINT "UserBelief_pkey" PRIMARY KEY ("id")
 );
@@ -166,7 +166,7 @@ CREATE TABLE "UserValue" (
     "valueId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
-    "deletedAt" TIMESTAMP(3),
+    "archivedAt" TIMESTAMP(3),
 
     CONSTRAINT "UserValue_pkey" PRIMARY KEY ("id")
 );
