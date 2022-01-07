@@ -33,7 +33,7 @@ const ActionBox: FC<ActionBoxProps> = (props: ActionBoxProps) => {
         key={userAction.action.name}
         userAction={userAction}
         actionCompletion={filteredActionCompletions.find((actionCompletion) => {
-          return actionCompletion.action.id === actionCompletion.action.id;
+          return actionCompletion.action.id === userAction.action.id;
         })}
       />
     ));

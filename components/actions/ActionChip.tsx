@@ -20,6 +20,9 @@ interface ActionChipProps {
 
 const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
   const { userAction, actionCompletion } = props;
+  if (actionCompletion && actionCompletion.action.id !== userAction.action.id) {
+    throw new Error("ActionChip: actionCompletion.action.id !== userAction.action.id");
+  }
   const completed = !actionCompletion?.date ? false : actionCompletion.archivedAt ? false : true;
   const schedule = userAction.schedules[0]; // TODO
   const { data: session } = useSession();
