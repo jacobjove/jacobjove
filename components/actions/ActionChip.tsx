@@ -42,17 +42,6 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
     if (on && !actionCompletion && session?.user.id) {
       console.log("Trying to create action completion...", on, actionCompletion, session?.user.id);
       const completionDate = new Date().toISOString();
-      const optimisticResponse: ActionCompletion = {
-        __typename: "ActionCompletion",
-        id: -1,
-        date: completionDate,
-        actionId: userAction.action.id,
-        action: {
-          ...userAction.action,
-        },
-        // actionId: userAction.action.id,
-        archivedAt,
-      };
       createActionCompletion({
         variables: {
           data: {
@@ -61,7 +50,20 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
             user: { connect: { id: session.user.id } },
           },
         },
-        optimisticResponse,
+        optimisticResponse: {
+          __typename: "Mutation",
+          createActionCompletion: {
+            __typename: "ActionCompletion",
+            id: -1,
+            date: completionDate,
+            actionId: userAction.action.id,
+            action: {
+              ...userAction.action,
+            },
+            // actionId: userAction.action.id,
+            archivedAt,
+          },
+        },
       });
     } else if (actionCompletion) {
       console.log(on, actionCompletion, session?.user.id);
@@ -77,6 +79,7 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
           },
         },
         optimisticResponse: {
+          __typename: "Mutation",
           updateActionCompletion: {
             ...actionCompletion,
             __typename: "ActionCompletion",
@@ -112,6 +115,7 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
         height: "auto",
         maxHeight: "auto",
         borderRadius: "3px",
+        border: "1px solid rgba(0, 0, 0, 0.05)",
         backgroundColor: "rgba(0, 0, 0, 0.08)",
         display: "flex",
         alignItems: "center",

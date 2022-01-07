@@ -1,5 +1,8 @@
 import ActionChip from "@/components/actions/ActionChip";
-import { ActionCompletion, UserAction } from "@/graphql/schema";
+import RoutineChip from "@/components/routines/RoutineChip";
+import { actionCompletionFragment, routineFragment, userActionFragment } from "@/graphql/fragments";
+import { ActionCompletion, Routine, UserAction } from "@/graphql/schema";
+import { gql } from "@apollo/client";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,13 +16,34 @@ import { isSameDay, parseISO } from "date-fns";
 import Link from "next/link";
 import { FC, useState } from "react";
 
-export interface ActionBoxProps {
-  userActions: UserAction[];
-  actionCompletions: ActionCompletion[];
+export const fragment = gql`
+  fragment ActionsBox on Query {
+    routines(where: { userId: { equals: $userId } }) {
+      ...RoutineFragment
+    }
+    userActions(where: { userId: { equals: $userId } }) {
+      ...UserActionFragment
+    }
+    actionCompletions(where: { userId: { equals: $userId } }) {
+      ...ActionCompletionFragment
+    }
+  }
+  ${userActionFragment}
+  ${routineFragment}
+  ${actionCompletionFragment}
+`;
+
+interface ActionsBoxProps {
+  data: {
+    routines: Routine[];
+    userActions: UserAction[];
+    actionCompletions: ActionCompletion[];
+  };
 }
 
-const ActionBox: FC<ActionBoxProps> = (props: ActionBoxProps) => {
-  const { userActions, actionCompletions } = props;
+const ActionsBox: FC<ActionsBoxProps> = (props: ActionsBoxProps) => {
+  const { data } = props;
+  const { routines, userActions, actionCompletions } = data;
   const today = new Date();
   const filteredActionCompletions = actionCompletions.filter(
     (actionCompletion: ActionCompletion) => {
@@ -28,15 +52,26 @@ const ActionBox: FC<ActionBoxProps> = (props: ActionBoxProps) => {
   );
   let content;
   if (userActions.length) {
-    content = userActions.map((userAction: UserAction) => (
-      <ActionChip
-        key={userAction.action.name}
-        userAction={userAction}
-        actionCompletion={filteredActionCompletions.find((actionCompletion) => {
-          return actionCompletion.action.id === userAction.action.id;
-        })}
-      />
-    ));
+    content = (
+      <div>
+        <div>
+          {routines.map((routine: Routine) => (
+            <RoutineChip key={routine.id} routine={routine} />
+          ))}
+        </div>
+        <div>
+          {userActions.map((userAction: UserAction) => (
+            <ActionChip
+              key={userAction.action.name}
+              userAction={userAction}
+              actionCompletion={filteredActionCompletions.find((actionCompletion) => {
+                return actionCompletion.action.id === userAction.action.id;
+              })}
+            />
+          ))}
+        </div>
+      </div>
+    );
   } else {
     content = <ActionsOnboarder />;
   }
@@ -52,7 +87,7 @@ const ActionBox: FC<ActionBoxProps> = (props: ActionBoxProps) => {
   );
 };
 
-export default ActionBox;
+export default ActionsBox;
 
 const steps = [
   {

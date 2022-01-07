@@ -1,4 +1,4 @@
-import ActionBox from "@/components/actions/ActionBox";
+import ActionsBox from "@/components/actions/ActionsBox";
 import CalendarViewer from "@/components/calendar";
 import { fragment as dashboardFragment } from "@/components/dashboard/Dashboard";
 import Layout from "@/components/Layout";
@@ -8,7 +8,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
@@ -39,7 +38,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session) {
     return null;
   }
-  const { calendarEvents, calendars, userActions } = data;
+  const { calendarEvents, calendars, userActions, routines, actionCompletions } = data;
   return (
     <Layout>
       <NextSeo
@@ -58,7 +57,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                 data={{ calendarEvents, calendars }}
                 error={error}
                 collapseViewMenu={true}
-                session={session}
               />
             </CardContent>
           </Card>
@@ -95,13 +93,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             </form>
           </Grid>
           <Grid item padding="0.25rem">
-            <div>
-              {(!!userActions.length && <ActionBox userActions={userActions} />) || (
-                <Typography component="p" textAlign="center">
-                  No actions yet.
-                </Typography>
-              )}
-            </div>
+            <ActionsBox data={{ userActions, routines, actionCompletions }} />
           </Grid>
           {!isMobile && (
             <Grid item padding={"0 0.25rem 0.25rem"}>

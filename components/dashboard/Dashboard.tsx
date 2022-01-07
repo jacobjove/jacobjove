@@ -1,8 +1,8 @@
+import ActionsBox from "@/components/actions/ActionsBox";
 import CalendarViewer from "@/components/calendar";
 import DashboardCard from "@/components/dashboard/components/DashboardCard";
 import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
 import IdentityTable from "@/components/identities/IdentityTable";
-import TasksBox from "@/components/tasks/TasksBox";
 import ValuesTable from "@/components/values/ValuesTable";
 import {
   actionCompletionFragment,
@@ -133,7 +133,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "actions":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <TasksBox data={{ userActions, routines, actionCompletions }} />
+              <ActionsBox data={{ userActions, routines, actionCompletions }} />
             </DashboardCard>
           );
         case "identities":
@@ -197,7 +197,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     //   ),
     //   actions: (
     //     <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-    //       {(!!userActions.length && <ActionBox userActions={userActions} />) || (
+    //       {(!!userActions.length && <ActionsBox userActions={userActions} />) || (
     //         <Typography component="p" textAlign="center">
     //           No actions yet.
     //         </Typography>

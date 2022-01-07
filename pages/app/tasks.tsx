@@ -1,6 +1,6 @@
+import ActionsBox, { fragment as taskBoxFragment } from "@/components/actions/ActionsBox";
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
 import Layout from "@/components/Layout";
-import TasksBox, { fragment as taskBoxFragment } from "@/components/tasks/TasksBox";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
@@ -19,7 +19,7 @@ interface PlannerPageProps {
 const QUERY = gql`
   query TasksPage($userId: String!) {
     ...CalendarViewer
-    ...TasksBox
+    ...ActionsBox
   }
   ${calendarViewerFragment}
   ${taskBoxFragment}
@@ -85,7 +85,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         >
           <Grid item padding="0.25rem">
             <div>
-              <TasksBox data={{ userActions, routines, actionCompletions }} />
+              <ActionsBox data={{ userActions, routines, actionCompletions }} />
             </div>
           </Grid>
         </Grid>
