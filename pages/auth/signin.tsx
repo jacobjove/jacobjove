@@ -1,8 +1,12 @@
 import { handleLogout } from "@/auth";
 import SocialLogin, { Provider } from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
-import { Alert, Box, Button, Paper, Typography } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { GetServerSideProps } from "next";
 import { getProviders, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
@@ -25,6 +29,11 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
       setErrors({ _: [`${router.query?.error}`] });
     }
   }, [router.query?.error]);
+  useEffect(() => {
+    if (session?.user && callbackUrl) {
+      router.push(callbackUrl);
+    }
+  }, [session, router, callbackUrl]);
   return (
     <Layout>
       <NextSeo
@@ -33,7 +42,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
         description={"Sign in to your SelfBuilder account, or create a free account now."}
       />
       <Container>
-        <Box m={"auto"} p={4} style={{ maxWidth: "40rem" }}>
+        <Box m={"auto"} p={4} maxWidth={"40rem"}>
           {!!Object.keys(errors).length && (
             <>
               <Alert severity="error">
@@ -50,20 +59,29 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
             </>
           )}
           {(session?.user && (
-            <Paper className="p-4 text-center">
-              <p className="lead">
-                You are logged in as <strong>{session.user.email}</strong>.
-              </p>
-              <br />
-              <Button
-                variant="outlined"
-                color="primary"
-                size="large"
-                onClick={() => handleLogout(session)}
-              >
-                Sign Out
-              </Button>
-            </Paper>
+            <Grid
+              container
+              spacing={4}
+              alignItems={"center"}
+              justifyContent={"center"}
+              height="100%"
+            >
+              <Grid item xs={12}>
+                <Typography variant="h5" component="p">
+                  You are logged in as <strong>{session.user.email}</strong>.
+                </Typography>
+              </Grid>
+              <Grid item container xs={12} justifyContent={"center"}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                  onClick={() => handleLogout(session)}
+                >
+                  Sign Out
+                </Button>
+              </Grid>
+            </Grid>
           )) || (
             <div id="sign-in">
               <Typography

@@ -298,6 +298,7 @@ input ActionAvgOrderByAggregateInput {
 type ActionCompletion {
   action: Action!
   actionId: Int!
+  archivedAt: DateTime
   date: DateTime!
   id: Int!
   user: User!
@@ -317,6 +318,7 @@ input ActionCompletionAvgOrderByAggregateInput {
 type ActionCompletionCountAggregate {
   _all: Int!
   actionId: Int!
+  archivedAt: Int!
   date: Int!
   id: Int!
   userId: Int!
@@ -324,6 +326,7 @@ type ActionCompletionCountAggregate {
 
 input ActionCompletionCountOrderByAggregateInput {
   actionId: SortOrder
+  archivedAt: SortOrder
   date: SortOrder
   id: SortOrder
   userId: SortOrder
@@ -331,11 +334,13 @@ input ActionCompletionCountOrderByAggregateInput {
 
 input ActionCompletionCreateInput {
   action: ActionCreateNestedOneWithoutCompletionsInput!
+  archivedAt: DateTime
   date: DateTime
   user: UserCreateNestedOneWithoutActionCompletionsInput!
 }
 
 input ActionCompletionCreateManyActionInput {
+  archivedAt: DateTime
   date: DateTime
   id: Int
   userId: String!
@@ -348,6 +353,7 @@ input ActionCompletionCreateManyActionInputEnvelope {
 
 input ActionCompletionCreateManyInput {
   actionId: Int!
+  archivedAt: DateTime
   date: DateTime
   id: Int
   userId: String!
@@ -355,6 +361,7 @@ input ActionCompletionCreateManyInput {
 
 input ActionCompletionCreateManyUserInput {
   actionId: Int!
+  archivedAt: DateTime
   date: DateTime
   id: Int
 }
@@ -389,12 +396,14 @@ input ActionCompletionCreateOrConnectWithoutUserInput {
 }
 
 input ActionCompletionCreateWithoutActionInput {
+  archivedAt: DateTime
   date: DateTime
   user: UserCreateNestedOneWithoutActionCompletionsInput!
 }
 
 input ActionCompletionCreateWithoutUserInput {
   action: ActionCreateNestedOneWithoutCompletionsInput!
+  archivedAt: DateTime
   date: DateTime
 }
 
@@ -405,6 +414,7 @@ type ActionCompletionGroupBy {
   _min: ActionCompletionMinAggregate
   _sum: ActionCompletionSumAggregate
   actionId: Int!
+  archivedAt: DateTime
   date: DateTime!
   id: Int!
   userId: String!
@@ -418,6 +428,7 @@ input ActionCompletionListRelationFilter {
 
 type ActionCompletionMaxAggregate {
   actionId: Int
+  archivedAt: DateTime
   date: DateTime
   id: Int
   userId: String
@@ -425,6 +436,7 @@ type ActionCompletionMaxAggregate {
 
 input ActionCompletionMaxOrderByAggregateInput {
   actionId: SortOrder
+  archivedAt: SortOrder
   date: SortOrder
   id: SortOrder
   userId: SortOrder
@@ -432,6 +444,7 @@ input ActionCompletionMaxOrderByAggregateInput {
 
 type ActionCompletionMinAggregate {
   actionId: Int
+  archivedAt: DateTime
   date: DateTime
   id: Int
   userId: String
@@ -439,6 +452,7 @@ type ActionCompletionMinAggregate {
 
 input ActionCompletionMinOrderByAggregateInput {
   actionId: SortOrder
+  archivedAt: SortOrder
   date: SortOrder
   id: SortOrder
   userId: SortOrder
@@ -455,6 +469,7 @@ input ActionCompletionOrderByWithAggregationInput {
   _min: ActionCompletionMinOrderByAggregateInput
   _sum: ActionCompletionSumOrderByAggregateInput
   actionId: SortOrder
+  archivedAt: SortOrder
   date: SortOrder
   id: SortOrder
   userId: SortOrder
@@ -463,6 +478,7 @@ input ActionCompletionOrderByWithAggregationInput {
 input ActionCompletionOrderByWithRelationInput {
   action: ActionOrderByWithRelationInput
   actionId: SortOrder
+  archivedAt: SortOrder
   date: SortOrder
   id: SortOrder
   user: UserOrderByWithRelationInput
@@ -471,6 +487,7 @@ input ActionCompletionOrderByWithRelationInput {
 
 enum ActionCompletionScalarFieldEnum {
   actionId
+  archivedAt
   date
   id
   userId
@@ -481,6 +498,7 @@ input ActionCompletionScalarWhereInput {
   NOT: [ActionCompletionScalarWhereInput!]
   OR: [ActionCompletionScalarWhereInput!]
   actionId: IntFilter
+  archivedAt: DateTimeNullableFilter
   date: DateTimeFilter
   id: IntFilter
   userId: StringFilter
@@ -491,6 +509,7 @@ input ActionCompletionScalarWhereWithAggregatesInput {
   NOT: [ActionCompletionScalarWhereWithAggregatesInput!]
   OR: [ActionCompletionScalarWhereWithAggregatesInput!]
   actionId: IntWithAggregatesFilter
+  archivedAt: DateTimeNullableWithAggregatesFilter
   date: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   userId: StringWithAggregatesFilter
@@ -508,11 +527,13 @@ input ActionCompletionSumOrderByAggregateInput {
 
 input ActionCompletionUpdateInput {
   action: ActionUpdateOneRequiredWithoutCompletionsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutActionCompletionsInput
 }
 
 input ActionCompletionUpdateManyMutationInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
 }
 
@@ -565,12 +586,14 @@ input ActionCompletionUpdateWithWhereUniqueWithoutUserInput {
 }
 
 input ActionCompletionUpdateWithoutActionInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutActionCompletionsInput
 }
 
 input ActionCompletionUpdateWithoutUserInput {
   action: ActionUpdateOneRequiredWithoutCompletionsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
 }
 
@@ -592,6 +615,7 @@ input ActionCompletionWhereInput {
   OR: [ActionCompletionWhereInput!]
   action: ActionRelationFilter
   actionId: IntFilter
+  archivedAt: DateTimeNullableFilter
   date: DateTimeFilter
   id: IntFilter
   user: UserRelationFilter
@@ -1990,10 +2014,10 @@ input CalendarCreateWithoutUserInput {
 
 type CalendarEvent {
   allDay: Boolean!
+  archivedAt: DateTime
   calendar: Calendar!
   calendarId: Int!
   createdAt: DateTime!
-  deletedAt: DateTime
   end: DateTime
   id: Int!
   notes: String
@@ -2024,9 +2048,9 @@ input CalendarEventAvgOrderByAggregateInput {
 type CalendarEventCountAggregate {
   _all: Int!
   allDay: Int!
+  archivedAt: Int!
   calendarId: Int!
   createdAt: Int!
-  deletedAt: Int!
   end: Int!
   id: Int!
   notes: Int!
@@ -2040,9 +2064,9 @@ type CalendarEventCountAggregate {
 
 input CalendarEventCountOrderByAggregateInput {
   allDay: SortOrder
+  archivedAt: SortOrder
   calendarId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2056,9 +2080,9 @@ input CalendarEventCountOrderByAggregateInput {
 
 input CalendarEventCreateInput {
   allDay: Boolean
+  archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   notes: String
   schedule: UserActionScheduleCreateNestedOneWithoutCalendarEventsInput
@@ -2071,8 +2095,8 @@ input CalendarEventCreateInput {
 
 input CalendarEventCreateManyCalendarInput {
   allDay: Boolean
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2091,9 +2115,9 @@ input CalendarEventCreateManyCalendarInputEnvelope {
 
 input CalendarEventCreateManyInput {
   allDay: Boolean
+  archivedAt: DateTime
   calendarId: Int!
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2107,9 +2131,9 @@ input CalendarEventCreateManyInput {
 
 input CalendarEventCreateManyScheduleInput {
   allDay: Boolean
+  archivedAt: DateTime
   calendarId: Int!
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2127,9 +2151,9 @@ input CalendarEventCreateManyScheduleInputEnvelope {
 
 input CalendarEventCreateManyUserActionInput {
   allDay: Boolean
+  archivedAt: DateTime
   calendarId: Int!
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2183,8 +2207,8 @@ input CalendarEventCreateOrConnectWithoutUserActionInput {
 
 input CalendarEventCreateWithoutCalendarInput {
   allDay: Boolean
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   notes: String
   schedule: UserActionScheduleCreateNestedOneWithoutCalendarEventsInput
@@ -2197,9 +2221,9 @@ input CalendarEventCreateWithoutCalendarInput {
 
 input CalendarEventCreateWithoutScheduleInput {
   allDay: Boolean
+  archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   notes: String
   start: DateTime!
@@ -2211,9 +2235,9 @@ input CalendarEventCreateWithoutScheduleInput {
 
 input CalendarEventCreateWithoutUserActionInput {
   allDay: Boolean
+  archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   notes: String
   schedule: UserActionScheduleCreateNestedOneWithoutCalendarEventsInput
@@ -2230,9 +2254,9 @@ type CalendarEventGroupBy {
   _min: CalendarEventMinAggregate
   _sum: CalendarEventSumAggregate
   allDay: Boolean!
+  archivedAt: DateTime
   calendarId: Int!
   createdAt: DateTime!
-  deletedAt: DateTime
   end: DateTime
   id: Int!
   notes: String
@@ -2252,9 +2276,9 @@ input CalendarEventListRelationFilter {
 
 type CalendarEventMaxAggregate {
   allDay: Boolean
+  archivedAt: DateTime
   calendarId: Int
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2268,9 +2292,9 @@ type CalendarEventMaxAggregate {
 
 input CalendarEventMaxOrderByAggregateInput {
   allDay: SortOrder
+  archivedAt: SortOrder
   calendarId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2284,9 +2308,9 @@ input CalendarEventMaxOrderByAggregateInput {
 
 type CalendarEventMinAggregate {
   allDay: Boolean
+  archivedAt: DateTime
   calendarId: Int
   createdAt: DateTime
-  deletedAt: DateTime
   end: DateTime
   id: Int
   notes: String
@@ -2300,9 +2324,9 @@ type CalendarEventMinAggregate {
 
 input CalendarEventMinOrderByAggregateInput {
   allDay: SortOrder
+  archivedAt: SortOrder
   calendarId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2325,9 +2349,9 @@ input CalendarEventOrderByWithAggregationInput {
   _min: CalendarEventMinOrderByAggregateInput
   _sum: CalendarEventSumOrderByAggregateInput
   allDay: SortOrder
+  archivedAt: SortOrder
   calendarId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2341,10 +2365,10 @@ input CalendarEventOrderByWithAggregationInput {
 
 input CalendarEventOrderByWithRelationInput {
   allDay: SortOrder
+  archivedAt: SortOrder
   calendar: CalendarOrderByWithRelationInput
   calendarId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   end: SortOrder
   id: SortOrder
   notes: SortOrder
@@ -2360,9 +2384,9 @@ input CalendarEventOrderByWithRelationInput {
 
 enum CalendarEventScalarFieldEnum {
   allDay
+  archivedAt
   calendarId
   createdAt
-  deletedAt
   end
   id
   notes
@@ -2379,9 +2403,9 @@ input CalendarEventScalarWhereInput {
   NOT: [CalendarEventScalarWhereInput!]
   OR: [CalendarEventScalarWhereInput!]
   allDay: BoolFilter
+  archivedAt: DateTimeNullableFilter
   calendarId: IntFilter
   createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
   end: DateTimeNullableFilter
   id: IntFilter
   notes: StringNullableFilter
@@ -2398,9 +2422,9 @@ input CalendarEventScalarWhereWithAggregatesInput {
   NOT: [CalendarEventScalarWhereWithAggregatesInput!]
   OR: [CalendarEventScalarWhereWithAggregatesInput!]
   allDay: BoolWithAggregatesFilter
+  archivedAt: DateTimeNullableWithAggregatesFilter
   calendarId: IntWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
-  deletedAt: DateTimeNullableWithAggregatesFilter
   end: DateTimeNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   notes: StringNullableWithAggregatesFilter
@@ -2428,9 +2452,9 @@ input CalendarEventSumOrderByAggregateInput {
 
 input CalendarEventUpdateInput {
   allDay: BoolFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: UserActionScheduleUpdateOneWithoutCalendarEventsInput
@@ -2443,8 +2467,8 @@ input CalendarEventUpdateInput {
 
 input CalendarEventUpdateManyMutationInput {
   allDay: BoolFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
@@ -2527,8 +2551,8 @@ input CalendarEventUpdateWithWhereUniqueWithoutUserActionInput {
 
 input CalendarEventUpdateWithoutCalendarInput {
   allDay: BoolFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: UserActionScheduleUpdateOneWithoutCalendarEventsInput
@@ -2541,9 +2565,9 @@ input CalendarEventUpdateWithoutCalendarInput {
 
 input CalendarEventUpdateWithoutScheduleInput {
   allDay: BoolFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
@@ -2555,9 +2579,9 @@ input CalendarEventUpdateWithoutScheduleInput {
 
 input CalendarEventUpdateWithoutUserActionInput {
   allDay: BoolFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: UserActionScheduleUpdateOneWithoutCalendarEventsInput
@@ -2590,10 +2614,10 @@ input CalendarEventWhereInput {
   NOT: [CalendarEventWhereInput!]
   OR: [CalendarEventWhereInput!]
   allDay: BoolFilter
+  archivedAt: DateTimeNullableFilter
   calendar: CalendarRelationFilter
   calendarId: IntFilter
   createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
   end: DateTimeNullableFilter
   id: IntFilter
   notes: StringNullableFilter
@@ -4044,10 +4068,11 @@ type Mutation {
   deleteUserIdentity(where: UserIdentityWhereUniqueInput!): UserIdentity
   deleteUserValue(where: UserValueWhereUniqueInput!): UserValue
   deleteValue(where: ValueWhereUniqueInput!): Value
-  toggleUserActionAdoption(abandonedAt: DateTime, actionId: Int!, userId: String!): UserAction!
+  toggleActionAdoption(actionId: Int!, archivedAt: DateTime, userId: String!): UserAction!
+  toggleActionCompletion(actionId: Int!, archivedAt: DateTime, userId: String!): ActionCompletion!
   toggleUserBelief(beliefId: Int!, deleted: DateTime, userId: String!): UserBelief!
   toggleUserIdentity(deleted: DateTime, identityId: Int!, userId: String!): UserIdentity!
-  toggleUserValue(deletedAt: DateTime, userId: String!, valueId: Int!): UserValue!
+  toggleUserValue(archivedAt: DateTime, userId: String!, valueId: Int!): UserValue!
   updateAccount(data: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account
   updateAction(data: ActionUpdateInput!, where: ActionWhereUniqueInput!): Action
   updateActionCompletion(data: ActionCompletionUpdateInput!, where: ActionCompletionWhereUniqueInput!): ActionCompletion
@@ -5543,11 +5568,11 @@ type User {
 
 type UserAction {
   _count: UserActionCount!
-  abandonedAt: DateTime
   action: Action!
   actionId: Int!
-  adoptedAt: DateTime!
+  archivedAt: DateTime
   calendarEvents(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
+  createdAt: DateTime!
   goals(cursor: GoalWhereUniqueInput, distinct: [GoalScalarFieldEnum!], orderBy: [GoalOrderByWithRelationInput!], skip: Int, take: Int, where: GoalWhereInput): [Goal!]!
   id: Int!
   schedules(cursor: UserActionScheduleWhereUniqueInput, distinct: [UserActionScheduleScalarFieldEnum!], orderBy: [UserActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: UserActionScheduleWhereInput): [UserActionSchedule!]!
@@ -5573,34 +5598,34 @@ type UserActionCount {
 
 type UserActionCountAggregate {
   _all: Int!
-  abandonedAt: Int!
   actionId: Int!
-  adoptedAt: Int!
+  archivedAt: Int!
+  createdAt: Int!
   id: Int!
   userId: Int!
 }
 
 input UserActionCountOrderByAggregateInput {
-  abandonedAt: SortOrder
   actionId: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   userId: SortOrder
 }
 
 input UserActionCreateInput {
-  abandonedAt: DateTime
   action: ActionCreateNestedOneWithoutUserActionsInput!
-  adoptedAt: DateTime
+  archivedAt: DateTime
   calendarEvents: CalendarEventCreateNestedManyWithoutUserActionInput
+  createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
 input UserActionCreateManyActionInput {
-  abandonedAt: DateTime
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   id: Int
   userId: String!
 }
@@ -5611,17 +5636,17 @@ input UserActionCreateManyActionInputEnvelope {
 }
 
 input UserActionCreateManyInput {
-  abandonedAt: DateTime
   actionId: Int!
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   id: Int
   userId: String!
 }
 
 input UserActionCreateManyUserInput {
-  abandonedAt: DateTime
   actionId: Int!
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   id: Int
 }
 
@@ -5688,46 +5713,46 @@ input UserActionCreateOrConnectWithoutUserInput {
 }
 
 input UserActionCreateWithoutActionInput {
-  abandonedAt: DateTime
-  adoptedAt: DateTime
+  archivedAt: DateTime
   calendarEvents: CalendarEventCreateNestedManyWithoutUserActionInput
+  createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
 input UserActionCreateWithoutCalendarEventsInput {
-  abandonedAt: DateTime
   action: ActionCreateNestedOneWithoutUserActionsInput!
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
 input UserActionCreateWithoutGoalsInput {
-  abandonedAt: DateTime
   action: ActionCreateNestedOneWithoutUserActionsInput!
-  adoptedAt: DateTime
+  archivedAt: DateTime
   calendarEvents: CalendarEventCreateNestedManyWithoutUserActionInput
+  createdAt: DateTime
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
 input UserActionCreateWithoutSchedulesInput {
-  abandonedAt: DateTime
   action: ActionCreateNestedOneWithoutUserActionsInput!
-  adoptedAt: DateTime
+  archivedAt: DateTime
   calendarEvents: CalendarEventCreateNestedManyWithoutUserActionInput
+  createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   user: UserCreateNestedOneWithoutUserActionsInput!
 }
 
 input UserActionCreateWithoutUserInput {
-  abandonedAt: DateTime
   action: ActionCreateNestedOneWithoutUserActionsInput!
-  adoptedAt: DateTime
+  archivedAt: DateTime
   calendarEvents: CalendarEventCreateNestedManyWithoutUserActionInput
+  createdAt: DateTime
   goals: GoalCreateNestedManyWithoutUserActionInput
   schedules: UserActionScheduleCreateNestedManyWithoutUserActionInput
 }
@@ -5738,9 +5763,9 @@ type UserActionGroupBy {
   _max: UserActionMaxAggregate
   _min: UserActionMinAggregate
   _sum: UserActionSumAggregate
-  abandonedAt: DateTime
   actionId: Int!
-  adoptedAt: DateTime!
+  archivedAt: DateTime
+  createdAt: DateTime!
   id: Int!
   userId: String!
 }
@@ -5752,33 +5777,33 @@ input UserActionListRelationFilter {
 }
 
 type UserActionMaxAggregate {
-  abandonedAt: DateTime
   actionId: Int
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   id: Int
   userId: String
 }
 
 input UserActionMaxOrderByAggregateInput {
-  abandonedAt: SortOrder
   actionId: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   userId: SortOrder
 }
 
 type UserActionMinAggregate {
-  abandonedAt: DateTime
   actionId: Int
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   id: Int
   userId: String
 }
 
 input UserActionMinOrderByAggregateInput {
-  abandonedAt: SortOrder
   actionId: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   userId: SortOrder
 }
@@ -5793,19 +5818,19 @@ input UserActionOrderByWithAggregationInput {
   _max: UserActionMaxOrderByAggregateInput
   _min: UserActionMinOrderByAggregateInput
   _sum: UserActionSumOrderByAggregateInput
-  abandonedAt: SortOrder
   actionId: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   userId: SortOrder
 }
 
 input UserActionOrderByWithRelationInput {
-  abandonedAt: SortOrder
   action: ActionOrderByWithRelationInput
   actionId: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
   calendarEvents: CalendarEventOrderByRelationAggregateInput
+  createdAt: SortOrder
   goals: GoalOrderByRelationAggregateInput
   id: SortOrder
   schedules: UserActionScheduleOrderByRelationAggregateInput
@@ -5819,9 +5844,9 @@ input UserActionRelationFilter {
 }
 
 enum UserActionScalarFieldEnum {
-  abandonedAt
   actionId
-  adoptedAt
+  archivedAt
+  createdAt
   id
   userId
 }
@@ -5830,9 +5855,9 @@ input UserActionScalarWhereInput {
   AND: [UserActionScalarWhereInput!]
   NOT: [UserActionScalarWhereInput!]
   OR: [UserActionScalarWhereInput!]
-  abandonedAt: DateTimeNullableFilter
   actionId: IntFilter
-  adoptedAt: DateTimeFilter
+  archivedAt: DateTimeNullableFilter
+  createdAt: DateTimeFilter
   id: IntFilter
   userId: StringFilter
 }
@@ -5841,21 +5866,21 @@ input UserActionScalarWhereWithAggregatesInput {
   AND: [UserActionScalarWhereWithAggregatesInput!]
   NOT: [UserActionScalarWhereWithAggregatesInput!]
   OR: [UserActionScalarWhereWithAggregatesInput!]
-  abandonedAt: DateTimeNullableWithAggregatesFilter
   actionId: IntWithAggregatesFilter
-  adoptedAt: DateTimeWithAggregatesFilter
+  archivedAt: DateTimeNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   userId: StringWithAggregatesFilter
 }
 
 type UserActionSchedule {
   _count: UserActionScheduleCount!
-  abandonedAt: DateTime
   actionScheduleTemplate: ActionScheduleTemplate
   actionScheduleTemplateId: Int
   active: Boolean!
-  adoptedAt: DateTime!
+  archivedAt: DateTime
   calendarEvents(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
+  createdAt: DateTime!
   frequency: FREQUENCY!
   id: Int!
   multiplier: Int!
@@ -5886,10 +5911,10 @@ type UserActionScheduleCount {
 
 type UserActionScheduleCountAggregate {
   _all: Int!
-  abandonedAt: Int!
   actionScheduleTemplateId: Int!
   active: Int!
-  adoptedAt: Int!
+  archivedAt: Int!
+  createdAt: Int!
   frequency: Int!
   id: Int!
   multiplier: Int!
@@ -5898,10 +5923,10 @@ type UserActionScheduleCountAggregate {
 }
 
 input UserActionScheduleCountOrderByAggregateInput {
-  abandonedAt: SortOrder
   actionScheduleTemplateId: SortOrder
   active: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
+  createdAt: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -5910,11 +5935,11 @@ input UserActionScheduleCountOrderByAggregateInput {
 }
 
 input UserActionScheduleCreateInput {
-  abandonedAt: DateTime
   actionScheduleTemplate: ActionScheduleTemplateCreateNestedOneWithoutUserActionSchedulesInput
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
   calendarEvents: CalendarEventCreateNestedManyWithoutScheduleInput
+  createdAt: DateTime
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -5922,9 +5947,9 @@ input UserActionScheduleCreateInput {
 }
 
 input UserActionScheduleCreateManyActionScheduleTemplateInput {
-  abandonedAt: DateTime
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -5938,10 +5963,10 @@ input UserActionScheduleCreateManyActionScheduleTemplateInputEnvelope {
 }
 
 input UserActionScheduleCreateManyInput {
-  abandonedAt: DateTime
   actionScheduleTemplateId: Int
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -5950,10 +5975,10 @@ input UserActionScheduleCreateManyInput {
 }
 
 input UserActionScheduleCreateManyUserActionInput {
-  abandonedAt: DateTime
   actionScheduleTemplateId: Int
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -6001,10 +6026,10 @@ input UserActionScheduleCreateOrConnectWithoutUserActionInput {
 }
 
 input UserActionScheduleCreateWithoutActionScheduleTemplateInput {
-  abandonedAt: DateTime
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
   calendarEvents: CalendarEventCreateNestedManyWithoutScheduleInput
+  createdAt: DateTime
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -6012,10 +6037,10 @@ input UserActionScheduleCreateWithoutActionScheduleTemplateInput {
 }
 
 input UserActionScheduleCreateWithoutCalendarEventsInput {
-  abandonedAt: DateTime
   actionScheduleTemplate: ActionScheduleTemplateCreateNestedOneWithoutUserActionSchedulesInput
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -6023,11 +6048,11 @@ input UserActionScheduleCreateWithoutCalendarEventsInput {
 }
 
 input UserActionScheduleCreateWithoutUserActionInput {
-  abandonedAt: DateTime
   actionScheduleTemplate: ActionScheduleTemplateCreateNestedOneWithoutUserActionSchedulesInput
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
   calendarEvents: CalendarEventCreateNestedManyWithoutScheduleInput
+  createdAt: DateTime
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -6039,10 +6064,10 @@ type UserActionScheduleGroupBy {
   _max: UserActionScheduleMaxAggregate
   _min: UserActionScheduleMinAggregate
   _sum: UserActionScheduleSumAggregate
-  abandonedAt: DateTime
   actionScheduleTemplateId: Int
   active: Boolean!
-  adoptedAt: DateTime!
+  archivedAt: DateTime
+  createdAt: DateTime!
   frequency: FREQUENCY!
   id: Int!
   multiplier: Int!
@@ -6057,10 +6082,10 @@ input UserActionScheduleListRelationFilter {
 }
 
 type UserActionScheduleMaxAggregate {
-  abandonedAt: DateTime
   actionScheduleTemplateId: Int
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -6069,10 +6094,10 @@ type UserActionScheduleMaxAggregate {
 }
 
 input UserActionScheduleMaxOrderByAggregateInput {
-  abandonedAt: SortOrder
   actionScheduleTemplateId: SortOrder
   active: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
+  createdAt: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -6081,10 +6106,10 @@ input UserActionScheduleMaxOrderByAggregateInput {
 }
 
 type UserActionScheduleMinAggregate {
-  abandonedAt: DateTime
   actionScheduleTemplateId: Int
   active: Boolean
-  adoptedAt: DateTime
+  archivedAt: DateTime
+  createdAt: DateTime
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -6093,10 +6118,10 @@ type UserActionScheduleMinAggregate {
 }
 
 input UserActionScheduleMinOrderByAggregateInput {
-  abandonedAt: SortOrder
   actionScheduleTemplateId: SortOrder
   active: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
+  createdAt: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -6114,10 +6139,10 @@ input UserActionScheduleOrderByWithAggregationInput {
   _max: UserActionScheduleMaxOrderByAggregateInput
   _min: UserActionScheduleMinOrderByAggregateInput
   _sum: UserActionScheduleSumOrderByAggregateInput
-  abandonedAt: SortOrder
   actionScheduleTemplateId: SortOrder
   active: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
+  createdAt: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -6126,12 +6151,12 @@ input UserActionScheduleOrderByWithAggregationInput {
 }
 
 input UserActionScheduleOrderByWithRelationInput {
-  abandonedAt: SortOrder
   actionScheduleTemplate: ActionScheduleTemplateOrderByWithRelationInput
   actionScheduleTemplateId: SortOrder
   active: SortOrder
-  adoptedAt: SortOrder
+  archivedAt: SortOrder
   calendarEvents: CalendarEventOrderByRelationAggregateInput
+  createdAt: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -6146,10 +6171,10 @@ input UserActionScheduleRelationFilter {
 }
 
 enum UserActionScheduleScalarFieldEnum {
-  abandonedAt
   actionScheduleTemplateId
   active
-  adoptedAt
+  archivedAt
+  createdAt
   frequency
   id
   multiplier
@@ -6161,10 +6186,10 @@ input UserActionScheduleScalarWhereInput {
   AND: [UserActionScheduleScalarWhereInput!]
   NOT: [UserActionScheduleScalarWhereInput!]
   OR: [UserActionScheduleScalarWhereInput!]
-  abandonedAt: DateTimeNullableFilter
   actionScheduleTemplateId: IntNullableFilter
   active: BoolFilter
-  adoptedAt: DateTimeFilter
+  archivedAt: DateTimeNullableFilter
+  createdAt: DateTimeFilter
   frequency: EnumFREQUENCYFilter
   id: IntFilter
   multiplier: IntFilter
@@ -6176,10 +6201,10 @@ input UserActionScheduleScalarWhereWithAggregatesInput {
   AND: [UserActionScheduleScalarWhereWithAggregatesInput!]
   NOT: [UserActionScheduleScalarWhereWithAggregatesInput!]
   OR: [UserActionScheduleScalarWhereWithAggregatesInput!]
-  abandonedAt: DateTimeNullableWithAggregatesFilter
   actionScheduleTemplateId: IntNullableWithAggregatesFilter
   active: BoolWithAggregatesFilter
-  adoptedAt: DateTimeWithAggregatesFilter
+  archivedAt: DateTimeNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
   frequency: EnumFREQUENCYWithAggregatesFilter
   id: IntWithAggregatesFilter
   multiplier: IntWithAggregatesFilter
@@ -6204,11 +6229,11 @@ input UserActionScheduleSumOrderByAggregateInput {
 }
 
 input UserActionScheduleUpdateInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   actionScheduleTemplate: ActionScheduleTemplateUpdateOneWithoutUserActionSchedulesInput
   active: BoolFieldUpdateOperationsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarEvents: CalendarEventUpdateManyWithoutScheduleInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -6216,9 +6241,9 @@ input UserActionScheduleUpdateInput {
 }
 
 input UserActionScheduleUpdateManyMutationInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   active: BoolFieldUpdateOperationsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -6283,10 +6308,10 @@ input UserActionScheduleUpdateWithWhereUniqueWithoutUserActionInput {
 }
 
 input UserActionScheduleUpdateWithoutActionScheduleTemplateInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   active: BoolFieldUpdateOperationsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarEvents: CalendarEventUpdateManyWithoutScheduleInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -6294,10 +6319,10 @@ input UserActionScheduleUpdateWithoutActionScheduleTemplateInput {
 }
 
 input UserActionScheduleUpdateWithoutCalendarEventsInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   actionScheduleTemplate: ActionScheduleTemplateUpdateOneWithoutUserActionSchedulesInput
   active: BoolFieldUpdateOperationsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -6305,11 +6330,11 @@ input UserActionScheduleUpdateWithoutCalendarEventsInput {
 }
 
 input UserActionScheduleUpdateWithoutUserActionInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   actionScheduleTemplate: ActionScheduleTemplateUpdateOneWithoutUserActionSchedulesInput
   active: BoolFieldUpdateOperationsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarEvents: CalendarEventUpdateManyWithoutScheduleInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -6336,12 +6361,12 @@ input UserActionScheduleWhereInput {
   AND: [UserActionScheduleWhereInput!]
   NOT: [UserActionScheduleWhereInput!]
   OR: [UserActionScheduleWhereInput!]
-  abandonedAt: DateTimeNullableFilter
   actionScheduleTemplate: ActionScheduleTemplateRelationFilter
   actionScheduleTemplateId: IntNullableFilter
   active: BoolFilter
-  adoptedAt: DateTimeFilter
+  archivedAt: DateTimeNullableFilter
   calendarEvents: CalendarEventListRelationFilter
+  createdAt: DateTimeFilter
   frequency: EnumFREQUENCYFilter
   id: IntFilter
   multiplier: IntFilter
@@ -6365,18 +6390,18 @@ input UserActionSumOrderByAggregateInput {
 }
 
 input UserActionUpdateInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   action: ActionUpdateOneRequiredWithoutUserActionsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarEvents: CalendarEventUpdateManyWithoutUserActionInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
 input UserActionUpdateManyMutationInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
 }
 
 input UserActionUpdateManyWithWhereWithoutActionInput {
@@ -6456,46 +6481,46 @@ input UserActionUpdateWithWhereUniqueWithoutUserInput {
 }
 
 input UserActionUpdateWithoutActionInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarEvents: CalendarEventUpdateManyWithoutUserActionInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
 input UserActionUpdateWithoutCalendarEventsInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   action: ActionUpdateOneRequiredWithoutUserActionsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
 input UserActionUpdateWithoutGoalsInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   action: ActionUpdateOneRequiredWithoutUserActionsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarEvents: CalendarEventUpdateManyWithoutUserActionInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
 input UserActionUpdateWithoutSchedulesInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   action: ActionUpdateOneRequiredWithoutUserActionsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarEvents: CalendarEventUpdateManyWithoutUserActionInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   user: UserUpdateOneRequiredWithoutUserActionsInput
 }
 
 input UserActionUpdateWithoutUserInput {
-  abandonedAt: NullableDateTimeFieldUpdateOperationsInput
   action: ActionUpdateOneRequiredWithoutUserActionsInput
-  adoptedAt: DateTimeFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarEvents: CalendarEventUpdateManyWithoutUserActionInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   goals: GoalUpdateManyWithoutUserActionInput
   schedules: UserActionScheduleUpdateManyWithoutUserActionInput
 }
@@ -6536,11 +6561,11 @@ input UserActionWhereInput {
   AND: [UserActionWhereInput!]
   NOT: [UserActionWhereInput!]
   OR: [UserActionWhereInput!]
-  abandonedAt: DateTimeNullableFilter
   action: ActionRelationFilter
   actionId: IntFilter
-  adoptedAt: DateTimeFilter
+  archivedAt: DateTimeNullableFilter
   calendarEvents: CalendarEventListRelationFilter
+  createdAt: DateTimeFilter
   goals: GoalListRelationFilter
   id: IntFilter
   schedules: UserActionScheduleListRelationFilter
@@ -6554,10 +6579,10 @@ input UserActionWhereUniqueInput {
 }
 
 type UserBelief {
+  archivedAt: DateTime
   belief: Belief!
   beliefId: Int!
   createdAt: DateTime!
-  deletedAt: DateTime
   id: Int!
   updatedAt: DateTime
   user: User!
@@ -6576,34 +6601,34 @@ input UserBeliefAvgOrderByAggregateInput {
 
 type UserBeliefCountAggregate {
   _all: Int!
+  archivedAt: Int!
   beliefId: Int!
   createdAt: Int!
-  deletedAt: Int!
   id: Int!
   updatedAt: Int!
   userId: Int!
 }
 
 input UserBeliefCountOrderByAggregateInput {
+  archivedAt: SortOrder
   beliefId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
 }
 
 input UserBeliefCreateInput {
+  archivedAt: DateTime
   belief: BeliefCreateNestedOneWithoutUserBeliefInput!
   createdAt: DateTime
-  deletedAt: DateTime
   updatedAt: DateTime
   user: UserCreateNestedOneWithoutUserBeliefsInput!
 }
 
 input UserBeliefCreateManyBeliefInput {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   userId: String!
@@ -6615,18 +6640,18 @@ input UserBeliefCreateManyBeliefInputEnvelope {
 }
 
 input UserBeliefCreateManyInput {
+  archivedAt: DateTime
   beliefId: Int!
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   userId: String!
 }
 
 input UserBeliefCreateManyUserInput {
+  archivedAt: DateTime
   beliefId: Int!
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
 }
@@ -6661,16 +6686,16 @@ input UserBeliefCreateOrConnectWithoutUserInput {
 }
 
 input UserBeliefCreateWithoutBeliefInput {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   updatedAt: DateTime
   user: UserCreateNestedOneWithoutUserBeliefsInput!
 }
 
 input UserBeliefCreateWithoutUserInput {
+  archivedAt: DateTime
   belief: BeliefCreateNestedOneWithoutUserBeliefInput!
   createdAt: DateTime
-  deletedAt: DateTime
   updatedAt: DateTime
 }
 
@@ -6680,9 +6705,9 @@ type UserBeliefGroupBy {
   _max: UserBeliefMaxAggregate
   _min: UserBeliefMinAggregate
   _sum: UserBeliefSumAggregate
+  archivedAt: DateTime
   beliefId: Int!
   createdAt: DateTime!
-  deletedAt: DateTime
   id: Int!
   updatedAt: DateTime
   userId: String!
@@ -6695,36 +6720,36 @@ input UserBeliefListRelationFilter {
 }
 
 type UserBeliefMaxAggregate {
+  archivedAt: DateTime
   beliefId: Int
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   userId: String
 }
 
 input UserBeliefMaxOrderByAggregateInput {
+  archivedAt: SortOrder
   beliefId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
 }
 
 type UserBeliefMinAggregate {
+  archivedAt: DateTime
   beliefId: Int
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   userId: String
 }
 
 input UserBeliefMinOrderByAggregateInput {
+  archivedAt: SortOrder
   beliefId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
@@ -6740,19 +6765,19 @@ input UserBeliefOrderByWithAggregationInput {
   _max: UserBeliefMaxOrderByAggregateInput
   _min: UserBeliefMinOrderByAggregateInput
   _sum: UserBeliefSumOrderByAggregateInput
+  archivedAt: SortOrder
   beliefId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
 }
 
 input UserBeliefOrderByWithRelationInput {
+  archivedAt: SortOrder
   belief: BeliefOrderByWithRelationInput
   beliefId: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   user: UserOrderByWithRelationInput
@@ -6760,9 +6785,9 @@ input UserBeliefOrderByWithRelationInput {
 }
 
 enum UserBeliefScalarFieldEnum {
+  archivedAt
   beliefId
   createdAt
-  deletedAt
   id
   updatedAt
   userId
@@ -6772,9 +6797,9 @@ input UserBeliefScalarWhereInput {
   AND: [UserBeliefScalarWhereInput!]
   NOT: [UserBeliefScalarWhereInput!]
   OR: [UserBeliefScalarWhereInput!]
+  archivedAt: DateTimeNullableFilter
   beliefId: IntFilter
   createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
   id: IntFilter
   updatedAt: DateTimeNullableFilter
   userId: StringFilter
@@ -6784,9 +6809,9 @@ input UserBeliefScalarWhereWithAggregatesInput {
   AND: [UserBeliefScalarWhereWithAggregatesInput!]
   NOT: [UserBeliefScalarWhereWithAggregatesInput!]
   OR: [UserBeliefScalarWhereWithAggregatesInput!]
+  archivedAt: DateTimeNullableWithAggregatesFilter
   beliefId: IntWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
-  deletedAt: DateTimeNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   updatedAt: DateTimeNullableWithAggregatesFilter
   userId: StringWithAggregatesFilter
@@ -6803,16 +6828,16 @@ input UserBeliefSumOrderByAggregateInput {
 }
 
 input UserBeliefUpdateInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   belief: BeliefUpdateOneRequiredWithoutUserBeliefInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutUserBeliefsInput
 }
 
 input UserBeliefUpdateManyMutationInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
@@ -6865,16 +6890,16 @@ input UserBeliefUpdateWithWhereUniqueWithoutUserInput {
 }
 
 input UserBeliefUpdateWithoutBeliefInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutUserBeliefsInput
 }
 
 input UserBeliefUpdateWithoutUserInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   belief: BeliefUpdateOneRequiredWithoutUserBeliefInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
@@ -6899,10 +6924,10 @@ input UserBeliefWhereInput {
   AND: [UserBeliefWhereInput!]
   NOT: [UserBeliefWhereInput!]
   OR: [UserBeliefWhereInput!]
+  archivedAt: DateTimeNullableFilter
   belief: BeliefRelationFilter
   beliefId: IntFilter
   createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
   id: IntFilter
   updatedAt: DateTimeNullableFilter
   user: UserRelationFilter
@@ -7888,8 +7913,8 @@ input UserUpsertWithoutUserValuesInput {
 }
 
 type UserValue {
+  archivedAt: DateTime
   createdAt: DateTime!
-  deletedAt: DateTime
   id: Int!
   updatedAt: DateTime
   user: User!
@@ -7910,8 +7935,8 @@ input UserValueAvgOrderByAggregateInput {
 
 type UserValueCountAggregate {
   _all: Int!
+  archivedAt: Int!
   createdAt: Int!
-  deletedAt: Int!
   id: Int!
   updatedAt: Int!
   userId: Int!
@@ -7919,8 +7944,8 @@ type UserValueCountAggregate {
 }
 
 input UserValueCountOrderByAggregateInput {
+  archivedAt: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
@@ -7928,16 +7953,16 @@ input UserValueCountOrderByAggregateInput {
 }
 
 input UserValueCreateInput {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   updatedAt: DateTime
   user: UserCreateNestedOneWithoutUserValuesInput!
   value: ValueCreateNestedOneWithoutUserValuesInput!
 }
 
 input UserValueCreateManyInput {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   userId: String!
@@ -7945,8 +7970,8 @@ input UserValueCreateManyInput {
 }
 
 input UserValueCreateManyUserInput {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   valueId: Int!
@@ -7958,8 +7983,8 @@ input UserValueCreateManyUserInputEnvelope {
 }
 
 input UserValueCreateManyValueInput {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   userId: String!
@@ -7995,15 +8020,15 @@ input UserValueCreateOrConnectWithoutValueInput {
 }
 
 input UserValueCreateWithoutUserInput {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   updatedAt: DateTime
   value: ValueCreateNestedOneWithoutUserValuesInput!
 }
 
 input UserValueCreateWithoutValueInput {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   updatedAt: DateTime
   user: UserCreateNestedOneWithoutUserValuesInput!
 }
@@ -8014,8 +8039,8 @@ type UserValueGroupBy {
   _max: UserValueMaxAggregate
   _min: UserValueMinAggregate
   _sum: UserValueSumAggregate
+  archivedAt: DateTime
   createdAt: DateTime!
-  deletedAt: DateTime
   id: Int!
   updatedAt: DateTime
   userId: String!
@@ -8029,8 +8054,8 @@ input UserValueListRelationFilter {
 }
 
 type UserValueMaxAggregate {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   userId: String
@@ -8038,8 +8063,8 @@ type UserValueMaxAggregate {
 }
 
 input UserValueMaxOrderByAggregateInput {
+  archivedAt: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
@@ -8047,8 +8072,8 @@ input UserValueMaxOrderByAggregateInput {
 }
 
 type UserValueMinAggregate {
+  archivedAt: DateTime
   createdAt: DateTime
-  deletedAt: DateTime
   id: Int
   updatedAt: DateTime
   userId: String
@@ -8056,8 +8081,8 @@ type UserValueMinAggregate {
 }
 
 input UserValueMinOrderByAggregateInput {
+  archivedAt: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
@@ -8074,8 +8099,8 @@ input UserValueOrderByWithAggregationInput {
   _max: UserValueMaxOrderByAggregateInput
   _min: UserValueMinOrderByAggregateInput
   _sum: UserValueSumOrderByAggregateInput
+  archivedAt: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
@@ -8083,8 +8108,8 @@ input UserValueOrderByWithAggregationInput {
 }
 
 input UserValueOrderByWithRelationInput {
+  archivedAt: SortOrder
   createdAt: SortOrder
-  deletedAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
   user: UserOrderByWithRelationInput
@@ -8094,8 +8119,8 @@ input UserValueOrderByWithRelationInput {
 }
 
 enum UserValueScalarFieldEnum {
+  archivedAt
   createdAt
-  deletedAt
   id
   updatedAt
   userId
@@ -8106,8 +8131,8 @@ input UserValueScalarWhereInput {
   AND: [UserValueScalarWhereInput!]
   NOT: [UserValueScalarWhereInput!]
   OR: [UserValueScalarWhereInput!]
+  archivedAt: DateTimeNullableFilter
   createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
   id: IntFilter
   updatedAt: DateTimeNullableFilter
   userId: StringFilter
@@ -8118,8 +8143,8 @@ input UserValueScalarWhereWithAggregatesInput {
   AND: [UserValueScalarWhereWithAggregatesInput!]
   NOT: [UserValueScalarWhereWithAggregatesInput!]
   OR: [UserValueScalarWhereWithAggregatesInput!]
+  archivedAt: DateTimeNullableWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
-  deletedAt: DateTimeNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   updatedAt: DateTimeNullableWithAggregatesFilter
   userId: StringWithAggregatesFilter
@@ -8137,16 +8162,16 @@ input UserValueSumOrderByAggregateInput {
 }
 
 input UserValueUpdateInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutUserValuesInput
   value: ValueUpdateOneRequiredWithoutUserValuesInput
 }
 
 input UserValueUpdateManyMutationInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
 
@@ -8199,15 +8224,15 @@ input UserValueUpdateWithWhereUniqueWithoutValueInput {
 }
 
 input UserValueUpdateWithoutUserInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   value: ValueUpdateOneRequiredWithoutUserValuesInput
 }
 
 input UserValueUpdateWithoutValueInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  deletedAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutUserValuesInput
 }
@@ -8233,8 +8258,8 @@ input UserValueWhereInput {
   AND: [UserValueWhereInput!]
   NOT: [UserValueWhereInput!]
   OR: [UserValueWhereInput!]
+  archivedAt: DateTimeNullableFilter
   createdAt: DateTimeFilter
-  deletedAt: DateTimeNullableFilter
   id: IntFilter
   updatedAt: DateTimeNullableFilter
   user: UserRelationFilter

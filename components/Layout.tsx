@@ -12,14 +12,19 @@ const Layout: FC = ({ children }) => {
   const [appDrawerOpen, setAppDrawerOpen] = useState(false);
   return (
     <div
-      style={{ height: "100vh", position: "relative", display: "flex", flexDirection: "column" }}
+      style={{
+        height: "100vh",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
       <Header heightInPx={headerHeightInPx} />
       <div
         style={{
           display: "flex",
           position: "relative",
-          paddingBottom: `${footerHeightRem}rem`,
+          // paddingBottom: `${footerHeightRem}rem`,
           flexGrow: 1,
           overflow: "hidden",
         }}
@@ -27,7 +32,16 @@ const Layout: FC = ({ children }) => {
         {router.pathname.includes("/app/") && (
           <AppDrawer open={appDrawerOpen} setOpen={setAppDrawerOpen} />
         )}
-        <div style={{ flexGrow: 1, flexShrink: 1, overflowY: "scroll" }}>{children}</div>
+        <div
+          style={{
+            flexGrow: 1,
+            flexShrink: 1,
+            overflowY: "scroll",
+            borderBottom: "5px solid red",
+          }}
+        >
+          {children}
+        </div>
       </div>
       <Footer height={footerHeight} />
     </div>

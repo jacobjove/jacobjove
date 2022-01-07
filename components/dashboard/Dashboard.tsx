@@ -337,11 +337,12 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
           containerPadding={{ xl: [24, 12] }}
           margin={{ md: [18, 18], lg: [24, 24], xl: [24, 24] }}
           cols={{ xl: 24, lg: 18, md: 12, sm: 6, xs: 4, xxs: 2 }}
+          rowHeight={48}
           draggableHandle=".drag-anchor"
           onLayoutChange={(components) => {
             const layoutIsUnchanged = true;
             if (layoutIsUnchanged) {
-              console.log("onLayoutChange");
+              console.debug("onLayoutChange");
             } else {
               console.log("onLayoutChange", components);
             }

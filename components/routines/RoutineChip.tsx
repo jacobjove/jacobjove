@@ -1,10 +1,14 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import { Routine } from "@/graphql/schema";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { useSession } from "next-auth/react";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useDrag } from "react-dnd";
 
 interface RoutineChipProps {
@@ -13,6 +17,7 @@ interface RoutineChipProps {
 
 const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
   const { data: session } = useSession();
+  const [expanded, setExpanded] = useState(false);
   const [{ opacity }, dragRef] = useDrag(() => ({
     type: "routine",
     item: {
@@ -57,6 +62,13 @@ const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
           >
             {routine.name}
           </Typography>
+          <IconButton
+            onClick={() => {
+              setExpanded(!expanded);
+            }}
+          >
+            {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </IconButton>
         </div>
         <DragIndicatorIcon
           sx={{
@@ -68,7 +80,7 @@ const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
       {routine.durationInMinutes && (
         <Typography component={"small"}>{routine.durationInMinutes} min</Typography>
       )}
-      <div>
+      <Collapse in={expanded}>
         {routine.routineActions.length ? (
           routine.routineActions.map((routineAction) => (
             <Box
@@ -87,7 +99,7 @@ const RoutineChip: FC<RoutineChipProps> = ({ routine }) => {
         ) : (
           <span>No actions</span>
         )}
-      </div>
+      </Collapse>
     </Box>
   );
 };

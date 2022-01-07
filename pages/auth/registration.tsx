@@ -1,8 +1,12 @@
 import { handleLogout } from "@/auth";
 import SocialLogin, { Provider } from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
-import { Alert, Box, Button, Paper, Typography } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import { GetServerSideProps } from "next";
 import { getProviders, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
@@ -53,9 +57,9 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
           )}
           {(session?.user && (
             <Paper className="p-4 text-center">
-              <p className="lead">
+              <Typography variant="h5" component="p">
                 You are logged in as <strong>{session.user.email}</strong>.
-              </p>
+              </Typography>
               <br />
               <Button
                 variant="outlined"
