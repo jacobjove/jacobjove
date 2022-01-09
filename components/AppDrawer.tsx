@@ -1,13 +1,16 @@
 import AdjustIcon from "@mui/icons-material/Adjust";
 import BentoIcon from "@mui/icons-material/Bento";
+import BookIcon from "@mui/icons-material/Book";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import MailIcon from "@mui/icons-material/Mail";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import NotesIcon from "@mui/icons-material/Notes";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import PsychologyIcon from "@mui/icons-material/Psychology";
 import ScienceIcon from "@mui/icons-material/Science";
 import TodayIcon from "@mui/icons-material/Today";
 import Divider from "@mui/material/Divider";
@@ -130,20 +133,39 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
             <ListItemText primary={"Tasks"} />
           </ListItem>
         </Link>
-        <Link href="/app/routines" passHref>
-          <ListItem button component={"a"} title={"Routines"}>
-            <ListItemIcon>
-              <BentoIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Routines"} />
-          </ListItem>
-        </Link>
         <Link href="/app/notifications" passHref>
           <ListItem button component={"a"} title={"Notifications"}>
             <ListItemIcon>
               <NotificationsIcon />
             </ListItemIcon>
             <ListItemText primary={"Notifications"} />
+          </ListItem>
+        </Link>
+      </List>
+      <Divider />
+      <List>
+        <Link href="/app/psychology" passHref>
+          <ListItem button component={"a"} title={"Psychology"}>
+            <ListItemIcon>
+              <PsychologyIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Psychology"} />
+          </ListItem>
+        </Link>
+        <Link href="/app/nutrition" passHref>
+          <ListItem button component={"a"} title={"Nutrition"}>
+            <ListItemIcon>
+              <BentoIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Nutrition"} />
+          </ListItem>
+        </Link>
+        <Link href="/app/fitness" passHref>
+          <ListItem button component={"a"} title={"Fitness Center"}>
+            <ListItemIcon>
+              <FitnessCenterIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Fitness Center"} />
           </ListItem>
         </Link>
       </List>
@@ -157,6 +179,14 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
             <ListItemText primary={"Notebook"} />
           </ListItem>
         </Link>
+        <Link href="/app/booklist" passHref>
+          <ListItem button component={"a"} title={"Book List"}>
+            <ListItemIcon>
+              <BookIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Book List"} />
+          </ListItem>
+        </Link>
         <Link href="/app/experiments" passHref>
           <ListItem button component={"a"} title={"Experiments"}>
             <ListItemIcon>
@@ -165,6 +195,9 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
             <ListItemText primary={"Experiments"} />
           </ListItem>
         </Link>
+      </List>
+      <Divider />
+      <List>
         <Link href="/app/focus" passHref>
           <ListItem button component={"a"} title={"Focus"}>
             <ListItemIcon>

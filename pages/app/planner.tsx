@@ -33,6 +33,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
       userId: session?.user?.id,
+      date: dateISO,
     },
   });
   if (!session) {
@@ -57,6 +58,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                 data={{ calendarEvents, calendars }}
                 error={error}
                 collapseViewMenu={true}
+                includeDateSelector={false}
               />
             </CardContent>
           </Card>
@@ -70,12 +72,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           order={{ xs: 1, sm: 2 }}
           flexDirection="column"
           maxHeight={isMobile ? "35vh" : "auto"}
-          // sx={{
-          //   maxHeight: {
-          //     xs: "33vh",
-          //     sm: "auto",
-          //   },
-          // }}
         >
           <Grid item padding="1rem 0.25rem 0.1rem">
             <form>
@@ -166,6 +162,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       query: QUERY,
       variables: {
         userId: session.user.id,
+        date: new Date().toISOString(),
       },
     })
     .catch((e) => {

@@ -127,7 +127,11 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "calendar":
           return (
             <DashboardCard title={"Calendar"} editing={editing} loading={loading}>
-              <CalendarViewer data={{ calendarEvents, calendars }} loading={loading} />
+              <CalendarViewer
+                data={{ calendarEvents, calendars }}
+                loading={loading}
+                includeDateSelector
+              />
             </DashboardCard>
           );
         case "actions":

@@ -1,8 +1,8 @@
-import DateSelector from "@/components/calendar/DateSelector";
 import EventEditingDialog from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/DateContext";
+import DateSelector from "@/components/dates/DateSelector";
 import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -81,6 +81,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
     initialEventFormData,
     setInitialEventFormData,
     defaultCalendar,
+    includeDateSelector,
     hidden,
     data,
   } = props;
@@ -112,18 +113,20 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
   }, [currentTimeOffsetPx]);
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        borderBottom="1px solid rgba(224, 224, 224, 1)"
-      >
-        <DateSelector
-          date={selectedDate}
-          setDate={setSelectedDate}
-          onDateChange={setSelectedDate}
-        />
-      </Box>
+      {includeDateSelector && (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderBottom="1px solid rgba(224, 224, 224, 1)"
+        >
+          <DateSelector
+            date={selectedDate}
+            setDate={setSelectedDate}
+            onDateChange={setSelectedDate}
+          />
+        </Box>
+      )}
       <Box display="flex" position="relative" flex="0 0 auto">
         <div className="time-labels-column">
           <Box

@@ -19,7 +19,7 @@ interface CalendarPageProps {
 }
 
 const QUERY = gql`
-  query CalendarPage($userId: String!) {
+  query CalendarPage($userId: String!, $date: DateTime!) {
     ...CalendarViewer
   }
   ${calendarViewerFragment}
@@ -50,7 +50,7 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
         <Grid item xs={12} lg={9} maxHeight={"80vh"}>
           <Card sx={{ height: "100%" }}>
             <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
-              <CalendarViewer data={data} loading={loading} error={error} />
+              <CalendarViewer data={data} loading={loading} error={error} includeDateSelector />
             </Box>
           </Card>
         </Grid>

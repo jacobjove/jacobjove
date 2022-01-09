@@ -9,7 +9,7 @@ import { addDays, subDays } from "date-fns";
 import { FC } from "react";
 
 interface DateSelectorProps {
-  date: Date;
+  date: Date | null;
   setDate: (date: Date | null) => void;
   onDateChange: (date: Date) => void;
 }
@@ -18,7 +18,14 @@ const DateSelector: FC<DateSelectorProps> = styled((props: DateSelectorProps) =>
   const { date: currentDate, setDate, onDateChange } = props;
   return (
     <Box display="flex" alignItems="stretch" justifyContent={"space-evenly"}>
-      <IconButton onClick={() => onDateChange(subDays(currentDate, 1))}>
+      <IconButton
+        disabled={!currentDate}
+        onClick={() => {
+          if (currentDate) {
+            onDateChange(subDays(currentDate, 1));
+          }
+        }}
+      >
         <ChevronLeftIcon />
       </IconButton>
       <DesktopDatePicker
@@ -53,7 +60,14 @@ const DateSelector: FC<DateSelectorProps> = styled((props: DateSelectorProps) =>
           );
         }}
       />
-      <IconButton onClick={() => onDateChange(addDays(currentDate, 1))}>
+      <IconButton
+        disabled={!currentDate}
+        onClick={() => {
+          if (currentDate) {
+            onDateChange(addDays(currentDate, 1));
+          }
+        }}
+      >
         <ChevronRightIcon />
       </IconButton>
     </Box>

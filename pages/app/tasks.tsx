@@ -1,8 +1,10 @@
 import ActionsBox, { fragment as taskBoxFragment } from "@/components/actions/ActionsBox";
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
+import DateSelector from "@/components/dates/DateSelector";
 import Layout from "@/components/Layout";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -11,13 +13,14 @@ import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
+import { useState } from "react";
 
 interface PlannerPageProps {
   session: Session;
 }
 
 const QUERY = gql`
-  query TasksPage($userId: String!) {
+  query TasksPage($userId: String!, $date: DateTime!) {
     ...CalendarViewer
     ...ActionsBox
   }
@@ -27,15 +30,17 @@ const QUERY = gql`
 
 const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { data: session } = useSession();
-  const isMobile = useMediaQuery("(max-width: 600px)");
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
       userId: session?.user?.id,
+      date: selectedDate?.toISOString(),
     },
     // Setting this value to true makes the component rerender when "networkStatus" changes,
     // so we are able to know if it is fetching more data.
     // notifyOnNetworkStatusChange: true,
   });
+  const isMobile = useMediaQuery("(max-width: 600px)");
   if (!session) {
     return null;
   }
@@ -53,6 +58,20 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         nofollow
       />
       <Grid container spacing={2} justifyContent="center" height={"100%"} maxHeight={"100%"}>
+        <Grid item xs={12}>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderBottom="1px solid rgba(224, 224, 224, 1)"
+          >
+            <DateSelector
+              date={selectedDate}
+              setDate={setSelectedDate}
+              onDateChange={setSelectedDate}
+            />
+          </Box>
+        </Grid>
         <Grid
           item
           xs={12}
@@ -69,6 +88,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                 data={{ calendarEvents, calendars }}
                 error={error}
                 collapseViewMenu={true}
+                includeDateSelector={false}
               />
             </CardContent>
           </Card>
@@ -114,6 +134,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       query: QUERY,
       variables: {
         userId: session.user.id,
+        date: new Date().toISOString(),
       },
     })
     .catch((e) => {

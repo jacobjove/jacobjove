@@ -11,6 +11,7 @@ export interface CalendarProps {
   data: CalendarData;
   loading: boolean;
   error?: Error;
+  includeDateSelector: boolean;
 }
 
 interface EventFormData {

@@ -209,6 +209,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       query: QUERY,
       variables: {
         userId: session?.user?.id,
+        date: new Date().toISOString(),
       },
     })
     .then()
