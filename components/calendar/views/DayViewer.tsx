@@ -61,8 +61,10 @@ const Root = styled("div")(() => ({
     borderTop: "1px solid rgba(224, 224, 224, 1)",
   },
   "& .past": {
-    backgroundImage:
-      "linear-gradient(to right, rgba(224, 224, 224, 1), rgba(224, 224, 224, 0.9), rgba(224, 224, 224, 0.7), rgba(224, 224, 224, 0))",
+    background:
+      "repeating-linear-gradient(-55deg, rgba(224, 224, 224, 0.9), rgba(224, 224, 224, 0.9) 1px, transparent 1px, transparent 20px)",
+    // backgroundImage:
+    //   "linear-gradient(to right, rgba(224, 224, 224, 1), rgba(224, 224, 224, 0.9), rgba(224, 224, 224, 0.7), rgba(224, 224, 224, 0))",
     opacity: 0.5,
     "&.hovered": {
       backgroundColor: "rgba(224, 224, 224, 1)",

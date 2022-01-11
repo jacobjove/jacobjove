@@ -75,7 +75,15 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
               />
             </Box>
           </Grid>
-          <Grid item xs={12} md={8} order={{ xs: 2, sm: 1 }} height={"100%"} maxHeight={"100%"}>
+          <Grid
+            item
+            xs={12}
+            md={8}
+            order={{ xs: 2, sm: 1 }}
+            height={"100%"}
+            maxHeight={"100%"}
+            paddingBottom="0.5rem"
+          >
             <Card sx={{ height: "100%", maxHeight: "100%" }}>
               <CardContent sx={{ height: "100%", maxHeight: "100%" }}>
                 <CalendarViewer
@@ -98,7 +106,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             maxHeight={isMobile ? "35vh" : "auto"}
           >
             <Paper>
-              <ActionsBox data={{ actions, actionCompletions }} />
+              <ActionsBox data={{ actions }} />
             </Paper>
           </Grid>
         </Grid>

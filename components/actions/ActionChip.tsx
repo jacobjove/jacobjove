@@ -10,7 +10,6 @@ import RepeatIcon from "@mui/icons-material/Repeat";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { isSameDay, parseISO } from "date-fns";
@@ -27,16 +26,20 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
   const { action } = props;
   const { data: session } = useSession();
   const today = useContext(DateContext);
-  const actionCompletion = action.completions?.filter((actionCompletion) => {
-    return isSameDay(parseISO(actionCompletion.date), today);
-  })?.[0];
-  action.completions?.sort((a, b) => {
-    return parseISO(a.date) > parseISO(b.date) ? 1 : -1;
-  });
-  console.log("ActionChip", action.name, actionCompletion);
+  const completionsToday = action.completions
+    ?.filter((completion) => {
+      return isSameDay(parseISO(completion.date), today);
+    })
+    ?.sort((a, b) => {
+      return parseISO(a.date) > parseISO(b.date) ? 1 : -1;
+    });
+  const completion = completionsToday?.[0];
+  if (completionsToday?.length) {
+    console.log(">>>", action.name, completionsToday);
+  }
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [expanded, setExpanded] = useState(isMobile ? false : true);
-  const completed = Boolean(actionCompletion && !actionCompletion.archivedAt);
+  const completed = Boolean(completion && !completion.archivedAt);
   const schedule = action.schedules[0]; // TODO
   const [createActionCompletion, { loading: createActionCompletionLoading }] =
     useMutation(CREATE_ACTION_COMPLETION);
@@ -51,7 +54,7 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
       console.log("WARNING: ActionChip: toggleActionCompletion: loading");
     }
     const archivedAt = on ? undefined : new Date().toISOString();
-    if (on && !actionCompletion && session?.user.id) {
+    if (on && !completion && session?.user.id) {
       console.log("Trying to create action completion...", on, session?.user.id);
       const completionDate = new Date().toISOString();
       createActionCompletion({
@@ -78,23 +81,23 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
       }).catch((error) => {
         console.error(error);
       });
-    } else if (actionCompletion) {
-      console.log(on, actionCompletion, session?.user.id);
+    } else if (completion) {
+      console.log(on, completion, session?.user.id);
       updateActionCompletion({
         variables: {
-          where: { id: actionCompletion.id },
+          where: { id: completion.id },
           data: {
             // For now, we assume that re-checking an action as complete (after it was
             // previously checked but then unchecked) means undoing the uncheck;
             // i.e., we don't need to modify the completion date.
-            // date: actionCompletion.date,
+            // date: completion.date,
             archivedAt: { set: archivedAt },
           },
         },
         optimisticResponse: {
           __typename: "Mutation",
           updateActionCompletion: {
-            ...actionCompletion,
+            ...completion,
             __typename: "ActionCompletion",
             action: {
               ...action,
@@ -218,11 +221,3 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
 };
 
 export default ActionChip;
-
-const StyledAnchor = styled("a")(() => ({
-  textDecoration: "none",
-  color: "inherit",
-  "&:hover": {
-    textDecoration: "none",
-  },
-}));

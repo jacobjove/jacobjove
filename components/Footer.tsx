@@ -8,18 +8,28 @@ interface FooterProps {
   height: string;
 }
 
-const Footer: FC<FooterProps> = styled((props: FooterProps) => {
+const StyledFooter = styled("footer", {
+  shouldForwardProp: (prop) => prop !== "height",
+})<FooterProps>`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: ${(props) => props.height};
+  margin-bottom: calc(${(props) => `-${props.height}`} - 0.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid lightgray;
+`;
+
+const Footer: FC<FooterProps> = (props: FooterProps) => {
   return (
-    <footer style={{ height: props.height, marginBottom: `-${props.height}` }}>
+    <StyledFooter height={props.height}>
       <Typography variant="body2" color="textSecondary" align="center">
         {`© ${new Date().getFullYear()} ${copyrightOwner}. All rights reserved.`}
       </Typography>
-    </footer>
+    </StyledFooter>
   );
-})(() => ({
-  position: "absolute",
-  bottom: 0,
-  width: "100%",
-}));
+};
 
 export default Footer;

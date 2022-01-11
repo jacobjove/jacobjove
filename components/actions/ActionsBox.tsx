@@ -37,7 +37,7 @@ const ActionsBox: FC<ActionsBoxProps> = (props: ActionsBoxProps) => {
   const { actions: allActions } = data;
   const today = useContext(DateContext);
   const [completeActions, incompleteActions] = partition(allActions, (action) => {
-    console.log("ActionsBox", action.name, action.completions);
+    // console.log("ActionsBox", action.name, action.completions);
     return !!action.completions?.filter((actionCompletion: ActionCompletion) => {
       return isSameDay(parseISO(actionCompletion.date), today) && !actionCompletion.archivedAt;
     }).length;

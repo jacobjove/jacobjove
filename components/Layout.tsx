@@ -7,7 +7,7 @@ import { FC, useState } from "react";
 const Layout: FC = ({ children }) => {
   const router = useRouter();
   const headerHeightInPx = 60;
-  const footerHeightRem = 2;
+  const footerHeightRem = 3;
   const footerHeight = `${footerHeightRem}rem`;
   const [appDrawerOpen, setAppDrawerOpen] = useState(false);
   return (
@@ -24,7 +24,7 @@ const Layout: FC = ({ children }) => {
         style={{
           display: "flex",
           position: "relative",
-          // paddingBottom: `${footerHeightRem}rem`,
+          paddingBottom: `0.5rem`,
           flexGrow: 1,
           overflow: "hidden",
         }}
@@ -37,7 +37,6 @@ const Layout: FC = ({ children }) => {
             flexGrow: 1,
             flexShrink: 1,
             overflowY: "scroll",
-            borderBottom: "5px solid red",
           }}
         >
           {children}
