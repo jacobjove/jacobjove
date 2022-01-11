@@ -1,12 +1,12 @@
-import React, { FC } from "react";
+import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
-import { useQuery, gql } from "@apollo/client";
 import Typography from "@mui/material/Typography";
+import { DataGrid } from "@mui/x-data-grid";
+import React, { FC } from "react";
 
 const QUERY = gql`
   query Actions {
-    actions {
+    actionTemplates {
       id
       name
       description
@@ -47,7 +47,7 @@ const ActionAdmin: FC = () => {
     <Box display="flex" height="100%" mx={2}>
       <Box flexGrow={1}>
         <DataGrid
-          rows={data.actions}
+          rows={data.actionTemplates}
           columns={columns}
           pageSize={20}
           rowsPerPageOptions={[20]}

@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import { Action, UserAction, UserActionSchedule } from "@/graphql/schema";
+import { Action } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Grid } from "@mui/material";
@@ -174,8 +174,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
               end
             }
           }
-          userActionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
-            userAction {
+          actionSchedules (where: {userId: {equals: "${session.user.id}"}}) {
+            action {
               action {
                 name
                 slug
@@ -200,14 +200,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       `,
     })
     .then((result) => {
-      const userActionSchedules: (UserActionSchedule & {
-        userAction: UserAction & {
-          action: Action;
-        };
-      })[] = result.data.userActionSchedules;
-      const actions = userActionSchedules.map(
-        (userActionSchedule) => userActionSchedule.userAction.action
-      );
+      const actions: Action[] = result.data.actions;
       props.columns = actions?.map((action) => action.name) || [];
       const dates: Date[] = getDatesBetweenDates(ototoi, itsukago);
       for (const date of dates) {

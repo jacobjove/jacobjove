@@ -1,4 +1,4 @@
-import { calendarEventFragment, calendarFragment, userActionFragment } from "@/graphql/fragments";
+import { actionFragment, calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
 
 export const GET_CALENDARS = gql`
@@ -20,10 +20,10 @@ export const GET_CALENDAR_EVENTS = gql`
 `;
 
 export const GET_USER_ACTIONS = gql`
-  query GetUserActions($userId: String!) {
-    userActions(where: { userId: { equals: $userId } }) {
-      ...UserActionFragment
+  query GetActions($userId: String!) {
+    actions(where: { userId: { equals: $userId } }) {
+      ...ActionFragment
     }
   }
-  ${userActionFragment}
+  ${actionFragment}
 `;

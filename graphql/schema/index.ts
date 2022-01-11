@@ -4,18 +4,17 @@ import * as generatedSchemaExports from "@/prisma/generated";
 import {
   Action as _Action,
   ActionCompletion as _ActionCompletion,
+  ActionSchedule as _ActionSchedule,
   ActionScheduleTemplate as _ActionScheduleTemplate,
+  ActionTemplate as _ActionTemplate,
   ActionTheme as _ActionTheme,
   Belief as _Belief,
   Calendar as _Calendar,
   CalendarEvent as _CalendarEvent,
   Identity as _Identity,
-  Routine as _Routine,
   RoutineAction as _RoutineAction,
   ScheduleTemplate as _ScheduleTemplate,
   User as _User,
-  UserAction as _UserAction,
-  UserActionSchedule as _UserActionSchedule,
   UserBelief as _UserBelief,
   UserIdentity as _UserIdentity,
   UserValue as _UserValue,
@@ -46,21 +45,23 @@ type FromPrismaWithOmission<T, K extends keyof T> = Pick<
   Exclude<keyof FromPrisma<T>, K>
 >;
 
-export type Action = FromPrisma<_Action>;
-export type UserAction = FromPrismaWithOmission<_UserAction, "action"> & {
-  action: Action;
-  schedules: UserActionSchedule[];
+export type ActionTemplate = FromPrisma<_ActionTemplate>;
+export type Action = FromPrismaWithOmission<_Action, "template" | "completions"> & {
+  template: ActionTemplate;
+  schedules: ActionSchedule[];
   themes: ActionTheme[];
+  completions: ActionCompletion[] | undefined;
+  routineActions: RoutineAction[];
 };
 export type ActionCompletion = FromPrismaWithOmission<
   _ActionCompletion,
-  "userId" | "date" | "archivedAt" | "action"
+  "date" | "archivedAt" | "action"
 > & {
   date: string;
-  archivedAt?: string;
+  archivedAt: string | null;
   action: Action;
 };
-export type UserActionSchedule = FromPrismaWithOmission<_UserActionSchedule, "archivedAt"> & {
+export type ActionSchedule = FromPrismaWithOmission<_ActionSchedule, "archivedAt"> & {
   archivedAt?: string;
 };
 export type ActionScheduleTemplate = FromPrisma<_ActionScheduleTemplate>;
@@ -68,9 +69,6 @@ export type ScheduleTemplate = FromPrisma<_ScheduleTemplate>;
 export type Identity = FromPrisma<_Identity>;
 export type Value = FromPrisma<_Value>;
 export type Belief = FromPrisma<_Belief>;
-export type Routine = FromPrismaWithOmission<_Routine, "routineActions"> & {
-  routineActions: RoutineAction[];
-};
 export type RoutineAction = FromPrismaWithOmission<_RoutineAction, "action"> & { action: Action };
 export type UserBelief = FromPrismaWithOmission<_UserBelief, "belief"> & { belief: Belief };
 export type UserIdentity = FromPrismaWithOmission<_UserIdentity, "identity"> & {

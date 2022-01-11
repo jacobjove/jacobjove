@@ -1,5 +1,5 @@
-import { userActionFragment } from "@/graphql/fragments";
-import { ActionTheme, UserAction } from "@/graphql/schema";
+import { actionFragment } from "@/graphql/fragments";
+import { Action, ActionTheme } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import TextField from "@mui/material/TextField";
 import { isPast, parseISO } from "date-fns";
@@ -7,23 +7,23 @@ import { FC } from "react";
 
 export const fragment = gql`
   fragment TopicsBox on Query {
-    userActions(where: { userId: { equals: $userId } }) {
-      ...UserActionFragment
+    actions(where: { userId: { equals: $userId } }) {
+      ...ActionFragment
     }
   }
-  ${userActionFragment}
+  ${actionFragment}
 `;
 
 interface TopicsBoxProps {
   data: {
-    userActions: UserAction[];
+    actions: Action[];
   };
 }
 
 const TopicsBox: FC<TopicsBoxProps> = (props: TopicsBoxProps) => {
   const { data } = props;
-  const { userActions } = data;
-  const actionsWithThemes = userActions.filter((action: UserAction) => {
+  const { actions } = data;
+  const actionsWithThemes = actions.filter((action: Action) => {
     return action.themes.filter((theme: ActionTheme) => {
       if (theme.end && isPast(parseISO(theme.end))) {
         return false;
@@ -33,7 +33,7 @@ const TopicsBox: FC<TopicsBoxProps> = (props: TopicsBoxProps) => {
   });
   return (
     <div>
-      {actionsWithThemes.map((action: UserAction) => (
+      {actionsWithThemes.map((action: Action) => (
         <TextField
           key={action.id}
           value=""

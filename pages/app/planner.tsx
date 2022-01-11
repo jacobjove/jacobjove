@@ -1,6 +1,7 @@
 import ActionsBox from "@/components/actions/ActionsBox";
 import CalendarViewer from "@/components/calendar";
 import { fragment as dashboardFragment } from "@/components/dashboard/Dashboard";
+import DateContext from "@/components/DateContext";
 import Layout from "@/components/Layout";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
@@ -13,9 +14,9 @@ import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
+import { useContext } from "react";
 
 interface PlannerPageProps {
-  dateISO: string;
   session: Session;
 }
 
@@ -27,19 +28,19 @@ const QUERY = gql`
 `;
 
 const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
-  const { dateISO } = props;
   const { data: session } = useSession();
+  const date = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
       userId: session?.user?.id,
-      date: dateISO,
+      date: date.toISOString(),
     },
   });
   if (!session) {
     return null;
   }
-  const { calendarEvents, calendars, userActions, routines, actionCompletions } = data;
+  const { calendarEvents, calendars, actions } = data;
   return (
     <Layout>
       <NextSeo
@@ -89,7 +90,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             </form>
           </Grid>
           <Grid item padding="0.25rem">
-            <ActionsBox data={{ userActions, routines, actionCompletions }} />
+            <ActionsBox data={{ actions }} />
           </Grid>
           {!isMobile && (
             <Grid item padding={"0 0.25rem 0.25rem"}>
@@ -152,11 +153,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const today = new Date();
-  const props: PlannerPageProps = {
-    dateISO: today.toISOString(),
-    session,
-  };
+  const props: PlannerPageProps = { session };
   await apolloClient
     .query({
       query: QUERY,
@@ -166,7 +163,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     })
     .catch((e) => {
-      console.error(e.networkError?.result?.errors);
+      if (e.networkError?.result?.errors) {
+        e.networkError.result.errors.forEach(
+          (error: {
+            message: string;
+            extensions: { code: string; exception: { stacktrace: string[] } };
+          }) => {
+            console.error(error.message);
+            console.log(error.extensions.exception.stacktrace.join("\n"), { depth: null });
+          }
+        );
+      } else {
+        console.error(e);
+      }
     });
   return addApolloState(apolloClient, { props });
 };

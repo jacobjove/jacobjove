@@ -51,12 +51,12 @@ async function main() {
     console.log(e);
   }
 
-  let actions = await prisma.action.findMany();
+  let actionTemplates = await prisma.actionTemplate.findMany();
   try {
-    await prisma.action.createMany({
+    await prisma.actionTemplate.createMany({
       data: actionsData,
     });
-    actions = await prisma.action.findMany();
+    actionTemplates = await prisma.actionTemplate.findMany();
   } catch (e) {
     console.log(e);
   }
@@ -96,17 +96,18 @@ async function main() {
     } catch (e) {
       console.log(e);
     }
-    actions.forEach(async (action) => {
+    actionTemplates.forEach(async (actionTemplate) => {
       try {
-        const userAction = await prisma.userAction.create({
+        const action = await prisma.action.create({
           data: {
             userId: user.id,
-            actionId: action.id,
+            templateId: actionTemplate.id,
+            name: actionTemplate.name,
           },
         });
-        await prisma.userActionSchedule.create({
+        await prisma.actionSchedule.create({
           data: {
-            userActionId: userAction.id,
+            actionId: action.id,
             frequency: "DAY",
             multiplier: 1,
           },
@@ -115,26 +116,27 @@ async function main() {
         console.log(e);
       }
     });
-    const userActions = await prisma.userAction.findMany({
+    const actions = await prisma.action.findMany({
       where: {
         userId: user.id,
       },
       include: {
-        action: true,
+        template: true,
       },
     });
     [...Array(2)].map(async (_, i) => {
       try {
-        const routine = await prisma.routine.create({
+        const routine = await prisma.action.create({
           data: {
             userId: user.id,
+            templateId: null,
             name: `Routine ${i}`,
-            description:
+            notes:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
           },
         });
         let routineDurationInMinutes = 0;
-        userActions.forEach(async (userAction, i) => {
+        actions.forEach(async (action, i) => {
           const doIt = true;
           if (doIt) {
             const actionDurationInMinutes = 10;
@@ -142,7 +144,7 @@ async function main() {
               await prisma.routineAction.create({
                 data: {
                   routineId: routine.id,
-                  actionId: userAction.action.id,
+                  actionId: action.id,
                   position: i,
                   durationInMinutes: actionDurationInMinutes,
                 },
@@ -152,12 +154,12 @@ async function main() {
               console.log(e);
             }
           }
-          await prisma.routine.update({
+          await prisma.action.update({
             where: {
               id: routine.id,
             },
             data: {
-              durationInMinutes: routineDurationInMinutes,
+              defaultDurationInMinutes: routineDurationInMinutes,
             },
           });
         });
@@ -172,11 +174,11 @@ async function main() {
       },
     });
     if (calendar) {
-      userActions.forEach(async (userAction) => {
+      actions.forEach(async (action) => {
         try {
-          await prisma.userActionSchedule.create({
+          await prisma.actionSchedule.create({
             data: {
-              userActionId: userAction.id,
+              actionId: action.id,
               frequency: "DAY",
               multiplier: 1,
             },
@@ -197,7 +199,7 @@ async function main() {
                   calendarId: calendar.id,
                   start: start.toISOString(),
                   end: end.toISOString(),
-                  title: `${userAction.action.name} event ${i}`,
+                  title: `${action.name} event ${i}`,
                 },
               });
             }

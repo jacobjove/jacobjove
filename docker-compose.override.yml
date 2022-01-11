@@ -1,15 +1,6 @@
 version: "3.8"
 
 services:
-  github_workflow_preprocessor:
-    command: sh .github/preprocess.sh
-    entrypoint: ''
-    image: ghcr.io/mithro/actions-includes/image:main
-    user: root
-    volumes:
-      - .:/github/workspace
-      - ./.git:/github/workspace/.git
-
   # graphql:
   #   build:
   #     context: .

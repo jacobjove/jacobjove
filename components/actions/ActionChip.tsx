@@ -1,31 +1,43 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
+import DateContext from "@/components/DateContext";
 import { CREATE_ACTION_COMPLETION, UPDATE_ACTION_COMPLETION } from "@/graphql/mutations";
-import { ActionCompletion, UserAction } from "@/graphql/schema";
+import { Action } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { isSameDay, parseISO } from "date-fns";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
-import React, { FC } from "react";
+// import Link from "next/link";
+import React, { FC, useContext, useState } from "react";
 import { useDrag } from "react-dnd";
 
 interface ActionChipProps {
-  userAction: UserAction;
-  actionCompletion?: ActionCompletion;
+  action: Action;
 }
 
 const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
-  const { userAction, actionCompletion } = props;
-  if (actionCompletion && actionCompletion.action.id !== userAction.action.id) {
-    throw new Error("ActionChip: actionCompletion.action.id !== userAction.action.id");
-  }
-  const completed = !actionCompletion?.date ? false : actionCompletion.archivedAt ? false : true;
-  const schedule = userAction.schedules[0]; // TODO
+  const { action } = props;
   const { data: session } = useSession();
+  const today = useContext(DateContext);
+  const actionCompletion = action.completions?.filter((actionCompletion) => {
+    return isSameDay(parseISO(actionCompletion.date), today);
+  })?.[0];
+  action.completions?.sort((a, b) => {
+    return parseISO(a.date) > parseISO(b.date) ? 1 : -1;
+  });
+  console.log("ActionChip", action.name, actionCompletion);
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const [expanded, setExpanded] = useState(isMobile ? false : true);
+  const completed = Boolean(actionCompletion && !actionCompletion.archivedAt);
+  const schedule = action.schedules[0]; // TODO
   const [createActionCompletion, { loading: createActionCompletionLoading }] =
     useMutation(CREATE_ACTION_COMPLETION);
   const [updateActionCompletion, { loading: updateActionCompletionLoading }] =
@@ -40,14 +52,13 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
     }
     const archivedAt = on ? undefined : new Date().toISOString();
     if (on && !actionCompletion && session?.user.id) {
-      console.log("Trying to create action completion...", on, actionCompletion, session?.user.id);
+      console.log("Trying to create action completion...", on, session?.user.id);
       const completionDate = new Date().toISOString();
       createActionCompletion({
         variables: {
           data: {
             date: completionDate,
-            action: { connect: { id: userAction.action.id } }, // hehe...
-            user: { connect: { id: session.user.id } },
+            action: { connect: { id: action.id } }, // hehe...
           },
         },
         optimisticResponse: {
@@ -56,14 +67,16 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
             __typename: "ActionCompletion",
             id: -1,
             date: completionDate,
-            actionId: userAction.action.id,
+            actionId: action.id,
             action: {
-              ...userAction.action,
+              ...action,
             },
-            // actionId: userAction.action.id,
-            archivedAt,
+            // actionId: action.template.id,
+            archivedAt: archivedAt ?? null,
           },
         },
+      }).catch((error) => {
+        console.error(error);
       });
     } else if (actionCompletion) {
       console.log(on, actionCompletion, session?.user.id);
@@ -83,7 +96,10 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
           updateActionCompletion: {
             ...actionCompletion,
             __typename: "ActionCompletion",
-            archivedAt,
+            action: {
+              ...action,
+            },
+            archivedAt: archivedAt ?? null,
           },
         },
       });
@@ -93,8 +109,8 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
     type: "action",
     item: {
       type: "action",
-      title: userAction.action.name,
-      scheduleId: schedule.id,
+      title: action.name,
+      scheduleId: schedule?.id ?? null,
       calendarId: session?.user?.settings?.defaultCalendarId,
     },
     collect: (monitor) => ({
@@ -117,36 +133,86 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
         borderRadius: "3px",
         border: "1px solid rgba(0, 0, 0, 0.05)",
         backgroundColor: "rgba(0, 0, 0, 0.08)",
-        display: "flex",
-        alignItems: "center",
       }}
     >
-      <CompletionCheckbox
-        checked={completed}
-        disabled={loading}
-        onClick={() => {
-          console.log("checkbox click -->", !completed);
-          toggleActionCompletion(!completed);
-        }}
-      />
-      <Typography fontSize="0.9rem">
-        <Link href={`/actions/${userAction.action.slug}`} passHref>
-          <StyledAnchor>{`${userAction.action.name}`}</StyledAnchor>
-        </Link>
-      </Typography>
-      <IconButton
-        title={`every ${schedule.frequency.toLowerCase()}`}
-        onClick={handleScheduleIconClick}
-        style={{ marginLeft: "auto" }}
-      >
-        <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
-      </IconButton>
-      <DragIndicatorIcon
-        sx={{
-          "&:hover": { cursor: "grab" },
-          color: "gray",
-        }}
-      />
+      <Box display="flex" justifyContent={"space-between"} alignItems="center">
+        <Box display="flex" alignItems="center">
+          <CompletionCheckbox
+            checked={completed}
+            disabled={loading}
+            onClick={() => {
+              console.log("checkbox click -->", !completed);
+              toggleActionCompletion(!completed);
+            }}
+          />
+          <Typography fontSize="0.9rem">
+            {`${action.name}`}
+            {/* <Link href={`/app/users/${session.user.name}`} passHref>
+              <StyledAnchor>{`${action.name}`}</StyledAnchor>
+            </Link> */}
+          </Typography>
+          {!!action.actions?.length && (
+            <IconButton
+              sx={{ marginLeft: "0.33rem" }}
+              onClick={() => {
+                setExpanded(!expanded);
+              }}
+            >
+              {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </IconButton>
+          )}
+        </Box>
+        <Box display="flex" alignItems="center">
+          {schedule && (
+            <IconButton
+              title={`every ${schedule.frequency.toLowerCase()}`}
+              onClick={handleScheduleIconClick}
+              style={{ marginLeft: "auto" }}
+            >
+              <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
+            </IconButton>
+          )}
+          <DragIndicatorIcon
+            sx={{
+              "&:hover": { cursor: "grab" },
+              color: "gray",
+            }}
+          />
+        </Box>
+      </Box>
+      {/* {action.defaultDurationInMinutes && (
+        <Typography component={"small"}>{action.defaultDurationInMinutes} min</Typography>
+      )} */}
+      <Collapse in={expanded}>
+        {!!action.actions?.length &&
+          action.actions.map((routineAction) => {
+            if (!routineAction.action) {
+              return null;
+            }
+            return (
+              <Box
+                key={routineAction.action.id}
+                bgcolor={"rgba(255, 255, 255, 0.5);"}
+                border={"1px solid rgba(255, 255, 255, 0.2);"}
+                borderRadius="3px"
+                padding="0.25rem 0.5rem"
+                margin="0.25rem"
+                display="flex"
+                alignItems="center"
+                justifyContent={"space-between"}
+              >
+                <Typography display={"block"} fontSize="0.8rem">
+                  {routineAction.action?.name}
+                </Typography>
+                {routineAction.durationInMinutes && (
+                  <Typography display={"block"} fontSize="0.8rem">
+                    {routineAction.durationInMinutes} minutes
+                  </Typography>
+                )}
+              </Box>
+            );
+          })}
+      </Collapse>
     </Box>
   );
 };

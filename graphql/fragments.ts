@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const actionFragment = gql`
-  fragment ActionFragment on Action {
+export const actionTemplateFragment = gql`
+  fragment ActionTemplateFragment on ActionTemplate {
     id
     name
     slug
@@ -16,16 +16,27 @@ export const actionThemeFragment = gql`
     start
     end
   }
-  ${actionFragment}
 `;
 
-export const userActionFragment = gql`
-  fragment UserActionFragment on UserAction {
+export const routineActionFragment = gql`
+  fragment RoutineActionFragment on RoutineAction {
     __typename
     id
+    position
+    durationInMinutes
     action {
-      ...ActionFragment
+      id
+      name
     }
+  }
+`;
+
+export const actionFragment = gql`
+  fragment ActionFragment on Action {
+    __typename
+    id
+    name
+    notes
     schedules {
       id
       frequency
@@ -34,9 +45,21 @@ export const userActionFragment = gql`
     themes {
       ...ActionThemeFragment
     }
+    template {
+      ...ActionTemplateFragment
+    }
+    actions {
+      ...RoutineActionFragment
+    }
+    completions {
+      id
+      date
+      archivedAt
+    }
   }
-  ${actionFragment}
+  ${actionTemplateFragment}
   ${actionThemeFragment}
+  ${routineActionFragment}
 `;
 
 export const actionCompletionFragment = gql`
@@ -98,31 +121,4 @@ export const userIdentityFragment = gql`
       slug
     }
   }
-`;
-
-export const routineActionFragment = gql`
-  fragment RoutineActionFragment on RoutineAction {
-    __typename
-    id
-    position
-    durationInMinutes
-    action {
-      id
-      name
-      slug
-    }
-  }
-`;
-
-export const routineFragment = gql`
-  fragment RoutineFragment on Routine {
-    __typename
-    id
-    name
-    description
-    routineActions {
-      ...RoutineActionFragment
-    }
-  }
-  ${routineActionFragment}
 `;

@@ -1,7 +1,7 @@
 import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Action, UserAction } from "@/graphql/schema";
+import { Action, ActionTemplate } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
@@ -12,16 +12,16 @@ import { NextSeo } from "next-seo";
 import React from "react";
 
 interface ActionsPageProps {
-  actions: Action[];
+  actionTemplates: ActionTemplate[];
   selectedActionIds: number[];
 }
 
 const ActionsPage: NextPage<ActionsPageProps> = ({
-  actions,
+  actionTemplates,
   selectedActionIds,
 }: ActionsPageProps) => {
-  const actionsByLetters: Record<string, typeof actions> = {};
-  actions.map((action) => {
+  const actionsByLetters: Record<string, typeof actionTemplates> = {};
+  actionTemplates.map((action) => {
     const firstLetter = action.name[0].toUpperCase();
     actionsByLetters[firstLetter] = actionsByLetters[firstLetter] || [];
     actionsByLetters[firstLetter].push(action);
@@ -57,19 +57,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
   const apolloClient = initializeApollo();
   const props: ActionsPageProps = {
-    actions: [],
+    actionTemplates: [],
     selectedActionIds: [],
   };
   if (session?.user?.id) {
     const { data } = await apolloClient.query({
       query: gql`
         query Actions {
-          actions {
+          actionTemplates {
             id
             name
             slug
           }
-          userActions (
+          actions (
             where: {
               userId: {
                 equals: "${session.user.id}"
@@ -81,10 +81,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
       `,
     });
-    props.actions = data.actions;
-    if (data?.userActions?.length) {
-      props.selectedActionIds = data.userActions.map((userAction: UserAction) =>
-        parseInt(`${userAction.actionId}`)
+    props.actionTemplates = data.actionTemplates;
+    if (data?.actions?.length) {
+      props.selectedActionIds = data.actions.map((action: Action) =>
+        parseInt(`${action.actionId}`)
       );
     }
   }

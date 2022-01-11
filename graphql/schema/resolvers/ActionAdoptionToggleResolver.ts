@@ -1,11 +1,11 @@
 import { getPrismaFromContext } from "@/prisma/generated/helpers";
-import { UserAction } from "@/prisma/generated/models/UserAction";
+import { Action } from "@/prisma/generated/models/Action";
 import { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql";
 
-@TypeGraphQL.Resolver((_of) => UserAction)
+@TypeGraphQL.Resolver((_of) => Action)
 export class ActionAdoptionToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => UserAction, {
+  @TypeGraphQL.Mutation((_returns) => Action, {
     nullable: false,
   })
   async toggleActionAdoption(
@@ -14,11 +14,11 @@ export class ActionAdoptionToggleResolver {
     @TypeGraphQL.Arg("userId") userId: string,
     @TypeGraphQL.Arg("actionId", (_type) => TypeGraphQL.Int) actionId: number,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
-  ): Promise<UserAction> {
+  ): Promise<Action> {
     const prisma = getPrismaFromContext(ctx);
-    const userActionExists = (await prisma.userAction.count({ where: { userId, actionId } })) > 0;
-    if (userActionExists) {
-      return await prisma.userAction.update({
+    const actionExists = (await prisma.action.count({ where: { userId, actionId } })) > 0;
+    if (actionExists) {
+      return await prisma.action.update({
         where: {
           userId_actionId: { userId, actionId },
         },
@@ -27,7 +27,7 @@ export class ActionAdoptionToggleResolver {
         },
       });
     } else {
-      return await prisma.userAction.create({
+      return await prisma.action.create({
         data: { userId: userId, actionId: actionId, archivedAt: archivedAt },
       });
     }

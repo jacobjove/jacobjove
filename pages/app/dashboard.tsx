@@ -212,9 +212,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         date: new Date().toISOString(),
       },
     })
-    .then()
-    .catch((error) => {
-      console.error(error.networkError?.result?.errors ?? error);
+    .catch((e) => {
+      if (e.networkError?.result?.errors) {
+        e.networkError.result.errors.forEach(
+          (error: {
+            message: string;
+            extensions: { code: string; exception: { stacktrace: string[] } };
+          }) => {
+            console.error(error.message);
+            console.log(error.extensions.exception.stacktrace.join("\n"), { depth: null });
+          }
+        );
+      } else {
+        console.error(e);
+      }
     });
   return addApolloState(apolloClient, { props });
 };

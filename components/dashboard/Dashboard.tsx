@@ -5,24 +5,13 @@ import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/
 import IdentityTable from "@/components/identities/IdentityTable";
 import ValuesTable from "@/components/values/ValuesTable";
 import {
-  actionCompletionFragment,
+  actionFragment,
   calendarEventFragment,
   calendarFragment,
-  routineFragment,
-  userActionFragment,
   userIdentityFragment,
   userValueFragment,
 } from "@/graphql/fragments";
-import {
-  ActionCompletion,
-  Calendar,
-  CalendarEvent,
-  Routine,
-  UserAction,
-  UserIdentity,
-  UserValue,
-  Value,
-} from "@/graphql/schema";
+import { Action, Calendar, CalendarEvent, UserIdentity, UserValue, Value } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import { Breakpoint } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
@@ -41,11 +30,8 @@ export const fragment = gql`
     calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
       ...CalendarEventFragment
     }
-    userActions(where: { userId: { equals: $userId } }) {
-      ...UserActionFragment
-    }
-    actionCompletions(where: { userId: { equals: $userId } }) {
-      ...ActionCompletionFragment
+    actions(where: { userId: { equals: $userId } }) {
+      ...ActionFragment
     }
     userValues(where: { userId: { equals: $userId } }) {
       ...UserValueFragment
@@ -53,17 +39,12 @@ export const fragment = gql`
     userIdentities(where: { userId: { equals: $userId } }) {
       ...UserIdentityFragment
     }
-    routines(where: { userId: { equals: $userId } }) {
-      ...RoutineFragment
-    }
   }
   ${calendarFragment}
   ${calendarEventFragment}
-  ${userActionFragment}
-  ${actionCompletionFragment}
+  ${actionFragment}
   ${userValueFragment}
   ${userIdentityFragment}
-  ${routineFragment}
 `;
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -71,9 +52,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 export interface DashboardData {
   calendars: Calendar[];
   calendarEvents: CalendarEvent[];
-  routines: Routine[];
-  userActions: UserAction[];
-  actionCompletions: ActionCompletion[];
+  actions: Action[];
   userIdentities: UserIdentity[];
   userValues: (UserValue & {
     value: Value;
@@ -113,15 +92,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   ];
   const children = useMemo(() => {
     if (!data || !session) return [];
-    const {
-      calendarEvents,
-      calendars,
-      routines,
-      userActions,
-      actionCompletions,
-      userIdentities,
-      userValues,
-    } = data;
+    const { calendarEvents, calendars, actions, userIdentities, userValues } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
       switch (key) {
         case "calendar":
@@ -137,7 +108,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "actions":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <ActionsBox data={{ userActions, routines, actionCompletions }} />
+              <ActionsBox data={{ actions }} />
             </DashboardCard>
           );
         case "identities":
@@ -174,7 +145,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     //   ),
     //   actions: (
     //     <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-    //       {(!!userActions.length && <ActionsBox userActions={userActions} />) || (
+    //       {(!!actions.length && <ActionsBox actions={actions} />) || (
     //         <Typography component="p" textAlign="center">
     //           No actions yet.
     //         </Typography>

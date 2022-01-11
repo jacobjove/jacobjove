@@ -1,3 +1,4 @@
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import BentoIcon from "@mui/icons-material/Bento";
 import BookIcon from "@mui/icons-material/Book";
@@ -166,6 +167,14 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
               <FitnessCenterIcon />
             </ListItemIcon>
             <ListItemText primary={"Fitness Center"} />
+          </ListItem>
+        </Link>
+        <Link href="app/finances" passHref>
+          <ListItem button component={"a"} title={"Finances"}>
+            <ListItemIcon>
+              <AccountBalanceIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Finances"} />
           </ListItem>
         </Link>
       </List>

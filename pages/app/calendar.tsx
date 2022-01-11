@@ -80,7 +80,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     })
     .catch((e) => {
-      console.error(e.networkError?.result?.errors);
+      if (e.networkError?.result?.errors) {
+        e.networkError.result.errors.forEach(
+          (error: {
+            message: string;
+            extensions: { code: string; exception: { stacktrace: string[] } };
+          }) => {
+            console.error(error.message);
+            console.log(error.extensions.exception.stacktrace.join("\n"), { depth: null });
+          }
+        );
+      } else {
+        console.error(e);
+      }
     });
   return addApolloState(apolloClient, { props });
 };

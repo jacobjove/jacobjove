@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let action: Action | null = null;
   let notFound = false;
   const { slug } = params || {};
-  await prisma.action
+  await prisma.actionTemplate
     .findUnique({ where: { slug: `${slug}` } })
     .then((result) => {
       action = result;

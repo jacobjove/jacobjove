@@ -1,7 +1,7 @@
 import ActionChip from "@/components/actions/ActionChip";
-import RoutineChip from "@/components/routines/RoutineChip";
-import { actionCompletionFragment, routineFragment, userActionFragment } from "@/graphql/fragments";
-import { ActionCompletion, Routine, UserAction } from "@/graphql/schema";
+import DateContext from "@/components/DateContext";
+import { actionFragment } from "@/graphql/fragments";
+import { Action, ActionCompletion } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
@@ -13,63 +13,55 @@ import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
 import { isSameDay, parseISO } from "date-fns";
+import partition from "lodash/partition";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 
 export const fragment = gql`
   fragment ActionsBox on Query {
-    routines(where: { userId: { equals: $userId } }) {
-      ...RoutineFragment
-    }
-    userActions(where: { userId: { equals: $userId } }) {
-      ...UserActionFragment
-    }
-    actionCompletions(where: { userId: { equals: $userId } }) {
-      ...ActionCompletionFragment
+    actions(where: { userId: { equals: $userId } }) {
+      ...ActionFragment
     }
   }
-  ${userActionFragment}
-  ${routineFragment}
-  ${actionCompletionFragment}
+  ${actionFragment}
 `;
 
 interface ActionsBoxProps {
   data: {
-    routines: Routine[];
-    userActions: UserAction[];
-    actionCompletions: ActionCompletion[];
+    actions: Action[];
   };
 }
 
 const ActionsBox: FC<ActionsBoxProps> = (props: ActionsBoxProps) => {
   const { data } = props;
-  const { routines, userActions, actionCompletions } = data;
-  const today = new Date();
-  const filteredActionCompletions = actionCompletions.filter(
-    (actionCompletion: ActionCompletion) => {
-      return isSameDay(parseISO(actionCompletion.date), today);
-    }
-  );
+  const { actions: allActions } = data;
+  const today = useContext(DateContext);
+  const [completeActions, incompleteActions] = partition(allActions, (action) => {
+    console.log("ActionsBox", action.name, action.completions);
+    return !!action.completions?.filter((actionCompletion: ActionCompletion) => {
+      return isSameDay(parseISO(actionCompletion.date), today) && !actionCompletion.archivedAt;
+    }).length;
+  });
+  // const [routines, actions] = partition(incompleteActions, (_) => Boolean(_.actions?.length));
   let content;
-  if (userActions.length) {
+  if (allActions.length) {
     content = (
       <div>
         <div>
-          {routines.map((routine: Routine) => (
-            <RoutineChip key={routine.id} routine={routine} />
-          ))}
+          {incompleteActions ? (
+            incompleteActions.map((action) => <ActionChip key={action.id} action={action} />)
+          ) : (
+            <Typography>All done!</Typography>
+          )}
         </div>
-        <div>
-          {userActions.map((userAction: UserAction) => (
-            <ActionChip
-              key={userAction.action.name}
-              userAction={userAction}
-              actionCompletion={filteredActionCompletions.find((actionCompletion) => {
-                return actionCompletion.action.id === userAction.action.id;
-              })}
-            />
-          ))}
-        </div>
+        {!!completeActions.length && (
+          <div>
+            <p>Completed:</p>
+            {completeActions.map((action) => (
+              <ActionChip key={action.id} action={action} />
+            ))}
+          </div>
+        )}
       </div>
     );
   } else {

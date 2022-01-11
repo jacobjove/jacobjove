@@ -1,4 +1,4 @@
-import ActionsBox, { fragment as taskBoxFragment } from "@/components/actions/ActionsBox";
+import ActionsBox, { fragment as actionsBoxFragment } from "@/components/actions/ActionsBox";
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
 import DateSelector from "@/components/dates/DateSelector";
 import Layout from "@/components/Layout";
@@ -7,7 +7,9 @@ import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
@@ -25,7 +27,7 @@ const QUERY = gql`
     ...ActionsBox
   }
   ${calendarViewerFragment}
-  ${taskBoxFragment}
+  ${actionsBoxFragment}
 `;
 
 const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
@@ -47,7 +49,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!data) {
     return null;
   }
-  const { calendarEvents, calendars, userActions, actionCompletions, routines } = data;
+  const { calendarEvents, calendars, actions, actionCompletions, routines } = data;
   return (
     <Layout>
       <NextSeo
@@ -57,59 +59,50 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         noindex
         nofollow
       />
-      <Grid container spacing={2} justifyContent="center" height={"100%"} maxHeight={"100%"}>
-        <Grid item xs={12}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            borderBottom="1px solid rgba(224, 224, 224, 1)"
-          >
-            <DateSelector
-              date={selectedDate}
-              setDate={setSelectedDate}
-              onDateChange={setSelectedDate}
-            />
-          </Box>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={8}
-          lg={6}
-          order={{ xs: 2, sm: 1 }}
-          height={"100%"}
-          maxHeight={"100%"}
-        >
-          <Card sx={{ height: "100%", maxHeight: "100%" }}>
-            <CardContent sx={{ height: "100%", maxHeight: "100%" }}>
-              <CalendarViewer
-                loading={loading}
-                data={{ calendarEvents, calendars }}
-                error={error}
-                collapseViewMenu={true}
-                includeDateSelector={false}
+      <Container maxWidth="md">
+        <Grid container spacing={2} justifyContent="center" height={"100%"} maxHeight={"100%"}>
+          <Grid item xs={12} marginTop="0.5rem">
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              borderBottom="1px solid rgba(224, 224, 224, 1)"
+            >
+              <DateSelector
+                date={selectedDate}
+                setDate={setSelectedDate}
+                onDateChange={setSelectedDate}
               />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid
-          item
-          container
-          xs={12}
-          md={4}
-          lg={3}
-          order={{ xs: 1, sm: 2 }}
-          flexDirection="column"
-          maxHeight={isMobile ? "35vh" : "auto"}
-        >
-          <Grid item padding="0.25rem">
-            <div>
-              <ActionsBox data={{ userActions, routines, actionCompletions }} />
-            </div>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={8} order={{ xs: 2, sm: 1 }} height={"100%"} maxHeight={"100%"}>
+            <Card sx={{ height: "100%", maxHeight: "100%" }}>
+              <CardContent sx={{ height: "100%", maxHeight: "100%" }}>
+                <CalendarViewer
+                  loading={loading}
+                  data={{ calendarEvents, calendars }}
+                  error={error}
+                  collapseViewMenu={true}
+                  includeDateSelector={false}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid
+            item
+            container
+            xs={12}
+            md={4}
+            order={{ xs: 1, sm: 2 }}
+            flexDirection="column"
+            maxHeight={isMobile ? "35vh" : "auto"}
+          >
+            <Paper>
+              <ActionsBox data={{ actions, actionCompletions }} />
+            </Paper>
           </Grid>
         </Grid>
-      </Grid>
+      </Container>
     </Layout>
   );
 };
@@ -138,7 +131,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     })
     .catch((e) => {
-      console.error(e.networkError?.result?.errors);
+      if (e.networkError?.result?.errors) {
+        e.networkError.result.errors.forEach(
+          (error: {
+            message: string;
+            extensions: { code: string; exception: { stacktrace: string[] } };
+          }) => {
+            console.error(error.message);
+            console.log(error.extensions.exception.stacktrace.join("\n"), { depth: null });
+          }
+        );
+      } else {
+        console.error(e);
+      }
     });
   return addApolloState(apolloClient, { props });
 };
