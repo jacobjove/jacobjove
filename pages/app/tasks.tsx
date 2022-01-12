@@ -47,6 +47,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
     return null;
   }
   const { calendarEvents, calendars, actions } = data;
+  const dateSelectorBoxHeight = "2.5rem";
   return (
     <Layout>
       <NextSeo
@@ -56,32 +57,29 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         noindex
         nofollow
       />
-      <Container maxWidth="md">
-        <Grid container spacing={2} justifyContent="center" height={"100%"} maxHeight={"100%"}>
-          <Grid item xs={12} marginTop="0.5rem">
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              borderBottom="1px solid rgba(224, 224, 224, 1)"
-            >
-              <DateSelector
-                date={selectedDate}
-                setDate={setSelectedDate}
-                onDateChange={setSelectedDate}
-              />
-            </Box>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={8}
-            order={{ xs: 2, sm: 1 }}
-            height={"100%"}
-            maxHeight={"100%"}
-            paddingBottom="0.5rem"
-          >
-            <Card sx={{ height: "100%", maxHeight: "100%" }}>
+      <Container maxWidth="md" sx={{ height: "100%", maxHeight: "100%" }}>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderBottom="1px solid rgba(224, 224, 224, 1)"
+          height={dateSelectorBoxHeight}
+        >
+          <DateSelector
+            date={selectedDate}
+            setDate={setSelectedDate}
+            onDateChange={setSelectedDate}
+          />
+        </Box>
+        <Grid
+          container
+          justifyContent="center"
+          height={`calc(100% - ${dateSelectorBoxHeight})`}
+          maxHeight={`calc(100% - ${dateSelectorBoxHeight})`}
+          padding={"0.25rem"}
+        >
+          <Grid item xs={12} md={8} order={{ xs: 2, sm: 1 }} height={"100%"} maxHeight={"100%"}>
+            <Card sx={{ height: "100%", maxHeight: "100%", marginRight: "0.75rem" }}>
               <CardContent sx={{ height: "100%", maxHeight: "100%" }}>
                 <CalendarViewer
                   loading={loading}

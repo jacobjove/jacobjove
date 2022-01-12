@@ -1,4 +1,3 @@
-import EventBox from "@/components/calendar/EventBox";
 import { calendarEventFragment } from "@/graphql/fragments";
 import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
@@ -48,11 +47,8 @@ const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 // TODO: https://www.apollographql.com/blog/apollo-client/caching/when-to-use-refetch-queries/
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
-  const { date, view, events, defaultCalendarId, onClick, past } = props;
+  const { date, view, defaultCalendarId, onClick, past } = props;
   const { data: session } = useSession();
-  const filteredEvents = events?.filter((event) => {
-    return !event.archivedAt;
-  });
   const [hovered, setHovered] = useState(false);
   const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
     updateCalendarEvent: CalendarEvent;
@@ -84,7 +80,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
     },
   });
   const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
-  const numEvents = filteredEvents?.length ?? 0;
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
       accept: ["event", "action", "routine", "task"],
@@ -136,9 +131,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
               calendarId = session.user.settings.defaultCalendarId;
             } catch (err) {
               console.error(err);
-              if (events?.length) {
-                calendarId = events[0].calendarId;
-              }
             }
           }
           calendarEventData = {
@@ -206,35 +198,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
       onMouseOut={() => {
         setHovered(false);
       }}
-    >
-      {!!filteredEvents?.length &&
-        filteredEvents.map((event, index) => {
-          if (!event.start || !event.end) {
-            console.error("Event missing start or end time: ", event);
-            return null;
-          }
-          const eventStart = parseISO(event.start);
-          const eventEnd = parseISO(event.end);
-          const eventDuration = differenceInMinutes(eventEnd, eventStart);
-          // Calculate styles.
-          const widthPercent = 100 / numEvents - 2;
-          // const width = `100%`;
-          const width = `${widthPercent}%`;
-          const topOffset = `${(differenceInMinutes(eventStart, date) / 30) * 100}%`;
-          const height = `${(eventDuration / 30) * 100}%`;
-          return (
-            <EventBox
-              key={index}
-              left={`${widthPercent * index + index}%`}
-              top={topOffset}
-              height={height}
-              zIndex={index}
-              width={width}
-              event={event}
-            />
-          );
-        })}
-    </Root>
+    />
   );
 };
 

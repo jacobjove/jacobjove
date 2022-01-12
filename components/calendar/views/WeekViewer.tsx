@@ -3,7 +3,6 @@ import {
   BORDER_DEF,
   HALF_HOUR_HEIGHT,
   HOUR_HEIGHT,
-  NUM_HOURS,
   START_HOUR,
   TIME_LABEL_COLUMN_WIDTH,
 } from "@/components/calendar/constants";
@@ -36,7 +35,7 @@ const Root = styled("div")(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "right",
-    paddingRight: "0.5rem",
+    paddingRight: "0.25rem",
     fontFamily: "Roboto, Arial, sans-serif",
     fontWeight: 400,
     fontSize: "0.7rem",
@@ -161,7 +160,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                 <Box height={`${HALF_HOUR_HEIGHT}px`} display="flex">
                   <Box flexGrow={1} />
                 </Box>
-                {[...Array(NUM_HOURS)].map((_, i) => {
+                {[...Array(24)].map((_, i) => {
                   return (
                     <Fragment key={i}>
                       {[...Array(2)].map((_, j) => {

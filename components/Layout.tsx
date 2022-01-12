@@ -2,9 +2,14 @@ import AppDrawer from "@/components/AppDrawer";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 
-const Layout: FC = ({ children }) => {
+interface LayoutProps {
+  children: ReactNode;
+  scrollable?: boolean;
+}
+
+const Layout: FC<LayoutProps> = ({ scrollable, children }: LayoutProps) => {
   const router = useRouter();
   const headerHeightInPx = 60;
   const headerHeight = `${headerHeightInPx}px`;
@@ -43,8 +48,10 @@ const Layout: FC = ({ children }) => {
             style={{
               flexGrow: 1,
               flexShrink: 1,
-              overflowY: "scroll",
               padding: "0.25rem",
+              height: "100%",
+              maxHeight: "100%",
+              overflowY: scrollable ? "scroll" : "hidden",
             }}
           >
             {children}

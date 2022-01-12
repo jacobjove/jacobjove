@@ -1,16 +1,11 @@
-import {
-  HALF_HOUR_HEIGHT,
-  HOUR_HEIGHT,
-  NUM_HOURS,
-  START_HOUR,
-} from "@/components/calendar/constants";
+import { HALF_HOUR_HEIGHT, HOUR_HEIGHT, START_HOUR } from "@/components/calendar/constants";
+import EventBox from "@/components/calendar/EventBox";
 import EventEditingDialog from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/DateContext";
 import DateSelector from "@/components/dates/DateSelector";
-import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
@@ -24,9 +19,7 @@ import {
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
-
-const TIME_MARKER_JUT_PX = 8;
+import { FC, useContext, useEffect, useRef, useState } from "react";
 
 const Root = styled("div")(() => ({
   display: "flex",
@@ -39,7 +32,7 @@ const Root = styled("div")(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "right",
-    paddingRight: "0.5rem",
+    paddingRight: "0.25rem",
     fontFamily: "Roboto, Arial, sans-serif",
     fontWeight: 400,
     fontSize: "0.7rem",
@@ -56,11 +49,13 @@ const Root = styled("div")(() => ({
   },
   "& .border-trick-box": {
     borderRight: "1px solid rgba(224, 224, 224, 1)",
-    width: `${TIME_MARKER_JUT_PX}px`,
+    width: "8px",
   },
   "& .calendar-event-slot": {
     display: "flex",
-    borderTop: "1px solid rgba(224, 224, 224, 1)",
+    "&:not(:first-of-type)": {
+      borderTop: "1px solid rgba(224, 224, 224, 1)",
+    },
   },
   "& .past": {
     background:
@@ -78,34 +73,36 @@ const Root = styled("div")(() => ({
   },
 }));
 
-const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const {
-    selectedDate,
-    setSelectedDate,
-    initialEventFormData,
-    setInitialEventFormData,
-    defaultCalendar,
-    includeDateSelector,
-    hidden,
-    data,
-    loading,
-  } = props;
+const DayViewer: FC<ViewerProps> = ({
+  selectedDate,
+  setSelectedDate,
+  initialEventFormData,
+  setInitialEventFormData,
+  defaultCalendar,
+  includeDateSelector,
+  hidden,
+  data,
+  loading,
+}: ViewerProps) => {
   const { calendarEvents } = data;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
-
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
 
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
-  const currentTimeOffsetPx =
-    (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
+  const currentTimeDiffInMinutes = differenceInMinutes(date, dayStart);
+  console.log(currentTimeDiffInMinutes, `${currentTimeDiffInMinutes / 60} hours`);
+  const minuteHeight = HALF_HOUR_HEIGHT / 30;
+  const currentTimeOffsetPx = minuteHeight * currentTimeDiffInMinutes;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
   const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
 
   const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
-
+  const filteredEvents = calendarEvents?.filter((event) => {
+    return isSameDay(parseISO(event.start), selectedDate) && !event.archivedAt;
+  });
   useEffect(() => {
     // Scroll to the current time.
     const scrollableDiv = scrollableDivRef.current;
@@ -119,7 +116,7 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
       {loading ? (
-        <Skeleton width="100%" height={HALF_HOUR_HEIGHT * NUM_HOURS} />
+        <Skeleton width="100%" height={HALF_HOUR_HEIGHT * 2 * 24} />
       ) : (
         <>
           {includeDateSelector && (
@@ -169,65 +166,84 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
           >
             <TimeLabelsColumn />
             <div className={`calendar-slots-column`}>
-              <Box height={`${HALF_HOUR_HEIGHT}px`} display="flex">
-                <Box flexGrow={1} />
-              </Box>
-              {[...Array(NUM_HOURS)].map((_, i) => {
+              {[...Array(24 * 2)].map((_, i) => {
+                let hour, minutes;
+                if (i % 2 === 0) {
+                  hour = START_HOUR + i;
+                  minutes = 0;
+                } else {
+                  hour = START_HOUR + i - 1;
+                  minutes = 30;
+                }
+                const eventSlotDate = setHours(
+                  setMinutes(setSeconds(selectedDate, 0), minutes),
+                  hour
+                );
                 return (
-                  <Fragment key={i}>
-                    {[...Array(2)].map((_, j) => {
-                      const eventSlotDate = setHours(
-                        setMinutes(setSeconds(selectedDate, 0), j * 30),
-                        START_HOUR + i
-                      );
-                      const eventSlotEvents = calendarEvents.filter((event: CalendarEvent) => {
-                        const diff = differenceInMinutes(
-                          parseISO(event.start),
-                          eventSlotDate,
-                          // Rounding method options are round, ceil, floor, and trunc (default).
-                          // The default rounding method results in diffs that are 1 smaller
-                          // than expected; e.g., 29 rather than 30, causing a 2:30 event to be
-                          // included in the 2:00 slot.
-                          { roundingMethod: "round" } // ceil also works
-                        );
-                        // console.log("Inspecting event", event.title, event.start, event.end, diff, Math.abs(diff) < 30 && diff > 0);
-                        return Math.abs(diff) < 30 && diff >= 0;
-                      });
-                      return (
-                        <Box
-                          key={j}
-                          className="calendar-event-slot"
-                          height={`${HALF_HOUR_HEIGHT}px`}
-                        >
-                          <EventSlot
-                            date={eventSlotDate}
-                            past={isPast}
-                            view="day"
-                            events={eventSlotEvents}
-                            defaultCalendarId={primaryCalendarId}
-                            onClick={(e) => {
-                              // Only trigger if the click was actually on the slot. This check
-                              // allows us to avoid stopping propagation on click events for
-                              // other elements in the slot.
-                              if (e.target === e.currentTarget) {
-                                setInitialEventFormData({
-                                  title: initialEventFormData.title ?? "",
-                                  start: eventSlotDate,
-                                  end: addMinutes(eventSlotDate, 29),
-                                  allDay: false,
-                                  notes: initialEventFormData.notes ?? "",
-                                  calendarId: initialEventFormData.calendarId ?? primaryCalendarId,
-                                });
-                                setEventEditingDialogOpen(true);
-                              }
-                            }}
-                          />
-                        </Box>
-                      );
-                    })}
-                  </Fragment>
+                  <Box key={i} className="calendar-event-slot" height={`${HALF_HOUR_HEIGHT}px`}>
+                    <EventSlot
+                      date={eventSlotDate}
+                      past={isPast}
+                      view="day"
+                      defaultCalendarId={primaryCalendarId}
+                      onClick={(e) => {
+                        // Only trigger if the click was actually on the slot. This check
+                        // allows us to avoid stopping propagation on click events for
+                        // other elements in the slot.
+                        if (e.target === e.currentTarget) {
+                          setInitialEventFormData({
+                            title: initialEventFormData.title ?? "",
+                            start: eventSlotDate,
+                            end: addMinutes(eventSlotDate, 29),
+                            allDay: false,
+                            notes: initialEventFormData.notes ?? "",
+                            calendarId: initialEventFormData.calendarId ?? primaryCalendarId,
+                          });
+                          setEventEditingDialogOpen(true);
+                        }
+                      }}
+                    />
+                  </Box>
                 );
               })}
+              {!!filteredEvents?.length &&
+                filteredEvents.map((event, index) => {
+                  if (!event.start || !event.end) {
+                    console.error("Event missing start or end time: ", event);
+                    return null;
+                  }
+                  console.log();
+                  const eventStart = parseISO(event.start);
+                  const eventEnd = parseISO(event.end);
+                  const eventDurationInMinutes = differenceInMinutes(eventEnd, eventStart);
+                  // Calculate styles.
+                  const widthPercent = 100; // / numEvents - 2;
+                  // const width = `100%`;
+                  const width = `${widthPercent}%`;
+                  const differenceFromDayStartInMinutes = differenceInMinutes(eventStart, dayStart);
+                  const totalMinutesInDay = 24 * 60;
+                  const topOffset = `${
+                    (differenceFromDayStartInMinutes / totalMinutesInDay) * 100
+                  }%`;
+                  console.log(
+                    differenceFromDayStartInMinutes,
+                    differenceFromDayStartInMinutes / 60,
+                    topOffset
+                  );
+                  const height = `${(eventDurationInMinutes / totalMinutesInDay) * 100}%`;
+                  return null;
+                  return (
+                    <EventBox
+                      key={index}
+                      left={`${widthPercent * index + index}%`}
+                      top={topOffset}
+                      height={height}
+                      zIndex={index}
+                      width={width}
+                      event={event}
+                    />
+                  );
+                })}
               {selectedDate < new Date() && isSameDay(date, selectedDate) && (
                 <Box
                   className="past"
@@ -236,7 +252,6 @@ const DayViewer: FC<ViewerProps> = (props: ViewerProps) => {
                   borderBottom={`1px solid red`}
                   top={0}
                   height={`${currentTimeOffsetPx}px`}
-                  maxHeight={"100%"}
                   paddingTop="2px"
                   paddingLeft="2px"
                   zIndex={1}
