@@ -1392,9 +1392,9 @@ input ActionScheduleSumOrderByAggregateInput {
 
 type ActionScheduleTemplate {
   _count: ActionScheduleTemplateCount!
-  action: ActionTemplate!
-  actionId: Int!
   actionSchedules(cursor: ActionScheduleWhereUniqueInput, distinct: [ActionScheduleScalarFieldEnum!], orderBy: [ActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleWhereInput): [ActionSchedule!]!
+  actionTemplate: ActionTemplate!
+  actionTemplateId: Int!
   frequency: FREQUENCY!
   id: Int!
   multiplier: Int!
@@ -1403,14 +1403,14 @@ type ActionScheduleTemplate {
   scheduleTemplateId: Int!
 }
 
-input ActionScheduleTemplateActionIdFrequencyMultiplierCompoundUniqueInput {
-  actionId: Int!
+input ActionScheduleTemplateActionTemplateIdFrequencyMultiplierCompoundUniqueInput {
+  actionTemplateId: Int!
   frequency: FREQUENCY!
   multiplier: Int!
 }
 
 type ActionScheduleTemplateAvgAggregate {
-  actionId: Float
+  actionTemplateId: Float
   id: Float
   multiplier: Float
   quantity: Float
@@ -1418,7 +1418,7 @@ type ActionScheduleTemplateAvgAggregate {
 }
 
 input ActionScheduleTemplateAvgOrderByAggregateInput {
-  actionId: SortOrder
+  actionTemplateId: SortOrder
   id: SortOrder
   multiplier: SortOrder
   quantity: SortOrder
@@ -1431,7 +1431,7 @@ type ActionScheduleTemplateCount {
 
 type ActionScheduleTemplateCountAggregate {
   _all: Int!
-  actionId: Int!
+  actionTemplateId: Int!
   frequency: Int!
   id: Int!
   multiplier: Int!
@@ -1440,7 +1440,7 @@ type ActionScheduleTemplateCountAggregate {
 }
 
 input ActionScheduleTemplateCountOrderByAggregateInput {
-  actionId: SortOrder
+  actionTemplateId: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1449,15 +1449,15 @@ input ActionScheduleTemplateCountOrderByAggregateInput {
 }
 
 input ActionScheduleTemplateCreateInput {
-  action: ActionTemplateCreateNestedOneWithoutScheduleTemplatesInput!
   actionSchedules: ActionScheduleCreateNestedManyWithoutActionScheduleTemplateInput
+  actionTemplate: ActionTemplateCreateNestedOneWithoutScheduleTemplatesInput!
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
   scheduleTemplate: ScheduleTemplateCreateNestedOneWithoutActionScheduleTemplatesInput!
 }
 
-input ActionScheduleTemplateCreateManyActionInput {
+input ActionScheduleTemplateCreateManyActionTemplateInput {
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -1465,13 +1465,13 @@ input ActionScheduleTemplateCreateManyActionInput {
   scheduleTemplateId: Int!
 }
 
-input ActionScheduleTemplateCreateManyActionInputEnvelope {
-  data: [ActionScheduleTemplateCreateManyActionInput!]!
+input ActionScheduleTemplateCreateManyActionTemplateInputEnvelope {
+  data: [ActionScheduleTemplateCreateManyActionTemplateInput!]!
   skipDuplicates: Boolean
 }
 
 input ActionScheduleTemplateCreateManyInput {
-  actionId: Int!
+  actionTemplateId: Int!
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -1480,7 +1480,7 @@ input ActionScheduleTemplateCreateManyInput {
 }
 
 input ActionScheduleTemplateCreateManyScheduleTemplateInput {
-  actionId: Int!
+  actionTemplateId: Int!
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -1492,11 +1492,11 @@ input ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope {
   skipDuplicates: Boolean
 }
 
-input ActionScheduleTemplateCreateNestedManyWithoutActionInput {
+input ActionScheduleTemplateCreateNestedManyWithoutActionTemplateInput {
   connect: [ActionScheduleTemplateWhereUniqueInput!]
-  connectOrCreate: [ActionScheduleTemplateCreateOrConnectWithoutActionInput!]
-  create: [ActionScheduleTemplateCreateWithoutActionInput!]
-  createMany: ActionScheduleTemplateCreateManyActionInputEnvelope
+  connectOrCreate: [ActionScheduleTemplateCreateOrConnectWithoutActionTemplateInput!]
+  create: [ActionScheduleTemplateCreateWithoutActionTemplateInput!]
+  createMany: ActionScheduleTemplateCreateManyActionTemplateInputEnvelope
 }
 
 input ActionScheduleTemplateCreateNestedManyWithoutScheduleTemplateInput {
@@ -1512,13 +1512,13 @@ input ActionScheduleTemplateCreateNestedOneWithoutActionSchedulesInput {
   create: ActionScheduleTemplateCreateWithoutActionSchedulesInput
 }
 
-input ActionScheduleTemplateCreateOrConnectWithoutActionInput {
-  create: ActionScheduleTemplateCreateWithoutActionInput!
+input ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput {
+  create: ActionScheduleTemplateCreateWithoutActionSchedulesInput!
   where: ActionScheduleTemplateWhereUniqueInput!
 }
 
-input ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput {
-  create: ActionScheduleTemplateCreateWithoutActionSchedulesInput!
+input ActionScheduleTemplateCreateOrConnectWithoutActionTemplateInput {
+  create: ActionScheduleTemplateCreateWithoutActionTemplateInput!
   where: ActionScheduleTemplateWhereUniqueInput!
 }
 
@@ -1527,16 +1527,16 @@ input ActionScheduleTemplateCreateOrConnectWithoutScheduleTemplateInput {
   where: ActionScheduleTemplateWhereUniqueInput!
 }
 
-input ActionScheduleTemplateCreateWithoutActionInput {
-  actionSchedules: ActionScheduleCreateNestedManyWithoutActionScheduleTemplateInput
+input ActionScheduleTemplateCreateWithoutActionSchedulesInput {
+  actionTemplate: ActionTemplateCreateNestedOneWithoutScheduleTemplatesInput!
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
   scheduleTemplate: ScheduleTemplateCreateNestedOneWithoutActionScheduleTemplatesInput!
 }
 
-input ActionScheduleTemplateCreateWithoutActionSchedulesInput {
-  action: ActionTemplateCreateNestedOneWithoutScheduleTemplatesInput!
+input ActionScheduleTemplateCreateWithoutActionTemplateInput {
+  actionSchedules: ActionScheduleCreateNestedManyWithoutActionScheduleTemplateInput
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -1544,8 +1544,8 @@ input ActionScheduleTemplateCreateWithoutActionSchedulesInput {
 }
 
 input ActionScheduleTemplateCreateWithoutScheduleTemplateInput {
-  action: ActionTemplateCreateNestedOneWithoutScheduleTemplatesInput!
   actionSchedules: ActionScheduleCreateNestedManyWithoutActionScheduleTemplateInput
+  actionTemplate: ActionTemplateCreateNestedOneWithoutScheduleTemplatesInput!
   frequency: FREQUENCY
   multiplier: Int
   quantity: Int
@@ -1557,7 +1557,7 @@ type ActionScheduleTemplateGroupBy {
   _max: ActionScheduleTemplateMaxAggregate
   _min: ActionScheduleTemplateMinAggregate
   _sum: ActionScheduleTemplateSumAggregate
-  actionId: Int!
+  actionTemplateId: Int!
   frequency: FREQUENCY!
   id: Int!
   multiplier: Int!
@@ -1572,7 +1572,7 @@ input ActionScheduleTemplateListRelationFilter {
 }
 
 type ActionScheduleTemplateMaxAggregate {
-  actionId: Int
+  actionTemplateId: Int
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -1581,7 +1581,7 @@ type ActionScheduleTemplateMaxAggregate {
 }
 
 input ActionScheduleTemplateMaxOrderByAggregateInput {
-  actionId: SortOrder
+  actionTemplateId: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1590,7 +1590,7 @@ input ActionScheduleTemplateMaxOrderByAggregateInput {
 }
 
 type ActionScheduleTemplateMinAggregate {
-  actionId: Int
+  actionTemplateId: Int
   frequency: FREQUENCY
   id: Int
   multiplier: Int
@@ -1599,7 +1599,7 @@ type ActionScheduleTemplateMinAggregate {
 }
 
 input ActionScheduleTemplateMinOrderByAggregateInput {
-  actionId: SortOrder
+  actionTemplateId: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1617,7 +1617,7 @@ input ActionScheduleTemplateOrderByWithAggregationInput {
   _max: ActionScheduleTemplateMaxOrderByAggregateInput
   _min: ActionScheduleTemplateMinOrderByAggregateInput
   _sum: ActionScheduleTemplateSumOrderByAggregateInput
-  actionId: SortOrder
+  actionTemplateId: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1626,9 +1626,9 @@ input ActionScheduleTemplateOrderByWithAggregationInput {
 }
 
 input ActionScheduleTemplateOrderByWithRelationInput {
-  action: ActionTemplateOrderByWithRelationInput
-  actionId: SortOrder
   actionSchedules: ActionScheduleOrderByRelationAggregateInput
+  actionTemplate: ActionTemplateOrderByWithRelationInput
+  actionTemplateId: SortOrder
   frequency: SortOrder
   id: SortOrder
   multiplier: SortOrder
@@ -1643,7 +1643,7 @@ input ActionScheduleTemplateRelationFilter {
 }
 
 enum ActionScheduleTemplateScalarFieldEnum {
-  actionId
+  actionTemplateId
   frequency
   id
   multiplier
@@ -1655,7 +1655,7 @@ input ActionScheduleTemplateScalarWhereInput {
   AND: [ActionScheduleTemplateScalarWhereInput!]
   NOT: [ActionScheduleTemplateScalarWhereInput!]
   OR: [ActionScheduleTemplateScalarWhereInput!]
-  actionId: IntFilter
+  actionTemplateId: IntFilter
   frequency: EnumFREQUENCYFilter
   id: IntFilter
   multiplier: IntFilter
@@ -1667,7 +1667,7 @@ input ActionScheduleTemplateScalarWhereWithAggregatesInput {
   AND: [ActionScheduleTemplateScalarWhereWithAggregatesInput!]
   NOT: [ActionScheduleTemplateScalarWhereWithAggregatesInput!]
   OR: [ActionScheduleTemplateScalarWhereWithAggregatesInput!]
-  actionId: IntWithAggregatesFilter
+  actionTemplateId: IntWithAggregatesFilter
   frequency: EnumFREQUENCYWithAggregatesFilter
   id: IntWithAggregatesFilter
   multiplier: IntWithAggregatesFilter
@@ -1676,7 +1676,7 @@ input ActionScheduleTemplateScalarWhereWithAggregatesInput {
 }
 
 type ActionScheduleTemplateSumAggregate {
-  actionId: Int
+  actionTemplateId: Int
   id: Int
   multiplier: Int
   quantity: Int
@@ -1684,7 +1684,7 @@ type ActionScheduleTemplateSumAggregate {
 }
 
 input ActionScheduleTemplateSumOrderByAggregateInput {
-  actionId: SortOrder
+  actionTemplateId: SortOrder
   id: SortOrder
   multiplier: SortOrder
   quantity: SortOrder
@@ -1692,8 +1692,8 @@ input ActionScheduleTemplateSumOrderByAggregateInput {
 }
 
 input ActionScheduleTemplateUpdateInput {
-  action: ActionTemplateUpdateOneRequiredWithoutScheduleTemplatesInput
   actionSchedules: ActionScheduleUpdateManyWithoutActionScheduleTemplateInput
+  actionTemplate: ActionTemplateUpdateOneRequiredWithoutScheduleTemplatesInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -1706,7 +1706,7 @@ input ActionScheduleTemplateUpdateManyMutationInput {
   quantity: IntFieldUpdateOperationsInput
 }
 
-input ActionScheduleTemplateUpdateManyWithWhereWithoutActionInput {
+input ActionScheduleTemplateUpdateManyWithWhereWithoutActionTemplateInput {
   data: ActionScheduleTemplateUpdateManyMutationInput!
   where: ActionScheduleTemplateScalarWhereInput!
 }
@@ -1716,18 +1716,18 @@ input ActionScheduleTemplateUpdateManyWithWhereWithoutScheduleTemplateInput {
   where: ActionScheduleTemplateScalarWhereInput!
 }
 
-input ActionScheduleTemplateUpdateManyWithoutActionInput {
+input ActionScheduleTemplateUpdateManyWithoutActionTemplateInput {
   connect: [ActionScheduleTemplateWhereUniqueInput!]
-  connectOrCreate: [ActionScheduleTemplateCreateOrConnectWithoutActionInput!]
-  create: [ActionScheduleTemplateCreateWithoutActionInput!]
-  createMany: ActionScheduleTemplateCreateManyActionInputEnvelope
+  connectOrCreate: [ActionScheduleTemplateCreateOrConnectWithoutActionTemplateInput!]
+  create: [ActionScheduleTemplateCreateWithoutActionTemplateInput!]
+  createMany: ActionScheduleTemplateCreateManyActionTemplateInputEnvelope
   delete: [ActionScheduleTemplateWhereUniqueInput!]
   deleteMany: [ActionScheduleTemplateScalarWhereInput!]
   disconnect: [ActionScheduleTemplateWhereUniqueInput!]
   set: [ActionScheduleTemplateWhereUniqueInput!]
-  update: [ActionScheduleTemplateUpdateWithWhereUniqueWithoutActionInput!]
-  updateMany: [ActionScheduleTemplateUpdateManyWithWhereWithoutActionInput!]
-  upsert: [ActionScheduleTemplateUpsertWithWhereUniqueWithoutActionInput!]
+  update: [ActionScheduleTemplateUpdateWithWhereUniqueWithoutActionTemplateInput!]
+  updateMany: [ActionScheduleTemplateUpdateManyWithWhereWithoutActionTemplateInput!]
+  upsert: [ActionScheduleTemplateUpsertWithWhereUniqueWithoutActionTemplateInput!]
 }
 
 input ActionScheduleTemplateUpdateManyWithoutScheduleTemplateInput {
@@ -1754,8 +1754,8 @@ input ActionScheduleTemplateUpdateOneWithoutActionSchedulesInput {
   upsert: ActionScheduleTemplateUpsertWithoutActionSchedulesInput
 }
 
-input ActionScheduleTemplateUpdateWithWhereUniqueWithoutActionInput {
-  data: ActionScheduleTemplateUpdateWithoutActionInput!
+input ActionScheduleTemplateUpdateWithWhereUniqueWithoutActionTemplateInput {
+  data: ActionScheduleTemplateUpdateWithoutActionTemplateInput!
   where: ActionScheduleTemplateWhereUniqueInput!
 }
 
@@ -1764,16 +1764,16 @@ input ActionScheduleTemplateUpdateWithWhereUniqueWithoutScheduleTemplateInput {
   where: ActionScheduleTemplateWhereUniqueInput!
 }
 
-input ActionScheduleTemplateUpdateWithoutActionInput {
-  actionSchedules: ActionScheduleUpdateManyWithoutActionScheduleTemplateInput
+input ActionScheduleTemplateUpdateWithoutActionSchedulesInput {
+  actionTemplate: ActionTemplateUpdateOneRequiredWithoutScheduleTemplatesInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
   scheduleTemplate: ScheduleTemplateUpdateOneRequiredWithoutActionScheduleTemplatesInput
 }
 
-input ActionScheduleTemplateUpdateWithoutActionSchedulesInput {
-  action: ActionTemplateUpdateOneRequiredWithoutScheduleTemplatesInput
+input ActionScheduleTemplateUpdateWithoutActionTemplateInput {
+  actionSchedules: ActionScheduleUpdateManyWithoutActionScheduleTemplateInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
@@ -1781,16 +1781,16 @@ input ActionScheduleTemplateUpdateWithoutActionSchedulesInput {
 }
 
 input ActionScheduleTemplateUpdateWithoutScheduleTemplateInput {
-  action: ActionTemplateUpdateOneRequiredWithoutScheduleTemplatesInput
   actionSchedules: ActionScheduleUpdateManyWithoutActionScheduleTemplateInput
+  actionTemplate: ActionTemplateUpdateOneRequiredWithoutScheduleTemplatesInput
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
 }
 
-input ActionScheduleTemplateUpsertWithWhereUniqueWithoutActionInput {
-  create: ActionScheduleTemplateCreateWithoutActionInput!
-  update: ActionScheduleTemplateUpdateWithoutActionInput!
+input ActionScheduleTemplateUpsertWithWhereUniqueWithoutActionTemplateInput {
+  create: ActionScheduleTemplateCreateWithoutActionTemplateInput!
+  update: ActionScheduleTemplateUpdateWithoutActionTemplateInput!
   where: ActionScheduleTemplateWhereUniqueInput!
 }
 
@@ -1809,9 +1809,9 @@ input ActionScheduleTemplateWhereInput {
   AND: [ActionScheduleTemplateWhereInput!]
   NOT: [ActionScheduleTemplateWhereInput!]
   OR: [ActionScheduleTemplateWhereInput!]
-  action: ActionTemplateRelationFilter
-  actionId: IntFilter
   actionSchedules: ActionScheduleListRelationFilter
+  actionTemplate: ActionTemplateRelationFilter
+  actionTemplateId: IntFilter
   frequency: EnumFREQUENCYFilter
   id: IntFilter
   multiplier: IntFilter
@@ -1821,7 +1821,7 @@ input ActionScheduleTemplateWhereInput {
 }
 
 input ActionScheduleTemplateWhereUniqueInput {
-  actionId_frequency_multiplier: ActionScheduleTemplateActionIdFrequencyMultiplierCompoundUniqueInput
+  actionTemplateId_frequency_multiplier: ActionScheduleTemplateActionTemplateIdFrequencyMultiplierCompoundUniqueInput
   id: Int
 }
 
@@ -2033,7 +2033,7 @@ input ActionTemplateCreateInput {
   description: String
   identityRelations: IdentityActionRelationCreateNestedManyWithoutActionInput
   name: String!
-  scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionInput
+  scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionTemplateInput
   slug: String!
 }
 
@@ -2081,7 +2081,7 @@ input ActionTemplateCreateWithoutActionsInput {
   description: String
   identityRelations: IdentityActionRelationCreateNestedManyWithoutActionInput
   name: String!
-  scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionInput
+  scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionTemplateInput
   slug: String!
 }
 
@@ -2089,7 +2089,7 @@ input ActionTemplateCreateWithoutIdentityRelationsInput {
   actions: ActionCreateNestedManyWithoutTemplateInput
   description: String
   name: String!
-  scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionInput
+  scheduleTemplates: ActionScheduleTemplateCreateNestedManyWithoutActionTemplateInput
   slug: String!
 }
 
@@ -2198,7 +2198,7 @@ input ActionTemplateUpdateInput {
   description: NullableStringFieldUpdateOperationsInput
   identityRelations: IdentityActionRelationUpdateManyWithoutActionInput
   name: StringFieldUpdateOperationsInput
-  scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionInput
+  scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionTemplateInput
   slug: StringFieldUpdateOperationsInput
 }
 
@@ -2238,7 +2238,7 @@ input ActionTemplateUpdateWithoutActionsInput {
   description: NullableStringFieldUpdateOperationsInput
   identityRelations: IdentityActionRelationUpdateManyWithoutActionInput
   name: StringFieldUpdateOperationsInput
-  scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionInput
+  scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionTemplateInput
   slug: StringFieldUpdateOperationsInput
 }
 
@@ -2246,7 +2246,7 @@ input ActionTemplateUpdateWithoutIdentityRelationsInput {
   actions: ActionUpdateManyWithoutTemplateInput
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
-  scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionInput
+  scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActionTemplateInput
   slug: StringFieldUpdateOperationsInput
 }
 
@@ -5523,7 +5523,7 @@ type Mutation {
   deleteUserIdentity(where: UserIdentityWhereUniqueInput!): UserIdentity
   deleteUserValue(where: UserValueWhereUniqueInput!): UserValue
   deleteValue(where: ValueWhereUniqueInput!): Value
-  toggleActionAdoption(actionId: Int!, archivedAt: DateTime, userId: String!): Action!
+  toggleActionAdoption(actionTemplateId: Int!, archivedAt: DateTime, userId: String!): Action!
   toggleActionCompletion(actionId: Int!, archivedAt: DateTime, userId: String!): ActionCompletion!
   toggleUserBelief(beliefId: Int!, deleted: DateTime, userId: String!): UserBelief!
   toggleUserIdentity(deleted: DateTime, identityId: Int!, userId: String!): UserIdentity!

@@ -43,9 +43,9 @@ services:
   cypress:
     # https://github.com/cypress-io/cypress-docker-images
     image: "cypress/included:8.4.1"
-    depends_on:
-      nextjs:
-        condition: service_healthy
+    # depends_on:
+    #   nextjs:
+    #     condition: service_healthy
     environment:
       - CYPRESS_baseUrl=http://localhost:3000/
     working_dir: /e2e

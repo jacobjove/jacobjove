@@ -6,5 +6,8 @@ coverage/
 generated/
 node_modules/
 
+# TODO: remove this after configuring GitHub Actions
+.github
+
 # Sentry
 .sentryclirc
