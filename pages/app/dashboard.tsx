@@ -6,9 +6,11 @@ import { DashboardLayouts } from "@/components/dashboard/types";
 import Layout from "@/components/Layout";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
+import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -59,7 +61,15 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
       />
       <Box display="flex" marginTop="0.8rem" paddingX="0.75rem">
         <Box flexGrow={1} paddingX="0.75rem">
-          {isMobile ? (
+          {editing ? (
+            <TextField
+              variant="standard"
+              value={"Default Dashboard"}
+              onChange={() => {
+                console.log("onChange");
+              }}
+            />
+          ) : isMobile ? (
             <NativeSelect
               defaultValue={"Default Dashboard"}
               inputProps={{
@@ -75,6 +85,14 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
               SelectDisplayProps={{ style: { paddingTop: "0.4rem", paddingBottom: "0.4rem" } }}
             >
               <MenuItem value="Default Dashboard">Default Dashboard</MenuItem>
+              <MenuItem
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log("TODO: Add new dashboard");
+                }}
+              >
+                <AddIcon /> New dashboard
+              </MenuItem>
             </Select>
           )}
         </Box>

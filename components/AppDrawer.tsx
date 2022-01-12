@@ -173,7 +173,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
             <ListItemText primary={"Fitness Center"} />
           </ListItem>
         </Link>
-        <Link href="app/finances" passHref>
+        <Link href="/app/finances" passHref>
           <ListItem button component={"a"} title={"Finances"}>
             <ListItemIcon>
               <AccountBalanceIcon />

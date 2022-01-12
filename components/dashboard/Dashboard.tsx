@@ -13,6 +13,7 @@ import {
 } from "@/graphql/fragments";
 import { Action, Calendar, CalendarEvent, UserIdentity, UserValue, Value } from "@/graphql/schema";
 import { gql } from "@apollo/client";
+import AddIcon from "@mui/icons-material/Add";
 import { Breakpoint } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import SpeedDial from "@mui/material/SpeedDial";
@@ -59,7 +60,16 @@ export interface DashboardData {
   })[];
 }
 
-const BREAKPOINTS = { xl: 1536, lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 };
+// Do not change these values without also changing the MUI breakpoints!
+// https://mui.com/customization/breakpoints/#default-breakpoints
+// https://mui.com/customization/breakpoints/#custom-breakpoints
+const BREAKPOINTS = {
+  xs: 0,
+  sm: 600,
+  md: 900,
+  lg: 1200,
+  xl: 1536,
+};
 
 interface DashboardProps {
   data: DashboardData | undefined;
@@ -84,12 +94,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     console.log("handleSpeedDialClose");
     setSpeedDialOpen(false);
   };
-  const speedDialActions: { name: string; icon: FC }[] = [
-    // { icon: <FileCopyIcon />, name: 'Copy' },
-    // { icon: <SaveIcon />, name: 'Save' },
-    // { icon: <PrintIcon />, name: 'Print' },
-    // { icon: <ShareIcon />, name: 'Share' },
-  ];
+  const speedDialActions = [{ icon: <AddIcon />, name: "Add task" }];
   const children = useMemo(() => {
     if (!data || !session) return [];
     const { calendarEvents, calendars, actions, userIdentities, userValues } = data;
@@ -134,128 +139,27 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
           );
       }
     };
-    // const componentMap = {
-    //   calendar: (
-    //     <DashboardCard title={"Calendar"} editing={editing} loading={loading}>
-    //       <CalendarViewer
-    //         data={{ calendarEvents, calendars }}
-    //         loading={loading}
-    //         session={session}
-    //       />
-    //     </DashboardCard>
-    //   ),
-    //   actions: (
-    //     <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-    //       {(!!actions.length && <ActionsBox actions={actions} />) || (
-    //         <Typography component="p" textAlign="center">
-    //           No actions yet.
-    //         </Typography>
-    //       )}
-    //     </DashboardCard>
-    //   ),
-    //   identities: (
-    //     <DashboardCard title={"Identities"} editing={editing} loading={loading}>
-    //       {(!!userIdentities.length && <IdentityTable userIdentities={userIdentities} />) || (
-    //         <Typography component="p" textAlign="center">
-    //           No identities yet.
-    //         </Typography>
-    //       )}
-    //       <Box textAlign="center" marginTop="1rem">
-    //         <Link href="/identities" passHref>
-    //           <IconButton
-    //             component={"a"}
-    //             color="info"
-    //             style={{ marginLeft: 3 }}
-    //             title="Explore identities"
-    //           >
-    //             <SearchIcon />
-    //           </IconButton>
-    //         </Link>
-    //       </Box>
-    //     </DashboardCard>
-    //   ),
-    //   values: (
-    //     <DashboardCard title={"Values"} editing={editing} loading={loading}>
-    //       {(!!userValues.length &&
-    //         userValues.map((userValue, index) => (
-    //           <p key={index}>
-    //             <Link href={`/userValues/${userValue.value.slug}`}>
-    //               <a>{userValue.value.name}</a>
-    //             </Link>
-    //           </p>
-    //         ))) || (
-    //         <Typography component="p" textAlign="center">
-    //           No values yet.
-    //         </Typography>
-    //       )}
-    //       <Box textAlign="center" marginTop="1rem">
-    //         <Link href="/values" passHref>
-    //           <IconButton
-    //             component={"a"}
-    //             color="info"
-    //             style={{ marginLeft: 3 }}
-    //             title="Explore values"
-    //           >
-    //             <SearchIcon />
-    //           </IconButton>
-    //         </Link>
-    //       </Box>
-    //     </DashboardCard>
-    //   ),
-    //   topics: (
-    //     <DashboardCard title="Topics" editing={editing} loading={loading}>
-    //       <TextField
-    //         value=""
-    //         label="Study theme"
-    //         sx={{ margin: "0.25rem 0" }}
-    //         variant="outlined"
-    //         // margin="dense"
-    //         fullWidth
-    //         onChange={() => {
-    //           console.log("study theme changed");
-    //         }}
-    //       />
-    //       <TextField
-    //         value=""
-    //         label="Other study theme"
-    //         sx={{ margin: "0.25rem 0" }}
-    //         variant="outlined"
-    //         // margin="dense"
-    //         fullWidth
-    //         onChange={() => {
-    //           console.log("other study theme changed");
-    //         }}
-    //       />
-    //     </DashboardCard>
-    //   ),
-    // };
     // TODO: refactor this; it currently expects each layout to have the same components.
     return Object.values(layouts)[0].map((component) => {
       return (
         <div key={component.i} className={`${editing ? "editing" : "not-editing"}`}>
           {getDashboardComponent(component.i)}
-          {/* {componentMap[component.i]} */}
         </div>
       );
     });
   }, [layouts, editing, data, loading, session]);
   useEffect(() => {
-    // console.log("Dashboard.tsx: useEffect");
+    console.log("Dashboard.tsx: useEffect");
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
-      let breakpoint: Breakpoint;
-      if (width < 600) {
-        breakpoint = "xs";
-      } else if (width < 960) {
-        breakpoint = "sm";
-      } else if (width < 1000) {
-        breakpoint = "md";
-      } else if (width < 1280) {
-        breakpoint = "lg";
-      } else {
-        breakpoint = "xl";
+      let breakpoint: Breakpoint = "xl";
+      for (const [breakpointKey, breakpointValue] of Object.entries(BREAKPOINTS)) {
+        if (width > breakpointValue) {
+          breakpoint = breakpointKey as keyof typeof BREAKPOINTS;
+        } else {
+          break;
+        }
       }
-      console.log("setting breakpoint to", breakpoint);
       setCurrentBreakpoint(breakpoint);
     }
   }, [setCurrentBreakpoint]);
@@ -297,7 +201,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             }
           }}
           onBreakpointChange={(breakpoint) => {
-            console.log("Breakpoint changed to", breakpoint);
+            // console.log("Breakpoint changed to", breakpoint);
             setCurrentBreakpoint(breakpoint as Breakpoint);
           }}
           onDragStop={handleLayoutChange}
