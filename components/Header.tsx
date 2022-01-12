@@ -89,7 +89,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
     session && handleLogout(session);
   };
   return (
-    <AppBar position="sticky">
+    <AppBar position="static">
       <Container maxWidth="xl">
         {/* Default toolbar height is 64px. */}
         <Toolbar disableGutters style={{ height: `${heightInPx}px`, minHeight: `${heightInPx}px` }}>

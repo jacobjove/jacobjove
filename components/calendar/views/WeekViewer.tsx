@@ -1,5 +1,15 @@
+import CalendarCell from "@/components/calendar/CalendarCell";
+import {
+  BORDER_DEF,
+  HALF_HOUR_HEIGHT,
+  HOUR_HEIGHT,
+  NUM_HOURS,
+  START_HOUR,
+  TIME_LABEL_COLUMN_WIDTH,
+} from "@/components/calendar/constants";
 import EventEditingDialog from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
+import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/DateContext";
 import { CalendarEvent } from "@/graphql/schema";
@@ -18,12 +28,6 @@ import {
 } from "date-fns";
 import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
 
-const START_HOUR = 7;
-const END_HOUR = 23;
-const NUM_HOURS = END_HOUR - START_HOUR;
-const HALF_HOUR_HEIGHT = 48; // Must be divisible by 2.
-const HOUR_HEIGHT = HALF_HOUR_HEIGHT * 2;
-
 const Root = styled("div")(() => ({
   "& *": {
     boxSizing: "border-box",
@@ -39,21 +43,25 @@ const Root = styled("div")(() => ({
     lineHeight: "1.66",
     whiteSpace: "nowrap",
     color: "rgba(0, 0, 0, 0.6)",
-    minWidth: "3.5rem",
+    width: "3.5rem",
   },
   "& .calendar-slots-column": {
     flexGrow: 1,
     position: "relative",
     cursor: "pointer",
     scrollBehavior: "smooth",
+    "&:not(:first-of-type)": {
+      borderLeft: BORDER_DEF,
+    },
   },
   "& .border-trick-box": {
-    borderRight: "1px solid rgba(224, 224, 224, 1)",
+    borderRight: BORDER_DEF,
     width: "0.5rem",
   },
   "& .calendar-event-slot": {
     display: "flex",
-    borderTop: "1px solid rgba(224, 224, 224, 1)",
+    borderTop: BORDER_DEF,
+    height: `${HALF_HOUR_HEIGHT}px`,
   },
 }));
 
@@ -91,72 +99,66 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
     }
   }, [currentTimeOffsetPx]);
   const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayHeaderHeight = `${HALF_HOUR_HEIGHT}px`;
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
+      {/* Day headers */}
       <Box display="flex">
-        <div className="time-labels-column">
-          <Box
-            className="time-label"
-            height={`1.5rem`}
-            borderBottom="1px solid rgba(224, 224, 224, 1)"
-          />
-        </div>
+        <Box width={TIME_LABEL_COLUMN_WIDTH} height={dayHeaderHeight} borderBottom={BORDER_DEF} />
         <div className="calendar-slots-column">
-          <Box height={`1.5rem`} borderBottom="1px solid rgba(224, 224, 224, 1)" display="flex">
-            <div className="border-trick-box" />
+          <Box height={dayHeaderHeight} borderBottom={BORDER_DEF} display="flex">
             <Box flexGrow={1} display="flex">
               {DAYS_OF_WEEK.map((day, i) => {
                 return (
-                  <Box key={i} flexGrow={1} textAlign={"center"}>
-                    <Typography fontSize="0.9rem">{day}</Typography>
-                  </Box>
+                  <CalendarCell key={i} className="day-header-cell">
+                    <Typography fontSize="0.75rem">{day}</Typography>
+                    <Typography fontSize="0.9rem" fontWeight={600}>
+                      {setDay(selectedDate, i).getDate()}
+                    </Typography>
+                  </CalendarCell>
                 );
               })}
             </Box>
           </Box>
         </div>
       </Box>
-      <Box display="flex">
-        <div className="time-labels-column">
-          <Box
-            className="time-label"
-            height={`${allDayBoxHeight}px`}
-            borderBottom="1px solid rgba(224, 224, 224, 1)"
-          >
+      {/* All day boxes */}
+      <Box display="flex" borderBottom={BORDER_DEF}>
+        <div style={{ width: TIME_LABEL_COLUMN_WIDTH }}>
+          <Box className="time-label" height={`${allDayBoxHeight}px`}>
             All Day
           </Box>
         </div>
         <div className="calendar-slots-column">
-          <Box
-            height={`${allDayBoxHeight}px`}
-            borderBottom="1px solid rgba(224, 224, 224, 1)"
-            display="flex"
-          >
-            <div className="border-trick-box" />
-            <Box flexGrow={1} />
+          <Box height={`${allDayBoxHeight}px`} display="flex">
+            <Box flexGrow={1} display="flex">
+              {DAYS_OF_WEEK.map((day, i) => {
+                return (
+                  <CalendarCell key={i} className="all-day-cell">
+                    <div></div>
+                  </CalendarCell>
+                );
+              })}
+            </Box>
           </Box>
         </div>
       </Box>
-      <Box display="flex" maxHeight="90vh" overflow={"scroll"} ref={scrollableDivRef}>
-        <div className="time-labels-column">
-          <Box height={`${HALF_HOUR_HEIGHT / 2}px`} />
-          {[...Array(NUM_HOURS)].map((_, i) => (
-            <Fragment key={i}>
-              <Box className="time-label" height={`${HALF_HOUR_HEIGHT}px`}>
-                {convertHourAndMinutesToTimeString(START_HOUR + i)}
-              </Box>
-              <Box className="time-label" height={`${HALF_HOUR_HEIGHT}px`}>
-                {convertHourAndMinutesToTimeString(START_HOUR + i, 30)}
-              </Box>
-            </Fragment>
-          ))}
-        </div>
+      {/* Time slots */}
+      <Box
+        display="flex"
+        ref={scrollableDivRef}
+        position="relative"
+        sx={{
+          overflowY: "scroll",
+          overflowX: "hidden",
+        }}
+      >
+        <TimeLabelsColumn />
         <Box display="flex" flexGrow={1}>
           {DAYS_OF_WEEK.map((_, dayIndex) => {
             return (
               <div key={dayIndex} className="calendar-slots-column">
                 <Box height={`${HALF_HOUR_HEIGHT}px`} display="flex">
-                  <div className="border-trick-box" />
                   <Box flexGrow={1} />
                 </Box>
                 {[...Array(NUM_HOURS)].map((_, i) => {
@@ -183,12 +185,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                           return Math.abs(diff) < 30 && diff >= 0;
                         });
                         return (
-                          <Box
-                            key={j}
-                            className="calendar-event-slot"
-                            height={`${HALF_HOUR_HEIGHT}px`}
-                          >
-                            <Box className="border-trick-box" />
+                          <Box key={j} className="calendar-event-slot">
                             <EventSlot
                               date={eventSlotDate}
                               view="week"

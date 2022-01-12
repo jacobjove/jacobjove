@@ -24,17 +24,6 @@ import { addMinutes } from "date-fns";
 import Link from "next/link";
 import { FC, useContext, useState } from "react";
 
-// import { google } from 'googleapis';
-// const googleCalendarClient = google.calendar('v3');
-
-const START_HOUR = 7;
-const END_HOUR = 23;
-const NUM_HOURS = END_HOUR - START_HOUR;
-const HALF_HOUR_HEIGHT = 48; // Must be divisible by 2.
-const HOUR_HEIGHT = HALF_HOUR_HEIGHT * 2;
-
-type ViewMode = "day" | "week" | "month";
-
 export const fragment = gql`
   fragment CalendarViewer on Query {
     calendars(where: { userId: { equals: $userId } }) {
@@ -50,19 +39,20 @@ export const fragment = gql`
   ${calendarEventFragment}
 `;
 
+type ViewMode = "day" | "week" | "month";
+
 type CalendarViewerProps = Omit<CalendarProps, "data"> & {
   data: CalendarData;
+  defaultView?: ViewMode;
 };
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
-  const { data, ...rest } = props;
-
-  const { calendars, calendarEvents } = data;
+  const { data, defaultView, ...rest } = props;
+  const { calendars } = data;
   const defaultCalendar = calendars[0]; // TODO
   const date = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
-
-  const [view, setView] = useState<ViewMode>("day");
+  const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
   const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
     calendars.map((calendar) => calendar.id)
@@ -83,6 +73,14 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   };
   const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
   const displayCalendarViewLabels = !isMobile && false;
+  const commonViewProps = {
+    ...rest,
+    selectedDate: selectedDate || date,
+    setSelectedDate,
+    initialEventFormData,
+    setInitialEventFormData,
+    defaultCalendar,
+  };
   return (
     <Box display="flex" flexDirection={"column"} height={"100%"}>
       {!props.collapseViewMenu && (
@@ -219,36 +217,9 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
         </Grid>
       )}
       <Box flex={"1 1 auto"} minHeight={0}>
-        <DayViewer
-          data={data}
-          {...rest}
-          selectedDate={selectedDate || date}
-          setSelectedDate={setSelectedDate}
-          initialEventFormData={initialEventFormData}
-          setInitialEventFormData={setInitialEventFormData}
-          defaultCalendar={defaultCalendar}
-          hidden={view != "day"}
-        />
-        <WeekViewer
-          data={data}
-          {...rest}
-          selectedDate={selectedDate || date}
-          setSelectedDate={setSelectedDate}
-          initialEventFormData={initialEventFormData}
-          setInitialEventFormData={setInitialEventFormData}
-          defaultCalendar={defaultCalendar}
-          hidden={view != "week"}
-        />
-        <MonthViewer
-          data={data}
-          {...rest}
-          selectedDate={selectedDate || date}
-          setSelectedDate={setSelectedDate}
-          initialEventFormData={initialEventFormData}
-          setInitialEventFormData={setInitialEventFormData}
-          defaultCalendar={defaultCalendar}
-          hidden={view != "month"}
-        />
+        <DayViewer data={data} {...commonViewProps} hidden={view != "day"} />
+        <WeekViewer data={data} {...commonViewProps} hidden={view != "week"} />
+        <MonthViewer data={data} {...commonViewProps} hidden={view != "month"} />
       </Box>
     </Box>
   );

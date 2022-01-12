@@ -33,6 +33,7 @@ const QUERY = gql`
 const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { data: session } = useSession();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
       userId: session?.user?.id,
@@ -42,14 +43,10 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
     // so we are able to know if it is fetching more data.
     // notifyOnNetworkStatusChange: true,
   });
-  const isMobile = useMediaQuery("(max-width: 600px)");
-  if (!session) {
+  if (!session || !data) {
     return null;
   }
-  if (!data) {
-    return null;
-  }
-  const { calendarEvents, calendars, actions, actionCompletions, routines } = data;
+  const { calendarEvents, calendars, actions } = data;
   return (
     <Layout>
       <NextSeo
@@ -90,6 +87,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                   loading={loading}
                   data={{ calendarEvents, calendars }}
                   error={error}
+                  defaultView="day"
                   collapseViewMenu={true}
                   includeDateSelector={false}
                 />

@@ -101,6 +101,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
               <CalendarViewer
                 data={{ calendarEvents, calendars }}
                 loading={loading}
+                defaultView="day"
                 includeDateSelector
               />
             </DashboardCard>

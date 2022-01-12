@@ -11,8 +11,6 @@ interface FooterProps {
 const StyledFooter = styled("footer", {
   shouldForwardProp: (prop) => prop !== "height",
 })<FooterProps>`
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: ${(props) => props.height};
   margin-bottom: calc(${(props) => `-${props.height}`} - 0.5rem);
@@ -20,13 +18,15 @@ const StyledFooter = styled("footer", {
   align-items: center;
   justify-content: center;
   border-top: 1px solid lightgray;
+  background-color: whitesmoke;
+  z-index: 10000;
 `;
 
 const Footer: FC<FooterProps> = (props: FooterProps) => {
   return (
     <StyledFooter height={props.height}>
       <Typography variant="body2" color="textSecondary" align="center">
-        {`© ${new Date().getFullYear()} ${copyrightOwner}. All rights reserved.`}
+        {`© ${new Date().getFullYear()} ${copyrightOwner}`}
       </Typography>
     </StyledFooter>
   );

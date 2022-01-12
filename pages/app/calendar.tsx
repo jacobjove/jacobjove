@@ -8,13 +8,15 @@ import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
+// import { useContext } from "react";
+// import DateContext from "@/components/DateContext";
 
 interface CalendarPageProps {
+  dateISO: string;
   session: Session;
 }
 
@@ -25,18 +27,15 @@ const QUERY = gql`
   ${calendarViewerFragment}
 `;
 
-const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => {
+const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProps) => {
   const { data: session } = useSession();
   const { loading, error, data } = useQuery<CalendarData>(QUERY, {
     variables: {
       userId: session?.user?.id,
+      date: dateISO,
     },
   });
-  console.log(QUERY);
-  if (!session) return null;
-  if (loading) return <p>{"Loading..."}</p>;
-  if (error) return <p>{"Error loading data."}</p>;
-  if (!data) return null;
+  if (!session || !data) return null; // TODO
   return (
     <Layout>
       <NextSeo
@@ -46,15 +45,15 @@ const CalendarPage: NextPage<CalendarPageProps> = (props: CalendarPageProps) => 
         noindex
         nofollow
       />
-      <Grid container justifyContent="center">
-        <Grid item xs={12} lg={9} maxHeight={"80vh"}>
+      <Box display="flex" justifyContent="center" height={"100%"} maxHeight={"100%"}>
+        <Box width="100%" maxWidth={"50rem"} height={"100%"} maxHeight={"100%"}>
           <Card sx={{ height: "100%" }}>
             <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
               <CalendarViewer data={data} loading={loading} error={error} includeDateSelector />
             </Box>
           </Card>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Layout>
   );
 };
@@ -71,12 +70,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const props: CalendarPageProps = { session };
+  const props: CalendarPageProps = {
+    dateISO: new Date().toISOString(),
+    session,
+  };
   await apolloClient
     .query({
       query: GET_CALENDAR_EVENTS,
       variables: {
         userId: session.user.id,
+        date: new Date().toISOString(),
       },
     })
     .catch((e) => {

@@ -89,7 +89,11 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
     setOpen(false);
   };
   return (
-    <Drawer variant="permanent" open={open} PaperProps={{ style: { top: "auto" } }}>
+    <Drawer
+      variant="permanent"
+      open={open}
+      PaperProps={{ style: { position: "absolute", top: 0 } }}
+    >
       <DrawerHeader>
         <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
           {theme.direction === "rtl" ? (
