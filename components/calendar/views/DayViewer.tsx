@@ -6,6 +6,7 @@ import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/DateContext";
 import DateSelector from "@/components/dates/DateSelector";
+import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
@@ -92,17 +93,21 @@ const DayViewer: FC<ViewerProps> = ({
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
   const currentTimeDiffInMinutes = differenceInMinutes(date, dayStart);
-  console.log(currentTimeDiffInMinutes, `${currentTimeDiffInMinutes / 60} hours`);
-  const minuteHeight = HALF_HOUR_HEIGHT / 30;
-  const currentTimeOffsetPx = minuteHeight * currentTimeDiffInMinutes;
+  const minuteHeightPx = HALF_HOUR_HEIGHT / 30;
+  const currentTimeOffsetPx = minuteHeightPx * currentTimeDiffInMinutes;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
   const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
 
   const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
-  const filteredEvents = calendarEvents?.filter((event) => {
-    return isSameDay(parseISO(event.start), selectedDate) && !event.archivedAt;
-  });
+  const filteredEvents = calendarEvents
+    ?.filter((event) => {
+      // TODO: partition events to separate all-day events based on event.end presence
+      return isSameDay(parseISO(event.start), selectedDate) && !event.archivedAt && event.end;
+    })
+    ?.sort((a, b) => {
+      return parseISO(a.start) > parseISO(b.start) ? 1 : -1;
+    }) as (Omit<CalendarEvent, "end"> & { end: string })[];
   useEffect(() => {
     // Scroll to the current time.
     const scrollableDiv = scrollableDivRef.current;
@@ -212,34 +217,30 @@ const DayViewer: FC<ViewerProps> = ({
                     console.error("Event missing start or end time: ", event);
                     return null;
                   }
-                  console.log();
                   const eventStart = parseISO(event.start);
                   const eventEnd = parseISO(event.end);
                   const eventDurationInMinutes = differenceInMinutes(eventEnd, eventStart);
                   // Calculate styles.
-                  const widthPercent = 100; // / numEvents - 2;
-                  // const width = `100%`;
-                  const width = `${widthPercent}%`;
-                  const differenceFromDayStartInMinutes = differenceInMinutes(eventStart, dayStart);
-                  const totalMinutesInDay = 24 * 60;
-                  const topOffset = `${
-                    (differenceFromDayStartInMinutes / totalMinutesInDay) * 100
-                  }%`;
-                  console.log(
-                    differenceFromDayStartInMinutes,
-                    differenceFromDayStartInMinutes / 60,
-                    topOffset
-                  );
-                  const height = `${(eventDurationInMinutes / totalMinutesInDay) * 100}%`;
-                  return null;
+                  const nOverlappingEvents = filteredEvents.filter((e) => {
+                    return (
+                      e.id !== event.id &&
+                      ((e.start >= event.start && e.start <= event.end) ||
+                        (event.start >= e.start && event.start <= e.end))
+                    );
+                  }).length;
+                  const widthPercent = 100 / nOverlappingEvents - 1;
+                  const dayStartDiffInMinutes = differenceInMinutes(eventStart, dayStart);
+                  const topOffset = `${dayStartDiffInMinutes * minuteHeightPx}px`;
+                  const height = `${eventDurationInMinutes * minuteHeightPx}px`;
                   return (
                     <EventBox
                       key={index}
-                      left={`${widthPercent * index + index}%`}
+                      position="absolute"
+                      left={`calc(1px + ${index + index * 1}px + ${widthPercent * index}%)`}
                       top={topOffset}
                       height={height}
                       zIndex={index}
-                      width={width}
+                      width={`${widthPercent}%`}
                       event={event}
                     />
                   );

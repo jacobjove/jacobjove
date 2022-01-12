@@ -35,11 +35,11 @@ const ActionsPage: NextPage<ActionsPageProps> = ({
           {Object.keys(actionsByLetters).map((key) => (
             <React.Fragment key={key}>
               <Divider sx={{ my: 2 }}>{key}</Divider>
-              {actionsByLetters[key].map((action) => (
+              {actionsByLetters[key].map((actionTemplate) => (
                 <SelectableAction
-                  key={action.name}
-                  action={action}
-                  selected={selectedActionIds.includes(action.id)}
+                  key={actionTemplate.name}
+                  actionTemplate={actionTemplate}
+                  selected={selectedActionIds.includes(actionTemplate.id)}
                 />
               ))}
             </React.Fragment>
@@ -76,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
               }
             }
           ) {
-            actionId
+            templateId
           }
         }
       `,
@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props.actionTemplates = data.actionTemplates;
     if (data?.actions?.length) {
       props.selectedActionIds = data.actions.map((action: Action) =>
-        parseInt(`${action.actionId}`)
+        parseInt(`${action.templateId}`)
       );
     }
   }

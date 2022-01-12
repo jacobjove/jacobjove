@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Action } from "@/graphql/schema";
+import { ActionTemplate } from "@/graphql/schema";
 import prisma from "@/lib/prisma";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -8,31 +8,33 @@ import { NextSeo } from "next-seo";
 import React, { FC } from "react";
 
 interface ActionProps {
-  action: Action;
+  actionTemplate: ActionTemplate;
 }
 
 /**
  * A page that renders the HTML of a single action.
  */
-const HabitDetailPage: FC<ActionProps> = ({ action }: ActionProps) => {
+const ActionDetailPage: FC<ActionProps> = ({ actionTemplate }: ActionProps) => {
   return (
     <Layout>
       <NextSeo
-        title={action.name}
-        canonical={`/${action.slug}`}
-        description={`${action.description}`}
+        title={actionTemplate.name}
+        canonical={`/${actionTemplate.slug}`}
+        description={`${actionTemplate.description}`}
       />
       <Container>
-        <PageHeader>{action.name}</PageHeader>
-        {action.description && <p dangerouslySetInnerHTML={{ __html: action.description }} />}
+        <PageHeader>{actionTemplate.name}</PageHeader>
+        {actionTemplate.description && (
+          <p dangerouslySetInnerHTML={{ __html: actionTemplate.description }} />
+        )}
       </Container>
     </Layout>
   );
 };
-export default HabitDetailPage;
+export default ActionDetailPage;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let action: Action | null = null;
+  let action: ActionTemplate | null = null;
   let notFound = false;
   const { slug } = params || {};
   await prisma.actionTemplate

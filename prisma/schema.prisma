@@ -152,8 +152,8 @@ model ActionTheme {
 
 model ActionScheduleTemplate {
   id                 Int              @id @default(autoincrement())
-  action             ActionTemplate   @relation(fields: [actionId], references: [id])
-  actionId           Int
+  actionTemplate     ActionTemplate   @relation(fields: [actionTemplateId], references: [id])
+  actionTemplateId   Int
   scheduleTemplate   ScheduleTemplate @relation(fields: [scheduleTemplateId], references: [id])
   scheduleTemplateId Int
   frequency          FREQUENCY        @default(DAY)
@@ -162,7 +162,7 @@ model ActionScheduleTemplate {
   // unit                 FREQUENCY                     @default(DAY)
   actionSchedules    ActionSchedule[]
 
-  @@unique([actionId, frequency, multiplier])
+  @@unique([actionTemplateId, frequency, multiplier])
 }
 
 model ActionSchedule {

@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { routineFragment } from "@/graphql/fragments";
-import { Action, Routine, RoutineAction } from "@/graphql/schema";
+import { actionFragment } from "@/graphql/fragments";
+import { Action, RoutineAction } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import Card from "@mui/material/Card";
@@ -18,15 +18,17 @@ interface RoutinesPageProps {
 
 const QUERY = gql`
   query RoutinesPage($userId: String!) {
-    routines(where: { userId: { equals: $userId } }) {
-      ...RoutineFragment
+    actions(
+      where: { userId: { equals: $userId }, actions: { some: { id: { not: { equals: null } } } } }
+    ) {
+      ...ActionFragment
     }
   }
-  ${routineFragment}
+  ${actionFragment}
 `;
 
 interface Data {
-  routines: (Omit<Routine, "routineActions"> & {
+  routines: (Omit<Action, "routineActions"> & {
     routineActions: (Omit<RoutineAction, "action"> & {
       action: Action;
     })[];
@@ -66,7 +68,7 @@ const RoutinesPage: NextPage<RoutinesPageProps> = (props: RoutinesPageProps) => 
             <Card sx={{ height: "100%" }}>
               <CardContent>
                 <p>{routine.name}</p>
-                <p>{routine.description}</p>
+                <p>{routine.template?.description ?? ""}</p>
                 <div>
                   {routine.routineActions.length ? (
                     routine.routineActions.map((routineAction) => (

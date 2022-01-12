@@ -12,15 +12,15 @@ export class ActionAdoptionToggleResolver {
     @TypeGraphQL.Ctx() ctx: any,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Arg("userId") userId: string,
-    @TypeGraphQL.Arg("actionId", (_type) => TypeGraphQL.Int) actionId: number,
+    @TypeGraphQL.Arg("actionTemplateId", (_type) => TypeGraphQL.Int) actionTemplateId: number,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<Action> {
     const prisma = getPrismaFromContext(ctx);
-    const actionExists = (await prisma.action.count({ where: { userId, actionId } })) > 0;
+    const actionExists = (await prisma.action.count({ where: { userId, actionTemplateId } })) > 0;
     if (actionExists) {
       return await prisma.action.update({
         where: {
-          userId_actionId: { userId, actionId },
+          userId_actionId: { userId, actionTemplateId },
         },
         data: {
           archivedAt: archivedAt,
@@ -28,7 +28,7 @@ export class ActionAdoptionToggleResolver {
       });
     } else {
       return await prisma.action.create({
-        data: { userId: userId, actionId: actionId, archivedAt: archivedAt },
+        data: { userId, actionTemplateId, archivedAt },
       });
     }
   }

@@ -52,6 +52,8 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
           fontSize: "0.75rem",
           display: "flex",
           alignItems: "start",
+          padding: "1px 0 1px 3px",
+          borderRadius: "2px",
           opacity,
         }}
         onMouseOver={(e) => {
