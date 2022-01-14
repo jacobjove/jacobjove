@@ -1,30 +1,30 @@
 import { getPrismaFromContext } from "@/prisma/generated/helpers";
-import { UserIdentity } from "@/prisma/generated/models/UserIdentity";
+import { Identification } from "@/prisma/generated/models/Identification";
 import { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql";
 
-@TypeGraphQL.Resolver((_of) => UserIdentity)
-export class UserIdentityToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => UserIdentity, {
+@TypeGraphQL.Resolver((_of) => Identification)
+export class IdentificationToggleResolver {
+  @TypeGraphQL.Mutation((_returns) => Identification, {
     nullable: false,
   })
-  async toggleUserIdentity(
+  async toggleIdentification(
     @TypeGraphQL.Ctx() ctx: any,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Arg("userId") userId: string,
     @TypeGraphQL.Arg("identityId", (_type) => TypeGraphQL.Int) identityId: number,
     @TypeGraphQL.Arg("deleted", { nullable: true }) deleted: null | Date
-  ): Promise<UserIdentity> {
+  ): Promise<Identification> {
     const prisma = getPrismaFromContext(ctx);
-    const userIdentityExists =
-      (await prisma.userIdentity.count({
+    const identificationExists =
+      (await prisma.identification.count({
         where: {
           userId: userId,
           identityId: identityId,
         },
       })) > 0;
-    if (userIdentityExists) {
-      return await prisma.userIdentity.update({
+    if (identificationExists) {
+      return await prisma.identification.update({
         where: {
           userId_identityId: {
             userId: userId,
@@ -36,7 +36,7 @@ export class UserIdentityToggleResolver {
         },
       });
     } else {
-      return await prisma.userIdentity.create({
+      return await prisma.identification.create({
         data: {
           userId: userId,
           identityId: identityId,

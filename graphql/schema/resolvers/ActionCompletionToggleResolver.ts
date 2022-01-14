@@ -17,9 +17,9 @@ export class ActionCompletionToggleResolver {
   ): Promise<ActionCompletion> {
     const prisma = getPrismaFromContext(ctx);
     const actionCompletionExists =
-      (await prisma.actionTemplateCompletion.count({ where: { userId, actionId } })) > 0;
+      (await prisma.actCompletion.count({ where: { userId, actionId } })) > 0;
     if (actionCompletionExists) {
-      return await prisma.actionTemplateCompletion.update({
+      return await prisma.actCompletion.update({
         where: {
           userId_actionId: { userId, actionId },
         },
@@ -28,7 +28,7 @@ export class ActionCompletionToggleResolver {
         },
       });
     } else {
-      return await prisma.actionTemplateCompletion.create({
+      return await prisma.actCompletion.create({
         data: { userId: userId, actionId: actionId, archivedAt: archivedAt },
       });
     }

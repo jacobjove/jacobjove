@@ -6,7 +6,7 @@ import React, { FC } from "react";
 
 const QUERY = gql`
   query Actions {
-    actionTemplates {
+    acts {
       id
       name
       description
@@ -47,7 +47,7 @@ const ActionAdmin: FC = () => {
     <Box display="flex" height="100%" mx={2}>
       <Box flexGrow={1}>
         <DataGrid
-          rows={data.actionTemplates}
+          rows={data.acts}
           columns={columns}
           pageSize={20}
           rowsPerPageOptions={[20]}

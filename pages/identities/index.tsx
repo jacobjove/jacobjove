@@ -1,4 +1,4 @@
-import { UserIdentity } from ".prisma/client";
+import { Identification } from ".prisma/client";
 import SelectableIdentity from "@/components/identities/SelectableIdentity";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             name
             slug
           }
-          userIdentities (
+          identifications (
             where: {
               userId: {equals: "${session.user.id}"}
               deleted: {equals: null}
@@ -86,10 +86,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       })
       .then((res) => {
         props.identities = res.data.identities;
-        if (res.data.userIdentities.length) {
-          props.selectedIdentityIds = res.data.userIdentities.map(
-            (userIdentity: UserIdentity & { identity: Identity }) =>
-              parseInt(`${userIdentity.identity.id}`)
+        if (res.data.identities.length) {
+          props.selectedIdentityIds = res.data.identifications.map(
+            (identification: Identification & { identity: Identity }) =>
+              parseInt(`${identification.identity.id}`)
           );
         }
       });

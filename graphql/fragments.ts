@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const actionTemplateFragment = gql`
-  fragment ActionTemplateFragment on ActionTemplate {
+export const actFragment = gql`
+  fragment ActFragment on Act {
     id
     name
     slug
@@ -46,7 +46,7 @@ export const actionFragment = gql`
       ...ActionThemeFragment
     }
     template {
-      ...ActionTemplateFragment
+      ...ActFragment
     }
     actions {
       ...RoutineActionFragment
@@ -57,7 +57,7 @@ export const actionFragment = gql`
       archivedAt
     }
   }
-  ${actionTemplateFragment}
+  ${actFragment}
   ${actionThemeFragment}
   ${routineActionFragment}
 `;
@@ -111,11 +111,11 @@ export const userValueFragment = gql`
   }
 `;
 
-export const userIdentityFragment = gql`
-  fragment UserIdentityFragment on UserIdentity {
+export const identificationFragment = gql`
+  fragment IdentificationFragment on Identification {
     __typename
     id
-    identity {
+    identification {
       id
       name
       slug

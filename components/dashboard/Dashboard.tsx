@@ -8,10 +8,17 @@ import {
   actionFragment,
   calendarEventFragment,
   calendarFragment,
-  userIdentityFragment,
+  identificationFragment,
   userValueFragment,
 } from "@/graphql/fragments";
-import { Action, Calendar, CalendarEvent, UserIdentity, UserValue, Value } from "@/graphql/schema";
+import {
+  Action,
+  Calendar,
+  CalendarEvent,
+  Identification,
+  UserValue,
+  Value,
+} from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import { Breakpoint } from "@mui/material";
@@ -38,15 +45,15 @@ export const fragment = gql`
     userValues(where: { userId: { equals: $userId } }) {
       ...UserValueFragment
     }
-    userIdentities(where: { userId: { equals: $userId } }) {
-      ...UserIdentityFragment
+    identifications(where: { userId: { equals: $userId } }) {
+      ...IdentificationFragment
     }
   }
   ${calendarFragment}
   ${calendarEventFragment}
   ${actionFragment}
   ${userValueFragment}
-  ${userIdentityFragment}
+  ${identificationFragment}
 `;
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -55,7 +62,7 @@ export interface DashboardData {
   calendars: Calendar[];
   calendarEvents: CalendarEvent[];
   actions: Action[];
-  userIdentities: UserIdentity[];
+  identifications: Identification[];
   userValues: (UserValue & {
     value: Value;
   })[];
@@ -99,7 +106,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const speedDialActions = [{ icon: <AddIcon />, name: "Add task" }];
   const children = useMemo(() => {
     if (!data || !session) return [];
-    const { calendarEvents, calendars, actions, userIdentities, userValues } = data;
+    const { calendarEvents, calendars, actions, identifications, userValues } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
       switch (key) {
         case "calendar":
@@ -122,7 +129,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "identities":
           return (
             <DashboardCard title={"Identities"} editing={editing} loading={loading}>
-              <IdentityTable userIdentities={userIdentities} />
+              <IdentityTable identifications={identifications} />
             </DashboardCard>
           );
         case "values":

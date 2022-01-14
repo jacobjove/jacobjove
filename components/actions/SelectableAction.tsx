@@ -1,5 +1,5 @@
 import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
-import { ActionTemplate } from "@/graphql/schema";
+import { Act } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,19 +10,19 @@ import { FC, MouseEvent, useState } from "react";
 const TOGGLE_IDENTIFICATION = gql`
   mutation ToggleActionAdoption($actionId: Int!, $userId: String!, $archivedAt: DateTime) {
     toggleActionAdoption(actionId: $actionId, userId: $userId, archivedAt: $archivedAt) {
-      actionTemplateId
+      actId
       archivedAt
     }
   }
 `;
 
 interface SelectableActionProps {
-  actionTemplate: ActionTemplate;
+  act: Act;
   selected: boolean;
 }
 
 const SelectableAction: FC<SelectableActionProps> = ({
-  actionTemplate,
+  act,
   selected: initiallySelected,
 }: SelectableActionProps) => {
   const { data: session } = useSession();
@@ -37,12 +37,12 @@ const SelectableAction: FC<SelectableActionProps> = ({
         archivedAt = new Date().toISOString();
       }
       mutate({
-        variables: { actionTemplateId: actionTemplate.id, userId: session.user.id, archivedAt },
+        variables: { actId: act.id, userId: session.user.id, archivedAt },
         optimisticResponse: {
           __typename: "Mutation",
           toggleActionAdoption: {
             __typename: "ToggleActionAdoptionPayload",
-            actionTemplateId: actionTemplate.id,
+            actId: act.id,
             archivedAt,
           },
         },
@@ -51,13 +51,8 @@ const SelectableAction: FC<SelectableActionProps> = ({
     }
   };
   return (
-    <Box key={actionTemplate.name} position="relative" display="inline-block">
-      <Link
-        href={`/actions/${actionTemplate.slug}`}
-        key={actionTemplate.name}
-        passHref
-        prefetch={false}
-      >
+    <Box key={act.name} position="relative" display="inline-block">
+      <Link href={`/actions/${act.slug}`} key={act.name} passHref prefetch={false}>
         <Button
           component="a"
           variant="outlined"
@@ -71,11 +66,11 @@ const SelectableAction: FC<SelectableActionProps> = ({
             paddingRight: "2.1rem",
           }}
         >
-          {actionTemplate.name}
+          {act.name}
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/actions/${actionTemplate.slug}`} onClick={toggleSelection}>
+        <a href={`/actions/${act.slug}`} onClick={toggleSelection}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

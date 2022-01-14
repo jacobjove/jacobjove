@@ -54,7 +54,7 @@ const SelectableBelief: FC<SelectableBeliefProps> = ({
   };
   return (
     <Box key={belief.name} position="relative" display="inline-block">
-      <Link href={`/identities/${belief.slug}`} key={belief.name} passHref prefetch={false}>
+      <Link href={`/beliefs/${belief.slug}`} key={belief.name} passHref prefetch={false}>
         <Button
           component="a"
           variant="outlined"
@@ -72,7 +72,7 @@ const SelectableBelief: FC<SelectableBeliefProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/identities/${belief.slug}`} onClick={toggleUserBelief}>
+        <a href={`/beliefs/${belief.slug}`} onClick={toggleUserBelief}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

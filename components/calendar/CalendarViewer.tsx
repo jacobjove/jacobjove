@@ -65,7 +65,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     end: date ? addMinutes(date, 29) : null,
     allDay: false,
     notes: "",
-    calendarId: defaultCalendar.id,
+    calendarId: defaultCalendar?.id,
   });
 
   const handleViewTabChange = (event: React.SyntheticEvent, newValue: 0 | 1 | 2) => {

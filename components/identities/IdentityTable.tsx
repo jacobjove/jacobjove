@@ -1,5 +1,5 @@
 import Onboarder from "@/components/Onboarder";
-import { Identity, UserIdentity as _UserIdentity } from "@/graphql/schema";
+import { Identification as _Identification, Identity } from "@/graphql/schema";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -13,12 +13,12 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { FC } from "react";
 
-type UserIdentity = _UserIdentity & {
+type Identification = _Identification & {
   identity: Identity;
 };
 
 interface IdentityTableProps {
-  userIdentities: UserIdentity[];
+  identifications: Identification[];
 }
 
 const ONBOARDING_STEPS = [
@@ -35,9 +35,9 @@ const ONBOARDING_STEPS = [
 // TODO: https://mui.com/components/tables/#sorting-amp-selecting
 const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   // console.log("IdentityTable", props);
-  const { userIdentities } = props;
+  const { identifications } = props;
   let content;
-  if (!userIdentities.length) {
+  if (!identifications.length) {
     content = <Onboarder steps={ONBOARDING_STEPS} />;
   } else {
     content = (
@@ -58,14 +58,14 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userIdentities.map((userIdentity: UserIdentity) => (
+            {identifications.map((identification: Identification) => (
               <TableRow
-                key={userIdentity.identity.name}
+                key={identification.identity.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <Link href={`/identities/${userIdentity.identity.slug}`}>
-                    <a>{userIdentity.identity.name}</a>
+                  <Link href={`/identities/${identification.identity.slug}`}>
+                    <a>{identification.identity.name}</a>
                   </Link>
                 </TableCell>
                 <TableCell component="td">

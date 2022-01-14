@@ -2,37 +2,37 @@
 
 import * as generatedSchemaExports from "@/prisma/generated";
 import {
+  Act as _Act,
   Action as _Action,
   ActionCompletion as _ActionCompletion,
   ActionSchedule as _ActionSchedule,
   ActionScheduleTemplate as _ActionScheduleTemplate,
-  ActionTemplate as _ActionTemplate,
   ActionTheme as _ActionTheme,
   Belief as _Belief,
   Calendar as _Calendar,
   CalendarEvent as _CalendarEvent,
   Dashboard as _Dashboard,
+  Identification as _Identification,
   Identity as _Identity,
   RoutineAction as _RoutineAction,
   ScheduleTemplate as _ScheduleTemplate,
   User as _User,
   UserBelief as _UserBelief,
-  UserIdentity as _UserIdentity,
   UserValue as _UserValue,
   Value as _Value,
 } from "@/prisma/generated";
 import { NonEmptyArray } from "type-graphql";
 import { ActionAdoptionToggleResolver } from "./resolvers/ActionAdoptionToggleResolver";
 import { ActionCompletionToggleResolver } from "./resolvers/ActionCompletionToggleResolver";
+import { IdentificationToggleResolver } from "./resolvers/IdentificationToggleResolver";
 import { UserBeliefToggleResolver } from "./resolvers/UserBeliefToggleResolver";
-import { UserIdentityToggleResolver } from "./resolvers/UserIdentityToggleResolver";
 import { UserValueToggleResolver } from "./resolvers/UserValueToggleResolver";
 
 const { resolvers: generatedResolvers, ...generatedSchema } = generatedSchemaExports;
 
 export const resolvers = [
   ...generatedResolvers,
-  UserIdentityToggleResolver,
+  IdentificationToggleResolver,
   ActionAdoptionToggleResolver,
   ActionCompletionToggleResolver,
   UserValueToggleResolver,
@@ -46,9 +46,9 @@ type FromPrismaWithOmission<T, K extends keyof T> = Pick<
   Exclude<keyof FromPrisma<T>, K>
 >;
 
-export type ActionTemplate = FromPrisma<_ActionTemplate>;
+export type Act = FromPrisma<_Act>;
 export type Action = FromPrismaWithOmission<_Action, "template" | "completions"> & {
-  template: ActionTemplate;
+  template: Act;
   schedules: ActionSchedule[];
   themes: ActionTheme[];
   completions: ActionCompletion[] | undefined;
@@ -72,7 +72,7 @@ export type Value = FromPrisma<_Value>;
 export type Belief = FromPrisma<_Belief>;
 export type RoutineAction = FromPrismaWithOmission<_RoutineAction, "action"> & { action: Action };
 export type UserBelief = FromPrismaWithOmission<_UserBelief, "belief"> & { belief: Belief };
-export type UserIdentity = FromPrismaWithOmission<_UserIdentity, "identity"> & {
+export type Identification = FromPrismaWithOmission<_Identification, "identity"> & {
   identity: Identity;
 };
 export type Calendar = Omit<_Calendar, "_count">;

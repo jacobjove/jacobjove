@@ -34,20 +34,20 @@ enum Role {
 }
 
 model User {
-  id             String         @id @default(cuid())
-  name           String?
-  email          String         @unique
-  emailVerified  DateTime?
-  image          String?
-  isAdmin        Boolean        @default(false)
-  accounts       Account[]
-  calendars      Calendar[]     @relation("calendars")
-  userIdentities UserIdentity[]
-  userValues     UserValue[]
-  userBeliefs    UserBelief[]
-  actions        Action[]
-  dashboards     Dashboard[]
-  settings       Json           @default("{}")
+  id            String           @id @default(cuid())
+  name          String?
+  email         String           @unique
+  emailVerified DateTime?
+  image         String?
+  isAdmin       Boolean          @default(false)
+  accounts      Account[]
+  calendars     Calendar[]       @relation("calendars")
+  identities    Identification[]
+  userValues    UserValue[]
+  userBeliefs   UserBelief[]
+  actions       Action[]
+  dashboards    Dashboard[]
+  settings      Json             @default("{}")
 }
 
 model Dashboard {
@@ -107,21 +107,25 @@ model ScheduleTemplate {
   actionScheduleTemplates ActionScheduleTemplate[]
 }
 
-model ActionTemplate {
-  id                Int                      @id @default(autoincrement())
-  name              String
-  slug              String                   @unique
-  description       String?
-  identityRelations IdentityActionRelation[]
-  scheduleTemplates ActionScheduleTemplate[]
-  actions           Action[]
+model Act {
+  id                      Int                      @id @default(autoincrement())
+  name                    String
+  slug                    String                   @unique
+  description             String?
+  isPublic                Boolean                  @default(false)
+  identificationRelations IdentityActRelation[]
+  scheduleTemplates       ActionScheduleTemplate[]
+  actions                 Action[]
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime?
+  archivedAt              DateTime?
 }
 
 model Action {
   id                       Int                @id @default(autoincrement())
   user                     User               @relation(fields: [userId], references: [id])
   userId                   String
-  template                 ActionTemplate?    @relation(fields: [templateId], references: [id])
+  template                 Act?               @relation(fields: [templateId], references: [id])
   templateId               Int?
   name                     String
   notes                    String?
@@ -166,8 +170,8 @@ model ActionTheme {
 
 model ActionScheduleTemplate {
   id                 Int              @id @default(autoincrement())
-  actionTemplate     ActionTemplate   @relation(fields: [actionTemplateId], references: [id])
-  actionTemplateId   Int
+  act                Act              @relation(fields: [actId], references: [id])
+  actId              Int
   scheduleTemplate   ScheduleTemplate @relation(fields: [scheduleTemplateId], references: [id])
   scheduleTemplateId Int
   frequency          FREQUENCY        @default(DAY)
@@ -176,7 +180,7 @@ model ActionScheduleTemplate {
   // unit                 FREQUENCY                     @default(DAY)
   actionSchedules    ActionSchedule[]
 
-  @@unique([actionTemplateId, frequency, multiplier])
+  @@unique([actId, frequency, multiplier])
 }
 
 model ActionSchedule {
@@ -216,7 +220,7 @@ enum FREQUENCY {
   YEAR
 }
 
-model UserIdentity {
+model Identification {
   id         Int       @id @default(autoincrement())
   user       User      @relation(fields: [userId], references: [id])
   userId     String
@@ -225,16 +229,16 @@ model UserIdentity {
   deleted    DateTime?
 
   @@unique([userId, identityId])
-  @@map(name: "userIdentities")
+  @@map(name: "identifications")
 }
 
 model Identity {
-  id              Int                      @id @default(autoincrement())
+  id              Int                   @id @default(autoincrement())
   name            String
-  slug            String                   @unique
+  slug            String                @unique
   description     String?
-  userIdentities  UserIdentity[]
-  actionRelations IdentityActionRelation[]
+  identities      Identification[]
+  actionRelations IdentityActRelation[]
 
   @@map(name: "identities")
 }
@@ -249,11 +253,11 @@ model Goal {
   quantity   Int
 }
 
-model IdentityActionRelation {
-  id         Int            @id @default(autoincrement())
-  identity   Identity       @relation(fields: [identityId], references: [id])
+model IdentityActRelation {
+  id         Int       @id @default(autoincrement())
+  identity   Identity  @relation(fields: [identityId], references: [id])
   identityId Int
-  action     ActionTemplate @relation(fields: [actionId], references: [id])
+  action     Act       @relation(fields: [actionId], references: [id])
   actionId   Int
   deleted    DateTime?
 

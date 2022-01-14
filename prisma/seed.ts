@@ -51,12 +51,12 @@ async function main() {
     console.log(e);
   }
 
-  let actionTemplates = await prisma.actionTemplate.findMany();
+  let acts = await prisma.act.findMany();
   try {
-    await prisma.actionTemplate.createMany({
+    await prisma.act.createMany({
       data: actionsData,
     });
-    actionTemplates = await prisma.actionTemplate.findMany();
+    acts = await prisma.act.findMany();
   } catch (e) {
     console.log(e);
   }
@@ -64,7 +64,7 @@ async function main() {
   users.forEach(async (user) => {
     sampleSize(identities, Math.floor(Math.random() * identities.length)).forEach((identity) => {
       try {
-        prisma.userIdentity.create({
+        prisma.identification.create({
           data: {
             userId: user.id,
             identityId: identity.id,
@@ -96,13 +96,13 @@ async function main() {
     } catch (e) {
       console.log(e);
     }
-    actionTemplates.forEach(async (actionTemplate) => {
+    acts.forEach(async (act) => {
       try {
         const action = await prisma.action.create({
           data: {
             userId: user.id,
-            templateId: actionTemplate.id,
-            name: actionTemplate.name,
+            templateId: act.id,
+            name: act.name,
           },
         });
         await prisma.actionSchedule.create({

@@ -1,7 +1,7 @@
 import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Action, ActionTemplate } from "@/graphql/schema";
+import { Act, Action } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
@@ -12,16 +12,13 @@ import { NextSeo } from "next-seo";
 import React from "react";
 
 interface ActionsPageProps {
-  actionTemplates: ActionTemplate[];
+  acts: Act[];
   selectedActionIds: number[];
 }
 
-const ActionsPage: NextPage<ActionsPageProps> = ({
-  actionTemplates,
-  selectedActionIds,
-}: ActionsPageProps) => {
-  const actionsByLetters: Record<string, typeof actionTemplates> = {};
-  actionTemplates.map((action) => {
+const ActionsPage: NextPage<ActionsPageProps> = ({ acts, selectedActionIds }: ActionsPageProps) => {
+  const actionsByLetters: Record<string, typeof acts> = {};
+  acts.map((action) => {
     const firstLetter = action.name[0].toUpperCase();
     actionsByLetters[firstLetter] = actionsByLetters[firstLetter] || [];
     actionsByLetters[firstLetter].push(action);
@@ -35,11 +32,11 @@ const ActionsPage: NextPage<ActionsPageProps> = ({
           {Object.keys(actionsByLetters).map((key) => (
             <React.Fragment key={key}>
               <Divider sx={{ my: 2 }}>{key}</Divider>
-              {actionsByLetters[key].map((actionTemplate) => (
+              {actionsByLetters[key].map((act) => (
                 <SelectableAction
-                  key={actionTemplate.name}
-                  actionTemplate={actionTemplate}
-                  selected={selectedActionIds.includes(actionTemplate.id)}
+                  key={act.name}
+                  act={act}
+                  selected={selectedActionIds.includes(act.id)}
                 />
               ))}
             </React.Fragment>
@@ -57,14 +54,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
   const apolloClient = initializeApollo();
   const props: ActionsPageProps = {
-    actionTemplates: [],
+    acts: [],
     selectedActionIds: [],
   };
   if (session?.user?.id) {
     const { data } = await apolloClient.query({
       query: gql`
         query Actions {
-          actionTemplates {
+          acts {
             id
             name
             slug
@@ -81,7 +78,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
       `,
     });
-    props.actionTemplates = data.actionTemplates;
+    props.acts = data.acts;
     if (data?.actions?.length) {
       props.selectedActionIds = data.actions.map((action: Action) =>
         parseInt(`${action.templateId}`)
