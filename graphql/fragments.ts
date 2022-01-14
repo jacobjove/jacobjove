@@ -115,7 +115,7 @@ export const identificationFragment = gql`
   fragment IdentificationFragment on Identification {
     __typename
     id
-    identification {
+    identity {
       id
       name
       slug
