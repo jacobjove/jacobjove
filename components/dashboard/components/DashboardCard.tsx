@@ -41,6 +41,9 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
             padding: 0,
             backgroundColor: "whitesmoke",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
           }}
           action={<DragHandle className={`drag-anchor${!props.editing ? " hidden" : ""}`} />}
         />

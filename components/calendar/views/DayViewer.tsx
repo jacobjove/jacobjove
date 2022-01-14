@@ -74,6 +74,11 @@ const Root = styled("div")(() => ({
   },
 }));
 
+type AllDayCalendarEvent = Omit<CalendarEvent, "end">;
+type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
+  end: string;
+};
+
 const DayViewer: FC<ViewerProps> = ({
   selectedDate,
   setSelectedDate,
@@ -107,9 +112,25 @@ const DayViewer: FC<ViewerProps> = ({
     })
     ?.sort((a, b) => {
       return parseISO(a.start) > parseISO(b.start) ? 1 : -1;
-    }) as (Omit<CalendarEvent, "end"> & { end: string })[];
+    }) as BoundCalendarEvent[];
+
+  // Group events to account for possible overlap.
+  const eventGroups: BoundCalendarEvent[][] = [];
+  let currentGroup: BoundCalendarEvent[];
+  let lastEnd = new Date(-8640000000000000);
+  filteredEvents.forEach((event) => {
+    const start = parseISO(event.start);
+    const end = parseISO(event.end);
+    if (!currentGroup || lastEnd < start) {
+      currentGroup = [];
+      eventGroups.push(currentGroup);
+    }
+    currentGroup.push(event);
+    lastEnd = end > lastEnd ? end : lastEnd;
+  });
+
+  // Scroll to the current time whenever it changes.
   useEffect(() => {
-    // Scroll to the current time.
     const scrollableDiv = scrollableDivRef.current;
     if (scrollableDiv) {
       scrollableDiv.scrollTo({
@@ -172,14 +193,8 @@ const DayViewer: FC<ViewerProps> = ({
             <TimeLabelsColumn />
             <div className={`calendar-slots-column`}>
               {[...Array(24 * 2)].map((_, i) => {
-                let hour, minutes;
-                if (i % 2 === 0) {
-                  hour = START_HOUR + i;
-                  minutes = 0;
-                } else {
-                  hour = START_HOUR + i - 1;
-                  minutes = 30;
-                }
+                const hour = (START_HOUR + i) / 2;
+                const minutes = i % 2 === 0 ? 0 : 30;
                 const eventSlotDate = setHours(
                   setMinutes(setSeconds(selectedDate, 0), minutes),
                   hour
@@ -211,39 +226,30 @@ const DayViewer: FC<ViewerProps> = ({
                   </Box>
                 );
               })}
-              {!!filteredEvents?.length &&
-                filteredEvents.map((event, index) => {
-                  if (!event.start || !event.end) {
-                    console.error("Event missing start or end time: ", event);
-                    return null;
-                  }
-                  const eventStart = parseISO(event.start);
-                  const eventEnd = parseISO(event.end);
-                  const eventDurationInMinutes = differenceInMinutes(eventEnd, eventStart);
-                  // Calculate styles.
-                  const nOverlappingEvents = filteredEvents.filter((e) => {
-                    return (
-                      e.id !== event.id &&
-                      ((e.start >= event.start && e.start <= event.end) ||
-                        (event.start >= e.start && event.start <= e.end))
-                    );
-                  }).length;
+              {!!eventGroups?.length &&
+                eventGroups.map((eventGroup) => {
+                  const nOverlappingEvents = eventGroup.length;
                   const widthPercent = 100 / nOverlappingEvents - 1;
-                  const dayStartDiffInMinutes = differenceInMinutes(eventStart, dayStart);
-                  const topOffset = `${dayStartDiffInMinutes * minuteHeightPx}px`;
-                  const height = `${eventDurationInMinutes * minuteHeightPx}px`;
-                  return (
-                    <EventBox
-                      key={index}
-                      position="absolute"
-                      left={`calc(1px + ${index + index * 1}px + ${widthPercent * index}%)`}
-                      top={topOffset}
-                      height={height}
-                      zIndex={index}
-                      width={`${widthPercent}%`}
-                      event={event}
-                    />
-                  );
+                  return eventGroup.map((event, indexInGroup) => {
+                    const eventStart = parseISO(event.start);
+                    const eventEnd = parseISO(event.end);
+                    const eventDurationInMinutes = differenceInMinutes(eventEnd, eventStart);
+                    const dayStartDiffInMinutes = differenceInMinutes(eventStart, dayStart);
+                    const topOffset = `${dayStartDiffInMinutes * minuteHeightPx + 2}px`; // TODO: fix magic number
+                    const height = `${eventDurationInMinutes * minuteHeightPx}px`;
+                    return (
+                      <EventBox
+                        key={indexInGroup}
+                        position="absolute"
+                        left={`calc(1px + ${widthPercent * indexInGroup}%)`}
+                        top={topOffset}
+                        height={height}
+                        zIndex={indexInGroup}
+                        width={`${widthPercent}%`}
+                        event={event}
+                      />
+                    );
+                  });
                 })}
               {selectedDate < new Date() && isSameDay(date, selectedDate) && (
                 <Box
@@ -255,7 +261,7 @@ const DayViewer: FC<ViewerProps> = ({
                   height={`${currentTimeOffsetPx}px`}
                   paddingTop="2px"
                   paddingLeft="2px"
-                  zIndex={1}
+                  zIndex={10}
                 />
               )}
               <EventEditingDialog

@@ -11,6 +11,7 @@ import {
   Belief as _Belief,
   Calendar as _Calendar,
   CalendarEvent as _CalendarEvent,
+  Dashboard as _Dashboard,
   Identity as _Identity,
   RoutineAction as _RoutineAction,
   ScheduleTemplate as _ScheduleTemplate,
@@ -93,4 +94,7 @@ export type User = FromPrismaWithOmission<_User, "settings"> & {
       };
     };
   };
+};
+export type Dashboard = FromPrismaWithOmission<_Dashboard, "layouts"> & {
+  layouts: string;
 };

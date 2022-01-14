@@ -19,12 +19,13 @@ import Backdrop from "@mui/material/Backdrop";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Session } from "next-auth";
 import { FC, useEffect, useMemo, useState } from "react";
 import { ItemCallback, Responsive, WidthProvider } from "react-grid-layout";
 
 export const fragment = gql`
-  fragment Dashboard on Query {
+  fragment DashboardData on Query {
     calendars(where: { userId: { equals: $userId } }) {
       ...CalendarFragment
     }
@@ -79,11 +80,12 @@ interface DashboardProps {
   editing?: boolean;
   session: Session | null;
   error?: Error;
+  height?: string;
 }
 
 const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const { data, loading, error, layouts, setLayouts, editing, session } = props;
-  if (error) console.error("ERROR", error);
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xs");
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
   const handleSpeedDialOpen = () => {
@@ -179,8 +181,14 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   };
   // console.log("Rendering dashboard with children", children);
   return (
-    <div style={{ position: "relative" }}>
-      <Backdrop open={speedDialOpen} />
+    <div
+      style={{
+        position: "relative",
+        height: props.height ?? "auto",
+        maxHeight: props.height ?? "auto",
+      }}
+    >
+      <Backdrop open={isMobile && speedDialOpen} />
       <div style={{ position: "relative" }}>
         <ResponsiveGridLayout
           className="layout"
@@ -210,31 +218,29 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
           {children}
         </ResponsiveGridLayout>
       </div>
-      <div style={{ position: "relative" }}>
-        <SpeedDial
-          ariaLabel="Dashboard speed dial"
-          sx={{
-            position: "sticky",
-            bottom: 16,
-            right: 0,
-            marginRight: "16px",
-            alignItems: "end",
-          }}
-          icon={<SpeedDialIcon />}
-          onClose={handleSpeedDialClose}
-          onOpen={handleSpeedDialOpen}
-        >
-          {speedDialActions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              tooltipOpen // TODO: on mobile only?
-              onClick={handleSpeedDialClose}
-            />
-          ))}
-        </SpeedDial>
-      </div>
+      <SpeedDial
+        ariaLabel="Dashboard speed dial"
+        sx={{
+          position: "sticky",
+          bottom: 16,
+          right: 0,
+          marginRight: "16px",
+          alignItems: "end",
+        }}
+        icon={<SpeedDialIcon />}
+        onClose={handleSpeedDialClose}
+        onOpen={handleSpeedDialOpen}
+      >
+        {speedDialActions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            tooltipOpen // TODO: on mobile only?
+            onClick={handleSpeedDialClose}
+          />
+        ))}
+      </SpeedDial>
     </div>
   );
 };

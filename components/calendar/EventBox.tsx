@@ -53,6 +53,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
           display: "flex",
           alignItems: "start",
           padding: "1px 0 1px 3px",
+          border: "1px solid rgba(255, 255, 255, 0.75)",
           borderRadius: "2px",
           opacity,
         }}
@@ -72,10 +73,16 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         ref={dragRef}
       >
         <div style={{ flexGrow: 1 }}>
-          <Typography component="div" fontWeight={"600"} fontSize={"0.7rem"} marginBottom="0.15rem">
+          <Typography
+            component="div"
+            fontWeight={"600"}
+            fontSize={"0.7rem"}
+            marginBottom="0.15rem"
+            lineHeight={"0.75rem"}
+          >
             {event.title}
           </Typography>
-          <Typography component="div" fontSize={"0.55rem"}>
+          <Typography component="div" fontSize={"0.55rem"} lineHeight={"0.75rem"}>
             {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}
           </Typography>
         </div>

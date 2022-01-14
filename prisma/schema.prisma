@@ -46,7 +46,21 @@ model User {
   userValues     UserValue[]
   userBeliefs    UserBelief[]
   actions        Action[]
+  dashboards     Dashboard[]
   settings       Json           @default("{}")
+}
+
+model Dashboard {
+  id         String    @id @default(cuid())
+  name       String
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  layouts    Json      @default("[]")
+  isDefault  Boolean   @default(false)
+  isPublic   Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
 }
 
 enum Color {
@@ -166,18 +180,18 @@ model ActionScheduleTemplate {
 }
 
 model ActionSchedule {
-  id                       Int                     @id @default(autoincrement())
-  action                   Action?                 @relation(fields: [actionId], references: [id])
-  actionId                 Int
-  frequency                FREQUENCY               @default(DAY)
-  multiplier               Int                     @default(1)
-  quantity                 Int                     @default(1)
-  actionScheduleTemplate   ActionScheduleTemplate? @relation(fields: [actionScheduleTemplateId], references: [id])
-  actionScheduleTemplateId Int?
-  calendarEvents           CalendarEvent[]
-  createdAt                DateTime                @default(now())
-  archivedAt               DateTime?
-  active                   Boolean                 @default(false)
+  id             Int                     @id @default(autoincrement())
+  action         Action?                 @relation(fields: [actionId], references: [id])
+  actionId       Int
+  frequency      FREQUENCY               @default(DAY)
+  multiplier     Int                     @default(1)
+  quantity       Int                     @default(1)
+  calendarEvents CalendarEvent[]
+  createdAt      DateTime                @default(now())
+  archivedAt     DateTime?
+  active         Boolean                 @default(false)
+  template       ActionScheduleTemplate? @relation(fields: [templateId], references: [id])
+  templateId     Int?
 }
 
 model ActionCompletion {

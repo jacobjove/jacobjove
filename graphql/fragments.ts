@@ -122,3 +122,15 @@ export const userIdentityFragment = gql`
     }
   }
 `;
+
+export const dashboardFragment = gql`
+  fragment DashboardFragment on Dashboard {
+    __typename
+    id
+    name
+    layouts
+    isDefault
+    isPublic
+    archivedAt
+  }
+`;

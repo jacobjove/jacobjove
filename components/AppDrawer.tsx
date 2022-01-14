@@ -92,7 +92,19 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
     <Drawer
       variant="permanent"
       open={open}
-      PaperProps={{ style: { position: "absolute", top: 0 } }}
+      PaperProps={{
+        sx: {
+          position: "absolute",
+          top: 0,
+          // Get rid of scrollbar.
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          "&::-webkit-scrollbar": {
+            width: 0,
+            height: 0,
+          },
+        },
+      }}
     >
       <DrawerHeader>
         <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>

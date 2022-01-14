@@ -4,9 +4,12 @@ import { CREATE_ACTION_COMPLETION, UPDATE_ACTION_COMPLETION } from "@/graphql/mu
 import { Action } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import EditIcon from "@mui/icons-material/Edit";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RepeatIcon from "@mui/icons-material/Repeat";
+import StopIcon from "@mui/icons-material/Stop";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -17,6 +20,8 @@ import { useSession } from "next-auth/react";
 // import Link from "next/link";
 import React, { FC, useContext, useState } from "react";
 import { useDrag } from "react-dnd";
+
+const USE_CIRCLE_ICONS = false;
 
 interface ActionChipProps {
   action: Action;
@@ -38,6 +43,7 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
     console.log(">>>", action.name, completionsToday);
   }
   const isMobile = useMediaQuery("(max-width: 600px)");
+  const [actionInProgress, setActionInProgress] = useState(false);
   const [expanded, setExpanded] = useState(isMobile ? false : true);
   const completed = Boolean(completion && !completion.archivedAt);
   const schedule = action.schedules[0]; // TODO
@@ -154,18 +160,6 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
               <StyledAnchor>{`${action.name}`}</StyledAnchor>
             </Link> */}
           </Typography>
-          {!!action.actions?.length && (
-            <IconButton
-              sx={{ marginLeft: "0.33rem" }}
-              onClick={() => {
-                setExpanded(!expanded);
-              }}
-            >
-              {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            </IconButton>
-          )}
-        </Box>
-        <Box display="flex" alignItems="center">
           {schedule && (
             <IconButton
               title={`every ${schedule.frequency.toLowerCase()}`}
@@ -175,6 +169,50 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
               <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
             </IconButton>
           )}
+          {!!action.actions?.length && (
+            <IconButton
+              title={`${expanded ? "Collapse routine" : "Expand routine"}`}
+              sx={{
+                marginLeft: "0.33rem",
+                backgroundColor: USE_CIRCLE_ICONS ? "white" : "transparent",
+                backgroundOrigin: "content-box",
+              }}
+              onClick={() => {
+                setExpanded(!expanded);
+              }}
+            >
+              {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </IconButton>
+          )}
+        </Box>
+        <Box display="flex" alignItems="center" marginLeft="auto">
+          {(!actionInProgress && (
+            <IconButton
+              title={`Begin ${action.name}`}
+              onClick={() => {
+                setActionInProgress(true);
+              }}
+            >
+              <PlayArrowIcon />
+            </IconButton>
+          )) || (
+            <IconButton
+              title="Stop action"
+              onClick={() => {
+                setActionInProgress(false);
+              }}
+            >
+              <StopIcon />
+            </IconButton>
+          )}
+          <IconButton
+            title={`Edit ${action.name}`}
+            onClick={() => {
+              console.log("edit action");
+            }}
+          >
+            <EditIcon />
+          </IconButton>
           <DragIndicatorIcon
             sx={{
               "&:hover": { cursor: "grab" },
