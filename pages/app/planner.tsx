@@ -1,4 +1,4 @@
-import ActionsBox from "@/components/actions/ActionsBox";
+import TasksBox from "@/components/actions/TasksBox";
 import CalendarViewer from "@/components/calendar";
 import { fragment as dashboardFragment } from "@/components/dashboard/Dashboard";
 import DateContext from "@/components/DateContext";
@@ -40,7 +40,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session) {
     return null;
   }
-  const { calendarEvents, calendars, actions } = data;
+  const { calendarEvents, calendars, habits } = data;
   return (
     <Layout>
       <NextSeo
@@ -90,7 +90,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             </form>
           </Grid>
           <Grid item padding="0.25rem">
-            <ActionsBox data={{ actions }} />
+            <TasksBox data={{ habits }} />
           </Grid>
           {!isMobile && (
             <Grid item padding={"0 0.25rem 0.25rem"}>

@@ -1,25 +1,22 @@
-import { actionCompletionFragment, calendarEventFragment } from "@/graphql/fragments";
+import { actionFragment, calendarEventFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
 
-export const CREATE_ACTION_COMPLETION = gql`
-  mutation CreateActionCompletion($data: ActionCompletionCreateInput!) {
-    createActionCompletion(data: $data) {
-      ...ActionCompletionFragment
+export const CREATE_ACTION = gql`
+  mutation CreateAction($data: ActionCreateInput!) {
+    createAction(data: $data) {
+      ...ActionFragment
     }
   }
-  ${actionCompletionFragment}
+  ${actionFragment}
 `;
 
 export const UPDATE_ACTION_COMPLETION = gql`
-  mutation UpdateActionCompletion(
-    $data: ActionCompletionUpdateInput!
-    $where: ActionCompletionWhereUniqueInput!
-  ) {
-    updateActionCompletion(data: $data, where: $where) {
-      ...ActionCompletionFragment
+  mutation UpdateAction($data: ActionUpdateInput!, $where: ActionWhereUniqueInput!) {
+    updateAction(data: $data, where: $where) {
+      ...ActionFragment
     }
   }
-  ${actionCompletionFragment}
+  ${actionFragment}
 `;
 
 export const CREATE_CALENDAR_EVENT = gql`

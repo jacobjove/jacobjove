@@ -1,7 +1,8 @@
 import sampleSize from "lodash/sampleSize";
 import prisma from "../lib/prisma";
-import actionsData from "./seeds/actions";
+import actsData from "./seeds/acts";
 import identitiesData from "./seeds/identities";
+import metricsData from "./seeds/metrics";
 import usersData from "./seeds/users";
 import valuesData from "./seeds/values";
 
@@ -54,12 +55,31 @@ async function main() {
   let acts = await prisma.act.findMany();
   try {
     await prisma.act.createMany({
-      data: actionsData,
+      data: actsData,
     });
     acts = await prisma.act.findMany();
   } catch (e) {
     console.log(e);
   }
+
+  let metrics = await prisma.actionMetric.findMany();
+  try {
+    await prisma.actionMetric.createMany({
+      data: metricsData,
+    });
+    metrics = await prisma.act.findMany();
+  } catch (e) {
+    console.log(e);
+  }
+
+  acts.forEach(async (act) => {
+    await prisma.actionMetricApplication.create({
+      data: {
+        actId: act.id,
+        metricId: sampleSize(metrics, 1)[0].id,
+      },
+    });
+  });
 
   users.forEach(async (user) => {
     sampleSize(identities, Math.floor(Math.random() * identities.length)).forEach((identity) => {
@@ -98,16 +118,32 @@ async function main() {
     }
     acts.forEach(async (act) => {
       try {
-        const action = await prisma.action.create({
+        const habit = await prisma.habit.create({
           data: {
             userId: user.id,
-            templateId: act.id,
+            actId: act.id,
             name: act.name,
           },
         });
+        const metricApplications = await prisma.actionMetricApplication.findMany({
+          where: {
+            actId: act.id,
+          },
+          include: {
+            metric: true,
+          },
+        });
+        metricApplications.forEach(async (metricApplication) => {
+          await prisma.actionMetricUsage.create({
+            data: {
+              metricId: metricApplication.metric.id,
+              habitId: habit.id,
+            },
+          });
+        });
         await prisma.actionSchedule.create({
           data: {
-            actionId: action.id,
+            habitId: habit.id,
             frequency: "DAY",
             multiplier: 1,
           },
@@ -116,35 +152,34 @@ async function main() {
         console.log(e);
       }
     });
-    const actions = await prisma.action.findMany({
+    const habits = await prisma.habit.findMany({
       where: {
         userId: user.id,
       },
       include: {
-        template: true,
+        act: true,
       },
     });
     [...Array(2)].map(async (_, i) => {
       try {
-        const routine = await prisma.action.create({
+        const routine = await prisma.routine.create({
           data: {
             userId: user.id,
-            templateId: null,
             name: `Routine ${i}`,
             notes:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
           },
         });
         let routineDurationInMinutes = 0;
-        actions.forEach(async (action, i) => {
+        habits.forEach(async (habit, i) => {
           const doIt = true;
           if (doIt) {
             const actionDurationInMinutes = 10;
             try {
-              await prisma.routineAction.create({
+              await prisma.routineHabit.create({
                 data: {
                   routineId: routine.id,
-                  actionId: action.id,
+                  habitId: habit.id,
                   position: i,
                   durationInMinutes: actionDurationInMinutes,
                 },
@@ -154,12 +189,12 @@ async function main() {
               console.log(e);
             }
           }
-          await prisma.action.update({
+          await prisma.routine.update({
             where: {
               id: routine.id,
             },
             data: {
-              defaultDurationInMinutes: routineDurationInMinutes,
+              durationInMinutes: routineDurationInMinutes,
             },
           });
         });
@@ -174,11 +209,11 @@ async function main() {
       },
     });
     if (calendar) {
-      actions.forEach(async (action) => {
+      habits.forEach(async (habit) => {
         try {
           await prisma.actionSchedule.create({
             data: {
-              actionId: action.id,
+              habitId: habit.id,
               frequency: "DAY",
               multiplier: 1,
             },
@@ -199,7 +234,7 @@ async function main() {
                   calendarId: calendar.id,
                   start: start.toISOString(),
                   end: end.toISOString(),
-                  title: `${action.name} event ${i}`,
+                  title: `${habit.name} event ${i}`,
                 },
               });
             }

@@ -1,7 +1,8 @@
-import ActionsBox, { fragment as actionsBoxFragment } from "@/components/actions/ActionsBox";
+import TasksBox, { fragment as actionsBoxFragment } from "@/components/actions/TasksBox";
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
 import DateSelector from "@/components/dates/DateSelector";
 import Layout from "@/components/Layout";
+import { Calendar, CalendarEvent, Habit } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -24,17 +25,24 @@ interface PlannerPageProps {
 const QUERY = gql`
   query TasksPage($userId: String!, $date: DateTime!) {
     ...CalendarViewer
-    ...ActionsBox
+    ...TasksBox
   }
   ${calendarViewerFragment}
   ${actionsBoxFragment}
 `;
 
+// TODO: build type from fragments
+interface TasksPageData {
+  calendarEvents: CalendarEvent[];
+  calendars: Calendar[];
+  habits: Habit[];
+}
+
 const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   const { data: session } = useSession();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const { loading, error, data } = useQuery(QUERY, {
+  const { loading, error, data } = useQuery<TasksPageData>(QUERY, {
     variables: {
       userId: session?.user?.id,
       date: selectedDate?.toISOString(),
@@ -46,7 +54,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session || !data) {
     return null;
   }
-  const { calendarEvents, calendars, actions } = data;
+  const { calendarEvents, calendars, habits } = data;
   const dateSelectorBoxHeight = "2.5rem";
   return (
     <Layout>
@@ -102,7 +110,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             maxHeight={isMobile ? "35vh" : "auto"}
           >
             <Paper>
-              <ActionsBox data={{ actions }} />
+              <TasksBox data={{ habits }} />
             </Paper>
           </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Act, Action } from "@/graphql/schema";
+import { Act, Habit } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
@@ -13,10 +13,10 @@ import React from "react";
 
 interface ActionsPageProps {
   acts: Act[];
-  selectedActionIds: number[];
+  selectedActIds: number[];
 }
 
-const ActionsPage: NextPage<ActionsPageProps> = ({ acts, selectedActionIds }: ActionsPageProps) => {
+const ActionsPage: NextPage<ActionsPageProps> = ({ acts, selectedActIds }: ActionsPageProps) => {
   const actionsByLetters: Record<string, typeof acts> = {};
   acts.map((action) => {
     const firstLetter = action.name[0].toUpperCase();
@@ -36,7 +36,7 @@ const ActionsPage: NextPage<ActionsPageProps> = ({ acts, selectedActionIds }: Ac
                 <SelectableAction
                   key={act.name}
                   act={act}
-                  selected={selectedActionIds.includes(act.id)}
+                  selected={selectedActIds.includes(act.id)}
                 />
               ))}
             </React.Fragment>
@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();
   const props: ActionsPageProps = {
     acts: [],
-    selectedActionIds: [],
+    selectedActIds: [],
   };
   if (session?.user?.id) {
     const { data } = await apolloClient.query({
@@ -66,23 +66,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             name
             slug
           }
-          actions (
+          habits (
             where: {
               userId: {
                 equals: "${session.user.id}"
               }
             }
           ) {
-            templateId
+            actId
           }
         }
       `,
     });
     props.acts = data.acts;
     if (data?.actions?.length) {
-      props.selectedActionIds = data.actions.map((action: Action) =>
-        parseInt(`${action.templateId}`)
-      );
+      props.selectedActIds = data.habits.map((habit: Habit) => parseInt(`${habit.actId}`));
     }
   }
   return addApolloState(apolloClient, { props });

@@ -9,7 +9,7 @@ import { FC, MouseEvent, useState } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
   mutation ToggleActionAdoption($actionId: Int!, $userId: String!, $archivedAt: DateTime) {
-    toggleActionAdoption(actionId: $actionId, userId: $userId, archivedAt: $archivedAt) {
+    toggleHabitAdoption(actionId: $actionId, userId: $userId, archivedAt: $archivedAt) {
       actId
       archivedAt
     }
@@ -40,7 +40,7 @@ const SelectableAction: FC<SelectableActionProps> = ({
         variables: { actId: act.id, userId: session.user.id, archivedAt },
         optimisticResponse: {
           __typename: "Mutation",
-          toggleActionAdoption: {
+          toggleHabitAdoption: {
             __typename: "ToggleActionAdoptionPayload",
             actId: act.id,
             archivedAt,
@@ -52,7 +52,7 @@ const SelectableAction: FC<SelectableActionProps> = ({
   };
   return (
     <Box key={act.name} position="relative" display="inline-block">
-      <Link href={`/actions/${act.slug}`} key={act.name} passHref prefetch={false}>
+      <Link href={`/habits/${act.slug}`} key={act.name} passHref prefetch={false}>
         <Button
           component="a"
           variant="outlined"
@@ -70,7 +70,7 @@ const SelectableAction: FC<SelectableActionProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/actions/${act.slug}`} onClick={toggleSelection}>
+        <a href={`/habits/${act.slug}`} onClick={toggleSelection}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

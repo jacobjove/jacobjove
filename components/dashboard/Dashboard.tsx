@@ -1,24 +1,17 @@
-import ActionsBox from "@/components/actions/ActionsBox";
+import TasksBox from "@/components/actions/TasksBox";
 import CalendarViewer from "@/components/calendar";
 import DashboardCard from "@/components/dashboard/components/DashboardCard";
 import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
 import IdentityTable from "@/components/identities/IdentityTable";
 import ValuesTable from "@/components/values/ValuesTable";
 import {
-  actionFragment,
   calendarEventFragment,
   calendarFragment,
+  habitFragment,
   identificationFragment,
   userValueFragment,
 } from "@/graphql/fragments";
-import {
-  Action,
-  Calendar,
-  CalendarEvent,
-  Identification,
-  UserValue,
-  Value,
-} from "@/graphql/schema";
+import { Calendar, CalendarEvent, Habit, Identification, UserValue, Value } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import { Breakpoint } from "@mui/material";
@@ -39,8 +32,8 @@ export const fragment = gql`
     calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
       ...CalendarEventFragment
     }
-    actions(where: { userId: { equals: $userId } }) {
-      ...ActionFragment
+    habits(where: { userId: { equals: $userId } }) {
+      ...HabitFragment
     }
     userValues(where: { userId: { equals: $userId } }) {
       ...UserValueFragment
@@ -51,7 +44,7 @@ export const fragment = gql`
   }
   ${calendarFragment}
   ${calendarEventFragment}
-  ${actionFragment}
+  ${habitFragment}
   ${userValueFragment}
   ${identificationFragment}
 `;
@@ -61,7 +54,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 export interface DashboardData {
   calendars: Calendar[];
   calendarEvents: CalendarEvent[];
-  actions: Action[];
+  habits: Habit[];
   identifications: Identification[];
   userValues: (UserValue & {
     value: Value;
@@ -106,7 +99,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const speedDialActions = [{ icon: <AddIcon />, name: "Add task" }];
   const children = useMemo(() => {
     if (!data || !session) return [];
-    const { calendarEvents, calendars, actions, identifications, userValues } = data;
+    const { calendarEvents, calendars, habits, identifications, userValues } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
       switch (key) {
         case "calendar":
@@ -120,10 +113,10 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
               />
             </DashboardCard>
           );
-        case "actions":
+        case "habits":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <ActionsBox data={{ actions }} />
+              <TasksBox data={{ habits }} />
             </DashboardCard>
           );
         case "identities":

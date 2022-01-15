@@ -8,70 +8,57 @@ export const actFragment = gql`
   }
 `;
 
-export const actionThemeFragment = gql`
-  fragment ActionThemeFragment on ActionTheme {
-    __typename
-    id
-    body
-    start
-    end
-  }
-`;
+// export const actionThemeFragment = gql`
+//   fragment ActionThemeFragment on ActionTheme {
+//     __typename
+//     id
+//     body
+//     start
+//     end
+//   }
+// `;
 
-export const routineActionFragment = gql`
-  fragment RoutineActionFragment on RoutineAction {
-    __typename
-    id
-    position
-    durationInMinutes
-    action {
-      id
-      name
-    }
-  }
-`;
+// export const routineHabitFragment = gql`
+//   fragment RoutineHabitFragment on RoutineHabit {
+//     __typename
+//     id
+//     position
+//     durationInMinutes
+//     action {
+//       id
+//       name
+//     }
+//   }
+// `;
 
 export const actionFragment = gql`
   fragment ActionFragment on Action {
+    id
+    start
+    end
+    notes
+    archivedAt
+  }
+`;
+
+export const habitFragment = gql`
+  fragment HabitFragment on Habit {
     __typename
     id
     name
-    notes
+    act {
+      ...ActFragment
+    }
     schedules {
       id
       frequency
       multiplier
     }
-    themes {
-      ...ActionThemeFragment
-    }
-    template {
-      ...ActFragment
-    }
     actions {
-      ...RoutineActionFragment
-    }
-    completions {
-      id
-      date
-      archivedAt
+      ...ActionFragment
     }
   }
   ${actFragment}
-  ${actionThemeFragment}
-  ${routineActionFragment}
-`;
-
-export const actionCompletionFragment = gql`
-  fragment ActionCompletionFragment on ActionCompletion {
-    __typename
-    id
-    action {
-      ...ActionFragment
-    }
-    date
-    archivedAt
-  }
   ${actionFragment}
 `;
 

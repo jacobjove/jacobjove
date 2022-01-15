@@ -1,20 +1,20 @@
 import { getPrismaFromContext } from "@/prisma/generated/helpers";
-import { ActionCompletion } from "@/prisma/generated/models/ActionCompletion";
+import { Action } from "@/prisma/generated/models/Action";
 import { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql";
 
-@TypeGraphQL.Resolver((_of) => ActionCompletion)
+@TypeGraphQL.Resolver((_of) => Action)
 export class ActionCompletionToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => ActionCompletion, {
+  @TypeGraphQL.Mutation((_returns) => Action, {
     nullable: false,
   })
-  async toggleActionCompletion(
+  async toggleAction(
     @TypeGraphQL.Ctx() ctx: any,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Arg("userId") userId: string,
     @TypeGraphQL.Arg("actionId", (_type) => TypeGraphQL.Int) actionId: number,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
-  ): Promise<ActionCompletion> {
+  ): Promise<Action> {
     const prisma = getPrismaFromContext(ctx);
     const actionCompletionExists =
       (await prisma.actCompletion.count({ where: { userId, actionId } })) > 0;

@@ -1,17 +1,17 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import DateContext from "@/components/DateContext";
-import { CREATE_ACTION_COMPLETION, UPDATE_ACTION_COMPLETION } from "@/graphql/mutations";
-import { Action } from "@/graphql/schema";
+import { CREATE_ACTION, UPDATE_ACTION_COMPLETION } from "@/graphql/mutations";
+import { Habit } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import StopIcon from "@mui/icons-material/Stop";
 import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
+// import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -21,90 +21,86 @@ import { useSession } from "next-auth/react";
 import React, { FC, useContext, useState } from "react";
 import { useDrag } from "react-dnd";
 
-const USE_CIRCLE_ICONS = false;
-
-interface ActionChipProps {
-  action: Action;
+interface HabitChipProps {
+  habit: Habit;
 }
 
-const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
-  const { action } = props;
+const HabitChip: FC<HabitChipProps> = (props: HabitChipProps) => {
+  const { habit } = props;
   const { data: session } = useSession();
   const today = useContext(DateContext);
-  const completionsToday = action.completions
-    ?.filter((completion) => {
-      return isSameDay(parseISO(completion.date), today);
+  const actionsToday = habit.actions
+    ?.filter((action) => {
+      return isSameDay(parseISO(action.start), today);
     })
     ?.sort((a, b) => {
-      return parseISO(a.date) > parseISO(b.date) ? 1 : -1;
+      return parseISO(a.start) > parseISO(b.start) ? 1 : -1;
     });
-  const completion = completionsToday?.[0];
-  if (completionsToday?.length) {
-    console.log(">>>", action.name, completionsToday);
+  const action = actionsToday?.[0];
+  if (actionsToday?.length) {
+    console.log(">>>", habit.name, actionsToday);
   }
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [actionInProgress, setActionInProgress] = useState(false);
   const [expanded, setExpanded] = useState(isMobile ? false : true);
-  const completed = Boolean(completion && !completion.archivedAt);
-  const schedule = action.schedules[0]; // TODO
-  const [createActionCompletion, { loading: createActionCompletionLoading }] =
-    useMutation(CREATE_ACTION_COMPLETION);
-  const [updateActionCompletion, { loading: updateActionCompletionLoading }] =
-    useMutation(UPDATE_ACTION_COMPLETION);
-  const loading = createActionCompletionLoading || updateActionCompletionLoading;
-  const toggleActionCompletion = (on: boolean) => {
+  const completed = Boolean(action && !action.archivedAt);
+  const schedule = habit.schedules[0]; // TODO
+  const [createAction, { loading: createActionLoading }] = useMutation(CREATE_ACTION);
+  const [updateAction, { loading: updateActionLoading }] = useMutation(UPDATE_ACTION_COMPLETION);
+  const loading = createActionLoading || updateActionLoading;
+  const toggleAction = (on: boolean) => {
     if (!session?.user.id) {
       return;
     }
     if (loading) {
-      console.log("WARNING: ActionChip: toggleActionCompletion: loading");
+      console.log("WARNING: HabitChip: toggleAction: loading");
     }
     const archivedAt = on ? undefined : new Date().toISOString();
-    if (on && !completion && session?.user.id) {
-      console.log("Trying to create action completion...", on, session?.user.id);
-      const completionDate = new Date().toISOString();
-      createActionCompletion({
+    if (on && !action && session?.user.id) {
+      console.log("Trying to create habit action...", on, session?.user.id);
+      const actionDate = new Date().toISOString();
+      createAction({
         variables: {
           data: {
-            date: completionDate,
-            action: { connect: { id: action.id } }, // hehe...
+            date: actionDate,
+            habit: { connect: { id: habit.id } }, // hehe...
           },
         },
         optimisticResponse: {
           __typename: "Mutation",
-          createActionCompletion: {
-            __typename: "ActionCompletion",
+          createAction: {
+            __typename: "Action",
             id: -1,
-            date: completionDate,
-            actionId: action.id,
-            action: {
-              ...action,
+            date: actionDate,
+            habitId: habit.id,
+            habit: {
+              ...habit,
             },
-            // actionId: action.template.id,
+            // habitId: habit.act.id,
             archivedAt: archivedAt ?? null,
           },
         },
       }).catch((error) => {
         console.error(error);
       });
-    } else if (completion) {
-      console.log(on, completion, session?.user.id);
-      updateActionCompletion({
+    } else if (action) {
+      console.log(on, action, session?.user.id);
+      updateAction({
         variables: {
-          where: { id: completion.id },
+          where: { id: action.id },
           data: {
             // For now, we assume that re-checking an action as complete (after it was
             // previously checked but then unchecked) means undoing the uncheck;
-            // i.e., we don't need to modify the completion date.
-            // date: completion.date,
+            // i.e., we don't need to modify the action date.
+            // date: action.date,
             archivedAt: { set: archivedAt },
           },
         },
         optimisticResponse: {
           __typename: "Mutation",
-          updateActionCompletion: {
-            ...completion,
-            __typename: "ActionCompletion",
+          updateAction: {
+            ...action,
+            __typename: "Action",
             action: {
               ...action,
             },
@@ -115,10 +111,10 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
     }
   };
   const [{ opacity }, dragRef] = useDrag(() => ({
-    type: "action",
+    type: "habit",
     item: {
       type: "action",
-      title: action.name,
+      title: habit.name,
       scheduleId: schedule?.id ?? null,
       calendarId: session?.user?.settings?.defaultCalendarId,
     },
@@ -151,13 +147,13 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
             disabled={loading}
             onClick={() => {
               console.log("checkbox click -->", !completed);
-              toggleActionCompletion(!completed);
+              toggleAction(!completed);
             }}
           />
           <Typography fontSize="0.9rem">
-            {`${action.name}`}
+            {`${habit.name}`}
             {/* <Link href={`/app/users/${session.user.name}`} passHref>
-              <StyledAnchor>{`${action.name}`}</StyledAnchor>
+              <StyledAnchor>{`${habit.name}`}</StyledAnchor>
             </Link> */}
           </Typography>
           {schedule && (
@@ -169,7 +165,7 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
               <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
             </IconButton>
           )}
-          {!!action.actions?.length && (
+          {/* {!!habit.actions?.length && (
             <IconButton
               title={`${expanded ? "Collapse routine" : "Expand routine"}`}
               sx={{
@@ -183,12 +179,12 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
             >
               {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </IconButton>
-          )}
+          )} */}
         </Box>
         <Box display="flex" alignItems="center" marginLeft="auto">
           {(!actionInProgress && (
             <IconButton
-              title={`Begin ${action.name}`}
+              title={`Begin ${habit.name}`}
               onClick={() => {
                 setActionInProgress(true);
               }}
@@ -206,9 +202,9 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
             </IconButton>
           )}
           <IconButton
-            title={`Edit ${action.name}`}
+            title={`Edit ${habit.name}`}
             onClick={() => {
-              console.log("edit action");
+              console.log("edit habit");
             }}
           >
             <EditIcon />
@@ -224,15 +220,15 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
       {/* {action.defaultDurationInMinutes && (
         <Typography component={"small"}>{action.defaultDurationInMinutes} min</Typography>
       )} */}
-      <Collapse in={expanded}>
-        {!!action.actions?.length &&
-          action.actions.map((routineAction) => {
-            if (!routineAction.action) {
+      {/* <Collapse in={expanded}>
+        {!!habit.actions?.length &&
+          habit.actions.map((routineHabit) => {
+            if (!routineHabit.action) {
               return null;
             }
             return (
               <Box
-                key={routineAction.action.id}
+                key={routineHabit.action.id}
                 bgcolor={"rgba(255, 255, 255, 0.5);"}
                 border={"1px solid rgba(255, 255, 255, 0.2);"}
                 borderRadius="3px"
@@ -243,19 +239,19 @@ const ActionChip: FC<ActionChipProps> = (props: ActionChipProps) => {
                 justifyContent={"space-between"}
               >
                 <Typography display={"block"} fontSize="0.8rem">
-                  {routineAction.action?.name}
+                  {routineHabit.action?.name}
                 </Typography>
-                {routineAction.durationInMinutes && (
+                {routineHabit.durationInMinutes && (
                   <Typography display={"block"} fontSize="0.8rem">
-                    {routineAction.durationInMinutes} minutes
+                    {routineHabit.durationInMinutes} minutes
                   </Typography>
                 )}
               </Box>
             );
           })}
-      </Collapse>
+      </Collapse> */}
     </Box>
   );
 };
 
-export default ActionChip;
+export default HabitChip;

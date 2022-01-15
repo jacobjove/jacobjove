@@ -1,5 +1,8 @@
 // Prisma schema file: https://pris.ly/d/prisma-schema
 
+// TODO: Split into multiple files?
+// https://github.com/prisma/prisma/issues/2377#issuecomment-974662122
+
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.1.x"]
@@ -45,7 +48,7 @@ model User {
   identities    Identification[]
   userValues    UserValue[]
   userBeliefs   UserBelief[]
-  actions       Action[]
+  habits        Habit[]
   dashboards    Dashboard[]
   settings      Json             @default("{}")
 }
@@ -85,8 +88,8 @@ model CalendarEvent {
   calendarId Int
   schedule   ActionSchedule? @relation(fields: [scheduleId], references: [id])
   scheduleId Int?
-  action     Action?         @relation(fields: [actionId], references: [id])
-  actionId   Int?
+  habit      Habit?          @relation(fields: [habitId], references: [id])
+  habitId    Int?
   title      String
   start      DateTime
   end        DateTime?
@@ -107,66 +110,160 @@ model ScheduleTemplate {
   actionScheduleTemplates ActionScheduleTemplate[]
 }
 
+model ActClass {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  acts Act[]
+}
+
+// e.g., running
 model Act {
-  id                      Int                      @id @default(autoincrement())
-  name                    String
-  slug                    String                   @unique
-  description             String?
-  isPublic                Boolean                  @default(false)
-  identificationRelations IdentityActRelation[]
-  scheduleTemplates       ActionScheduleTemplate[]
-  actions                 Action[]
-  createdAt               DateTime                 @default(now())
-  updatedAt               DateTime?
-  archivedAt              DateTime?
+  id                 Int                       @id @default(autoincrement())
+  name               String
+  slug               String                    @unique
+  class              ActClass?                 @relation(fields: [classId], references: [id])
+  classId            Int?
+  description        String?
+  isPublic           Boolean                   @default(false)
+  identityRelations  IdentityActRelation[]
+  scheduleTemplates  ActionScheduleTemplate[]
+  habits             Habit[]
+  metricApplications ActionMetricApplication[]
+  parent             Act?                      @relation("variants", fields: [parentId], references: [id])
+  parentId           Int?
+  variants           Act[]                     @relation("variants")
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime?
+  archivedAt         DateTime?
 }
 
-model Action {
-  id                       Int                @id @default(autoincrement())
-  user                     User               @relation(fields: [userId], references: [id])
+// e.g., running:miles
+model ActionMetricApplication {
+  id         Int          @id @default(autoincrement())
+  actId      Int
+  act        Act          @relation(fields: [actId], references: [id], onDelete: Cascade)
+  metricId   Int
+  metric     ActionMetric @relation(fields: [metricId], references: [id])
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime?
+  archivedAt DateTime?
+}
+
+model ActionMetricUsage {
+  id         Int                  @id @default(autoincrement())
+  metricId   Int
+  metric     ActionMetric         @relation(fields: [metricId], references: [id])
+  habitId    Int
+  habit      Habit                @relation(fields: [habitId], references: [id])
+  records    ActionMetricRecord[]
+  archivedAt DateTime?
+}
+
+// e.g., miles
+model ActionMetric {
+  id           Int                       @id @default(autoincrement())
+  name         String                    @unique
+  applications ActionMetricApplication[]
+  usages       ActionMetricUsage[]
+}
+
+model Habit {
+  id                       Int                 @id @default(autoincrement())
+  actId                    Int
+  act                      Act                 @relation(fields: [actId], references: [id], onDelete: Cascade)
   userId                   String
-  template                 Act?               @relation(fields: [templateId], references: [id])
-  templateId               Int?
+  user                     User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   name                     String
-  notes                    String?
+  isPublic                 Boolean             @default(false)
   schedules                ActionSchedule[]
-  themes                   ActionTheme[]
   calendarEvents           CalendarEvent[]
-  completions              ActionCompletion[]
+  // themes                   ActionTheme[]
+  metrics                  ActionMetricUsage[]
   goals                    Goal[]
-  routines                 RoutineAction[]    @relation("routines")
-  actions                  RoutineAction[]    @relation("actions")
-  createdAt                DateTime           @default(now())
-  archivedAt               DateTime?
+  routines                 RoutineHabit[]
   defaultDurationInMinutes Int?
-
-  @@unique([userId, templateId])
+  actions                  Action[]
+  createdAt                DateTime            @default(now())
+  updatedAt                DateTime?
+  archivedAt               DateTime?
 }
 
-model RoutineAction {
+model RoutineHabit {
   id                Int       @unique @default(autoincrement())
-  routine           Action    @relation("actions", fields: [routineId], references: [id])
+  routine           Routine   @relation(fields: [routineId], references: [id])
   routineId         Int
-  action            Action    @relation("routines", fields: [actionId], references: [id])
-  actionId          Int
+  habit             Habit     @relation(fields: [habitId], references: [id])
+  habitId           Int
   position          Int
   durationInMinutes Int
   createdAt         DateTime  @default(now())
   updatedAt         DateTime?
 
-  @@id([routineId, actionId])
+  @@id([routineId, position])
 }
 
-// theme or focus
-model ActionTheme {
-  id       Int       @id @default(autoincrement())
-  actionId Int?
-  action   Action?   @relation(fields: [actionId], references: [id])
-  key      String
-  body     String
-  start    DateTime
-  end      DateTime?
+model Routine {
+  id                Int            @id @default(autoincrement())
+  userId            String
+  name              String
+  habits            RoutineHabit[]
+  durationInMinutes Int?
+  notes             String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime?
+  archivedAt        DateTime?
 }
+
+model ActionMetricRecord {
+  id            Int               @id @default(autoincrement())
+  metricUsageId Int
+  metricUsage   ActionMetricUsage @relation(fields: [metricUsageId], references: [id])
+  actionId      Int
+  action        Action            @relation(fields: [actionId], references: [id])
+  value         Int
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime?
+  archivedAt    DateTime?
+}
+
+model Action {
+  id            Int                  @id @default(autoincrement())
+  habit         Habit                @relation(fields: [habitId], references: [id])
+  habitId       Int
+  start         DateTime
+  end           DateTime
+  notes         String?
+  metricRecords ActionMetricRecord[]
+  archivedAt    DateTime?
+}
+
+model ActionSchedule {
+  id             Int                     @id @default(autoincrement())
+  habit          Habit                   @relation(fields: [habitId], references: [id])
+  habitId        Int
+  frequency      FREQUENCY               @default(DAY)
+  multiplier     Int                     @default(1)
+  quantity       Int                     @default(1)
+  calendarEvents CalendarEvent[]
+  createdAt      DateTime                @default(now())
+  archivedAt     DateTime?
+  active         Boolean                 @default(false)
+  template       ActionScheduleTemplate? @relation(fields: [templateId], references: [id])
+  templateId     Int?
+}
+
+// // theme or focus
+// model ActionTheme {
+//   id       Int       @id @default(autoincrement())
+//   actionId Int?
+//   action   Action?   @relation(fields: [actionId], references: [id])
+//   key      String
+//   body     String
+//   start    DateTime
+//   end      DateTime?
+//   habit    Habit    @relation(fields: [habitId], references: [id])
+//   habitId  Int
+// }
 
 model ActionScheduleTemplate {
   id                 Int              @id @default(autoincrement())
@@ -181,29 +278,6 @@ model ActionScheduleTemplate {
   actionSchedules    ActionSchedule[]
 
   @@unique([actId, frequency, multiplier])
-}
-
-model ActionSchedule {
-  id             Int                     @id @default(autoincrement())
-  action         Action?                 @relation(fields: [actionId], references: [id])
-  actionId       Int
-  frequency      FREQUENCY               @default(DAY)
-  multiplier     Int                     @default(1)
-  quantity       Int                     @default(1)
-  calendarEvents CalendarEvent[]
-  createdAt      DateTime                @default(now())
-  archivedAt     DateTime?
-  active         Boolean                 @default(false)
-  template       ActionScheduleTemplate? @relation(fields: [templateId], references: [id])
-  templateId     Int?
-}
-
-model ActionCompletion {
-  id         Int       @id @default(autoincrement())
-  action     Action    @relation(fields: [actionId], references: [id])
-  actionId   Int
-  date       DateTime  @default(now())
-  archivedAt DateTime?
 }
 
 enum TYPE {
@@ -245,8 +319,8 @@ model Identity {
 
 model Goal {
   id         Int    @id @default(autoincrement())
-  action     Action @relation(fields: [actionId], references: [id])
-  actionId   Int
+  habit      Habit  @relation(fields: [habitId], references: [id])
+  habitId    Int
   goalId     Int?
   goal       Goal?  @relation("GoalMilestones", fields: [goalId], references: [id])
   milestones Goal[] @relation("GoalMilestones")

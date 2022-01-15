@@ -1,7 +1,7 @@
-import ActionChip from "@/components/actions/ActionChip";
+import HabitChip from "@/components/actions/HabitChip";
 import DateContext from "@/components/DateContext";
-import { actionFragment } from "@/graphql/fragments";
-import { Action, ActionCompletion } from "@/graphql/schema";
+import { habitFragment } from "@/graphql/fragments";
+import { Action, Habit } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
@@ -18,38 +18,38 @@ import Link from "next/link";
 import { FC, useContext, useState } from "react";
 
 export const fragment = gql`
-  fragment ActionsBox on Query {
-    actions(where: { userId: { equals: $userId } }) {
-      ...ActionFragment
+  fragment TasksBox on Query {
+    habits(where: { userId: { equals: $userId } }) {
+      ...HabitFragment
     }
   }
-  ${actionFragment}
+  ${habitFragment}
 `;
 
-interface ActionsBoxProps {
+interface TasksBoxProps {
   data: {
-    actions: Action[];
+    habits: Habit[];
   };
 }
 
-const ActionsBox: FC<ActionsBoxProps> = (props: ActionsBoxProps) => {
+const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const { data } = props;
-  const { actions: allActions } = data;
+  const { habits: allHabits } = data;
   const today = useContext(DateContext);
-  const [completeActions, incompleteActions] = partition(allActions, (action) => {
-    // console.log("ActionsBox", action.name, action.completions);
-    return !!action.completions?.filter((actionCompletion: ActionCompletion) => {
-      return isSameDay(parseISO(actionCompletion.date), today) && !actionCompletion.archivedAt;
+  const [completeActions, incompleteActions] = partition(allHabits, (habit) => {
+    // console.log("TasksBox", habit.name, habit.actions);
+    return !!habit.actions?.filter((action: Action) => {
+      return isSameDay(parseISO(action.start), today) && !action.archivedAt;
     }).length;
   });
-  // const [routines, actions] = partition(incompleteActions, (_) => Boolean(_.actions?.length));
+  // const [routines, habits] = partition(incompleteActions, (_) => Boolean(_.habits?.length));
   let content;
-  if (allActions.length) {
+  if (allHabits.length) {
     content = (
       <div>
         <div>
           {incompleteActions ? (
-            incompleteActions.map((action) => <ActionChip key={action.id} action={action} />)
+            incompleteActions.map((habit) => <HabitChip key={habit.id} habit={habit} />)
           ) : (
             <Typography>All done!</Typography>
           )}
@@ -57,8 +57,8 @@ const ActionsBox: FC<ActionsBoxProps> = (props: ActionsBoxProps) => {
         {!!completeActions.length && (
           <div>
             <p>Completed:</p>
-            {completeActions.map((action) => (
-              <ActionChip key={action.id} action={action} />
+            {completeActions.map((habit) => (
+              <HabitChip key={habit.id} habit={habit} />
             ))}
           </div>
         )}
@@ -70,8 +70,8 @@ const ActionsBox: FC<ActionsBoxProps> = (props: ActionsBoxProps) => {
   return (
     <div>
       {content}
-      <Link href="/actions" passHref>
-        <IconButton component={"a"} color="info" style={{ marginLeft: 3 }} title="Explore actions">
+      <Link href="/habits" passHref>
+        <IconButton component={"a"} color="info" style={{ marginLeft: 3 }} title="Explore habits">
           <SearchIcon />
         </IconButton>
       </Link>
@@ -79,16 +79,16 @@ const ActionsBox: FC<ActionsBoxProps> = (props: ActionsBoxProps) => {
   );
 };
 
-export default ActionsBox;
+export default TasksBox;
 
 const steps = [
   {
-    label: "Select actions",
-    description: `Select one or more actions.`,
+    label: "Select habits",
+    description: `Select one or more habits.`,
   },
   {
     label: "Add schedules",
-    description: "Add schedules for your tracked actions.",
+    description: "Add schedules for your tracked habits.",
   },
 ];
 

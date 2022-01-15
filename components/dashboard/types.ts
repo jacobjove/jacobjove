@@ -16,7 +16,7 @@ export type DashboardLayouts = AtLeastOne<CompleteDashboardLayouts>;
 export type DashboardComponentKey =
   | "calendar"
   | "identities"
-  | "actions"
+  | "habits"
   | "values"
   | "topics"
   | "routines";

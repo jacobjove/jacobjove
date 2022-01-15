@@ -4,17 +4,17 @@ import * as generatedSchemaExports from "@/prisma/generated";
 import {
   Act as _Act,
   Action as _Action,
-  ActionCompletion as _ActionCompletion,
   ActionSchedule as _ActionSchedule,
   ActionScheduleTemplate as _ActionScheduleTemplate,
-  ActionTheme as _ActionTheme,
+  // ActionTheme as _ActionTheme,
   Belief as _Belief,
   Calendar as _Calendar,
   CalendarEvent as _CalendarEvent,
   Dashboard as _Dashboard,
+  Habit as _Habit,
   Identification as _Identification,
   Identity as _Identity,
-  RoutineAction as _RoutineAction,
+  RoutineHabit as _RoutineHabit,
   ScheduleTemplate as _ScheduleTemplate,
   User as _User,
   UserBelief as _UserBelief,
@@ -22,8 +22,8 @@ import {
   Value as _Value,
 } from "@/prisma/generated";
 import { NonEmptyArray } from "type-graphql";
-import { ActionAdoptionToggleResolver } from "./resolvers/ActionAdoptionToggleResolver";
 import { ActionCompletionToggleResolver } from "./resolvers/ActionCompletionToggleResolver";
+import { HabitAdoptionToggleResolver } from "./resolvers/HabitAdoptionToggleResolver";
 import { IdentificationToggleResolver } from "./resolvers/IdentificationToggleResolver";
 import { UserBeliefToggleResolver } from "./resolvers/UserBeliefToggleResolver";
 import { UserValueToggleResolver } from "./resolvers/UserValueToggleResolver";
@@ -33,7 +33,7 @@ const { resolvers: generatedResolvers, ...generatedSchema } = generatedSchemaExp
 export const resolvers = [
   ...generatedResolvers,
   IdentificationToggleResolver,
-  ActionAdoptionToggleResolver,
+  HabitAdoptionToggleResolver,
   ActionCompletionToggleResolver,
   UserValueToggleResolver,
   UserBeliefToggleResolver,
@@ -47,20 +47,17 @@ type FromPrismaWithOmission<T, K extends keyof T> = Pick<
 >;
 
 export type Act = FromPrisma<_Act>;
-export type Action = FromPrismaWithOmission<_Action, "template" | "completions"> & {
-  template: Act;
+export type Habit = FromPrismaWithOmission<_Habit, "act" | "actions"> & {
+  act: Act;
   schedules: ActionSchedule[];
-  themes: ActionTheme[];
-  completions: ActionCompletion[] | undefined;
-  routineActions: RoutineAction[];
+  // themes: ActionTheme[];
+  actions: Action[];
+  routineHabits: RoutineHabit[];
 };
-export type ActionCompletion = FromPrismaWithOmission<
-  _ActionCompletion,
-  "date" | "archivedAt" | "action"
-> & {
-  date: string;
-  archivedAt: string | null;
-  action: Action;
+export type Action = FromPrismaWithOmission<_Action, "habit" | "start" | "end"> & {
+  start: string;
+  end: string;
+  archivedAt?: string;
 };
 export type ActionSchedule = FromPrismaWithOmission<_ActionSchedule, "archivedAt"> & {
   archivedAt?: string;
@@ -70,7 +67,7 @@ export type ScheduleTemplate = FromPrisma<_ScheduleTemplate>;
 export type Identity = FromPrisma<_Identity>;
 export type Value = FromPrisma<_Value>;
 export type Belief = FromPrisma<_Belief>;
-export type RoutineAction = FromPrismaWithOmission<_RoutineAction, "action"> & { action: Action };
+export type RoutineHabit = FromPrismaWithOmission<_RoutineHabit, "habit"> & { habit: Habit };
 export type UserBelief = FromPrismaWithOmission<_UserBelief, "belief"> & { belief: Belief };
 export type Identification = FromPrismaWithOmission<_Identification, "identity"> & {
   identity: Identity;
@@ -80,10 +77,10 @@ export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "en
   start: string;
   end?: string | null;
 };
-export type ActionTheme = FromPrismaWithOmission<_ActionTheme, "start" | "end"> & {
-  start: string;
-  end?: string | null;
-};
+// export type ActionTheme = FromPrismaWithOmission<_ActionTheme, "start" | "end"> & {
+//   start: string;
+//   end?: string | null;
+// };
 export type UserValue = FromPrisma<_UserValue>;
 export type User = FromPrismaWithOmission<_User, "settings"> & {
   settings: {

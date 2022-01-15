@@ -31,35 +31,35 @@ import { useEffect, useState } from "react";
 const DEFAULT_LAYOUTS: DashboardLayouts = {
   xs: [
     { i: "calendar", x: 0, y: 0, w: 4, h: 6, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "actions", x: 0, y: 1, w: 4, h: 3, minH: 2, resizeHandles: ["se", "sw"] },
+    { i: "habits", x: 0, y: 1, w: 4, h: 3, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "identities", x: 0, y: 2, w: 4, h: 1, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "values", x: 0, y: 3, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "topics", x: 0, y: 4, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
   ],
   sm: [
     { i: "calendar", x: 0, y: 0, w: 4, h: 10, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "actions", x: 6, y: 3, w: 2, h: 6, minH: 2, resizeHandles: ["se", "sw"] },
+    { i: "habits", x: 6, y: 3, w: 2, h: 6, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "identities", x: 9, y: 4, w: 2, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "values", x: 6, y: 5, w: 2, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "topics", x: 9, y: 6, w: 2, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
   ],
   md: [
     { i: "calendar", x: 0, y: 0, w: 6, h: 10, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "actions", x: 6, y: 0, w: 3, h: 6, minH: 2, resizeHandles: ["se", "sw"] },
+    { i: "habits", x: 6, y: 0, w: 3, h: 6, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "identities", x: 9, y: 0, w: 3, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "values", x: 9, y: 2, w: 3, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "topics", x: 9, y: 2, w: 3, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
   ],
   lg: [
     { i: "calendar", x: 1, y: 0, w: 8, h: 10, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "actions", x: 9, y: 0, w: 4, h: 6, minH: 2, resizeHandles: ["se", "sw"] },
+    { i: "habits", x: 9, y: 0, w: 4, h: 6, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "identities", x: 13, y: 2, w: 4, h: 2, resizeHandles: ["se", "sw"] },
     { i: "values", x: 13, y: 3, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "topics", x: 13, y: 4, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
   ],
   xl: [
     { i: "calendar", x: 1, y: 0, w: 8, h: 10, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "actions", x: 9, y: 0, w: 4, h: 10, minH: 2, resizeHandles: ["se", "sw"] },
+    { i: "habits", x: 9, y: 0, w: 4, h: 10, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "identities", x: 13, y: 2, w: 4, h: 2, resizeHandles: ["se", "sw"] },
     { i: "values", x: 13, y: 3, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     { i: "topics", x: 13, y: 4, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
@@ -306,9 +306,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         date: new Date().toISOString(),
       },
     })
-    .then((response) => {
-      console.log("Dashboard page data fetched", response.data.dashboards);
-    })
+    // .then((response) => {
+    //   console.log("Dashboard page data:", response.data.dashboards);
+    // })
     .catch((e) => {
       if (e.networkError?.result?.errors) {
         e.networkError.result.errors.forEach(

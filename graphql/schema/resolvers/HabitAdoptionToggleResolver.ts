@@ -4,11 +4,11 @@ import { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql";
 
 @TypeGraphQL.Resolver((_of) => Action)
-export class ActionAdoptionToggleResolver {
+export class HabitAdoptionToggleResolver {
   @TypeGraphQL.Mutation((_returns) => Action, {
     nullable: false,
   })
-  async toggleActionAdoption(
+  async toggleHabitAdoption(
     @TypeGraphQL.Ctx() ctx: any,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Arg("userId") userId: string,
