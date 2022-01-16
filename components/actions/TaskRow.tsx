@@ -82,6 +82,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     }
     return dueDate.toLocaleDateString();
   };
+  const isHabit = Boolean(task.habit);
   return (
     <TableRow
       sx={{
@@ -94,7 +95,6 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           checked={completed}
           disabled={loading}
           onClick={() => {
-            console.log("checkbox click -->", !completed);
             toggleCompletion(!completed);
           }}
         />
@@ -110,13 +110,13 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
             height: "auto",
             maxHeight: "auto",
             borderRadius: "3px",
-            border: "1px solid rgba(0, 0, 0, 0.05)",
-            backgroundColor: "rgba(0, 0, 0, 0.08)",
+            border: isHabit ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
+            backgroundColor: isHabit ? "rgba(0, 0, 0, 0.08)" : "transparent",
           }}
         >
           <Box display="flex" justifyContent={"space-between"} alignItems="center">
             <Box display="flex" alignItems="center">
-              <Typography fontSize="0.9rem">{`${task.title}`}</Typography>
+              <Typography fontSize="0.8rem">{`${task.title}`}</Typography>
               {/* {!!task.actions?.length && (
             <IconButton
               title={`${expanded ? "Collapse routine" : "Expand routine"}`}
@@ -139,7 +139,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       <TableCell>
         <Box px="0.25rem">
           {task.dueDate ? (
-            getDueDateString(task.dueDate)
+            <Typography fontSize="0.8rem">{getDueDateString(task.dueDate)}</Typography>
           ) : task.habit?.schedules?.length ? (
             <IconButton
               title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}

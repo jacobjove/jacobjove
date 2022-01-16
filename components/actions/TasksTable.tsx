@@ -85,17 +85,6 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 
 export default TasksTable;
 
-const steps = [
-  {
-    label: "Select habits",
-    description: `Select one or more habits.`,
-  },
-  {
-    label: "Add schedules",
-    description: "Add schedules for your tracked habits.",
-  },
-];
-
 // import * as React from 'react';
 // import { alpha } from '@mui/material/styles';
 // import Box from '@mui/material/Box';
