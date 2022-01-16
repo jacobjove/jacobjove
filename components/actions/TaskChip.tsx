@@ -26,8 +26,6 @@ const TaskChip: FC<TaskChipProps> = (props: TaskChipProps) => {
   const [expanded, setExpanded] = useState(isMobile ? false : true);
   const completed = Boolean(task.completedAt);
   const [updateTask, { loading }] = useMutation(UPDATE_TASK);
-  // const [updateAction, { loading: updateActionLoading }] = useMutation(UPDATE_ACTION);
-  // const loading = updateTaskLoading || updateActionLoading;
   const toggleCompletion = (complete: boolean) => {
     if (!session?.user.id) {
       return;

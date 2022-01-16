@@ -80,7 +80,6 @@ const HabitChip: FC<HabitChipProps> = (props: HabitChipProps) => {
         console.error(error);
       });
     } else if (action) {
-      console.log(on, action, session?.user.id);
       updateAction({
         variables: {
           where: { id: action.id },

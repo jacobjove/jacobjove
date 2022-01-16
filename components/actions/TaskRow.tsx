@@ -32,20 +32,17 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const [expanded, setExpanded] = useState(isMobile ? false : true);
   const completed = Boolean(task.completedAt);
   const [updateTask, { loading }] = useMutation(UPDATE_TASK);
-  // const [updateAction, { loading: updateActionLoading }] = useMutation(UPDATE_ACTION);
-  // const loading = updateTaskLoading || updateActionLoading;
   const toggleCompletion = (complete: boolean) => {
     if (!session?.user.id) {
       return;
     }
-    console.log("toggleCompletion", complete);
-    const completedAt = complete ? null : new Date().toISOString();
+    const completedAt = complete ? new Date().toISOString() : null;
     if (session?.user.id) {
       updateTask({
         variables: {
           where: { id: task.id },
           data: {
-            completedAt,
+            completedAt: { set: completedAt },
           },
         },
         optimisticResponse: {

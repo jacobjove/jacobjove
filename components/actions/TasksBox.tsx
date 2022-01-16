@@ -43,7 +43,6 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const { habits: allHabits, tasks: allTasks } = data;
   const today = useContext(DateContext);
   const [completeHabits, incompleteHabits] = partition(allHabits, (habit) => {
-    // console.log("TasksBox", habit.name, habit.actions);
     return !!habit.actions?.filter((action: Action) => {
       return isSameDay(parseISO(action.start), today) && !action.archivedAt;
     }).length;
@@ -51,7 +50,6 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const [completeTasks, incompleteTasks] = partition(allTasks, (task) => {
     return !!task.completedAt;
   });
-  // const [routines, habits] = partition(incompleteHabits, (_) => Boolean(_.habits?.length));
   let habitsContent, tasksContent;
   if (allHabits.length) {
     habitsContent = (

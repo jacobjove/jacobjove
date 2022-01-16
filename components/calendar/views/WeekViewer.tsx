@@ -91,10 +91,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
     // Scroll to the current time.
     const scrollableDiv = scrollableDivRef.current;
     if (scrollableDiv) {
-      // console.log('Scrolling to', currentTimeOffsetPx);
-      // console.log('Before', scrollableDiv.scrollTop);
       scrollableDiv.scrollTo({ top: currentTimeOffsetPx - HOUR_HEIGHT, behavior: "smooth" });
-      // console.log('After', scrollableDiv.scrollTop);
     }
   }, [currentTimeOffsetPx]);
   const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
