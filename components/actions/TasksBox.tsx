@@ -1,7 +1,8 @@
 import HabitChip from "@/components/actions/HabitChip";
+import TaskChip from "@/components/actions/TaskChip";
 import DateContext from "@/components/DateContext";
-import { habitFragment } from "@/graphql/fragments";
-import { Action, Habit } from "@/graphql/schema";
+import { habitFragment, taskFragment } from "@/graphql/fragments";
+import { Action, Habit, Task } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
@@ -22,42 +23,50 @@ export const fragment = gql`
     habits(where: { userId: { equals: $userId } }) {
       ...HabitFragment
     }
+    tasks(where: { userId: { equals: $userId } }) {
+      ...TaskFragment
+    }
   }
   ${habitFragment}
+  ${taskFragment}
 `;
 
 interface TasksBoxProps {
   data: {
     habits: Habit[];
+    tasks: Task[];
   };
 }
 
 const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const { data } = props;
-  const { habits: allHabits } = data;
+  const { habits: allHabits, tasks: allTasks } = data;
   const today = useContext(DateContext);
-  const [completeActions, incompleteActions] = partition(allHabits, (habit) => {
+  const [completeHabits, incompleteHabits] = partition(allHabits, (habit) => {
     // console.log("TasksBox", habit.name, habit.actions);
     return !!habit.actions?.filter((action: Action) => {
       return isSameDay(parseISO(action.start), today) && !action.archivedAt;
     }).length;
   });
-  // const [routines, habits] = partition(incompleteActions, (_) => Boolean(_.habits?.length));
-  let content;
+  const [completeTasks, incompleteTasks] = partition(allTasks, (task) => {
+    return !!task.completedAt;
+  });
+  // const [routines, habits] = partition(incompleteHabits, (_) => Boolean(_.habits?.length));
+  let habitsContent, tasksContent;
   if (allHabits.length) {
-    content = (
+    habitsContent = (
       <div>
         <div>
-          {incompleteActions ? (
-            incompleteActions.map((habit) => <HabitChip key={habit.id} habit={habit} />)
+          {incompleteHabits ? (
+            incompleteHabits.map((habit) => <HabitChip key={habit.id} habit={habit} />)
           ) : (
             <Typography>All done!</Typography>
           )}
         </div>
-        {!!completeActions.length && (
+        {!!completeHabits.length && (
           <div>
             <p>Completed:</p>
-            {completeActions.map((habit) => (
+            {completeHabits.map((habit) => (
               <HabitChip key={habit.id} habit={habit} />
             ))}
           </div>
@@ -65,11 +74,35 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
       </div>
     );
   } else {
-    content = <ActionsOnboarder />;
+    habitsContent = <ActionsOnboarder />;
+  }
+  if (allTasks.length) {
+    tasksContent = (
+      <div>
+        <div>
+          {incompleteTasks ? (
+            incompleteTasks.map((task) => <TaskChip key={task.id} task={task} />)
+          ) : (
+            <Typography>All done!</Typography>
+          )}
+        </div>
+        {!!completeTasks.length && (
+          <div>
+            <p>Completed:</p>
+            {completeTasks.map((task) => (
+              <TaskChip key={task.id} task={task} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  } else {
+    tasksContent = null;
   }
   return (
     <div>
-      {content}
+      {tasksContent}
+      {habitsContent}
       <Link href="/habits" passHref>
         <IconButton component={"a"} color="info" style={{ marginLeft: 3 }} title="Explore habits">
           <SearchIcon />

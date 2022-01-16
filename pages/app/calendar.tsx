@@ -21,7 +21,7 @@ interface CalendarPageProps {
 }
 
 const QUERY = gql`
-  query CalendarPage($userId: String!, $date: DateTime!) {
+  query CalendarPage($userId: Int!, $date: DateTime!) {
     ...CalendarViewer
   }
   ${calendarViewerFragment}

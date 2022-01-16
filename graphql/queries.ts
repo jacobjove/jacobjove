@@ -2,7 +2,7 @@ import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
 
 export const GET_CALENDARS = gql`
-  query GetCalendars($userId: String!) {
+  query GetCalendars($userId: Int!) {
     calendars(where: { userId: { equals: $userId } }) {
       ...CalendarEventFragment
     }
@@ -11,7 +11,7 @@ export const GET_CALENDARS = gql`
 `;
 
 export const GET_CALENDAR_EVENTS = gql`
-  query GetCalendarEvents($userId: String!) {
+  query GetCalendarEvents($userId: Int!) {
     calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
       ...CalendarEventFragment
     }

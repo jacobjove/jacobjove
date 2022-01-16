@@ -164,8 +164,6 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                   return (
                     <Fragment key={i}>
                       {[...Array(2)].map((_, j) => {
-                        // console.log(">>>>>", "day", dayIndex, "hour", i, "min", j * 30);
-                        // console.log(selectedDate.getDay() + dayIndex - selectedDayIndex);
                         const eventSlotDate = setDay(
                           setHours(setMinutes(setSeconds(selectedDate, 0), j * 30), START_HOUR + i),
                           selectedDate.getDay() + dayIndex - selectedDayIndex

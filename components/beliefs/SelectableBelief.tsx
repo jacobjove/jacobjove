@@ -8,7 +8,7 @@ import Link from "next/link";
 import React, { FC, MouseEvent } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleUserBelief($beliefId: Int!, $userId: String!, $deleted: DateTime) {
+  mutation ToggleUserBelief($beliefId: Int!, $userId: Int!, $deleted: DateTime) {
     toggleUserBelief(beliefId: $beliefId, userId: $userId, deleted: $deleted) {
       beliefId
       userId

@@ -100,9 +100,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             date,
             durationInMinutes ?? differenceInMinutes(oldEnd, oldStart)
           ).toISOString();
-          console.log("event itemData", itemData);
-          console.log("oldStart", oldStart);
-          console.log("newStart", newStart);
           if (itemData.id) {
             rescheduleEvent({
               variables: {

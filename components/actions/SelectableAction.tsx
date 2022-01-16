@@ -8,7 +8,7 @@ import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleActionAdoption($actionId: Int!, $userId: String!, $archivedAt: DateTime) {
+  mutation ToggleActionAdoption($actionId: Int!, $userId: Int!, $archivedAt: DateTime) {
     toggleHabitAdoption(actionId: $actionId, userId: $userId, archivedAt: $archivedAt) {
       actId
       archivedAt

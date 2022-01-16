@@ -1,6 +1,6 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import DateContext from "@/components/DateContext";
-import { CREATE_ACTION, UPDATE_ACTION_COMPLETION } from "@/graphql/mutations";
+import { CREATE_ACTION, UPDATE_ACTION } from "@/graphql/mutations";
 import { Habit } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -37,16 +37,13 @@ const HabitChip: FC<HabitChipProps> = (props: HabitChipProps) => {
       return parseISO(a.start) > parseISO(b.start) ? 1 : -1;
     });
   const action = actionsToday?.[0];
-  if (actionsToday?.length) {
-    console.log(">>>", habit.name, actionsToday);
-  }
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [actionInProgress, setActionInProgress] = useState(false);
   const [expanded, setExpanded] = useState(isMobile ? false : true);
   const completed = Boolean(action && !action.archivedAt);
   const schedule = habit.schedules[0]; // TODO
   const [createAction, { loading: createActionLoading }] = useMutation(CREATE_ACTION);
-  const [updateAction, { loading: updateActionLoading }] = useMutation(UPDATE_ACTION_COMPLETION);
+  const [updateAction, { loading: updateActionLoading }] = useMutation(UPDATE_ACTION);
   const loading = createActionLoading || updateActionLoading;
   const toggleAction = (on: boolean) => {
     if (!session?.user.id) {
@@ -57,7 +54,6 @@ const HabitChip: FC<HabitChipProps> = (props: HabitChipProps) => {
     }
     const archivedAt = on ? undefined : new Date().toISOString();
     if (on && !action && session?.user.id) {
-      console.log("Trying to create habit action...", on, session?.user.id);
       const actionDate = new Date().toISOString();
       createAction({
         variables: {

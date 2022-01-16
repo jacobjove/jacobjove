@@ -7,5 +7,5 @@ services:
 
   nextjs:
     environment:
-      NEXTAUTH_URL: "https://habit-builder.com"
+      NEXTAUTH_URL: "https://self-builder.com"
       NODE_ENV: production

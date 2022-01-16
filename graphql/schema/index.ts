@@ -16,6 +16,7 @@ import {
   Identity as _Identity,
   RoutineHabit as _RoutineHabit,
   ScheduleTemplate as _ScheduleTemplate,
+  Task as _Task,
   User as _User,
   UserBelief as _UserBelief,
   UserValue as _UserValue,
@@ -53,6 +54,14 @@ export type Habit = FromPrismaWithOmission<_Habit, "act" | "actions"> & {
   // themes: ActionTheme[];
   actions: Action[];
   routineHabits: RoutineHabit[];
+};
+export type Task = FromPrismaWithOmission<
+  _Task,
+  "dueDate" | "completedAt" | "subtasks" | "userId"
+> & {
+  dueDate?: string;
+  completedAt?: string | null;
+  subtasks?: Task[];
 };
 export type Action = FromPrismaWithOmission<_Action, "habit" | "start" | "end"> & {
   start: string;

@@ -1,4 +1,4 @@
-import TasksBox from "@/components/actions/TasksBox";
+import TasksTable from "@/components/actions/TasksTable";
 import CalendarViewer from "@/components/calendar";
 import DashboardCard from "@/components/dashboard/components/DashboardCard";
 import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
@@ -9,9 +9,18 @@ import {
   calendarFragment,
   habitFragment,
   identificationFragment,
+  taskFragment,
   userValueFragment,
 } from "@/graphql/fragments";
-import { Calendar, CalendarEvent, Habit, Identification, UserValue, Value } from "@/graphql/schema";
+import {
+  Calendar,
+  CalendarEvent,
+  Habit,
+  Identification,
+  Task,
+  UserValue,
+  Value,
+} from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import { Breakpoint } from "@mui/material";
@@ -35,6 +44,9 @@ export const fragment = gql`
     habits(where: { userId: { equals: $userId } }) {
       ...HabitFragment
     }
+    tasks(where: { userId: { equals: $userId } }) {
+      ...TaskFragment
+    }
     userValues(where: { userId: { equals: $userId } }) {
       ...UserValueFragment
     }
@@ -45,6 +57,7 @@ export const fragment = gql`
   ${calendarFragment}
   ${calendarEventFragment}
   ${habitFragment}
+  ${taskFragment}
   ${userValueFragment}
   ${identificationFragment}
 `;
@@ -55,6 +68,7 @@ export interface DashboardData {
   calendars: Calendar[];
   calendarEvents: CalendarEvent[];
   habits: Habit[];
+  tasks: Task[];
   identifications: Identification[];
   userValues: (UserValue & {
     value: Value;
@@ -99,7 +113,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const speedDialActions = [{ icon: <AddIcon />, name: "Add task" }];
   const children = useMemo(() => {
     if (!data || !session) return [];
-    const { calendarEvents, calendars, habits, identifications, userValues } = data;
+    const { calendarEvents, calendars, habits, tasks, identifications, userValues } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
       switch (key) {
         case "calendar":
@@ -113,10 +127,10 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
               />
             </DashboardCard>
           );
-        case "habits":
+        case "tasks":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <TasksBox data={{ habits }} />
+              <TasksTable data={{ tasks }} />
             </DashboardCard>
           );
         case "identities":

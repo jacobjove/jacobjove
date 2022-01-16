@@ -21,7 +21,7 @@ interface PlannerPageProps {
 }
 
 const QUERY = gql`
-  query PlannerPage($userId: String!) {
+  query PlannerPage($userId: Int!) {
     ...Dashboard
   }
   ${dashboardFragment}
@@ -40,7 +40,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session) {
     return null;
   }
-  const { calendarEvents, calendars, habits } = data;
+  const { calendarEvents, calendars, habits, tasks } = data;
   return (
     <Layout>
       <NextSeo
@@ -90,7 +90,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             </form>
           </Grid>
           <Grid item padding="0.25rem">
-            <TasksBox data={{ habits }} />
+            <TasksBox data={{ habits, tasks }} />
           </Grid>
           {!isMobile && (
             <Grid item padding={"0 0.25rem 0.25rem"}>

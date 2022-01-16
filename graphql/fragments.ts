@@ -41,6 +41,25 @@ export const actionFragment = gql`
   }
 `;
 
+export const taskFragment = gql`
+  fragment TaskFragment on Task {
+    id
+    title
+    dueDate
+    description
+    completedAt
+    archivedAt
+    habit {
+      id
+      schedules {
+        id
+        frequency
+        multiplier
+      }
+    }
+  }
+`;
+
 export const habitFragment = gql`
   fragment HabitFragment on Habit {
     __typename

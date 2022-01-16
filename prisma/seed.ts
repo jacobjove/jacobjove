@@ -3,80 +3,106 @@ import prisma from "../lib/prisma";
 import actsData from "./seeds/acts";
 import identitiesData from "./seeds/identities";
 import metricsData from "./seeds/metrics";
-import usersData from "./seeds/users";
+import tasksData from "./seeds/tasks";
+import usersData, { userUid } from "./seeds/users";
 import valuesData from "./seeds/values";
 
 async function main() {
   const adminEmail = process.env.ADMIN_USER || `test@gmail.com`;
+
+  const deleteValues = prisma.value.deleteMany();
+  const deleteIdentities = prisma.identity.deleteMany();
+  const deleteTasks = prisma.task.deleteMany();
+  const deleteMetrics = prisma.metric.deleteMany();
+  const deleteActions = prisma.action.deleteMany();
+  const deleteActionSchedules = prisma.actionSchedule.deleteMany();
+  const deleteRoutineHabits = prisma.routineHabit.deleteMany();
+  const deleteRoutines = prisma.routine.deleteMany();
+  const deleteActs = prisma.act.deleteMany();
+  const deleteUsers = prisma.user.deleteMany();
+
+  await prisma.$transaction([
+    deleteValues,
+    deleteIdentities,
+    deleteTasks,
+    deleteMetrics,
+    deleteActions,
+    deleteActionSchedules,
+    deleteRoutineHabits,
+    deleteRoutines,
+    deleteActs,
+    deleteUsers,
+  ]);
+
+  await prisma.user.create({
+    data: {
+      uid: userUid,
+      email: adminEmail,
+      isAdmin: true,
+    },
+  });
   const user = await prisma.user.findUnique({
     where: {
       email: adminEmail,
     },
   });
   if (!user) {
-    await prisma.user.create({
-      data: {
-        email: adminEmail,
-        isAdmin: true,
-      },
-    });
+    throw new Error(`Could not find user with email ${adminEmail}`);
   }
 
-  let users = await prisma.user.findMany();
-  try {
-    await prisma.user.createMany({
-      data: usersData,
-    });
-    users = await prisma.user.findMany();
-  } catch (e) {
-    console.log(e);
-  }
+  await prisma.user.createMany({
+    data: usersData,
+  });
+  const users = await prisma.user.findMany();
 
-  let identities = await prisma.identity.findMany();
-  try {
-    await prisma.identity.createMany({
-      data: identitiesData,
-    });
-    identities = await prisma.identity.findMany();
-  } catch (e) {
-    console.log(e);
+  for (const taskData of tasksData) {
+    const { subtasks, ...rest } = taskData;
+    const data = rest as typeof rest & { userId: number };
+    data.userId = user.id;
+    const parentTask = await prisma.task.create({ data });
+    if (subtasks) {
+      for (const subtask of subtasks) {
+        const data = subtask as typeof subtask & { userId: number; parentId: number };
+        data.userId = user.id;
+        data.parentId = parentTask.id;
+        await prisma.task.create({ data });
+      }
+    }
   }
+  // const tasks = await prisma.task.findMany();
 
-  let values = await prisma.value.findMany();
-  try {
-    await prisma.value.createMany({
-      data: valuesData,
-    });
-    values = await prisma.value.findMany();
-  } catch (e) {
-    console.log(e);
+  await prisma.identity.createMany({
+    data: identitiesData,
+  });
+  const identities = await prisma.identity.findMany();
+
+  await prisma.value.createMany({
+    data: valuesData,
+  });
+  const values = await prisma.value.findMany();
+
+  for (const actData of actsData) {
+    const { variants: _variants, ...data } = actData;
+    const variants = _variants || [];
+    const parentAct = await prisma.act.create({ data });
+    for (const variantData of variants) {
+      const data = variantData as typeof variantData & { parentId?: number };
+      data.parentId = parentAct.id;
+      await prisma.act.create({ data });
+    }
   }
+  const acts = await prisma.act.findMany();
 
-  let acts = await prisma.act.findMany();
-  try {
-    await prisma.act.createMany({
-      data: actsData,
-    });
-    acts = await prisma.act.findMany();
-  } catch (e) {
-    console.log(e);
-  }
+  await prisma.metric.createMany({
+    data: metricsData,
+  });
+  const metrics = await prisma.act.findMany();
 
-  let metrics = await prisma.actionMetric.findMany();
-  try {
-    await prisma.actionMetric.createMany({
-      data: metricsData,
-    });
-    metrics = await prisma.act.findMany();
-  } catch (e) {
-    console.log(e);
-  }
-
-  acts.forEach(async (act) => {
-    await prisma.actionMetricApplication.create({
+  acts.forEach((act) => {
+    prisma.metricApplication.create({
       data: {
         actId: act.id,
-        metricId: sampleSize(metrics, 1)[0].id,
+        metricId: metrics[0].id,
       },
     });
   });
@@ -125,7 +151,7 @@ async function main() {
             name: act.name,
           },
         });
-        const metricApplications = await prisma.actionMetricApplication.findMany({
+        const metricApplications = await prisma.metricApplication.findMany({
           where: {
             actId: act.id,
           },
@@ -134,7 +160,7 @@ async function main() {
           },
         });
         metricApplications.forEach(async (metricApplication) => {
-          await prisma.actionMetricUsage.create({
+          await prisma.metricUsage.create({
             data: {
               metricId: metricApplication.metric.id,
               habitId: habit.id,
@@ -159,6 +185,16 @@ async function main() {
       include: {
         act: true,
       },
+    });
+    console.log("Creating habit tasks...");
+    habits.forEach(async (habit) => {
+      await prisma.task.create({
+        data: {
+          userId: user.id,
+          habitId: habit.id,
+          title: habit.name,
+        },
+      });
     });
     [...Array(2)].map(async (_, i) => {
       try {

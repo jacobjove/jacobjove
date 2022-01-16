@@ -2,7 +2,7 @@ import TasksBox, { fragment as actionsBoxFragment } from "@/components/actions/T
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
 import DateSelector from "@/components/dates/DateSelector";
 import Layout from "@/components/Layout";
-import { Calendar, CalendarEvent, Habit } from "@/graphql/schema";
+import { Calendar, CalendarEvent, Habit, Task } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -23,7 +23,7 @@ interface PlannerPageProps {
 }
 
 const QUERY = gql`
-  query TasksPage($userId: String!, $date: DateTime!) {
+  query TasksPage($userId: Int!, $date: DateTime!) {
     ...CalendarViewer
     ...TasksBox
   }
@@ -36,6 +36,7 @@ interface TasksPageData {
   calendarEvents: CalendarEvent[];
   calendars: Calendar[];
   habits: Habit[];
+  tasks: Task[];
 }
 
 const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
@@ -54,7 +55,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session || !data) {
     return null;
   }
-  const { calendarEvents, calendars, habits } = data;
+  const { calendarEvents, calendars, habits, tasks } = data;
   const dateSelectorBoxHeight = "2.5rem";
   return (
     <Layout>
@@ -110,7 +111,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             maxHeight={isMobile ? "35vh" : "auto"}
           >
             <Paper>
-              <TasksBox data={{ habits }} />
+              <TasksBox data={{ habits, tasks }} />
             </Paper>
           </Grid>
         </Grid>
