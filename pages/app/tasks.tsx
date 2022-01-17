@@ -1,4 +1,4 @@
-import TasksBox, { fragment as actionsBoxFragment } from "@/components/actions/TasksBox";
+import TasksTable, { fragment as actionsBoxFragment } from "@/components/actions/TasksTable";
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
 import DateSelector from "@/components/dates/DateSelector";
 import Layout from "@/components/Layout";
@@ -25,7 +25,7 @@ interface PlannerPageProps {
 const QUERY = gql`
   query TasksPage($userId: Int!, $date: DateTime!) {
     ...CalendarViewer
-    ...TasksBox
+    ...TasksTable
   }
   ${calendarViewerFragment}
   ${actionsBoxFragment}
@@ -66,7 +66,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         noindex
         nofollow
       />
-      <Container maxWidth="md" sx={{ height: "100%", maxHeight: "100%" }}>
+      <Container maxWidth="lg" sx={{ height: "100%", maxHeight: "100%" }}>
         <Box
           display="flex"
           alignItems="center"
@@ -87,7 +87,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           maxHeight={`calc(100% - ${dateSelectorBoxHeight})`}
           padding={"0.25rem"}
         >
-          <Grid item xs={12} md={8} order={{ xs: 2, sm: 1 }} height={"100%"} maxHeight={"100%"}>
+          <Grid item xs={12} md={6} order={{ xs: 2, sm: 1 }} height={"100%"} maxHeight={"100%"}>
             <Card sx={{ height: "100%", maxHeight: "100%", marginRight: "0.75rem" }}>
               <CardContent sx={{ height: "100%", maxHeight: "100%" }}>
                 <CalendarViewer
@@ -105,13 +105,13 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             item
             container
             xs={12}
-            md={4}
+            md={6}
             order={{ xs: 1, sm: 2 }}
             flexDirection="column"
             maxHeight={isMobile ? "35vh" : "auto"}
           >
             <Paper>
-              <TasksBox data={{ habits, tasks }} />
+              <TasksTable data={{ tasks }} />
             </Paper>
           </Grid>
         </Grid>

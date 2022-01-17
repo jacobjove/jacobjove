@@ -31,19 +31,20 @@ const theme = createTheme({
   typography: {
     fontFamily: ["Open Sans", "sans-serif"].join(","),
     h1: {
-      fontSize: "3rem",
-    },
-    h2: {
       fontSize: "2rem",
     },
+    h2: {
+      fontSize: "1.4rem",
+    },
     h3: {
-      fontSize: "1.5rem",
+      fontSize: "1.2rem",
     },
     h4: {
-      fontSize: "1.25rem",
+      fontSize: "1.1rem",
     },
     h5: {
-      fontSize: "1.1rem",
+      fontSize: "1.0rem",
+      fontStyle: "italic",
     },
   },
   palette: {

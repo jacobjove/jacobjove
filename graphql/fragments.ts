@@ -49,6 +49,16 @@ export const taskFragment = gql`
     description
     completedAt
     archivedAt
+    parentId
+    subtasks {
+      id
+      title
+      dueDate
+      description
+      completedAt
+      archivedAt
+      parentId
+    }
     habit {
       id
       schedules {

@@ -90,8 +90,11 @@ model CalendarEvent {
   calendarId Int
   schedule   ActionSchedule? @relation(fields: [scheduleId], references: [id])
   scheduleId Int?
+  // TODO: remove habit and habitId
   habit      Habit?          @relation(fields: [habitId], references: [id])
   habitId    Int?
+  task       Task?           @relation(fields: [taskId], references: [id])
+  taskId     Int?
   title      String
   start      DateTime
   end        DateTime?
@@ -235,22 +238,23 @@ model MetricRecord {
 
 // One-off tasks
 model Task {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String?
-  dueDate     DateTime?
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  parentId    Int?
-  parent      Task?     @relation("children", fields: [parentId], references: [id])
-  habitId     Int?
-  habit       Habit?    @relation(fields: [habitId], references: [id])
-  subtasks    Task[]    @relation("children")
-  position    Int       @default(0)
-  completedAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime?
-  archivedAt  DateTime?
+  id             Int             @id @default(autoincrement())
+  title          String
+  description    String?
+  dueDate        DateTime?
+  userId         Int
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId       Int?
+  parent         Task?           @relation("children", fields: [parentId], references: [id])
+  habitId        Int?
+  habit          Habit?          @relation(fields: [habitId], references: [id])
+  subtasks       Task[]          @relation("children")
+  position       Int             @default(0)
+  completedAt    DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime?
+  archivedAt     DateTime?
+  calendarEvents CalendarEvent[]
 }
 
 model Action {

@@ -2,7 +2,9 @@ import TaskRow from "@/components/actions/TaskRow";
 import { taskFragment } from "@/graphql/fragments";
 import { Task } from "@/graphql/schema";
 import { gql } from "@apollo/client";
+import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,6 +12,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
 import partition from "lodash/partition";
 import Link from "next/link";
 import { FC } from "react";
@@ -33,12 +36,31 @@ interface TasksTableProps {
 const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const { data } = props;
   const { tasks: allTasks } = data;
-  // const today = useContext(DateContext);
-  const [completeTasks, incompleteTasks] = partition(allTasks, (task) => {
+  // Filter out subtasks, since the top-level tasks should already contain them.
+  const filteredTasks = allTasks.filter((task) => !task.parentId);
+  const [completeTasks, incompleteTasks] = partition(filteredTasks, (task) => {
     return !!task.completedAt;
   });
   return (
     <div>
+      <Box display="flex" padding="0.25rem">
+        <Box marginLeft="auto">
+          <IconButton
+            title={"Add task"}
+            size="small"
+            onClick={() => {
+              console.log("handle click");
+            }}
+          >
+            <AddIcon />
+          </IconButton>
+          <Link href="/habits" passHref>
+            <IconButton component={"a"} color="info" title="Explore habits">
+              <SearchIcon />
+            </IconButton>
+          </Link>
+        </Box>
+      </Box>
       <TableContainer>
         <Table
           sx={{ minWidth: 100, "& th": { padding: 0 } }}
@@ -47,6 +69,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         >
           <TableHead>
             <TableRow>
+              <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell>Task</TableCell>
               <TableCell>Due date</TableCell>
@@ -62,8 +85,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             {!!completeTasks.length && (
               <>
                 <TableRow>
-                  <TableCell colSpan={6} sx={{ paddingTop: "1rem" }}>
-                    Recently completed
+                  <TableCell colSpan={7} sx={{ paddingTop: "1rem" }}>
+                    <Typography variant="h4">{"Recently completed"}</Typography>
                   </TableCell>
                 </TableRow>
                 {completeTasks.map((task) => (
@@ -74,11 +97,6 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Link href="/habits" passHref>
-        <IconButton component={"a"} color="info" style={{ marginLeft: 3 }} title="Explore habits">
-          <SearchIcon />
-        </IconButton>
-      </Link>
     </div>
   );
 };
@@ -445,7 +463,7 @@ export default TasksTable;
 //                     height: (dense ? 33 : 53) * emptyRows,
 //                   }}
 //                 >
-//                   <TableCell colSpan={6} />
+//                   <TableCell colSpan={7} />
 //                 </TableRow>
 //               )}
 //             </TableBody>

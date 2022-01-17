@@ -11,7 +11,6 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import StopIcon from "@mui/icons-material/Stop";
 import Box from "@mui/material/Box";
-// import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -212,39 +211,6 @@ const HabitChip: FC<HabitChipProps> = (props: HabitChipProps) => {
           />
         </Box>
       </Box>
-      {/* {action.defaultDurationInMinutes && (
-        <Typography component={"small"}>{action.defaultDurationInMinutes} min</Typography>
-      )} */}
-      {/* <Collapse in={expanded}>
-        {!!habit.actions?.length &&
-          habit.actions.map((routineHabit) => {
-            if (!routineHabit.action) {
-              return null;
-            }
-            return (
-              <Box
-                key={routineHabit.action.id}
-                bgcolor={"rgba(255, 255, 255, 0.5);"}
-                border={"1px solid rgba(255, 255, 255, 0.2);"}
-                borderRadius="3px"
-                padding="0.25rem 0.5rem"
-                margin="0.25rem"
-                display="flex"
-                alignItems="center"
-                justifyContent={"space-between"}
-              >
-                <Typography display={"block"} fontSize="0.8rem">
-                  {routineHabit.action?.name}
-                </Typography>
-                {routineHabit.durationInMinutes && (
-                  <Typography display={"block"} fontSize="0.8rem">
-                    {routineHabit.durationInMinutes} minutes
-                  </Typography>
-                )}
-              </Box>
-            );
-          })}
-      </Collapse> */}
     </Box>
   );
 };

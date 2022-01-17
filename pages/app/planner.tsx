@@ -1,4 +1,4 @@
-import TasksBox from "@/components/actions/TasksBox";
+import TasksTable from "@/components/actions/TasksTable";
 import CalendarViewer from "@/components/calendar";
 import { fragment as dashboardFragment } from "@/components/dashboard/Dashboard";
 import DateContext from "@/components/DateContext";
@@ -51,7 +51,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         nofollow
       />
       <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} md={8} lg={6} order={{ xs: 2, sm: 1 }}>
+        <Grid item xs={12} md={8} order={{ xs: 2, sm: 1 }}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <CalendarViewer
@@ -69,7 +69,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           container
           xs={12}
           md={4}
-          lg={3}
           order={{ xs: 1, sm: 2 }}
           flexDirection="column"
           maxHeight={isMobile ? "35vh" : "auto"}
@@ -90,7 +89,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
             </form>
           </Grid>
           <Grid item padding="0.25rem">
-            <TasksBox data={{ habits, tasks }} />
+            <TasksTable data={{ tasks }} />
           </Grid>
           {!isMobile && (
             <Grid item padding={"0 0.25rem 0.25rem"}>

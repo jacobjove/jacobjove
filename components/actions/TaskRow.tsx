@@ -5,6 +5,8 @@ import { Task } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import StopIcon from "@mui/icons-material/Stop";
@@ -21,15 +23,18 @@ import { useDrag } from "react-dnd";
 
 interface TaskRowProps {
   task: Task;
+  collapsed?: boolean;
 }
 
 const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
-  const { task } = props;
+  const { task, collapsed: _collapsed } = props;
+  const collapsed = _collapsed ?? false;
+  console.log(task.title, collapsed);
   const { data: session } = useSession();
   const today = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [actionInProgress, setActionInProgress] = useState(false);
-  const [expanded, setExpanded] = useState(isMobile ? false : true);
+  const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const completed = Boolean(task.completedAt);
   const [updateTask, { loading }] = useMutation(UPDATE_TASK);
   const toggleCompletion = (complete: boolean) => {
@@ -84,115 +89,132 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   };
   const isHabit = Boolean(task.habit);
   return (
-    <TableRow
-      sx={{
-        "& td, th": { padding: 0 },
-        "&:last-child td, &:last-child th": { border: 0 },
-      }}
-    >
-      <TableCell>
-        <CompletionCheckbox
-          checked={completed}
-          disabled={loading}
-          onClick={() => {
-            toggleCompletion(!completed);
-          }}
-        />
-      </TableCell>
-      <TableCell>
-        <Box
-          ref={dragRef}
-          sx={{
-            opacity,
-            position: "relative",
-            margin: "0.25rem",
-            paddingX: "0.5rem",
-            height: "auto",
-            maxHeight: "auto",
-            borderRadius: "3px",
-            border: isHabit ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
-            backgroundColor: isHabit ? "rgba(0, 0, 0, 0.08)" : "transparent",
-          }}
-        >
-          <Box display="flex" justifyContent={"space-between"} alignItems="center">
-            <Box display="flex" alignItems="center">
-              <Typography fontSize="0.8rem">{`${task.title}`}</Typography>
-              {/* {!!task.actions?.length && (
+    <>
+      <TableRow
+        sx={{
+          // TODO: A CSS transition would be nice here...
+          display: collapsed ? "none" : "table-row",
+          "& td, th": { padding: 0 },
+          "&:last-child td, &:last-child th": { border: 0 },
+        }}
+      >
+        <TableCell sx={{ visibility: task.parentId ? "hidden" : "visible" }}>
+          <CompletionCheckbox
+            checked={completed}
+            disabled={loading || Boolean(task.parentId)}
+            onClick={() => {
+              toggleCompletion(!completed);
+            }}
+          />
+        </TableCell>
+        <TableCell>
+          {task.subtasks?.length ? (
             <IconButton
-              title={`${expanded ? "Collapse routine" : "Expand routine"}`}
+              title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
               sx={{
-                marginLeft: "0.33rem",
-                backgroundColor: USE_CIRCLE_ICONS ? "white" : "transparent",
+                backgroundColor: "transparent",
                 backgroundOrigin: "content-box",
               }}
               onClick={() => {
-                setExpanded(!expanded);
+                setSubtasksExpanded(!subtasksExpanded);
               }}
             >
-              {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              {subtasksExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </IconButton>
-          )} */}
+          ) : task.parentId ? (
+            <CompletionCheckbox
+              checked={completed}
+              disabled={loading}
+              onClick={() => {
+                toggleCompletion(!completed);
+              }}
+            />
+          ) : null}
+        </TableCell>
+        <TableCell>
+          <Box
+            ref={dragRef}
+            sx={{
+              opacity,
+              position: "relative",
+              margin: "0.25rem",
+              paddingX: isHabit ? "0.5rem" : 0,
+              height: "auto",
+              maxHeight: "auto",
+              borderRadius: "3px",
+              border: isHabit ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
+              backgroundColor: isHabit ? "rgba(0, 0, 0, 0.08)" : "transparent",
+            }}
+          >
+            <Box display="flex" justifyContent={"space-between"} alignItems="center">
+              <Box display="flex" alignItems="center">
+                <Typography fontSize="0.8rem">{`${task.title}`}</Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </TableCell>
-      <TableCell>
-        <Box px="0.25rem">
-          {task.dueDate ? (
-            <Typography fontSize="0.8rem">{getDueDateString(task.dueDate)}</Typography>
-          ) : task.habit?.schedules?.length ? (
-            <IconButton
-              title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
-              onClick={handleScheduleIconClick}
-              style={{ marginLeft: "auto" }}
-            >
-              <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
-            </IconButton>
-          ) : null}
-        </Box>
-      </TableCell>
-      <TableCell>
-        <Box display="flex" alignItems="center" marginLeft="auto">
-          {(!actionInProgress && (
-            <IconButton
-              title={`Begin ${task.title}`}
-              onClick={() => {
-                setActionInProgress(true);
-              }}
-            >
-              <PlayArrowIcon />
-            </IconButton>
-          )) || (
-            <IconButton
-              title="Stop action"
-              onClick={() => {
-                setActionInProgress(false);
-              }}
-            >
-              <StopIcon />
-            </IconButton>
-          )}
-        </Box>
-      </TableCell>
-      <TableCell>
-        <IconButton
-          title={`Edit ${task.title}`}
-          onClick={() => {
-            console.log("edit task");
-          }}
-        >
-          <EditIcon />
-        </IconButton>
-      </TableCell>
-      <TableCell>
-        <DragIndicatorIcon
-          sx={{
-            "&:hover": { cursor: "grab" },
-            color: "gray",
-          }}
-        />
-      </TableCell>
-    </TableRow>
+        </TableCell>
+        <TableCell>
+          <Box px="0.25rem">
+            {task.dueDate ? (
+              <Typography fontSize="0.8rem">{getDueDateString(task.dueDate)}</Typography>
+            ) : task.habit?.schedules?.length ? (
+              <IconButton
+                title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
+                onClick={handleScheduleIconClick}
+                style={{ marginLeft: "auto" }}
+              >
+                <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
+              </IconButton>
+            ) : null}
+          </Box>
+        </TableCell>
+        <TableCell>
+          <Box display="flex" alignItems="center" marginLeft="auto">
+            {(!actionInProgress && (
+              <IconButton
+                title={`Begin ${task.title}`}
+                onClick={() => {
+                  setActionInProgress(true);
+                }}
+              >
+                <PlayArrowIcon />
+              </IconButton>
+            )) || (
+              <IconButton
+                title="Stop action"
+                onClick={() => {
+                  setActionInProgress(false);
+                }}
+              >
+                <StopIcon />
+              </IconButton>
+            )}
+          </Box>
+        </TableCell>
+        <TableCell>
+          <IconButton
+            title={`Edit ${task.title}`}
+            onClick={() => {
+              console.log("edit task");
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </TableCell>
+        <TableCell>
+          <DragIndicatorIcon
+            sx={{
+              "&:hover": { cursor: "grab" },
+              color: "gray",
+            }}
+          />
+        </TableCell>
+      </TableRow>
+      {!collapsed &&
+        task.subtasks?.map((subtask) => {
+          return <TaskRow key={subtask.id} task={subtask} collapsed={!subtasksExpanded} />;
+        })}
+    </>
   );
 };
 
