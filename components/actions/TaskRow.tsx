@@ -8,16 +8,19 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import StopIcon from "@mui/icons-material/Stop";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { format, isSameDay, isSameYear, parseISO } from "date-fns";
+import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useSession } from "next-auth/react";
 import React, { FC, useContext, useState } from "react";
 import { useDrag } from "react-dnd";
@@ -29,13 +32,14 @@ interface TaskRowProps {
 
 const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const { task, collapsed: _collapsed } = props;
+  const completed = Boolean(task.completedAt);
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
   const today = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [actionInProgress, setActionInProgress] = useState(false);
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
-  const completed = Boolean(task.completedAt);
+  const menuState = usePopupState({ variant: "popper", popupId: `task-${task.id}-menu` });
   const [updateTask, { loading }] = useMutation(UPDATE_TASK);
   const toggleCompletion = (complete: boolean) => {
     if (!session?.user.id) {
@@ -97,7 +101,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           "& td, th": {
             padding: 0,
             "& svg": {
-              fontSize: "1.2rem",
+              fontSize: "1.4rem",
               color: "#808080",
               "&:hover": {
                 color: "#666666",
@@ -207,23 +211,45 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         </TableCell>
         <TableCell>
           <IconButton
-            title={`Edit ${task.title}`}
-            onClick={() => {
-              console.log("edit task");
+            title={`Display actions for ${task.title}`}
+            {...bindTrigger(menuState)}
+            disableTouchRipple
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            {...bindMenu(menuState)}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            MenuListProps={{
+              "aria-labelledby": "calendar-menu-button-x",
             }}
           >
-            <EditIcon />
-          </IconButton>
-        </TableCell>
-        <TableCell>
-          <IconButton
-            title={`Delete task`}
-            onClick={() => {
-              console.log("delete task");
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
+            <Box px="0.5rem">
+              <IconButton
+                title={`Edit ${task.title}`}
+                onClick={() => {
+                  console.log("edit task");
+                }}
+              >
+                <EditIcon />
+              </IconButton>
+              <IconButton
+                title={`Delete task`}
+                onClick={() => {
+                  console.log("delete task");
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          </Menu>
         </TableCell>
         <TableCell>
           <Box display="flex" alignItems={"center"} height="100%">

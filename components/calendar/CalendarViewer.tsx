@@ -133,9 +133,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               title={`Display calendar menu`}
               id="calendar-menu-button-x"
               onClick={(e) => {
-                console.log(
-                  "Open dropdown for renaming, sharing, creating new dashboard, viewing all dashboards, etc."
-                );
                 setMenuAnchorEl(e.currentTarget);
                 setMenuOpen(true);
               }}

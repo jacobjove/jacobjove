@@ -234,9 +234,6 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
           <IconButton
             id="menu-button-x"
             onClick={(e) => {
-              console.log(
-                "Open dropdown for renaming, sharing, creating new dashboard, viewing all dashboards, etc."
-              );
               setMenuAnchorEl(e.currentTarget);
               setMenuOpen(true);
             }}

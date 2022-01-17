@@ -67,6 +67,7 @@
     "graphql-scalars": "^1.13.6",
     "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",
+    "material-ui-popup-state": "^2.0.0",
     "next": "^12.0.7",
     "next-auth": "^4.0.0-beta.7",
     "next-compose-plugins": "^2.2.0",
