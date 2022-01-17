@@ -91,7 +91,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                   data={{ calendarEvents, calendars }}
                   error={error}
                   defaultView="day"
-                  collapseViewMenu={true}
+                  collapseMenu={true}
                   includeDateSelector={false}
                 />
               </CardContent>

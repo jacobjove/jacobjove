@@ -58,7 +58,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
                 loading={loading}
                 data={{ calendarEvents, calendars }}
                 error={error}
-                collapseViewMenu={true}
+                collapseMenu={true}
                 includeDateSelector={false}
               />
             </CardContent>

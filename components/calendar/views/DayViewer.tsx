@@ -5,7 +5,6 @@ import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/DateContext";
-import DateSelector from "@/components/dates/DateSelector";
 import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -145,16 +144,6 @@ const DayViewer: FC<ViewerProps> = ({
         <Skeleton width="100%" height={HALF_HOUR_HEIGHT * 2 * 24} />
       ) : (
         <>
-          {includeDateSelector && (
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              borderBottom="1px solid rgba(224, 224, 224, 1)"
-            >
-              <DateSelector date={selectedDate} setDate={setSelectedDate} />
-            </Box>
-          )}
           {/* All day row */}
           <Box display="flex" position="relative" flex="0 0 auto">
             <div>

@@ -236,7 +236,9 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
               <>
                 <TableRow>
                   <TableCell colSpan={7} style={{ paddingTop: "1rem", paddingBottom: "0.25rem" }}>
-                    <Typography variant="h4">{"Recently completed"}</Typography>
+                    <Typography variant="h4" mx="0.25rem">
+                      {"Recently completed"}
+                    </Typography>
                   </TableCell>
                 </TableRow>
                 {completeTasks.map((task) => (

@@ -3,6 +3,7 @@ import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
 import DateContext from "@/components/DateContext";
+import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -12,14 +13,13 @@ import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 import GoogleIcon from "@mui/icons-material/Google";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { addMinutes } from "date-fns";
 import Link from "next/link";
 import { FC, useContext, useState } from "react";
@@ -51,7 +51,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const { calendars } = data;
   const defaultCalendar = calendars[0]; // TODO
   const date = useContext(DateContext);
-  const isMobile = useMediaQuery("(max-width: 600px)");
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
   const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
@@ -67,12 +66,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     notes: "",
     calendarId: defaultCalendar?.id,
   });
-
-  const handleViewTabChange = (event: React.SyntheticEvent, newValue: 0 | 1 | 2) => {
-    setView(newValue === 0 ? "day" : newValue === 1 ? "week" : "month");
-  };
-  const viewTabIndex = view === "day" ? 0 : view === "week" ? 1 : 2;
-  const displayCalendarViewLabels = !isMobile && false;
   const commonViewProps = {
     ...rest,
     selectedDate: selectedDate || date,
@@ -83,46 +76,50 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   };
   return (
     <Box display="flex" flexDirection={"column"} height={"100%"}>
-      {!props.collapseViewMenu && (
-        <Grid
-          container
+      {!props.collapseMenu && (
+        <Box
           flex={"0 0 auto"}
-          justifyContent={"space-between"}
+          display="flex"
           width={"100%"}
+          justifyContent={"space-between"}
+          pb="0.12rem"
           sx={{
             borderBottom: "1px solid rgba(224, 224, 224, 1)",
-            display: props.collapseViewMenu ? "none" : "flex",
+            display: props.collapseMenu ? "none" : "flex",
           }}
         >
-          <Grid item justifyContent={"center"} alignItems={"end"} display={"flex"}>
-            <Tabs value={viewTabIndex} onChange={handleViewTabChange} sx={{ minHeight: "auto" }}>
-              <Tab
-                icon={<CalendarViewDayIcon />}
-                iconPosition="start"
-                {...(!displayCalendarViewLabels ? { title: "Day" } : { label: "Day" })}
-                sx={{ padding: "0.5rem 0.75rem 0.35rem", minWidth: "auto", minHeight: "auto" }}
-              />
-              <Tab
-                icon={<CalendarViewWeekIcon />}
-                iconPosition="start"
-                {...(!displayCalendarViewLabels ? { title: "Week" } : { label: "Week" })}
-                sx={{ padding: "0.5rem 0.75rem 0.35rem", minWidth: "auto", minHeight: "auto" }}
-              />
-              <Tab
-                icon={<CalendarViewMonthIcon />}
-                iconPosition="start"
-                {...(!displayCalendarViewLabels ? { title: "Month" } : { label: "Month" })}
-                sx={{ padding: "0.5rem 0.75rem 0.35rem", minWidth: "auto", minHeight: "auto" }}
-              />
-            </Tabs>
-          </Grid>
-          <Grid
-            item
+          <Box display="flex" justifyContent={"center"} alignItems={"end"}>
+            <ToggleButtonGroup
+              exclusive
+              value={view}
+              onChange={(_, value: ViewMode) => {
+                setView(value);
+              }}
+              size="small"
+              color="primary"
+              aria-label="text alignment"
+            >
+              <ToggleButton value="day" aria-label="day view">
+                <CalendarViewDayIcon />
+              </ToggleButton>
+              <ToggleButton value="week" aria-label="week view">
+                <CalendarViewWeekIcon />
+              </ToggleButton>
+              <ToggleButton value="month" aria-label="month view">
+                <CalendarViewMonthIcon />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+          {view === "day" && (
+            <Box display="flex" justifyContent={"center"} alignItems={"center"}>
+              <DateSelector date={selectedDate} setDate={setSelectedDate} />
+            </Box>
+          )}
+          <Box
             display={"flex"}
             alignItems={"start"}
             justifyContent={"center"}
             position="relative"
-            right="-0.6rem"
             sx={{
               "& button svg": {
                 fontSize: "1.25rem",
@@ -210,8 +207,8 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
             >
               <ZoomOutMapIcon />
             </IconButton>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       )}
       <Box flex={"1 1 auto"} minHeight={0}>
         <DayViewer data={data} {...commonViewProps} hidden={view != "day"} />

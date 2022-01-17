@@ -7,7 +7,7 @@ export type CalendarData = {
 };
 
 export interface CalendarProps {
-  collapseViewMenu?: boolean;
+  collapseMenu?: boolean;
   data: CalendarData;
   loading: boolean;
   error?: Error;
