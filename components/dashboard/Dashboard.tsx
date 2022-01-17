@@ -193,7 +193,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       setLayouts(newLayouts);
     }
   };
-  // console.log("Rendering dashboard with children", children);
+  console.log("Rendering dashboard with children", children);
   return (
     <div
       style={{
@@ -223,7 +223,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             }
           }}
           onBreakpointChange={(breakpoint) => {
-            // console.log("Breakpoint changed to", breakpoint);
+            console.log("Breakpoint changed to", breakpoint);
             setCurrentBreakpoint(breakpoint as Breakpoint);
           }}
           onDragStop={handleLayoutChange}

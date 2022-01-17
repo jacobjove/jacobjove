@@ -32,7 +32,6 @@ const DateSelector: FC<DateSelectorProps> = ({
   const referenceDate = currentDate || new Date();
   const canStepBack = steppable && (minDate ? subDays(referenceDate, 1) >= minDate : true);
   const canStepForward = steppable && (maxDate ? addDays(referenceDate, 1) <= maxDate : true);
-  console.log(canStepBack, canStepForward);
   return (
     // Note: 100% height on the outer box lets the bottom border flesh with any containing element.
     <Box display="flex" alignItems="stretch" justifyContent={"space-evenly"} height="100%">

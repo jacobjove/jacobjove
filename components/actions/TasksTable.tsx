@@ -1,8 +1,9 @@
 import TaskRow from "@/components/actions/TaskRow";
 import DateSelector from "@/components/dates/DateSelector";
 import { taskFragment } from "@/graphql/fragments";
+import { CREATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
-import { gql } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@mui/material";
@@ -17,6 +18,7 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import partition from "lodash/partition";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, useState } from "react";
 
@@ -41,7 +43,32 @@ const PREFERRED_FONT_SIZE = "0.8rem";
 const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const { data } = props;
   const { tasks: allTasks } = data;
+  const { data: session } = useSession();
   const [addingNewTask, setAddingNewTask] = useState(false);
+  const [createTask, { loading }] = useMutation<{ createTask: Task }>(CREATE_TASK, {
+    update(cache, { data }) {
+      const { createTask } = data || {};
+      if (createTask) {
+        cache.modify({
+          fields: {
+            tasks(existingTasks = []) {
+              const newTaskRef = cache.writeFragment({
+                data: createTask,
+                fragment: gql`
+                  fragment NewTask on Task {
+                    ...TaskFragment
+                  }
+                  ${taskFragment}
+                `,
+                fragmentName: "NewTask",
+              });
+              return [...existingTasks, newTaskRef];
+            },
+          },
+        });
+      }
+    },
+  });
   const [newTask, setNewTask] = useState<Partial<Task>>({});
   // Filter out subtasks, since the top-level tasks should already contain them.
   const filteredTasks = allTasks.filter((task) => !task.parentId);
@@ -51,6 +78,40 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
     console.log(field, value);
     setNewTask({ ...newTask, [field]: value });
+  };
+  const handleNewTaskSubmit = async () => {
+    setAddingNewTask(false);
+    if (session?.user) {
+      await createTask({
+        variables: {
+          data: {
+            ...newTask,
+            user: {
+              connect: {
+                id: session.user.id,
+              },
+            },
+          },
+        },
+        optimisticResponse: {
+          createTask: {
+            dueDate: null,
+            description: null,
+            habit: null,
+            parentId: null,
+            subtasks: [],
+            completedAt: null,
+            archivedAt: null,
+            ...(newTask as Task),
+            __typename: "Task",
+            id: -1,
+          },
+        },
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
+    setNewTask({});
   };
   return (
     <div>
@@ -108,7 +169,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             ))}
             <TableRow>
               <TableCell colSpan={2} />
-              {!addingNewTask && (
+              {!addingNewTask && !loading && (
                 <TableCell colSpan={5}>
                   <Button
                     variant="text"
@@ -125,11 +186,13 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                   <TableCell>
                     <Box height="2.5rem" width="100%" display="flex" justifyContent="center">
                       <TextField
+                        autoFocus
                         variant="standard"
                         placeholder={"Task title"}
                         value={newTask.title ?? ""}
                         required
                         sx={{
+                          flexGrow: 1,
                           height: "100%",
                           "& div": { height: "100%" },
                           "& input": {
@@ -138,7 +201,6 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                           },
                           "& input::placeholder": {
                             fontStyle: "italic",
-                            paddingLeft: "0.25rem",
                             fontSize: PREFERRED_FONT_SIZE,
                           },
                         }}
@@ -147,7 +209,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                         }}
                         onKeyPress={(event) => {
                           if (event.key === "Enter") {
-                            console.log("mutate!!!");
+                            event.preventDefault();
+                            handleNewTaskSubmit();
                           }
                         }}
                       />
@@ -156,15 +219,16 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                   <TableCell>
                     <Box height="2.5rem" maxWidth={"5rem"}>
                       <DateSelector
-                        date={new Date()}
+                        date={null}
                         setDate={(date) => {
-                          console.log("set date to", date);
+                          handleNewTaskFieldChange("dueDate", date);
                         }}
                         dateFormat={"M/d"}
                         steppable={false}
                       />
                     </Box>
                   </TableCell>
+                  <TableCell colSpan={3} />
                 </>
               )}
             </TableRow>

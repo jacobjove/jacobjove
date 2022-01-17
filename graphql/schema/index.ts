@@ -59,7 +59,7 @@ export type Task = FromPrismaWithOmission<
   _Task,
   "dueDate" | "completedAt" | "subtasks" | "userId"
 > & {
-  dueDate?: string;
+  dueDate?: string | null;
   completedAt?: string | null;
   subtasks?: Task[];
 };

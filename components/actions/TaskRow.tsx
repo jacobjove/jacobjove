@@ -3,6 +3,7 @@ import DateContext from "@/components/DateContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -93,7 +94,19 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         sx={{
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
-          "& td, th": { padding: 0 },
+          "& td, th": {
+            padding: 0,
+            "& svg": {
+              fontSize: "1.2rem",
+              color: "#808080",
+              "&:hover": {
+                color: "#666666",
+              },
+            },
+            "& button:hover svg": {
+              color: "#666666",
+            },
+          },
           "&:last-child td, &:last-child th": { border: 0 },
         }}
       >
@@ -163,21 +176,22 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                 title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
                 onClick={handleScheduleIconClick}
               >
-                <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
+                <RepeatIcon sx={{ color: "gray" }} />
               </IconButton>
             ) : null}
           </Box>
         </TableCell>
         <TableCell>
-          <Box display="flex" alignItems="center" marginLeft="auto">
+          <Box display="flex" alignItems="center" mx="auto" px="0.5rem">
             {(!actionInProgress && (
               <IconButton
                 title={`Begin ${task.title}`}
+                color="success"
                 onClick={() => {
                   setActionInProgress(true);
                 }}
               >
-                <PlayArrowIcon />
+                <PlayArrowIcon style={{ fontSize: "1.5rem" }} />
               </IconButton>
             )) || (
               <IconButton
@@ -199,6 +213,16 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
             }}
           >
             <EditIcon />
+          </IconButton>
+        </TableCell>
+        <TableCell>
+          <IconButton
+            title={`Delete task`}
+            onClick={() => {
+              console.log("delete task");
+            }}
+          >
+            <DeleteIcon />
           </IconButton>
         </TableCell>
         <TableCell>

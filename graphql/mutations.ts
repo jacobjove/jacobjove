@@ -10,6 +10,15 @@ export const CREATE_ACTION = gql`
   ${actionFragment}
 `;
 
+export const CREATE_TASK = gql`
+  mutation CreateTask($data: TaskCreateInput!) {
+    createTask(data: $data) {
+      ...TaskFragment
+    }
+  }
+  ${taskFragment}
+`;
+
 export const UPDATE_TASK = gql`
   mutation UpdateTask($data: TaskUpdateInput!, $where: TaskWhereUniqueInput!) {
     updateTask(data: $data, where: $where) {
