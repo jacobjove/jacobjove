@@ -19,6 +19,7 @@ import {
   addMinutes,
   differenceInMinutes,
   getDay,
+  isSameDay,
   parseISO,
   setDay,
   setHours,
@@ -77,7 +78,6 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
-
   const selectedDayIndex = getDay(selectedDate);
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
@@ -105,11 +105,16 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
           <Box height={dayHeaderHeight} borderBottom={BORDER_DEF} display="flex">
             <Box flexGrow={1} display="flex">
               {DAYS_OF_WEEK.map((day, i) => {
+                const dayDate = setDay(selectedDate, i);
                 return (
                   <CalendarCell key={i} className="day-header-cell">
                     <Typography fontSize="0.75rem">{day}</Typography>
-                    <Typography fontSize="0.9rem" fontWeight={600}>
-                      {setDay(selectedDate, i).getDate()}
+                    <Typography
+                      fontSize="0.9rem"
+                      fontWeight={600}
+                      color={isSameDay(dayDate, selectedDate) ? "primary" : "initial"}
+                    >
+                      {dayDate.getDate()}
                     </Typography>
                   </CalendarCell>
                 );

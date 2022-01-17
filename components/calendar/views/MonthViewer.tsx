@@ -2,7 +2,7 @@ import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/DateContext";
 import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { addDays, getDay, getWeeksInMonth } from "date-fns";
+import { addDays, getDay, getWeeksInMonth, isSameDay } from "date-fns";
 import { FC, useContext } from "react";
 
 const grey = {
@@ -59,9 +59,8 @@ const Root = styled("div")(({ theme }) => ({
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const MonthViewer: FC<ViewerProps> = (props: ViewerProps) => {
+const MonthViewer: FC<ViewerProps> = ({ selectedDate, hidden, data }: ViewerProps) => {
   const date = useContext(DateContext);
-  const { selectedDate, hidden, data } = props;
   const { calendarEvents } = data;
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayIndex = getDay(firstDayOfMonth);
@@ -84,9 +83,10 @@ const MonthViewer: FC<ViewerProps> = (props: ViewerProps) => {
               <tr key={i}>
                 {[...Array(7)].map((_, j) => {
                   const monthDay = i * 7 + j + 1 - firstDayIndex;
+                  const dayDate = addDays(firstDayOfMonth, monthDay - 1);
                   return (
                     <td key={j}>
-                      <MonthDay date={addDays(firstDayOfMonth, monthDay - 1)} />
+                      <MonthDay date={dayDate} isSelected={isSameDay(dayDate, selectedDate)} />
                     </td>
                   );
                 })}
@@ -103,13 +103,20 @@ export default MonthViewer;
 
 interface MonthDayProps {
   date: Date;
+  isSelected?: boolean;
 }
 
 const MonthDay: FC<MonthDayProps> = (props: MonthDayProps) => {
-  const { date } = props;
+  const { date, isSelected } = props;
   return (
     <div>
-      <Typography component={"div"} fontSize={"0.75rem"} marginTop="0.2rem">
+      <Typography
+        component={"div"}
+        fontSize={"0.75rem"}
+        marginTop="0.2rem"
+        fontWeight={500}
+        color={isSelected ? "primary" : "initial"}
+      >
         {date.getDate()}
       </Typography>
     </div>
