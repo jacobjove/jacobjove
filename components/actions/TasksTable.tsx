@@ -1,9 +1,11 @@
 import TaskRow from "@/components/actions/TaskRow";
+import DateSelector from "@/components/dates/DateSelector";
 import { taskFragment } from "@/graphql/fragments";
 import { Task } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
@@ -12,10 +14,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import partition from "lodash/partition";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 export const fragment = gql`
   fragment TasksTable on Query {
@@ -33,14 +36,22 @@ interface TasksTableProps {
   };
 }
 
+const PREFERRED_FONT_SIZE = "0.8rem";
+
 const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const { data } = props;
   const { tasks: allTasks } = data;
+  const [addingNewTask, setAddingNewTask] = useState(false);
+  const [newTask, setNewTask] = useState<Partial<Task>>({});
   // Filter out subtasks, since the top-level tasks should already contain them.
   const filteredTasks = allTasks.filter((task) => !task.parentId);
   const [completeTasks, incompleteTasks] = partition(filteredTasks, (task) => {
     return !!task.completedAt;
   });
+  const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
+    console.log(field, value);
+    setNewTask({ ...newTask, [field]: value });
+  };
   return (
     <div>
       <Box display="flex" padding="0.25rem">
@@ -63,7 +74,20 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
       </Box>
       <TableContainer>
         <Table
-          sx={{ minWidth: 100, "& th": { padding: 0 } }}
+          sx={{
+            minWidth: 100,
+            "& th": { padding: 0 },
+            "& td": { padding: 0, fontSize: PREFERRED_FONT_SIZE },
+            "& .MuiButton-text": {
+              textTransform: "none",
+              fontStyle: "italic",
+              color: "lightgray",
+              py: "0.25rem",
+              width: "100%",
+              display: "flex",
+              justifyContent: "start",
+            },
+          }}
           size="small"
           aria-label="table of tasks"
         >
@@ -72,7 +96,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
               <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell>Task</TableCell>
-              <TableCell>Due date</TableCell>
+              <TableCell style={{ width: "5rem", textAlign: "center" }}>Due date</TableCell>
               <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell></TableCell>
@@ -82,10 +106,72 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             {incompleteTasks.map((task) => (
               <TaskRow key={task.id} task={task} />
             ))}
+            <TableRow>
+              <TableCell colSpan={2} />
+              {!addingNewTask && (
+                <TableCell colSpan={5}>
+                  <Button
+                    variant="text"
+                    onClick={() => {
+                      setAddingNewTask(true);
+                    }}
+                  >
+                    {incompleteTasks.length ? "Add another task..." : "Add a task..."}
+                  </Button>
+                </TableCell>
+              )}
+              {addingNewTask && (
+                <>
+                  <TableCell>
+                    <Box height="2.5rem" width="100%" display="flex" justifyContent="center">
+                      <TextField
+                        variant="standard"
+                        placeholder={"Task title"}
+                        value={newTask.title ?? ""}
+                        required
+                        sx={{
+                          height: "100%",
+                          "& div": { height: "100%" },
+                          "& input": {
+                            height: "100%",
+                            fontSize: PREFERRED_FONT_SIZE,
+                          },
+                          "& input::placeholder": {
+                            fontStyle: "italic",
+                            paddingLeft: "0.25rem",
+                            fontSize: PREFERRED_FONT_SIZE,
+                          },
+                        }}
+                        onChange={(event) => {
+                          handleNewTaskFieldChange("title", event.target.value);
+                        }}
+                        onKeyPress={(event) => {
+                          if (event.key === "Enter") {
+                            console.log("mutate!!!");
+                          }
+                        }}
+                      />
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box height="2.5rem" maxWidth={"5rem"}>
+                      <DateSelector
+                        date={new Date()}
+                        setDate={(date) => {
+                          console.log("set date to", date);
+                        }}
+                        dateFormat={"M/d"}
+                        steppable={false}
+                      />
+                    </Box>
+                  </TableCell>
+                </>
+              )}
+            </TableRow>
             {!!completeTasks.length && (
               <>
                 <TableRow>
-                  <TableCell colSpan={7} sx={{ paddingTop: "1rem" }}>
+                  <TableCell colSpan={7} style={{ paddingTop: "1rem", paddingBottom: "0.25rem" }}>
                     <Typography variant="h4">{"Recently completed"}</Typography>
                   </TableCell>
                 </TableRow>

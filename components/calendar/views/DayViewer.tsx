@@ -152,11 +152,7 @@ const DayViewer: FC<ViewerProps> = ({
               justifyContent="center"
               borderBottom="1px solid rgba(224, 224, 224, 1)"
             >
-              <DateSelector
-                date={selectedDate}
-                setDate={setSelectedDate}
-                onDateChange={setSelectedDate}
-              />
+              <DateSelector date={selectedDate} setDate={setSelectedDate} />
             </Box>
           )}
           {/* All day row */}

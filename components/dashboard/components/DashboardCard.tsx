@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import { FC, ReactNode } from "react";
 
 const CardTitle: FC<{ title: string }> = ({ title }) => (
-  <Typography fontSize="0.8rem" m="0.25rem 0.5rem" fontWeight="bold">
+  <Typography component="h3" fontSize="0.8rem" m="0.25rem 0.5rem" fontWeight="bold">
     {title}
   </Typography>
 );

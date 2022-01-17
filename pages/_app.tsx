@@ -44,7 +44,15 @@ const theme = createTheme({
     },
     h5: {
       fontSize: "1.0rem",
+      fontWeight: 500,
       fontStyle: "italic",
+    },
+    body1: {
+      fontStyle: "normal",
+      fontWeight: 400,
+    },
+    body2: {
+      fontStyle: "normal",
     },
   },
   palette: {

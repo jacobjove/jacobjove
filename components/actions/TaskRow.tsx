@@ -29,7 +29,6 @@ interface TaskRowProps {
 const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const { task, collapsed: _collapsed } = props;
   const collapsed = _collapsed ?? false;
-  console.log(task.title, collapsed);
   const { data: session } = useSession();
   const today = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -154,14 +153,15 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           </Box>
         </TableCell>
         <TableCell>
-          <Box px="0.25rem">
+          <Box px="0.25rem" display="flex" justifyContent={"center"}>
             {task.dueDate ? (
-              <Typography fontSize="0.8rem">{getDueDateString(task.dueDate)}</Typography>
+              <Typography component="span" fontSize="0.8rem">
+                {getDueDateString(task.dueDate)}
+              </Typography>
             ) : task.habit?.schedules?.length ? (
               <IconButton
                 title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
                 onClick={handleScheduleIconClick}
-                style={{ marginLeft: "auto" }}
               >
                 <RepeatIcon sx={{ color: "gray", fontSize: "1rem" }} />
               </IconButton>
@@ -202,12 +202,14 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           </IconButton>
         </TableCell>
         <TableCell>
-          <DragIndicatorIcon
-            sx={{
-              "&:hover": { cursor: "grab" },
-              color: "gray",
-            }}
-          />
+          <Box display="flex" alignItems={"center"} height="100%">
+            <DragIndicatorIcon
+              sx={{
+                "&:hover": { cursor: "grab" },
+                color: "gray",
+              }}
+            />
+          </Box>
         </TableCell>
       </TableRow>
       {!collapsed &&

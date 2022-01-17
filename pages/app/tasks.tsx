@@ -74,11 +74,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           borderBottom="1px solid rgba(224, 224, 224, 1)"
           height={dateSelectorBoxHeight}
         >
-          <DateSelector
-            date={selectedDate}
-            setDate={setSelectedDate}
-            onDateChange={setSelectedDate}
-          />
+          <DateSelector date={selectedDate} setDate={setSelectedDate} />
         </Box>
         <Grid
           container
