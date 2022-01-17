@@ -101,7 +101,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           "& td, th": {
             padding: 0,
             "& svg": {
-              fontSize: "1.4rem",
+              fontSize: "1.33rem",
               color: "#808080",
               "&:hover": {
                 color: "#666666",
