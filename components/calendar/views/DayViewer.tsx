@@ -73,7 +73,7 @@ const Root = styled("div")(() => ({
   },
 }));
 
-type AllDayCalendarEvent = Omit<CalendarEvent, "end">;
+// type AllDayCalendarEvent = Omit<CalendarEvent, "end">;
 type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
   end: string;
 };

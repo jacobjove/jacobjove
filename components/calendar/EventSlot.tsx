@@ -17,15 +17,15 @@ interface EventSlotProps {
   past?: boolean;
 }
 
-const Root = styled("div")(() => ({
+const Root = styled("div")(({ theme }) => ({
   display: "flex",
   position: "relative",
   flexGrow: 1,
   "&.droppable": {
-    backgroundColor: "lightgray",
+    backgroundColor: theme.palette.grey[500], // "lightgray",
   },
   "&.hovered": {
-    backgroundColor: "whitesmoke",
+    backgroundColor: theme.palette.action, // TODO
     cursor: "pointer",
   },
   "& .event": {

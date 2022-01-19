@@ -1,4 +1,7 @@
 import { handleLogout } from "@/auth";
+import ColorModeContext from "@/components/ColorModeContext";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Divider } from "@mui/material";
@@ -9,7 +12,7 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
@@ -18,7 +21,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 
 const DynamicPageTransitionProgressBar = dynamic(
   () => import("@/components/PageTransitionProgressBar")
@@ -33,9 +36,9 @@ const settings = [
 
 const AppBar = styled(_AppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  color: "whitesmoke",
+  // color: "whitesmoke",
   "& a": {
-    color: "whitesmoke",
+    // color: "whitesmoke",
     textDecoration: "none",
     "&:hover": {
       textDecoration: "none",
@@ -43,7 +46,7 @@ const AppBar = styled(_AppBar)(({ theme }) => ({
     },
   },
   "& #appTabs": {
-    backgroundColor: "whitesmoke",
+    // backgroundColor: "whitesmoke",
     color: "darkgray",
     "& a": {
       color: "darkgray",
@@ -67,6 +70,9 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const colorMode = useContext(ColorModeContext);
+  const theme = useTheme();
 
   const isActive = (pathname: string) => router.pathname === pathname;
 
@@ -169,6 +175,10 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                 </Link>
               </Box>
             ))}
+
+            <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+              {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             {(session?.user && (

@@ -1,3 +1,4 @@
+import ActionDialog from "@/components/actions/ActionDialog";
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import DateContext from "@/components/DateContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
@@ -12,6 +13,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import StopIcon from "@mui/icons-material/Stop";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -20,7 +22,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { format, isSameDay, isSameYear, parseISO } from "date-fns";
-import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useSession } from "next-auth/react";
 import React, { FC, useContext, useState } from "react";
 import { useDrag } from "react-dnd";
@@ -40,32 +42,29 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const [actionInProgress, setActionInProgress] = useState(false);
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const menuState = usePopupState({ variant: "popper", popupId: `task-${task.id}-menu` });
+  const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
   const [updateTask, { loading }] = useMutation(UPDATE_TASK);
   const toggleCompletion = (complete: boolean) => {
-    if (!session?.user.id) {
-      return;
-    }
+    if (!session?.user.id) return;
     const completedAt = complete ? new Date().toISOString() : null;
-    if (session?.user.id) {
-      updateTask({
-        variables: {
-          where: { id: task.id },
-          data: {
-            completedAt: { set: completedAt },
-          },
+    updateTask({
+      variables: {
+        where: { id: task.id },
+        data: {
+          completedAt: { set: completedAt },
         },
-        optimisticResponse: {
-          __typename: "Mutation",
-          updateTask: {
-            __typename: "Task",
-            ...task,
-            completedAt,
-          },
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        updateTask: {
+          __typename: "Task",
+          ...task,
+          completedAt,
         },
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
+      },
+    }).catch((error) => {
+      console.error(error);
+    });
   };
   const [{ opacity }, dragRef] = useDrag(() => ({
     type: "task",
@@ -154,7 +153,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
               opacity,
               position: "relative",
               margin: "0.25rem",
-              paddingX: isHabit ? "0.5rem" : 0,
+              paddingX: 0,
               height: "auto",
               maxHeight: "auto",
               borderRadius: "3px",
@@ -164,7 +163,19 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           >
             <Box display="flex" justifyContent={"space-between"} alignItems="center">
               <Box display="flex" alignItems="center">
-                <Typography fontSize="0.8rem">{`${task.title}`}</Typography>
+                <Button
+                  variant="text"
+                  sx={{
+                    padding: "0 0.25rem",
+                    margin: 0,
+                    fontSize: "0.8rem",
+                    textTransform: "none",
+                    minWidth: 0,
+                  }}
+                  {...bindTrigger(dialogState)}
+                >
+                  {task.title}
+                </Button>
               </Box>
             </Box>
           </Box>
@@ -243,7 +254,24 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
               <IconButton
                 title={`Delete task`}
                 onClick={() => {
-                  console.log("delete task");
+                  const archivedAt = new Date().toISOString();
+                  updateTask({
+                    variables: {
+                      where: { id: task.id },
+                      data: {
+                        archivedAt: { set: archivedAt },
+                      },
+                    },
+                    optimisticResponse: {
+                      updateTask: {
+                        __typename: "Task",
+                        ...task,
+                        archivedAt,
+                      },
+                    },
+                  }).catch((error) => {
+                    console.error(error);
+                  });
                 }}
               >
                 <DeleteIcon />
@@ -266,6 +294,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         task.subtasks?.map((subtask) => {
           return <TaskRow key={subtask.id} task={subtask} collapsed={!subtasksExpanded} />;
         })}
+      <ActionDialog {...bindPopover(dialogState)} task={task} />
     </>
   );
 };

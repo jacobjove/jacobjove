@@ -10,17 +10,16 @@ interface FooterProps {
 
 const StyledFooter = styled("footer", {
   shouldForwardProp: (prop) => prop !== "height",
-})<FooterProps>`
-  width: 100%;
-  height: ${(props) => props.height};
-  margin-bottom: calc(${(props) => `-${props.height}`} - 0.5rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top: 1px solid lightgray;
-  background-color: whitesmoke;
-  z-index: 10000;
-`;
+})<FooterProps>(({ theme, height }) => ({
+  width: "100%",
+  height,
+  marginBottom: `calc(-${height} - 0.5rem)`,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderTop: `1px solid ${theme.palette.divider}`,
+  zIndex: 10000,
+}));
 
 const Footer: FC<FooterProps> = (props: FooterProps) => {
   return (

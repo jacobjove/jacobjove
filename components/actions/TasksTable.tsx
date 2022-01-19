@@ -70,11 +70,24 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     },
   });
   const [newTask, setNewTask] = useState<Partial<Task>>({});
-  // Filter out subtasks, since the top-level tasks should already contain them.
-  const filteredTasks = allTasks.filter((task) => !task.parentId);
+
+  // Exclude archived tasks.
+  let filteredTasks = allTasks.filter((task) => !task.archivedAt);
+
+  // If these are any top-level tasks, exclude the subtasks, since the top-level tasks
+  // should already contain their subtasks. Otherwise, if there are no top-level tasks,
+  // just show all the tasks, so that, e.g., a table of a task's subtasks can be
+  // rendered in a task's detail dialog... TODO.
+  const [topLevelTasks, subtasks] = partition(filteredTasks, (task) => {
+    return !task.parentId;
+  });
+  filteredTasks = topLevelTasks.length ? topLevelTasks : subtasks;
+
+  // Distinguish incomplete tasks from completed tasks.
   const [completeTasks, incompleteTasks] = partition(filteredTasks, (task) => {
     return !!task.completedAt;
   });
+
   const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
     console.log(field, value);
     setNewTask({ ...newTask, [field]: value });
@@ -139,15 +152,6 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             minWidth: 100,
             "& th": { padding: 0 },
             "& td": { padding: 0, fontSize: PREFERRED_FONT_SIZE },
-            "& .MuiButton-text": {
-              textTransform: "none",
-              fontStyle: "italic",
-              color: "lightgray",
-              py: "0.25rem",
-              width: "100%",
-              display: "flex",
-              justifyContent: "start",
-            },
           }}
           size="small"
           aria-label="table of tasks"
@@ -175,6 +179,15 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                     variant="text"
                     onClick={() => {
                       setAddingNewTask(true);
+                    }}
+                    sx={{
+                      textTransform: "none",
+                      fontStyle: "italic",
+                      color: "lightgray",
+                      py: "0.25rem",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "start",
                     }}
                   >
                     {incompleteTasks.length ? "Add another task..." : "Add a task..."}

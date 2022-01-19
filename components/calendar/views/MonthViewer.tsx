@@ -86,7 +86,11 @@ const MonthViewer: FC<ViewerProps> = ({ selectedDate, hidden, data }: ViewerProp
                   const dayDate = addDays(firstDayOfMonth, monthDay - 1);
                   return (
                     <td key={j}>
-                      <MonthDay date={dayDate} isSelected={isSameDay(dayDate, selectedDate)} />
+                      <MonthDay
+                        date={dayDate}
+                        isToday={isSameDay(dayDate, date)}
+                        isSelected={isSameDay(dayDate, selectedDate)}
+                      />
                     </td>
                   );
                 })}
@@ -103,19 +107,25 @@ export default MonthViewer;
 
 interface MonthDayProps {
   date: Date;
+  isToday?: boolean;
   isSelected?: boolean;
 }
 
 const MonthDay: FC<MonthDayProps> = (props: MonthDayProps) => {
-  const { date, isSelected } = props;
+  const { date, isToday, isSelected } = props;
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
       <Typography
         component={"div"}
         fontSize={"0.75rem"}
         marginTop="0.2rem"
+        textAlign={"center"}
         fontWeight={500}
+        height="1.25rem"
+        width="1.25rem"
         color={isSelected ? "primary" : "initial"}
+        border={isToday ? "1px solid gray" : "none"}
+        borderRadius={"50%"}
       >
         {date.getDate()}
       </Typography>

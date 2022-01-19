@@ -1,3 +1,4 @@
+import ColorModeContext from "@/components/ColorModeContext";
 import DateContext from "@/components/DateContext";
 import { PageTransitionContextProvider } from "@/components/PageTransitionContext";
 import { useApollo } from "@/lib/apollo/apolloClient";
@@ -7,15 +8,16 @@ import "@/public/styles/global.css";
 import { ApolloProvider } from "@apollo/client";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { createTheme } from "@mui/material";
-import { blue, orange } from "@mui/material/colors";
+import { createTheme, PaletteMode } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { NextPage } from "next";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
-import { FC, ReactElement, useEffect, useState } from "react";
+import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
@@ -27,7 +29,33 @@ const tagManagerArgs = {
   gtmId: `${process.env.NEXT_PUBLIC_GTM_ID}`, // e.g., 'GTM-XXXXXX'
 };
 
-const theme = createTheme({
+const getDesignTokens = (mode: PaletteMode) => ({
+  palette: {
+    mode,
+    // primary: {
+    //   ...amber,
+    //   ...(mode === 'dark' && {
+    //     main: amber[300],
+    //   }),
+    // },
+    // ...(mode === 'dark' && {
+    //   background: {
+    //     default: deepOrange[900],
+    //     paper: deepOrange[900],
+    //   },
+    // }),
+    text: {
+      ...(mode === "light"
+        ? {
+            primary: grey[900],
+            secondary: grey[800],
+          }
+        : {
+            primary: "#fff",
+            secondary: grey[500],
+          }),
+    },
+  },
   typography: {
     fontFamily: ["Open Sans", "sans-serif"].join(","),
     h1: {
@@ -55,23 +83,6 @@ const theme = createTheme({
       fontStyle: "normal",
     },
   },
-  palette: {
-    primary: {
-      // main: colorName[hue],
-      // we have to import the color first to use it
-      main: blue[600],
-    },
-    secondary: {
-      main: orange[400],
-    },
-  },
-  components: {
-    MuiCheckbox: {
-      styleOverrides: {
-        root: {},
-      },
-    },
-  },
 });
 
 export type ComponentWithAuth = NextPage & {
@@ -82,6 +93,16 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   const apolloClient = useApollo(pageProps);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState<PaletteMode>("dark");
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      },
+    }),
+    []
+  );
+  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
@@ -99,67 +120,70 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <SessionProvider session={session}>
       <PageTransitionContextProvider>
         <ApolloProvider client={apolloClient}>
-          <ThemeProvider theme={theme}>
-            <LocalizationProvider dateAdapter={DateAdapter}>
-              <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
-                <DateContext.Provider value={date}>
-                  <DefaultSeo
-                    description={"Build good habits, break bad habits, and be your best self."}
-                    openGraph={{
-                      type: "website",
-                      url: "https://www.habitbuilder.com/",
-                      site_name: "SelfBuilder",
-                      // images: [
-                      //   {
-                      //     url: 'https://www.example.ie/og-image.jpg',
-                      //     width: 800,
-                      //     height: 600,
-                      //     alt: 'Og Image Alt',
-                      //   },
-                      //   {
-                      //     url: 'https://www.example.ie/og-image-2.jpg',
-                      //     width: 800,
-                      //     height: 600,
-                      //     alt: 'Og Image Alt 2',
-                      //   },
-                      // ],
-                    }}
-                    twitter={{ handle: "@habitbuilder" }}
-                    facebook={{
-                      appId: `${process.env.FACEBOOK_APP_ID}`,
-                    }}
-                    titleTemplate="%s | SelfBuilder" // https://github.com/garmeeh/next-seo#title-template
-                    defaultTitle="SelfBuilder" // https://github.com/garmeeh/next-seo#default-title
-                    additionalMetaTags={[
-                      {
-                        httpEquiv: "content-type",
-                        content: "text/html; charset=utf-8",
-                      },
-                      {
-                        name: "application-name",
-                        content: "SelfBuilder",
-                      },
-                    ]}
-                    additionalLinkTags={
-                      [
-                        // {
-                        //   rel: 'icon',
-                        //   href: '/static/favicon.ico',
-                        // }
-                      ]
-                    }
-                  />
-                  {(Component as ComponentWithAuth).auth ? (
-                    <Auth>
+          <ColorModeContext.Provider value={colorMode}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+                  <DateContext.Provider value={date}>
+                    <DefaultSeo
+                      description={"Build good habits, break bad habits, and be your best self."}
+                      openGraph={{
+                        type: "website",
+                        url: "https://www.habitbuilder.com/",
+                        site_name: "SelfBuilder",
+                        // images: [
+                        //   {
+                        //     url: 'https://www.example.ie/og-image.jpg',
+                        //     width: 800,
+                        //     height: 600,
+                        //     alt: 'Og Image Alt',
+                        //   },
+                        //   {
+                        //     url: 'https://www.example.ie/og-image-2.jpg',
+                        //     width: 800,
+                        //     height: 600,
+                        //     alt: 'Og Image Alt 2',
+                        //   },
+                        // ],
+                      }}
+                      twitter={{ handle: "@habitbuilder" }}
+                      facebook={{
+                        appId: `${process.env.FACEBOOK_APP_ID}`,
+                      }}
+                      titleTemplate="%s | SelfBuilder" // https://github.com/garmeeh/next-seo#title-template
+                      defaultTitle="SelfBuilder" // https://github.com/garmeeh/next-seo#default-title
+                      additionalMetaTags={[
+                        {
+                          httpEquiv: "content-type",
+                          content: "text/html; charset=utf-8",
+                        },
+                        {
+                          name: "application-name",
+                          content: "SelfBuilder",
+                        },
+                      ]}
+                      additionalLinkTags={
+                        [
+                          // {
+                          //   rel: 'icon',
+                          //   href: '/static/favicon.ico',
+                          // }
+                        ]
+                      }
+                    />
+                    {(Component as ComponentWithAuth).auth ? (
+                      <Auth>
+                        <Component {...pageProps} />
+                      </Auth>
+                    ) : (
                       <Component {...pageProps} />
-                    </Auth>
-                  ) : (
-                    <Component {...pageProps} />
-                  )}
-                </DateContext.Provider>
-              </DndProvider>
-            </LocalizationProvider>
-          </ThemeProvider>
+                    )}
+                  </DateContext.Provider>
+                </DndProvider>
+              </LocalizationProvider>
+            </ThemeProvider>
+          </ColorModeContext.Provider>
         </ApolloProvider>
       </PageTransitionContextProvider>
     </SessionProvider>
