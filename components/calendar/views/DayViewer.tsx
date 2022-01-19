@@ -9,6 +9,7 @@ import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
+import { alpha, darken, lighten } from "@mui/system";
 import {
   addMinutes,
   differenceInMinutes,
@@ -21,7 +22,7 @@ import {
 } from "date-fns";
 import { FC, useContext, useEffect, useRef, useState } from "react";
 
-const Root = styled("div")(() => ({
+const Root = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   height: "100%",
@@ -48,13 +49,23 @@ const Root = styled("div")(() => ({
     scrollBehavior: "smooth",
   },
   "& .border-trick-box": {
-    borderRight: "1px solid rgba(224, 224, 224, 1)",
+    borderRight: `1px solid
+    ${
+      theme.palette.mode === "light"
+        ? lighten(alpha(theme.palette.divider, 1), 0.88)
+        : darken(alpha(theme.palette.divider, 1), 0.68)
+    }`,
     width: "8px",
   },
   "& .calendar-event-slot": {
     display: "flex",
     "&:not(:first-of-type)": {
-      borderTop: "1px solid rgba(224, 224, 224, 1)",
+      borderTop: `1px solid
+      ${
+        theme.palette.mode === "light"
+          ? lighten(alpha(theme.palette.divider, 1), 0.88)
+          : darken(alpha(theme.palette.divider, 1), 0.68)
+      }`,
     },
   },
   "& .past": {
@@ -64,7 +75,12 @@ const Root = styled("div")(() => ({
     backgroundOrigin: "content-box",
     opacity: 0.5,
     "&.hovered": {
-      backgroundColor: "rgba(224, 224, 224, 1)",
+      backgroundColor: `1px solid
+      ${
+        theme.palette.mode === "light"
+          ? lighten(alpha(theme.palette.divider, 1), 0.88)
+          : darken(alpha(theme.palette.divider, 1), 0.68)
+      }`,
       cursor: "pointer",
     },
     "& .event": {
@@ -150,7 +166,14 @@ const DayViewer: FC<ViewerProps> = ({
               <Box
                 className="time-label"
                 height={`${allDayBoxHeight}px`}
-                borderBottom="1px solid rgba(224, 224, 224, 1)"
+                sx={{
+                  borderBottom: (theme) => `1px solid
+                  ${
+                    theme.palette.mode === "light"
+                      ? lighten(alpha(theme.palette.divider, 1), 0.88)
+                      : darken(alpha(theme.palette.divider, 1), 0.68)
+                  }`,
+                }}
               >
                 All Day
               </Box>
@@ -158,8 +181,15 @@ const DayViewer: FC<ViewerProps> = ({
             <div className={`calendar-slots-column`}>
               <Box
                 height={`${allDayBoxHeight}px`}
-                borderBottom="1px solid rgba(224, 224, 224, 1)"
                 display="flex"
+                sx={{
+                  borderBottom: (theme) => `1px solid
+                  ${
+                    theme.palette.mode === "light"
+                      ? lighten(alpha(theme.palette.divider, 1), 0.88)
+                      : darken(alpha(theme.palette.divider, 1), 0.68)
+                  }`,
+                }}
               >
                 <div className="border-trick-box" />
                 <Box flexGrow={1} />

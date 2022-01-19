@@ -2,6 +2,7 @@ import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/DateContext";
 import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { alpha, darken, lighten } from "@mui/system";
 import { addDays, getDay, getWeeksInMonth, isSameDay } from "date-fns";
 import { FC, useContext } from "react";
 
@@ -44,7 +45,12 @@ const Root = styled("div")(({ theme }) => ({
         opacity: 0.6,
       },
     },
-    border: "1px solid rgba(224, 224, 224, 1)",
+    border: `1px solid
+    ${
+      theme.palette.mode === "light"
+        ? lighten(alpha(theme.palette.divider, 1), 0.88)
+        : darken(alpha(theme.palette.divider, 1), 0.68)
+    }`,
     "&:first-of-type": {
       borderLeft: "none",
     },

@@ -20,6 +20,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { alpha, darken, lighten } from "@mui/system";
 import { addMinutes } from "date-fns";
 import Link from "next/link";
 import { FC, useContext, useState } from "react";
@@ -84,7 +85,12 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
           justifyContent={"space-between"}
           pb="0.12rem"
           sx={{
-            borderBottom: "1px solid rgba(224, 224, 224, 1)",
+            borderBottom: (theme) => `1px solid
+            ${
+              theme.palette.mode === "light"
+                ? lighten(alpha(theme.palette.divider, 1), 0.88)
+                : darken(alpha(theme.palette.divider, 1), 0.68)
+            }`,
             display: props.collapseMenu ? "none" : "flex",
           }}
         >
