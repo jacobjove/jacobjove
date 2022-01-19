@@ -22,72 +22,63 @@ import {
 } from "date-fns";
 import { FC, useContext, useEffect, useRef, useState } from "react";
 
-const Root = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  height: "100%",
-  "& *": {
-    boxSizing: "border-box",
-  },
-  "& .time-label": {
+const Root = styled("div")(({ theme }) => {
+  const dividerColor =
+    theme.palette.mode === "light"
+      ? lighten(alpha(theme.palette.divider, 1), 0.88)
+      : darken(alpha(theme.palette.divider, 1), 0.68);
+  return {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "right",
-    paddingRight: "0.25rem",
-    fontFamily: "Roboto, Arial, sans-serif",
-    fontWeight: 400,
-    fontSize: "0.7rem",
-    lineHeight: "1.66",
-    whiteSpace: "nowrap",
-    color: "rgba(0, 0, 0, 0.6)",
-    minWidth: "3.5rem",
-  },
-  "& .calendar-slots-column": {
-    flexGrow: 1,
-    position: "relative",
-    cursor: "pointer",
-    scrollBehavior: "smooth",
-  },
-  "& .border-trick-box": {
-    borderRight: `1px solid
-    ${
-      theme.palette.mode === "light"
-        ? lighten(alpha(theme.palette.divider, 1), 0.88)
-        : darken(alpha(theme.palette.divider, 1), 0.68)
-    }`,
-    width: "8px",
-  },
-  "& .calendar-event-slot": {
-    display: "flex",
-    "&:not(:first-of-type)": {
-      borderTop: `1px solid
-      ${
-        theme.palette.mode === "light"
-          ? lighten(alpha(theme.palette.divider, 1), 0.88)
-          : darken(alpha(theme.palette.divider, 1), 0.68)
-      }`,
+    flexDirection: "column",
+    height: "100%",
+    "& *": {
+      boxSizing: "border-box",
     },
-  },
-  "& .past": {
-    background:
-      // diagonal gray lines
-      "repeating-linear-gradient(-55deg, rgb(224, 224, 224), rgb(224, 224, 224) 1px, transparent 1px, transparent 20px)",
-    backgroundOrigin: "content-box",
-    opacity: 0.5,
-    "&.hovered": {
-      backgroundColor: `1px solid
-      ${
-        theme.palette.mode === "light"
-          ? lighten(alpha(theme.palette.divider, 1), 0.88)
-          : darken(alpha(theme.palette.divider, 1), 0.68)
-      }`,
+    "& .time-label": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "right",
+      paddingRight: "0.25rem",
+      fontFamily: "Roboto, Arial, sans-serif",
+      fontWeight: 400,
+      fontSize: "0.7rem",
+      lineHeight: "1.66",
+      whiteSpace: "nowrap",
+      color: "rgba(0, 0, 0, 0.6)",
+      minWidth: "3.5rem",
+    },
+    "& .calendar-slots-column": {
+      flexGrow: 1,
+      position: "relative",
       cursor: "pointer",
+      scrollBehavior: "smooth",
     },
-    "& .event": {
-      border: "1px solid lightgray",
+    "& .border-trick-box": {
+      borderRight: `1px solid ${dividerColor}`,
+      width: "8px",
     },
-  },
-}));
+    "& .calendar-event-slot": {
+      display: "flex",
+      "&:not(:first-of-type)": {
+        borderTop: `1px solid ${dividerColor}`,
+      },
+    },
+    "& .past": {
+      background:
+        // diagonal gray lines
+        `repeating-linear-gradient(-55deg, ${dividerColor}, ${dividerColor} 1px, transparent 1px, transparent 20px)`,
+      backgroundOrigin: "content-box",
+      opacity: 0.5,
+      "&.hovered": {
+        backgroundColor: `1px solid ${dividerColor}`,
+        cursor: "pointer",
+      },
+      "& .event": {
+        border: "1px solid lightgray",
+      },
+    },
+  };
+});
 
 // type AllDayCalendarEvent = Omit<CalendarEvent, "end">;
 type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
@@ -100,7 +91,7 @@ const DayViewer: FC<ViewerProps> = ({
   initialEventFormData,
   setInitialEventFormData,
   defaultCalendar,
-  includeDateSelector,
+  // includeDateSelector,
   hidden,
   data,
   loading,
