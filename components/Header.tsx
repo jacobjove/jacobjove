@@ -38,7 +38,7 @@ const AppBar = styled(_AppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
   // color: "whitesmoke",
   "& a": {
-    // color: "whitesmoke",
+    color: theme.palette.primary.contrastText,
     textDecoration: "none",
     "&:hover": {
       textDecoration: "none",
@@ -172,7 +172,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Box key={page[0]} sx={{ m: 2, color: "white", display: "block" }}>
+              <Box key={page[0]} sx={{ m: 2, display: "block" }}>
                 <Link href={page[1]} passHref>
                   <Typography component="a">{page[0]}</Typography>
                 </Link>
