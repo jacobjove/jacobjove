@@ -178,6 +178,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                     fontSize: "0.8rem",
                     textTransform: "none",
                     minWidth: 0,
+                    color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
                   }}
                   {...bindTrigger(dialogState)}
                 >

@@ -183,7 +183,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                     sx={{
                       textTransform: "none",
                       fontStyle: "italic",
-                      color: "lightgray",
+                      color: (theme) => (theme.palette.mode === "light" ? "lightgray" : "darkgray"),
                       py: "0.25rem",
                       width: "100%",
                       display: "flex",
