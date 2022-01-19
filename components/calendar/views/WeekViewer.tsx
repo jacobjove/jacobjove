@@ -1,6 +1,5 @@
 import CalendarCell from "@/components/calendar/CalendarCell";
 import {
-  BORDER_DEF,
   HALF_HOUR_HEIGHT,
   HOUR_HEIGHT,
   START_HOUR,
@@ -15,6 +14,7 @@ import { CalendarEvent } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import { alpha, darken, lighten } from "@mui/system";
 import {
   addMinutes,
   differenceInMinutes,
@@ -28,42 +28,49 @@ import {
 } from "date-fns";
 import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
 
-const Root = styled("div")(() => ({
-  "& *": {
-    boxSizing: "border-box",
-  },
-  "& .time-label": {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "right",
-    paddingRight: "0.25rem",
-    fontFamily: "Roboto, Arial, sans-serif",
-    fontWeight: 400,
-    fontSize: "0.7rem",
-    lineHeight: "1.66",
-    whiteSpace: "nowrap",
-    color: "rgba(0, 0, 0, 0.6)",
-    width: "3.5rem",
-  },
-  "& .calendar-slots-column": {
-    flexGrow: 1,
-    position: "relative",
-    cursor: "pointer",
-    scrollBehavior: "smooth",
-    "&:not(:first-of-type)": {
-      borderLeft: BORDER_DEF,
+const Root = styled("div")(({ theme }) => {
+  const borderDef = `1px solid ${
+    theme.palette.mode === "light"
+      ? lighten(alpha(theme.palette.divider, 1), 0.88)
+      : darken(alpha(theme.palette.divider, 1), 0.68)
+  }`;
+  return {
+    "& *": {
+      boxSizing: "border-box",
     },
-  },
-  "& .border-trick-box": {
-    borderRight: BORDER_DEF,
-    width: "0.5rem",
-  },
-  "& .calendar-event-slot": {
-    display: "flex",
-    borderTop: BORDER_DEF,
-    height: `${HALF_HOUR_HEIGHT}px`,
-  },
-}));
+    "& .time-label": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "right",
+      paddingRight: "0.25rem",
+      fontFamily: "Roboto, Arial, sans-serif",
+      fontWeight: 400,
+      fontSize: "0.7rem",
+      lineHeight: "1.66",
+      whiteSpace: "nowrap",
+      color: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.6)",
+      width: "3.5rem",
+    },
+    "& .calendar-slots-column": {
+      flexGrow: 1,
+      position: "relative",
+      cursor: "pointer",
+      scrollBehavior: "smooth",
+      "&:not(:first-of-type)": {
+        borderLeft: borderDef,
+      },
+    },
+    "& .border-trick-box": {
+      borderRight: borderDef,
+      width: "0.5rem",
+    },
+    "& .calendar-event-slot": {
+      display: "flex",
+      borderTop: borderDef,
+      height: `${HALF_HOUR_HEIGHT}px`,
+    },
+  };
+});
 
 const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const {
@@ -100,9 +107,31 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
     <Root className={`${hidden ? "hidden" : ""}`}>
       {/* Day headers */}
       <Box display="flex">
-        <Box width={TIME_LABEL_COLUMN_WIDTH} height={dayHeaderHeight} borderBottom={BORDER_DEF} />
+        <Box
+          width={TIME_LABEL_COLUMN_WIDTH}
+          height={dayHeaderHeight}
+          sx={{
+            borderBottom: (theme) =>
+              `1px solid ${
+                theme.palette.mode === "light"
+                  ? lighten(alpha(theme.palette.divider, 1), 0.88)
+                  : darken(alpha(theme.palette.divider, 1), 0.68)
+              }`,
+          }}
+        />
         <div className="calendar-slots-column">
-          <Box height={dayHeaderHeight} borderBottom={BORDER_DEF} display="flex">
+          <Box
+            height={dayHeaderHeight}
+            display="flex"
+            sx={{
+              borderBottom: (theme) =>
+                `1px solid ${
+                  theme.palette.mode === "light"
+                    ? lighten(alpha(theme.palette.divider, 1), 0.88)
+                    : darken(alpha(theme.palette.divider, 1), 0.68)
+                }`,
+            }}
+          >
             <Box flexGrow={1} display="flex">
               {DAYS_OF_WEEK.map((day, i) => {
                 const dayDate = setDay(selectedDate, i);
@@ -130,7 +159,17 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
         </div>
       </Box>
       {/* All day boxes */}
-      <Box display="flex" borderBottom={BORDER_DEF}>
+      <Box
+        display="flex"
+        sx={{
+          borderBottom: (theme) =>
+            `1px solid ${
+              theme.palette.mode === "light"
+                ? lighten(alpha(theme.palette.divider, 1), 0.88)
+                : darken(alpha(theme.palette.divider, 1), 0.68)
+            }`,
+        }}
+      >
         <div style={{ width: TIME_LABEL_COLUMN_WIDTH }}>
           <Box className="time-label" height={`${allDayBoxHeight}px`}>
             All Day

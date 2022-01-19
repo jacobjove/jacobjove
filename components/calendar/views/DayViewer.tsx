@@ -44,7 +44,7 @@ const Root = styled("div")(({ theme }) => {
       fontSize: "0.7rem",
       lineHeight: "1.66",
       whiteSpace: "nowrap",
-      color: "rgba(0, 0, 0, 0.6)",
+      color: theme.palette.mode === "light" ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.6)",
       minWidth: "3.5rem",
     },
     "& .calendar-slots-column": {
@@ -72,9 +72,6 @@ const Root = styled("div")(({ theme }) => {
       "&.hovered": {
         backgroundColor: `1px solid ${dividerColor}`,
         cursor: "pointer",
-      },
-      "& .event": {
-        border: "1px solid lightgray",
       },
     },
   };

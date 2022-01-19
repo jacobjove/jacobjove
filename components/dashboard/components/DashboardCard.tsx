@@ -8,7 +8,15 @@ import Typography from "@mui/material/Typography";
 import { FC, ReactNode } from "react";
 
 const CardTitle: FC<{ title: string }> = ({ title }) => (
-  <Typography component="h3" fontSize="0.8rem" m="0.25rem 0.5rem" fontWeight="bold">
+  <Typography
+    component="h3"
+    fontSize="0.8rem"
+    m="0.25rem 0.5rem"
+    fontWeight="bold"
+    sx={{
+      color: (theme) => theme.palette.secondary.contrastText,
+    }}
+  >
     {title}
   </Typography>
 );
@@ -40,7 +48,9 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
           sx={{
             padding: 0,
             backgroundColor: (theme) =>
-              theme.palette.mode === "light" ? "whitesmoke" : "darkslategray",
+              theme.palette.mode === "light"
+                ? theme.palette.secondary.main
+                : theme.palette.secondary.dark,
             borderBottom: (theme) =>
               `1px solid ${
                 theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)"

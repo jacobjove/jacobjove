@@ -6,15 +6,7 @@ interface DragHandleProps {
 }
 
 const DragHandle: FC<DragHandleProps> = (props: DragHandleProps) => {
-  return (
-    <DragIndicatorIcon
-      {...props}
-      sx={{
-        color: "gray",
-        "&:hover": { cursor: "grab" },
-      }}
-    />
-  );
+  return <DragIndicatorIcon {...props} sx={{ "&:hover": { cursor: "grab" } }} />;
 };
 
 export default DragHandle;

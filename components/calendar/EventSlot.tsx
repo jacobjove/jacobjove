@@ -28,18 +28,6 @@ const Root = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.action, // TODO
     cursor: "pointer",
   },
-  "& .event": {
-    position: "absolute",
-    border: `${theme.palette.mode === "light" ? "black" : "white"}`,
-    borderRadius: "3px",
-    paddingTop: "0.25rem",
-    paddingBottom: "0.25rem",
-    paddingLeft: "0.5rem",
-    maxWidth: "92%",
-    "& *": {
-      lineHeight: "1.1",
-    },
-  },
 }));
 
 const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;

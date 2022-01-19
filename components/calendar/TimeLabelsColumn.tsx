@@ -1,10 +1,8 @@
-import {
-  BORDER_DEF,
-  HALF_HOUR_HEIGHT,
-  TIME_LABEL_COLUMN_WIDTH,
-} from "@/components/calendar/constants";
+import { HALF_HOUR_HEIGHT, TIME_LABEL_COLUMN_WIDTH } from "@/components/calendar/constants";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import { alpha, darken, lighten } from "@mui/system";
 import { FC } from "react";
 
 interface TimeLabelProps {
@@ -13,21 +11,22 @@ interface TimeLabelProps {
 
 const TimeLabelBox: FC<TimeLabelProps> = ({ minutes }) => {
   return (
-    <Box
+    <Typography
       className="time-label"
       sx={{
         height: `${HALF_HOUR_HEIGHT}px`,
         "&:first-of-type": {
           visibility: "hidden",
         },
+        color: (theme) => theme.palette.primary.contrastText,
       }}
     >
       {convertMinutesToTimeString(minutes)}
-    </Box>
+    </Typography>
   );
 };
 
-const Root = styled("div")(() => ({
+const Root = styled("div")(({ theme }) => ({
   position: "relative",
   top: "1px", // TODO: remove this hack
   display: "flex",
@@ -35,7 +34,11 @@ const Root = styled("div")(() => ({
   "& .border-trick-box": {
     height: `${HALF_HOUR_HEIGHT}px`,
     "&:not(:last-of-type)": {
-      borderBottom: BORDER_DEF,
+      borderBottom: `1px solid ${
+        theme.palette.mode === "light"
+          ? lighten(alpha(theme.palette.divider, 1), 0.88)
+          : darken(alpha(theme.palette.divider, 1), 0.68)
+      }`,
     },
   },
 }));

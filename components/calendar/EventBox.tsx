@@ -46,16 +46,31 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         className="event"
         {...rest}
         sx={{
-          bgcolor: "rgb(100, 181, 246)", // or calendar.color
+          opacity,
           filter: hovered ? "brightness(1.05)" : null,
-          color: (theme) => `${theme.palette.mode === "light" ? "black" : "white"}`,
-          fontSize: "0.75rem",
+          bgcolor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.primary.main
+              : theme.palette.primary.dark, // or calendar.color
+          color: (theme) => `${theme.palette.primary.contrastText}`,
+          border: (theme) =>
+            `1px solid ${
+              theme.palette.mode === "light" ? "rgba(255, 255, 255, 0.75)" : "rgba(0, 0, 0, 0.75)"
+            }`,
+          borderRadius: "3px",
+          position: "absolute",
           display: "flex",
           alignItems: "start",
-          padding: "1px 0 1px 3px",
-          border: "1px solid rgba(255, 255, 255, 0.75)",
-          borderRadius: "2px",
-          opacity,
+          padding: "2px 0 1px 2px",
+          overflow: "hidden",
+          maxWidth: "92%",
+          "& *": {
+            lineHeight: "1.1",
+          },
+          "& svg": {
+            position: "relative",
+            width: "1.1rem",
+          },
         }}
         onMouseOver={(e) => {
           if (e.target === e.currentTarget) {
@@ -76,13 +91,13 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
           <Typography
             component="div"
             fontWeight={"600"}
-            fontSize={"0.7rem"}
+            fontSize={"0.65rem"}
             marginBottom="0.15rem"
-            lineHeight={"0.75rem"}
+            lineHeight={"0.7rem"}
           >
             {event.title}
           </Typography>
-          <Typography component="div" fontSize={"0.55rem"} lineHeight={"0.75rem"}>
+          <Typography component="div" fontSize={"0.5rem"} lineHeight={"0.6rem"}>
             {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}
           </Typography>
         </div>

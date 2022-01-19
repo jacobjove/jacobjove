@@ -70,7 +70,6 @@ const MonthViewer: FC<ViewerProps> = ({ selectedDate, hidden, data }: ViewerProp
   const { calendarEvents } = data;
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayIndex = getDay(firstDayOfMonth);
-  // console.log(calendarEvents);
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
       <table>
@@ -129,9 +128,18 @@ const MonthDay: FC<MonthDayProps> = (props: MonthDayProps) => {
         fontWeight={500}
         height="1.25rem"
         width="1.25rem"
-        color={isSelected ? "primary" : "initial"}
         border={isToday ? "1px solid gray" : "none"}
         borderRadius={"50%"}
+        sx={{
+          color: (theme) =>
+            isSelected
+              ? theme.palette.mode === "light"
+                ? theme.palette.primary.dark
+                : theme.palette.primary.main
+              : theme.palette.mode === "light"
+              ? "black"
+              : "white",
+        }}
       >
         {date.getDate()}
       </Typography>

@@ -144,7 +144,7 @@ const TaskChip: FC<TaskChipProps> = (props: TaskChipProps) => {
           <DragIndicatorIcon
             sx={{
               "&:hover": { cursor: "grab" },
-              color: "gray",
+              // color: theme => "gray",
             }}
           />
         </Box>
