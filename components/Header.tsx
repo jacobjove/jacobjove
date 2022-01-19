@@ -42,17 +42,16 @@ const AppBar = styled(_AppBar)(({ theme }) => ({
     textDecoration: "none",
     "&:hover": {
       textDecoration: "none",
-      color: "white",
+      // color: "white",
     },
   },
   "& #appTabs": {
-    // backgroundColor: "whitesmoke",
-    color: "darkgray",
+    // color: "darkgray",
     "& a": {
-      color: "darkgray",
+      // color: "darkgray",
       "&:hover": {
         textDecoration: "none",
-        color: "black",
+        // color: "black",
       },
     },
   },
@@ -105,7 +104,11 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
               <Typography
                 noWrap
                 component="span"
-                sx={{ ml: 0.5, mr: 2, display: { xs: "none", md: "inline" } }}
+                sx={{
+                  ml: 0.5,
+                  mr: 2,
+                  display: { xs: "none", md: "inline" },
+                }}
               >
                 SelfBuilder
                 {process.env.NODE_ENV !== "production" && (

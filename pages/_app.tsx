@@ -32,12 +32,22 @@ const tagManagerArgs = {
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
-    // primary: {
-    //   ...amber,
-    //   ...(mode === 'dark' && {
-    //     main: amber[300],
-    //   }),
-    // },
+    primary: {
+      main: "#42a5f5",
+      light: "#80d6ff",
+      dark: "#0077c2",
+      // ...(mode === 'dark' && {
+      //   main: amber[300],
+      // }),
+    },
+    secondary: {
+      main: "#9e9e9e",
+      light: "#cfcfcf",
+      dark: "#707070",
+      // ...(mode === 'dark' && {
+      //   main: amber[300],
+      // }),
+    },
     // ...(mode === 'dark' && {
     //   background: {
     //     default: deepOrange[900],
