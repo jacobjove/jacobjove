@@ -30,7 +30,7 @@ const Root = styled("div")(({ theme }) => ({
   },
   "& .event": {
     position: "absolute",
-    border: "1px solid white",
+    border: `${theme.palette.mode === "light" ? "black" : "white"}`,
     borderRadius: "3px",
     paddingTop: "0.25rem",
     paddingBottom: "0.25rem",

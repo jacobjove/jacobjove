@@ -158,7 +158,14 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
               maxHeight: "auto",
               borderRadius: "3px",
               border: isHabit ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
-              backgroundColor: isHabit ? "rgba(0, 0, 0, 0.08)" : "transparent",
+              backgroundColor: (theme) =>
+                isHabit
+                  ? `${
+                      theme.palette.mode === "light"
+                        ? "rgba(0, 0, 0, 0.08)"
+                        : "rgba(255, 255, 255, 0.08)"
+                    }`
+                  : "transparent",
             }}
           >
             <Box display="flex" justifyContent={"space-between"} alignItems="center">

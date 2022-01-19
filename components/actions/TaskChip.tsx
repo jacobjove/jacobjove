@@ -77,7 +77,8 @@ const TaskChip: FC<TaskChipProps> = (props: TaskChipProps) => {
         maxHeight: "auto",
         borderRadius: "3px",
         border: "1px solid rgba(0, 0, 0, 0.05)",
-        backgroundColor: "rgba(0, 0, 0, 0.08)",
+        backgroundColor: (theme) =>
+          `${theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)"}`,
       }}
     >
       <Box display="flex" justifyContent={"space-between"} alignItems="center">

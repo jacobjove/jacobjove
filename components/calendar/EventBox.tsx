@@ -48,7 +48,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         sx={{
           bgcolor: "rgb(100, 181, 246)", // or calendar.color
           filter: hovered ? "brightness(1.05)" : null,
-          color: "white",
+          color: (theme) => `${theme.palette.mode === "light" ? "black" : "white"}`,
           fontSize: "0.75rem",
           display: "flex",
           alignItems: "start",

@@ -37,10 +37,14 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
       <Collapse in={displayCardHeader}>
         <CardHeader
           title={<CardTitle title={props.title} />}
-          style={{
+          sx={{
             padding: 0,
-            backgroundColor: "whitesmoke",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light" ? "whitesmoke" : "darkslategray",
+            borderBottom: (theme) =>
+              `1px solid ${
+                theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)"
+              }`,
             height: "100%",
             display: "flex",
             alignItems: "center",

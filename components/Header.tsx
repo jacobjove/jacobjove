@@ -36,23 +36,11 @@ const settings = [
 
 const AppBar = styled(_AppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  // color: "whitesmoke",
   "& a": {
     color: theme.palette.primary.contrastText,
     textDecoration: "none",
     "&:hover": {
       textDecoration: "none",
-      // color: "white",
-    },
-  },
-  "& #appTabs": {
-    // color: "darkgray",
-    "& a": {
-      // color: "darkgray",
-      "&:hover": {
-        textDecoration: "none",
-        // color: "black",
-      },
     },
   },
 }));
