@@ -16,10 +16,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import update from "immutability-helper";
+import isEqual from "lodash/isEqual";
 import partition from "lodash/partition";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 
 export const fragment = gql`
   fragment TasksTable on Query {
@@ -43,8 +45,11 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const { data } = props;
   const { tasks: allTasks } = data;
   const { data: session } = useSession();
+
   const [addingNewTask, setAddingNewTask] = useState(false);
-  const [createTask, { loading }] = useMutation<{ createTask: Task }>(CREATE_TASK, {
+  const [newTask, setNewTask] = useState<Partial<Task>>({});
+
+  const [createTask, { loading: _loading }] = useMutation<{ createTask: Task }>(CREATE_TASK, {
     update(cache, { data }) {
       const { createTask } = data || {};
       if (createTask) {
@@ -68,10 +73,10 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
       }
     },
   });
-  const [newTask, setNewTask] = useState<Partial<Task>>({});
 
   // Exclude archived tasks.
   let filteredTasks = allTasks.filter((task) => !task.archivedAt);
+  filteredTasks.sort((a, b) => (a.position > b.position ? 1 : -1));
 
   // If these are any top-level tasks, exclude the subtasks, since the top-level tasks
   // should already contain their subtasks. Otherwise, if there are no top-level tasks,
@@ -86,6 +91,31 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const [completeTasks, incompleteTasks] = partition(filteredTasks, (task) => {
     return !!task.completedAt;
   });
+
+  // Enable re-ordering the tasks.
+  const [incompleteTasksState, setIncompleteTasksState] = useState(incompleteTasks);
+  const moveTaskRow = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const draggedTask = incompleteTasksState[dragIndex];
+      setIncompleteTasksState(
+        update(incompleteTasksState, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, draggedTask],
+          ],
+        })
+      );
+    },
+    [incompleteTasksState]
+  );
+  const renderTaskRow = (task: Task, index: number) => {
+    return <TaskRow key={task.id} task={task} index={index} move={moveTaskRow} />;
+  };
+  useEffect(() => {
+    if (!isEqual(incompleteTasksState, incompleteTasks)) {
+      setIncompleteTasksState(incompleteTasks);
+    }
+  }, [incompleteTasks, incompleteTasksState]);
 
   const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
     // console.log(field, value);
@@ -167,9 +197,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {incompleteTasks.map((task) => (
-              <TaskRow key={task.id} task={task} />
-            ))}
+            {incompleteTasks.map((task, index) => renderTaskRow(task, index))}
             <TableRow>
               {(addingNewTask && (
                 <EditingModeTaskCells

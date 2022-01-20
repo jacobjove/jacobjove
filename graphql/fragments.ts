@@ -46,6 +46,7 @@ export const taskFragment = gql`
     id
     title
     dueDate
+    position
     description
     completedAt
     archivedAt
@@ -158,5 +159,22 @@ export const userFragment = gql`
     name
     email
     settings
+  }
+`;
+
+export const notebookFragment = gql`
+  fragment NotebookFragment on Notebook {
+    __typename
+    id
+    title
+  }
+`;
+
+export const noteFragment = gql`
+  fragment NoteFragment on Note {
+    __typename
+    id
+    title
+    body
   }
 `;

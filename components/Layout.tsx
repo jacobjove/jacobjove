@@ -46,9 +46,9 @@ const Layout: FC<LayoutProps> = ({ scrollable, children }: LayoutProps) => {
           )}
           <div
             style={{
+              position: "relative",
               flexGrow: 1,
               flexShrink: 1,
-              padding: "0.25rem",
               height: "100%",
               maxHeight: "100%",
               overflowY: scrollable ? "scroll" : "hidden",

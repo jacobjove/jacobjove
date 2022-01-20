@@ -37,26 +37,28 @@ enum Role {
 }
 
 model User {
-  id            Int              @id @default(autoincrement())
-  uid           String           @unique @default(cuid())
-  name          String?
-  email         String           @unique
-  emailVerified DateTime?
-  image         String?
-  isAdmin       Boolean          @default(false)
-  settings      Json             @default("{}")
-  accounts      Account[]
-  calendars     Calendar[]       @relation("calendars")
-  identities    Identification[]
-  userValues    UserValue[]
-  userBeliefs   UserBelief[]
-  habits        Habit[]
-  tasks         Task[]
-  dashboards    Dashboard[]
-  lists         List[]
-  readings      Reading[]
-  bookshelves   Bookshelf[]
-  bookReviews   BookReview[]
+  id                  Int                      @id @default(autoincrement())
+  uid                 String                   @unique @default(cuid())
+  name                String?
+  email               String                   @unique
+  emailVerified       DateTime?
+  image               String?
+  isAdmin             Boolean                  @default(false)
+  settings            Json                     @default("{}")
+  accounts            Account[]
+  calendars           Calendar[]               @relation("calendars")
+  identities          Identification[]
+  userValues          UserValue[]
+  userBeliefs         UserBelief[]
+  habits              Habit[]
+  tasks               Task[]
+  dashboards          Dashboard[]
+  notebooks           Notebook[]
+  notebookPermissions NotebookUserPermission[]
+  lists               List[]
+  readings            Reading[]
+  bookshelves         Bookshelf[]
+  bookReviews         BookReview[]
 }
 
 model Dashboard {
@@ -466,6 +468,46 @@ enum LIST_FIELD_TYPE {
   DATE
   DATETIME
   BOOLEAN
+}
+
+model NotebookUserPermission {
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     Int
+  notebook   Notebook  @relation(fields: [notebookId], references: [id])
+  notebookId Int
+  deleted    DateTime?
+
+  @@unique([userId, notebookId])
+}
+
+model Notebook {
+  id              Int                      @id @default(autoincrement())
+  owner           User                     @relation(fields: [ownerId], references: [id])
+  ownerId         Int
+  name            String
+  slug            String                   @unique
+  isPublic        Boolean                  @default(false)
+  description     String?
+  notes           Note[]
+  userPermissions NotebookUserPermission[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime?
+  archivedAt DateTime?
+}
+
+model Note {
+  id         Int      @id @default(autoincrement())
+  notebook   Notebook @relation(fields: [notebookId], references: [id])
+  notebookId Int
+  title      String?
+  body       String?
+  isPublic   Boolean  @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime?
+  archivedAt DateTime?
 }
 
 model List {

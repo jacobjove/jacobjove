@@ -51,7 +51,6 @@ const Root = styled("div")(({ theme }) => {
       flexGrow: 1,
       position: "relative",
       cursor: "pointer",
-      scrollBehavior: "smooth",
     },
     "& .border-trick-box": {
       borderRight: `1px solid ${dividerColor}`,
@@ -189,8 +188,14 @@ const DayViewer: FC<ViewerProps> = ({
             ref={scrollableDivRef}
             position="relative"
             sx={{
+              scrollBehavior: "smooth",
               overflowY: "scroll",
               overflowX: "hidden",
+              scrollPaddingRight: 0,
+              scrollMarginRight: 0,
+              // Avoid scrollbar overlap.
+              paddingRight: "0.6rem",
+              marginRight: "-0.6rem",
             }}
           >
             <TimeLabelsColumn />

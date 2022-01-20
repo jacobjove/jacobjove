@@ -24,6 +24,7 @@ import { alpha, darken, lighten } from "@mui/system";
 import { addMinutes } from "date-fns";
 import Link from "next/link";
 import { FC, useContext, useState } from "react";
+import { createPortal } from "react-dom";
 
 export const fragment = gql`
   fragment CalendarViewer on Query {
@@ -52,6 +53,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const { calendars } = data;
   const defaultCalendar = calendars[0]; // TODO
   const date = useContext(DateContext);
+  const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
   const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
@@ -75,8 +77,26 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     setInitialEventFormData,
     defaultCalendar,
   };
-  return (
-    <Box display="flex" flexDirection={"column"} height={"100%"}>
+  const renderedComponent = (
+    <Box
+      display="flex"
+      flexDirection={"column"}
+      height={"100%"}
+      sx={{
+        ...(fullScreen
+          ? {
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: (theme) => theme.palette.background.default,
+              padding: "0.5rem",
+              zIndex: 1000000000000000000, // TODO
+            }
+          : {}),
+      }}
+    >
       {!props.collapseMenu && (
         <Box
           flex={"0 0 auto"}
@@ -205,12 +225,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                 Close
               </MenuItem>
             </Menu>
-            <IconButton
-              title={`Expand to full screen`}
-              onClick={() => {
-                console.log("Expanding calendar widget to full screen...");
-              }}
-            >
+            <IconButton title={`Expand to full screen`} onClick={() => setFullScreen(!fullScreen)}>
               <ZoomOutMapIcon />
             </IconButton>
           </Box>
@@ -223,6 +238,8 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
       </Box>
     </Box>
   );
+  if (fullScreen) return createPortal(renderedComponent, document.body);
+  return renderedComponent;
 };
 
 export default CalendarViewer;

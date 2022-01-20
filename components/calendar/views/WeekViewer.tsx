@@ -137,8 +137,14 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                 const dayDate = setDay(selectedDate, i);
                 return (
                   <CalendarCell key={i} className="day-header-cell">
-                    <Typography fontSize="0.75rem">{day}</Typography>
-                    <Box display="flex" alignItems="center" justifyContent={"center"}>
+                    <Box
+                      height="100%"
+                      display="flex"
+                      flexDirection={"column"}
+                      alignItems="center"
+                      justifyContent={"center"}
+                    >
+                      <Typography fontSize="0.7rem">{day}</Typography>
                       <Typography
                         fontSize="0.9rem"
                         fontWeight={600}
@@ -146,7 +152,12 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                         width="1.5rem"
                         border={isSameDay(dayDate, date) ? "1px solid gray" : "none"}
                         borderRadius={"50%"}
-                        color={isSameDay(dayDate, selectedDate) ? "primary" : "initial"}
+                        sx={{
+                          color: (theme) =>
+                            isSameDay(dayDate, selectedDate)
+                              ? theme.palette.primary.main
+                              : theme.palette.primary.contrastText,
+                        }}
                       >
                         {dayDate.getDate()}
                       </Typography>

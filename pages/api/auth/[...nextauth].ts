@@ -71,6 +71,7 @@ const callbacks: CallbacksOptions = {
   async jwt({ token, account }) {
     // The account is only passed the first time this callback is called on a new session.
     // In subsequent calls, only the token is available.
+    console.log("🔑 JWT");
     if (account) {
       // Persist the OAuth access_token to the token.
       token.accessToken = account.access_token;
@@ -103,10 +104,12 @@ const callbacks: CallbacksOptions = {
         jti: 'e6a89a68-0554-4930-8b74-32af60148b5f'
       }
     */
+    console.log("🔑 session");
+    if (!session?.user) return session;
     if (token.accessToken) {
       session.accessToken = token.accessToken;
     }
-    if (session.user && !session.user.id) {
+    if (!session.user.id) {
       // Get the user's ID.
       let user = await prisma.user.findUnique({
         where: {

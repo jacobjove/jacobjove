@@ -219,31 +219,47 @@ interface AuthProps {
 }
 
 const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
-  const { data: session, status } = useSession();
-  const isAuthenticated = !!session?.user;
+  const { data: session, status } = useSession({ required: true });
+  const colorMode = useContext(ColorModeContext);
   const { data, loading: loadingData } = useQuery<{ user: User }>(QUERY, {
     variables: { userId: session?.user?.id },
   });
-
-  const loading = status === "loading" || loadingData;
+  const loadingAuth = status === "loading";
+  const isAuthenticated = !!session?.user;
+  const loading = loadingAuth || loadingData;
   const user = data?.user;
   const settings = user?.settings ? JSON.parse(user.settings) : {};
-  const colorMode = useContext(ColorModeContext);
 
-  useEffect(() => {
-    if (settings?.colorMode) colorMode.set(settings.colorMode);
-  }, [colorMode, settings?.colorMode]);
-
+  // Require authentication.
   useEffect(() => {
     // Do nothing while loading.
-    if (loading) return;
+    if (loadingAuth) return;
     // If not authenticated, force log in.
     if (!isAuthenticated) signIn();
-  }, [isAuthenticated, loading]);
+  }, [isAuthenticated, loadingAuth]);
 
-  if (isAuthenticated)
+  // Update the color mode if the user's color mode setting changes.
+  useEffect(() => {
+    if (!loading && settings?.colorMode) colorMode.set(settings.colorMode);
+  }, [loading, colorMode, settings?.colorMode]);
+
+  if (isAuthenticated) {
     return <UserContext.Provider value={user ?? null}>{children}</UserContext.Provider>;
+  }
+
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return <div>Loading...</div>;
+  return (
+    <div
+      style={{
+        display: "flex",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      {"Loading..."}
+    </div>
+  );
 };

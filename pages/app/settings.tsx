@@ -22,7 +22,7 @@ import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useContext } from "react";
 
-interface PlannerPageProps {
+interface SettingsPageProps {
   session: Session | null;
 }
 
@@ -35,7 +35,7 @@ const UPDATE_SETTINGS = gql`
   ${userFragment}
 `;
 
-const SettingsPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
+const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) => {
   const { data: session } = useSession();
   const isMobile = useMediaQuery("(max-width: 600px)");
   const user = useContext(UserContext);
@@ -182,7 +182,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const props: PlannerPageProps = {
+  const props: SettingsPageProps = {
     session,
   };
   return addApolloState(apolloClient, { props });

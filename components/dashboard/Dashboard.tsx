@@ -110,7 +110,15 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     console.log("handleSpeedDialClose");
     setSpeedDialOpen(false);
   };
-  const speedDialActions = [{ icon: <AddIcon />, name: "Add task" }];
+  const speedDialActions = [
+    {
+      icon: <AddIcon />,
+      name: "Add task",
+      onClick: () => {
+        console.log("Add task");
+      },
+    },
+  ];
   const children = useMemo(() => {
     if (!data || !session) return [];
     const { calendarEvents, calendars, habits, tasks, identifications, userValues } = data;
@@ -192,7 +200,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       setLayouts(newLayouts);
     }
   };
-  console.log("Rendering dashboard with children", children);
+  // console.log("Rendering dashboard with children", children);
   return (
     <div
       style={{
@@ -250,7 +258,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen // TODO: on mobile only?
-            onClick={handleSpeedDialClose}
+            onClick={action.onClick}
           />
         ))}
       </SpeedDial>

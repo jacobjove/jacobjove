@@ -23,22 +23,27 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { format, isSameDay, isSameYear, parseISO } from "date-fns";
+import { XYCoord } from "dnd-core";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useSession } from "next-auth/react";
-import React, { FC, useContext, useState } from "react";
-import { useDrag } from "react-dnd";
+import { FC, useContext, useRef, useState } from "react";
+import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
 interface TaskRowProps {
   task: Task;
   collapsed?: boolean;
+  index?: number;
+  move?: (dragIndex: number, hoverIndex: number) => void;
 }
 
 const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
-  const { task, collapsed: _collapsed } = props;
+  const { task, collapsed: _collapsed, index: _index, move } = props;
+  const index = _index ?? task.position;
   const completed = Boolean(task.completedAt);
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
   const today = useContext(DateContext);
+  const ref = useRef<HTMLTableRowElement>(null);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [editing, setEditing] = useState(false);
   const [actionInProgress, setActionInProgress] = useState(false);
@@ -68,17 +73,95 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       console.error(error);
     });
   };
-  const [{ opacity }, dragRef] = useDrag(() => ({
+  const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "task",
     item: {
-      type: "action",
+      type: "task",
       title: task.title,
       calendarId: session?.user?.settings?.defaultCalendarId,
     },
     collect: (monitor) => ({
-      opacity: monitor.isDragging() ? 0.5 : 1,
+      isDragging: monitor.isDragging(),
     }),
   }));
+  const [{ handlerId, canDrop }, dropRef] = useDrop(
+    () => ({
+      accept: ["task"],
+      canDrop: () => !loading,
+      drop: (item: Task) => {
+        if (!session) return;
+        const { ...itemData } = item;
+        // addEvent({
+        //   variables: {
+        //     data: calendarEventDataWithConnections,
+        //   },
+        //   optimisticResponse: {
+        //     createCalendarEvent: {
+        //       __typename: "CalendarEvent",
+        //       id: -1,
+        //       uid: "tmp-id",
+        //       calendarId,
+        //       scheduleId,
+        //     },
+        //   },
+        // });
+      },
+      hover(item: Task, monitor: DropTargetMonitor) {
+        if (!ref.current || !move) {
+          return;
+        }
+        const dragIndex = item.position;
+        const hoverIndex = index;
+
+        // Don't replace items with themselves.
+        if (dragIndex === hoverIndex) {
+          return;
+        }
+
+        // Determine rectangle on screen
+        const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
+        // Get vertical middle
+        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+        // Determine mouse position
+        const clientOffset = monitor.getClientOffset();
+
+        // Get pixels to the top
+        const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+
+        // Only perform the move when the mouse has crossed half of the items height.
+        // When dragging downwards, only move when the cursor is below 50%.
+        // When dragging upwards, only move when the cursor is above 50%.
+
+        // Dragging downwards
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+
+        // Dragging upwards
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
+
+        // Time to actually perform the action
+        move(dragIndex, hoverIndex);
+
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        console.log(item, typeof item);
+        // item.index = hoverIndex;
+      },
+      collect: (monitor) => ({
+        handlerId: monitor.getHandlerId(),
+        isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop(),
+      }),
+    }),
+    []
+  );
   const handleScheduleIconClick = () => {
     console.info("You clicked the schedule icon.");
   };
@@ -93,10 +176,15 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     return dueDate.toLocaleDateString();
   };
   const isHabit = Boolean(task.habit);
+  const opacity = isDragging ? 0 : 1;
+  dragRef(dropRef(ref));
   return (
     <>
       <TableRow
+        ref={ref}
+        data-handler-id={handlerId}
         sx={{
+          opacity,
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
           "& td, th": {
@@ -175,9 +263,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
             </TableCell>
             <TableCell>
               <Box
-                ref={dragRef}
                 sx={{
-                  opacity,
                   position: "relative",
                   margin: "0.25rem",
                   paddingX: 0,
@@ -211,7 +297,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                       }}
                       {...bindTrigger(dialogState)}
                     >
-                      {task.title}
+                      {task.title} ({task.position})
                     </Button>
                   </Box>
                 </Box>

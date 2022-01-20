@@ -35,7 +35,7 @@ const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 // TODO: https://www.apollographql.com/blog/apollo-client/caching/when-to-use-refetch-queries/
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
-  const { date, view, defaultCalendarId, onClick, past } = props;
+  const { date, view: _view, defaultCalendarId, onClick, past } = props;
   const { data: session } = useSession();
   const [hovered, setHovered] = useState(false);
   const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
@@ -70,12 +70,12 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
-      accept: ["event", "action", "routine", "task"],
+      accept: ["event", "task"],
       canDrop: () => !loading,
       drop: (
         item: Partial<CalendarEvent> & {
           durationInMinutes?: number;
-          type: "event" | "action" | "routine" | "task";
+          type: "event" | "task";
         } & Pick<CalendarEvent, "title">
       ) => {
         if (!session) return;
@@ -111,15 +111,8 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           const start = date;
           const end = addMinutes(date, durationInMinutes ?? DEFAULT_EVENT_LENGTH_IN_MINUTES);
           let { scheduleId, calendarId, ...calendarEventData } = itemData;
-          calendarId = calendarId ?? defaultCalendarId;
+          calendarId = calendarId ?? defaultCalendarId; // TODO: session.user.settings.defaultCalendarId
           scheduleId = scheduleId ?? null;
-          if (!calendarId) {
-            try {
-              calendarId = session.user.settings.defaultCalendarId;
-            } catch (err) {
-              console.error(err);
-            }
-          }
           calendarEventData = {
             start: start.toISOString(),
             end: end.toISOString(),
