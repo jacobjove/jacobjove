@@ -1,10 +1,29 @@
 import Layout from "@/components/Layout";
 import UserContext from "@/components/UserContext";
 import { notebookFragment, noteFragment } from "@/graphql/fragments";
+// import ListSubheader from "@mui/material/ListSubheader";
+// import Collapse from "@mui/material/Collapse";
+// import ExpandLess from "@mui/icons-material/ExpandLess";
+// import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Notebook } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import AddIcon from "@mui/icons-material/Add";
+import ClassIcon from "@mui/icons-material/Class";
+import DoneIcon from "@mui/icons-material/Done";
+import {
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  TextField,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import MenuItem from "@mui/material/MenuItem";
 // import TextField from "@mui/material/TextField";
 import NativeSelect from "@mui/material/NativeSelect";
@@ -19,11 +38,12 @@ import TableRow from "@mui/material/TableRow";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { alpha } from "@mui/system";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 interface NotesPageProps {
   session: Session | null;
@@ -47,15 +67,35 @@ const UPDATE_NOTE = gql`
   ${noteFragment}
 `;
 
+const QUERY = gql`
+  query GetNotebooks($userId: Int!) {
+    notebooks(where: { userId: $userId }) {
+      ...NotebookFragment
+    }
+  }
+  ${notebookFragment}
+`;
+
 const drawerWidth = 240;
+
+interface NotesPageData {
+  notebooks: Notebook[];
+}
 
 const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const { data: session } = useSession();
   const isMobile = useMediaQuery("(max-width: 600px)");
   const user = useContext(UserContext);
+  const { data, loading: loadingNotes, error } = useQuery<NotesPageData>(QUERY);
   const [updateNotes, { loading: loadingUpdateSetting }] = useMutation(UPDATE_NOTEBOOK);
+  const { notebooks } = data || { notebooks: [] };
+  const [selectedNotebook, setSelectedNotebook] = useState<Notebook | null>(
+    notebooks.length ? notebooks[0] : null
+  );
+  const [addingNewNotebook, setAddingNewNotebook] = useState(false);
+  const [newNotebookName, setNewNotebookName] = useState("");
   if (!session || !user) return null;
-  const loading = loadingUpdateSetting;
+  const loading = loadingUpdateSetting || loadingNotes;
   const { settings: settingsJson } = user;
   const userNotes = settingsJson
     ? typeof settingsJson === "object"
@@ -85,38 +125,79 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
         noindex
         nofollow
       />
-      {/* <Drawer
+      <Drawer
         sx={{
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
+            position: "absolute",
             width: drawerWidth,
             boxSizing: "border-box",
+            backgroundColor: (theme) =>
+              alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+            // theme.palette.mode === "light"
+            //   ? theme.palette.secondary.light
+            //   : theme.palette.secondary.dark,
           },
         }}
         variant="permanent"
         anchor="left"
       >
-        <Toolbar />
+        <Toolbar>
+          <Typography component="h1" variant="h2">
+            {"Notes"}
+          </Typography>
+        </Toolbar>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon></ListItemIcon>
-              <ListItemText primary={text} />
+          {addingNewNotebook ? (
+            <ListItem>
+              <TextField
+                autoFocus
+                placeholder="Notebook title"
+                variant="standard"
+                value={newNotebookName}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="create new notebook"
+                        onClick={() => {
+                          console.log("create new notebook");
+                        }}
+                        edge="end"
+                      >
+                        <DoneIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => setNewNotebookName(e.target.value)}
+                onKeyUp={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                  } else if (event.key === "Escape") {
+                    event.preventDefault();
+                    setAddingNewNotebook(false);
+                  }
+                }}
+              />
+            </ListItem>
+          ) : (
+            <ListItem button onClick={() => setAddingNewNotebook(true)}>
+              <AddIcon /> {"New notebook"}
+            </ListItem>
+          )}
+          {notebooks.map((notebook) => (
+            <ListItem button key={notebook.title}>
+              <ListItemIcon sx={{ justifyContent: "center" }}>
+                <ClassIcon />
+              </ListItemIcon>
+              <ListItemText primary={notebook.title} />
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon></ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer> */}
+      </Drawer>
       <Container
         maxWidth="md"
         sx={{

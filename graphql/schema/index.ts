@@ -14,6 +14,8 @@ import {
   Habit as _Habit,
   Identification as _Identification,
   Identity as _Identity,
+  Note as _Note,
+  Notebook as _Notebook,
   RoutineHabit as _RoutineHabit,
   ScheduleTemplate as _ScheduleTemplate,
   Task as _Task,
@@ -97,4 +99,8 @@ export type User = FromPrismaWithOmission<_User, "settings"> & {
 };
 export type Dashboard = FromPrismaWithOmission<_Dashboard, "layouts"> & {
   layouts: string;
+};
+export type Note = FromPrisma<_Note>;
+export type Notebook = FromPrismaWithOmission<_Notebook, "notes"> & {
+  notes: Note[];
 };

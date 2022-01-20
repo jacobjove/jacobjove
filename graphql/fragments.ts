@@ -162,14 +162,6 @@ export const userFragment = gql`
   }
 `;
 
-export const notebookFragment = gql`
-  fragment NotebookFragment on Notebook {
-    __typename
-    id
-    title
-  }
-`;
-
 export const noteFragment = gql`
   fragment NoteFragment on Note {
     __typename
@@ -177,4 +169,16 @@ export const noteFragment = gql`
     title
     body
   }
+`;
+
+export const notebookFragment = gql`
+  fragment NotebookFragment on Notebook {
+    __typename
+    id
+    title
+    notes {
+      ...NoteFragment
+    }
+  }
+  ${noteFragment}
 `;
