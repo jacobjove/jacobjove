@@ -22,7 +22,7 @@ import Select from "@mui/material/Select";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { isEmpty } from "lodash";
 import { GetServerSideProps, NextPage } from "next";
-import { Session } from "next-auth";
+import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
@@ -284,6 +284,8 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
   );
 };
 export default DashboardPage;
+
+(DashboardPage as PageWithAuth).auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();

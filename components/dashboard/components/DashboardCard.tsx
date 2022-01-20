@@ -58,6 +58,9 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
             height: "100%",
             display: "flex",
             alignItems: "center",
+            "& .MuiCardHeader-action": {
+              height: "100%",
+            },
           }}
           action={<DragHandle className={`drag-anchor${!props.editing ? " hidden" : ""}`} />}
         />

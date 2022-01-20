@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import "next-auth";
 import "next-auth/jwt";
 
@@ -9,15 +10,12 @@ declare module "next-auth" {
    */
   interface User {
     id: number;
-    name: string;
+    name?: string | null;
     email: string;
     image: string;
     isAdmin: boolean;
     settings: {
-      dashboard?: {
-        [key: string]: undefined;
-      };
-      defaultCalendarId: number;
+      [key: string]: unknown;
     };
   }
   /**
@@ -29,6 +27,9 @@ declare module "next-auth" {
   }
   interface JWT {
     accessToken: string;
+  }
+  interface PageWithAuth extends NextPage {
+    auth?: boolean;
   }
 }
 

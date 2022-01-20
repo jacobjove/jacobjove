@@ -1,11 +1,14 @@
 import ColorModeContext from "@/components/ColorModeContext";
 import DateContext from "@/components/DateContext";
 import { PageTransitionContextProvider } from "@/components/PageTransitionContext";
+import UserContext from "@/components/UserContext";
+import { userFragment } from "@/graphql/fragments";
+import { User } from "@/graphql/schema";
 import { useApollo } from "@/lib/apollo/apolloClient";
 import "@/node_modules/react-grid-layout/css/styles.css";
 import "@/node_modules/react-resizable/css/styles.css";
 import "@/public/styles/global.css";
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider, gql, useQuery } from "@apollo/client";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { createTheme, PaletteMode } from "@mui/material";
@@ -17,12 +20,21 @@ import { NextPage } from "next";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
-import { FC, ReactElement, useEffect, useMemo, useState } from "react";
+import { FC, ReactElement, useContext, useEffect, useMemo, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import TagManager from "react-gtm-module";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
+
+const QUERY = gql`
+  query GetUser($userId: Int!) {
+    user(where: { id: $userId }) {
+      ...UserFragment
+    }
+  }
+  ${userFragment}
+`;
 
 // TODO: https://github.com/vercel/next.js/discussions/15518#discussioncomment-42875
 const tagManagerArgs = {
@@ -97,7 +109,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
   },
 });
 
-export type ComponentWithAuth = NextPage & {
+export type PageWithAuth = NextPage & {
   auth?: boolean;
 };
 
@@ -105,19 +117,16 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   const apolloClient = useApollo(pageProps);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState<PaletteMode>("dark");
+  const [mode, setMode] = useState<PaletteMode>(session?.user?.settings?.colorMode ?? "light");
   const colorMode = useMemo(
     () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      set: (mode: PaletteMode) => {
+        setMode(mode);
       },
     }),
     []
   );
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-  useEffect(() => {
-    TagManager.initialize(tagManagerArgs);
-  }, []);
   useEffect(() => {
     // Update the current time every minute.
     const intervalId = setInterval(function () {
@@ -128,6 +137,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       clearInterval(intervalId);
     };
   }, [setDate]);
+  useEffect(() => {
+    TagManager.initialize(tagManagerArgs);
+  }, []);
   return (
     <SessionProvider session={session}>
       <PageTransitionContextProvider>
@@ -184,7 +196,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                         ]
                       }
                     />
-                    {(Component as ComponentWithAuth).auth ? (
+                    {(Component as PageWithAuth).auth ? (
                       <Auth>
                         <Component {...pageProps} />
                       </Auth>
@@ -202,16 +214,35 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   );
 }
 
-const Auth: FC<{ children: ReactElement }> = ({ children }: { children: ReactElement }) => {
+interface AuthProps {
+  children: ReactElement;
+}
+
+const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
   const { data: session, status } = useSession();
-  const isUser = !!session?.user;
+  const isAuthenticated = !!session?.user;
+  const { data, loading: loadingData } = useQuery<{ user: User }>(QUERY, {
+    variables: { userId: session?.user?.id },
+  });
+
+  const loading = status === "loading" || loadingData;
+  const user = data?.user;
+  const settings = user?.settings ? JSON.parse(user.settings) : {};
+  const colorMode = useContext(ColorModeContext);
+
   useEffect(() => {
-    if (status === "loading") return; // Do nothing while loading
-    if (!isUser) signIn(); // If not authenticated, force log in
-  }, [isUser, status]);
-  if (isUser) {
-    return children;
-  }
+    if (settings?.colorMode) colorMode.set(settings.colorMode);
+  }, [colorMode, settings?.colorMode]);
+
+  useEffect(() => {
+    // Do nothing while loading.
+    if (loading) return;
+    // If not authenticated, force log in.
+    if (!isAuthenticated) signIn();
+  }, [isAuthenticated, loading]);
+
+  if (isAuthenticated)
+    return <UserContext.Provider value={user ?? null}>{children}</UserContext.Provider>;
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
   return <div>Loading...</div>;

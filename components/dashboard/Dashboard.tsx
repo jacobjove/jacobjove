@@ -165,7 +165,6 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     });
   }, [layouts, editing, data, loading, session]);
   useEffect(() => {
-    console.log("Dashboard.tsx: useEffect");
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
       let breakpoint: Breakpoint = "xl";

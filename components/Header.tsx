@@ -166,8 +166,11 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                 </Link>
               </Box>
             ))}
-
-            <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+            <IconButton
+              sx={{ ml: 1 }}
+              onClick={() => colorMode.set(theme.palette.mode === "light" ? "dark" : "light")}
+              color="inherit"
+            >
               {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
           </Box>

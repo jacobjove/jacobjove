@@ -1,5 +1,5 @@
+import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
 import TaskRow from "@/components/actions/TaskRow";
-import DateSelector from "@/components/dates/DateSelector";
 import { taskFragment } from "@/graphql/fragments";
 import { CREATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
@@ -15,7 +15,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import partition from "lodash/partition";
 import { useSession } from "next-auth/react";
@@ -89,7 +88,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   });
 
   const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
-    console.log(field, value);
+    // console.log(field, value);
     setNewTask({ ...newTask, [field]: value });
   };
   const handleNewTaskSubmit = async () => {
@@ -172,76 +171,34 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
               <TaskRow key={task.id} task={task} />
             ))}
             <TableRow>
-              <TableCell colSpan={2} />
-              {!addingNewTask && !loading && (
-                <TableCell colSpan={5}>
-                  <Button
-                    variant="text"
-                    onClick={() => {
-                      setAddingNewTask(true);
-                    }}
-                    sx={{
-                      textTransform: "none",
-                      fontStyle: "italic",
-                      color: (theme) => (theme.palette.mode === "light" ? "lightgray" : "darkgray"),
-                      py: "0.25rem",
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "start",
-                    }}
-                  >
-                    {incompleteTasks.length ? "Add another task..." : "Add a task..."}
-                  </Button>
-                </TableCell>
-              )}
-              {addingNewTask && (
+              {(addingNewTask && (
+                <EditingModeTaskCells
+                  task={newTask}
+                  handleFieldChange={handleNewTaskFieldChange}
+                  handleSubmit={handleNewTaskSubmit}
+                  handleCancel={() => setAddingNewTask(false)}
+                />
+              )) || (
                 <>
-                  <TableCell>
-                    <Box height="2.5rem" width="100%" display="flex" justifyContent="center">
-                      <TextField
-                        autoFocus
-                        variant="standard"
-                        placeholder={"Task title"}
-                        value={newTask.title ?? ""}
-                        required
-                        sx={{
-                          flexGrow: 1,
-                          height: "100%",
-                          "& div": { height: "100%" },
-                          "& input": {
-                            height: "100%",
-                            fontSize: PREFERRED_FONT_SIZE,
-                          },
-                          "& input::placeholder": {
-                            fontStyle: "italic",
-                            fontSize: PREFERRED_FONT_SIZE,
-                          },
-                        }}
-                        onChange={(event) => {
-                          handleNewTaskFieldChange("title", event.target.value);
-                        }}
-                        onKeyPress={(event) => {
-                          if (event.key === "Enter") {
-                            event.preventDefault();
-                            handleNewTaskSubmit();
-                          }
-                        }}
-                      />
-                    </Box>
+                  <TableCell colSpan={2} />
+                  <TableCell colSpan={5}>
+                    <Button
+                      variant="text"
+                      onClick={() => setAddingNewTask(true)}
+                      sx={{
+                        textTransform: "none",
+                        fontStyle: "italic",
+                        color: (theme) =>
+                          theme.palette.mode === "light" ? "lightgray" : "darkgray",
+                        py: "0.25rem",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "start",
+                      }}
+                    >
+                      {incompleteTasks.length ? "Add another task..." : "Add a task..."}
+                    </Button>
                   </TableCell>
-                  <TableCell>
-                    <Box height="2.5rem" maxWidth={"5rem"}>
-                      <DateSelector
-                        date={null}
-                        setDate={(date) => {
-                          handleNewTaskFieldChange("dueDate", date);
-                        }}
-                        dateFormat={"M/d"}
-                        steppable={false}
-                      />
-                    </Box>
-                  </TableCell>
-                  <TableCell colSpan={3} />
                 </>
               )}
             </TableRow>

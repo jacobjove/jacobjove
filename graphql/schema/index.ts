@@ -92,14 +92,8 @@ export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "en
 // };
 export type UserValue = FromPrisma<_UserValue>;
 export type User = FromPrismaWithOmission<_User, "settings"> & {
-  settings: {
-    defaultCalendarId: number;
-    dashboard?: {
-      layouts: {
-        xs?: any;
-      };
-    };
-  };
+  // settings: { [key: string]: any; };
+  settings: string;
 };
 export type Dashboard = FromPrismaWithOmission<_Dashboard, "layouts"> & {
   layouts: string;

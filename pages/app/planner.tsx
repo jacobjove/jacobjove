@@ -11,7 +11,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { GetServerSideProps, NextPage } from "next";
-import { Session } from "next-auth";
+import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useContext } from "react";
@@ -139,7 +139,10 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
     </Layout>
   );
 };
+
 export default PlannerPage;
+
+(PlannerPage as PageWithAuth).auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();

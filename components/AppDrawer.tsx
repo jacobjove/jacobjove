@@ -13,6 +13,7 @@ import NotesIcon from "@mui/icons-material/Notes";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import ScienceIcon from "@mui/icons-material/Science";
+import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
@@ -148,6 +149,14 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
               <FormatListBulletedIcon />
             </ListItemIcon>
             <ListItemText primary={"Tasks"} />
+          </ListItem>
+        </Link>
+        <Link href="/app/settings" passHref>
+          <ListItem button component={"a"} title={"Settings"}>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Settings"} />
           </ListItem>
         </Link>
         <Link href="/app/notifications" passHref>

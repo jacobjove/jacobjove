@@ -1,15 +1,14 @@
-import prisma from '@/lib/prisma';
+import prisma from "@/lib/prisma";
 import NextAuth, { CallbacksOptions } from "next-auth";
+import { AppProviders } from "next-auth/providers";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-
-import { AppProviders } from 'next-auth/providers';
 
 const { VERCEL_ENV, APP_ENV } = process.env;
-let useMockProviders = VERCEL_ENV === 'preview';
-if (APP_ENV === 'test') {
-  console.log('⚠️ Using mocked auth providers');
+let useMockProviders = VERCEL_ENV === "preview";
+if (APP_ENV === "test") {
+  console.log("⚠️ Using mocked auth providers");
   useMockProviders = true;
 }
 
@@ -20,8 +19,8 @@ interface MockCredentials {
 const providers: AppProviders = [];
 if (useMockProviders) {
   const credentials = {
-    name: { type: 'test' },
-  }
+    name: { type: "test" },
+  };
   const authorize = async (credentials?: MockCredentials) => {
     const user = {
       id: credentials?.name,
@@ -29,20 +28,20 @@ if (useMockProviders) {
       email: credentials?.name,
     };
     return user;
-  }
+  };
   providers.push(
     CredentialsProvider({
-      id: 'google',
-      name: 'Mocked Google',
+      id: "google",
+      name: "Mocked Google",
       authorize,
       credentials,
     }),
     CredentialsProvider({
-      id: 'github',
-      name: 'Mocked GitHub',
+      id: "github",
+      name: "Mocked GitHub",
       authorize,
       credentials,
-    }),
+    })
   );
 } else {
   providers.push(
@@ -53,7 +52,7 @@ if (useMockProviders) {
     GitHubProvider({
       clientId: process.env.AUTH_GITHUB_ID ?? "",
       clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
-    }),
+    })
   );
 }
 
@@ -63,10 +62,10 @@ const callbacks: CallbacksOptions = {
     // if (account.provider === "google") {
     //   return profile.email_verified
     // }
-    return true
+    return true;
   },
   async redirect({ url, baseUrl }) {
-    return baseUrl
+    return baseUrl;
   },
   // https://next-auth.js.org/configuration/callbacks#jwt-callback
   async jwt({ token, account }) {
@@ -74,9 +73,9 @@ const callbacks: CallbacksOptions = {
     // In subsequent calls, only the token is available.
     if (account) {
       // Persist the OAuth access_token to the token.
-      token.accessToken = account.access_token
+      token.accessToken = account.access_token;
     }
-    return token
+    return token;
   },
   async session({ session, token }) {
     /*
@@ -105,7 +104,7 @@ const callbacks: CallbacksOptions = {
       }
     */
     if (token.accessToken) {
-      session.accessToken = token.accessToken
+      session.accessToken = token.accessToken;
     }
     if (session.user && !session.user.id) {
       // Get the user's ID.
@@ -114,7 +113,10 @@ const callbacks: CallbacksOptions = {
           email: session.user.email,
         },
         select: {
-          id: true
+          id: true,
+          name: true,
+          email: true,
+          settings: true,
         },
       });
       if (!user) {
@@ -124,13 +126,20 @@ const callbacks: CallbacksOptions = {
             email: session.user.email,
             name: session.user.name,
           },
-        })
+        });
       }
-      session.user.id = user.id
+      const { settings: settingsJson, ...userProps } = user;
+      const settings = JSON.parse(settingsJson ? `${settingsJson}` : "{}");
+      session.user.id = user.id;
+      session.user = {
+        ...session.user,
+        ...userProps,
+        settings,
+      };
     }
     return session;
-  }
-}
+  },
+};
 
 export default NextAuth({
   // https://next-auth.js.org/configuration/options#callbacks

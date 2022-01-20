@@ -15,6 +15,7 @@ interface DateSelectorProps {
   steppable?: boolean;
   minDate?: Date;
   maxDate?: Date;
+  onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const DateSelector: FC<DateSelectorProps> = ({
@@ -25,6 +26,7 @@ const DateSelector: FC<DateSelectorProps> = ({
   minDate,
   maxDate,
   steppable: _steppable,
+  onKeyUp,
 }: DateSelectorProps) => {
   const [open, setOpen] = useState(false);
   const dateFormat = _dateFormat || "MMMM d, yyyy";
@@ -78,6 +80,7 @@ const DateSelector: FC<DateSelectorProps> = ({
               onClick={() => {
                 setOpen(true);
               }}
+              onKeyUp={onKeyUp}
             />
           );
         }}

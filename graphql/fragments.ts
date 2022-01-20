@@ -150,3 +150,13 @@ export const dashboardFragment = gql`
     archivedAt
   }
 `;
+
+export const userFragment = gql`
+  fragment UserFragment on User {
+    __typename
+    id
+    name
+    email
+    settings
+  }
+`;
