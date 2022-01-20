@@ -3,7 +3,7 @@ import DateContext from "@/components/DateContext";
 import { PageTransitionContextProvider } from "@/components/PageTransitionContext";
 import UserContext from "@/components/UserContext";
 import { userFragment } from "@/graphql/fragments";
-import { User } from "@/graphql/schema";
+import { User, UserSettings } from "@/graphql/schema";
 import { useApollo } from "@/lib/apollo/apolloClient";
 import "@/node_modules/react-grid-layout/css/styles.css";
 import "@/node_modules/react-resizable/css/styles.css";
@@ -229,7 +229,7 @@ const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
   const isAuthenticated = !!session?.user;
   const loading = loadingAuth || loadingData;
   const user = data?.user;
-  let settings = {};
+  let settings: UserSettings = {};
   if (user?.settings) {
     if (isObject(user.settings)) {
       settings = user.settings;
