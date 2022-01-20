@@ -16,6 +16,7 @@ import { grey } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import isObject from "lodash/isObject";
 import { NextPage } from "next";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
@@ -228,7 +229,14 @@ const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
   const isAuthenticated = !!session?.user;
   const loading = loadingAuth || loadingData;
   const user = data?.user;
-  const settings = user?.settings ? JSON.parse(user.settings) : {};
+  let settings = {};
+  if (user?.settings) {
+    if (isObject(user.settings)) {
+      settings = user.settings;
+    } else {
+      settings = JSON.parse(user.settings);
+    }
+  }
 
   // Require authentication.
   useEffect(() => {
