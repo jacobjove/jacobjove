@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import isObject from "lodash/isObject";
 import NextAuth, { CallbacksOptions } from "next-auth";
 import { AppProviders } from "next-auth/providers";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -132,7 +133,9 @@ const callbacks: CallbacksOptions = {
         });
       }
       const { settings: settingsJson, ...userProps } = user;
-      const settings = JSON.parse(settingsJson ? `${settingsJson}` : "{}");
+      const settings = isObject(settingsJson)
+        ? settingsJson
+        : JSON.parse(settingsJson ? `${settingsJson}` : "{}");
       session.user.id = user.id;
       session.user = {
         ...session.user,

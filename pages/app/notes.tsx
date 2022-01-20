@@ -69,7 +69,7 @@ const UPDATE_NOTE = gql`
 
 const QUERY = gql`
   query GetNotebooks($userId: Int!) {
-    notebooks(where: { userId: $userId }) {
+    notebooks(where: { ownerId: $userId }) {
       ...NotebookFragment
     }
   }

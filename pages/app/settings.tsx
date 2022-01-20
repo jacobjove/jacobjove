@@ -16,6 +16,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import isObject from "lodash/isObject";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
@@ -44,9 +45,9 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
   const loading = loadingUpdateSetting;
   const { settings: settingsJson } = user;
   const userSettings = settingsJson
-    ? typeof settingsJson === "object"
+    ? isObject(settingsJson)
       ? settingsJson
-      : JSON.parse(settingsJson)
+      : JSON.parse(settingsJson || "{}")
     : {};
   const settings = [
     {

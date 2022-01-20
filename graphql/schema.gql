@@ -2610,6 +2610,30 @@ type AggregateMetricUsage {
   _sum: MetricUsageSumAggregate
 }
 
+type AggregateNote {
+  _avg: NoteAvgAggregate
+  _count: NoteCountAggregate
+  _max: NoteMaxAggregate
+  _min: NoteMinAggregate
+  _sum: NoteSumAggregate
+}
+
+type AggregateNotebook {
+  _avg: NotebookAvgAggregate
+  _count: NotebookCountAggregate
+  _max: NotebookMaxAggregate
+  _min: NotebookMinAggregate
+  _sum: NotebookSumAggregate
+}
+
+type AggregateNotebookUserPermission {
+  _avg: NotebookUserPermissionAvgAggregate
+  _count: NotebookUserPermissionCountAggregate
+  _max: NotebookUserPermissionMaxAggregate
+  _min: NotebookUserPermissionMinAggregate
+  _sum: NotebookUserPermissionSumAggregate
+}
+
 type AggregateReading {
   _avg: ReadingAvgAggregate
   _count: ReadingCountAggregate
@@ -11621,6 +11645,9 @@ type Mutation {
   createManyMetricApplication(data: [MetricApplicationCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyMetricRecord(data: [MetricRecordCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyMetricUsage(data: [MetricUsageCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyNote(data: [NoteCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyNotebook(data: [NotebookCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyNotebookUserPermission(data: [NotebookUserPermissionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyReading(data: [ReadingCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyRoutine(data: [RoutineCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyRoutineHabit(data: [RoutineHabitCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -11635,6 +11662,9 @@ type Mutation {
   createMetricApplication(data: MetricApplicationCreateInput!): MetricApplication!
   createMetricRecord(data: MetricRecordCreateInput!): MetricRecord!
   createMetricUsage(data: MetricUsageCreateInput!): MetricUsage!
+  createNote(data: NoteCreateInput!): Note!
+  createNotebook(data: NotebookCreateInput!): Notebook!
+  createNotebookUserPermission(data: NotebookUserPermissionCreateInput!): NotebookUserPermission!
   createReading(data: ReadingCreateInput!): Reading!
   createRoutine(data: RoutineCreateInput!): Routine!
   createRoutineHabit(data: RoutineHabitCreateInput!): RoutineHabit!
@@ -11695,6 +11725,9 @@ type Mutation {
   deleteManyMetricApplication(where: MetricApplicationWhereInput): AffectedRowsOutput!
   deleteManyMetricRecord(where: MetricRecordWhereInput): AffectedRowsOutput!
   deleteManyMetricUsage(where: MetricUsageWhereInput): AffectedRowsOutput!
+  deleteManyNote(where: NoteWhereInput): AffectedRowsOutput!
+  deleteManyNotebook(where: NotebookWhereInput): AffectedRowsOutput!
+  deleteManyNotebookUserPermission(where: NotebookUserPermissionWhereInput): AffectedRowsOutput!
   deleteManyReading(where: ReadingWhereInput): AffectedRowsOutput!
   deleteManyRoutine(where: RoutineWhereInput): AffectedRowsOutput!
   deleteManyRoutineHabit(where: RoutineHabitWhereInput): AffectedRowsOutput!
@@ -11709,6 +11742,9 @@ type Mutation {
   deleteMetricApplication(where: MetricApplicationWhereUniqueInput!): MetricApplication
   deleteMetricRecord(where: MetricRecordWhereUniqueInput!): MetricRecord
   deleteMetricUsage(where: MetricUsageWhereUniqueInput!): MetricUsage
+  deleteNote(where: NoteWhereUniqueInput!): Note
+  deleteNotebook(where: NotebookWhereUniqueInput!): Notebook
+  deleteNotebookUserPermission(where: NotebookUserPermissionWhereUniqueInput!): NotebookUserPermission
   deleteReading(where: ReadingWhereUniqueInput!): Reading
   deleteRoutine(where: RoutineWhereUniqueInput!): Routine
   deleteRoutineHabit(where: RoutineHabitWhereUniqueInput!): RoutineHabit
@@ -11774,6 +11810,9 @@ type Mutation {
   updateManyMetricApplication(data: MetricApplicationUpdateManyMutationInput!, where: MetricApplicationWhereInput): AffectedRowsOutput!
   updateManyMetricRecord(data: MetricRecordUpdateManyMutationInput!, where: MetricRecordWhereInput): AffectedRowsOutput!
   updateManyMetricUsage(data: MetricUsageUpdateManyMutationInput!, where: MetricUsageWhereInput): AffectedRowsOutput!
+  updateManyNote(data: NoteUpdateManyMutationInput!, where: NoteWhereInput): AffectedRowsOutput!
+  updateManyNotebook(data: NotebookUpdateManyMutationInput!, where: NotebookWhereInput): AffectedRowsOutput!
+  updateManyNotebookUserPermission(data: NotebookUserPermissionUpdateManyMutationInput!, where: NotebookUserPermissionWhereInput): AffectedRowsOutput!
   updateManyReading(data: ReadingUpdateManyMutationInput!, where: ReadingWhereInput): AffectedRowsOutput!
   updateManyRoutine(data: RoutineUpdateManyMutationInput!, where: RoutineWhereInput): AffectedRowsOutput!
   updateManyRoutineHabit(data: RoutineHabitUpdateManyMutationInput!, where: RoutineHabitWhereInput): AffectedRowsOutput!
@@ -11788,6 +11827,9 @@ type Mutation {
   updateMetricApplication(data: MetricApplicationUpdateInput!, where: MetricApplicationWhereUniqueInput!): MetricApplication
   updateMetricRecord(data: MetricRecordUpdateInput!, where: MetricRecordWhereUniqueInput!): MetricRecord
   updateMetricUsage(data: MetricUsageUpdateInput!, where: MetricUsageWhereUniqueInput!): MetricUsage
+  updateNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note
+  updateNotebook(data: NotebookUpdateInput!, where: NotebookWhereUniqueInput!): Notebook
+  updateNotebookUserPermission(data: NotebookUserPermissionUpdateInput!, where: NotebookUserPermissionWhereUniqueInput!): NotebookUserPermission
   updateReading(data: ReadingUpdateInput!, where: ReadingWhereUniqueInput!): Reading
   updateRoutine(data: RoutineUpdateInput!, where: RoutineWhereUniqueInput!): Routine
   updateRoutineHabit(data: RoutineHabitUpdateInput!, where: RoutineHabitWhereUniqueInput!): RoutineHabit
@@ -11825,6 +11867,9 @@ type Mutation {
   upsertMetricApplication(create: MetricApplicationCreateInput!, update: MetricApplicationUpdateInput!, where: MetricApplicationWhereUniqueInput!): MetricApplication!
   upsertMetricRecord(create: MetricRecordCreateInput!, update: MetricRecordUpdateInput!, where: MetricRecordWhereUniqueInput!): MetricRecord!
   upsertMetricUsage(create: MetricUsageCreateInput!, update: MetricUsageUpdateInput!, where: MetricUsageWhereUniqueInput!): MetricUsage!
+  upsertNote(create: NoteCreateInput!, update: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note!
+  upsertNotebook(create: NotebookCreateInput!, update: NotebookUpdateInput!, where: NotebookWhereUniqueInput!): Notebook!
+  upsertNotebookUserPermission(create: NotebookUserPermissionCreateInput!, update: NotebookUserPermissionUpdateInput!, where: NotebookUserPermissionWhereUniqueInput!): NotebookUserPermission!
   upsertReading(create: ReadingCreateInput!, update: ReadingUpdateInput!, where: ReadingWhereUniqueInput!): Reading!
   upsertRoutine(create: RoutineCreateInput!, update: RoutineUpdateInput!, where: RoutineWhereUniqueInput!): Routine!
   upsertRoutineHabit(create: RoutineHabitCreateInput!, update: RoutineHabitUpdateInput!, where: RoutineHabitWhereUniqueInput!): RoutineHabit!
@@ -12077,6 +12122,1118 @@ input NestedStringWithAggregatesFilter {
   startsWith: String
 }
 
+type Note {
+  archivedAt: DateTime
+  body: String
+  createdAt: DateTime!
+  id: Int!
+  isPublic: Boolean!
+  notebook: Notebook!
+  notebookId: Int!
+  title: String
+  updatedAt: DateTime
+}
+
+type NoteAvgAggregate {
+  id: Float
+  notebookId: Float
+}
+
+input NoteAvgOrderByAggregateInput {
+  id: SortOrder
+  notebookId: SortOrder
+}
+
+type NoteCountAggregate {
+  _all: Int!
+  archivedAt: Int!
+  body: Int!
+  createdAt: Int!
+  id: Int!
+  isPublic: Int!
+  notebookId: Int!
+  title: Int!
+  updatedAt: Int!
+}
+
+input NoteCountOrderByAggregateInput {
+  archivedAt: SortOrder
+  body: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  notebookId: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+input NoteCreateInput {
+  archivedAt: DateTime
+  body: String
+  createdAt: DateTime
+  isPublic: Boolean
+  notebook: NotebookCreateNestedOneWithoutNotesInput!
+  title: String
+  updatedAt: DateTime
+}
+
+input NoteCreateManyInput {
+  archivedAt: DateTime
+  body: String
+  createdAt: DateTime
+  id: Int
+  isPublic: Boolean
+  notebookId: Int!
+  title: String
+  updatedAt: DateTime
+}
+
+input NoteCreateManyNotebookInput {
+  archivedAt: DateTime
+  body: String
+  createdAt: DateTime
+  id: Int
+  isPublic: Boolean
+  title: String
+  updatedAt: DateTime
+}
+
+input NoteCreateManyNotebookInputEnvelope {
+  data: [NoteCreateManyNotebookInput!]!
+  skipDuplicates: Boolean
+}
+
+input NoteCreateNestedManyWithoutNotebookInput {
+  connect: [NoteWhereUniqueInput!]
+  connectOrCreate: [NoteCreateOrConnectWithoutNotebookInput!]
+  create: [NoteCreateWithoutNotebookInput!]
+  createMany: NoteCreateManyNotebookInputEnvelope
+}
+
+input NoteCreateOrConnectWithoutNotebookInput {
+  create: NoteCreateWithoutNotebookInput!
+  where: NoteWhereUniqueInput!
+}
+
+input NoteCreateWithoutNotebookInput {
+  archivedAt: DateTime
+  body: String
+  createdAt: DateTime
+  isPublic: Boolean
+  title: String
+  updatedAt: DateTime
+}
+
+type NoteGroupBy {
+  _avg: NoteAvgAggregate
+  _count: NoteCountAggregate
+  _max: NoteMaxAggregate
+  _min: NoteMinAggregate
+  _sum: NoteSumAggregate
+  archivedAt: DateTime
+  body: String
+  createdAt: DateTime!
+  id: Int!
+  isPublic: Boolean!
+  notebookId: Int!
+  title: String
+  updatedAt: DateTime
+}
+
+input NoteListRelationFilter {
+  every: NoteWhereInput
+  none: NoteWhereInput
+  some: NoteWhereInput
+}
+
+type NoteMaxAggregate {
+  archivedAt: DateTime
+  body: String
+  createdAt: DateTime
+  id: Int
+  isPublic: Boolean
+  notebookId: Int
+  title: String
+  updatedAt: DateTime
+}
+
+input NoteMaxOrderByAggregateInput {
+  archivedAt: SortOrder
+  body: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  notebookId: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+type NoteMinAggregate {
+  archivedAt: DateTime
+  body: String
+  createdAt: DateTime
+  id: Int
+  isPublic: Boolean
+  notebookId: Int
+  title: String
+  updatedAt: DateTime
+}
+
+input NoteMinOrderByAggregateInput {
+  archivedAt: SortOrder
+  body: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  notebookId: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+input NoteOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input NoteOrderByWithAggregationInput {
+  _avg: NoteAvgOrderByAggregateInput
+  _count: NoteCountOrderByAggregateInput
+  _max: NoteMaxOrderByAggregateInput
+  _min: NoteMinOrderByAggregateInput
+  _sum: NoteSumOrderByAggregateInput
+  archivedAt: SortOrder
+  body: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  notebookId: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+input NoteOrderByWithRelationInput {
+  archivedAt: SortOrder
+  body: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  notebook: NotebookOrderByWithRelationInput
+  notebookId: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+enum NoteScalarFieldEnum {
+  archivedAt
+  body
+  createdAt
+  id
+  isPublic
+  notebookId
+  title
+  updatedAt
+}
+
+input NoteScalarWhereInput {
+  AND: [NoteScalarWhereInput!]
+  NOT: [NoteScalarWhereInput!]
+  OR: [NoteScalarWhereInput!]
+  archivedAt: DateTimeNullableFilter
+  body: StringNullableFilter
+  createdAt: DateTimeFilter
+  id: IntFilter
+  isPublic: BoolFilter
+  notebookId: IntFilter
+  title: StringNullableFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input NoteScalarWhereWithAggregatesInput {
+  AND: [NoteScalarWhereWithAggregatesInput!]
+  NOT: [NoteScalarWhereWithAggregatesInput!]
+  OR: [NoteScalarWhereWithAggregatesInput!]
+  archivedAt: DateTimeNullableWithAggregatesFilter
+  body: StringNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  isPublic: BoolWithAggregatesFilter
+  notebookId: IntWithAggregatesFilter
+  title: StringNullableWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
+}
+
+type NoteSumAggregate {
+  id: Int
+  notebookId: Int
+}
+
+input NoteSumOrderByAggregateInput {
+  id: SortOrder
+  notebookId: SortOrder
+}
+
+input NoteUpdateInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  body: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  isPublic: BoolFieldUpdateOperationsInput
+  notebook: NotebookUpdateOneRequiredWithoutNotesInput
+  title: NullableStringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input NoteUpdateManyMutationInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  body: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  isPublic: BoolFieldUpdateOperationsInput
+  title: NullableStringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input NoteUpdateManyWithWhereWithoutNotebookInput {
+  data: NoteUpdateManyMutationInput!
+  where: NoteScalarWhereInput!
+}
+
+input NoteUpdateManyWithoutNotebookInput {
+  connect: [NoteWhereUniqueInput!]
+  connectOrCreate: [NoteCreateOrConnectWithoutNotebookInput!]
+  create: [NoteCreateWithoutNotebookInput!]
+  createMany: NoteCreateManyNotebookInputEnvelope
+  delete: [NoteWhereUniqueInput!]
+  deleteMany: [NoteScalarWhereInput!]
+  disconnect: [NoteWhereUniqueInput!]
+  set: [NoteWhereUniqueInput!]
+  update: [NoteUpdateWithWhereUniqueWithoutNotebookInput!]
+  updateMany: [NoteUpdateManyWithWhereWithoutNotebookInput!]
+  upsert: [NoteUpsertWithWhereUniqueWithoutNotebookInput!]
+}
+
+input NoteUpdateWithWhereUniqueWithoutNotebookInput {
+  data: NoteUpdateWithoutNotebookInput!
+  where: NoteWhereUniqueInput!
+}
+
+input NoteUpdateWithoutNotebookInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  body: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  isPublic: BoolFieldUpdateOperationsInput
+  title: NullableStringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input NoteUpsertWithWhereUniqueWithoutNotebookInput {
+  create: NoteCreateWithoutNotebookInput!
+  update: NoteUpdateWithoutNotebookInput!
+  where: NoteWhereUniqueInput!
+}
+
+input NoteWhereInput {
+  AND: [NoteWhereInput!]
+  NOT: [NoteWhereInput!]
+  OR: [NoteWhereInput!]
+  archivedAt: DateTimeNullableFilter
+  body: StringNullableFilter
+  createdAt: DateTimeFilter
+  id: IntFilter
+  isPublic: BoolFilter
+  notebook: NotebookRelationFilter
+  notebookId: IntFilter
+  title: StringNullableFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input NoteWhereUniqueInput {
+  id: Int
+}
+
+type Notebook {
+  _count: NotebookCount!
+  archivedAt: DateTime
+  createdAt: DateTime!
+  description: String
+  id: Int!
+  isPublic: Boolean!
+  notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
+  owner: User!
+  ownerId: Int!
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+  userPermissions(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermission!]!
+}
+
+type NotebookAvgAggregate {
+  id: Float
+  ownerId: Float
+}
+
+input NotebookAvgOrderByAggregateInput {
+  id: SortOrder
+  ownerId: SortOrder
+}
+
+type NotebookCount {
+  notes: Int!
+  userPermissions: Int!
+}
+
+type NotebookCountAggregate {
+  _all: Int!
+  archivedAt: Int!
+  createdAt: Int!
+  description: Int!
+  id: Int!
+  isPublic: Int!
+  ownerId: Int!
+  slug: Int!
+  title: Int!
+  updatedAt: Int!
+}
+
+input NotebookCountOrderByAggregateInput {
+  archivedAt: SortOrder
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  ownerId: SortOrder
+  slug: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+input NotebookCreateInput {
+  archivedAt: DateTime
+  createdAt: DateTime
+  description: String
+  isPublic: Boolean
+  notes: NoteCreateNestedManyWithoutNotebookInput
+  owner: UserCreateNestedOneWithoutNotebooksInput!
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+  userPermissions: NotebookUserPermissionCreateNestedManyWithoutNotebookInput
+}
+
+input NotebookCreateManyInput {
+  archivedAt: DateTime
+  createdAt: DateTime
+  description: String
+  id: Int
+  isPublic: Boolean
+  ownerId: Int!
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+}
+
+input NotebookCreateManyOwnerInput {
+  archivedAt: DateTime
+  createdAt: DateTime
+  description: String
+  id: Int
+  isPublic: Boolean
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+}
+
+input NotebookCreateManyOwnerInputEnvelope {
+  data: [NotebookCreateManyOwnerInput!]!
+  skipDuplicates: Boolean
+}
+
+input NotebookCreateNestedManyWithoutOwnerInput {
+  connect: [NotebookWhereUniqueInput!]
+  connectOrCreate: [NotebookCreateOrConnectWithoutOwnerInput!]
+  create: [NotebookCreateWithoutOwnerInput!]
+  createMany: NotebookCreateManyOwnerInputEnvelope
+}
+
+input NotebookCreateNestedOneWithoutNotesInput {
+  connect: NotebookWhereUniqueInput
+  connectOrCreate: NotebookCreateOrConnectWithoutNotesInput
+  create: NotebookCreateWithoutNotesInput
+}
+
+input NotebookCreateNestedOneWithoutUserPermissionsInput {
+  connect: NotebookWhereUniqueInput
+  connectOrCreate: NotebookCreateOrConnectWithoutUserPermissionsInput
+  create: NotebookCreateWithoutUserPermissionsInput
+}
+
+input NotebookCreateOrConnectWithoutNotesInput {
+  create: NotebookCreateWithoutNotesInput!
+  where: NotebookWhereUniqueInput!
+}
+
+input NotebookCreateOrConnectWithoutOwnerInput {
+  create: NotebookCreateWithoutOwnerInput!
+  where: NotebookWhereUniqueInput!
+}
+
+input NotebookCreateOrConnectWithoutUserPermissionsInput {
+  create: NotebookCreateWithoutUserPermissionsInput!
+  where: NotebookWhereUniqueInput!
+}
+
+input NotebookCreateWithoutNotesInput {
+  archivedAt: DateTime
+  createdAt: DateTime
+  description: String
+  isPublic: Boolean
+  owner: UserCreateNestedOneWithoutNotebooksInput!
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+  userPermissions: NotebookUserPermissionCreateNestedManyWithoutNotebookInput
+}
+
+input NotebookCreateWithoutOwnerInput {
+  archivedAt: DateTime
+  createdAt: DateTime
+  description: String
+  isPublic: Boolean
+  notes: NoteCreateNestedManyWithoutNotebookInput
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+  userPermissions: NotebookUserPermissionCreateNestedManyWithoutNotebookInput
+}
+
+input NotebookCreateWithoutUserPermissionsInput {
+  archivedAt: DateTime
+  createdAt: DateTime
+  description: String
+  isPublic: Boolean
+  notes: NoteCreateNestedManyWithoutNotebookInput
+  owner: UserCreateNestedOneWithoutNotebooksInput!
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+}
+
+type NotebookGroupBy {
+  _avg: NotebookAvgAggregate
+  _count: NotebookCountAggregate
+  _max: NotebookMaxAggregate
+  _min: NotebookMinAggregate
+  _sum: NotebookSumAggregate
+  archivedAt: DateTime
+  createdAt: DateTime!
+  description: String
+  id: Int!
+  isPublic: Boolean!
+  ownerId: Int!
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+}
+
+input NotebookListRelationFilter {
+  every: NotebookWhereInput
+  none: NotebookWhereInput
+  some: NotebookWhereInput
+}
+
+type NotebookMaxAggregate {
+  archivedAt: DateTime
+  createdAt: DateTime
+  description: String
+  id: Int
+  isPublic: Boolean
+  ownerId: Int
+  slug: String
+  title: String
+  updatedAt: DateTime
+}
+
+input NotebookMaxOrderByAggregateInput {
+  archivedAt: SortOrder
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  ownerId: SortOrder
+  slug: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+type NotebookMinAggregate {
+  archivedAt: DateTime
+  createdAt: DateTime
+  description: String
+  id: Int
+  isPublic: Boolean
+  ownerId: Int
+  slug: String
+  title: String
+  updatedAt: DateTime
+}
+
+input NotebookMinOrderByAggregateInput {
+  archivedAt: SortOrder
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  ownerId: SortOrder
+  slug: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+input NotebookOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input NotebookOrderByWithAggregationInput {
+  _avg: NotebookAvgOrderByAggregateInput
+  _count: NotebookCountOrderByAggregateInput
+  _max: NotebookMaxOrderByAggregateInput
+  _min: NotebookMinOrderByAggregateInput
+  _sum: NotebookSumOrderByAggregateInput
+  archivedAt: SortOrder
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  ownerId: SortOrder
+  slug: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+}
+
+input NotebookOrderByWithRelationInput {
+  archivedAt: SortOrder
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  isPublic: SortOrder
+  notes: NoteOrderByRelationAggregateInput
+  owner: UserOrderByWithRelationInput
+  ownerId: SortOrder
+  slug: SortOrder
+  title: SortOrder
+  updatedAt: SortOrder
+  userPermissions: NotebookUserPermissionOrderByRelationAggregateInput
+}
+
+input NotebookRelationFilter {
+  is: NotebookWhereInput
+  isNot: NotebookWhereInput
+}
+
+enum NotebookScalarFieldEnum {
+  archivedAt
+  createdAt
+  description
+  id
+  isPublic
+  ownerId
+  slug
+  title
+  updatedAt
+}
+
+input NotebookScalarWhereInput {
+  AND: [NotebookScalarWhereInput!]
+  NOT: [NotebookScalarWhereInput!]
+  OR: [NotebookScalarWhereInput!]
+  archivedAt: DateTimeNullableFilter
+  createdAt: DateTimeFilter
+  description: StringNullableFilter
+  id: IntFilter
+  isPublic: BoolFilter
+  ownerId: IntFilter
+  slug: StringFilter
+  title: StringFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input NotebookScalarWhereWithAggregatesInput {
+  AND: [NotebookScalarWhereWithAggregatesInput!]
+  NOT: [NotebookScalarWhereWithAggregatesInput!]
+  OR: [NotebookScalarWhereWithAggregatesInput!]
+  archivedAt: DateTimeNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  description: StringNullableWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  isPublic: BoolWithAggregatesFilter
+  ownerId: IntWithAggregatesFilter
+  slug: StringWithAggregatesFilter
+  title: StringWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
+}
+
+type NotebookSumAggregate {
+  id: Int
+  ownerId: Int
+}
+
+input NotebookSumOrderByAggregateInput {
+  id: SortOrder
+  ownerId: SortOrder
+}
+
+input NotebookUpdateInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  isPublic: BoolFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutNotebookInput
+  owner: UserUpdateOneRequiredWithoutNotebooksInput
+  slug: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
+}
+
+input NotebookUpdateManyMutationInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  isPublic: BoolFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input NotebookUpdateManyWithWhereWithoutOwnerInput {
+  data: NotebookUpdateManyMutationInput!
+  where: NotebookScalarWhereInput!
+}
+
+input NotebookUpdateManyWithoutOwnerInput {
+  connect: [NotebookWhereUniqueInput!]
+  connectOrCreate: [NotebookCreateOrConnectWithoutOwnerInput!]
+  create: [NotebookCreateWithoutOwnerInput!]
+  createMany: NotebookCreateManyOwnerInputEnvelope
+  delete: [NotebookWhereUniqueInput!]
+  deleteMany: [NotebookScalarWhereInput!]
+  disconnect: [NotebookWhereUniqueInput!]
+  set: [NotebookWhereUniqueInput!]
+  update: [NotebookUpdateWithWhereUniqueWithoutOwnerInput!]
+  updateMany: [NotebookUpdateManyWithWhereWithoutOwnerInput!]
+  upsert: [NotebookUpsertWithWhereUniqueWithoutOwnerInput!]
+}
+
+input NotebookUpdateOneRequiredWithoutNotesInput {
+  connect: NotebookWhereUniqueInput
+  connectOrCreate: NotebookCreateOrConnectWithoutNotesInput
+  create: NotebookCreateWithoutNotesInput
+  update: NotebookUpdateWithoutNotesInput
+  upsert: NotebookUpsertWithoutNotesInput
+}
+
+input NotebookUpdateOneRequiredWithoutUserPermissionsInput {
+  connect: NotebookWhereUniqueInput
+  connectOrCreate: NotebookCreateOrConnectWithoutUserPermissionsInput
+  create: NotebookCreateWithoutUserPermissionsInput
+  update: NotebookUpdateWithoutUserPermissionsInput
+  upsert: NotebookUpsertWithoutUserPermissionsInput
+}
+
+input NotebookUpdateWithWhereUniqueWithoutOwnerInput {
+  data: NotebookUpdateWithoutOwnerInput!
+  where: NotebookWhereUniqueInput!
+}
+
+input NotebookUpdateWithoutNotesInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  isPublic: BoolFieldUpdateOperationsInput
+  owner: UserUpdateOneRequiredWithoutNotebooksInput
+  slug: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
+}
+
+input NotebookUpdateWithoutOwnerInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  isPublic: BoolFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutNotebookInput
+  slug: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
+}
+
+input NotebookUpdateWithoutUserPermissionsInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  isPublic: BoolFieldUpdateOperationsInput
+  notes: NoteUpdateManyWithoutNotebookInput
+  owner: UserUpdateOneRequiredWithoutNotebooksInput
+  slug: StringFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input NotebookUpsertWithWhereUniqueWithoutOwnerInput {
+  create: NotebookCreateWithoutOwnerInput!
+  update: NotebookUpdateWithoutOwnerInput!
+  where: NotebookWhereUniqueInput!
+}
+
+input NotebookUpsertWithoutNotesInput {
+  create: NotebookCreateWithoutNotesInput!
+  update: NotebookUpdateWithoutNotesInput!
+}
+
+input NotebookUpsertWithoutUserPermissionsInput {
+  create: NotebookCreateWithoutUserPermissionsInput!
+  update: NotebookUpdateWithoutUserPermissionsInput!
+}
+
+type NotebookUserPermission {
+  deleted: DateTime
+  id: Int!
+  notebook: Notebook!
+  notebookId: Int!
+  user: User!
+  userId: Int!
+}
+
+type NotebookUserPermissionAvgAggregate {
+  id: Float
+  notebookId: Float
+  userId: Float
+}
+
+input NotebookUserPermissionAvgOrderByAggregateInput {
+  id: SortOrder
+  notebookId: SortOrder
+  userId: SortOrder
+}
+
+type NotebookUserPermissionCountAggregate {
+  _all: Int!
+  deleted: Int!
+  id: Int!
+  notebookId: Int!
+  userId: Int!
+}
+
+input NotebookUserPermissionCountOrderByAggregateInput {
+  deleted: SortOrder
+  id: SortOrder
+  notebookId: SortOrder
+  userId: SortOrder
+}
+
+input NotebookUserPermissionCreateInput {
+  deleted: DateTime
+  notebook: NotebookCreateNestedOneWithoutUserPermissionsInput!
+  user: UserCreateNestedOneWithoutNotebookPermissionsInput!
+}
+
+input NotebookUserPermissionCreateManyInput {
+  deleted: DateTime
+  id: Int
+  notebookId: Int!
+  userId: Int!
+}
+
+input NotebookUserPermissionCreateManyNotebookInput {
+  deleted: DateTime
+  id: Int
+  userId: Int!
+}
+
+input NotebookUserPermissionCreateManyNotebookInputEnvelope {
+  data: [NotebookUserPermissionCreateManyNotebookInput!]!
+  skipDuplicates: Boolean
+}
+
+input NotebookUserPermissionCreateManyUserInput {
+  deleted: DateTime
+  id: Int
+  notebookId: Int!
+}
+
+input NotebookUserPermissionCreateManyUserInputEnvelope {
+  data: [NotebookUserPermissionCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input NotebookUserPermissionCreateNestedManyWithoutNotebookInput {
+  connect: [NotebookUserPermissionWhereUniqueInput!]
+  connectOrCreate: [NotebookUserPermissionCreateOrConnectWithoutNotebookInput!]
+  create: [NotebookUserPermissionCreateWithoutNotebookInput!]
+  createMany: NotebookUserPermissionCreateManyNotebookInputEnvelope
+}
+
+input NotebookUserPermissionCreateNestedManyWithoutUserInput {
+  connect: [NotebookUserPermissionWhereUniqueInput!]
+  connectOrCreate: [NotebookUserPermissionCreateOrConnectWithoutUserInput!]
+  create: [NotebookUserPermissionCreateWithoutUserInput!]
+  createMany: NotebookUserPermissionCreateManyUserInputEnvelope
+}
+
+input NotebookUserPermissionCreateOrConnectWithoutNotebookInput {
+  create: NotebookUserPermissionCreateWithoutNotebookInput!
+  where: NotebookUserPermissionWhereUniqueInput!
+}
+
+input NotebookUserPermissionCreateOrConnectWithoutUserInput {
+  create: NotebookUserPermissionCreateWithoutUserInput!
+  where: NotebookUserPermissionWhereUniqueInput!
+}
+
+input NotebookUserPermissionCreateWithoutNotebookInput {
+  deleted: DateTime
+  user: UserCreateNestedOneWithoutNotebookPermissionsInput!
+}
+
+input NotebookUserPermissionCreateWithoutUserInput {
+  deleted: DateTime
+  notebook: NotebookCreateNestedOneWithoutUserPermissionsInput!
+}
+
+type NotebookUserPermissionGroupBy {
+  _avg: NotebookUserPermissionAvgAggregate
+  _count: NotebookUserPermissionCountAggregate
+  _max: NotebookUserPermissionMaxAggregate
+  _min: NotebookUserPermissionMinAggregate
+  _sum: NotebookUserPermissionSumAggregate
+  deleted: DateTime
+  id: Int!
+  notebookId: Int!
+  userId: Int!
+}
+
+input NotebookUserPermissionListRelationFilter {
+  every: NotebookUserPermissionWhereInput
+  none: NotebookUserPermissionWhereInput
+  some: NotebookUserPermissionWhereInput
+}
+
+type NotebookUserPermissionMaxAggregate {
+  deleted: DateTime
+  id: Int
+  notebookId: Int
+  userId: Int
+}
+
+input NotebookUserPermissionMaxOrderByAggregateInput {
+  deleted: SortOrder
+  id: SortOrder
+  notebookId: SortOrder
+  userId: SortOrder
+}
+
+type NotebookUserPermissionMinAggregate {
+  deleted: DateTime
+  id: Int
+  notebookId: Int
+  userId: Int
+}
+
+input NotebookUserPermissionMinOrderByAggregateInput {
+  deleted: SortOrder
+  id: SortOrder
+  notebookId: SortOrder
+  userId: SortOrder
+}
+
+input NotebookUserPermissionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input NotebookUserPermissionOrderByWithAggregationInput {
+  _avg: NotebookUserPermissionAvgOrderByAggregateInput
+  _count: NotebookUserPermissionCountOrderByAggregateInput
+  _max: NotebookUserPermissionMaxOrderByAggregateInput
+  _min: NotebookUserPermissionMinOrderByAggregateInput
+  _sum: NotebookUserPermissionSumOrderByAggregateInput
+  deleted: SortOrder
+  id: SortOrder
+  notebookId: SortOrder
+  userId: SortOrder
+}
+
+input NotebookUserPermissionOrderByWithRelationInput {
+  deleted: SortOrder
+  id: SortOrder
+  notebook: NotebookOrderByWithRelationInput
+  notebookId: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum NotebookUserPermissionScalarFieldEnum {
+  deleted
+  id
+  notebookId
+  userId
+}
+
+input NotebookUserPermissionScalarWhereInput {
+  AND: [NotebookUserPermissionScalarWhereInput!]
+  NOT: [NotebookUserPermissionScalarWhereInput!]
+  OR: [NotebookUserPermissionScalarWhereInput!]
+  deleted: DateTimeNullableFilter
+  id: IntFilter
+  notebookId: IntFilter
+  userId: IntFilter
+}
+
+input NotebookUserPermissionScalarWhereWithAggregatesInput {
+  AND: [NotebookUserPermissionScalarWhereWithAggregatesInput!]
+  NOT: [NotebookUserPermissionScalarWhereWithAggregatesInput!]
+  OR: [NotebookUserPermissionScalarWhereWithAggregatesInput!]
+  deleted: DateTimeNullableWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  notebookId: IntWithAggregatesFilter
+  userId: IntWithAggregatesFilter
+}
+
+type NotebookUserPermissionSumAggregate {
+  id: Int
+  notebookId: Int
+  userId: Int
+}
+
+input NotebookUserPermissionSumOrderByAggregateInput {
+  id: SortOrder
+  notebookId: SortOrder
+  userId: SortOrder
+}
+
+input NotebookUserPermissionUpdateInput {
+  deleted: NullableDateTimeFieldUpdateOperationsInput
+  notebook: NotebookUpdateOneRequiredWithoutUserPermissionsInput
+  user: UserUpdateOneRequiredWithoutNotebookPermissionsInput
+}
+
+input NotebookUserPermissionUpdateManyMutationInput {
+  deleted: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input NotebookUserPermissionUpdateManyWithWhereWithoutNotebookInput {
+  data: NotebookUserPermissionUpdateManyMutationInput!
+  where: NotebookUserPermissionScalarWhereInput!
+}
+
+input NotebookUserPermissionUpdateManyWithWhereWithoutUserInput {
+  data: NotebookUserPermissionUpdateManyMutationInput!
+  where: NotebookUserPermissionScalarWhereInput!
+}
+
+input NotebookUserPermissionUpdateManyWithoutNotebookInput {
+  connect: [NotebookUserPermissionWhereUniqueInput!]
+  connectOrCreate: [NotebookUserPermissionCreateOrConnectWithoutNotebookInput!]
+  create: [NotebookUserPermissionCreateWithoutNotebookInput!]
+  createMany: NotebookUserPermissionCreateManyNotebookInputEnvelope
+  delete: [NotebookUserPermissionWhereUniqueInput!]
+  deleteMany: [NotebookUserPermissionScalarWhereInput!]
+  disconnect: [NotebookUserPermissionWhereUniqueInput!]
+  set: [NotebookUserPermissionWhereUniqueInput!]
+  update: [NotebookUserPermissionUpdateWithWhereUniqueWithoutNotebookInput!]
+  updateMany: [NotebookUserPermissionUpdateManyWithWhereWithoutNotebookInput!]
+  upsert: [NotebookUserPermissionUpsertWithWhereUniqueWithoutNotebookInput!]
+}
+
+input NotebookUserPermissionUpdateManyWithoutUserInput {
+  connect: [NotebookUserPermissionWhereUniqueInput!]
+  connectOrCreate: [NotebookUserPermissionCreateOrConnectWithoutUserInput!]
+  create: [NotebookUserPermissionCreateWithoutUserInput!]
+  createMany: NotebookUserPermissionCreateManyUserInputEnvelope
+  delete: [NotebookUserPermissionWhereUniqueInput!]
+  deleteMany: [NotebookUserPermissionScalarWhereInput!]
+  disconnect: [NotebookUserPermissionWhereUniqueInput!]
+  set: [NotebookUserPermissionWhereUniqueInput!]
+  update: [NotebookUserPermissionUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [NotebookUserPermissionUpdateManyWithWhereWithoutUserInput!]
+  upsert: [NotebookUserPermissionUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input NotebookUserPermissionUpdateWithWhereUniqueWithoutNotebookInput {
+  data: NotebookUserPermissionUpdateWithoutNotebookInput!
+  where: NotebookUserPermissionWhereUniqueInput!
+}
+
+input NotebookUserPermissionUpdateWithWhereUniqueWithoutUserInput {
+  data: NotebookUserPermissionUpdateWithoutUserInput!
+  where: NotebookUserPermissionWhereUniqueInput!
+}
+
+input NotebookUserPermissionUpdateWithoutNotebookInput {
+  deleted: NullableDateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutNotebookPermissionsInput
+}
+
+input NotebookUserPermissionUpdateWithoutUserInput {
+  deleted: NullableDateTimeFieldUpdateOperationsInput
+  notebook: NotebookUpdateOneRequiredWithoutUserPermissionsInput
+}
+
+input NotebookUserPermissionUpsertWithWhereUniqueWithoutNotebookInput {
+  create: NotebookUserPermissionCreateWithoutNotebookInput!
+  update: NotebookUserPermissionUpdateWithoutNotebookInput!
+  where: NotebookUserPermissionWhereUniqueInput!
+}
+
+input NotebookUserPermissionUpsertWithWhereUniqueWithoutUserInput {
+  create: NotebookUserPermissionCreateWithoutUserInput!
+  update: NotebookUserPermissionUpdateWithoutUserInput!
+  where: NotebookUserPermissionWhereUniqueInput!
+}
+
+input NotebookUserPermissionUserIdNotebookIdCompoundUniqueInput {
+  notebookId: Int!
+  userId: Int!
+}
+
+input NotebookUserPermissionWhereInput {
+  AND: [NotebookUserPermissionWhereInput!]
+  NOT: [NotebookUserPermissionWhereInput!]
+  OR: [NotebookUserPermissionWhereInput!]
+  deleted: DateTimeNullableFilter
+  id: IntFilter
+  notebook: NotebookRelationFilter
+  notebookId: IntFilter
+  user: UserRelationFilter
+  userId: IntFilter
+}
+
+input NotebookUserPermissionWhereUniqueInput {
+  id: Int
+  userId_notebookId: NotebookUserPermissionUserIdNotebookIdCompoundUniqueInput
+}
+
+input NotebookWhereInput {
+  AND: [NotebookWhereInput!]
+  NOT: [NotebookWhereInput!]
+  OR: [NotebookWhereInput!]
+  archivedAt: DateTimeNullableFilter
+  createdAt: DateTimeFilter
+  description: StringNullableFilter
+  id: IntFilter
+  isPublic: BoolFilter
+  notes: NoteListRelationFilter
+  owner: UserRelationFilter
+  ownerId: IntFilter
+  slug: StringFilter
+  title: StringFilter
+  updatedAt: DateTimeNullableFilter
+  userPermissions: NotebookUserPermissionListRelationFilter
+}
+
+input NotebookWhereUniqueInput {
+  id: Int
+  slug: String
+}
+
 input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
@@ -12135,6 +13292,9 @@ type Query {
   aggregateMetricApplication(cursor: MetricApplicationWhereUniqueInput, orderBy: [MetricApplicationOrderByWithRelationInput!], skip: Int, take: Int, where: MetricApplicationWhereInput): AggregateMetricApplication!
   aggregateMetricRecord(cursor: MetricRecordWhereUniqueInput, orderBy: [MetricRecordOrderByWithRelationInput!], skip: Int, take: Int, where: MetricRecordWhereInput): AggregateMetricRecord!
   aggregateMetricUsage(cursor: MetricUsageWhereUniqueInput, orderBy: [MetricUsageOrderByWithRelationInput!], skip: Int, take: Int, where: MetricUsageWhereInput): AggregateMetricUsage!
+  aggregateNote(cursor: NoteWhereUniqueInput, orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): AggregateNote!
+  aggregateNotebook(cursor: NotebookWhereUniqueInput, orderBy: [NotebookOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookWhereInput): AggregateNotebook!
+  aggregateNotebookUserPermission(cursor: NotebookUserPermissionWhereUniqueInput, orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): AggregateNotebookUserPermission!
   aggregateReading(cursor: ReadingWhereUniqueInput, orderBy: [ReadingOrderByWithRelationInput!], skip: Int, take: Int, where: ReadingWhereInput): AggregateReading!
   aggregateRoutine(cursor: RoutineWhereUniqueInput, orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): AggregateRoutine!
   aggregateRoutineHabit(cursor: RoutineHabitWhereUniqueInput, orderBy: [RoutineHabitOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineHabitWhereInput): AggregateRoutineHabit!
@@ -12194,6 +13354,9 @@ type Query {
   findFirstMetricApplication(cursor: MetricApplicationWhereUniqueInput, distinct: [MetricApplicationScalarFieldEnum!], orderBy: [MetricApplicationOrderByWithRelationInput!], skip: Int, take: Int, where: MetricApplicationWhereInput): MetricApplication
   findFirstMetricRecord(cursor: MetricRecordWhereUniqueInput, distinct: [MetricRecordScalarFieldEnum!], orderBy: [MetricRecordOrderByWithRelationInput!], skip: Int, take: Int, where: MetricRecordWhereInput): MetricRecord
   findFirstMetricUsage(cursor: MetricUsageWhereUniqueInput, distinct: [MetricUsageScalarFieldEnum!], orderBy: [MetricUsageOrderByWithRelationInput!], skip: Int, take: Int, where: MetricUsageWhereInput): MetricUsage
+  findFirstNote(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): Note
+  findFirstNotebook(cursor: NotebookWhereUniqueInput, distinct: [NotebookScalarFieldEnum!], orderBy: [NotebookOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookWhereInput): Notebook
+  findFirstNotebookUserPermission(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): NotebookUserPermission
   findFirstReading(cursor: ReadingWhereUniqueInput, distinct: [ReadingScalarFieldEnum!], orderBy: [ReadingOrderByWithRelationInput!], skip: Int, take: Int, where: ReadingWhereInput): Reading
   findFirstRoutine(cursor: RoutineWhereUniqueInput, distinct: [RoutineScalarFieldEnum!], orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): Routine
   findFirstRoutineHabit(cursor: RoutineHabitWhereUniqueInput, distinct: [RoutineHabitScalarFieldEnum!], orderBy: [RoutineHabitOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineHabitWhereInput): RoutineHabit
@@ -12233,6 +13396,9 @@ type Query {
   groupByMetricApplication(by: [MetricApplicationScalarFieldEnum!]!, having: MetricApplicationScalarWhereWithAggregatesInput, orderBy: [MetricApplicationOrderByWithAggregationInput!], skip: Int, take: Int, where: MetricApplicationWhereInput): [MetricApplicationGroupBy!]!
   groupByMetricRecord(by: [MetricRecordScalarFieldEnum!]!, having: MetricRecordScalarWhereWithAggregatesInput, orderBy: [MetricRecordOrderByWithAggregationInput!], skip: Int, take: Int, where: MetricRecordWhereInput): [MetricRecordGroupBy!]!
   groupByMetricUsage(by: [MetricUsageScalarFieldEnum!]!, having: MetricUsageScalarWhereWithAggregatesInput, orderBy: [MetricUsageOrderByWithAggregationInput!], skip: Int, take: Int, where: MetricUsageWhereInput): [MetricUsageGroupBy!]!
+  groupByNote(by: [NoteScalarFieldEnum!]!, having: NoteScalarWhereWithAggregatesInput, orderBy: [NoteOrderByWithAggregationInput!], skip: Int, take: Int, where: NoteWhereInput): [NoteGroupBy!]!
+  groupByNotebook(by: [NotebookScalarFieldEnum!]!, having: NotebookScalarWhereWithAggregatesInput, orderBy: [NotebookOrderByWithAggregationInput!], skip: Int, take: Int, where: NotebookWhereInput): [NotebookGroupBy!]!
+  groupByNotebookUserPermission(by: [NotebookUserPermissionScalarFieldEnum!]!, having: NotebookUserPermissionScalarWhereWithAggregatesInput, orderBy: [NotebookUserPermissionOrderByWithAggregationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermissionGroupBy!]!
   groupByReading(by: [ReadingScalarFieldEnum!]!, having: ReadingScalarWhereWithAggregatesInput, orderBy: [ReadingOrderByWithAggregationInput!], skip: Int, take: Int, where: ReadingWhereInput): [ReadingGroupBy!]!
   groupByRoutine(by: [RoutineScalarFieldEnum!]!, having: RoutineScalarWhereWithAggregatesInput, orderBy: [RoutineOrderByWithAggregationInput!], skip: Int, take: Int, where: RoutineWhereInput): [RoutineGroupBy!]!
   groupByRoutineHabit(by: [RoutineHabitScalarFieldEnum!]!, having: RoutineHabitScalarWhereWithAggregatesInput, orderBy: [RoutineHabitOrderByWithAggregationInput!], skip: Int, take: Int, where: RoutineHabitWhereInput): [RoutineHabitGroupBy!]!
@@ -12263,6 +13429,12 @@ type Query {
   metricUsage(where: MetricUsageWhereUniqueInput!): MetricUsage
   metricUsages(cursor: MetricUsageWhereUniqueInput, distinct: [MetricUsageScalarFieldEnum!], orderBy: [MetricUsageOrderByWithRelationInput!], skip: Int, take: Int, where: MetricUsageWhereInput): [MetricUsage!]!
   metrics(cursor: MetricWhereUniqueInput, distinct: [MetricScalarFieldEnum!], orderBy: [MetricOrderByWithRelationInput!], skip: Int, take: Int, where: MetricWhereInput): [Metric!]!
+  note(where: NoteWhereUniqueInput!): Note
+  notebook(where: NotebookWhereUniqueInput!): Notebook
+  notebookUserPermission(where: NotebookUserPermissionWhereUniqueInput!): NotebookUserPermission
+  notebookUserPermissions(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermission!]!
+  notebooks(cursor: NotebookWhereUniqueInput, distinct: [NotebookScalarFieldEnum!], orderBy: [NotebookOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookWhereInput): [Notebook!]!
+  notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
   reading(where: ReadingWhereUniqueInput!): Reading
   readings(cursor: ReadingWhereUniqueInput, distinct: [ReadingScalarFieldEnum!], orderBy: [ReadingOrderByWithRelationInput!], skip: Int, take: Int, where: ReadingWhereInput): [Reading!]!
   routine(where: RoutineWhereUniqueInput!): Routine
@@ -14938,6 +16110,8 @@ type User {
   isAdmin: Boolean!
   lists(cursor: ListWhereUniqueInput, distinct: [ListScalarFieldEnum!], orderBy: [ListOrderByWithRelationInput!], skip: Int, take: Int, where: ListWhereInput): [List!]!
   name: String
+  notebookPermissions(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermission!]!
+  notebooks(cursor: NotebookWhereUniqueInput, distinct: [NotebookScalarFieldEnum!], orderBy: [NotebookOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookWhereInput): [Notebook!]!
   readings(cursor: ReadingWhereUniqueInput, distinct: [ReadingScalarFieldEnum!], orderBy: [ReadingOrderByWithRelationInput!], skip: Int, take: Int, where: ReadingWhereInput): [Reading!]!
   settings: JSON!
   tasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum!], orderBy: [TaskOrderByWithRelationInput!], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
@@ -15328,6 +16502,8 @@ type UserCount {
   habits: Int!
   identities: Int!
   lists: Int!
+  notebookPermissions: Int!
+  notebooks: Int!
   readings: Int!
   tasks: Int!
   userBeliefs: Int!
@@ -15371,6 +16547,8 @@ input UserCreateInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15438,6 +16616,18 @@ input UserCreateNestedOneWithoutListsInput {
   create: UserCreateWithoutListsInput
 }
 
+input UserCreateNestedOneWithoutNotebookPermissionsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutNotebookPermissionsInput
+  create: UserCreateWithoutNotebookPermissionsInput
+}
+
+input UserCreateNestedOneWithoutNotebooksInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutNotebooksInput
+  create: UserCreateWithoutNotebooksInput
+}
+
 input UserCreateNestedOneWithoutReadingsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutReadingsInput
@@ -15502,6 +16692,16 @@ input UserCreateOrConnectWithoutListsInput {
   where: UserWhereUniqueInput!
 }
 
+input UserCreateOrConnectWithoutNotebookPermissionsInput {
+  create: UserCreateWithoutNotebookPermissionsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutNotebooksInput {
+  create: UserCreateWithoutNotebooksInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateOrConnectWithoutReadingsInput {
   create: UserCreateWithoutReadingsInput!
   where: UserWhereUniqueInput!
@@ -15535,6 +16735,8 @@ input UserCreateWithoutAccountsInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15556,6 +16758,8 @@ input UserCreateWithoutBookReviewsInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15577,6 +16781,8 @@ input UserCreateWithoutBookshelvesInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15598,6 +16804,8 @@ input UserCreateWithoutCalendarsInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15619,6 +16827,8 @@ input UserCreateWithoutDashboardsInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15640,6 +16850,8 @@ input UserCreateWithoutHabitsInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15661,6 +16873,8 @@ input UserCreateWithoutIdentitiesInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15682,6 +16896,54 @@ input UserCreateWithoutListsInput {
   image: String
   isAdmin: Boolean
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
+  readings: ReadingCreateNestedManyWithoutUserInput
+  settings: JSON
+  tasks: TaskCreateNestedManyWithoutUserInput
+  uid: String
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutNotebookPermissionsInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
+  bookReviews: BookReviewCreateNestedManyWithoutUserInput
+  bookshelves: BookshelfCreateNestedManyWithoutOwnerInput
+  calendars: CalendarCreateNestedManyWithoutUserInput
+  dashboards: DashboardCreateNestedManyWithoutUserInput
+  email: String!
+  emailVerified: DateTime
+  habits: HabitCreateNestedManyWithoutUserInput
+  identities: IdentificationCreateNestedManyWithoutUserInput
+  image: String
+  isAdmin: Boolean
+  lists: ListCreateNestedManyWithoutOwnerInput
+  name: String
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
+  readings: ReadingCreateNestedManyWithoutUserInput
+  settings: JSON
+  tasks: TaskCreateNestedManyWithoutUserInput
+  uid: String
+  userBeliefs: UserBeliefCreateNestedManyWithoutUserInput
+  userValues: UserValueCreateNestedManyWithoutUserInput
+}
+
+input UserCreateWithoutNotebooksInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
+  bookReviews: BookReviewCreateNestedManyWithoutUserInput
+  bookshelves: BookshelfCreateNestedManyWithoutOwnerInput
+  calendars: CalendarCreateNestedManyWithoutUserInput
+  dashboards: DashboardCreateNestedManyWithoutUserInput
+  email: String!
+  emailVerified: DateTime
+  habits: HabitCreateNestedManyWithoutUserInput
+  identities: IdentificationCreateNestedManyWithoutUserInput
+  image: String
+  isAdmin: Boolean
+  lists: ListCreateNestedManyWithoutOwnerInput
+  name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15704,6 +16966,8 @@ input UserCreateWithoutReadingsInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
   uid: String
@@ -15725,6 +16989,8 @@ input UserCreateWithoutTasksInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   uid: String
@@ -15746,6 +17012,8 @@ input UserCreateWithoutUserBeliefsInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15767,6 +17035,8 @@ input UserCreateWithoutUserValuesInput {
   isAdmin: Boolean
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
+  notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
+  notebooks: NotebookCreateNestedManyWithoutOwnerInput
   readings: ReadingCreateNestedManyWithoutUserInput
   settings: JSON
   tasks: TaskCreateNestedManyWithoutUserInput
@@ -15861,6 +17131,8 @@ input UserOrderByWithRelationInput {
   isAdmin: SortOrder
   lists: ListOrderByRelationAggregateInput
   name: SortOrder
+  notebookPermissions: NotebookUserPermissionOrderByRelationAggregateInput
+  notebooks: NotebookOrderByRelationAggregateInput
   readings: ReadingOrderByRelationAggregateInput
   settings: SortOrder
   tasks: TaskOrderByRelationAggregateInput
@@ -15921,6 +17193,8 @@ input UserUpdateInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16003,6 +17277,22 @@ input UserUpdateOneRequiredWithoutListsInput {
   upsert: UserUpsertWithoutListsInput
 }
 
+input UserUpdateOneRequiredWithoutNotebookPermissionsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutNotebookPermissionsInput
+  create: UserCreateWithoutNotebookPermissionsInput
+  update: UserUpdateWithoutNotebookPermissionsInput
+  upsert: UserUpsertWithoutNotebookPermissionsInput
+}
+
+input UserUpdateOneRequiredWithoutNotebooksInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutNotebooksInput
+  create: UserCreateWithoutNotebooksInput
+  update: UserUpdateWithoutNotebooksInput
+  upsert: UserUpsertWithoutNotebooksInput
+}
+
 input UserUpdateOneRequiredWithoutReadingsInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutReadingsInput
@@ -16048,6 +17338,8 @@ input UserUpdateWithoutAccountsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16069,6 +17361,8 @@ input UserUpdateWithoutBookReviewsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16090,6 +17384,8 @@ input UserUpdateWithoutBookshelvesInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16111,6 +17407,8 @@ input UserUpdateWithoutCalendarsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16132,6 +17430,8 @@ input UserUpdateWithoutDashboardsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16153,6 +17453,8 @@ input UserUpdateWithoutHabitsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16174,6 +17476,8 @@ input UserUpdateWithoutIdentitiesInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16195,6 +17499,54 @@ input UserUpdateWithoutListsInput {
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
+  readings: ReadingUpdateManyWithoutUserInput
+  settings: JSON
+  tasks: TaskUpdateManyWithoutUserInput
+  uid: StringFieldUpdateOperationsInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutNotebookPermissionsInput {
+  accounts: AccountUpdateManyWithoutUserInput
+  bookReviews: BookReviewUpdateManyWithoutUserInput
+  bookshelves: BookshelfUpdateManyWithoutOwnerInput
+  calendars: CalendarUpdateManyWithoutUserInput
+  dashboards: DashboardUpdateManyWithoutUserInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  habits: HabitUpdateManyWithoutUserInput
+  identities: IdentificationUpdateManyWithoutUserInput
+  image: NullableStringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lists: ListUpdateManyWithoutOwnerInput
+  name: NullableStringFieldUpdateOperationsInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
+  readings: ReadingUpdateManyWithoutUserInput
+  settings: JSON
+  tasks: TaskUpdateManyWithoutUserInput
+  uid: StringFieldUpdateOperationsInput
+  userBeliefs: UserBeliefUpdateManyWithoutUserInput
+  userValues: UserValueUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutNotebooksInput {
+  accounts: AccountUpdateManyWithoutUserInput
+  bookReviews: BookReviewUpdateManyWithoutUserInput
+  bookshelves: BookshelfUpdateManyWithoutOwnerInput
+  calendars: CalendarUpdateManyWithoutUserInput
+  dashboards: DashboardUpdateManyWithoutUserInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  habits: HabitUpdateManyWithoutUserInput
+  identities: IdentificationUpdateManyWithoutUserInput
+  image: NullableStringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lists: ListUpdateManyWithoutOwnerInput
+  name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16217,6 +17569,8 @@ input UserUpdateWithoutReadingsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
   uid: StringFieldUpdateOperationsInput
@@ -16238,6 +17592,8 @@ input UserUpdateWithoutTasksInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   uid: StringFieldUpdateOperationsInput
@@ -16259,6 +17615,8 @@ input UserUpdateWithoutUserBeliefsInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16280,6 +17638,8 @@ input UserUpdateWithoutUserValuesInput {
   isAdmin: BoolFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
+  notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
+  notebooks: NotebookUpdateManyWithoutOwnerInput
   readings: ReadingUpdateManyWithoutUserInput
   settings: JSON
   tasks: TaskUpdateManyWithoutUserInput
@@ -16325,6 +17685,16 @@ input UserUpsertWithoutIdentitiesInput {
 input UserUpsertWithoutListsInput {
   create: UserCreateWithoutListsInput!
   update: UserUpdateWithoutListsInput!
+}
+
+input UserUpsertWithoutNotebookPermissionsInput {
+  create: UserCreateWithoutNotebookPermissionsInput!
+  update: UserUpdateWithoutNotebookPermissionsInput!
+}
+
+input UserUpsertWithoutNotebooksInput {
+  create: UserCreateWithoutNotebooksInput!
+  update: UserUpdateWithoutNotebooksInput!
 }
 
 input UserUpsertWithoutReadingsInput {
@@ -16730,6 +18100,8 @@ input UserWhereInput {
   isAdmin: BoolFilter
   lists: ListListRelationFilter
   name: StringNullableFilter
+  notebookPermissions: NotebookUserPermissionListRelationFilter
+  notebooks: NotebookListRelationFilter
   readings: ReadingListRelationFilter
   settings: JsonFilter
   tasks: TaskListRelationFilter

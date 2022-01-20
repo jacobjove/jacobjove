@@ -20,7 +20,7 @@ import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
 import Select from "@mui/material/Select";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
