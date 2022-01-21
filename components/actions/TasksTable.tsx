@@ -1,7 +1,7 @@
 import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
 import TaskRow from "@/components/actions/TaskRow";
 import { taskFragment } from "@/graphql/fragments";
-import { CREATE_TASK } from "@/graphql/mutations";
+import { CREATE_TASK, UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
@@ -16,8 +16,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+// import { throttle } from "throttle-debounce";
 import update from "immutability-helper";
-import isEqual from "lodash/isEqual";
+import debounce from "lodash/debounce";
 import partition from "lodash/partition";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -46,6 +47,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const { tasks: allTasks } = data;
   const { data: session } = useSession();
 
+  const [updateTask, { loading: loadingUpdateTask }] = useMutation(UPDATE_TASK);
   const [addingNewTask, setAddingNewTask] = useState(false);
   const [newTask, setNewTask] = useState<Partial<Task>>({});
 
@@ -88,17 +90,25 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   filteredTasks = topLevelTasks.length ? topLevelTasks : subtasks;
 
   // Distinguish incomplete tasks from completed tasks.
-  const [completeTasks, incompleteTasks] = partition(filteredTasks, (task) => {
-    return !!task.completedAt;
+  const [incompleteTasks, completeTasks] = partition(filteredTasks, (task) => {
+    return !task.completedAt;
   });
 
+  const [orderedTasks, setOrderedTasks] = useState<Task[]>(incompleteTasks);
+
   // Enable re-ordering the tasks.
-  const [incompleteTasksState, setIncompleteTasksState] = useState(incompleteTasks);
   const moveTaskRow = useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      const draggedTask = incompleteTasksState[dragIndex];
-      setIncompleteTasksState(
-        update(incompleteTasksState, {
+      console.log("moveTaskRow", dragIndex, hoverIndex);
+      if (dragIndex === hoverIndex || loadingUpdateTask) return;
+      console.log("moveTaskRow.throttle: Updating state...", dragIndex, hoverIndex);
+      const draggedTask = orderedTasks[dragIndex];
+      if (!draggedTask) {
+        console.error("Unable to identify dragged task ID; the dragIndex is invalid.");
+        return;
+      }
+      setOrderedTasks(
+        update(orderedTasks, {
           $splice: [
             [dragIndex, 1],
             [hoverIndex, 0, draggedTask],
@@ -106,16 +116,39 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         })
       );
     },
-    [incompleteTasksState]
+    [orderedTasks, setOrderedTasks, loadingUpdateTask]
   );
+
+  useEffect(() => {
+    console.log("useEffect");
+    debounce(() => {
+      return Promise.all(
+        orderedTasks.map((task, index) => {
+          if (task.position === index) return;
+          console.log("useEffect.debounce.updateTask");
+          return updateTask({
+            variables: {
+              taskId: task.id,
+              data: { position: { set: index } },
+            },
+            optimisticResponse: {
+              updateTask: {
+                __typename: "Task",
+                ...task,
+                position: index,
+              },
+            },
+          });
+        })
+      ).catch((error) => {
+        console.error(error);
+      });
+    }, 3000)();
+  }, [orderedTasks, updateTask]);
+
   const renderTaskRow = (task: Task, index: number) => {
     return <TaskRow key={task.id} task={task} index={index} move={moveTaskRow} />;
   };
-  useEffect(() => {
-    if (!isEqual(incompleteTasksState, incompleteTasks)) {
-      setIncompleteTasksState(incompleteTasks);
-    }
-  }, [incompleteTasks, incompleteTasksState]);
 
   const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
     // console.log(field, value);
@@ -197,7 +230,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {incompleteTasks.map((task, index) => renderTaskRow(task, index))}
+            {orderedTasks.map((task, index) => renderTaskRow(task, index))}
             <TableRow>
               {(addingNewTask && (
                 <EditingModeTaskCells

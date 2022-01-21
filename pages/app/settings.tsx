@@ -67,11 +67,9 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
         }),
       },
     }).then(() => {
-      console.log("Settings updated");
-      getSession();
+      console.log("Settings updated.");
     });
   };
-  console.log("Settings page: user.settings:", user.settings);
   return (
     <Layout>
       <NextSeo

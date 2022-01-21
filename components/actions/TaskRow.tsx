@@ -4,7 +4,7 @@ import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
 import DateContext from "@/components/DateContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
-import { useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
@@ -36,6 +36,17 @@ interface TaskRowProps {
   move?: (dragIndex: number, hoverIndex: number) => void;
 }
 
+const READ_TASKS = gql`
+  query ReadTasks($where: TaskWhereInput) {
+    tasks(where: $where) {
+      id
+      position
+    }
+  }
+`;
+
+type DraggedTask = Pick<Task, "id" | "title" | "position"> & { index: number };
+
 const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const { task, collapsed: _collapsed, index: _index, move } = props;
   const index = _index ?? task.position;
@@ -50,16 +61,32 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const menuState = usePopupState({ variant: "popper", popupId: `task-${task.id}-menu` });
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
-  const [updateTask, { loading }] = useMutation(UPDATE_TASK);
+  const {
+    data: tasksData,
+    loading: loadingTasks,
+    error: errorLoadingTasks,
+  } = useQuery<{
+    tasks: Task[];
+  }>(READ_TASKS, {
+    variables: {
+      where: {
+        userId: {
+          equals: session?.user?.id,
+        },
+      },
+    },
+    fetchPolicy: "cache-only",
+  });
+  const { tasks } = tasksData ?? { tasks: [] };
+  const [updateTask, { loading: loadingUpdateTask }] = useMutation(UPDATE_TASK);
+  const loading = loadingTasks || loadingUpdateTask;
   const toggleCompletion = (complete: boolean) => {
     if (!session?.user.id) return;
     const completedAt = complete ? new Date().toISOString() : null;
     updateTask({
       variables: {
-        where: { id: task.id },
-        data: {
-          completedAt: { set: completedAt },
-        },
+        taskId: task.id,
+        data: { completedAt: { set: completedAt } },
       },
       optimisticResponse: {
         __typename: "Mutation",
@@ -77,7 +104,10 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     type: "task",
     item: {
       type: "task",
+      id: task.id,
       title: task.title,
+      position: task.position,
+      index: index,
       calendarId: session?.user?.settings?.defaultCalendarId,
     },
     collect: (monitor) => ({
@@ -88,29 +118,60 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     () => ({
       accept: ["task"],
       canDrop: () => !loading,
-      drop: (item: Task) => {
+      drop: (item: DraggedTask) => {
         if (!session) return;
-        const { ...itemData } = item;
-        // addEvent({
-        //   variables: {
-        //     data: calendarEventDataWithConnections,
-        //   },
-        //   optimisticResponse: {
-        //     createCalendarEvent: {
-        //       __typename: "CalendarEvent",
-        //       id: -1,
-        //       uid: "tmp-id",
-        //       calendarId,
-        //       scheduleId,
-        //     },
-        //   },
-        // });
+        console.log("dropped", item.position);
+        if (errorLoadingTasks) {
+          console.error(errorLoadingTasks);
+          return;
+        }
+        // Promise.all(tasks
+        //   .filter((task) => {
+        //     return task.position > item.index && task.id != item.id;
+        //   })
+        //   .map((task, index) => {
+        //     console.log(task.position, index);
+        //     console.log("new position", item.index + index + 1);
+        //     const newPosition = item.index + index + 1;
+        //     return updateTask({
+        //       variables: {
+        //         taskId: task.id,
+        //         data: { position: { set: newPosition } },
+        //       },
+        //       optimisticResponse: {
+        //         updateTask: {
+        //           __typename: "Task",
+        //           ...task,
+        //           position: newPosition,
+        //         },
+        //       },
+        //     });
+        //   }))
+        //   .then(() => {
+        //     console.log("promises resolved");
+        //     updateTask({
+        //       variables: {
+        //         taskId: item.id,
+        //         data: { position: { set: item.index } },
+        //       },
+        //       optimisticResponse: {
+        //         updateTask: {
+        //           __typename: "Task",
+        //           ...tasks.find((task) => task.id == item.id),
+        //           position: item.index,
+        //         },
+        //       },
+        //     });
+        //   })
+        //   .catch((error) => {
+        //     console.error(error);
+        //   });
       },
-      hover(item: Task, monitor: DropTargetMonitor) {
+      hover(item: DraggedTask, monitor: DropTargetMonitor) {
         if (!ref.current || !move) {
           return;
         }
-        const dragIndex = item.position;
+        const dragIndex = item.index;
         const hoverIndex = index;
 
         // Don't replace items with themselves.
@@ -151,8 +212,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         // Generally it's better to avoid mutations,
         // but it's good here for the sake of performance
         // to avoid expensive index searches.
-        console.log(item, typeof item);
-        // item.index = hoverIndex;
+        item.index = hoverIndex;
+        console.log("item.index", item.index);
       },
       collect: (monitor) => ({
         handlerId: monitor.getHandlerId(),
@@ -176,7 +237,6 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     return dueDate.toLocaleDateString();
   };
   const isHabit = Boolean(task.habit);
-  const opacity = isDragging ? 0 : 1;
   dragRef(dropRef(ref));
   return (
     <>
@@ -184,7 +244,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         ref={ref}
         data-handler-id={handlerId}
         sx={{
-          opacity,
+          opacity: isDragging ? 0 : 1,
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
           "& td, th": {
@@ -209,7 +269,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
             handleFieldChange={(fieldName, value) => {
               updateTask({
                 variables: {
-                  where: { id: task.id },
+                  taskId: task.id,
                   data: { [fieldName]: { set: value } },
                 },
                 optimisticResponse: {
@@ -297,7 +357,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                       }}
                       {...bindTrigger(dialogState)}
                     >
-                      {task.title} ({task.position})
+                      {task.title} (i: {index}, pos: {task.position})
                     </Button>
                   </Box>
                 </Box>
@@ -374,10 +434,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                       const archivedAt = new Date().toISOString();
                       updateTask({
                         variables: {
-                          where: { id: task.id },
-                          data: {
-                            archivedAt: { set: archivedAt },
-                          },
+                          taskId: task.id,
+                          data: { archivedAt: { set: archivedAt } },
                         },
                         optimisticResponse: {
                           updateTask: {
@@ -386,8 +444,22 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                             archivedAt,
                           },
                         },
-                      }).catch((error) => {
-                        console.error(error);
+                      }).catch((e) => {
+                        if (e.networkError?.result?.errors) {
+                          e.networkError.result.errors.forEach(
+                            (error: {
+                              message: string;
+                              extensions: { code: string; exception: { stacktrace: string[] } };
+                            }) => {
+                              console.error(error.message);
+                              console.log(error.extensions.exception.stacktrace.join("\n"), {
+                                depth: null,
+                              });
+                            }
+                          );
+                        } else {
+                          console.error(e);
+                        }
                       });
                     }}
                   >

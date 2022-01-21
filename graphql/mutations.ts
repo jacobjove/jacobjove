@@ -20,8 +20,8 @@ export const CREATE_TASK = gql`
 `;
 
 export const UPDATE_TASK = gql`
-  mutation UpdateTask($data: TaskUpdateInput!, $where: TaskWhereUniqueInput!) {
-    updateTask(data: $data, where: $where) {
+  mutation UpdateTask($taskId: Int!, $data: TaskUpdateInput!) {
+    updateTask(data: $data, where: { id: $taskId }) {
       ...TaskFragment
     }
   }
@@ -29,7 +29,7 @@ export const UPDATE_TASK = gql`
 `;
 
 export const UPDATE_ACTION = gql`
-  mutation UpdateAction($data: ActionUpdateInput!, $where: ActionWhereUniqueInput!) {
+  mutation UpdateAction($where: ActionWhereUniqueInput!, $data: ActionUpdateInput!) {
     updateAction(data: $data, where: $where) {
       ...ActionFragment
     }
