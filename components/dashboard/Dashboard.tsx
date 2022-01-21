@@ -23,7 +23,7 @@ import {
 } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
-import { Breakpoint } from "@mui/material";
+import { Box, Breakpoint } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
@@ -210,7 +210,27 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       }}
     >
       <Backdrop open={isMobile && speedDialOpen} />
-      <div style={{ position: "relative" }}>
+      <Box
+        position="relative"
+        sx={{
+          "& .react-resizable-handle": {
+            color: (theme) => (theme.palette.mode === "light" ? "gray" : "whitesmoke"),
+            "&::after": {
+              borderRight: (theme) =>
+                `2px solid ${
+                  theme.palette.mode === "light" ? "rgba(0,0,0,0.4)" : "rgba(255,255,255,255.4)"
+                } !important`,
+              borderBottom: (theme) =>
+                `2px solid ${
+                  theme.palette.mode === "light" ? "rgba(0,0,0,0.4)" : "rgba(255,255,255,255.4)"
+                } !important`,
+            },
+          },
+          "& .not-editing .react-resizable-handle": {
+            display: "none !important",
+          },
+        }}
+      >
         <ResponsiveGridLayout
           className="layout"
           layouts={layouts}
@@ -238,7 +258,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         >
           {children}
         </ResponsiveGridLayout>
-      </div>
+      </Box>
       <SpeedDial
         ariaLabel="Dashboard speed dial"
         sx={{

@@ -11,7 +11,6 @@ import AddIcon from "@mui/icons-material/Add";
 import ClassIcon from "@mui/icons-material/Class";
 import DoneIcon from "@mui/icons-material/Done";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -271,40 +270,53 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
               ))}
             </List>
           </Drawer>
-          <Container
-            maxWidth="md"
+          <Box
             sx={{
               position: "relative",
+              left: `${drawerWidth}px`,
               height: "100%",
               maxHeight: "100%",
               display: "flex",
               alignItems: "start",
               justifyContent: "center",
+              width: `calc(100% - ${drawerWidth}px)`,
             }}
           >
-            <Paper sx={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
+            <Paper
+              sx={{
+                width: "100%",
+                maxWidth: "21cm", // A4 sheet of paper
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <Toolbar>
                 <Typography component="h2" variant="h1">
                   {"Note title"}
                 </Typography>
               </Toolbar>
-              <TextField
-                variant="filled"
-                placeholder="Type here..."
-                sx={{
-                  flexGrow: 1,
-                  flexShrink: 0,
-                  borderBottom: "none",
-                  "& *": {
+              <Box flexGrow={1} flexShrink={0}>
+                <TextField
+                  variant="filled"
+                  placeholder="Type here..."
+                  sx={{
+                    height: "100%",
                     borderBottom: "none",
-                  },
-                }}
-                minRows={20}
-                fullWidth
-                multiline
-              />
+                    alignItems: "start",
+                    "& .MuiFilledInput-root": {
+                      alignItems: "start",
+                      height: "100%",
+                      borderBottom: "none",
+                    },
+                  }}
+                  // minRows={20}
+                  fullWidth
+                  multiline
+                />
+              </Box>
             </Paper>
-          </Container>
+          </Box>
         </>
       )}
     </Layout>

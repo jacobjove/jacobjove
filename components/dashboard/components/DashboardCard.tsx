@@ -29,7 +29,7 @@ interface DashboardCardProps {
   children?: ReactNode;
 }
 
-const StyledCard = styled(Card)(() => ({
+const StyledCard = styled(Card)(({ theme }) => ({
   height: "100%",
   "& .MuiCardHeader-action": {
     display: "flex",
@@ -41,7 +41,7 @@ const StyledCard = styled(Card)(() => ({
 const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
   const displayCardHeader = props.editing || true;
   return (
-    <StyledCard>
+    <StyledCard className={`${props.editing ? "editing" : "not-editing"}`}>
       <Collapse in={displayCardHeader}>
         <CardHeader
           title={<CardTitle title={props.title} />}
