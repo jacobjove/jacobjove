@@ -161,6 +161,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         variables: {
           data: {
             ...newTask,
+            position: orderedTasks.length,
             user: {
               connect: {
                 id: session.user.id,
@@ -170,6 +171,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         },
         optimisticResponse: {
           createTask: {
+            title: "",
             dueDate: null,
             description: null,
             habit: null,
@@ -177,7 +179,9 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             subtasks: [],
             completedAt: null,
             archivedAt: null,
-            ...(newTask as Task),
+            position: orderedTasks.length,
+            createdAt: new Date().toISOString(),
+            ...newTask,
             __typename: "Task",
             id: -1,
           },
