@@ -308,6 +308,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
                       alignItems: "start",
                       height: "100%",
                       borderBottom: "none",
+                      borderRadius: "1px",
                     },
                   }}
                   // minRows={20}
