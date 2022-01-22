@@ -12458,7 +12458,6 @@ type Notebook {
   notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
   owner: User!
   ownerId: Int!
-  slug: String!
   title: String!
   updatedAt: DateTime
   userPermissions(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermission!]!
@@ -12487,7 +12486,6 @@ type NotebookCountAggregate {
   id: Int!
   isPublic: Int!
   ownerId: Int!
-  slug: Int!
   title: Int!
   updatedAt: Int!
 }
@@ -12499,7 +12497,6 @@ input NotebookCountOrderByAggregateInput {
   id: SortOrder
   isPublic: SortOrder
   ownerId: SortOrder
-  slug: SortOrder
   title: SortOrder
   updatedAt: SortOrder
 }
@@ -12511,7 +12508,6 @@ input NotebookCreateInput {
   isPublic: Boolean
   notes: NoteCreateNestedManyWithoutNotebookInput
   owner: UserCreateNestedOneWithoutNotebooksInput!
-  slug: String!
   title: String!
   updatedAt: DateTime
   userPermissions: NotebookUserPermissionCreateNestedManyWithoutNotebookInput
@@ -12524,7 +12520,6 @@ input NotebookCreateManyInput {
   id: Int
   isPublic: Boolean
   ownerId: Int!
-  slug: String!
   title: String!
   updatedAt: DateTime
 }
@@ -12535,7 +12530,6 @@ input NotebookCreateManyOwnerInput {
   description: String
   id: Int
   isPublic: Boolean
-  slug: String!
   title: String!
   updatedAt: DateTime
 }
@@ -12585,7 +12579,6 @@ input NotebookCreateWithoutNotesInput {
   description: String
   isPublic: Boolean
   owner: UserCreateNestedOneWithoutNotebooksInput!
-  slug: String!
   title: String!
   updatedAt: DateTime
   userPermissions: NotebookUserPermissionCreateNestedManyWithoutNotebookInput
@@ -12597,7 +12590,6 @@ input NotebookCreateWithoutOwnerInput {
   description: String
   isPublic: Boolean
   notes: NoteCreateNestedManyWithoutNotebookInput
-  slug: String!
   title: String!
   updatedAt: DateTime
   userPermissions: NotebookUserPermissionCreateNestedManyWithoutNotebookInput
@@ -12610,7 +12602,6 @@ input NotebookCreateWithoutUserPermissionsInput {
   isPublic: Boolean
   notes: NoteCreateNestedManyWithoutNotebookInput
   owner: UserCreateNestedOneWithoutNotebooksInput!
-  slug: String!
   title: String!
   updatedAt: DateTime
 }
@@ -12627,7 +12618,6 @@ type NotebookGroupBy {
   id: Int!
   isPublic: Boolean!
   ownerId: Int!
-  slug: String!
   title: String!
   updatedAt: DateTime
 }
@@ -12645,7 +12635,6 @@ type NotebookMaxAggregate {
   id: Int
   isPublic: Boolean
   ownerId: Int
-  slug: String
   title: String
   updatedAt: DateTime
 }
@@ -12657,7 +12646,6 @@ input NotebookMaxOrderByAggregateInput {
   id: SortOrder
   isPublic: SortOrder
   ownerId: SortOrder
-  slug: SortOrder
   title: SortOrder
   updatedAt: SortOrder
 }
@@ -12669,7 +12657,6 @@ type NotebookMinAggregate {
   id: Int
   isPublic: Boolean
   ownerId: Int
-  slug: String
   title: String
   updatedAt: DateTime
 }
@@ -12681,7 +12668,6 @@ input NotebookMinOrderByAggregateInput {
   id: SortOrder
   isPublic: SortOrder
   ownerId: SortOrder
-  slug: SortOrder
   title: SortOrder
   updatedAt: SortOrder
 }
@@ -12702,7 +12688,6 @@ input NotebookOrderByWithAggregationInput {
   id: SortOrder
   isPublic: SortOrder
   ownerId: SortOrder
-  slug: SortOrder
   title: SortOrder
   updatedAt: SortOrder
 }
@@ -12716,7 +12701,6 @@ input NotebookOrderByWithRelationInput {
   notes: NoteOrderByRelationAggregateInput
   owner: UserOrderByWithRelationInput
   ownerId: SortOrder
-  slug: SortOrder
   title: SortOrder
   updatedAt: SortOrder
   userPermissions: NotebookUserPermissionOrderByRelationAggregateInput
@@ -12734,7 +12718,6 @@ enum NotebookScalarFieldEnum {
   id
   isPublic
   ownerId
-  slug
   title
   updatedAt
 }
@@ -12749,7 +12732,6 @@ input NotebookScalarWhereInput {
   id: IntFilter
   isPublic: BoolFilter
   ownerId: IntFilter
-  slug: StringFilter
   title: StringFilter
   updatedAt: DateTimeNullableFilter
 }
@@ -12764,7 +12746,6 @@ input NotebookScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   isPublic: BoolWithAggregatesFilter
   ownerId: IntWithAggregatesFilter
-  slug: StringWithAggregatesFilter
   title: StringWithAggregatesFilter
   updatedAt: DateTimeNullableWithAggregatesFilter
 }
@@ -12786,7 +12767,6 @@ input NotebookUpdateInput {
   isPublic: BoolFieldUpdateOperationsInput
   notes: NoteUpdateManyWithoutNotebookInput
   owner: UserUpdateOneRequiredWithoutNotebooksInput
-  slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
@@ -12797,7 +12777,6 @@ input NotebookUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
-  slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
@@ -12848,7 +12827,6 @@ input NotebookUpdateWithoutNotesInput {
   description: NullableStringFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutNotebooksInput
-  slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
@@ -12860,7 +12838,6 @@ input NotebookUpdateWithoutOwnerInput {
   description: NullableStringFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
   notes: NoteUpdateManyWithoutNotebookInput
-  slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
   userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
@@ -12873,7 +12850,6 @@ input NotebookUpdateWithoutUserPermissionsInput {
   isPublic: BoolFieldUpdateOperationsInput
   notes: NoteUpdateManyWithoutNotebookInput
   owner: UserUpdateOneRequiredWithoutNotebooksInput
-  slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
 }
@@ -13223,7 +13199,6 @@ input NotebookWhereInput {
   notes: NoteListRelationFilter
   owner: UserRelationFilter
   ownerId: IntFilter
-  slug: StringFilter
   title: StringFilter
   updatedAt: DateTimeNullableFilter
   userPermissions: NotebookUserPermissionListRelationFilter
@@ -13231,7 +13206,6 @@ input NotebookWhereInput {
 
 input NotebookWhereUniqueInput {
   id: Int
-  slug: String
 }
 
 input NullableDateTimeFieldUpdateOperationsInput {

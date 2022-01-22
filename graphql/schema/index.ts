@@ -105,6 +105,8 @@ export type Dashboard = FromPrismaWithOmission<_Dashboard, "layouts"> & {
   layouts: string;
 };
 export type Note = FromPrisma<_Note>;
-export type Notebook = FromPrismaWithOmission<_Notebook, "notes"> & {
+export type Notebook = FromPrismaWithOmission<_Notebook, "notes" | "createdAt" | "ownerId"> & {
   notes: Note[];
+  createdAt: string;
+  archivedAt?: string | null;
 };

@@ -29,7 +29,7 @@ interface DashboardCardProps {
   children?: ReactNode;
 }
 
-const StyledCard = styled(Card)(({ theme }) => ({
+const StyledCard = styled(Card)(() => ({
   height: "100%",
   "& .MuiCardHeader-action": {
     display: "flex",

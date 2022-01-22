@@ -136,33 +136,38 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
   const loading = loadingData || loadingCreateDashboard;
   const { dashboards, ...dashboardData } = data || {};
   const defaultDashboard = dashboards?.find((dashboard) => dashboard.isDefault);
-  const [selectedDashboard, setSelectedDashboard] = useState<Dashboard | null>(
-    defaultDashboard || dashboards?.[0] || null
-  );
-  const layouts = selectedDashboard?.layouts ? JSON.parse(selectedDashboard.layouts) : undefined;
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const [editing, setEditing] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const isMobile = useMediaQuery("(max-width: 600px)");
+  const [selectedDashboard, setSelectedDashboard] = useState<Dashboard | null>(
+    defaultDashboard || dashboards?.[0] || null
+  );
+
+  const layouts = selectedDashboard?.layouts ? JSON.parse(selectedDashboard.layouts) : undefined;
+
   useEffect(() => {
-    if (data && session?.user?.id && !dashboards?.length) {
-      createDashboard({
-        variables: {
-          data: {
-            name: "Default Dashboard",
-            isDefault: true,
-            layouts: JSON.stringify(DEFAULT_LAYOUTS),
-            user: { connect: { id: session.user.id } },
+    if (session && data && !dashboards?.length) {
+      (async () => {
+        await createDashboard({
+          variables: {
+            data: {
+              name: "Default Dashboard",
+              isDefault: true,
+              layouts: JSON.stringify(DEFAULT_LAYOUTS),
+              user: { connect: { id: session.user.id } },
+            },
           },
-        },
-      });
-      // .then((response) => {
-      //   setSelectedDashboard(defaultDashboard || dashboards[0]);
-      // });
+        }).catch((error) => {
+          console.error(error);
+        });
+      })();
     }
-  }, [data, dashboards, dashboards?.length, createDashboard, session]);
+  }, [data, dashboards, createDashboard, session]);
+  useEffect(() => {
+    if (dashboards?.length && !selectedDashboard) setSelectedDashboard(dashboards[0]);
+  }, [dashboards, selectedDashboard, setSelectedDashboard]);
   if (!data || isEmpty(dashboardData)) return null;
-  // console.log(">>> layouts", typeof selectedDashboard?.layouts, selectedDashboard?.layouts);
   return (
     <Layout>
       <NextSeo

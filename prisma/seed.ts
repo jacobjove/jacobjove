@@ -18,6 +18,8 @@ async function main() {
   const deleteActionSchedules = prisma.actionSchedule.deleteMany();
   const deleteRoutineHabits = prisma.routineHabit.deleteMany();
   const deleteRoutines = prisma.routine.deleteMany();
+  const deleteNotes = prisma.note.deleteMany();
+  const deleteNotebooks = prisma.notebook.deleteMany();
   const deleteActs = prisma.act.deleteMany();
   const deleteUsers = prisma.user.deleteMany();
 
@@ -30,6 +32,8 @@ async function main() {
     deleteActionSchedules,
     deleteRoutineHabits,
     deleteRoutines,
+    deleteNotes,
+    deleteNotebooks,
     deleteActs,
     deleteUsers,
   ]);

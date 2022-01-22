@@ -17,7 +17,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 // import { throttle } from "throttle-debounce";
-import update from "immutability-helper";
 import debounce from "lodash/debounce";
 import partition from "lodash/partition";
 import { useSession } from "next-auth/react";
@@ -53,11 +52,14 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 
   const [createTask, { loading: _loading }] = useMutation<{ createTask: Task }>(CREATE_TASK, {
     update(cache, { data }) {
+      console.log("update", data);
       const { createTask } = data || {};
       if (createTask) {
+        console.log("cache.modify...");
         cache.modify({
           fields: {
             tasks(existingTasks = []) {
+              console.log("existingTasks", existingTasks);
               const newTaskRef = cache.writeFragment({
                 data: createTask,
                 fragment: gql`
@@ -94,7 +96,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     return !task.completedAt;
   });
 
-  const [orderedTasks, setOrderedTasks] = useState<Task[]>(incompleteTasks);
+  const orderedTasks = incompleteTasks;
 
   // Enable re-ordering the tasks.
   const moveTaskRow = useCallback(
@@ -107,16 +109,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         console.error("Unable to identify dragged task ID; the dragIndex is invalid.");
         return;
       }
-      setOrderedTasks(
-        update(orderedTasks, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, draggedTask],
-          ],
-        })
-      );
     },
-    [orderedTasks, setOrderedTasks, loadingUpdateTask]
+    [orderedTasks, loadingUpdateTask]
   );
 
   useEffect(() => {

@@ -18,6 +18,12 @@ datasource db {
   provider = "postgresql"
 }
 
+model Redirect {
+  id       Int    @id @default(autoincrement())
+  old_path String
+  new_path String
+}
+
 model Account {
   id                Int    @id @default(autoincrement())
   userId            Int
@@ -488,7 +494,6 @@ model Notebook {
   owner           User                     @relation(fields: [ownerId], references: [id])
   ownerId         Int
   title           String
-  slug            String                   @unique
   isPublic        Boolean                  @default(false)
   description     String?
   notes           Note[]
@@ -497,6 +502,8 @@ model Notebook {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime?
   archivedAt DateTime?
+
+  @@unique([ownerId, title])
 }
 
 model Note {

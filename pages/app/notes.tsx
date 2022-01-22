@@ -27,11 +27,13 @@ import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { alpha } from "@mui/system";
+import partition from "lodash/partition";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
+// import debounce from "lodash/debounce";
 
 interface NotesPageProps {
   session: Session | null;
@@ -97,7 +99,10 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   } = useQuery<NotesPageData>(QUERY, {
     variables: { userId: session?.user?.id },
   });
-  const { notebooks } = data || { notebooks: [] };
+  const { notebooks: allNotebooks } = data || { notebooks: [] };
+  const [notebooks, archivedNotebooks] = partition(allNotebooks, (notebook) => {
+    return !notebook.archivedAt;
+  });
   const [selectedNotebookId, setSelectedNotebookId] = useState<number | null>(
     notebooks.length ? notebooks[0].id : null
   );
@@ -109,7 +114,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
       if (createNotebook) {
         cache.modify({
           fields: {
-            dashboards(existingNotebooks = []) {
+            notebooks(existingNotebooks = []) {
               const newNotebookRef = cache.writeFragment({
                 data: createNotebook,
                 fragment: gql`
@@ -124,9 +129,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
             },
           },
         });
-        if (!selectedNotebookId) {
-          setSelectedNotebookId(createNotebook.id);
-        }
+        console.log(">>>>> cache should be updated now!");
       }
     },
   });
@@ -135,18 +138,16 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   }>(UPDATE_NOTEBOOK);
   const [addingNewNotebook, setAddingNewNotebook] = useState(false);
   const [newNotebookName, setNewNotebookName] = useState("");
-  const [creatingDefaultNotebook, setCreatingDefaultNotebook] = useState(false);
   const loading = loadingNotes || loadingCreateNotebook || loadingUpdateNotebook;
-  // Create a new default notebook if there isn't one.
+
   useEffect(() => {
-    if (session && !loading && !notebooks.length) {
-      setCreatingDefaultNotebook(true);
-      if (!creatingDefaultNotebook) {
-        createNotebook({
+    if (session && data && !allNotebooks.length) {
+      console.log("creating default notebook");
+      (async () =>
+        await createNotebook({
           variables: {
             data: {
-              title: "Default notebook",
-              slug: "default-notebook",
+              title: "Journal",
               owner: {
                 connect: {
                   id: session.user.id,
@@ -156,20 +157,13 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
           },
         }).catch((error) => {
           console.error(error);
-        });
-      }
+        }))();
     }
-  }, [
-    session,
-    loading,
-    notebooks,
-    createNotebook,
-    creatingDefaultNotebook,
-    setCreatingDefaultNotebook,
-  ]);
+  }, [session, data, allNotebooks, createNotebook]);
 
   if (!session) return null;
-  const handleNotebookChange = (notebookId: number) => {
+
+  const handleNotebookUpdate = (notebookId: number) => {
     updateNotebook({
       variables: {
         notebookId,
@@ -189,8 +183,8 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
         noindex
         nofollow
       />
-      {creatingDefaultNotebook ? (
-        <Box height="100%" display="flex" alignItems="center">
+      {loading ? null : !allNotebooks.length ? (
+        <Box height="100%" width="100%" display="flex" alignItems="center">
           <Typography variant="h5" textAlign="center">
             {"Creating default notebook..."}
           </Typography>
@@ -235,7 +229,32 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
                           <IconButton
                             aria-label="create new notebook"
                             onClick={() => {
-                              console.log("create new notebook");
+                              createNotebook({
+                                variables: {
+                                  data: {
+                                    title: newNotebookName,
+                                    owner: {
+                                      connect: {
+                                        id: session.user.id,
+                                      },
+                                    },
+                                  },
+                                },
+                                optimisticResponse: {
+                                  createNotebook: {
+                                    title: newNotebookName,
+                                    archivedAt: null,
+                                    createdAt: new Date().toISOString(),
+                                    isPublic: false,
+                                    notes: [],
+                                    __typename: "Notebook",
+                                    id: -1,
+                                  },
+                                },
+                              }).catch((error) => {
+                                console.error(error);
+                              });
+                              setAddingNewNotebook(false);
                             }}
                             edge="end"
                           >

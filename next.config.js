@@ -35,6 +35,30 @@ const nextConfig = {
   webpack: (config) => {
     return config;
   },
+  async redirects() {
+    const redirects = [
+      {
+        source: "/app",
+        destination: "/app/dashboard",
+        permanent: true,
+      },
+    ];
+    // const prisma = require("./lib/prisma");
+    // await prisma.redirect.findMany({
+    //   where: {
+    //     active: true,
+    //   },
+    // }).then((redirects) => {
+    //   redirects.forEach((redirect) => {
+    //     redirects.push({
+    //       source: redirect.from,
+    //       destination: redirect.to,
+    //       permanent: redirect.permanent,
+    //     });
+    //   });
+    // });
+    return redirects;
+  },
 };
 
 module.exports = withPlugins(plugins, nextConfig);
