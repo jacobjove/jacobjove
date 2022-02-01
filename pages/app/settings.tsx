@@ -15,6 +15,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import isObject from "lodash/isObject";
 import { GetServerSideProps, NextPage } from "next";
@@ -58,16 +59,23 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
     },
   ];
   const handleSettingChange = (settingName: string, newValue: string) => {
+    const newSettingsJson = JSON.stringify({
+      ...userSettings,
+      [settingName]: newValue,
+    });
     updateSettings({
       variables: {
         userId: session.user.id,
-        settings: JSON.stringify({
-          ...userSettings,
-          [settingName]: newValue,
-        }),
+        settings: newSettingsJson,
       },
-    }).then(() => {
-      console.log("Settings updated.");
+      optimisticResponse: {
+        updateUser: {
+          ...user,
+          settings: newSettingsJson,
+        },
+      },
+    }).catch((error) => {
+      console.error(error);
     });
   };
   return (
@@ -102,10 +110,10 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
               <TableHead>
                 <TableRow>
                   <TableCell component="th" scope="column" sx={{ width: "10rem" }}>
-                    Setting
+                    <Typography variant="h4">{"Setting"}</Typography>
                   </TableCell>
                   <TableCell component="th" scope="column">
-                    Value
+                    <Typography variant="h4">{"Value"}</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>

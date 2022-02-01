@@ -2,7 +2,6 @@ import { HALF_HOUR_HEIGHT, TIME_LABEL_COLUMN_WIDTH } from "@/components/calendar
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { alpha, darken, lighten } from "@mui/system";
 import { FC } from "react";
 
 interface TimeLabelProps {
@@ -34,11 +33,7 @@ const Root = styled("div")(({ theme }) => ({
   "& .border-trick-box": {
     height: `${HALF_HOUR_HEIGHT}px`,
     "&:not(:last-of-type)": {
-      borderBottom: `1px solid ${
-        theme.palette.mode === "light"
-          ? lighten(alpha(theme.palette.divider, 1), 0.88)
-          : darken(alpha(theme.palette.divider, 1), 0.68)
-      }`,
+      borderBottom: `1px solid ${theme.palette.divider}`,
     },
   },
 }));

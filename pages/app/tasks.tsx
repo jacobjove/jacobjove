@@ -12,7 +12,6 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { alpha, darken, lighten } from "@mui/system";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
@@ -74,11 +73,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           justifyContent="center"
           sx={{
             borderBottom: (theme) => `1px solid
-            ${
-              theme.palette.mode === "light"
-                ? lighten(alpha(theme.palette.divider, 1), 0.88)
-                : darken(alpha(theme.palette.divider, 1), 0.68)
-            }`,
+            ${theme.palette.divider}`,
           }}
           height={dateSelectorBoxHeight}
         >

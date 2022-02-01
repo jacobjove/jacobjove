@@ -515,7 +515,7 @@ model Note {
   isPublic   Boolean  @default(false)
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -531,7 +531,7 @@ model List {
   items Item[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -542,7 +542,7 @@ model Item {
   data   Json @default("{}")
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -552,7 +552,7 @@ model Author {
   slug String @unique
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   authorships Authorship[]
@@ -567,7 +567,7 @@ model Authorship {
   position Int    @default(0)
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([authorId, bookId])
@@ -590,7 +590,7 @@ model Book {
   extra Json
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   authorships Authorship[]
@@ -610,7 +610,7 @@ model Reading {
   review       BookReview?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -625,7 +625,7 @@ model Bookshelf {
   shelvings   Shelving[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@map(name: "bookshelves")
@@ -641,7 +641,7 @@ model Shelving {
   rationale String?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([shelfId, position])
@@ -659,6 +659,6 @@ model BookReview {
   readingId Int?     @unique
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }

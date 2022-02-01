@@ -9,7 +9,6 @@ import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
-import { alpha, darken, lighten } from "@mui/system";
 import {
   addMinutes,
   differenceInMinutes,
@@ -23,10 +22,7 @@ import {
 import { FC, useContext, useEffect, useRef, useState } from "react";
 
 const Root = styled("div")(({ theme }) => {
-  const dividerColor =
-    theme.palette.mode === "light"
-      ? lighten(alpha(theme.palette.divider, 1), 0.88)
-      : darken(alpha(theme.palette.divider, 1), 0.68);
+  const dividerColor = theme.palette.divider;
   return {
     display: "flex",
     flexDirection: "column",
@@ -155,11 +151,7 @@ const DayViewer: FC<ViewerProps> = ({
                 height={`${allDayBoxHeight}px`}
                 sx={{
                   borderBottom: (theme) => `1px solid
-                  ${
-                    theme.palette.mode === "light"
-                      ? lighten(alpha(theme.palette.divider, 1), 0.88)
-                      : darken(alpha(theme.palette.divider, 1), 0.68)
-                  }`,
+                  ${theme.palette.divider}`,
                 }}
               >
                 All Day
@@ -171,11 +163,7 @@ const DayViewer: FC<ViewerProps> = ({
                 display="flex"
                 sx={{
                   borderBottom: (theme) => `1px solid
-                  ${
-                    theme.palette.mode === "light"
-                      ? lighten(alpha(theme.palette.divider, 1), 0.88)
-                      : darken(alpha(theme.palette.divider, 1), 0.68)
-                  }`,
+                  ${theme.palette.divider}`,
                 }}
               >
                 <div className="border-trick-box" />

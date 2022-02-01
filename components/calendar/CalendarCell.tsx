@@ -1,5 +1,4 @@
 import { styled } from "@mui/material/styles";
-import { alpha, darken, lighten } from "@mui/system";
 import { FC, ReactNode } from "react";
 
 interface CalendarCellProps {
@@ -8,11 +7,7 @@ interface CalendarCellProps {
 }
 
 const Root = styled("div")(({ theme }) => {
-  const borderDef = `1px solid ${
-    theme.palette.mode === "light"
-      ? lighten(alpha(theme.palette.divider, 1), 0.88)
-      : darken(alpha(theme.palette.divider, 1), 0.68)
-  }`;
+  const borderDef = `1px solid ${theme.palette.divider}`;
   return {
     position: "relative",
     "& > div": {

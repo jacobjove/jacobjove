@@ -14,7 +14,6 @@ import { CalendarEvent } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import { alpha, darken, lighten } from "@mui/system";
 import {
   addMinutes,
   differenceInMinutes,
@@ -29,11 +28,7 @@ import {
 import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
 
 const Root = styled("div")(({ theme }) => {
-  const borderDef = `1px solid ${
-    theme.palette.mode === "light"
-      ? lighten(alpha(theme.palette.divider, 1), 0.88)
-      : darken(alpha(theme.palette.divider, 1), 0.68)
-  }`;
+  const borderDef = `1px solid ${theme.palette.divider}`;
   return {
     "& *": {
       boxSizing: "border-box",
@@ -111,12 +106,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
           width={TIME_LABEL_COLUMN_WIDTH}
           height={dayHeaderHeight}
           sx={{
-            borderBottom: (theme) =>
-              `1px solid ${
-                theme.palette.mode === "light"
-                  ? lighten(alpha(theme.palette.divider, 1), 0.88)
-                  : darken(alpha(theme.palette.divider, 1), 0.68)
-              }`,
+            borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
           }}
         />
         <div className="calendar-slots-column">
@@ -124,12 +114,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
             height={dayHeaderHeight}
             display="flex"
             sx={{
-              borderBottom: (theme) =>
-                `1px solid ${
-                  theme.palette.mode === "light"
-                    ? lighten(alpha(theme.palette.divider, 1), 0.88)
-                    : darken(alpha(theme.palette.divider, 1), 0.68)
-                }`,
+              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
             }}
           >
             <Box flexGrow={1} display="flex">
@@ -173,12 +158,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
       <Box
         display="flex"
         sx={{
-          borderBottom: (theme) =>
-            `1px solid ${
-              theme.palette.mode === "light"
-                ? lighten(alpha(theme.palette.divider, 1), 0.88)
-                : darken(alpha(theme.palette.divider, 1), 0.68)
-            }`,
+          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
         <div style={{ width: TIME_LABEL_COLUMN_WIDTH }}>

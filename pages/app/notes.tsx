@@ -1,17 +1,22 @@
 import Layout from "@/components/Layout";
+import SearchDialog from "@/components/search/SearchDialog";
+import Select from "@/components/Select";
 import { notebookFragment, noteFragment } from "@/graphql/fragments";
 // import ListSubheader from "@mui/material/ListSubheader";
 // import Collapse from "@mui/material/Collapse";
 // import ExpandLess from "@mui/icons-material/ExpandLess";
 // import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Notebook } from "@/graphql/schema";
+import { Note, Notebook } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import ClassIcon from "@mui/icons-material/Class";
 import DoneIcon from "@mui/icons-material/Done";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import SearchIcon from "@mui/icons-material/Search";
+import SortIcon from "@mui/icons-material/Sort";
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -19,21 +24,27 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-// import MenuItem from "@mui/material/MenuItem";
-// import NativeSelect from "@mui/material/NativeSelect";
+import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-// import Select from "@mui/material/Select";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { alpha } from "@mui/system";
+import { format, parseISO } from "date-fns";
+import debounce from "lodash/debounce";
 import partition from "lodash/partition";
+import {
+  bindHover,
+  bindMenu,
+  bindPopover,
+  bindTrigger,
+  usePopupState,
+} from "material-ui-popup-state/hooks";
+import HoverMenu from "material-ui-popup-state/HoverMenu";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { useEffect, useState } from "react";
-// import debounce from "lodash/debounce";
+import { useEffect, useRef, useState } from "react";
 
 interface NotesPageProps {
   session: Session | null;
@@ -95,85 +106,125 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const {
     data,
     loading: loadingNotes,
-    error: _error,
+    error,
   } = useQuery<NotesPageData>(QUERY, {
     variables: { userId: session?.user?.id },
   });
-  const { notebooks: allNotebooks } = data || { notebooks: [] };
-  const [notebooks, archivedNotebooks] = partition(allNotebooks, (notebook) => {
-    return !notebook.archivedAt;
-  });
-  const [selectedNotebookId, setSelectedNotebookId] = useState<number | null>(
-    notebooks.length ? notebooks[0].id : null
-  );
-  const [createNotebook, { loading: loadingCreateNotebook }] = useMutation<{
-    createNotebook: Notebook;
-  }>(CREATE_NOTEBOOK, {
-    update(cache, { data }) {
-      const { createNotebook } = data || {};
-      if (createNotebook) {
-        cache.modify({
-          fields: {
-            notebooks(existingNotebooks = []) {
-              const newNotebookRef = cache.writeFragment({
-                data: createNotebook,
-                fragment: gql`
-                  fragment NewNotebook on Notebook {
-                    ...NotebookFragment
-                  }
-                  ${notebookFragment}
-                `,
-                fragmentName: "NewNotebook",
-              });
-              return [...existingNotebooks, newNotebookRef];
-            },
-          },
-        });
-        console.log(">>>>> cache should be updated now!");
-      }
-    },
-  });
+
+  const [selectedNotebookId, setSelectedNotebookId] = useState<number | null>(null);
+  const selectedNotebook = data?.notebooks?.find((nb) => nb.id === selectedNotebookId);
+  const notes = selectedNotebook?.notes;
+
+  const [selectedNoteId, setSelectedNoteId] = useState<number | null>(null);
+  const selectedNote = notes?.find((note) => note.id === selectedNoteId);
+  const [noteTitle, setNoteTitle] = useState(selectedNote?.title);
+  const [noteBody, setNoteBody] = useState(selectedNote?.body);
+
   const [updateNotebook, { loading: loadingUpdateNotebook }] = useMutation<{
     updateNotebook: Notebook;
   }>(UPDATE_NOTEBOOK);
-  const [addingNewNotebook, setAddingNewNotebook] = useState(false);
-  const [newNotebookName, setNewNotebookName] = useState("");
-  const loading = loadingNotes || loadingCreateNotebook || loadingUpdateNotebook;
-
-  useEffect(() => {
-    if (session && data && !allNotebooks.length) {
-      console.log("creating default notebook");
-      (async () =>
-        await createNotebook({
-          variables: {
-            data: {
-              title: "Journal",
-              owner: {
-                connect: {
-                  id: session.user.id,
-                },
-              },
+  const [updateNote, { loading: loadingUpdateNote }] = useMutation<{
+    updateNotebook: Notebook;
+  }>(UPDATE_NOTE);
+  const [createNote, { loading: loadingCreateNote }] = useMutation<{
+    createNote: Note;
+  }>(CREATE_NOTE, {
+    update(cache, { data }) {
+      const { createNote } = data || {};
+      if (createNote) {
+        cache.modify({
+          fields: {
+            notes(existingNotes = []) {
+              const newNoteRef = cache.writeFragment({
+                data: createNote,
+                fragment: gql`
+                  fragment NewNote on Note {
+                    ...NoteFragment
+                  }
+                  ${noteFragment}
+                `,
+                fragmentName: "NewNote",
+              });
+              return [...existingNotes, newNoteRef];
             },
           },
-        }).catch((error) => {
-          console.error(error);
-        }))();
+        });
+      }
+    },
+  });
+
+  const abortController = useRef<AbortController>();
+  const handleUpdateNote = useRef(
+    debounce(
+      (...args: Parameters<typeof updateNote>) => {
+        const controller = new window.AbortController();
+        abortController.current = controller;
+        const mutationOptions = args[0];
+        if (mutationOptions) {
+          mutationOptions.context = { fetchOptions: { signal: controller.signal } };
+        }
+        return (
+          Promise.resolve(updateNote(...args))
+            // .then(() => console.log())
+            .catch((error) => console.error(error))
+        );
+      },
+      1200 // 1.2 seconds
+    )
+  );
+  const abortLatest = () => {
+    if (abortController.current) {
+      abortController.current.abort();
     }
-  }, [session, data, allNotebooks, createNotebook]);
+  };
+
+  const loading = loadingNotes || loadingCreateNote || loadingUpdateNotebook || loadingUpdateNote;
+
+  // Update state when a different note is selected.
+  useEffect(() => {
+    if (selectedNote) {
+      setNoteTitle(selectedNote.title);
+      setNoteBody(selectedNote.body);
+    }
+  }, [selectedNote, setNoteTitle, setNoteBody]);
 
   if (!session) return null;
 
-  const handleNotebookUpdate = (notebookId: number) => {
-    updateNotebook({
+  const handleCreateNote = () => {
+    const title = "Untitled note";
+    const body = "";
+    const creationDateISO = new Date().toISOString();
+    if (!data?.notebooks[0].id) {
+      console.error("No notebooks found.");
+      return;
+    }
+    const notebookId = selectedNotebook?.id || data?.notebooks[0].id; // TODO
+    createNote({
       variables: {
-        notebookId,
-        data: {},
+        data: {
+          title,
+          body,
+          notebook: { connect: { id: notebookId } },
+        },
       },
-    }).then(() => {
-      console.log("Notes updated");
-      getSession();
+      optimisticResponse: {
+        createNote: {
+          title,
+          body,
+          isPublic: false,
+          notebookId: notebookId,
+          createdAt: creationDateISO,
+          updatedAt: creationDateISO,
+          archivedAt: null,
+          __typename: "Note",
+          id: -1,
+        },
+      },
+    }).catch((error) => {
+      console.error(error);
     });
   };
+
   return (
     <Layout>
       <NextSeo
@@ -183,162 +234,131 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
         noindex
         nofollow
       />
-      {loading ? null : !allNotebooks.length ? (
-        <Box height="100%" width="100%" display="flex" alignItems="center">
-          <Typography variant="h5" textAlign="center">
-            {"Creating default notebook..."}
-          </Typography>
-        </Box>
-      ) : (
-        <>
-          <Drawer
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              "& .MuiDrawer-paper": {
-                position: "absolute",
-                width: drawerWidth,
-                boxSizing: "border-box",
-                backgroundColor: (theme) =>
-                  alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-                // theme.palette.mode === "light"
-                //   ? theme.palette.secondary.light
-                //   : theme.palette.secondary.dark,
-              },
-            }}
-            variant="permanent"
-            anchor="left"
+      <Box position="relative" display="flex" height="100%">
+        <NotesMenu
+          data={data}
+          loading={loading}
+          error={error}
+          selectedNotebook={selectedNotebook}
+          setSelectedNotebookId={setSelectedNotebookId}
+          selectedNote={selectedNote}
+          setSelectedNoteId={setSelectedNoteId}
+          handleCreateNote={handleCreateNote}
+          session={session}
+        />
+        {!data?.notebooks?.length ? (
+          <Box
+            height="100%"
+            width="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent={"center"}
           >
-            <Toolbar>
-              <Typography component="h1" variant="h2">
-                {"Notes"}
-              </Typography>
-            </Toolbar>
-            <Divider />
-            <List>
-              {addingNewNotebook ? (
-                <ListItem>
-                  <TextField
-                    autoFocus
-                    placeholder="Notebook title"
-                    variant="standard"
-                    value={newNotebookName}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="create new notebook"
-                            onClick={() => {
-                              createNotebook({
-                                variables: {
-                                  data: {
-                                    title: newNotebookName,
-                                    owner: {
-                                      connect: {
-                                        id: session.user.id,
-                                      },
-                                    },
-                                  },
-                                },
-                                optimisticResponse: {
-                                  createNotebook: {
-                                    title: newNotebookName,
-                                    archivedAt: null,
-                                    createdAt: new Date().toISOString(),
-                                    isPublic: false,
-                                    notes: [],
-                                    __typename: "Notebook",
-                                    id: -1,
-                                  },
-                                },
-                              }).catch((error) => {
-                                console.error(error);
-                              });
-                              setAddingNewNotebook(false);
-                            }}
-                            edge="end"
-                          >
-                            <DoneIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    onChange={(e) => setNewNotebookName(e.target.value)}
-                    onKeyUp={(event) => {
-                      if (event.key === "Enter") {
-                        event.preventDefault();
-                      } else if (event.key === "Escape") {
-                        event.preventDefault();
-                        setAddingNewNotebook(false);
-                      }
-                    }}
-                  />
-                </ListItem>
-              ) : (
-                <ListItem button onClick={() => setAddingNewNotebook(true)}>
-                  <AddIcon /> {"New notebook"}
-                </ListItem>
-              )}
-              {notebooks.map((notebook) => (
-                <ListItem button key={notebook.title}>
-                  <ListItemIcon sx={{ justifyContent: "center" }}>
-                    <ClassIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={notebook.title} />
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
+            <Typography variant="h5" textAlign="center" justifyContent={"center"}>
+              {loading ? "Loading..." : "Creating default notebook..."}
+            </Typography>
+          </Box>
+        ) : (
           <Box
             sx={{
               position: "relative",
-              left: `${drawerWidth}px`,
               height: "100%",
               maxHeight: "100%",
               display: "flex",
               alignItems: "start",
               justifyContent: "center",
-              width: `calc(100% - ${drawerWidth}px)`,
+              flexGrow: 1,
             }}
           >
-            <Paper
-              sx={{
-                width: "100%",
-                maxWidth: "21cm", // A4 sheet of paper
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Toolbar>
-                <Typography component="h2" variant="h1">
-                  {"Note title"}
-                </Typography>
-              </Toolbar>
-              <Box flexGrow={1} flexShrink={0}>
-                <TextField
-                  variant="filled"
-                  placeholder="Type here..."
-                  sx={{
-                    height: "100%",
-                    borderBottom: "none",
-                    alignItems: "start",
-                    "& .MuiFilledInput-root": {
-                      alignItems: "start",
+            {selectedNote ? (
+              <Paper
+                sx={{
+                  width: "100%",
+                  maxWidth: "21cm", // A4 sheet of paper
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Toolbar>
+                  <TextField
+                    variant="standard"
+                    value={noteTitle || "Untitled note"}
+                    onChange={(event) => {
+                      setNoteTitle(event.target.value);
+                      abortLatest();
+                      handleUpdateNote.current({
+                        variables: {
+                          noteId: selectedNote.id,
+                          data: {
+                            title: { set: event.target.value },
+                          },
+                        },
+                      });
+                    }}
+                  />
+                </Toolbar>
+                <Box flexGrow={1} flexShrink={0}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    variant="filled"
+                    placeholder="Type here..."
+                    sx={{
                       height: "100%",
                       borderBottom: "none",
-                      borderRadius: "1px",
-                    },
+                      alignItems: "start",
+                      "& .MuiFilledInput-root": {
+                        alignItems: "start",
+                        height: "100%",
+                        borderBottom: "none",
+                        borderRadius: "1px",
+                      },
+                    }}
+                    value={noteBody || ""}
+                    onChange={(event) => {
+                      setNoteBody(event.target.value);
+                      abortLatest();
+                      handleUpdateNote.current({
+                        variables: {
+                          noteId: selectedNote.id,
+                          data: {
+                            body: { set: event.target.value },
+                          },
+                        },
+                      });
+                    }}
+                  />
+                </Box>
+              </Paper>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                {"Select a note from the menu, or"}
+                &nbsp;
+                <Button
+                  variant="text"
+                  sx={{
+                    m: 0,
+                    p: 0,
+                    textTransform: "none",
+                    fontSize: "inherit",
                   }}
-                  // minRows={20}
-                  fullWidth
-                  multiline
-                />
+                  onClick={handleCreateNote}
+                >
+                  {"create a new one"}
+                </Button>
+                {"."}
               </Box>
-            </Paper>
+            )}
           </Box>
-        </>
-      )}
+        )}
+      </Box>
     </Layout>
   );
 };
@@ -362,3 +382,386 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
   return addApolloState(apolloClient, { props });
 };
+
+interface NotesMenuProps {
+  data?: NotesPageData;
+  loading: boolean;
+  error?: Error;
+  selectedNotebook?: Notebook | null;
+  setSelectedNotebookId: (id: number | null) => void;
+  selectedNote?: Note | null;
+  setSelectedNoteId: (id: number | null) => void;
+  session: Session;
+  // createNote: (
+  //   options: MutationHookOptions<{ createNote: Note }>
+  // ) => Promise<FetchResult<{ createNote: Note }, Record<string, any>, Record<string, any>>>;
+  handleCreateNote: () => void;
+}
+
+function NotesMenu({
+  data,
+  loading: _loading,
+  error,
+  selectedNotebook,
+  setSelectedNotebookId,
+  selectedNote,
+  setSelectedNoteId,
+  handleCreateNote,
+  session,
+}: NotesMenuProps) {
+  const { notebooks: allNotebooks } = data || { notebooks: [] };
+  const [notebooks, archivedNotebooks] = partition(allNotebooks, (notebook) => {
+    return !notebook.archivedAt;
+  });
+  const [addingNewNotebook, setAddingNewNotebook] = useState(false);
+  const [newNotebookName, setNewNotebookName] = useState("");
+  const searchDialogState = usePopupState({ variant: "popover", popupId: `notes-search-dialog` });
+  const creationMenuState = usePopupState({ variant: "popper", popupId: `notes-creation-menu` });
+  const [createNotebook, { loading: loadingCreateNotebook }] = useMutation<{
+    createNotebook: Notebook;
+  }>(CREATE_NOTEBOOK, {
+    update(cache, { data }) {
+      const { createNotebook } = data || {};
+      if (createNotebook) {
+        cache.modify({
+          fields: {
+            notebooks(existingNotebooks = []) {
+              const newNotebookRef = cache.writeFragment({
+                data: createNotebook,
+                fragment: gql`
+                  fragment NewNotebook on Notebook {
+                    ...NotebookFragment
+                  }
+                  ${notebookFragment}
+                `,
+                fragmentName: "NewNotebook",
+              });
+              return [...existingNotebooks, newNotebookRef];
+            },
+          },
+        });
+      }
+    },
+  });
+
+  const loading = _loading || loadingCreateNotebook;
+
+  // Create default notebook if necessary.
+  useEffect(() => {
+    const needToCreateDefaultNotebook =
+      !!session && !!data && !loading && !error && !allNotebooks.length;
+    if (needToCreateDefaultNotebook) {
+      (async () =>
+        await createNotebook({
+          variables: {
+            data: {
+              title: "Journal",
+              owner: {
+                connect: {
+                  id: session.user.id,
+                },
+              },
+            },
+          },
+        }).catch((error) => {
+          console.error(error);
+        }))();
+    }
+  }, [session, data, loading, error, allNotebooks, createNotebook]);
+
+  // Select the default notebook.
+  useEffect(() => {
+    if (notebooks.length && !selectedNotebook) {
+      setSelectedNotebookId(notebooks[0].id);
+    }
+  }, [notebooks, selectedNotebook, setSelectedNotebookId]);
+
+  // Select the latest "new" (blank) note if one is present. This might help
+  // the user to avoid creating multiple empty, untitled notes.
+  useEffect(() => {
+    const firstNote = selectedNotebook?.notes?.[0];
+    if (selectedNotebook && firstNote?.title === "Untitled note" && !firstNote.body) {
+      setSelectedNoteId(firstNote.id);
+    }
+  }, [selectedNotebook, setSelectedNoteId]);
+
+  return (
+    <>
+      <Box
+        width={`${drawerWidth}px`}
+        sx={{
+          position: "relative",
+          height: "100%",
+          m: 0,
+        }}
+      >
+        <Drawer
+          sx={{
+            width: "100%",
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              position: "absolute",
+              width: "100%",
+              px: 0,
+            },
+          }}
+          variant="permanent"
+          anchor="left"
+        >
+          <Toolbar
+            sx={{
+              px: "0.35rem !important",
+              // paddingRight: "0.25rem !important",
+            }}
+          >
+            <Select
+              fullWidth
+              name={"notebook"}
+              value={selectedNotebook?.id.toString() ?? ""}
+              options={notebooks.map((notebook) => ({
+                value: `${notebook.id}`,
+                label: notebook.title,
+              }))}
+              onChange={(value) => setSelectedNotebookId(parseInt(value))}
+            />
+          </Toolbar>
+          <Box
+            sx={{
+              display: "flex",
+              height: "100%",
+              borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+            }}
+          >
+            <Box
+              sx={{
+                flexGrow: 1,
+                height: "100%",
+                p: 1,
+                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+              }}
+            >
+              <Box display="flex" alignItems={"center"} pl={1}>
+                {!!selectedNotebook && (
+                  <Typography fontSize={"0.8rem"}>
+                    {`${selectedNotebook?.notes.length} note${
+                      selectedNotebook?.notes.length != 1 ? "s" : ""
+                    }`}
+                  </Typography>
+                )}
+                <Box
+                  ml="auto"
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: "1.2rem",
+                    },
+                  }}
+                >
+                  <IconButton>
+                    <SortIcon />
+                  </IconButton>
+                  <IconButton>
+                    <FilterAltIcon />
+                  </IconButton>
+                  <IconButton title={`Search notes`} {...bindTrigger(searchDialogState)}>
+                    <SearchIcon />
+                  </IconButton>
+                  <IconButton
+                    title={`Create a new note or notebook`}
+                    {...bindTrigger(creationMenuState)}
+                    {...bindHover(creationMenuState)}
+                    disableTouchRipple
+                  >
+                    <AddIcon />
+                  </IconButton>
+                  <HoverMenu
+                    {...bindMenu(creationMenuState)}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                    // MenuListProps={{
+                    //   "aria-labelledby": "calendar-menu-button-x",
+                    // }}
+                  >
+                    <MenuItem onClick={handleCreateNote}>{"New note"}</MenuItem>
+                    <MenuItem onClick={() => setAddingNewNotebook(true)}>{"New notebook"}</MenuItem>
+                  </HoverMenu>
+                </Box>
+              </Box>
+              {/* <List>
+                {addingNewNotebook ? (
+                  <ListItem>
+                    <TextField
+                      autoFocus
+                      placeholder="Notebook title"
+                      variant="standard"
+                      value={newNotebookName}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="create new notebook"
+                              onClick={() => {
+                                const dateISO = new Date().toISOString();
+                                createNotebook({
+                                  variables: {
+                                    data: {
+                                      title: newNotebookName,
+                                      owner: {
+                                        connect: {
+                                          id: session.user.id,
+                                        },
+                                      },
+                                    },
+                                  },
+                                  optimisticResponse: {
+                                    createNotebook: {
+                                      title: newNotebookName,
+                                      archivedAt: null,
+                                      createdAt: dateISO,
+                                      updatedAt: dateISO,
+                                      isPublic: false,
+                                      notes: [],
+                                      __typename: "Notebook",
+                                      id: -1,
+                                    },
+                                  },
+                                }).catch((error) => {
+                                  console.error(error);
+                                });
+                                setAddingNewNotebook(false);
+                              }}
+                              edge="end"
+                            >
+                              <DoneIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                      onChange={(e) => setNewNotebookName(e.target.value)}
+                      onKeyUp={(event) => {
+                        if (event.key === "Enter") {
+                          event.preventDefault();
+                        } else if (event.key === "Escape") {
+                          event.preventDefault();
+                          setAddingNewNotebook(false);
+                        }
+                      }}
+                    />
+                  </ListItem>
+                ) : null}
+              </List> */}
+              {selectedNotebook && (
+                <List>
+                  {addingNewNotebook ? (
+                    <ListItem>
+                      <TextField
+                        autoFocus
+                        placeholder="Notebook title"
+                        variant="standard"
+                        value={newNotebookName}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="Create new notebook"
+                                onClick={() => {
+                                  const dateISO = new Date().toISOString();
+                                  createNotebook({
+                                    variables: {
+                                      data: {
+                                        title: newNotebookName,
+                                        owner: {
+                                          connect: {
+                                            id: session.user.id,
+                                          },
+                                        },
+                                      },
+                                    },
+                                    optimisticResponse: {
+                                      createNotebook: {
+                                        title: newNotebookName,
+                                        archivedAt: null,
+                                        createdAt: dateISO,
+                                        updatedAt: dateISO,
+                                        isPublic: false,
+                                        notes: [],
+                                        __typename: "Notebook",
+                                        id: -1,
+                                      },
+                                    },
+                                  }).catch((error) => {
+                                    console.error(error);
+                                  });
+                                  setAddingNewNotebook(false);
+                                }}
+                                edge="end"
+                              >
+                                <DoneIcon />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        onChange={(e) => setNewNotebookName(e.target.value)}
+                        onKeyUp={(event) => {
+                          if (event.key === "Enter") {
+                            event.preventDefault();
+                          } else if (event.key === "Escape") {
+                            event.preventDefault();
+                            setAddingNewNotebook(false);
+                          }
+                        }}
+                      />
+                    </ListItem>
+                  ) : null}
+                  {selectedNotebook.notes.map((note) => (
+                    <ListItem
+                      button
+                      key={note.title}
+                      onClick={() => setSelectedNoteId(note.id)}
+                      selected={selectedNote?.id === note.id}
+                      sx={{
+                        "& .MuiListItemIcon-root": {
+                          minWidth: "36px",
+                        },
+                      }}
+                    >
+                      <ListItemIcon>
+                        <ClassIcon />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={note.title}
+                        secondary={format(parseISO(note.updatedAt), "M/d, h:mm a")}
+                        sx={{
+                          "& .MuiListItemText-secondary": {
+                            fontSize: "0.75rem",
+                          },
+                        }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+            </Box>
+          </Box>
+        </Drawer>
+      </Box>
+      <SearchDialog
+        {...bindPopover(searchDialogState)}
+        searchProps={{
+          label: "Search",
+          idKey: "id",
+          labelKey: "title",
+          getDataForInput: (input) => {
+            console.log(input);
+            return [];
+          },
+        }}
+      />
+    </>
+  );
+}

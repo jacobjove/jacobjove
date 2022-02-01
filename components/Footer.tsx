@@ -1,6 +1,5 @@
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { alpha, darken, lighten } from "@mui/system";
 import { FC } from "react";
 
 const copyrightOwner = "Jacob T. Fredericksen";
@@ -18,12 +17,7 @@ const StyledFooter = styled("footer", {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  borderTop: `1px solid
-  ${
-    theme.palette.mode === "light"
-      ? lighten(alpha(theme.palette.divider, 1), 0.88)
-      : darken(alpha(theme.palette.divider, 1), 0.68)
-  }`,
+  borderTop: `1px solid ${theme.palette.divider}`,
   zIndex: 10000,
 }));
 

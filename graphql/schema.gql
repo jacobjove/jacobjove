@@ -2642,6 +2642,14 @@ type AggregateReading {
   _sum: ReadingSumAggregate
 }
 
+type AggregateRedirect {
+  _avg: RedirectAvgAggregate
+  _count: RedirectCountAggregate
+  _max: RedirectMaxAggregate
+  _min: RedirectMinAggregate
+  _sum: RedirectSumAggregate
+}
+
 type AggregateRoutine {
   _avg: RoutineAvgAggregate
   _count: RoutineCountAggregate
@@ -2722,7 +2730,7 @@ type Author {
   id: Int!
   name: String!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type AuthorAvgAggregate {
@@ -2804,7 +2812,7 @@ type AuthorGroupBy {
   id: Int!
   name: String!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type AuthorMaxAggregate {
@@ -2890,7 +2898,7 @@ input AuthorScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   name: StringWithAggregatesFilter
   slug: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type AuthorSumAggregate {
@@ -2907,7 +2915,7 @@ input AuthorUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input AuthorUpdateManyMutationInput {
@@ -2915,7 +2923,7 @@ input AuthorUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input AuthorUpdateOneRequiredWithoutAuthorshipsInput {
@@ -2931,7 +2939,7 @@ input AuthorUpdateWithoutAuthorshipsInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input AuthorUpsertWithoutAuthorshipsInput {
@@ -2949,7 +2957,7 @@ input AuthorWhereInput {
   id: IntFilter
   name: StringFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input AuthorWhereUniqueInput {
@@ -2966,7 +2974,7 @@ type Authorship {
   createdAt: DateTime!
   id: Int!
   position: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input AuthorshipAuthorIdBookIdCompoundUniqueInput {
@@ -3108,7 +3116,7 @@ type AuthorshipGroupBy {
   createdAt: DateTime!
   id: Int!
   position: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input AuthorshipListRelationFilter {
@@ -3208,7 +3216,7 @@ input AuthorshipScalarWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   position: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input AuthorshipScalarWhereWithAggregatesInput {
@@ -3221,7 +3229,7 @@ input AuthorshipScalarWhereWithAggregatesInput {
   createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   position: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type AuthorshipSumAggregate {
@@ -3244,14 +3252,14 @@ input AuthorshipUpdateInput {
   book: BookUpdateOneRequiredWithoutAuthorshipsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input AuthorshipUpdateManyMutationInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input AuthorshipUpdateManyWithWhereWithoutAuthorInput {
@@ -3307,7 +3315,7 @@ input AuthorshipUpdateWithoutAuthorInput {
   book: BookUpdateOneRequiredWithoutAuthorshipsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input AuthorshipUpdateWithoutBookInput {
@@ -3315,7 +3323,7 @@ input AuthorshipUpdateWithoutBookInput {
   author: AuthorUpdateOneRequiredWithoutAuthorshipsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input AuthorshipUpsertWithWhereUniqueWithoutAuthorInput {
@@ -3342,7 +3350,7 @@ input AuthorshipWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   position: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input AuthorshipWhereUniqueInput {
@@ -3632,7 +3640,7 @@ type Book {
   shelvings(cursor: ShelvingWhereUniqueInput, distinct: [ShelvingScalarFieldEnum!], orderBy: [ShelvingOrderByWithRelationInput!], skip: Int, take: Int, where: ShelvingWhereInput): [Shelving!]!
   slug: String!
   title: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type BookAvgAggregate {
@@ -3890,7 +3898,7 @@ type BookGroupBy {
   publicationYear: Int
   slug: String!
   title: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type BookMaxAggregate {
@@ -4009,7 +4017,7 @@ type BookReview {
   reading: Reading
   readingId: Int
   review: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   user: User!
   userId: Int!
 }
@@ -4188,7 +4196,7 @@ type BookReviewGroupBy {
   rating: Int!
   readingId: Int
   review: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userId: Int!
 }
 
@@ -4310,7 +4318,7 @@ input BookReviewScalarWhereInput {
   rating: IntFilter
   readingId: IntNullableFilter
   review: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userId: IntFilter
 }
 
@@ -4325,7 +4333,7 @@ input BookReviewScalarWhereWithAggregatesInput {
   rating: IntWithAggregatesFilter
   readingId: IntNullableWithAggregatesFilter
   review: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
@@ -4352,7 +4360,7 @@ input BookReviewUpdateInput {
   rating: IntFieldUpdateOperationsInput
   reading: ReadingUpdateOneWithoutReviewInput
   review: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutBookReviewsInput
 }
 
@@ -4361,7 +4369,7 @@ input BookReviewUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   rating: IntFieldUpdateOperationsInput
   review: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookReviewUpdateManyWithWhereWithoutBookInput {
@@ -4428,7 +4436,7 @@ input BookReviewUpdateWithoutBookInput {
   rating: IntFieldUpdateOperationsInput
   reading: ReadingUpdateOneWithoutReviewInput
   review: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutBookReviewsInput
 }
 
@@ -4438,7 +4446,7 @@ input BookReviewUpdateWithoutReadingInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   rating: IntFieldUpdateOperationsInput
   review: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutBookReviewsInput
 }
 
@@ -4449,7 +4457,7 @@ input BookReviewUpdateWithoutUserInput {
   rating: IntFieldUpdateOperationsInput
   reading: ReadingUpdateOneWithoutReviewInput
   review: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookReviewUpsertWithWhereUniqueWithoutBookInput {
@@ -4482,7 +4490,7 @@ input BookReviewWhereInput {
   reading: ReadingRelationFilter
   readingId: IntNullableFilter
   review: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   user: UserRelationFilter
   userId: IntFilter
 }
@@ -4528,7 +4536,7 @@ input BookScalarWhereWithAggregatesInput {
   publicationYear: IntNullableWithAggregatesFilter
   slug: StringWithAggregatesFilter
   title: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type BookSumAggregate {
@@ -4561,7 +4569,7 @@ input BookUpdateInput {
   shelvings: ShelvingUpdateManyWithoutBookInput
   slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookUpdateManyMutationInput {
@@ -4578,7 +4586,7 @@ input BookUpdateManyMutationInput {
   publicationYear: NullableIntFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookUpdateOneRequiredWithoutAuthorshipsInput {
@@ -4630,7 +4638,7 @@ input BookUpdateWithoutAuthorshipsInput {
   shelvings: ShelvingUpdateManyWithoutBookInput
   slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookUpdateWithoutBookReviewInput {
@@ -4650,7 +4658,7 @@ input BookUpdateWithoutBookReviewInput {
   shelvings: ShelvingUpdateManyWithoutBookInput
   slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookUpdateWithoutReadingsInput {
@@ -4670,7 +4678,7 @@ input BookUpdateWithoutReadingsInput {
   shelvings: ShelvingUpdateManyWithoutBookInput
   slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookUpdateWithoutShelvingsInput {
@@ -4690,7 +4698,7 @@ input BookUpdateWithoutShelvingsInput {
   readings: ReadingUpdateManyWithoutBookInput
   slug: StringFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookUpdateauthorNamesInput {
@@ -4745,7 +4753,7 @@ input BookWhereInput {
   shelvings: ShelvingListRelationFilter
   slug: StringFilter
   title: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input BookWhereUniqueInput {
@@ -4765,7 +4773,7 @@ type Bookshelf {
   ownerId: Int!
   shelvings(cursor: ShelvingWhereUniqueInput, distinct: [ShelvingScalarFieldEnum!], orderBy: [ShelvingOrderByWithRelationInput!], skip: Int, take: Int, where: ShelvingWhereInput): [Shelving!]!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type BookshelfAvgAggregate {
@@ -4906,7 +4914,7 @@ type BookshelfGroupBy {
   name: String!
   ownerId: Int!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input BookshelfListRelationFilter {
@@ -5027,7 +5035,7 @@ input BookshelfScalarWhereInput {
   name: StringFilter
   ownerId: IntFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input BookshelfScalarWhereWithAggregatesInput {
@@ -5042,7 +5050,7 @@ input BookshelfScalarWhereWithAggregatesInput {
   name: StringWithAggregatesFilter
   ownerId: IntWithAggregatesFilter
   slug: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type BookshelfSumAggregate {
@@ -5064,7 +5072,7 @@ input BookshelfUpdateInput {
   owner: UserUpdateOneRequiredWithoutBookshelvesInput
   shelvings: ShelvingUpdateManyWithoutShelfInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookshelfUpdateManyMutationInput {
@@ -5074,7 +5082,7 @@ input BookshelfUpdateManyMutationInput {
   isPublic: BoolFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookshelfUpdateManyWithWhereWithoutOwnerInput {
@@ -5117,7 +5125,7 @@ input BookshelfUpdateWithoutOwnerInput {
   name: StringFieldUpdateOperationsInput
   shelvings: ShelvingUpdateManyWithoutShelfInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookshelfUpdateWithoutShelvingsInput {
@@ -5128,7 +5136,7 @@ input BookshelfUpdateWithoutShelvingsInput {
   name: StringFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutBookshelvesInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BookshelfUpsertWithWhereUniqueWithoutOwnerInput {
@@ -5156,7 +5164,7 @@ input BookshelfWhereInput {
   ownerId: IntFilter
   shelvings: ShelvingListRelationFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input BookshelfWhereUniqueInput {
@@ -9558,7 +9566,7 @@ type Item {
   id: Int!
   list: List!
   listId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type ItemAvgAggregate {
@@ -9650,7 +9658,7 @@ type ItemGroupBy {
   data: JSON!
   id: Int!
   listId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input ItemListRelationFilter {
@@ -9737,7 +9745,7 @@ input ItemScalarWhereInput {
   data: JsonFilter
   id: IntFilter
   listId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ItemScalarWhereWithAggregatesInput {
@@ -9749,7 +9757,7 @@ input ItemScalarWhereWithAggregatesInput {
   data: JsonWithAggregatesFilter
   id: IntWithAggregatesFilter
   listId: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type ItemSumAggregate {
@@ -9767,14 +9775,14 @@ input ItemUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   data: JSON
   list: ListUpdateOneRequiredWithoutItemsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ItemUpdateManyMutationInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   data: JSON
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ItemUpdateManyWithWhereWithoutListInput {
@@ -9805,7 +9813,7 @@ input ItemUpdateWithoutListInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   data: JSON
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ItemUpsertWithWhereUniqueWithoutListInput {
@@ -9824,7 +9832,7 @@ input ItemWhereInput {
   id: IntFilter
   list: ListRelationFilter
   listId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ItemWhereUniqueInput {
@@ -9859,7 +9867,7 @@ type List {
   owner: User!
   ownerId: Int!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type ListAvgAggregate {
@@ -10000,7 +10008,7 @@ type ListGroupBy {
   name: String!
   ownerId: Int!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input ListListRelationFilter {
@@ -10117,7 +10125,7 @@ input ListScalarWhereInput {
   name: StringFilter
   ownerId: IntFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ListScalarWhereWithAggregatesInput {
@@ -10132,7 +10140,7 @@ input ListScalarWhereWithAggregatesInput {
   name: StringWithAggregatesFilter
   ownerId: IntWithAggregatesFilter
   slug: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type ListSumAggregate {
@@ -10154,7 +10162,7 @@ input ListUpdateInput {
   name: StringFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutListsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ListUpdateManyMutationInput {
@@ -10164,7 +10172,7 @@ input ListUpdateManyMutationInput {
   fields: JSON
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ListUpdateManyWithWhereWithoutOwnerInput {
@@ -10207,7 +10215,7 @@ input ListUpdateWithoutItemsInput {
   name: StringFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutListsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ListUpdateWithoutOwnerInput {
@@ -10218,7 +10226,7 @@ input ListUpdateWithoutOwnerInput {
   items: ItemUpdateManyWithoutListInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ListUpsertWithWhereUniqueWithoutOwnerInput {
@@ -10246,7 +10254,7 @@ input ListWhereInput {
   owner: UserRelationFilter
   ownerId: IntFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ListWhereUniqueInput {
@@ -11649,6 +11657,7 @@ type Mutation {
   createManyNotebook(data: [NotebookCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyNotebookUserPermission(data: [NotebookUserPermissionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyReading(data: [ReadingCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyRedirect(data: [RedirectCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyRoutine(data: [RoutineCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyRoutineHabit(data: [RoutineHabitCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyScheduleTemplate(data: [ScheduleTemplateCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -11666,6 +11675,7 @@ type Mutation {
   createNotebook(data: NotebookCreateInput!): Notebook!
   createNotebookUserPermission(data: NotebookUserPermissionCreateInput!): NotebookUserPermission!
   createReading(data: ReadingCreateInput!): Reading!
+  createRedirect(data: RedirectCreateInput!): Redirect!
   createRoutine(data: RoutineCreateInput!): Routine!
   createRoutineHabit(data: RoutineHabitCreateInput!): RoutineHabit!
   createScheduleTemplate(data: ScheduleTemplateCreateInput!): ScheduleTemplate!
@@ -11729,6 +11739,7 @@ type Mutation {
   deleteManyNotebook(where: NotebookWhereInput): AffectedRowsOutput!
   deleteManyNotebookUserPermission(where: NotebookUserPermissionWhereInput): AffectedRowsOutput!
   deleteManyReading(where: ReadingWhereInput): AffectedRowsOutput!
+  deleteManyRedirect(where: RedirectWhereInput): AffectedRowsOutput!
   deleteManyRoutine(where: RoutineWhereInput): AffectedRowsOutput!
   deleteManyRoutineHabit(where: RoutineHabitWhereInput): AffectedRowsOutput!
   deleteManyScheduleTemplate(where: ScheduleTemplateWhereInput): AffectedRowsOutput!
@@ -11746,6 +11757,7 @@ type Mutation {
   deleteNotebook(where: NotebookWhereUniqueInput!): Notebook
   deleteNotebookUserPermission(where: NotebookUserPermissionWhereUniqueInput!): NotebookUserPermission
   deleteReading(where: ReadingWhereUniqueInput!): Reading
+  deleteRedirect(where: RedirectWhereUniqueInput!): Redirect
   deleteRoutine(where: RoutineWhereUniqueInput!): Routine
   deleteRoutineHabit(where: RoutineHabitWhereUniqueInput!): RoutineHabit
   deleteScheduleTemplate(where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate
@@ -11814,6 +11826,7 @@ type Mutation {
   updateManyNotebook(data: NotebookUpdateManyMutationInput!, where: NotebookWhereInput): AffectedRowsOutput!
   updateManyNotebookUserPermission(data: NotebookUserPermissionUpdateManyMutationInput!, where: NotebookUserPermissionWhereInput): AffectedRowsOutput!
   updateManyReading(data: ReadingUpdateManyMutationInput!, where: ReadingWhereInput): AffectedRowsOutput!
+  updateManyRedirect(data: RedirectUpdateManyMutationInput!, where: RedirectWhereInput): AffectedRowsOutput!
   updateManyRoutine(data: RoutineUpdateManyMutationInput!, where: RoutineWhereInput): AffectedRowsOutput!
   updateManyRoutineHabit(data: RoutineHabitUpdateManyMutationInput!, where: RoutineHabitWhereInput): AffectedRowsOutput!
   updateManyScheduleTemplate(data: ScheduleTemplateUpdateManyMutationInput!, where: ScheduleTemplateWhereInput): AffectedRowsOutput!
@@ -11831,6 +11844,7 @@ type Mutation {
   updateNotebook(data: NotebookUpdateInput!, where: NotebookWhereUniqueInput!): Notebook
   updateNotebookUserPermission(data: NotebookUserPermissionUpdateInput!, where: NotebookUserPermissionWhereUniqueInput!): NotebookUserPermission
   updateReading(data: ReadingUpdateInput!, where: ReadingWhereUniqueInput!): Reading
+  updateRedirect(data: RedirectUpdateInput!, where: RedirectWhereUniqueInput!): Redirect
   updateRoutine(data: RoutineUpdateInput!, where: RoutineWhereUniqueInput!): Routine
   updateRoutineHabit(data: RoutineHabitUpdateInput!, where: RoutineHabitWhereUniqueInput!): RoutineHabit
   updateScheduleTemplate(data: ScheduleTemplateUpdateInput!, where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate
@@ -11871,6 +11885,7 @@ type Mutation {
   upsertNotebook(create: NotebookCreateInput!, update: NotebookUpdateInput!, where: NotebookWhereUniqueInput!): Notebook!
   upsertNotebookUserPermission(create: NotebookUserPermissionCreateInput!, update: NotebookUserPermissionUpdateInput!, where: NotebookUserPermissionWhereUniqueInput!): NotebookUserPermission!
   upsertReading(create: ReadingCreateInput!, update: ReadingUpdateInput!, where: ReadingWhereUniqueInput!): Reading!
+  upsertRedirect(create: RedirectCreateInput!, update: RedirectUpdateInput!, where: RedirectWhereUniqueInput!): Redirect!
   upsertRoutine(create: RoutineCreateInput!, update: RoutineUpdateInput!, where: RoutineWhereUniqueInput!): Routine!
   upsertRoutineHabit(create: RoutineHabitCreateInput!, update: RoutineHabitUpdateInput!, where: RoutineHabitWhereUniqueInput!): RoutineHabit!
   upsertScheduleTemplate(create: ScheduleTemplateCreateInput!, update: ScheduleTemplateUpdateInput!, where: ScheduleTemplateWhereUniqueInput!): ScheduleTemplate!
@@ -12131,7 +12146,7 @@ type Note {
   notebook: Notebook!
   notebookId: Int!
   title: String
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type NoteAvgAggregate {
@@ -12237,7 +12252,7 @@ type NoteGroupBy {
   isPublic: Boolean!
   notebookId: Int!
   title: String
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input NoteListRelationFilter {
@@ -12344,7 +12359,7 @@ input NoteScalarWhereInput {
   isPublic: BoolFilter
   notebookId: IntFilter
   title: StringNullableFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input NoteScalarWhereWithAggregatesInput {
@@ -12358,7 +12373,7 @@ input NoteScalarWhereWithAggregatesInput {
   isPublic: BoolWithAggregatesFilter
   notebookId: IntWithAggregatesFilter
   title: StringNullableWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type NoteSumAggregate {
@@ -12378,7 +12393,7 @@ input NoteUpdateInput {
   isPublic: BoolFieldUpdateOperationsInput
   notebook: NotebookUpdateOneRequiredWithoutNotesInput
   title: NullableStringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input NoteUpdateManyMutationInput {
@@ -12387,7 +12402,7 @@ input NoteUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
   title: NullableStringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input NoteUpdateManyWithWhereWithoutNotebookInput {
@@ -12420,7 +12435,7 @@ input NoteUpdateWithoutNotebookInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
   title: NullableStringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input NoteUpsertWithWhereUniqueWithoutNotebookInput {
@@ -12441,7 +12456,7 @@ input NoteWhereInput {
   notebook: NotebookRelationFilter
   notebookId: IntFilter
   title: StringNullableFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input NoteWhereUniqueInput {
@@ -12704,6 +12719,11 @@ input NotebookOrderByWithRelationInput {
   title: SortOrder
   updatedAt: SortOrder
   userPermissions: NotebookUserPermissionOrderByRelationAggregateInput
+}
+
+input NotebookOwnerIdTitleCompoundUniqueInput {
+  ownerId: Int!
+  title: String!
 }
 
 input NotebookRelationFilter {
@@ -13206,6 +13226,7 @@ input NotebookWhereInput {
 
 input NotebookWhereUniqueInput {
   id: Int
+  ownerId_title: NotebookOwnerIdTitleCompoundUniqueInput
 }
 
 input NullableDateTimeFieldUpdateOperationsInput {
@@ -13270,6 +13291,7 @@ type Query {
   aggregateNotebook(cursor: NotebookWhereUniqueInput, orderBy: [NotebookOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookWhereInput): AggregateNotebook!
   aggregateNotebookUserPermission(cursor: NotebookUserPermissionWhereUniqueInput, orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): AggregateNotebookUserPermission!
   aggregateReading(cursor: ReadingWhereUniqueInput, orderBy: [ReadingOrderByWithRelationInput!], skip: Int, take: Int, where: ReadingWhereInput): AggregateReading!
+  aggregateRedirect(cursor: RedirectWhereUniqueInput, orderBy: [RedirectOrderByWithRelationInput!], skip: Int, take: Int, where: RedirectWhereInput): AggregateRedirect!
   aggregateRoutine(cursor: RoutineWhereUniqueInput, orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): AggregateRoutine!
   aggregateRoutineHabit(cursor: RoutineHabitWhereUniqueInput, orderBy: [RoutineHabitOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineHabitWhereInput): AggregateRoutineHabit!
   aggregateScheduleTemplate(cursor: ScheduleTemplateWhereUniqueInput, orderBy: [ScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ScheduleTemplateWhereInput): AggregateScheduleTemplate!
@@ -13332,6 +13354,7 @@ type Query {
   findFirstNotebook(cursor: NotebookWhereUniqueInput, distinct: [NotebookScalarFieldEnum!], orderBy: [NotebookOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookWhereInput): Notebook
   findFirstNotebookUserPermission(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): NotebookUserPermission
   findFirstReading(cursor: ReadingWhereUniqueInput, distinct: [ReadingScalarFieldEnum!], orderBy: [ReadingOrderByWithRelationInput!], skip: Int, take: Int, where: ReadingWhereInput): Reading
+  findFirstRedirect(cursor: RedirectWhereUniqueInput, distinct: [RedirectScalarFieldEnum!], orderBy: [RedirectOrderByWithRelationInput!], skip: Int, take: Int, where: RedirectWhereInput): Redirect
   findFirstRoutine(cursor: RoutineWhereUniqueInput, distinct: [RoutineScalarFieldEnum!], orderBy: [RoutineOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineWhereInput): Routine
   findFirstRoutineHabit(cursor: RoutineHabitWhereUniqueInput, distinct: [RoutineHabitScalarFieldEnum!], orderBy: [RoutineHabitOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineHabitWhereInput): RoutineHabit
   findFirstScheduleTemplate(cursor: ScheduleTemplateWhereUniqueInput, distinct: [ScheduleTemplateScalarFieldEnum!], orderBy: [ScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ScheduleTemplateWhereInput): ScheduleTemplate
@@ -13374,6 +13397,7 @@ type Query {
   groupByNotebook(by: [NotebookScalarFieldEnum!]!, having: NotebookScalarWhereWithAggregatesInput, orderBy: [NotebookOrderByWithAggregationInput!], skip: Int, take: Int, where: NotebookWhereInput): [NotebookGroupBy!]!
   groupByNotebookUserPermission(by: [NotebookUserPermissionScalarFieldEnum!]!, having: NotebookUserPermissionScalarWhereWithAggregatesInput, orderBy: [NotebookUserPermissionOrderByWithAggregationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermissionGroupBy!]!
   groupByReading(by: [ReadingScalarFieldEnum!]!, having: ReadingScalarWhereWithAggregatesInput, orderBy: [ReadingOrderByWithAggregationInput!], skip: Int, take: Int, where: ReadingWhereInput): [ReadingGroupBy!]!
+  groupByRedirect(by: [RedirectScalarFieldEnum!]!, having: RedirectScalarWhereWithAggregatesInput, orderBy: [RedirectOrderByWithAggregationInput!], skip: Int, take: Int, where: RedirectWhereInput): [RedirectGroupBy!]!
   groupByRoutine(by: [RoutineScalarFieldEnum!]!, having: RoutineScalarWhereWithAggregatesInput, orderBy: [RoutineOrderByWithAggregationInput!], skip: Int, take: Int, where: RoutineWhereInput): [RoutineGroupBy!]!
   groupByRoutineHabit(by: [RoutineHabitScalarFieldEnum!]!, having: RoutineHabitScalarWhereWithAggregatesInput, orderBy: [RoutineHabitOrderByWithAggregationInput!], skip: Int, take: Int, where: RoutineHabitWhereInput): [RoutineHabitGroupBy!]!
   groupByScheduleTemplate(by: [ScheduleTemplateScalarFieldEnum!]!, having: ScheduleTemplateScalarWhereWithAggregatesInput, orderBy: [ScheduleTemplateOrderByWithAggregationInput!], skip: Int, take: Int, where: ScheduleTemplateWhereInput): [ScheduleTemplateGroupBy!]!
@@ -13411,6 +13435,8 @@ type Query {
   notes(cursor: NoteWhereUniqueInput, distinct: [NoteScalarFieldEnum!], orderBy: [NoteOrderByWithRelationInput!], skip: Int, take: Int, where: NoteWhereInput): [Note!]!
   reading(where: ReadingWhereUniqueInput!): Reading
   readings(cursor: ReadingWhereUniqueInput, distinct: [ReadingScalarFieldEnum!], orderBy: [ReadingOrderByWithRelationInput!], skip: Int, take: Int, where: ReadingWhereInput): [Reading!]!
+  redirect(where: RedirectWhereUniqueInput!): Redirect
+  redirects(cursor: RedirectWhereUniqueInput, distinct: [RedirectScalarFieldEnum!], orderBy: [RedirectOrderByWithRelationInput!], skip: Int, take: Int, where: RedirectWhereInput): [Redirect!]!
   routine(where: RoutineWhereUniqueInput!): Routine
   routineHabit(where: RoutineHabitWhereUniqueInput!): RoutineHabit
   routineHabits(cursor: RoutineHabitWhereUniqueInput, distinct: [RoutineHabitScalarFieldEnum!], orderBy: [RoutineHabitOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineHabitWhereInput): [RoutineHabit!]!
@@ -13445,7 +13471,7 @@ type Reading {
   dateStarted: DateTime
   id: Int!
   review: BookReview
-  updatedAt: DateTime
+  updatedAt: DateTime!
   user: User!
   userId: Int!
 }
@@ -13614,7 +13640,7 @@ type ReadingGroupBy {
   dateFinished: DateTime
   dateStarted: DateTime
   id: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userId: Int!
 }
 
@@ -13728,7 +13754,7 @@ input ReadingScalarWhereInput {
   dateFinished: DateTimeNullableFilter
   dateStarted: DateTimeNullableFilter
   id: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userId: IntFilter
 }
 
@@ -13742,7 +13768,7 @@ input ReadingScalarWhereWithAggregatesInput {
   dateFinished: DateTimeNullableWithAggregatesFilter
   dateStarted: DateTimeNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
@@ -13765,7 +13791,7 @@ input ReadingUpdateInput {
   dateFinished: NullableDateTimeFieldUpdateOperationsInput
   dateStarted: NullableDateTimeFieldUpdateOperationsInput
   review: BookReviewUpdateOneWithoutReadingInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutReadingsInput
 }
 
@@ -13774,7 +13800,7 @@ input ReadingUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   dateFinished: NullableDateTimeFieldUpdateOperationsInput
   dateStarted: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ReadingUpdateManyWithWhereWithoutBookInput {
@@ -13841,7 +13867,7 @@ input ReadingUpdateWithoutBookInput {
   dateFinished: NullableDateTimeFieldUpdateOperationsInput
   dateStarted: NullableDateTimeFieldUpdateOperationsInput
   review: BookReviewUpdateOneWithoutReadingInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutReadingsInput
 }
 
@@ -13851,7 +13877,7 @@ input ReadingUpdateWithoutReviewInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   dateFinished: NullableDateTimeFieldUpdateOperationsInput
   dateStarted: NullableDateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutReadingsInput
 }
 
@@ -13862,7 +13888,7 @@ input ReadingUpdateWithoutUserInput {
   dateFinished: NullableDateTimeFieldUpdateOperationsInput
   dateStarted: NullableDateTimeFieldUpdateOperationsInput
   review: BookReviewUpdateOneWithoutReadingInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ReadingUpsertWithWhereUniqueWithoutBookInput {
@@ -13894,12 +13920,148 @@ input ReadingWhereInput {
   dateStarted: DateTimeNullableFilter
   id: IntFilter
   review: BookReviewRelationFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   user: UserRelationFilter
   userId: IntFilter
 }
 
 input ReadingWhereUniqueInput {
+  id: Int
+}
+
+type Redirect {
+  id: Int!
+  new_path: String!
+  old_path: String!
+}
+
+type RedirectAvgAggregate {
+  id: Float
+}
+
+input RedirectAvgOrderByAggregateInput {
+  id: SortOrder
+}
+
+type RedirectCountAggregate {
+  _all: Int!
+  id: Int!
+  new_path: Int!
+  old_path: Int!
+}
+
+input RedirectCountOrderByAggregateInput {
+  id: SortOrder
+  new_path: SortOrder
+  old_path: SortOrder
+}
+
+input RedirectCreateInput {
+  new_path: String!
+  old_path: String!
+}
+
+input RedirectCreateManyInput {
+  id: Int
+  new_path: String!
+  old_path: String!
+}
+
+type RedirectGroupBy {
+  _avg: RedirectAvgAggregate
+  _count: RedirectCountAggregate
+  _max: RedirectMaxAggregate
+  _min: RedirectMinAggregate
+  _sum: RedirectSumAggregate
+  id: Int!
+  new_path: String!
+  old_path: String!
+}
+
+type RedirectMaxAggregate {
+  id: Int
+  new_path: String
+  old_path: String
+}
+
+input RedirectMaxOrderByAggregateInput {
+  id: SortOrder
+  new_path: SortOrder
+  old_path: SortOrder
+}
+
+type RedirectMinAggregate {
+  id: Int
+  new_path: String
+  old_path: String
+}
+
+input RedirectMinOrderByAggregateInput {
+  id: SortOrder
+  new_path: SortOrder
+  old_path: SortOrder
+}
+
+input RedirectOrderByWithAggregationInput {
+  _avg: RedirectAvgOrderByAggregateInput
+  _count: RedirectCountOrderByAggregateInput
+  _max: RedirectMaxOrderByAggregateInput
+  _min: RedirectMinOrderByAggregateInput
+  _sum: RedirectSumOrderByAggregateInput
+  id: SortOrder
+  new_path: SortOrder
+  old_path: SortOrder
+}
+
+input RedirectOrderByWithRelationInput {
+  id: SortOrder
+  new_path: SortOrder
+  old_path: SortOrder
+}
+
+enum RedirectScalarFieldEnum {
+  id
+  new_path
+  old_path
+}
+
+input RedirectScalarWhereWithAggregatesInput {
+  AND: [RedirectScalarWhereWithAggregatesInput!]
+  NOT: [RedirectScalarWhereWithAggregatesInput!]
+  OR: [RedirectScalarWhereWithAggregatesInput!]
+  id: IntWithAggregatesFilter
+  new_path: StringWithAggregatesFilter
+  old_path: StringWithAggregatesFilter
+}
+
+type RedirectSumAggregate {
+  id: Int
+}
+
+input RedirectSumOrderByAggregateInput {
+  id: SortOrder
+}
+
+input RedirectUpdateInput {
+  new_path: StringFieldUpdateOperationsInput
+  old_path: StringFieldUpdateOperationsInput
+}
+
+input RedirectUpdateManyMutationInput {
+  new_path: StringFieldUpdateOperationsInput
+  old_path: StringFieldUpdateOperationsInput
+}
+
+input RedirectWhereInput {
+  AND: [RedirectWhereInput!]
+  NOT: [RedirectWhereInput!]
+  OR: [RedirectWhereInput!]
+  id: IntFilter
+  new_path: StringFilter
+  old_path: StringFilter
+}
+
+input RedirectWhereUniqueInput {
   id: Int
 }
 
@@ -14833,7 +14995,7 @@ type Shelving {
   rationale: String
   shelf: Bookshelf!
   shelfId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type ShelvingAvgAggregate {
@@ -14979,7 +15141,7 @@ type ShelvingGroupBy {
   position: Int!
   rationale: String
   shelfId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input ShelvingListRelationFilter {
@@ -15087,7 +15249,7 @@ input ShelvingScalarWhereInput {
   position: IntFilter
   rationale: StringNullableFilter
   shelfId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ShelvingScalarWhereWithAggregatesInput {
@@ -15101,7 +15263,7 @@ input ShelvingScalarWhereWithAggregatesInput {
   position: IntWithAggregatesFilter
   rationale: StringNullableWithAggregatesFilter
   shelfId: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 input ShelvingShelfIdPositionCompoundUniqueInput {
@@ -15130,7 +15292,7 @@ input ShelvingUpdateInput {
   position: IntFieldUpdateOperationsInput
   rationale: NullableStringFieldUpdateOperationsInput
   shelf: BookshelfUpdateOneRequiredWithoutShelvingsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ShelvingUpdateManyMutationInput {
@@ -15138,7 +15300,7 @@ input ShelvingUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
   rationale: NullableStringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ShelvingUpdateManyWithWhereWithoutBookInput {
@@ -15195,7 +15357,7 @@ input ShelvingUpdateWithoutBookInput {
   position: IntFieldUpdateOperationsInput
   rationale: NullableStringFieldUpdateOperationsInput
   shelf: BookshelfUpdateOneRequiredWithoutShelvingsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ShelvingUpdateWithoutShelfInput {
@@ -15204,7 +15366,7 @@ input ShelvingUpdateWithoutShelfInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
   rationale: NullableStringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ShelvingUpsertWithWhereUniqueWithoutBookInput {
@@ -15232,7 +15394,7 @@ input ShelvingWhereInput {
   rationale: StringNullableFilter
   shelf: BookshelfRelationFilter
   shelfId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ShelvingWhereUniqueInput {

@@ -168,6 +168,9 @@ export const noteFragment = gql`
     id
     title
     body
+    createdAt
+    updatedAt
+    archivedAt
   }
 `;
 
