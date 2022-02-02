@@ -10,11 +10,11 @@ import { Note, Notebook } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
-import ClassIcon from "@mui/icons-material/Class";
 import DoneIcon from "@mui/icons-material/Done";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import SortIcon from "@mui/icons-material/Sort";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
@@ -721,7 +721,7 @@ function NotesMenu({
                   {selectedNotebook.notes.map((note) => (
                     <ListItem
                       button
-                      key={note.title}
+                      key={note.id}
                       onClick={() => setSelectedNoteId(note.id)}
                       selected={selectedNote?.id === note.id}
                       sx={{
@@ -731,7 +731,7 @@ function NotesMenu({
                       }}
                     >
                       <ListItemIcon>
-                        <ClassIcon />
+                        <TextSnippetIcon />
                       </ListItemIcon>
                       <ListItemText
                         primary={note.title}
