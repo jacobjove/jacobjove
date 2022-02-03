@@ -30,7 +30,7 @@ const getApolloServerHandler = async () => {
       debug: process.env.NODE_ENV !== "production",
     });
     await apolloServer.start();
-    // console.log(">>>>> Started apollo server")
+    // console.log(">>> Started apollo server")
     global.apolloServerHandler = apolloServer.createHandler({ path: "/api/graphql" });
   }
   return global.apolloServerHandler;

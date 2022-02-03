@@ -14,9 +14,9 @@ type ActionDialogProps = ReturnType<typeof bindPopover> & {
 };
 
 export default function ActionDialog(props: ActionDialogProps) {
-  const { task, onClose, ...rest } = props;
+  const { task, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
   return (
-    <Dialog {...rest} onClose={onClose}>
+    <Dialog fullWidth {...dialogProps} onClose={onClose}>
       <DialogTitle>{task.title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{task.description}</DialogContentText>

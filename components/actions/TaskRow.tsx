@@ -22,7 +22,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { format, isSameDay, isSameYear, parseISO } from "date-fns";
+import { format, isPast, isSameDay, isSameYear, parseISO } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useSession } from "next-auth/react";
@@ -92,6 +92,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         __typename: "Mutation",
         updateTask: {
           __typename: "Task",
+          subtasks: [],
+          habit: null,
           ...task,
           completedAt,
         },
@@ -125,47 +127,6 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           console.error(errorLoadingTasks);
           return;
         }
-        // Promise.all(tasks
-        //   .filter((task) => {
-        //     return task.position > item.index && task.id != item.id;
-        //   })
-        //   .map((task, index) => {
-        //     console.log(task.position, index);
-        //     console.log("new position", item.index + index + 1);
-        //     const newPosition = item.index + index + 1;
-        //     return updateTask({
-        //       variables: {
-        //         taskId: task.id,
-        //         data: { position: { set: newPosition } },
-        //       },
-        //       optimisticResponse: {
-        //         updateTask: {
-        //           __typename: "Task",
-        //           ...task,
-        //           position: newPosition,
-        //         },
-        //       },
-        //     });
-        //   }))
-        //   .then(() => {
-        //     console.log("promises resolved");
-        //     updateTask({
-        //       variables: {
-        //         taskId: item.id,
-        //         data: { position: { set: item.index } },
-        //       },
-        //       optimisticResponse: {
-        //         updateTask: {
-        //           __typename: "Task",
-        //           ...tasks.find((task) => task.id == item.id),
-        //           position: item.index,
-        //         },
-        //       },
-        //     });
-        //   })
-        //   .catch((error) => {
-        //     console.error(error);
-        //   });
       },
       hover(item: DraggedTask, monitor: DropTargetMonitor) {
         if (!ref.current || !move) {
@@ -223,42 +184,46 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     }),
     []
   );
-  const handleScheduleIconClick = () => {
-    console.info("You clicked the schedule icon.");
-  };
-  const getDueDateString = (dueDateISO: string) => {
-    const dueDate = parseISO(dueDateISO);
-    if (isSameDay(dueDate, today)) {
-      return "Today";
-    }
-    if (isSameYear(dueDate, today)) {
-      return format(dueDate, "M/d");
-    }
-    return dueDate.toLocaleDateString();
-  };
+
   const isHabit = Boolean(task.habit);
+
+  const dueDate = task.dueDate ? parseISO(task.dueDate) : null;
+  // prettier-ignore
+  const dueDateString = dueDate ? (
+    isSameDay(dueDate, today) ? "Today" : (
+      isSameYear(dueDate, today) ? format(dueDate, "M/d") : dueDate.toLocaleDateString()
+    )
+  ) : "";
+
   dragRef(dropRef(ref));
+  const bindTriggerProps = bindTrigger(dialogState);
+  const menuTriggerProps = bindTrigger(menuState);
+  menuTriggerProps.onClick = (event) => {
+    event.stopPropagation();
+    menuTriggerProps.onClick(event);
+  };
   return (
     <>
       <TableRow
         ref={ref}
         data-handler-id={handlerId}
+        onClick={bindTriggerProps.onClick}
         sx={{
           opacity: isDragging ? 0 : 1,
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
+          "& .drag-handle": { visibility: "hidden" },
+          "&:hover": {
+            "& .drag-handle": { visibility: "visible" },
+          },
           "& td, th": {
             padding: 0,
             "& svg": {
               fontSize: "1.33rem",
               color: "#808080",
-              "&:hover": {
-                color: "#666666",
-              },
+              "&:hover": { color: "#666666" },
             },
-            "& button:hover svg": {
-              color: "#666666",
-            },
+            "& button:hover svg": { color: "#666666" },
           },
           "&:last-child td, &:last-child th": { border: 0 },
         }}
@@ -275,6 +240,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                 optimisticResponse: {
                   updateTask: {
                     __typename: "Task",
+                    subtasks: [],
+                    habit: null,
                     ...task,
                     [fieldName]: value,
                   },
@@ -292,7 +259,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
               <CompletionCheckbox
                 checked={completed}
                 disabled={loading || Boolean(task.parentId)}
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   toggleCompletion(!completed);
                 }}
               />
@@ -305,7 +273,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                     backgroundColor: "transparent",
                     backgroundOrigin: "content-box",
                   }}
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.stopPropagation();
                     setSubtasksExpanded(!subtasksExpanded);
                   }}
                 >
@@ -315,7 +284,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                 <CompletionCheckbox
                   checked={completed}
                   disabled={loading}
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.stopPropagation();
                     toggleCompletion(!completed);
                   }}
                 />
@@ -355,7 +325,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                         lineHeight: "1rem",
                         textAlign: "left",
                       }}
-                      {...bindTrigger(dialogState)}
+                      {...bindTriggerProps}
                     >
                       {task.title} (i: {index}, pos: {task.position})
                     </Button>
@@ -365,14 +335,25 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
             </TableCell>
             <TableCell>
               <Box px="0.25rem" display="flex" justifyContent={"center"}>
-                {task.dueDate ? (
-                  <Typography component="span" fontSize="0.8rem">
-                    {getDueDateString(task.dueDate)}
+                {dueDate ? (
+                  <Typography
+                    component="span"
+                    fontSize="0.8rem"
+                    sx={{
+                      ...(isPast(dueDate) && {
+                        color: (theme) => theme.palette.error.main,
+                      }),
+                    }}
+                  >
+                    {dueDateString}
                   </Typography>
                 ) : task.habit?.schedules?.length ? (
                   <IconButton
                     title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
-                    onClick={handleScheduleIconClick}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      console.info("You clicked the schedule icon.");
+                    }}
                   >
                     <RepeatIcon sx={{ color: "gray" }} />
                   </IconButton>
@@ -386,14 +367,18 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                     title={`Begin ${task.title}`}
                     color="success"
                     disabled={loading || editing}
-                    onClick={() => setActionInProgress(true)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setActionInProgress(true);
+                    }}
                   >
                     <PlayArrowIcon style={{ fontSize: "1.5rem" }} />
                   </IconButton>
                 )) || (
                   <IconButton
                     title="Stop action"
-                    onClick={() => {
+                    onClick={(event) => {
+                      event.stopPropagation();
                       setActionInProgress(false);
                     }}
                   >
@@ -405,7 +390,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
             <TableCell>
               <IconButton
                 title={`Display actions for ${task.title}`}
-                {...bindTrigger(menuState)}
+                {...menuTriggerProps}
                 disableTouchRipple
               >
                 <MoreVertIcon />
@@ -425,12 +410,19 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                 }}
               >
                 <Box px="0.5rem">
-                  <IconButton title={`Edit ${task.title}`} onClick={() => setEditing(true)}>
+                  <IconButton
+                    title={`Edit ${task.title}`}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setEditing(true);
+                    }}
+                  >
                     <EditIcon />
                   </IconButton>
                   <IconButton
                     title={`Delete task`}
-                    onClick={() => {
+                    onClick={(event) => {
+                      event.stopPropagation();
                       const archivedAt = new Date().toISOString();
                       updateTask({
                         variables: {
@@ -440,6 +432,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                         optimisticResponse: {
                           updateTask: {
                             __typename: "Task",
+                            subtasks: [],
+                            habit: null,
                             ...task,
                             archivedAt,
                           },
@@ -468,12 +462,20 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                 </Box>
               </Menu>
             </TableCell>
-            <TableCell>
-              <Box display="flex" alignItems={"center"} height="100%">
+            <TableCell sx={{ "&:hover": { cursor: "grab" } }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "100%",
+                  "&:hover": { cursor: "grab" },
+                }}
+              >
                 <DragIndicatorIcon
+                  className="drag-handle"
                   sx={{
-                    "&:hover": { cursor: "grab" },
                     color: "gray",
+                    "&:hover": { cursor: "grab" },
                   }}
                 />
               </Box>

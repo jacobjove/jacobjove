@@ -185,6 +185,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
         display="flex"
         ref={scrollableDivRef}
         position="relative"
+        className="no-scrollbar"
         sx={{
           overflowY: "scroll",
           overflowX: "hidden",

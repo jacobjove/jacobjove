@@ -45,6 +45,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children }: LayoutProps) => {
             </div>
           )}
           <div
+            className="no-scrollbar"
             style={{
               position: "relative",
               flexGrow: 1,

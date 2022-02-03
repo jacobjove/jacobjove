@@ -6,6 +6,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import NotesIcon from "@mui/icons-material/Notes";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PsychologyIcon from "@mui/icons-material/Psychology";
@@ -41,6 +42,7 @@ const MENU_ITEMS: MenuItem[][] = [
   ],
   [
     ["Book list", "/app/booklist", BookIcon],
+    ["Music", "/app/music", MusicNoteIcon],
     ["Experiments", "/app/experiments", ScienceIcon],
   ],
   [
@@ -120,16 +122,11 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
       variant="permanent"
       open={open}
       PaperProps={{
+        // Get rid of scrollbar.
+        className: "no-scrollbar",
         sx: {
           position: "absolute",
           top: 0,
-          // Get rid of scrollbar.
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          "&::-webkit-scrollbar": {
-            width: 0,
-            height: 0,
-          },
         },
       }}
     >

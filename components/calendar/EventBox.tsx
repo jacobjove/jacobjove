@@ -15,6 +15,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import { format, parseISO } from "date-fns";
+import { bindPopover, bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
 import { ComponentProps, FC, useState } from "react";
 import { useDrag } from "react-dnd";
 
@@ -26,7 +27,14 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   const { event, ...rest } = props;
   const [hovered, setHovered] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [eventEditingDialogOpen, setEventEditingDialogOpen] = useState(false);
+  const detailDialogState = usePopupState({
+    variant: "popover",
+    popupId: `event-${event.id}-detail-dialog`,
+  });
+  const editingDialogState = usePopupState({
+    variant: "popover",
+    popupId: `event-${event.id}-editing-dialog`,
+  });
   const [{ opacity }, dragRef] = useDrag(() => ({
     type: "event",
     item: { type: "event", ...event },
@@ -40,6 +48,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
     console.error("EventBox: endTime is null");
     return null;
   }
+  const detailDialogTriggerProps = bindTrigger(detailDialogState);
   return (
     <>
       <Box
@@ -83,7 +92,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          setDialogOpen(true);
+          detailDialogTriggerProps.onClick(e);
         }}
         ref={dragRef}
       >
@@ -106,64 +115,45 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         </div>
       </Box>
       <EventDetailDialog
+        {...bindPopover(detailDialogState)}
         event={event}
-        open={dialogOpen}
-        setOpen={setDialogOpen}
-        setEditingDialogOpen={setEventEditingDialogOpen}
+        editingDialogState={editingDialogState}
       />
-      <EventEditingDialog
-        event={event}
-        open={eventEditingDialogOpen}
-        setOpen={setEventEditingDialogOpen}
-      />
+      <EventEditingDialog event={event} {...bindPopover(editingDialogState)} />
     </>
   );
 };
 
 export default EventBox;
 
-interface EventDetailDialogProps {
+interface EventDetailDialogProps extends ReturnType<typeof bindPopover> {
   event: CalendarEvent;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  setEditingDialogOpen: (open: boolean) => void;
+  editingDialogState: PopupState;
 }
 
 const EventDetailDialog: FC<EventDetailDialogProps> = (props: EventDetailDialogProps) => {
-  const { event, open, setOpen, setEditingDialogOpen } = props;
-  const [deletionDialogOpen, setDeletionDialogOpen] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { event, editingDialogState, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const deletionDialogState = usePopupState({
+    variant: "popover",
+    popupId: `event-${event.id}-deletion-dialog`,
+  });
 
   return (
     <>
       <Dialog
-        open={open}
+        fullWidth
+        maxWidth="md"
         onBackdropClick={(event) => {
           event.stopPropagation();
         }}
-        onClose={() => {
-          handleClose();
-        }}
-        // maxWidth="sm"
-        // fullWidth
+        onClose={onClose}
+        {...dialogProps}
       >
         <Box display="flex" justifyContent={"end"}>
-          <IconButton
-            onClick={() => {
-              setDeletionDialogOpen(true);
-            }}
-          >
+          <IconButton {...bindTrigger(deletionDialogState)}>
             <DeleteIcon />
           </IconButton>
-          <IconButton
-            onClick={() => {
-              setEditingDialogOpen(true);
-              setOpen(false);
-            }}
-          >
+          <IconButton {...bindTrigger(editingDialogState)}>
             <EditIcon />
           </IconButton>
         </Box>
@@ -180,36 +170,30 @@ const EventDetailDialog: FC<EventDetailDialogProps> = (props: EventDetailDialogP
           <DialogContentText>{event.notes}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button autoFocus onClick={onClose}>
             Close
           </Button>
         </DialogActions>
       </Dialog>
       <EventDeletionConfirmationDialog
+        {...bindPopover(deletionDialogState)}
         event={event}
-        open={deletionDialogOpen}
-        setOpen={setDeletionDialogOpen}
-        setDetailDialogOpen={setOpen}
+        closeDetailDialog={onClose}
       />
     </>
   );
 };
 
-interface EventDeletionConfirmationDialogProps {
+interface EventDeletionConfirmationDialogProps extends ReturnType<typeof bindPopover> {
   event: CalendarEvent;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  setDetailDialogOpen: (open: boolean) => void;
+  closeDetailDialog: () => void;
 }
 
 const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> = (
   props: EventDeletionConfirmationDialogProps
 ) => {
-  const { event, open, setOpen, setDetailDialogOpen } = props;
+  const { event, closeDetailDialog, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
   const [updateCalendarEvent, { loading }] = useMutation(UPDATE_CALENDAR_EVENT);
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleDeletion = () => {
     const archivedAt = new Date().toISOString();
     updateCalendarEvent({
@@ -225,22 +209,22 @@ const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> 
         },
       },
     });
-    setOpen(false);
-    setDetailDialogOpen(false);
+    onClose();
+    closeDetailDialog();
   };
   return (
     <Dialog
-      open={open}
+      {...dialogProps}
       onBackdropClick={(event) => {
         event.stopPropagation();
       }}
-      onClose={handleClose}
+      onClose={onClose}
     >
       <DialogContent>
         <DialogContentText>Are you sure you want to delete this event?</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button disabled={loading} onClick={handleClose}>
+        <Button disabled={loading} onClick={onClose}>
           Cancel
         </Button>
         <Button disabled={loading} onClick={handleDeletion} autoFocus>

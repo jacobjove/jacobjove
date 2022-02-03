@@ -128,6 +128,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             optimisticResponse: {
               updateTask: {
                 __typename: "Task",
+                subtasks: [],
+                habit: null,
                 ...task,
                 position: index,
               },

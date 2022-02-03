@@ -13,9 +13,7 @@ const CardTitle: FC<{ title: string }> = ({ title }) => (
     fontSize="0.8rem"
     m="0.25rem 0.5rem"
     fontWeight="bold"
-    sx={{
-      color: (theme) => theme.palette.secondary.contrastText,
-    }}
+    sx={{ color: "white" }}
   >
     {title}
   </Typography>
@@ -49,7 +47,7 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
             padding: 0,
             backgroundColor: (theme) =>
               theme.palette.mode === "light"
-                ? theme.palette.secondary.main
+                ? theme.palette.secondary.light
                 : theme.palette.secondary.dark,
             borderBottom: (theme) =>
               `1px solid ${
@@ -66,6 +64,7 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
         />
       </Collapse>
       <CardContent
+        className="no-scrollbar"
         style={{
           padding: "0.5rem",
           height: "100%",

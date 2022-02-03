@@ -13,12 +13,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { addMinutes } from "date-fns/esm";
+import { bindPopover } from "material-ui-popup-state/hooks";
 import { FC, useEffect, useState } from "react";
 
-interface EventEditingDialogProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  // event: {}
+interface EventEditingDialogProps extends ReturnType<typeof bindPopover> {
   event: Omit<CalendarEvent, "start" | "end" | "id" | "uid" | "createdAt"> & {
     start: Date | string;
     end?: Date | string | null;
@@ -27,7 +25,7 @@ interface EventEditingDialogProps {
 }
 
 const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDialogProps) => {
-  const { open, setOpen, event } = props;
+  const { event, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
   const [title, setTitle] = useState(event.title ?? "");
   const [start, setStart] = useState<Date | null>(event.start ? new Date(event.start) : new Date());
   const [end, setEnd] = useState<Date | null>(
@@ -40,9 +38,6 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     event.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
   );
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleSave = async () => {
     if (!start) {
       return; // TODO: show error
@@ -112,7 +107,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
         },
       });
     }
-    setOpen(false);
+    onClose();
   };
   useEffect(() => {
     setTitle(event.title);
@@ -122,7 +117,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     setCalendarId(event.calendarId); // TODO
   }, [event]);
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog fullWidth onClose={onClose} {...dialogProps}>
       <DialogTitle>{event.id ? "Modify" : "Create"} calendar event</DialogTitle>
       <DialogContent>
         <EventFormFields
@@ -135,7 +130,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSave} disabled={loading}>
           {loading ? "Saving..." : "Save"}
         </Button>

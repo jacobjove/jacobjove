@@ -175,6 +175,7 @@ const DayViewer: FC<ViewerProps> = ({
             display="flex"
             ref={scrollableDivRef}
             position="relative"
+            className="no-scrollbar"
             sx={{
               scrollBehavior: "smooth",
               overflowY: "scroll",

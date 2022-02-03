@@ -4,6 +4,7 @@ import DashboardViewer, {
 } from "@/components/dashboard/Dashboard";
 import { DashboardLayouts } from "@/components/dashboard/types";
 import Layout from "@/components/Layout";
+import Select from "@/components/Select";
 import { dashboardFragment } from "@/graphql/fragments";
 import { Dashboard } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
@@ -17,8 +18,6 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import NativeSelect from "@mui/material/NativeSelect";
-import Select from "@mui/material/Select";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import isEmpty from "lodash/isEmpty";
 import { GetServerSideProps, NextPage } from "next";
@@ -134,16 +133,17 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
     },
   });
   const loading = loadingData || loadingCreateDashboard;
-  const { dashboards, ...dashboardData } = data || {};
+  const { dashboards, ...dashboardData } = data || { dashboards: [] };
   const defaultDashboard = dashboards?.find((dashboard) => dashboard.isDefault);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [editing, setEditing] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedDashboard, setSelectedDashboard] = useState<Dashboard | null>(
-    defaultDashboard || dashboards?.[0] || null
+  const [selectedDashboardId, setSelectedDashboardId] = useState<number | null>(
+    (defaultDashboard || dashboards?.[0])?.id || null
   );
-
+  const selectedDashboard =
+    dashboards?.find((dashboard) => dashboard.id === selectedDashboardId) || dashboards?.[0];
   const layouts = selectedDashboard?.layouts ? JSON.parse(selectedDashboard.layouts) : undefined;
 
   useEffect(() => {
@@ -165,8 +165,8 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
     }
   }, [data, dashboards, createDashboard, session]);
   useEffect(() => {
-    if (dashboards?.length && !selectedDashboard) setSelectedDashboard(dashboards[0]);
-  }, [dashboards, selectedDashboard, setSelectedDashboard]);
+    if (dashboards?.length && !selectedDashboard) setSelectedDashboardId(dashboards[0].id);
+  }, [dashboards, selectedDashboard, setSelectedDashboardId]);
   if (!data || isEmpty(dashboardData)) return null;
   return (
     <Layout>
@@ -192,31 +192,31 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
                   console.log("onChange");
                 }}
               />
-            ) : isMobile ? (
-              <NativeSelect
-                defaultValue={"Default Dashboard"}
-                inputProps={{
-                  name: "dashboard",
-                  id: "uncontrolled-dashboard",
-                }}
-              >
-                <option value={"Default Dashboard"}>Default Dashboard</option>
-              </NativeSelect>
             ) : (
               <Select
-                value="Default Dashboard"
+                value={selectedDashboardId}
                 SelectDisplayProps={{ style: { paddingTop: "0.4rem", paddingBottom: "0.4rem" } }}
-              >
-                <MenuItem value="Default Dashboard">Default Dashboard</MenuItem>
-                <MenuItem
-                  onClick={(e) => {
-                    e.preventDefault();
-                    console.log("TODO: Add new dashboard");
-                  }}
-                >
-                  <AddIcon /> New dashboard
-                </MenuItem>
-              </Select>
+                options={[
+                  ...dashboards.map((dashboard) => ({
+                    value: `${dashboard.id}`,
+                    label: dashboard.name,
+                  })),
+                  {
+                    value: "",
+                    label: (
+                      <>
+                        <AddIcon /> {"Add new dashboard"}
+                      </>
+                    ),
+                    onSelect: () => {
+                      console.log("TODO: Add new dashboard");
+                    },
+                  },
+                ]}
+                onChange={(value) => {
+                  if (dashboards?.length) setSelectedDashboardId(parseInt(value));
+                }}
+              />
             )}
           </Box>
           {editing ? (

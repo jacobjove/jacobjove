@@ -1,12 +1,13 @@
 import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
-import _Select, { SelectProps as _SelectProps } from "@mui/material/Select";
+import _Select, { SelectChangeEvent, SelectProps as _SelectProps } from "@mui/material/Select";
 // import useMediaQuery from "@mui/material/useMediaQuery";
-import { FC } from "react";
+import { ChangeEvent, FC, ReactElement } from "react";
 
 interface Option {
-  label: string;
+  label: string | ReactElement;
   value: string;
+  onSelect?: () => void;
 }
 
 type SelectProps = Omit<_SelectProps, "children" | "onChange"> & {
@@ -17,22 +18,24 @@ type SelectProps = Omit<_SelectProps, "children" | "onChange"> & {
 const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
   const isMobile = false; // TODO
   const { name, id } = props.inputProps || {};
+  const handleChange = (event: ChangeEvent<HTMLSelectElement> | SelectChangeEvent<unknown>) => {
+    const value = event.target.value as string;
+    event.preventDefault();
+    console.log(event.target);
+    if (value) onChange(value);
+  };
   return isMobile ? (
-    <NativeSelect
-      defaultValue={props.value}
-      inputProps={{ name, id }}
-      onChange={(event) => onChange(event.target.value)}
-    >
-      {options.map((option) => (
-        <option key={option.label} value={option.value}>
+    <NativeSelect defaultValue={props.value} inputProps={{ name, id }} onChange={handleChange}>
+      {options.map((option, index) => (
+        <option key={index} value={option.value}>
           {option.label}
         </option>
       ))}
     </NativeSelect>
   ) : (
-    <_Select {...props} onChange={(event) => onChange(event.target.value as string)}>
-      {options.map((option) => (
-        <MenuItem key={option.label} value={option.value}>
+    <_Select {...props} onChange={handleChange}>
+      {options.map((option, index) => (
+        <MenuItem key={index} value={option.value}>
           {option.label}
         </MenuItem>
       ))}

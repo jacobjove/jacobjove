@@ -51,7 +51,7 @@ class Document extends BaseDocument {
         <Head>
           <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         </Head>
-        <body style={{ width: "100%", margin: "0", padding: "0" }}>
+        <body className="no-scrollbar" style={{ width: "100%", margin: "0", padding: "0" }}>
           <Main />
           <NextScript />
           <div id="modal-root"></div>
