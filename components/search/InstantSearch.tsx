@@ -1,26 +1,27 @@
+import { useLazyQuery } from "@apollo/client";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import React, { FC, SyntheticEvent, useCallback, useRef, useState } from "react";
-import { throttle } from "throttle-debounce";
+import { DocumentNode } from "graphql";
+import debounce from "lodash/debounce";
+import React, { FC, SyntheticEvent, useRef } from "react";
 
 type Option = Record<string, string>;
 
 export interface InstantSearchProps {
-  label: string;
+  label: string; // label for the search input
+  query: DocumentNode; // GraphQL query that accepts "where" and "orderBy" arguments
+  dataKey: string; // key associated with the search results in the GraphQL response data
   onChange?: (value: string[]) => void;
-  getDataForInput: (input: string) => Option[] | Promise<Option[]>;
   labelKey: string;
-  disabled?: boolean;
+  bodyKey: string;
   idKey?: string;
+  disabled?: boolean;
   minimumSearchLength?: number;
   throttleDelay?: number;
 }
 
 /**
- * A TextInput component that instantly retrieves suggested
- * options from ElasticSearch as the user types.
- * @param label - the input field label.
- * @param name - the query parameter name used during form submission.
+ * A TextInput component that instantly retrieves results
  * @param getDataForInput - the callback used to retrieve results for a given text input.
  * @param labelKey - the key used to access an option's label attribute.
  * @param idKey - the key used to access an option's id attribute.
@@ -30,49 +31,90 @@ export interface InstantSearchProps {
  */
 const InstantSearch: FC<InstantSearchProps> = ({
   label,
+  query: QUERY,
+  dataKey,
   onChange,
-  getDataForInput,
   labelKey,
-  disabled,
+  bodyKey,
   idKey = "id",
+  disabled,
   minimumSearchLength = 1,
   throttleDelay = 250,
 }: InstantSearchProps) => {
-  const [options, setOptions] = useState<Option[]>([]);
+  const [getResults, { data, loading, error }] = useLazyQuery(QUERY, {
+    fetchPolicy: "network-only", // TODO: this could be cache only if we already have all notes in the cache...
+  });
+
+  console.log(">>> InstantSearch: ", { data, loading, error });
+
+  const options: Option[] =
+    data?.[dataKey]?.map((item) => {
+      console.log(">>> calcing options");
+      return {
+        label: item[labelKey],
+        id: item[idKey],
+      };
+    }) || [];
+
+  // const [options, setOptions] = useState<Option[]>([]);
   const handleValueChange = (event: SyntheticEvent, values: Option[]) => {
     onChange?.(values.map((value) => value[idKey]));
   };
 
-  const abortController = useRef<AbortController>(new AbortController());
-  // const cancelTokenSourceRef = useRef(axios.CancelToken.source());
-
-  // Throttling behavior only works if the same instance of
-  // the throttled callback is used, so we use `useCallback`.
-  // eslint-disable-next-line
-  const getThrottledDataForInput = useCallback(
-    throttle(throttleDelay, (...args: Parameters<typeof getDataForInput>) =>
-      Promise.resolve(getDataForInput(...args))
-        .then(setOptions)
-        .catch((error) => {
-          // TODO: add more resilient error handling.
-          console.error(error);
-        })
-    ),
-    [getDataForInput, abortController]
+  const abortController = useRef<AbortController>();
+  // Throttling behavior only works if the same function object is used,
+  // so we use `useRef` to keep hold of the function object.
+  const getSearchResultsForInput = useRef(
+    debounce((...args: Parameters<typeof getResults>) => {
+      console.log("getSearchResultsForInput", args);
+      const controller = new window.AbortController();
+      abortController.current = controller;
+      const [queryOptions, ...rest] = args;
+      if (queryOptions) {
+        queryOptions.context = { fetchOptions: { signal: controller.signal } };
+      }
+      console.log("Returning from getSearchResultsForInput");
+      return Promise.resolve(getResults(queryOptions, ...rest)).catch((error) => {
+        // TODO: add more resilient error handling.
+        console.error(error);
+      });
+    }, throttleDelay)
   );
 
   const handleInputChange = (event: SyntheticEvent, value: string) => {
-    // When input changes, cancel any pending requests.
-    abortController.current.abort();
-    // cancelTokenSourceRef.current.cancel();
-    abortController.current = new AbortController();
+    // Cancel any pending requests.
+    if (abortController.current) {
+      abortController.current.abort();
+    }
 
+    // Only call `getSearchResultsForInput` if the input is long enough.
     if (value.length < minimumSearchLength) {
-      setOptions([]);
       return;
     }
 
-    getThrottledDataForInput(value);
+    console.log("Calling getSearchResultsForInput", labelKey, bodyKey);
+
+    getSearchResultsForInput.current({
+      variables: {
+        where: {
+          OR: [
+            {
+              [labelKey]: {
+                contains: value,
+              },
+              [bodyKey]: {
+                contains: value,
+              },
+            },
+          ],
+        },
+        orderBy: [
+          {
+            [labelKey]: "asc",
+          },
+        ],
+      },
+    });
   };
 
   return (
@@ -80,8 +122,8 @@ const InstantSearch: FC<InstantSearchProps> = ({
       freeSolo
       // limitTags={5}
       noOptionsText={"Type to search"}
-      options={options}
-      filterOptions={() => options}
+      options={options} // TODO
+      filterOptions={() => options} // TODO
       getOptionLabel={(option) => option[labelKey] as string}
       // value={selectedOptions}
       // onChange={handleValueChange}

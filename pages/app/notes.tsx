@@ -95,6 +95,15 @@ const QUERY = gql`
   ${notebookFragment}
 `;
 
+const SEARCH_QUERY = gql`
+  query GetNotes($where: NoteWhereInput!, $orderBy: [NoteOrderByWithRelationInput!]) {
+    notes(where: $where, orderBy: $orderBy) {
+      ...NoteFragment
+    }
+  }
+  ${noteFragment}
+`;
+
 const drawerWidth = 240;
 
 interface NotesPageData {
@@ -159,12 +168,12 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
       (...args: Parameters<typeof updateNote>) => {
         const controller = new window.AbortController();
         abortController.current = controller;
-        const mutationOptions = args[0];
+        const [mutationOptions, ...rest] = args;
         if (mutationOptions) {
           mutationOptions.context = { fetchOptions: { signal: controller.signal } };
         }
         return (
-          Promise.resolve(updateNote(...args))
+          Promise.resolve(updateNote(mutationOptions, ...rest))
             // .then(() => console.log())
             .catch((error) => console.error(error))
         );
@@ -752,14 +761,19 @@ function NotesMenu({
       </Box>
       <SearchDialog
         {...bindPopover(searchDialogState)}
+        header={"Search notes"}
         searchProps={{
           label: "Search",
+          query: SEARCH_QUERY,
+          dataKey: "notes",
           idKey: "id",
           labelKey: "title",
-          getDataForInput: (input) => {
-            console.log(input);
-            return [];
-          },
+          bodyKey: "body",
+          // getDataForInput: (input) => {
+          //   console.log(input);
+          //   return [];
+          // },
+          throttleDelay: 500,
         }}
       />
     </>
