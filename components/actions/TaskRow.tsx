@@ -216,7 +216,10 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           "& .drag-handle": { visibility: "hidden" },
           "& .actions-menu-icon": { visibility: "hidden" },
           "&:hover": {
-            "& .drag-handle": { visibility: "visible" },
+            "& .drag-handle": {
+              visibility: "visible",
+              color: "#666666",
+            },
             "& .actions-menu-icon": { visibility: "visible" },
           },
           "& td, th": {
