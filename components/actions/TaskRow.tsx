@@ -224,9 +224,13 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
             "& svg": {
               fontSize: "1.33rem",
               color: "#808080",
-              "&:hover": { color: "#666666" },
+              "&:hover": {
+                color: (theme) => (theme.palette.mode === "light" ? "#666666" : "#ffffff"),
+              },
             },
-            "& button:hover svg": { color: "#666666" },
+            "& button:hover svg": {
+              color: (theme) => (theme.palette.mode === "light" ? "#666666" : "#ffffff"),
+            },
           },
           "&:last-child td, &:last-child th": { border: 0 },
         }}
