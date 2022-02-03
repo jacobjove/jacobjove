@@ -34,22 +34,23 @@ interface TaskRowProps {
   collapsed?: boolean;
   index?: number;
   move?: (dragIndex: number, hoverIndex: number) => void;
+  onDrop?: (dropIndex: number) => void;
 }
 
 const READ_TASKS = gql`
   query ReadTasks($where: TaskWhereInput) {
     tasks(where: $where) {
       id
-      position
+      rank
     }
   }
 `;
 
-type DraggedTask = Pick<Task, "id" | "title" | "position"> & { index: number };
+type DraggedTask = Pick<Task, "id" | "title" | "rank"> & { index: number };
 
 const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
-  const { task, collapsed: _collapsed, index: _index, move } = props;
-  const index = _index ?? task.position;
+  const { task, collapsed: _collapsed, index: _index, move, onDrop } = props;
+  const index = _index ?? 0;
   const completed = Boolean(task.completedAt);
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
@@ -102,27 +103,29 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       console.error(error);
     });
   };
-  const [{ isDragging }, dragRef] = useDrag(() => ({
-    type: "task",
-    item: {
+
+  const [{ isDragging }, dragRef] = useDrag(
+    () => ({
       type: "task",
-      id: task.id,
-      title: task.title,
-      position: task.position,
-      index: index,
-      calendarId: session?.user?.settings?.defaultCalendarId,
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      item: {
+        type: "task",
+        id: task.id,
+        index: index,
+      },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     }),
-  }));
+    [index]
+  );
+
   const [{ handlerId, canDrop }, dropRef] = useDrop(
     () => ({
       accept: ["task"],
       canDrop: () => !loading,
       drop: (item: DraggedTask) => {
         if (!session) return;
-        console.log("dropped", item.position);
+        onDrop?.(item.index);
         if (errorLoadingTasks) {
           console.error(errorLoadingTasks);
           return;
@@ -182,7 +185,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         canDrop: !!monitor.canDrop(),
       }),
     }),
-    []
+    [move]
   );
 
   const isHabit = Boolean(task.habit);
@@ -337,7 +340,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                       }}
                       {...bindTriggerProps}
                     >
-                      {task.title} (i: {index}, pos: {task.position})
+                      {task.title} (i: {index}, rank: {task.rank})
                     </Button>
                   </Box>
                 </Box>
