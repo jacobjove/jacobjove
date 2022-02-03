@@ -198,9 +198,10 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   dragRef(dropRef(ref));
   const bindTriggerProps = bindTrigger(dialogState);
   const menuTriggerProps = bindTrigger(menuState);
+  const originalOnClick = menuTriggerProps.onClick;
   menuTriggerProps.onClick = (event) => {
     event.stopPropagation();
-    menuTriggerProps.onClick(event);
+    originalOnClick(event);
   };
   return (
     <>
@@ -213,8 +214,10 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
           "& .drag-handle": { visibility: "hidden" },
+          "& .actions-menu-icon": { visibility: "hidden" },
           "&:hover": {
             "& .drag-handle": { visibility: "visible" },
+            "& .actions-menu-icon": { visibility: "visible" },
           },
           "& td, th": {
             padding: 0,
@@ -390,6 +393,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
             <TableCell>
               <IconButton
                 title={`Display actions for ${task.title}`}
+                className="actions-menu-icon"
                 {...menuTriggerProps}
                 disableTouchRipple
               >
