@@ -480,10 +480,10 @@ function NotesMenu({
   // the user to avoid creating multiple empty, untitled notes.
   useEffect(() => {
     const firstNote = selectedNotebook?.notes?.[0];
-    if (selectedNotebook && firstNote?.title === "Untitled note" && !firstNote.body) {
+    if (selectedNotebook && !selectedNote && firstNote) {
       setSelectedNoteId(firstNote.id);
     }
-  }, [selectedNotebook, setSelectedNoteId]);
+  }, [selectedNotebook, selectedNote, setSelectedNoteId]);
 
   return (
     <>
