@@ -1,9 +1,9 @@
 import { useLazyQuery } from "@apollo/client";
-import Autocomplete from "@mui/material/Autocomplete";
+import Autocomplete, { AutocompleteRenderOptionState } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { DocumentNode } from "graphql";
 import debounce from "lodash/debounce";
-import React, { FC, SyntheticEvent, useRef } from "react";
+import { FC, HTMLAttributes, ReactNode, SyntheticEvent, useRef } from "react";
 
 type Option = Record<string, string>;
 
@@ -15,6 +15,13 @@ export interface InstantSearchProps {
   labelKey: string;
   bodyKey: string;
   idKey?: string;
+  getOptionKey?: (option: Option) => string;
+  renderOption?: (
+    props: HTMLAttributes<HTMLLIElement>,
+    option: Option,
+    state: AutocompleteRenderOptionState
+  ) => ReactNode;
+  groupBy?: (option: Option) => string;
   disabled?: boolean;
   minimumSearchLength?: number;
   throttleDelay?: number;
@@ -37,6 +44,9 @@ const InstantSearch: FC<InstantSearchProps> = ({
   labelKey,
   bodyKey,
   idKey = "id",
+  getOptionKey = (option: Option) => option[labelKey],
+  renderOption,
+  groupBy,
   disabled,
   minimumSearchLength = 1,
   throttleDelay = 250,
@@ -45,34 +55,22 @@ const InstantSearch: FC<InstantSearchProps> = ({
     fetchPolicy: "network-only", // TODO: this could be cache only if we already have all notes in the cache...
   });
 
-  console.log(">>> InstantSearch: ", { data, loading, error });
-
-  const options: Option[] =
-    data?.[dataKey]?.map((item) => {
-      console.log(">>> calcing options");
-      return {
-        label: item[labelKey],
-        id: item[idKey],
-      };
-    }) || [];
+  const options: Option[] = data?.[dataKey] || [];
 
   // const [options, setOptions] = useState<Option[]>([]);
   const handleValueChange = (event: SyntheticEvent, values: Option[]) => {
     onChange?.(values.map((value) => value[idKey]));
   };
 
-  const abortController = useRef<AbortController>();
+  // const abortController = useRef<AbortController>();
   // Throttling behavior only works if the same function object is used,
   // so we use `useRef` to keep hold of the function object.
   const getSearchResultsForInput = useRef(
     debounce((...args: Parameters<typeof getResults>) => {
       console.log("getSearchResultsForInput", args);
-      const controller = new window.AbortController();
-      abortController.current = controller;
+      // const controller = new window.AbortController();
+      // abortController.current = controller;
       const [queryOptions, ...rest] = args;
-      if (queryOptions) {
-        queryOptions.context = { fetchOptions: { signal: controller.signal } };
-      }
       console.log("Returning from getSearchResultsForInput");
       return Promise.resolve(getResults(queryOptions, ...rest)).catch((error) => {
         // TODO: add more resilient error handling.
@@ -83,9 +81,9 @@ const InstantSearch: FC<InstantSearchProps> = ({
 
   const handleInputChange = (event: SyntheticEvent, value: string) => {
     // Cancel any pending requests.
-    if (abortController.current) {
-      abortController.current.abort();
-    }
+    // if (abortController.current) {
+    //   abortController.current.abort();
+    // }
 
     // Only call `getSearchResultsForInput` if the input is long enough.
     if (value.length < minimumSearchLength) {
@@ -102,6 +100,8 @@ const InstantSearch: FC<InstantSearchProps> = ({
               [labelKey]: {
                 contains: value,
               },
+            },
+            {
               [bodyKey]: {
                 contains: value,
               },
@@ -123,8 +123,11 @@ const InstantSearch: FC<InstantSearchProps> = ({
       // limitTags={5}
       noOptionsText={"Type to search"}
       options={options} // TODO
+      // groupBy={(option) => notebooks.find((notebook) => notebook.id === option.notebookId)?.name}
       filterOptions={() => options} // TODO
-      getOptionLabel={(option) => option[labelKey] as string}
+      getOptionLabel={getOptionKey}
+      {...(renderOption ? { renderOption } : {})}
+      {...(groupBy ? { groupBy } : {})}
       // value={selectedOptions}
       // onChange={handleValueChange}
       // Do not use strict equality here, since ids may be numbers or strings.

@@ -769,10 +769,26 @@ function NotesMenu({
           idKey: "id",
           labelKey: "title",
           bodyKey: "body",
-          // getDataForInput: (input) => {
-          //   console.log(input);
-          //   return [];
-          // },
+          getOptionKey: (option) => `${option.id}`,
+          renderOption: (props, option) => {
+            console.log(props);
+            return (
+              <li
+                {...props}
+                style={{
+                  display: "flex",
+                  alignItems: "end",
+                }}
+              >
+                <Typography>{option.title}</Typography>&nbsp;&nbsp;
+                <Typography component={"small"} fontSize={"0.75rem"} color={"textSecondary"}>
+                  {"last updated"} {format(parseISO(option.updatedAt), "M/d, h:mm a")}
+                </Typography>
+              </li>
+            );
+          },
+          groupBy: (option) =>
+            notebooks.find((notebook) => `${notebook.id}` == option.notebookId)?.title ?? "",
           throttleDelay: 500,
         }}
       />
