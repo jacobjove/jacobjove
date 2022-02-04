@@ -494,6 +494,44 @@ function NotesMenu({
     }
   }, [selectedNotebook, selectedNote, setSelectedNoteId]);
 
+  const handleCreateNotebook = () => {
+    const dateISO = new Date().toISOString();
+    createNotebook({
+      variables: {
+        data: {
+          title: newNotebookName,
+          owner: {
+            connect: {
+              id: session.user.id,
+            },
+          },
+        },
+      },
+      optimisticResponse: {
+        createNotebook: {
+          title: newNotebookName,
+          archivedAt: null,
+          createdAt: dateISO,
+          updatedAt: dateISO,
+          isPublic: false,
+          notes: [],
+          __typename: "Notebook",
+          id: -1,
+        },
+      },
+    })
+      .then((result) => {
+        const { createNotebook } = result.data || {};
+        if (createNotebook) {
+          setSelectedNotebookId(createNotebook.id);
+          setAddingNewNotebook(false);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const searchDialogProps = bindPopover(searchDialogState);
 
   return (
@@ -536,44 +574,7 @@ function NotesMenu({
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="Create new notebook"
-                        onClick={() => {
-                          const dateISO = new Date().toISOString();
-                          const tmpId = -1;
-                          createNotebook({
-                            variables: {
-                              data: {
-                                title: newNotebookName,
-                                owner: {
-                                  connect: {
-                                    id: session.user.id,
-                                  },
-                                },
-                              },
-                            },
-                            optimisticResponse: {
-                              createNotebook: {
-                                title: newNotebookName,
-                                archivedAt: null,
-                                createdAt: dateISO,
-                                updatedAt: dateISO,
-                                isPublic: false,
-                                notes: [],
-                                __typename: "Notebook",
-                                id: tmpId,
-                              },
-                            },
-                          })
-                            .then((result) => {
-                              const { createNotebook } = result.data || {};
-                              if (createNotebook) {
-                                setSelectedNotebookId(createNotebook.id);
-                                setAddingNewNotebook(false);
-                              }
-                            })
-                            .catch((error) => {
-                              console.error(error);
-                            });
-                        }}
+                        onClick={() => handleCreateNotebook()}
                         edge="end"
                       >
                         <DoneIcon />
@@ -584,7 +585,7 @@ function NotesMenu({
                 onChange={(e) => setNewNotebookName(e.target.value)}
                 onKeyUp={(event) => {
                   if (event.key === "Enter") {
-                    event.preventDefault();
+                    handleCreateNotebook();
                   } else if (event.key === "Escape") {
                     event.preventDefault();
                     setAddingNewNotebook(false);
