@@ -12,9 +12,9 @@ export interface InstantSearchProps {
   query: DocumentNode; // GraphQL query that accepts "where" and "orderBy" arguments
   dataKey: string; // key associated with the search results in the GraphQL response data
   onChange: (value: string | Option | null) => void;
+  idKey?: string;
   labelKey: string;
   searchableFieldKeys: string[];
-  idKey?: string;
   getOptionKey?: (option: Option) => string;
   renderOption?: (
     props: HTMLAttributes<HTMLLIElement>,

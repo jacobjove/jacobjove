@@ -525,16 +525,96 @@ function NotesMenu({
               // paddingRight: "0.25rem !important",
             }}
           >
-            <Select
-              fullWidth
-              name={"notebook"}
-              value={selectedNotebook?.id.toString() ?? ""}
-              options={notebooks.map((notebook) => ({
-                value: `${notebook.id}`,
-                label: notebook.title,
-              }))}
-              onChange={(value) => setSelectedNotebookId(parseInt(value))}
-            />
+            {addingNewNotebook ? (
+              <TextField
+                autoFocus
+                placeholder="Notebook title"
+                variant="standard"
+                value={newNotebookName}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Create new notebook"
+                        onClick={() => {
+                          const dateISO = new Date().toISOString();
+                          const tmpId = -1;
+                          createNotebook({
+                            variables: {
+                              data: {
+                                title: newNotebookName,
+                                owner: {
+                                  connect: {
+                                    id: session.user.id,
+                                  },
+                                },
+                              },
+                            },
+                            optimisticResponse: {
+                              createNotebook: {
+                                title: newNotebookName,
+                                archivedAt: null,
+                                createdAt: dateISO,
+                                updatedAt: dateISO,
+                                isPublic: false,
+                                notes: [],
+                                __typename: "Notebook",
+                                id: tmpId,
+                              },
+                            },
+                          })
+                            .then((result) => {
+                              const { createNotebook } = result.data || {};
+                              if (createNotebook) {
+                                setSelectedNotebookId(createNotebook.id);
+                                setAddingNewNotebook(false);
+                              }
+                            })
+                            .catch((error) => {
+                              console.error(error);
+                            });
+                        }}
+                        edge="end"
+                      >
+                        <DoneIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => setNewNotebookName(e.target.value)}
+                onKeyUp={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                  } else if (event.key === "Escape") {
+                    event.preventDefault();
+                    setAddingNewNotebook(false);
+                  }
+                }}
+              />
+            ) : (
+              <Select
+                fullWidth
+                name={"notebook"}
+                value={selectedNotebook?.id.toString() ?? ""}
+                options={[
+                  ...notebooks.map((notebook) => ({
+                    value: `${notebook.id}`,
+                    label: notebook.title,
+                  })),
+                  {
+                    value: "",
+                    label: (
+                      <>
+                        <AddIcon /> {"Create new notebook"}
+                      </>
+                    ),
+                    mobileLabel: "+ Create new notebook",
+                    onSelect: () => setAddingNewNotebook(true),
+                  },
+                ]}
+                onChange={(value) => setSelectedNotebookId(parseInt(value))}
+              />
+            )}
           </Toolbar>
           <Box
             sx={{
@@ -603,132 +683,8 @@ function NotesMenu({
                   </HoverMenu>
                 </Box>
               </Box>
-              {/* <List>
-                {addingNewNotebook ? (
-                  <ListItem>
-                    <TextField
-                      autoFocus
-                      placeholder="Notebook title"
-                      variant="standard"
-                      value={newNotebookName}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="create new notebook"
-                              onClick={() => {
-                                const dateISO = new Date().toISOString();
-                                createNotebook({
-                                  variables: {
-                                    data: {
-                                      title: newNotebookName,
-                                      owner: {
-                                        connect: {
-                                          id: session.user.id,
-                                        },
-                                      },
-                                    },
-                                  },
-                                  optimisticResponse: {
-                                    createNotebook: {
-                                      title: newNotebookName,
-                                      archivedAt: null,
-                                      createdAt: dateISO,
-                                      updatedAt: dateISO,
-                                      isPublic: false,
-                                      notes: [],
-                                      __typename: "Notebook",
-                                      id: -1,
-                                    },
-                                  },
-                                }).catch((error) => {
-                                  console.error(error);
-                                });
-                                setAddingNewNotebook(false);
-                              }}
-                              edge="end"
-                            >
-                              <DoneIcon />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                      onChange={(e) => setNewNotebookName(e.target.value)}
-                      onKeyUp={(event) => {
-                        if (event.key === "Enter") {
-                          event.preventDefault();
-                        } else if (event.key === "Escape") {
-                          event.preventDefault();
-                          setAddingNewNotebook(false);
-                        }
-                      }}
-                    />
-                  </ListItem>
-                ) : null}
-              </List> */}
               {selectedNotebook && (
                 <List>
-                  {addingNewNotebook ? (
-                    <ListItem>
-                      <TextField
-                        autoFocus
-                        placeholder="Notebook title"
-                        variant="standard"
-                        value={newNotebookName}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                aria-label="Create new notebook"
-                                onClick={() => {
-                                  const dateISO = new Date().toISOString();
-                                  createNotebook({
-                                    variables: {
-                                      data: {
-                                        title: newNotebookName,
-                                        owner: {
-                                          connect: {
-                                            id: session.user.id,
-                                          },
-                                        },
-                                      },
-                                    },
-                                    optimisticResponse: {
-                                      createNotebook: {
-                                        title: newNotebookName,
-                                        archivedAt: null,
-                                        createdAt: dateISO,
-                                        updatedAt: dateISO,
-                                        isPublic: false,
-                                        notes: [],
-                                        __typename: "Notebook",
-                                        id: -1,
-                                      },
-                                    },
-                                  }).catch((error) => {
-                                    console.error(error);
-                                  });
-                                  setAddingNewNotebook(false);
-                                }}
-                                edge="end"
-                              >
-                                <DoneIcon />
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                        onChange={(e) => setNewNotebookName(e.target.value)}
-                        onKeyUp={(event) => {
-                          if (event.key === "Enter") {
-                            event.preventDefault();
-                          } else if (event.key === "Escape") {
-                            event.preventDefault();
-                            setAddingNewNotebook(false);
-                          }
-                        }}
-                      />
-                    </ListItem>
-                  ) : null}
                   {selectedNotebook.notes.map((note) => (
                     <ListItem
                       button

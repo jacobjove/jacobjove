@@ -208,6 +208,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
                         <AddIcon /> {"Add new dashboard"}
                       </>
                     ),
+                    mobileLabel: "+ Add new dashboard",
                     onSelect: () => {
                       console.log("TODO: Add new dashboard");
                     },
