@@ -13,7 +13,7 @@ export interface InstantSearchProps {
   dataKey: string; // key associated with the search results in the GraphQL response data
   onChange: (value: string | Option | null) => void;
   labelKey: string;
-  bodyKey: string;
+  searchableFieldKeys: string[];
   idKey?: string;
   getOptionKey?: (option: Option) => string;
   renderOption?: (
@@ -42,7 +42,7 @@ const InstantSearch: FC<InstantSearchProps> = ({
   dataKey,
   onChange,
   labelKey,
-  bodyKey,
+  searchableFieldKeys,
   idKey = "id",
   getOptionKey = (option: Option) => option[labelKey],
   renderOption,
@@ -76,16 +76,11 @@ const InstantSearch: FC<InstantSearchProps> = ({
       variables: {
         where: {
           OR: [
-            {
-              [labelKey]: {
+            ...searchableFieldKeys.map((key) => ({
+              [key]: {
                 contains: value,
               },
-            },
-            {
-              [bodyKey]: {
-                contains: value,
-              },
-            },
+            })),
           ],
         },
         orderBy: [

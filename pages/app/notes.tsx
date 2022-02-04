@@ -770,7 +770,7 @@ function NotesMenu({
           dataKey: "notes",
           idKey: "id",
           labelKey: "title",
-          bodyKey: "body",
+          searchableFieldKeys: ["title", "body"],
           getOptionKey: (option) => `${option.id}`,
           renderOption: (props, option) => {
             return (
