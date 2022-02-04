@@ -77,17 +77,11 @@ const InstantSearch: FC<InstantSearchProps> = ({
         where: {
           OR: [
             ...searchableFieldKeys.map((key) => ({
-              [key]: {
-                contains: value,
-              },
+              [key]: { contains: value },
             })),
           ],
         },
-        orderBy: [
-          {
-            [labelKey]: "asc",
-          },
-        ],
+        orderBy: [{ [labelKey]: "asc" }],
       },
     });
   };
