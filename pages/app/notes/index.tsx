@@ -1,11 +1,9 @@
+import DeviceContext from "@/components/contexts/DeviceContext";
 import Layout from "@/components/Layout";
+import NoteViewer from "@/components/notes/NoteViewer";
 import SearchDialog from "@/components/search/SearchDialog";
 import Select from "@/components/Select";
 import { notebookFragment, noteFragment } from "@/graphql/fragments";
-// import ListSubheader from "@mui/material/ListSubheader";
-// import Collapse from "@mui/material/Collapse";
-// import ExpandLess from "@mui/icons-material/ExpandLess";
-// import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Note, Notebook } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useMutation, useQuery } from "@apollo/client";
@@ -21,16 +19,14 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
-import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { format, parseISO } from "date-fns";
-import debounce from "lodash/debounce";
 import partition from "lodash/partition";
 import {
   bindHover,
@@ -44,7 +40,9 @@ import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 
 interface NotesPageProps {
   session: Session | null;
@@ -53,15 +51,6 @@ interface NotesPageProps {
 const CREATE_NOTEBOOK = gql`
   mutation CreateNotebook($data: NotebookCreateInput!) {
     createNotebook(data: $data) {
-      ...NotebookFragment
-    }
-  }
-  ${notebookFragment}
-`;
-
-const UPDATE_NOTEBOOK = gql`
-  mutation UpdateNotebook($notebookId: Int!, $data: NotebookUpdateInput!) {
-    updateNotebook(where: { id: $notebookId }, data: $data) {
       ...NotebookFragment
     }
   }
@@ -112,6 +101,7 @@ interface NotesPageData {
 
 const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const { data: session } = useSession();
+  const { isMobile } = useContext(DeviceContext);
   const {
     data,
     loading: loadingNotes,
@@ -119,22 +109,11 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   } = useQuery<NotesPageData>(QUERY, {
     variables: { userId: session?.user?.id },
   });
-
   const [selectedNotebookId, setSelectedNotebookId] = useState<number | null>(null);
   const selectedNotebook = data?.notebooks?.find((nb) => nb.id === selectedNotebookId);
   const notes = selectedNotebook?.notes;
-
   const [selectedNoteId, setSelectedNoteId] = useState<number | null>(null);
   const selectedNote = notes?.find((note) => note.id === selectedNoteId);
-  const [noteTitle, setNoteTitle] = useState(selectedNote?.title);
-  const [noteBody, setNoteBody] = useState(selectedNote?.body);
-
-  const [updateNotebook, { loading: loadingUpdateNotebook }] = useMutation<{
-    updateNotebook: Notebook;
-  }>(UPDATE_NOTEBOOK);
-  const [updateNote, { loading: loadingUpdateNote }] = useMutation<{
-    updateNotebook: Notebook;
-  }>(UPDATE_NOTE);
   const [createNote, { loading: loadingCreateNote }] = useMutation<{
     createNote: Note;
   }>(CREATE_NOTE, {
@@ -162,40 +141,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
     },
   });
 
-  const abortController = useRef<AbortController>();
-  const handleUpdateNote = useRef(
-    debounce(
-      (...args: Parameters<typeof updateNote>) => {
-        const controller = new window.AbortController();
-        abortController.current = controller;
-        const [mutationOptions, ...rest] = args;
-        if (mutationOptions) {
-          mutationOptions.context = { fetchOptions: { signal: controller.signal } };
-        }
-        return (
-          Promise.resolve(updateNote(mutationOptions, ...rest))
-            // .then(() => console.log())
-            .catch((error) => console.error(error))
-        );
-      },
-      1200 // 1.2 seconds
-    )
-  );
-  const abortLatest = () => {
-    if (abortController.current) {
-      abortController.current.abort();
-    }
-  };
-
-  const loading = loadingNotes || loadingCreateNote || loadingUpdateNotebook || loadingUpdateNote;
-
-  // Update state when a different note is selected.
-  useEffect(() => {
-    if (selectedNote) {
-      setNoteTitle(selectedNote.title);
-      setNoteBody(selectedNote.body);
-    }
-  }, [selectedNote, setNoteTitle, setNoteBody]);
+  const loading = loadingNotes || loadingCreateNote;
 
   if (!session) return null;
 
@@ -255,122 +201,63 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
           handleCreateNote={handleCreateNote}
           session={session}
         />
-        {!data?.notebooks?.length ? (
-          <Box
-            height="100%"
-            width="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent={"center"}
-          >
-            <Typography variant="h5" textAlign="center" justifyContent={"center"}>
-              {loading ? "Loading..." : "Creating default notebook..."}
-            </Typography>
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              position: "relative",
-              height: "100%",
-              maxHeight: "100%",
-              display: "flex",
-              alignItems: "start",
-              justifyContent: "center",
-              flexGrow: 1,
-            }}
-          >
-            {selectedNote ? (
-              <Paper
-                sx={{
-                  width: "100%",
-                  maxWidth: "21cm", // A4 sheet of paper
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
+        {!isMobile && (
+          <>
+            {!data?.notebooks?.length ? (
+              <Box
+                height="100%"
+                flexGrow={1}
+                display="flex"
+                alignItems="center"
+                justifyContent={"center"}
               >
-                <Toolbar>
-                  <TextField
-                    variant="standard"
-                    value={noteTitle || "Untitled note"}
-                    onChange={(event) => {
-                      setNoteTitle(event.target.value);
-                      abortLatest();
-                      handleUpdateNote.current({
-                        variables: {
-                          noteId: selectedNote.id,
-                          data: {
-                            title: { set: event.target.value },
-                          },
-                        },
-                      });
-                    }}
-                  />
-                </Toolbar>
-                <Box flexGrow={1} flexShrink={0}>
-                  <TextField
-                    fullWidth
-                    multiline
-                    variant="filled"
-                    placeholder="Type here..."
-                    sx={{
-                      height: "100%",
-                      borderBottom: "none",
-                      alignItems: "start",
-                      "& .MuiFilledInput-root": {
-                        alignItems: "start",
-                        height: "100%",
-                        borderBottom: "none",
-                        borderRadius: "1px",
-                      },
-                    }}
-                    value={noteBody || ""}
-                    onChange={(event) => {
-                      setNoteBody(event.target.value);
-                      abortLatest();
-                      handleUpdateNote.current({
-                        variables: {
-                          noteId: selectedNote.id,
-                          data: {
-                            body: { set: event.target.value },
-                          },
-                        },
-                      });
-                    }}
-                  />
-                </Box>
-              </Paper>
+                <Typography variant="h5" textAlign="center" justifyContent={"center"}>
+                  {loading ? "Loading..." : "Creating default notebook..."}
+                </Typography>
+              </Box>
             ) : (
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
+                  position: "relative",
                   height: "100%",
+                  maxHeight: "100%",
+                  flexGrow: 1,
+                  display: "flex",
+                  alignItems: "start",
+                  justifyContent: "center",
                 }}
               >
-                {"Select a note from the menu, or"}
-                &nbsp;
-                <Button
-                  variant="text"
-                  sx={{
-                    m: 0,
-                    p: 0,
-                    textTransform: "none",
-                    fontSize: "inherit",
-                  }}
-                  onClick={handleCreateNote}
-                >
-                  {"create a new one"}
-                </Button>
-                {"."}
+                {selectedNote ? (
+                  <NoteViewer note={selectedNote} />
+                ) : (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      height: "100%",
+                    }}
+                  >
+                    {"Select a note from the menu, or"}
+                    &nbsp;
+                    <Button
+                      variant="text"
+                      sx={{ m: 0, p: 0, textTransform: "none", fontSize: "inherit" }}
+                      onClick={handleCreateNote}
+                    >
+                      {"create a new one"}
+                    </Button>
+                    {"."}
+                  </Box>
+                )}
               </Box>
             )}
-          </Box>
+          </>
         )}
       </Box>
     </Layout>
   );
 };
+
 export default NotesPage;
 
 (NotesPage as PageWithAuth).auth = true;
@@ -381,7 +268,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!session?.user?.id) {
     return {
       redirect: {
-        destination: "/auth/signin?callbackUrl=/app/settings",
+        destination: "/auth/signin?callbackUrl=/app/notes",
         permanent: false,
       },
     };
@@ -401,9 +288,6 @@ interface NotesMenuProps {
   selectedNote?: Note | null;
   setSelectedNoteId: (id: number | null) => void;
   session: Session;
-  // createNote: (
-  //   options: MutationHookOptions<{ createNote: Note }>
-  // ) => Promise<FetchResult<{ createNote: Note }, Record<string, any>, Record<string, any>>>;
   handleCreateNote: () => void;
 }
 
@@ -419,9 +303,11 @@ function NotesMenu({
   session,
 }: NotesMenuProps) {
   const { notebooks: allNotebooks } = data || { notebooks: [] };
-  const [notebooks, archivedNotebooks] = partition(allNotebooks, (notebook) => {
+  const [notebooks, _archivedNotebooks] = partition(allNotebooks, (notebook) => {
     return !notebook.archivedAt;
   });
+  const router = useRouter();
+  const { isMobile } = useContext(DeviceContext);
   const [addingNewNotebook, setAddingNewNotebook] = useState(false);
   const [newNotebookName, setNewNotebookName] = useState("");
   const searchDialogState = usePopupState({ variant: "popover", popupId: `notes-search-dialog` });
@@ -485,14 +371,22 @@ function NotesMenu({
     }
   }, [notebooks, selectedNotebook, setSelectedNotebookId]);
 
-  // Select the latest "new" (blank) note if one is present. This might help
-  // the user to avoid creating multiple empty, untitled notes.
+  // On desktop (i.e., if not on a mobile device), select the last-updated note
+  // so that it is displayed in the right pane. On mobile, don't do anything, since
+  // selecting a note results in navigating to a separate page for the selected note.
   useEffect(() => {
-    const firstNote = selectedNotebook?.notes?.[0];
-    if (selectedNotebook && !selectedNote && firstNote) {
-      setSelectedNoteId(firstNote.id);
+    if (!isMobile) {
+      const firstNote = selectedNotebook?.notes?.[0];
+      if (selectedNotebook && !selectedNote && firstNote) {
+        setSelectedNoteId(firstNote.id);
+      }
+    } else {
+      // On mobile, if a note is selected, navigate to the detail page for that note.
+      // This should only happen if the user switches from desktop to mobile, e.g.,
+      // with dev tools.
+      if (selectedNote) router.push(`/app/notes/${selectedNote.id}`);
     }
-  }, [selectedNotebook, selectedNote, setSelectedNoteId]);
+  }, [isMobile, router, selectedNotebook, selectedNote, setSelectedNoteId]);
 
   const handleCreateNotebook = () => {
     const dateISO = new Date().toISOString();
@@ -542,6 +436,7 @@ function NotesMenu({
           position: "relative",
           height: "100%",
           m: 0,
+          ...(isMobile ? { width: "100%" } : {}),
         }}
       >
         <Drawer
@@ -560,7 +455,7 @@ function NotesMenu({
           <Toolbar
             sx={{
               px: "0.35rem !important",
-              // paddingRight: "0.25rem !important",
+              justifyContent: "center",
             }}
           >
             {addingNewNotebook ? (
@@ -634,7 +529,7 @@ function NotesMenu({
             >
               <Box display="flex" alignItems={"center"} pl={1}>
                 {!!selectedNotebook && (
-                  <Typography fontSize={"0.8rem"}>
+                  <Typography component={"div"} fontSize={"0.8rem"} minWidth={"3rem"}>
                     {`${selectedNotebook?.notes.length} note${
                       selectedNotebook?.notes.length != 1 ? "s" : ""
                     }`}
@@ -687,30 +582,42 @@ function NotesMenu({
               {selectedNotebook && (
                 <List>
                   {selectedNotebook.notes.map((note) => (
-                    <ListItem
-                      button
-                      key={note.id}
-                      onClick={() => setSelectedNoteId(note.id)}
-                      selected={selectedNote?.id === note.id}
-                      sx={{
-                        "& .MuiListItemIcon-root": {
-                          minWidth: "36px",
-                        },
-                      }}
-                    >
-                      <ListItemIcon>
-                        <TextSnippetIcon />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={note.title}
-                        secondary={format(parseISO(note.updatedAt), "M/d, h:mm a")}
+                    // TODO: look into prefetching policy:
+                    // https://nextjs.org/docs/api-reference/next/link
+                    <Link key={note.id} href={`/app/notes/${note.id}`} passHref>
+                      <ListItemButton
+                        component="a"
+                        {...(!isMobile
+                          ? {
+                              onClick: (event) => {
+                                if (!isMobile) {
+                                  event.preventDefault();
+                                  setSelectedNoteId(note.id);
+                                }
+                              },
+                            }
+                          : {})}
+                        selected={selectedNote?.id === note.id}
                         sx={{
-                          "& .MuiListItemText-secondary": {
-                            fontSize: "0.75rem",
+                          "& .MuiListItemIcon-root": {
+                            minWidth: "36px",
                           },
                         }}
-                      />
-                    </ListItem>
+                      >
+                        <ListItemIcon>
+                          <TextSnippetIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={note.title}
+                          secondary={format(parseISO(note.updatedAt), "M/d, h:mm a")}
+                          sx={{
+                            "& .MuiListItemText-secondary": {
+                              fontSize: "0.75rem",
+                            },
+                          }}
+                        />
+                      </ListItemButton>
+                    </Link>
                   ))}
                 </List>
               )}

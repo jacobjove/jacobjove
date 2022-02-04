@@ -1,5 +1,5 @@
+import UserContext from "@/components/contexts/UserContext";
 import Layout from "@/components/Layout";
-import UserContext from "@/components/UserContext";
 import { userFragment } from "@/graphql/fragments";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useMutation } from "@apollo/client";

@@ -2,7 +2,7 @@ import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
-import DateContext from "@/components/DateContext";
+import DateContext from "@/components/contexts/DateContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";

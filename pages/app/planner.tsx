@@ -1,7 +1,7 @@
 import TasksTable from "@/components/actions/TasksTable";
 import CalendarViewer from "@/components/calendar";
+import DateContext from "@/components/contexts/DateContext";
 import { fragment as dashboardFragment } from "@/components/dashboard/Dashboard";
-import DateContext from "@/components/DateContext";
 import Layout from "@/components/Layout";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";

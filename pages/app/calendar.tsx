@@ -13,7 +13,7 @@ import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 // import { useContext } from "react";
-// import DateContext from "@/components/DateContext";
+// import DateContext from "@/components/contexts/DateContext";
 
 interface CalendarPageProps {
   dateISO: string;

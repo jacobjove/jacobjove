@@ -1,4 +1,4 @@
-import DeviceContext from "@/components/DeviceContext";
+import DeviceContext from "@/components/contexts/DeviceContext";
 import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
 import _Select, { SelectChangeEvent, SelectProps as _SelectProps } from "@mui/material/Select";
@@ -26,7 +26,25 @@ const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
     if (value) onChange(value);
   };
   return isMobile ? (
-    <NativeSelect defaultValue={props.value} inputProps={{ name, id }} onChange={handleChange}>
+    <NativeSelect
+      defaultValue={props.value}
+      sx={{
+        ...(props.fullWidth
+          ? {
+              width: "100%",
+              "& > div": {
+                width: "100%",
+                "& > select": {
+                  width: "100%",
+                },
+              },
+            }
+          : {}),
+        "& select": { pl: "0.2rem" },
+      }}
+      inputProps={{ name, id }}
+      onChange={handleChange}
+    >
       {options.map((option, index) => {
         let label = option.mobileLabel ?? option.label;
         if (typeof label !== "string") {

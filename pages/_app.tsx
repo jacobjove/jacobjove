@@ -1,8 +1,8 @@
-import ColorModeContext from "@/components/ColorModeContext";
-import DateContext from "@/components/DateContext";
-import DeviceContext from "@/components/DeviceContext";
-import { PageTransitionContextProvider } from "@/components/PageTransitionContext";
-import UserContext from "@/components/UserContext";
+import ColorModeContext from "@/components/contexts/ColorModeContext";
+import DateContext from "@/components/contexts/DateContext";
+import DeviceContext from "@/components/contexts/DeviceContext";
+import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
+import UserContext from "@/components/contexts/UserContext";
 import { userFragment } from "@/graphql/fragments";
 import { User, UserSettings } from "@/graphql/schema";
 import { useApollo } from "@/lib/apollo/apolloClient";
@@ -134,7 +134,9 @@ export type PageWithAuth = NextPage & {
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
-  const isMobile = useMediaQuery("(max-width: 600px)"); // TODO
+  // TODO: isMobile should actually check device type, not just window size;
+  // we could also add isMobileWidth, though.
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState<PaletteMode>(session?.user?.settings?.colorMode ?? "light");
   const colorMode = useMemo(
