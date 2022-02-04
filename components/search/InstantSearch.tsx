@@ -23,18 +23,12 @@ export interface InstantSearchProps {
   ) => ReactNode;
   groupBy?: (option: Option) => string;
   disabled?: boolean;
-  minimumSearchLength?: number;
-  throttleDelay?: number;
+  minimumSearchLength?: number; // minimum length of text input required to call `getSearchResultsForInput`
+  throttleDelay?: number; // delay in ms between calls to `getSearchResultsForInput`
 }
 
 /**
  * A TextInput component that instantly retrieves results
- * @param getDataForInput - the callback used to retrieve results for a given text input.
- * @param labelKey - the key used to access an option's label attribute.
- * @param idKey - the key used to access an option's id attribute.
- * @param minimumSearchLength - the minimum length of text input required to call `getDataForInput`.
- * @param throttleDelay - the delay in ms between calls to `getDataForInput`.
- * @constructor
  */
 const InstantSearch: FC<InstantSearchProps> = ({
   label,
