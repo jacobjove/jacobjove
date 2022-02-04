@@ -494,6 +494,8 @@ function NotesMenu({
     }
   }, [selectedNotebook, selectedNote, setSelectedNoteId]);
 
+  const searchDialogProps = bindPopover(searchDialogState);
+
   return (
     <>
       <Box
@@ -760,7 +762,7 @@ function NotesMenu({
         </Drawer>
       </Box>
       <SearchDialog
-        {...bindPopover(searchDialogState)}
+        {...searchDialogProps}
         header={"Search notes"}
         searchProps={{
           label: "Search",
@@ -789,6 +791,17 @@ function NotesMenu({
           },
           groupBy: (option) =>
             notebooks.find((notebook) => `${notebook.id}` == option.notebookId)?.title ?? "",
+          onChange: (option) => {
+            // TODO: fix these janky types!
+            if (typeof option === "string") {
+              setSelectedNoteId(parseInt(option));
+            } else if (typeof option === "object") {
+              setSelectedNoteId((option as unknown as Note).id);
+            } else {
+              setSelectedNoteId(null);
+            }
+            searchDialogProps.onClose();
+          },
           throttleDelay: 500,
         }}
       />

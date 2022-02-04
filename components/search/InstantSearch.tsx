@@ -5,13 +5,13 @@ import { DocumentNode } from "graphql";
 import debounce from "lodash/debounce";
 import { FC, HTMLAttributes, ReactNode, SyntheticEvent, useRef } from "react";
 
-type Option = Record<string, string>;
+type Option = Record<string, string>; // TODO: use generic type!
 
 export interface InstantSearchProps {
   label: string; // label for the search input
   query: DocumentNode; // GraphQL query that accepts "where" and "orderBy" arguments
   dataKey: string; // key associated with the search results in the GraphQL response data
-  onChange?: (value: string[]) => void;
+  onChange: (value: string | Option | null) => void;
   labelKey: string;
   bodyKey: string;
   idKey?: string;
@@ -56,11 +56,6 @@ const InstantSearch: FC<InstantSearchProps> = ({
   });
 
   const options: Option[] = data?.[dataKey] || [];
-
-  // const [options, setOptions] = useState<Option[]>([]);
-  const handleValueChange = (event: SyntheticEvent, values: Option[]) => {
-    onChange?.(values.map((value) => value[idKey]));
-  };
 
   // const abortController = useRef<AbortController>();
   // Throttling behavior only works if the same function object is used,
@@ -129,7 +124,7 @@ const InstantSearch: FC<InstantSearchProps> = ({
       {...(renderOption ? { renderOption } : {})}
       {...(groupBy ? { groupBy } : {})}
       // value={selectedOptions}
-      // onChange={handleValueChange}
+      onChange={(_event, value, _reason, _details) => onChange(value)}
       // Do not use strict equality here, since ids may be numbers or strings.
       isOptionEqualToValue={(option, value) => option[idKey] == value[idKey]}
       onInputChange={handleInputChange}
