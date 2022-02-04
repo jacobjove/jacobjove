@@ -70,18 +70,8 @@ const InstantSearch: FC<InstantSearchProps> = ({
   );
 
   const handleInputChange = (event: SyntheticEvent, value: string) => {
-    // Cancel any pending requests.
-    // if (abortController.current) {
-    //   abortController.current.abort();
-    // }
-
     // Only call `getSearchResultsForInput` if the input is long enough.
-    if (value.length < minimumSearchLength) {
-      return;
-    }
-
-    console.log("Calling getSearchResultsForInput", labelKey, bodyKey);
-
+    if (value.length < minimumSearchLength) return;
     getSearchResultsForInput.current({
       variables: {
         where: {
