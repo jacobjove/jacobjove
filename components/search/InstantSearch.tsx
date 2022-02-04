@@ -52,23 +52,18 @@ const InstantSearch: FC<InstantSearchProps> = ({
   throttleDelay = 250,
 }: InstantSearchProps) => {
   const [getResults, { data, loading, error }] = useLazyQuery(QUERY, {
-    fetchPolicy: "network-only", // TODO: this could be cache only if we already have all notes in the cache...
+    // TODO: this could be cache only if we already have all notes in the cache...
+    fetchPolicy: "network-only",
   });
 
   const options: Option[] = data?.[dataKey] || [];
 
-  // const abortController = useRef<AbortController>();
   // Throttling behavior only works if the same function object is used,
   // so we use `useRef` to keep hold of the function object.
   const getSearchResultsForInput = useRef(
     debounce((...args: Parameters<typeof getResults>) => {
-      console.log("getSearchResultsForInput", args);
-      // const controller = new window.AbortController();
-      // abortController.current = controller;
       const [queryOptions, ...rest] = args;
-      console.log("Returning from getSearchResultsForInput");
       return Promise.resolve(getResults(queryOptions, ...rest)).catch((error) => {
-        // TODO: add more resilient error handling.
         console.error(error);
       });
     }, throttleDelay)

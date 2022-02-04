@@ -773,7 +773,6 @@ function NotesMenu({
           bodyKey: "body",
           getOptionKey: (option) => `${option.id}`,
           renderOption: (props, option) => {
-            console.log(props);
             return (
               <li
                 {...props}

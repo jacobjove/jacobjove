@@ -21,7 +21,6 @@ const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
   const handleChange = (event: ChangeEvent<HTMLSelectElement> | SelectChangeEvent<unknown>) => {
     const value = event.target.value as string;
     event.preventDefault();
-    console.log(event.target);
     if (value) onChange(value);
   };
   return isMobile ? (
