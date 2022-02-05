@@ -83,10 +83,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await apolloClient
     .query({
       query: QUERY,
-      variables: {
-        userId: session.user.id,
-        noteId,
-      },
+      variables: { noteId },
     })
     .catch((e) => {
       if (e.networkError?.result?.errors) {
