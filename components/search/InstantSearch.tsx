@@ -11,20 +11,23 @@ export interface InstantSearchProps {
   label: string; // label for the search input
   query: DocumentNode; // GraphQL query that accepts "where" and "orderBy" arguments
   dataKey: string; // key associated with the search results in the GraphQL response data
-  onChange: (value: string | Option | null) => void;
   idKey?: string;
   labelKey: string;
   searchableFieldKeys: string[];
   getOptionKey?: (option: Option) => string;
-  renderOption?: (
-    props: HTMLAttributes<HTMLLIElement>,
-    option: Option,
-    state: AutocompleteRenderOptionState
-  ) => ReactNode;
-  groupBy?: (option: Option) => string;
-  disabled?: boolean;
   minimumSearchLength?: number; // minimum length of text input required to call `getSearchResultsForInput`
   throttleDelay?: number; // delay in ms between calls to `getSearchResultsForInput`
+  // TODO: include onChange in autocompleteProps after fixing signature
+  onChange: (value: string | Option | null) => void;
+  autocompleteProps: {
+    renderOption?: (
+      props: HTMLAttributes<HTMLLIElement>,
+      option: Option,
+      state: AutocompleteRenderOptionState
+    ) => ReactNode;
+    groupBy?: (option: Option) => string;
+    disabled?: boolean;
+  };
 }
 
 /**
@@ -34,16 +37,17 @@ const InstantSearch: FC<InstantSearchProps> = ({
   label,
   query: QUERY,
   dataKey,
-  onChange,
   labelKey,
   searchableFieldKeys,
   idKey = "id",
   getOptionKey = (option: Option) => option[labelKey],
-  renderOption,
-  groupBy,
-  disabled,
+  // renderOption,
+  // groupBy,
+  // disabled,
   minimumSearchLength = 1,
   throttleDelay = 250,
+  onChange, // TODO: include in autocompleteProps after fixing signature
+  autocompleteProps,
 }: InstantSearchProps) => {
   const [getResults, { data, loading, error }] = useLazyQuery(QUERY, {
     // TODO: this could be cache only if we already have all notes in the cache...
@@ -82,22 +86,18 @@ const InstantSearch: FC<InstantSearchProps> = ({
 
   return (
     <Autocomplete
+      {...autocompleteProps}
+      // TODO: include onChange in autocompleteProps after fixing signature
+      onChange={(_event, value, _reason, _details) => onChange(value)}
       freeSolo
-      // limitTags={5}
       noOptionsText={"Type to search"}
       options={options} // TODO
-      // groupBy={(option) => notebooks.find((notebook) => notebook.id === option.notebookId)?.name}
       filterOptions={() => options} // TODO
+      // Note: Option labels must be unique; MUI uses them as component keys.
       getOptionLabel={getOptionKey}
-      {...(renderOption ? { renderOption } : {})}
-      {...(groupBy ? { groupBy } : {})}
-      // value={selectedOptions}
-      onChange={(_event, value, _reason, _details) => onChange(value)}
       // Do not use strict equality here, since ids may be numbers or strings.
       isOptionEqualToValue={(option, value) => option[idKey] == value[idKey]}
       onInputChange={handleInputChange}
-      ChipProps={{ size: "small" }}
-      disabled={disabled}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -106,21 +106,6 @@ const InstantSearch: FC<InstantSearchProps> = ({
           inputProps={{ ...params.inputProps, "data-testid": "instantSearchInput" }}
         />
       )}
-      sx={{
-        "& .MuiChip-root": {
-          fontSize: "11px",
-          height: "20px",
-          "& .MuiChip-label": {
-            paddingLeft: "6px",
-            paddingRight: "8px",
-          },
-          "& .MuiChip-deleteIcon": {
-            height: "18px",
-            width: "18px",
-            marginRight: "2px",
-          },
-        },
-      }}
     />
   );
 };
