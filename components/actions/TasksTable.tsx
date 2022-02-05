@@ -113,12 +113,10 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   );
 
   useEffect(() => {
-    console.log("useEffect");
     debounce(() => {
       return Promise.all(
         orderedTasks.map((task, index) => {
           if (task.position === index) return;
-          console.log("useEffect.debounce.updateTask");
           return updateTask({
             variables: {
               taskId: task.id,

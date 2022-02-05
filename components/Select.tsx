@@ -19,10 +19,22 @@ type SelectProps = Omit<_SelectProps, "children" | "onChange"> & {
 const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
   const { name, id } = props.inputProps || {};
   const { isMobile } = useContext(DeviceContext);
+  const onSelectMap = Object.fromEntries(
+    options.map((option) => {
+      // Value is guaranteed to be a string and is accessible in the change events
+      // of both the native select and MUI select, so we can safely use it as a key.
+      return [option.value, option.onSelect];
+    })
+  );
+  console.log(onSelectMap);
   const handleChange = (event: ChangeEvent<HTMLSelectElement> | SelectChangeEvent<unknown>) => {
-    const value = event.target.value as string;
     event.preventDefault();
-    if (value) onChange(value);
+    const value = event.target.value as string;
+    if (onSelectMap?.[value]) {
+      (onSelectMap[value] as CallableFunction)();
+    } else {
+      onChange(value);
+    }
   };
   return isMobile ? (
     <NativeSelect
@@ -58,11 +70,6 @@ const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
               .join("");
           }
         }
-        // TODO: figure out a way to use onSelect with native select
-        if (option.onSelect) {
-          console.log(option);
-          return;
-        }
         return (
           <option key={index} value={option.value}>
             {label}
@@ -76,16 +83,17 @@ const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
         <MenuItem
           key={index}
           value={option.value}
-          onClick={(event) => {
-            if (option.onSelect) {
-              event.preventDefault();
-              // Note: Rather than stopping propagation via `event.stopPropagation()`
-              // (which may have unforeseen consequences), we instead rely on the
-              // Select component's `onChange` handler to ignore the change event if
-              // the value is falsy (empty string).
-              (option.onSelect as CallableFunction)();
-            }
-          }}
+          // TODO: clean up after confirming the `handleChange` solution works well.
+          // onClick={(event) => {
+          //   if (option.onSelect) {
+          //     event.preventDefault();
+          //     // Note: Rather than stopping propagation via `event.stopPropagation()`
+          //     // (which may have unforeseen consequences), we instead rely on the
+          //     // Select component's `onChange` handler to ignore the change event if
+          //     // the value is falsy (empty string).
+          //     (option.onSelect as CallableFunction)();
+          //   }
+          // }}
         >
           {option.label}
         </MenuItem>

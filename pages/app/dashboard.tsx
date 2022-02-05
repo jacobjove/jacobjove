@@ -202,7 +202,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
                     label: dashboard.name,
                   })),
                   {
-                    value: "",
+                    value: "_",
                     label: (
                       <>
                         <AddIcon /> {"Add new dashboard"}

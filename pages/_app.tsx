@@ -1,6 +1,6 @@
 import ColorModeContext from "@/components/contexts/ColorModeContext";
 import DateContext from "@/components/contexts/DateContext";
-import DeviceContext from "@/components/contexts/DeviceContext";
+import DeviceContext, { DeviceContextData } from "@/components/contexts/DeviceContext";
 import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
 import UserContext from "@/components/contexts/UserContext";
 import { userFragment } from "@/graphql/fragments";
@@ -23,6 +23,7 @@ import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import { FC, ReactElement, useContext, useEffect, useMemo, useState } from "react";
+import { getSelectorsByUserAgent } from "react-device-detect";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
@@ -62,25 +63,13 @@ const getDesignTokens = (mode: PaletteMode) => {
         light: "#80d6ff",
         dark: "#0077c2",
         contrastText: "#fff",
-        // ...(mode === 'dark' && {
-        //   main: amber[300],
-        // }),
       },
       secondary: {
         main: "#757575",
         light: "#a4a4a4",
         dark: "#494949",
         contrastText: mode === "light" ? "#fff" : "#000",
-        // ...(mode === 'dark' && {
-        //   main: amber[300],
-        // }),
       },
-      // ...(mode === 'dark' && {
-      //   background: {
-      //     default: deepOrange[900],
-      //     paper: deepOrange[900],
-      //   },
-      // }),
       divider: dividerColor,
       text: {
         ...(mode === "light"
@@ -134,9 +123,6 @@ export type PageWithAuth = NextPage & {
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
-  // TODO: isMobile should actually check device type, not just window size;
-  // we could also add isMobileWidth, though.
-  const isMobile = useMediaQuery("(max-width: 600px)");
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState<PaletteMode>(session?.user?.settings?.colorMode ?? "light");
   const colorMode = useMemo(
@@ -147,30 +133,52 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     }),
     []
   );
+  const isMobileWidth = useMediaQuery("(max-width: 600px)");
+  const [isLandscape, setIsLandscape] = useState<boolean>();
+  const [deviceContextData, setDeviceContextData] = useState<DeviceContextData>({});
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   useEffect(() => {
     // Update the current time every minute.
     const intervalId = setInterval(function () {
       setDate(new Date());
     }, 1000 * 60);
-    // Clean up when the component unmounts.
     return function cleanup() {
       clearInterval(intervalId);
     };
   }, [setDate]);
   useEffect(() => {
+    const handleOrientationChange = function (e: Event) {
+      setIsLandscape((e.target as ScreenOrientation).type.toString().includes("landscape"));
+    };
+    if (typeof window !== "undefined") {
+      window.screen.orientation.addEventListener("change", handleOrientationChange);
+    }
+    return function cleanup() {
+      window.screen.orientation.removeEventListener("change", handleOrientationChange);
+    };
+  }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined" && navigator.userAgent) {
+      setDeviceContextData({
+        ...getSelectorsByUserAgent(navigator.userAgent),
+        isMobileWidth,
+        isLandscape,
+      });
+    }
+  }, [isMobileWidth, isLandscape]);
+  useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
   return (
     <SessionProvider session={session}>
-      <DeviceContext.Provider value={{ isMobile }}>
+      <DeviceContext.Provider value={deviceContextData}>
         <PageTransitionContextProvider>
           <ApolloProvider client={apolloClient}>
             <ColorModeContext.Provider value={colorMode}>
               <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <LocalizationProvider dateAdapter={DateAdapter}>
-                  <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+                  <DndProvider backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}>
                     <DateContext.Provider value={date}>
                       <DefaultSeo
                         description={"Build good habits, break bad habits, and be your best self."}
