@@ -26,7 +26,6 @@ const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
       return [option.value, option.onSelect];
     })
   );
-  console.log(onSelectMap);
   const handleChange = (event: ChangeEvent<HTMLSelectElement> | SelectChangeEvent<unknown>) => {
     event.preventDefault();
     const value = event.target.value as string;
