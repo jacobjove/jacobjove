@@ -210,7 +210,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
                     ),
                     mobileLabel: "+ Add new dashboard",
                     onSelect: () => {
-                      console.log("TODO: Add new dashboard");
+                      alert("This functionality is not yet implemented.");
                     },
                   },
                 ]}

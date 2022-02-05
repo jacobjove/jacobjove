@@ -6,9 +6,6 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import debounce from "lodash/debounce";
-// import Typography from "@mui/material/Typography";
-// import { format, parseISO } from "date-fns";
-// import { getSession, useSession } from "next-auth/react";
 import { FC, useEffect, useRef, useState } from "react";
 
 const UPDATE_NOTE = gql`
@@ -24,6 +21,8 @@ interface NoteViewerProps {
   note: Note;
 }
 
+const MUTATION_DEBOUNCE_DELAY = 1200; // 1.2 seconds
+
 const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
   const [noteTitle, setNoteTitle] = useState(note?.title);
   const [noteBody, setNoteBody] = useState(note?.body);
@@ -38,22 +37,17 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
   }, [note]);
   const abortController = useRef<AbortController>();
   const handleUpdateNote = useRef(
-    debounce(
-      (...args: Parameters<typeof updateNote>) => {
-        const controller = new window.AbortController();
-        abortController.current = controller;
-        const [mutationOptions, ...rest] = args;
-        if (mutationOptions) {
-          mutationOptions.context = { fetchOptions: { signal: controller.signal } };
-        }
-        return (
-          Promise.resolve(updateNote(mutationOptions, ...rest))
-            // .then(() => console.log())
-            .catch((error) => console.error(error))
-        );
-      },
-      1200 // 1.2 seconds
-    )
+    debounce((...args: Parameters<typeof updateNote>) => {
+      const controller = new window.AbortController();
+      abortController.current = controller;
+      const [mutationOptions, ...rest] = args;
+      if (mutationOptions) {
+        mutationOptions.context = { fetchOptions: { signal: controller.signal } };
+      }
+      return Promise.resolve(updateNote(mutationOptions, ...rest)).catch((error) =>
+        console.error(error)
+      );
+    }, MUTATION_DEBOUNCE_DELAY)
   );
   const abortLatest = () => {
     if (abortController.current) {
