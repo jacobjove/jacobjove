@@ -58,6 +58,8 @@ const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
       {options.map((option, index) => {
         let label = option.mobileLabel ?? option.label;
         if (typeof label !== "string") {
+          // TODO: Determine if there's a way to make TypeScript enforce supplying
+          // `mobileLabel` (which is a string) if `label` is not a string.
           console.error("Encountered non-string label in native select:", label);
           // Try to extract a string from the element.
           if (label.props?.children) {
