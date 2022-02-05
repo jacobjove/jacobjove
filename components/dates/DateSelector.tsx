@@ -4,7 +4,9 @@ import DatePicker from "@mui/lab/DatePicker";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { addDays, subDays } from "date-fns";
+import json2mq from "json2mq";
 import { FC, useState } from "react";
 
 interface DateSelectorProps {
@@ -18,6 +20,18 @@ interface DateSelectorProps {
   onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
+const FORMAT_A = "MMMM d, yyyy";
+const FORMAT_B = "MMM d, yyyy";
+const FORMAT_C = "M/d/yyyy";
+const FORMAT_D = "M/d/yy";
+
+const FORMAT_CH_LENGTHS: Record<string, number> = {
+  [FORMAT_A]: 16,
+  [FORMAT_B]: 12,
+  [FORMAT_C]: 8,
+  [FORMAT_D]: 6,
+};
+
 const DateSelector: FC<DateSelectorProps> = ({
   date: currentDate,
   setDate,
@@ -29,15 +43,30 @@ const DateSelector: FC<DateSelectorProps> = ({
   onKeyUp,
 }: DateSelectorProps) => {
   const [open, setOpen] = useState(false);
-  const dateFormat = _dateFormat || "MMMM d, yyyy";
+
+  // TODO: determine if there's a more efficient way to do this
+  const canUseFormatA = useMediaQuery(json2mq({ minWidth: "720px" }));
+  const canUseFormatB = useMediaQuery(json2mq({ minWidth: "455px" }));
+  const canUseFormatC = useMediaQuery(json2mq({ minWidth: "450px" }));
+  const canIncludeSteppers = useMediaQuery(json2mq({ minWidth: "434px" }));
+
+  const dateFormat =
+    _dateFormat ||
+    (canUseFormatA ? FORMAT_A : canUseFormatB ? FORMAT_B : canUseFormatC ? FORMAT_C : FORMAT_D);
   const steppable = _steppable ?? true;
   const referenceDate = currentDate || new Date();
   const canStepBack = steppable && (minDate ? subDays(referenceDate, 1) >= minDate : true);
   const canStepForward = steppable && (maxDate ? addDays(referenceDate, 1) <= maxDate : true);
   return (
     // Note: 100% height on the outer box lets the bottom border flesh with any containing element.
-    <Box display="flex" alignItems="stretch" justifyContent={"space-evenly"} height="100%">
-      {canStepBack && (
+    <Box
+      display="flex"
+      alignItems="stretch"
+      justifyContent={"space-evenly"}
+      height="100%"
+      px="0.5rem"
+    >
+      {canStepBack && canIncludeSteppers && (
         <IconButton
           disabled={!currentDate}
           onClick={() => {
@@ -65,6 +94,9 @@ const DateSelector: FC<DateSelectorProps> = ({
             inputProps.style = {
               ...inputProps.style,
               ...{
+                width: FORMAT_CH_LENGTHS[dateFormat]
+                  ? `${FORMAT_CH_LENGTHS[dateFormat]}ch`
+                  : "100%",
                 height: "100%",
                 border: "none",
                 textAlign: "center",
@@ -85,7 +117,7 @@ const DateSelector: FC<DateSelectorProps> = ({
           );
         }}
       />
-      {canStepForward && (
+      {canStepForward && canIncludeSteppers && (
         <IconButton
           disabled={!currentDate}
           onClick={() => {

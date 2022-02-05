@@ -18,20 +18,19 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import isEmpty from "lodash/isEmpty";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import Link from "next/link";
+// import Link from "next/link";
 import { useEffect, useState } from "react";
 
 // cols={{ xl: 24, lg: 18, md: 12, sm: 6, xs: 4, xxs: 2 }}
 const DEFAULT_LAYOUTS: DashboardLayouts = {
   xs: [
     { i: "calendar", x: 0, y: 0, w: 4, h: 6, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "tasks", x: 0, y: 1, w: 4, h: 3, minH: 2, resizeHandles: ["se", "sw"] },
+    { i: "tasks", x: 0, y: 1, w: 4, h: 4, minH: 4, resizeHandles: ["se", "sw"] },
     // { i: "identities", x: 0, y: 2, w: 4, h: 1, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "values", x: 0, y: 3, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "topics", x: 0, y: 4, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
@@ -135,7 +134,6 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
   const loading = loadingData || loadingCreateDashboard;
   const { dashboards, ...dashboardData } = data || { dashboards: [] };
   const defaultDashboard = dashboards?.find((dashboard) => dashboard.isDefault);
-  const isMobile = useMediaQuery("(max-width: 600px)");
   const [editing, setEditing] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -257,11 +255,11 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
             }}
             keepMounted
           >
-            <Link href="/app/routines">
+            {/* <Link href="/app/routines">
               <a>
                 <MenuItem>Routines</MenuItem>
               </a>
-            </Link>
+            </Link> */}
             <MenuItem
               onClick={() => {
                 setMenuOpen(false);

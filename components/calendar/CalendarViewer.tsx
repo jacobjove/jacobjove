@@ -91,7 +91,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               bottom: 0,
               backgroundColor: (theme) => theme.palette.background.default,
               padding: "0.5rem",
-              zIndex: 1000000000000000000, // TODO
+              zIndex: 100000000000000, // TODO
             }
           : {}),
       }}
