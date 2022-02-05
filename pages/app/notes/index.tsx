@@ -636,24 +636,26 @@ function NotesMenu({
           labelKey: "title",
           searchableFieldKeys: ["title", "body"],
           getOptionKey: (option) => `${option.id}`,
-          renderOption: (props, option) => {
-            return (
-              <li
-                {...props}
-                style={{
-                  display: "flex",
-                  alignItems: "end",
-                }}
-              >
-                <Typography>{option.title}</Typography>&nbsp;&nbsp;
-                <Typography component={"small"} fontSize={"0.75rem"} color={"textSecondary"}>
-                  {"last updated"} {format(parseISO(option.updatedAt), "M/d, h:mm a")}
-                </Typography>
-              </li>
-            );
+          autocompleteProps: {
+            renderOption: (props, option) => {
+              return (
+                <li
+                  {...props}
+                  style={{
+                    display: "flex",
+                    alignItems: "end",
+                  }}
+                >
+                  <Typography>{option.title}</Typography>&nbsp;&nbsp;
+                  <Typography component={"small"} fontSize={"0.75rem"} color={"textSecondary"}>
+                    {"last updated"} {format(parseISO(option.updatedAt), "M/d, h:mm a")}
+                  </Typography>
+                </li>
+              );
+            },
+            groupBy: (option) =>
+              notebooks.find((notebook) => `${notebook.id}` == option.notebookId)?.title ?? "",
           },
-          groupBy: (option) =>
-            notebooks.find((notebook) => `${notebook.id}` == option.notebookId)?.title ?? "",
           onChange: (option) => {
             // TODO: fix these janky types!
             if (typeof option === "string") {

@@ -41,9 +41,6 @@ const InstantSearch: FC<InstantSearchProps> = ({
   searchableFieldKeys,
   idKey = "id",
   getOptionKey = (option: Option) => option[labelKey],
-  // renderOption,
-  // groupBy,
-  // disabled,
   minimumSearchLength = 1,
   throttleDelay = 250,
   onChange, // TODO: include in autocompleteProps after fixing signature
