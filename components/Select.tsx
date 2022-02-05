@@ -5,10 +5,10 @@ import _Select, { SelectChangeEvent, SelectProps as _SelectProps } from "@mui/ma
 import { ChangeEvent, FC, ReactElement, useContext } from "react";
 
 interface Option {
-  label: string | ReactElement;
-  mobileLabel?: string;
+  label: string | ReactElement; // Label could be, e.g., a fragment containing an icon followed by a string.
+  mobileLabel?: string; // On mobile, we use the native select, which requires a string for the label.
   value: string;
-  onSelect?: () => void;
+  onSelect?: () => void; // Overrides the onChange behavior for a specific option.
 }
 
 type SelectProps = Omit<_SelectProps, "children" | "onChange"> & {
