@@ -36,6 +36,7 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
     }
   }, [note]);
   const abortController = useRef<AbortController>();
+  // TODO: refactor to use `useCallback`
   const handleUpdateNote = useRef(
     debounce((...args: Parameters<typeof updateNote>) => {
       const controller = new window.AbortController();
@@ -47,6 +48,7 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
       return updateNote(mutationOptions, ...rest).catch((error) => console.error(error));
     }, MUTATION_DEBOUNCE_DELAY)
   );
+  console.log("Rendering note viewer...");
   return (
     <Paper
       sx={{
