@@ -95,14 +95,10 @@ const DateSelector: FC<DateSelectorProps> = ({
           if (inputProps) {
             inputProps.style = {
               ...inputProps.style,
-              ...{
-                width: FORMAT_CH_LENGTHS[dateFormat]
-                  ? `${FORMAT_CH_LENGTHS[dateFormat]}ch`
-                  : "100%",
-                height: "100%",
-                border: "none",
-                textAlign: "center",
-              },
+              width: FORMAT_CH_LENGTHS[dateFormat] ? `${FORMAT_CH_LENGTHS[dateFormat]}ch` : "100%",
+              height: "100%",
+              border: "none",
+              textAlign: "center",
             };
           }
           return (
