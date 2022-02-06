@@ -16,15 +16,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-// import { throttle } from "throttle-debounce";
-import update from "immutability-helper";
-// import partition from "lodash/partition";
-// import orderBy from "lodash/orderBy";
 import { partition } from "lodash";
-import debounce from "lodash/debounce";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
+
+const MAX_TASK_RANK = 2 ** 31 - 1;
 
 export const fragment = gql`
   fragment TasksTable on Query {
@@ -34,15 +31,6 @@ export const fragment = gql`
   }
   ${taskFragment}
 `;
-
-// const UPDATE_TASK_RANK = gql`
-//     mutation UpdateTaskRank($taskId: Int!, $rank: String!) {
-//         updateTaskRank(rank: $rank, where: { id: $taskId }) {
-//             ...TaskFragment
-//         }
-//     }
-//     ${taskFragment}
-// `;
 
 interface TasksTableProps {
   contained?: boolean;
@@ -58,7 +46,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const { tasks: allTasks } = data;
   const { data: session } = useSession();
 
-  const [updateTask, { loading: loadingUpdateTask }] = useMutation(UPDATE_TASK);
+  const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] =
+    useMutation(UPDATE_TASK);
   const [addingNewTask, setAddingNewTask] = useState(false);
   const [newTask, setNewTask] = useState<Partial<Task>>({});
 
@@ -91,8 +80,11 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   });
 
   // Exclude archived tasks.
-  let filteredTasks = allTasks.filter((task) => !task.archivedAt);
-  filteredTasks.sort((a, b) => (a.rank > b.rank ? 1 : -1));
+  let filteredTasks = useMemo(
+    () => allTasks.filter((task) => !task.archivedAt).sort((a, b) => (a.rank > b.rank ? 1 : -1)),
+    [allTasks]
+  );
+  // filteredTasks.sort((a, b) => (a.rank > b.rank ? 1 : -1));
 
   // If these are any top-level tasks, exclude the subtasks, since the top-level tasks
   // should already contain their subtasks. Otherwise, if there are no top-level tasks,
@@ -104,145 +96,87 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   filteredTasks = topLevelTasks.length ? topLevelTasks : subtasks;
 
   // Distinguish incomplete tasks from completed tasks.
-  const [incompleteTasks, completeTasks] = partition(filteredTasks, (task) => {
-    return !task.completedAt;
-  });
-
-  const tasksById = Object.fromEntries(incompleteTasks.map((task) => [task.id, task]));
-  const [orderedTasks, setOrderedTasks] = useState<number[]>(
-    incompleteTasks
-      .sort((a, b) => parseInt(a.rank, 36) - parseInt(b.rank, 36))
-      .map((task) => task.id)
+  const [incompleteTasks, completeTasks] = useMemo(
+    () =>
+      partition(filteredTasks, (task) => {
+        return !task.completedAt;
+      }),
+    [filteredTasks]
   );
+
+  // const tasksById = Object.fromEntries(incompleteTasks.map((task) => [task.id, task]));
+  // const [orderedTasks, setOrderedTasks] = useState<number[]>(() =>
+  //   incompleteTasks.sort((a, b) => (a.rank > b.rank ? 1 : -1)).map((task) => task.id)
+  // );
 
   // Enable re-ordering the tasks.
   const moveTaskRow = useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      console.log("moveTaskRow", dragIndex, hoverIndex);
       if (dragIndex === hoverIndex || loadingUpdateTask) return;
-      console.log("moveTaskRow: Updating state...", dragIndex, hoverIndex);
-      const draggedTask = orderedTasks[dragIndex];
+      // const draggedTaskId = orderedTasks[dragIndex];
+      const draggedTask = incompleteTasks[dragIndex];
       if (!draggedTask) {
         console.error("Unable to identify dragged task ID; the dragIndex is invalid.");
         return;
       }
-      setOrderedTasks(
-        update(orderedTasks, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, draggedTask],
-          ],
-        })
-      );
+      apolloClient.cache.writeFragment({
+        id: `${draggedTask.__typename}:${draggedTask.id}`,
+        data: {
+          rank:
+            hoverIndex == 0
+              ? 0
+              : incompleteTasks[hoverIndex].rank + (dragIndex < hoverIndex ? 1 : -1),
+        },
+        fragment: gql`
+          fragment UpdateTaskRank on Task {
+            rank
+          }
+          ${taskFragment}
+        `,
+        fragmentName: "UpdateTaskRank",
+      });
     },
-    [orderedTasks, setOrderedTasks, loadingUpdateTask]
+    [incompleteTasks, loadingUpdateTask, apolloClient.cache]
   );
 
   const updateTaskRank = useCallback(
     (dropIndex: number) => {
-      const taskId = orderedTasks[dropIndex];
-      const task = tasksById[taskId];
-      console.log({ dropIndex, taskId });
-      const parseRank = (rank: string) => parseInt(rank, 36);
-      const lowerBound =
-        dropIndex == 0 ? 0 : parseRank(tasksById[orderedTasks[dropIndex - 1]].rank);
-      const upperBound =
-        dropIndex == orderedTasks.length - 1
-          ? 1e8 - 1
-          : parseRank(tasksById[orderedTasks[dropIndex + 1]].rank);
-      console.log({ lowerBound, upperBound });
-      const newRank = (lowerBound + Math.floor((upperBound - lowerBound) / 2)).toString(36);
+      const task = incompleteTasks[dropIndex];
+      // const parseRank = (rank: string) => parseInt(rank, 36);
 
-      updateTask({
-        variables: {
-          taskId,
-          data: { rank: { set: newRank } },
-        },
-        optimisticResponse: {
-          updateTask: {
-            __typename: "Task",
-            ...tasksById[taskId],
-            rank: newRank,
+      const lowerRank = dropIndex == 0 ? 0 : incompleteTasks[dropIndex - 1].rank;
+      const upperRank =
+        dropIndex == incompleteTasks.length - 1
+          ? MAX_TASK_RANK
+          : incompleteTasks[dropIndex + 1].rank;
+
+      const newRank = lowerRank + Math.floor((upperRank - lowerRank) / 2);
+      if ([lowerRank, upperRank].includes(newRank)) {
+        // re-rank all tasks
+      } else {
+        updateTask({
+          variables: {
+            taskId: task.id,
+            data: { rank: { set: newRank } },
           },
-        },
-      }).then(console.log);
-
-      // Promise.all(tasks
-      //   .filter((task) => {
-      //     return task.position > item.index && task.id != item.id;
-      //   })
-      //   .map((task, index) => {
-      //     console.log(task.position, index);
-      //     console.log("new position", item.index + index + 1);
-      //     const newPosition = item.index + index + 1;
-      //     return updateTask({
-      //       variables: {
-      //         taskId: task.id,
-      //         data: { position: { set: newPosition } },
-      //       },
-      //       optimisticResponse: {
-      //         updateTask: {
-      //           __typename: "Task",
-      //           ...task,
-      //           position: newPosition,
-      //         },
-      //       },
-      //     });
-      //   }))
-      //   .then(() => {
-      //     console.log("promises resolved");
-      //     updateTask({
-      //       variables: {
-      //         taskId: item.id,
-      //         data: { position: { set: item.index } },
-      //       },
-      //       optimisticResponse: {
-      //         updateTask: {
-      //           __typename: "Task",
-      //           ...tasks.find((task) => task.id == item.id),
-      //           position: item.index,
-      //         },
-      //       },
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+          optimisticResponse: {
+            updateTask: {
+              __typename: "Task",
+              ...task,
+              rank: newRank,
+            },
+          },
+        }).then(console.log);
+      }
     },
-    [orderedTasks]
+    [incompleteTasks, updateTask]
   );
-
-  // useEffect(() => {
-  //   console.log("useEffect");
-  //   debounce(() => {
-  //     return Promise.all(
-  //       orderedTasks.map((task, index) => {
-  //         if (task.position === index) return;
-  //         console.log("useEffect.debounce.updateTask");
-  //         return updateTask({
-  //           variables: {
-  //             taskId: task.id,
-  //             data: { position: { set: index } },
-  //           },
-  //           optimisticResponse: {
-  //             updateTask: {
-  //               __typename: "Task",
-  //               ...task,
-  //               position: index,
-  //             },
-  //           },
-  //         });
-  //       })
-  //     ).catch((error) => {
-  //       console.error(error);
-  //     });
-  //   }, 3000)();
-  // }, [orderedTasks, updateTask]);
 
   const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
     // console.log(field, value);
     setNewTask({ ...newTask, [field]: value });
   };
+
   const handleNewTaskSubmit = async () => {
     setAddingNewTask(false);
     if (session?.user) {
@@ -250,7 +184,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         variables: {
           data: {
             ...newTask,
-            position: orderedTasks.length,
+            rank: MAX_TASK_RANK,
             user: {
               connect: {
                 id: session.user.id,
@@ -268,7 +202,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             subtasks: [],
             completedAt: null,
             archivedAt: null,
-            rank: "zzzzz",
+            rank: MAX_TASK_RANK,
             createdAt: new Date().toISOString(),
             ...newTask,
             __typename: "Task",
@@ -281,6 +215,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     }
     setNewTask({});
   };
+
   return (
     <div>
       <Box display="flex" padding="0.25rem">
@@ -323,10 +258,10 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orderedTasks.map((taskId, index) => (
+            {incompleteTasks.map((task, index) => (
               <TaskRow
-                key={taskId}
-                task={tasksById[taskId]}
+                key={task.id}
+                task={task}
                 index={index}
                 move={moveTaskRow}
                 onDrop={updateTaskRank}

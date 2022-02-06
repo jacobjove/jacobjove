@@ -16,7 +16,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 interface PlannerPageProps {
   session: Session;
@@ -52,11 +52,71 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
     // so we are able to know if it is fetching more data.
     // notifyOnNetworkStatusChange: true,
   });
+
+  const { calendarEvents, calendars, habits, tasks } = data ?? {};
+  const dateSelectorBoxHeight = "2.5rem";
+
+  const dateSelectorBox = useMemo(
+    () => (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        sx={{
+          borderBottom: (theme) => `1px solid
+            ${theme.palette.divider}`,
+        }}
+        height={dateSelectorBoxHeight}
+      >
+        <DateSelector date={selectedDate} setDate={setSelectedDate} />
+      </Box>
+    ),
+    [selectedDate, setSelectedDate]
+  );
+
+  const calendarViewerGrid = useMemo(
+    () => (
+      <Grid item xs={12} md={6} order={{ xs: 2, sm: 1 }} height={"100%"} maxHeight={"100%"}>
+        <Card sx={{ height: "100%", maxHeight: "100%", marginRight: "0.75rem" }}>
+          <CardContent sx={{ height: "100%", maxHeight: "100%" }}>
+            <CalendarViewer
+              loading={loading}
+              data={{ calendarEvents: calendarEvents ?? [], calendars: calendars ?? [] }}
+              error={error}
+              defaultView="day"
+              collapseMenu={true}
+              includeDateSelector={false}
+            />
+          </CardContent>
+        </Card>
+      </Grid>
+    ),
+    [calendarEvents, calendars, loading, error]
+  );
+
+  const taskGrid = useMemo(
+    () => (
+      <Grid
+        item
+        container
+        xs={12}
+        md={6}
+        order={{ xs: 1, sm: 2 }}
+        flexDirection="column"
+        maxHeight={isMobile ? "35vh" : "auto"}
+      >
+        <Paper>
+          <TasksTable data={{ tasks: tasks ?? [] }} />
+        </Paper>
+      </Grid>
+    ),
+    [tasks, isMobile]
+  );
+
   if (!session || !data) {
     return null;
   }
-  const { calendarEvents, calendars, habits, tasks } = data;
-  const dateSelectorBoxHeight = "2.5rem";
+
   return (
     <Layout>
       <NextSeo
@@ -67,18 +127,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
         nofollow
       />
       <Container maxWidth="lg" sx={{ height: "100%", maxHeight: "100%" }}>
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{
-            borderBottom: (theme) => `1px solid
-            ${theme.palette.divider}`,
-          }}
-          height={dateSelectorBoxHeight}
-        >
-          <DateSelector date={selectedDate} setDate={setSelectedDate} />
-        </Box>
+        {dateSelectorBox}
         <Grid
           container
           justifyContent="center"
@@ -86,33 +135,8 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
           maxHeight={`calc(100% - ${dateSelectorBoxHeight})`}
           padding={"0.25rem"}
         >
-          <Grid item xs={12} md={6} order={{ xs: 2, sm: 1 }} height={"100%"} maxHeight={"100%"}>
-            <Card sx={{ height: "100%", maxHeight: "100%", marginRight: "0.75rem" }}>
-              <CardContent sx={{ height: "100%", maxHeight: "100%" }}>
-                <CalendarViewer
-                  loading={loading}
-                  data={{ calendarEvents, calendars }}
-                  error={error}
-                  defaultView="day"
-                  collapseMenu={true}
-                  includeDateSelector={false}
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid
-            item
-            container
-            xs={12}
-            md={6}
-            order={{ xs: 1, sm: 2 }}
-            flexDirection="column"
-            maxHeight={isMobile ? "35vh" : "auto"}
-          >
-            <Paper>
-              <TasksTable data={{ tasks }} />
-            </Paper>
-          </Grid>
+          {calendarViewerGrid}
+          {taskGrid}
         </Grid>
       </Container>
     </Layout>

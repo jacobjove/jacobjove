@@ -287,7 +287,7 @@ model Task {
   habitId        Int?
   habit          Habit?          @relation(fields: [habitId], references: [id])
   subtasks       Task[]          @relation("children")
-  rank           String          @default(dbgenerated("'' || floor(random() * power(10, 5))"))
+  rank           Int             @default(dbgenerated("floor(random() * power(10, 9))"))
   completedAt    DateTime?
   calendarEvents CalendarEvent[]
 

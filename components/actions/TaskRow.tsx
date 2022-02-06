@@ -4,7 +4,7 @@ import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
 import DateContext from "@/components/DateContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
@@ -26,7 +26,7 @@ import { format, isPast, isSameDay, isSameYear, parseISO } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useSession } from "next-auth/react";
-import { FC, useContext, useRef, useState } from "react";
+import { FC, RefObject, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
 interface TaskRowProps {
@@ -35,6 +35,9 @@ interface TaskRowProps {
   index?: number;
   move?: (dragIndex: number, hoverIndex: number) => void;
   onDrop?: (dropIndex: number) => void;
+  dndRef?: RefObject<HTMLTableRowElement>;
+  isDragging: boolean;
+  onLoading: (loading: boolean) => void;
 }
 
 const READ_TASKS = gql`
@@ -49,38 +52,39 @@ const READ_TASKS = gql`
 type DraggedTask = Pick<Task, "id" | "title" | "rank"> & { index: number };
 
 const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
-  const { task, collapsed: _collapsed, index: _index, move, onDrop } = props;
-  const index = _index ?? 0;
+  const { task, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
   const completed = Boolean(task.completedAt);
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
   const today = useContext(DateContext);
-  const ref = useRef<HTMLTableRowElement>(null);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [editing, setEditing] = useState(false);
   const [actionInProgress, setActionInProgress] = useState(false);
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const menuState = usePopupState({ variant: "popper", popupId: `task-${task.id}-menu` });
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
-  const {
-    data: tasksData,
-    loading: loadingTasks,
-    error: errorLoadingTasks,
-  } = useQuery<{
-    tasks: Task[];
-  }>(READ_TASKS, {
-    variables: {
-      where: {
-        userId: {
-          equals: session?.user?.id,
-        },
-      },
-    },
-    fetchPolicy: "cache-only",
-  });
-  const { tasks } = tasksData ?? { tasks: [] };
-  const [updateTask, { loading: loadingUpdateTask }] = useMutation(UPDATE_TASK);
-  const loading = loadingTasks || loadingUpdateTask;
+  // const {
+  //   data: tasksData,
+  //   loading: loadingTasks,
+  //   error: errorLoadingTasks,
+  // } = useQuery<{
+  //   tasks: Task[];
+  // }>(READ_TASKS, {
+  //   variables: {
+  //     where: {
+  //       userId: {
+  //         equals: session?.user?.id,
+  //       },
+  //     },
+  //   },
+  //   fetchPolicy: "cache-only",
+  // });
+  // const { tasks } = tasksData ?? { tasks: [] };
+  const [updateTask, { loading }] = useMutation(UPDATE_TASK);
+  useEffect(() => {
+    onLoading(loading);
+  }, [loading]);
+
   const toggleCompletion = (complete: boolean) => {
     if (!session?.user.id) return;
     const completedAt = complete ? new Date().toISOString() : null;
@@ -104,90 +108,6 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     });
   };
 
-  const [{ isDragging }, dragRef] = useDrag(
-    () => ({
-      type: "task",
-      item: {
-        type: "task",
-        id: task.id,
-        index: index,
-      },
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-    }),
-    [index]
-  );
-
-  const [{ handlerId, canDrop }, dropRef] = useDrop(
-    () => ({
-      accept: ["task"],
-      canDrop: () => !loading,
-      drop: (item: DraggedTask) => {
-        if (!session) return;
-        onDrop?.(item.index);
-        if (errorLoadingTasks) {
-          console.error(errorLoadingTasks);
-          return;
-        }
-      },
-      hover(item: DraggedTask, monitor: DropTargetMonitor) {
-        if (!ref.current || !move) {
-          return;
-        }
-        const dragIndex = item.index;
-        const hoverIndex = index;
-
-        // Don't replace items with themselves.
-        if (dragIndex === hoverIndex) {
-          return;
-        }
-
-        // Determine rectangle on screen
-        const hoverBoundingRect = ref.current?.getBoundingClientRect();
-
-        // Get vertical middle
-        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-        // Determine mouse position
-        const clientOffset = monitor.getClientOffset();
-
-        // Get pixels to the top
-        const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-
-        // Only perform the move when the mouse has crossed half of the items height.
-        // When dragging downwards, only move when the cursor is below 50%.
-        // When dragging upwards, only move when the cursor is above 50%.
-
-        // Dragging downwards
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-          return;
-        }
-
-        // Dragging upwards
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-          return;
-        }
-
-        // Time to actually perform the action
-        move(dragIndex, hoverIndex);
-
-        // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
-        item.index = hoverIndex;
-        console.log("item.index", item.index);
-      },
-      collect: (monitor) => ({
-        handlerId: monitor.getHandlerId(),
-        isOver: !!monitor.isOver(),
-        canDrop: !!monitor.canDrop(),
-      }),
-    }),
-    [move]
-  );
-
   const isHabit = Boolean(task.habit);
 
   const dueDate = task.dueDate ? parseISO(task.dueDate) : null;
@@ -198,7 +118,6 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     )
   ) : "";
 
-  dragRef(dropRef(ref));
   const bindTriggerProps = bindTrigger(dialogState);
   const menuTriggerProps = bindTrigger(menuState);
   const originalOnClick = menuTriggerProps.onClick;
@@ -209,8 +128,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   return (
     <>
       <TableRow
-        ref={ref}
-        data-handler-id={handlerId}
+        ref={dndRef}
         onClick={bindTriggerProps.onClick}
         sx={{
           opacity: isDragging ? 0 : 1,
@@ -340,7 +258,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                       }}
                       {...bindTriggerProps}
                     >
-                      {task.title} (i: {index}, rank: {task.rank})
+                      {task.title} (rank: {task.rank})
                     </Button>
                   </Box>
                 </Box>
@@ -499,11 +417,107 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       </TableRow>
       {!collapsed &&
         task.subtasks?.map((subtask) => {
-          return <TaskRow key={subtask.id} task={subtask} collapsed={!subtasksExpanded} />;
+          return null; //<TaskRow key={subtask.id} task={subtask} collapsed={!subtasksExpanded} />;
         })}
       <ActionDialog {...bindPopover(dialogState)} task={task} />
     </>
   );
 };
 
-export default TaskRow;
+const TaskRowDndLayer = (props: TaskRowProps) => {
+  const { task, index: _index, onDrop, move } = props;
+  const index = _index ?? 0;
+
+  const { data: session } = useSession();
+  const ref = useRef<HTMLTableRowElement>(null);
+  const [loading, setLoading] = useState(false);
+
+  const [{ isDragging }, dragRef] = useDrag(
+    () => ({
+      type: "task",
+      item: {
+        type: "task",
+        id: task.id,
+        index,
+      },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [index]
+  );
+
+  const [{ handlerId, canDrop }, dropRef] = useDrop(
+    () => ({
+      accept: ["task"],
+      canDrop: () => !loading,
+      drop: (item: DraggedTask) => {
+        if (!session) return;
+        onDrop?.(item.index);
+      },
+      hover(item: DraggedTask, monitor: DropTargetMonitor) {
+        if (!ref.current || !move) {
+          return;
+        }
+        const dragIndex = item.index;
+        const hoverIndex = index;
+
+        // Don't replace items with themselves.
+        if (dragIndex === hoverIndex) {
+          return;
+        }
+
+        // Determine rectangle on screen
+        const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
+        // Get vertical middle
+        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+        // Determine mouse position
+        const clientOffset = monitor.getClientOffset();
+
+        // Get pixels to the top
+        const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+
+        // Only perform the move when the mouse has crossed half of the items height.
+        // When dragging downwards, only move when the cursor is below 50%.
+        // When dragging upwards, only move when the cursor is above 50%.
+
+        // Dragging downwards
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+
+        // Dragging upwards
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
+
+        // Time to actually perform the action
+        move(dragIndex, hoverIndex);
+
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        item.index = hoverIndex;
+        console.log("item.index", item.index);
+      },
+      collect: (monitor) => ({
+        handlerId: monitor.getHandlerId(),
+        isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop(),
+      }),
+    }),
+    [move]
+  );
+
+  dragRef(dropRef(ref));
+
+  return useMemo(
+    () => <TaskRow {...props} dndRef={ref} isDragging={isDragging} onLoading={setLoading} />,
+    [isDragging]
+  );
+};
+
+export default TaskRowDndLayer;
