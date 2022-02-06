@@ -35,7 +35,7 @@ const MENU_ITEMS: MenuItem[][] = [
   [
     ["Dashboard", "/app/dashboard", DashboardIcon],
     ["Calendar", "/app/calendar", TodayIcon],
-    ["Tasks", "/app/tasks", FormatListBulletedIcon],
+    ["Planner", "/app/planner", FormatListBulletedIcon],
   ],
   [
     ["Psychology", "/app/psychology", PsychologyIcon],

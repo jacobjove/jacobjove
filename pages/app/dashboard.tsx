@@ -150,7 +150,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
         await createDashboard({
           variables: {
             data: {
-              name: "Default Dashboard",
+              name: "Daily Planner",
               isDefault: true,
               layouts: JSON.stringify(DEFAULT_LAYOUTS),
               user: { connect: { id: session.user.id } },
@@ -185,9 +185,9 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
             {editing ? (
               <TextField
                 variant="standard"
-                value={"Default Dashboard"}
+                value={selectedDashboard.name}
                 onChange={() => {
-                  console.log("onChange");
+                  alert("Not yet implemented.");
                 }}
               />
             ) : (
