@@ -1,4 +1,5 @@
-import TasksTable, { fragment as actionsBoxFragment } from "@/components/actions/TasksTable";
+import TasksBox from "@/components/actions/TasksBox";
+import { fragment as tasksBoxFragment } from "@/components/actions/TasksTable";
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
 import { CalendarData } from "@/components/calendar/views/props";
 import Layout from "@/components/Layout";
@@ -26,7 +27,7 @@ const QUERY = gql`
     ...TasksTable
   }
   ${calendarViewerFragment}
-  ${actionsBoxFragment}
+  ${tasksBoxFragment}
 `;
 
 const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProps) => {
@@ -97,7 +98,7 @@ const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProp
           }}
         >
           <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
-            <TasksTable data={{ tasks }} />
+            <TasksBox data={{ tasks }} />
           </Box>
         </Card>
       </Box>
