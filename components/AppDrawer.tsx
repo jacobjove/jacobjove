@@ -7,6 +7,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import HomeIcon from "@mui/icons-material/Home";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import NotesIcon from "@mui/icons-material/Notes";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -30,11 +31,11 @@ import { FC, Fragment, ReactNode, useContext } from "react";
 type MenuItem = [string, string, typeof DashboardIcon];
 
 const MENU_ITEMS: MenuItem[][] = [
-  [["Dashboard", "/app/dashboard", DashboardIcon]],
+  [["Home", "/app/home", HomeIcon]],
   [
+    ["Dashboard", "/app/dashboard", DashboardIcon],
     ["Calendar", "/app/calendar", TodayIcon],
     ["Tasks", "/app/tasks", FormatListBulletedIcon],
-    ["Notes", "/app/notes", NotesIcon],
   ],
   [
     ["Psychology", "/app/psychology", PsychologyIcon],
@@ -43,6 +44,7 @@ const MENU_ITEMS: MenuItem[][] = [
     ["Finances", "/app/finances", AccountBalanceIcon],
   ],
   [
+    ["Notes", "/app/notes", NotesIcon],
     ["Book list", "/app/booklist", BookIcon],
     ["Music", "/app/music", MusicNoteIcon],
     ["Experiments", "/app/experiments", ScienceIcon],

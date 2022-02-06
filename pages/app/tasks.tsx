@@ -2,7 +2,7 @@ import TasksTable, { fragment as actionsBoxFragment } from "@/components/actions
 import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
 import DateSelector from "@/components/dates/DateSelector";
 import Layout from "@/components/Layout";
-import { Calendar, CalendarEvent, Habit, Task } from "@/graphql/schema";
+import { Calendar, CalendarEvent, Task } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -35,7 +35,6 @@ const QUERY = gql`
 interface TasksPageData {
   calendarEvents: CalendarEvent[];
   calendars: Calendar[];
-  habits: Habit[];
   tasks: Task[];
 }
 
@@ -55,7 +54,7 @@ const TasksPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session || !data) {
     return null;
   }
-  const { calendarEvents, calendars, habits, tasks } = data;
+  const { calendarEvents, calendars, tasks } = data;
   const dateSelectorBoxHeight = "2.5rem";
   return (
     <Layout>

@@ -1,13 +1,15 @@
-import CalendarViewer, {
-  fragment as calendarViewerFragment,
-} from "@/components/calendar/CalendarViewer";
+import TasksTable, { fragment as actionsBoxFragment } from "@/components/actions/TasksTable";
+import CalendarViewer, { fragment as calendarViewerFragment } from "@/components/calendar";
 import { CalendarData } from "@/components/calendar/views/props";
 import Layout from "@/components/Layout";
 import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
+import { Task } from "@/graphql/schema";
 import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
 import { gql, useQuery } from "@apollo/client";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
@@ -21,19 +23,23 @@ interface CalendarPageProps {
 const QUERY = gql`
   query CalendarPage($userId: Int!, $date: DateTime!) {
     ...CalendarViewer
+    ...TasksTable
   }
   ${calendarViewerFragment}
+  ${actionsBoxFragment}
 `;
 
 const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProps) => {
   const { data: session } = useSession();
-  const { loading, error, data } = useQuery<CalendarData>(QUERY, {
+  const { loading, error, data } = useQuery<CalendarData & { tasks: Task[] }>(QUERY, {
     variables: {
       userId: session?.user?.id,
       date: dateISO,
     },
   });
-  if (!session || !data) return null; // TODO
+  const displaySideBySide = useMediaQuery(json2mq({ minWidth: "1000px" }));
+  if (!session || !data) return null;
+  const { calendarEvents, calendars, tasks } = data;
   return (
     <Layout>
       <NextSeo
@@ -43,14 +49,31 @@ const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProp
         noindex
         nofollow
       />
-      <Box display="flex" justifyContent="center" height={"100%"} maxHeight={"100%"}>
-        <Box width="100%" maxWidth={"50rem"} height={"100%"} maxHeight={"100%"}>
-          <Card sx={{ height: "100%" }}>
-            <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
-              <CalendarViewer data={data} loading={loading} error={error} includeDateSelector />
-            </Box>
-          </Card>
-        </Box>
+      <Box display="flex" justifyContent="center" width="100%" height={"100%"} maxHeight={"100%"}>
+        <Card
+          sx={{
+            height: "100%",
+            maxHeight: "100%",
+            maxWidth: "40rem",
+            flexBasis: displaySideBySide ? "50%" : "100%",
+            flexGrow: 1,
+            flexShrink: 0,
+          }}
+        >
+          <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
+            <CalendarViewer
+              data={{ calendarEvents, calendars }}
+              loading={loading}
+              error={error}
+              includeDateSelector
+            />
+          </Box>
+        </Card>
+        <Card sx={{ height: "100%", flexGrow: 1 }}>
+          <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
+            <TasksTable data={{ tasks }} />
+          </Box>
+        </Card>
       </Box>
     </Layout>
   );

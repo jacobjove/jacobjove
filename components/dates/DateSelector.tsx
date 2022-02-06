@@ -20,16 +20,16 @@ interface DateSelectorProps {
   onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
+// TODO: refactor...
 const FORMAT_A = "MMMM d, yyyy";
 const FORMAT_B = "MMM d, yyyy";
-const FORMAT_C = "M/d/yyyy";
-const FORMAT_D = "M/d/yy";
-
+const FORMAT_C = "yyyy-M-d";
+const FORMAT_D = "M/d";
 const FORMAT_CH_LENGTHS: Record<string, number> = {
   [FORMAT_A]: 16,
   [FORMAT_B]: 12,
   [FORMAT_C]: 8,
-  [FORMAT_D]: 6,
+  [FORMAT_D]: 3,
 };
 
 const DateSelector: FC<DateSelectorProps> = ({
@@ -44,7 +44,9 @@ const DateSelector: FC<DateSelectorProps> = ({
 }: DateSelectorProps) => {
   const [open, setOpen] = useState(false);
 
-  // TODO: determine if there's a more efficient way to do this
+  // TODO: determine if there's a more efficient way to do this...
+  // Also, it would be way better to use container queries instead of media queries...
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries
   const canUseFormatA = useMediaQuery(json2mq({ minWidth: "720px" }));
   const canUseFormatB = useMediaQuery(json2mq({ minWidth: "455px" }));
   const canUseFormatC = useMediaQuery(json2mq({ minWidth: "450px" }));

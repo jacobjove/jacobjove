@@ -40,7 +40,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (props: PlannerPageProps) => {
   if (!session) {
     return null;
   }
-  const { calendarEvents, calendars, habits, tasks } = data;
+  const { calendarEvents, calendars, tasks } = data;
   return (
     <Layout>
       <NextSeo

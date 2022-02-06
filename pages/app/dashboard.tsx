@@ -30,7 +30,7 @@ import { useEffect, useState } from "react";
 const DEFAULT_LAYOUTS: DashboardLayouts = {
   xs: [
     { i: "calendar", x: 0, y: 0, w: 4, h: 6, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "tasks", x: 0, y: 1, w: 4, h: 4, minH: 4, resizeHandles: ["se", "sw"] },
+    { i: "tasks", x: 0, y: 1, w: 4, h: 6, minH: 4, resizeHandles: ["se", "sw"] },
     // { i: "identities", x: 0, y: 2, w: 4, h: 1, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "values", x: 0, y: 3, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "topics", x: 0, y: 4, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
