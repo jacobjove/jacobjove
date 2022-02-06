@@ -1,3 +1,4 @@
+import TasksBoard from "@/components/actions/TasksBoard";
 import TasksTable, { TasksTableProps } from "@/components/actions/TasksTable";
 import DateSelector from "@/components/dates/DateSelector";
 // import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -82,8 +83,14 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
             {!fullScreen ? <ZoomOutMapIcon /> : <CloseFullscreenIcon />}
           </IconButton>
         </Box>
-      </Box>{" "}
-      <TasksTable {...tasksTableProps} />
+      </Box>
+      <Box flex={"1 1 auto"} minHeight={0}>
+        {view === "list" ? (
+          <TasksTable {...tasksTableProps} />
+        ) : (
+          <TasksBoard {...tasksTableProps} />
+        )}
+      </Box>
     </Box>
   );
   if (fullScreen) return createPortal(renderedComponent, document.body);
