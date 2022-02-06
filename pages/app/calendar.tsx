@@ -69,7 +69,7 @@ const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProp
             flexBasis: "50%",
             flexGrow: 1,
             flexShrink: 0,
-            m: "0.5rem",
+            m: "0.25rem",
           }}
         >
           <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
@@ -87,11 +87,11 @@ const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProp
             maxWidth: "40rem",
             height: "100%",
             maxHeight: "100%",
+            m: "0.25rem",
             ...(displaySideBySide
               ? {
-                  flexBasis: displaySideBySide ? "50%" : "100%",
+                  flexBasis: "50%",
                   flexGrow: 1,
-                  m: "0.5rem",
                 }
               : {}),
           }}
