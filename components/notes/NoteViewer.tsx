@@ -47,11 +47,6 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
       return updateNote(mutationOptions, ...rest).catch((error) => console.error(error));
     }, MUTATION_DEBOUNCE_DELAY)
   );
-  const abortLatest = () => {
-    if (abortController.current) {
-      abortController.current.abort();
-    }
-  };
   return (
     <Paper
       sx={{
@@ -70,7 +65,7 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
           value={noteTitle || "Untitled note"}
           onChange={(event) => {
             setNoteTitle(event.target.value);
-            abortLatest();
+            abortController.current?.abort();
             handleUpdateNote.current({
               variables: {
                 noteId: note.id,
@@ -102,7 +97,7 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
           value={noteBody || ""}
           onChange={(event) => {
             setNoteBody(event.target.value);
-            abortLatest();
+            abortController.current?.abort();
             handleUpdateNote.current({
               variables: {
                 noteId: note.id,
