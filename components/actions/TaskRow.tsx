@@ -4,7 +4,7 @@ import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
 import DateContext from "@/components/DateContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
@@ -35,51 +35,30 @@ interface TaskRowProps {
   index?: number;
   move?: (dragIndex: number, hoverIndex: number) => void;
   onDrop?: (dropIndex: number) => void;
-  dndRef?: RefObject<HTMLTableRowElement>;
-  isDragging: boolean;
-  onLoading: (loading: boolean) => void;
 }
 
-const READ_TASKS = gql`
-  query ReadTasks($where: TaskWhereInput) {
-    tasks(where: $where) {
-      id
-      rank
-    }
-  }
-`;
+interface TaskRowContentProps extends TaskRowProps {
+  dndRef: RefObject<HTMLTableRowElement>;
+  isDragging: boolean;
+  onLoading: (loading: boolean) => void;
+  editing: boolean;
+  setEditing: (editing: boolean) => void;
+}
 
 type DraggedTask = Pick<Task, "id" | "title" | "rank"> & { index: number };
 
-const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
-  const { task, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
+const TaskRowContent: FC<TaskRowContentProps> = (props) => {
+  const { task, collapsed: _collapsed, dndRef, isDragging, onLoading, editing, setEditing } = props;
   const completed = Boolean(task.completedAt);
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
   const today = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const [editing, setEditing] = useState(false);
   const [actionInProgress, setActionInProgress] = useState(false);
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const menuState = usePopupState({ variant: "popper", popupId: `task-${task.id}-menu` });
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
-  // const {
-  //   data: tasksData,
-  //   loading: loadingTasks,
-  //   error: errorLoadingTasks,
-  // } = useQuery<{
-  //   tasks: Task[];
-  // }>(READ_TASKS, {
-  //   variables: {
-  //     where: {
-  //       userId: {
-  //         equals: session?.user?.id,
-  //       },
-  //     },
-  //   },
-  //   fetchPolicy: "cache-only",
-  // });
-  // const { tasks } = tasksData ?? { tasks: [] };
+
   const [updateTask, { loading }] = useMutation(UPDATE_TASK);
   useEffect(() => {
     onLoading(loading);
@@ -125,11 +104,14 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     event.stopPropagation();
     originalOnClick(event);
   };
+
   return (
     <>
       <TableRow
         ref={dndRef}
-        onClick={bindTriggerProps.onClick}
+        onClick={(e) => {
+          if (!editing) bindTriggerProps.onClick(e);
+        }}
         sx={{
           opacity: isDragging ? 0 : 1,
           // TODO: A CSS transition would be nice here...
@@ -416,21 +398,22 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         )}
       </TableRow>
       {!collapsed &&
-        task.subtasks?.map((subtask) => {
-          return null; //<TaskRow key={subtask.id} task={subtask} collapsed={!subtasksExpanded} />;
-        })}
+        task.subtasks?.map((subtask) => (
+          <TaskRow key={subtask.id} task={subtask} collapsed={!subtasksExpanded} />
+        ))}
       <ActionDialog {...bindPopover(dialogState)} task={task} />
     </>
   );
 };
 
-const TaskRowDndLayer = (props: TaskRowProps) => {
+const TaskRow = (props: TaskRowProps) => {
   const { task, index: _index, onDrop, move } = props;
   const index = _index ?? 0;
 
   const { data: session } = useSession();
   const ref = useRef<HTMLTableRowElement>(null);
   const [loading, setLoading] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
@@ -443,8 +426,9 @@ const TaskRowDndLayer = (props: TaskRowProps) => {
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
+      canDrag: () => !(editing || loading),
     }),
-    [index]
+    [index, editing, loading]
   );
 
   const [{ handlerId, canDrop }, dropRef] = useDrop(
@@ -509,15 +493,24 @@ const TaskRowDndLayer = (props: TaskRowProps) => {
         canDrop: !!monitor.canDrop(),
       }),
     }),
-    [move]
+    [move, loading]
   );
 
   dragRef(dropRef(ref));
 
-  return useMemo(
-    () => <TaskRow {...props} dndRef={ref} isDragging={isDragging} onLoading={setLoading} />,
-    [isDragging]
-  );
+  return useMemo(() => {
+    // console.log("TASK ROW RENDER");
+    return (
+      <TaskRowContent
+        {...props}
+        dndRef={ref}
+        isDragging={isDragging}
+        onLoading={setLoading}
+        editing={editing}
+        setEditing={setEditing}
+      />
+    );
+  }, [props.task, isDragging, editing]);
 };
 
-export default TaskRowDndLayer;
+export default TaskRow;
