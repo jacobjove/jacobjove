@@ -4,21 +4,21 @@ import NativeSelect from "@mui/material/NativeSelect";
 import _Select, { SelectChangeEvent, SelectProps as _SelectProps } from "@mui/material/Select";
 import { ChangeEvent, FC, ReactElement, useContext } from "react";
 
+// prettier-ignore
 type Option = {
   value: string;
   // Allow overriding the onChange behavior for a specific option via `onSelect`.
   onSelect?: () => void;
 } & (
-  | // On mobile, require a string for the label (either through `label` or `nativeSelectLabel`),
-  // since we use the native select and the native select requires string labels.
+  // On mobile, require a string for the label (through `nativeSelectLabel` if not
+  // through `label`), since we use the native select (which requires string labels).
   {
-      label: string;
-      nativeSelectLabel?: string;
-    }
-  | {
-      label: ReactElement;
-      nativeSelectLabel: string;
-    }
+    label: string;
+    nativeSelectLabel?: string;
+  } | {
+    label: ReactElement;
+    nativeSelectLabel: string;
+  }
 );
 
 type SelectProps = Omit<_SelectProps, "children" | "onChange"> & {
