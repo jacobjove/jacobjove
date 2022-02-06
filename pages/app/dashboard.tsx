@@ -206,7 +206,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
                         <AddIcon /> {"Add new dashboard"}
                       </>
                     ),
-                    mobileLabel: "+ Add new dashboard",
+                    nativeSelectLabel: "+ Add new dashboard",
                     onSelect: () => {
                       alert("This functionality is not yet implemented.");
                     },

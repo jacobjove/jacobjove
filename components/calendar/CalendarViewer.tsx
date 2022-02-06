@@ -10,6 +10,7 @@ import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
 import CalendarViewMonthIcon from "@mui/icons-material/CalendarViewMonth";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
+import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import GoogleIcon from "@mui/icons-material/Google";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
@@ -220,8 +221,11 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                 Close
               </MenuItem>
             </Menu>
-            <IconButton title={`Expand to full screen`} onClick={() => setFullScreen(!fullScreen)}>
-              <ZoomOutMapIcon />
+            <IconButton
+              title={!fullScreen ? `Expand to full screen` : `Exit full screen`}
+              onClick={() => setFullScreen(!fullScreen)}
+            >
+              {!fullScreen ? <ZoomOutMapIcon /> : <CloseFullscreenIcon />}
             </IconButton>
           </Box>
         </Box>

@@ -4,12 +4,22 @@ import NativeSelect from "@mui/material/NativeSelect";
 import _Select, { SelectChangeEvent, SelectProps as _SelectProps } from "@mui/material/Select";
 import { ChangeEvent, FC, ReactElement, useContext } from "react";
 
-interface Option {
-  label: string | ReactElement; // Label could be, e.g., a fragment containing an icon followed by a string.
-  mobileLabel?: string; // On mobile, we use the native select, which requires a string for the label.
+type Option = {
   value: string;
-  onSelect?: () => void; // Overrides the onChange behavior for a specific option.
-}
+  // Allow overriding the onChange behavior for a specific option via `onSelect`.
+  onSelect?: () => void;
+} & (
+  | // On mobile, require a string for the label (either through `label` or `nativeSelectLabel`),
+  // since we use the native select and the native select requires string labels.
+  {
+      label: string;
+      nativeSelectLabel?: string;
+    }
+  | {
+      label: ReactElement;
+      nativeSelectLabel: string;
+    }
+);
 
 type SelectProps = Omit<_SelectProps, "children" | "onChange"> & {
   options: Option[];
@@ -56,21 +66,7 @@ const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
       onChange={handleChange}
     >
       {options.map((option, index) => {
-        let label = option.mobileLabel ?? option.label;
-        if (typeof label !== "string") {
-          // TODO: Determine if there's a way to make TypeScript enforce supplying
-          // `mobileLabel` (which is a string) if `label` is not a string.
-          console.error("Encountered non-string label in native select:", label);
-          // Try to extract a string from the element.
-          if (label.props?.children) {
-            label = label.props.children
-              .map((child: string | ReactElement) => {
-                if (typeof child === "string") return child;
-                return;
-              })
-              .join("");
-          }
-        }
+        const label = option.nativeSelectLabel ?? option.label;
         return (
           <option key={index} value={option.value}>
             {label}

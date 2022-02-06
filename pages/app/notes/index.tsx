@@ -504,7 +504,7 @@ function NotesMenu({
                         <AddIcon /> {"Create new notebook"}
                       </>
                     ),
-                    mobileLabel: "+ Create new notebook",
+                    nativeSelectLabel: "+ Create new notebook",
                     onSelect: () => setAddingNewNotebook(true),
                   },
                 ]}
