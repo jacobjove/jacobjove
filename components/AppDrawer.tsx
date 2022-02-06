@@ -6,7 +6,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import HomeIcon from "@mui/icons-material/Home";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import NotesIcon from "@mui/icons-material/Notes";
@@ -35,7 +34,6 @@ const MENU_ITEMS: MenuItem[][] = [
   [
     ["Dashboard", "/app/dashboard", DashboardIcon],
     ["Calendar", "/app/calendar", TodayIcon],
-    ["Planner", "/app/planner", FormatListBulletedIcon],
   ],
   [
     ["Psychology", "/app/psychology", PsychologyIcon],
