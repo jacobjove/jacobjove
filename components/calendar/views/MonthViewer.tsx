@@ -1,5 +1,5 @@
 import { ViewerProps } from "@/components/calendar/views/props";
-import DateContext from "@/components/DateContext";
+import DateContext from "@/components/contexts/DateContext";
 import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { addDays, getDay, getWeeksInMonth, isSameDay } from "date-fns";

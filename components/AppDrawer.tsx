@@ -1,3 +1,4 @@
+import DeviceContext from "@/components/contexts/DeviceContext";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import BentoIcon from "@mui/icons-material/Bento";
 import BookIcon from "@mui/icons-material/Book";
@@ -5,7 +6,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import HomeIcon from "@mui/icons-material/Home";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import NotesIcon from "@mui/icons-material/Notes";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -13,26 +14,26 @@ import PsychologyIcon from "@mui/icons-material/Psychology";
 import ScienceIcon from "@mui/icons-material/Science";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
+import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, Fragment } from "react";
+import { FC, Fragment, ReactNode, useContext } from "react";
 
 type MenuItem = [string, string, typeof DashboardIcon];
 
 const MENU_ITEMS: MenuItem[][] = [
-  [["Dashboard", "/app/dashboard", DashboardIcon]],
+  [["Home", "/app/home", HomeIcon]],
   [
+    ["Dashboard", "/app/dashboard", DashboardIcon],
     ["Calendar", "/app/calendar", TodayIcon],
-    ["Tasks", "/app/tasks", FormatListBulletedIcon],
-    ["Notes", "/app/notes", NotesIcon],
   ],
   [
     ["Psychology", "/app/psychology", PsychologyIcon],
@@ -40,6 +41,7 @@ const MENU_ITEMS: MenuItem[][] = [
     ["Fitness", "/app/fitness", FitnessCenterIcon],
     ["Finances", "/app/finances", AccountBalanceIcon],
   ],
+  [["Notes", "/app/notes", NotesIcon]],
   [
     ["Book list", "/app/booklist", BookIcon],
     ["Music", "/app/music", MusicNoteIcon],
@@ -76,14 +78,22 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
+const DrawerHeader: FC<{ open: boolean; children: ReactNode }> = ({ open, children }) => {
+  const theme = useTheme();
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: open ? "end" : "center",
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -111,6 +121,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
   const { open, setOpen } = props;
   const router = useRouter();
   const theme = useTheme();
+  const { isMobile } = useContext(DeviceContext);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -130,7 +141,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
         },
       }}
     >
-      <DrawerHeader>
+      <DrawerHeader open={open}>
         <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
           {theme.direction === "rtl" ? (
             open ? (
@@ -151,12 +162,21 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
           <List>
             {menuItems.map(([label, href, Icon]) => (
               <Link key={label} href={href} passHref>
-                <ListItem button component={"a"} title={label} selected={router.pathname === href}>
+                <ListItemButton
+                  component={"a"}
+                  title={label}
+                  selected={router.pathname === href}
+                  sx={{
+                    width: "100%",
+                    // TODO: This is a hack; fix it.
+                    pl: isMobile ? "12px" : "16px",
+                  }}
+                >
                   <ListItemIcon>
                     <Icon />
                   </ListItemIcon>
                   <ListItemText primary={label} />
-                </ListItem>
+                </ListItemButton>
               </Link>
             ))}
           </List>

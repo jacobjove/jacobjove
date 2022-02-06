@@ -1,5 +1,5 @@
 import { handleLogout } from "@/auth";
-import ColorModeContext from "@/components/ColorModeContext";
+import ColorModeContext from "@/components/contexts/ColorModeContext";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import LogoutIcon from "@mui/icons-material/Logout";

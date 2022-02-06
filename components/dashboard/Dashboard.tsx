@@ -115,7 +115,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       icon: <AddIcon />,
       name: "Add task",
       onClick: () => {
-        console.log("Add task");
+        alert("This functionality is not yet implemented.");
       },
     },
   ];

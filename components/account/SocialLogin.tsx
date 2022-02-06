@@ -41,7 +41,6 @@ const SocialLogin: FC<SocialLoginProps> = ({
     try {
       signIn(provider_id, { callbackUrl });
     } catch (error) {
-      // console.log(error);
       onError(`${error}`);
     }
   };

@@ -18,7 +18,7 @@ const StyledFooter = styled("footer", {
   alignItems: "center",
   justifyContent: "center",
   borderTop: `1px solid ${theme.palette.divider}`,
-  zIndex: 10000,
+  zIndex: 1e4,
 }));
 
 const Footer: FC<FooterProps> = (props: FooterProps) => {

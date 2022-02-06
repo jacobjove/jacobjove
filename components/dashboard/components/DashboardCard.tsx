@@ -1,23 +1,10 @@
 import DragHandle from "@/components/dashboard/components/DragHandle";
+import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Collapse from "@mui/material/Collapse";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { FC, ReactNode } from "react";
-
-const CardTitle: FC<{ title: string }> = ({ title }) => (
-  <Typography
-    component="h3"
-    fontSize="0.8rem"
-    m="0.25rem 0.5rem"
-    fontWeight="bold"
-    sx={{ color: "white" }}
-  >
-    {title}
-  </Typography>
-);
 
 interface DashboardCardProps {
   title: string;
@@ -29,40 +16,45 @@ interface DashboardCardProps {
 
 const StyledCard = styled(Card)(() => ({
   height: "100%",
-  "& .MuiCardHeader-action": {
-    display: "flex",
-    alignItems: "center",
-    margin: 0,
-  },
 }));
 
 const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
-  const displayCardHeader = props.editing || true;
   return (
     <StyledCard className={`${props.editing ? "editing" : "not-editing"}`}>
-      <Collapse in={displayCardHeader}>
-        <CardHeader
-          title={<CardTitle title={props.title} />}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          component="h3"
           sx={{
-            padding: 0,
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.secondary.light
-                : theme.palette.secondary.dark,
-            borderBottom: (theme) =>
-              `1px solid ${
-                theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)"
-              }`,
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            "& .MuiCardHeader-action": {
-              height: "100%",
-            },
+            display: "none", // TODO !!!
+            fontWeight: 700,
+            fontSize: "0.8rem",
+            m: "0.25rem 0.5rem",
+            px: "0.33rem",
+            position: "absolute",
+            top: "-1rem",
+            left: "0.8rem",
+            color: "text.primary",
+            backgroundColor: (theme) => theme.palette.background.default,
+            borderRadius: "0.25rem",
+            border: (theme) => `1px solid ${theme.palette.divider}`,
+            zIndex: 1e6,
           }}
-          action={<DragHandle className={`drag-anchor${!props.editing ? " hidden" : ""}`} />}
+        >
+          {props.title}
+        </Typography>
+        <DragHandle
+          className={`drag-anchor${!props.editing ? " hidden" : ""}`}
+          style={{ marginLeft: "auto" }}
         />
-      </Collapse>
+      </Box>
       <CardContent
         className="no-scrollbar"
         style={{

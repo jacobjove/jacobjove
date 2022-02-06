@@ -2,7 +2,7 @@ import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
-import DateContext from "@/components/DateContext";
+import DateContext from "@/components/contexts/DateContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
@@ -10,6 +10,7 @@ import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
 import CalendarViewMonthIcon from "@mui/icons-material/CalendarViewMonth";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
+import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import GoogleIcon from "@mui/icons-material/Google";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
@@ -91,7 +92,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               bottom: 0,
               backgroundColor: (theme) => theme.palette.background.default,
               padding: "0.5rem",
-              zIndex: 1000000000000000000, // TODO
+              zIndex: 1e14,
             }
           : {}),
       }}
@@ -220,8 +221,11 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                 Close
               </MenuItem>
             </Menu>
-            <IconButton title={`Expand to full screen`} onClick={() => setFullScreen(!fullScreen)}>
-              <ZoomOutMapIcon />
+            <IconButton
+              title={!fullScreen ? `Expand to full screen` : `Exit full screen`}
+              onClick={() => setFullScreen(!fullScreen)}
+            >
+              {!fullScreen ? <ZoomOutMapIcon /> : <CloseFullscreenIcon />}
             </IconButton>
           </Box>
         </Box>

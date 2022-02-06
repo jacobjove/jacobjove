@@ -1,12 +1,16 @@
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { FC } from "react";
+import { FC, HTMLAttributes } from "react";
 
-interface DragHandleProps {
+interface DragHandleProps extends HTMLAttributes<HTMLSpanElement> {
   className?: string;
 }
 
 const DragHandle: FC<DragHandleProps> = (props: DragHandleProps) => {
-  return <DragIndicatorIcon {...props} sx={{ "&:hover": { cursor: "grab" } }} />;
+  return (
+    <span {...props}>
+      <DragIndicatorIcon sx={{ "&:hover": { cursor: "grab" } }} />
+    </span>
+  );
 };
 
 export default DragHandle;

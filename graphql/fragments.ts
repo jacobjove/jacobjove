@@ -168,6 +168,7 @@ export const noteFragment = gql`
     id
     title
     body
+    notebookId
     createdAt
     updatedAt
     archivedAt

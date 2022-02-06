@@ -16,7 +16,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-// import { throttle } from "throttle-debounce";
 import debounce from "lodash/debounce";
 import partition from "lodash/partition";
 import { useSession } from "next-auth/react";
@@ -114,12 +113,10 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   );
 
   useEffect(() => {
-    console.log("useEffect");
     debounce(() => {
       return Promise.all(
         orderedTasks.map((task, index) => {
           if (task.position === index) return;
-          console.log("useEffect.debounce.updateTask");
           return updateTask({
             variables: {
               taskId: task.id,

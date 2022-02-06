@@ -1,5 +1,4 @@
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
-// import { concatPagination } from '@apollo/client/utilities'
 import merge from "deepmerge";
 import isEqual from "lodash/isEqual";
 import { AppProps } from "next/app";

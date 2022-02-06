@@ -79,6 +79,8 @@ model Dashboard {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
   archivedAt DateTime?
+
+  @@unique([name, userId])
 }
 
 enum Color {
