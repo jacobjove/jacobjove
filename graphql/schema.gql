@@ -294,7 +294,7 @@ input AccountWhereUniqueInput {
 }
 
 type Act {
-  _count: ActCount!
+  _count: ActCount
   archivedAt: DateTime
   categorizations(cursor: CategorizationWhereUniqueInput, distinct: [CategorizationScalarFieldEnum!], orderBy: [CategorizationOrderByWithRelationInput!], skip: Int, take: Int, where: CategorizationWhereInput): [Categorization!]!
   createdAt: DateTime!
@@ -1037,7 +1037,7 @@ input ActWhereUniqueInput {
 }
 
 type Action {
-  _count: ActionCount!
+  _count: ActionCount
   archivedAt: DateTime
   createdAt: DateTime!
   end: DateTime!
@@ -1311,7 +1311,7 @@ input ActionScalarWhereWithAggregatesInput {
 }
 
 type ActionSchedule {
-  _count: ActionScheduleCount!
+  _count: ActionScheduleCount
   active: Boolean!
   archivedAt: DateTime
   calendarEvents(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
@@ -1686,7 +1686,7 @@ input ActionScheduleSumOrderByAggregateInput {
 }
 
 type ActionScheduleTemplate {
-  _count: ActionScheduleTemplateCount!
+  _count: ActionScheduleTemplateCount
   act: Act!
   actId: Int!
   actionSchedules(cursor: ActionScheduleWhereUniqueInput, distinct: [ActionScheduleScalarFieldEnum!], orderBy: [ActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleWhereInput): [ActionSchedule!]!
@@ -2723,7 +2723,7 @@ type AggregateValue {
 }
 
 type Author {
-  _count: AuthorCount!
+  _count: AuthorCount
   archivedAt: DateTime
   authorships(cursor: AuthorshipWhereUniqueInput, distinct: [AuthorshipScalarFieldEnum!], orderBy: [AuthorshipOrderByWithRelationInput!], skip: Int, take: Int, where: AuthorshipWhereInput): [Authorship!]!
   createdAt: DateTime!
@@ -3359,7 +3359,7 @@ input AuthorshipWhereUniqueInput {
 }
 
 type Belief {
-  _count: BeliefCount!
+  _count: BeliefCount
   archivedAt: DateTime
   createdAt: DateTime!
   description: String
@@ -3622,7 +3622,7 @@ input BeliefWhereUniqueInput {
 
 type Book {
   BookReview(cursor: BookReviewWhereUniqueInput, distinct: [BookReviewScalarFieldEnum!], orderBy: [BookReviewOrderByWithRelationInput!], skip: Int, take: Int, where: BookReviewWhereInput): [BookReview!]!
-  _count: BookCount!
+  _count: BookCount
   archivedAt: DateTime
   authorNames: [String!]!
   authorNamesLf: [String!]!
@@ -4762,7 +4762,7 @@ input BookWhereUniqueInput {
 }
 
 type Bookshelf {
-  _count: BookshelfCount!
+  _count: BookshelfCount
   archivedAt: DateTime
   createdAt: DateTime!
   description: String
@@ -5190,7 +5190,7 @@ input BoolWithAggregatesFilter {
 }
 
 type Calendar {
-  _count: CalendarCount!
+  _count: CalendarCount
   color: Color
   events(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
   id: Int!
@@ -6641,7 +6641,7 @@ input CategorizationWhereUniqueInput {
 }
 
 type Category {
-  _count: CategoryCount!
+  _count: CategoryCount
   archivedAt: DateTime
   categorizations(cursor: CategorizationWhereUniqueInput, distinct: [CategorizationScalarFieldEnum!], orderBy: [CategorizationOrderByWithRelationInput!], skip: Int, take: Int, where: CategorizationWhereInput): [Categorization!]!
   createdAt: DateTime!
@@ -7043,6 +7043,11 @@ input DashboardMinOrderByAggregateInput {
   userId: SortOrder
 }
 
+input DashboardNameUserIdCompoundUniqueInput {
+  name: String!
+  userId: Int!
+}
+
 input DashboardOrderByRelationAggregateInput {
   _count: SortOrder
 }
@@ -7208,6 +7213,7 @@ input DashboardWhereInput {
 
 input DashboardWhereUniqueInput {
   id: Int
+  name_userId: DashboardNameUserIdCompoundUniqueInput
 }
 
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
@@ -7315,7 +7321,7 @@ enum FREQUENCY {
 }
 
 type Goal {
-  _count: GoalCount!
+  _count: GoalCount
   goal: Goal
   goalId: Int
   habit: Habit!
@@ -7687,7 +7693,7 @@ input GoalWhereUniqueInput {
 }
 
 type Habit {
-  _count: HabitCount!
+  _count: HabitCount
   act: Act!
   actId: Int!
   actions(cursor: ActionWhereUniqueInput, distinct: [ActionScalarFieldEnum!], orderBy: [ActionOrderByWithRelationInput!], skip: Int, take: Int, where: ActionWhereInput): [Action!]!
@@ -8930,7 +8936,7 @@ input IdentificationWhereUniqueInput {
 }
 
 type Identity {
-  _count: IdentityCount!
+  _count: IdentityCount
   actionRelations(cursor: IdentityActRelationWhereUniqueInput, distinct: [IdentityActRelationScalarFieldEnum!], orderBy: [IdentityActRelationOrderByWithRelationInput!], skip: Int, take: Int, where: IdentityActRelationWhereInput): [IdentityActRelation!]!
   description: String
   id: Int!
@@ -9856,7 +9862,7 @@ input JsonWithAggregatesFilter {
 }
 
 type List {
-  _count: ListCount!
+  _count: ListCount
   archivedAt: DateTime
   createdAt: DateTime!
   description: String
@@ -10263,7 +10269,7 @@ input ListWhereUniqueInput {
 }
 
 type Metric {
-  _count: MetricCount!
+  _count: MetricCount
   applications(cursor: MetricApplicationWhereUniqueInput, distinct: [MetricApplicationScalarFieldEnum!], orderBy: [MetricApplicationOrderByWithRelationInput!], skip: Int, take: Int, where: MetricApplicationWhereInput): [MetricApplication!]!
   id: Int!
   name: String!
@@ -11212,7 +11218,7 @@ input MetricUpsertWithoutUsagesInput {
 }
 
 type MetricUsage {
-  _count: MetricUsageCount!
+  _count: MetricUsageCount
   archivedAt: DateTime
   habit: Habit!
   habitId: Int!
@@ -12464,7 +12470,7 @@ input NoteWhereUniqueInput {
 }
 
 type Notebook {
-  _count: NotebookCount!
+  _count: NotebookCount
   archivedAt: DateTime
   createdAt: DateTime!
   description: String
@@ -14066,7 +14072,7 @@ input RedirectWhereUniqueInput {
 }
 
 type Routine {
-  _count: RoutineCount!
+  _count: RoutineCount
   archivedAt: DateTime
   createdAt: DateTime!
   durationInMinutes: Int
@@ -14778,7 +14784,7 @@ input RoutineWhereUniqueInput {
 }
 
 type ScheduleTemplate {
-  _count: ScheduleTemplateCount!
+  _count: ScheduleTemplateCount
   actionScheduleTemplates(cursor: ActionScheduleTemplateWhereUniqueInput, distinct: [ActionScheduleTemplateScalarFieldEnum!], orderBy: [ActionScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): [ActionScheduleTemplate!]!
   chron: String
   frequency: FREQUENCY!
@@ -15486,7 +15492,7 @@ input StringWithAggregatesFilter {
 }
 
 type Task {
-  _count: TaskCount!
+  _count: TaskCount
   archivedAt: DateTime
   calendarEvents(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
   completedAt: DateTime
@@ -16231,7 +16237,7 @@ input TaskWhereUniqueInput {
 }
 
 type User {
-  _count: UserCount!
+  _count: UserCount
   accounts(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], skip: Int, take: Int, where: AccountWhereInput): [Account!]!
   bookReviews(cursor: BookReviewWhereUniqueInput, distinct: [BookReviewScalarFieldEnum!], orderBy: [BookReviewOrderByWithRelationInput!], skip: Int, take: Int, where: BookReviewWhereInput): [BookReview!]!
   bookshelves(cursor: BookshelfWhereUniqueInput, distinct: [BookshelfScalarFieldEnum!], orderBy: [BookshelfOrderByWithRelationInput!], skip: Int, take: Int, where: BookshelfWhereInput): [Bookshelf!]!
@@ -18253,7 +18259,7 @@ input UserWhereUniqueInput {
 }
 
 type Value {
-  _count: ValueCount!
+  _count: ValueCount
   archivedAt: DateTime
   createdAt: DateTime!
   description: String

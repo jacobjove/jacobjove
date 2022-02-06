@@ -41,8 +41,8 @@ const MENU_ITEMS: MenuItem[][] = [
     ["Fitness", "/app/fitness", FitnessCenterIcon],
     ["Finances", "/app/finances", AccountBalanceIcon],
   ],
+  [["Notes", "/app/notes", NotesIcon]],
   [
-    ["Notes", "/app/notes", NotesIcon],
     ["Book list", "/app/booklist", BookIcon],
     ["Music", "/app/music", MusicNoteIcon],
     ["Experiments", "/app/experiments", ScienceIcon],
