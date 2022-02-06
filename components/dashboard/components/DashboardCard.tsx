@@ -45,7 +45,7 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
             backgroundColor: (theme) => theme.palette.background.default,
             borderRadius: "0.25rem",
             border: (theme) => `1px solid ${theme.palette.divider}`,
-            zIndex: 1000000,
+            zIndex: 1e6,
           }}
         >
           {props.title}

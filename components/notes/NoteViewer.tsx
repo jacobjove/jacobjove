@@ -44,9 +44,7 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
       if (mutationOptions) {
         mutationOptions.context = { fetchOptions: { signal: controller.signal } };
       }
-      return Promise.resolve(updateNote(mutationOptions, ...rest)).catch((error) =>
-        console.error(error)
-      );
+      return updateNote(mutationOptions, ...rest).catch((error) => console.error(error));
     }, MUTATION_DEBOUNCE_DELAY)
   );
   const abortLatest = () => {
