@@ -49,15 +49,27 @@ const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProp
         noindex
         nofollow
       />
-      <Box display="flex" justifyContent="center" width="100%" height={"100%"} maxHeight={"100%"}>
+      <Box
+        display="flex"
+        flexDirection={displaySideBySide ? "row" : "column"}
+        justifyContent="center"
+        alignItems="center"
+        width={"100%"}
+        height={"100%"}
+        maxWidth={"100%"}
+        maxHeight={"100%"}
+        px={"0.25rem"}
+      >
         <Card
           sx={{
+            width: "100%",
+            maxWidth: "40rem",
             height: "100%",
             maxHeight: "100%",
-            maxWidth: "40rem",
-            flexBasis: displaySideBySide ? "50%" : "100%",
+            flexBasis: "50%",
             flexGrow: 1,
             flexShrink: 0,
+            m: "0.5rem",
           }}
         >
           <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
@@ -69,7 +81,21 @@ const CalendarPage: NextPage<CalendarPageProps> = ({ dateISO }: CalendarPageProp
             />
           </Box>
         </Card>
-        <Card sx={{ height: "100%", flexGrow: 1 }}>
+        <Card
+          sx={{
+            width: "100%",
+            maxWidth: "40rem",
+            height: "100%",
+            maxHeight: "100%",
+            ...(displaySideBySide
+              ? {
+                  flexBasis: displaySideBySide ? "50%" : "100%",
+                  flexGrow: 1,
+                  m: "0.5rem",
+                }
+              : {}),
+          }}
+        >
           <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
             <TasksTable data={{ tasks }} />
           </Box>
