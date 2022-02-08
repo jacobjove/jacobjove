@@ -29,15 +29,15 @@ import { useEffect, useState } from "react";
 // cols={{ xl: 24, lg: 18, md: 12, sm: 6, xs: 4, xxs: 2 }}
 const DEFAULT_LAYOUTS: DashboardLayouts = {
   xs: [
-    { i: "calendar", x: 0, y: 0, w: 4, h: 6, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "tasks", x: 0, y: 1, w: 4, h: 6, minH: 4, resizeHandles: ["se", "sw"] },
+    { i: "calendar", x: 0, y: 0, w: 4, h: 6, minW: 3, minH: 4, resizeHandles: ["se", "sw"] },
+    { i: "tasks", x: 0, y: 1, w: 4, h: 6, minW: 3, minH: 4, resizeHandles: ["se", "sw"] },
     // { i: "identities", x: 0, y: 2, w: 4, h: 1, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "values", x: 0, y: 3, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "topics", x: 0, y: 4, w: 4, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
   ],
   sm: [
-    { i: "calendar", x: 0, y: 0, w: 4, h: 10, minW: 2, minH: 4, resizeHandles: ["se", "sw"] },
-    { i: "tasks", x: 5, y: 3, w: 2, h: 10, minH: 2, resizeHandles: ["se", "sw"] },
+    { i: "calendar", x: 0, y: 0, w: 3, h: 10, minW: 3, minH: 4, resizeHandles: ["se", "sw"] },
+    { i: "tasks", x: 4, y: 3, w: 3, h: 10, minW: 3, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "identities", x: 9, y: 4, w: 2, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "values", x: 6, y: 5, w: 2, h: 2, minH: 2, resizeHandles: ["se", "sw"] },
     // { i: "topics", x: 9, y: 6, w: 2, h: 2, minH: 2, resizeHandles: ["se", "sw"] },

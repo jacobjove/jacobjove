@@ -1,4 +1,4 @@
-import TasksTable from "@/components/actions/TasksTable";
+import TasksBox from "@/components/actions/TasksBox";
 import CalendarViewer from "@/components/calendar";
 import DashboardCard from "@/components/dashboard/components/DashboardCard";
 import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
@@ -121,7 +121,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   ];
   const children = useMemo(() => {
     if (!data || !session) return [];
-    const { calendarEvents, calendars, habits, tasks, identifications, userValues } = data;
+    const { calendarEvents, calendars, tasks, identifications, userValues } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
       switch (key) {
         case "calendar":
@@ -138,7 +138,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "tasks":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <TasksTable data={{ tasks }} />
+              <TasksBox data={{ tasks }} />
             </DashboardCard>
           );
         case "identities":
