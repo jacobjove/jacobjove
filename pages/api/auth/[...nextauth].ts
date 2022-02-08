@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import NextAuth, { CallbacksOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { AppProviders } from "next-auth/providers";
+import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
@@ -44,6 +45,12 @@ if (useMockProviders) {
   };
   providers.push(
     CredentialsProvider({
+      id: "apple",
+      name: "Mocked Apple",
+      authorize,
+      credentials,
+    }),
+    CredentialsProvider({
       id: "google",
       name: "Mocked Google",
       authorize,
@@ -58,6 +65,10 @@ if (useMockProviders) {
   );
 } else {
   providers.push(
+    AppleProvider({
+      clientId: process.env.AUTH_APPLE_ID ?? "",
+      clientSecret: process.env.AUTH_APPLE_SECRET ?? "",
+    }),
     GoogleProvider({
       clientId: process.env.AUTH_GOOGLE_ID ?? "",
       clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
