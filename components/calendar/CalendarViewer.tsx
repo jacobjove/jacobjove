@@ -1,4 +1,4 @@
-import ApiProviderDialog from "@/components/calendar/ApiProviderDialog";
+import CalendarApiProviderDialog from "@/components/calendar/CalendarApiProviderDialog";
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
@@ -67,7 +67,7 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children,
         <Icon sx={{ color: "lightgray" }} />
         {children}
       </MenuItem>
-      <ApiProviderDialog provider={provider} {...bindMenu(dialogState)} />
+      <CalendarApiProviderDialog provider={provider} {...bindMenu(dialogState)} />
     </>
   );
 };

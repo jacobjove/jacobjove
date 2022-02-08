@@ -7,7 +7,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-// import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { signIn } from "next-auth/react";
@@ -19,28 +18,27 @@ const CALENDAR_PROVIDERS = {
     Icon: GoogleIcon,
     // https://developers.google.com/identity/protocols/oauth2/scopes
     scope: "https://www.googleapis.com/auth/calendar",
+    defaultScopes: [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "openid",
+    ],
   },
   apple: {
     name: "Apple",
     Icon: AppleIcon,
-    scope: "https://www.googleapis.com/auth/calendar",
+    scope: "https://www.googleapis.com/auth/calendar", // TODO
+    defaultScopes: [],
   },
 };
 
-const GOOGLE_DEFAULT_SCOPES = [
-  "https://www.googleapis.com/auth/userinfo.email",
-  "https://www.googleapis.com/auth/userinfo.profile",
-  "openid",
-];
-const GOOGLE_CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
-
-type ApiProviderDialogProps = ReturnType<typeof bindPopover> & {
+type CalendarApiProviderDialogProps = ReturnType<typeof bindPopover> & {
   provider: "google" | "apple";
 };
 
-export default function ApiProviderDialog(props: ApiProviderDialogProps) {
+export default function CalendarApiProviderDialog(props: CalendarApiProviderDialogProps) {
   const { provider, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
-  const { name, Icon, scope } = useMemo(() => {
+  const { name, Icon, scope, defaultScopes } = useMemo(() => {
     return CALENDAR_PROVIDERS[provider];
   }, [provider]);
   const user = useContext(UserContext);
@@ -72,9 +70,7 @@ export default function ApiProviderDialog(props: ApiProviderDialogProps) {
               signIn(
                 provider,
                 { callbackUrl: window.location.href },
-                {
-                  scope: [...(account?.scopes ?? GOOGLE_DEFAULT_SCOPES), scope].join(" "),
-                }
+                { scope: [...(account?.scopes ?? defaultScopes), scope].join(" ") }
               );
             }}
           >
