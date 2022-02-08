@@ -277,6 +277,7 @@ async function refreshAccessToken(token: JWT) {
 export default NextAuth({
   // https://next-auth.js.org/configuration/options#callbacks
   callbacks,
+  debug: process.env.NODE_ENV === "development",
   // https://next-auth.js.org/configuration/pages
   pages: {
     signIn: "/auth/signin",
