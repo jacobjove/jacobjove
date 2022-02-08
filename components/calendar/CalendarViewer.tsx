@@ -1,9 +1,9 @@
+import ApiProviderDialog from "@/components/calendar/ApiProviderDialog";
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
 import DateContext from "@/components/contexts/DateContext";
-import UserContext from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
@@ -11,29 +11,30 @@ import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
 import CalendarViewMonthIcon from "@mui/icons-material/CalendarViewMonth";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
+import Check from "@mui/icons-material/Check";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import GoogleIcon from "@mui/icons-material/Google";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Typography from "@mui/material/Typography";
 import { addMinutes } from "date-fns";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { signIn } from "next-auth/react";
-import { FC, useContext, useMemo, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 
-const GOOGLE_DEFAULT_SCOPES = [
-  "https://www.googleapis.com/auth/userinfo.email",
-  "https://www.googleapis.com/auth/userinfo.profile",
-  "openid",
-];
-const GOOGLE_CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
+const ICON_MAP = {
+  google: GoogleIcon,
+  apple: AppleIcon,
+};
 
 export const fragment = gql`
   fragment CalendarViewer on Query {
@@ -50,6 +51,27 @@ export const fragment = gql`
   ${calendarEventFragment}
 `;
 
+interface CalendarApiMenuItemProps extends MenuItemProps {
+  provider: "google" | "apple";
+}
+
+const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children, ...props }) => {
+  const dialogState = usePopupState({ variant: "popover", popupId: `${provider}-calendar-dialog` });
+  const Icon = ICON_MAP[provider];
+  return (
+    <>
+      <MenuItem {...props} {...bindTrigger(dialogState)}>
+        <ListItemIcon>
+          <Check />
+        </ListItemIcon>
+        <Icon sx={{ color: "lightgray" }} />
+        {children}
+      </MenuItem>
+      <ApiProviderDialog provider={provider} {...bindMenu(dialogState)} />
+    </>
+  );
+};
+
 type ViewMode = "day" | "week" | "month";
 
 type CalendarViewerProps = Omit<CalendarProps, "data"> & {
@@ -62,11 +84,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const { calendars } = data;
   const defaultCalendar = calendars[0]; // TODO
   const date = useContext(DateContext);
-  const user = useContext(UserContext);
-  const googleAccount = useMemo(() => {
-    if (!user) return null;
-    return user.accounts.find((account) => account.provider === "google") || null;
-  }, [user]);
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
@@ -176,40 +193,13 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               }}
               keepMounted
             >
-              {googleAccount?.scopes.includes(GOOGLE_CALENDAR_SCOPE) ? null : (
-                <MenuItem
-                  title={`Connect Google Calendar`}
-                  onClick={() => {
-                    signIn(
-                      "google",
-                      {
-                        callbackUrl: window.location.href,
-                      },
-                      {
-                        scope: [
-                          // https://developers.google.com/identity/protocols/oauth2/scopes
-                          ...(googleAccount?.scopes ?? GOOGLE_DEFAULT_SCOPES),
-                          GOOGLE_CALENDAR_SCOPE,
-                        ].join(" "),
-                      }
-                    );
-                  }}
-                >
-                  <IconButton>
-                    <GoogleIcon sx={{ color: "lightgray" }} />
-                  </IconButton>
-                </MenuItem>
-              )}
-              <MenuItem>
-                <IconButton
-                  title={`Connect Apple Calendar`}
-                  onClick={() => {
-                    console.log("connecting to apple calendar...");
-                  }}
-                >
-                  <AppleIcon sx={{ color: "lightgray" }} />
-                </IconButton>
-              </MenuItem>
+              <CalendarApiMenuItem provider={"google"}>
+                <Typography ml={1}>{"Google Calendar"}</Typography>
+              </CalendarApiMenuItem>
+              <CalendarApiMenuItem provider={"apple"}>
+                <Typography ml={1}>{"Apple Calendar"}</Typography>
+              </CalendarApiMenuItem>
+              <Divider />
               {calendars?.map((calendar) => (
                 <MenuItem key={calendar.id}>
                   <Button

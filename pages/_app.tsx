@@ -3,13 +3,13 @@ import DateContext from "@/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@/components/contexts/DeviceContext";
 import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
 import UserContext, { UserSettings } from "@/components/contexts/UserContext";
-import { userFragment } from "@/graphql/fragments";
+import { GET_USER } from "@/graphql/queries";
 import { User } from "@/graphql/schema";
 import { useApollo } from "@/lib/apollo/apolloClient";
 import "@/node_modules/react-grid-layout/css/styles.css";
 import "@/node_modules/react-resizable/css/styles.css";
 import "@/public/styles/global.css";
-import { ApolloProvider, gql, useQuery } from "@apollo/client";
+import { ApolloProvider, useQuery } from "@apollo/client";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { createTheme, PaletteMode } from "@mui/material";
@@ -31,15 +31,6 @@ import TagManager from "react-gtm-module";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
 const DEFAULT_COLOR_MODE = "light";
-
-const QUERY = gql`
-  query GetUser($userId: Int!) {
-    user(where: { id: $userId }) {
-      ...UserFragment
-    }
-  }
-  ${userFragment}
-`;
 
 // TODO: https://github.com/vercel/next.js/discussions/15518#discussioncomment-42875
 const tagManagerArgs = {
@@ -125,7 +116,7 @@ export type PageWithAuth = NextPage & {
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
-  const { data, loading } = useQuery<{ user: User }>(QUERY, {
+  const { data, loading: _loading } = useQuery<{ user: User }>(GET_USER, {
     client: apolloClient,
     skip: !session?.user?.id,
     variables: { userId: session?.user?.id },

@@ -234,7 +234,8 @@ const callbacks: CallbacksOptions = {
  * returns the old token and an error property
  */
 async function refreshAccessToken(token: JWT) {
-  console.log("🔑 refreshAccessToken", { token });
+  console.log("🔑 refreshAccessToken");
+  // console.log("🔑 refreshAccessToken", { token });
   try {
     const url =
       "https://oauth2.googleapis.com/token?" +

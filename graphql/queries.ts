@@ -1,5 +1,14 @@
-import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
+import { calendarEventFragment, calendarFragment, userFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
+
+export const GET_USER = gql`
+  query GetUser($userId: Int!) {
+    user(where: { id: $userId }) {
+      ...UserFragment
+    }
+  }
+  ${userFragment}
+`;
 
 export const GET_CALENDARS = gql`
   query GetCalendars($userId: Int!) {
