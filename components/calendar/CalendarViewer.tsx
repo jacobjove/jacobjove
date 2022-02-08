@@ -3,6 +3,7 @@ import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
 import DateContext from "@/components/contexts/DateContext";
+import UserContext from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
@@ -22,9 +23,16 @@ import MenuItem from "@mui/material/MenuItem";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { addMinutes } from "date-fns";
-import Link from "next/link";
-import { FC, useContext, useState } from "react";
+import { signIn } from "next-auth/react";
+import { FC, useContext, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+
+const GOOGLE_DEFAULT_SCOPES = [
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile",
+  "openid",
+];
+const GOOGLE_CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
 
 export const fragment = gql`
   fragment CalendarViewer on Query {
@@ -53,6 +61,11 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const { calendars } = data;
   const defaultCalendar = calendars[0]; // TODO
   const date = useContext(DateContext);
+  const user = useContext(UserContext);
+  const googleAccount = useMemo(() => {
+    if (!user) return null;
+    return user.accounts.find((account) => account.provider === "google") || null;
+  }, [user]);
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
@@ -177,20 +190,30 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               }}
               keepMounted
             >
-              <Link href="/app/routines">
-                <a>
-                  <MenuItem>
-                    <IconButton
-                      title={`Connect Google Calendar`}
-                      onClick={() => {
-                        console.log("connecting to google calendar...");
-                      }}
-                    >
-                      <GoogleIcon sx={{ color: "lightgray" }} />
-                    </IconButton>
-                  </MenuItem>
-                </a>
-              </Link>
+              {googleAccount?.scopes.includes(GOOGLE_CALENDAR_SCOPE) ? null : (
+                <MenuItem
+                  title={`Connect Google Calendar`}
+                  onClick={() => {
+                    signIn(
+                      "google",
+                      {
+                        callbackUrl: window.location.href,
+                      },
+                      {
+                        scope: [
+                          // https://developers.google.com/identity/protocols/oauth2/scopes
+                          ...(googleAccount?.scopes ?? GOOGLE_DEFAULT_SCOPES),
+                          GOOGLE_CALENDAR_SCOPE,
+                        ].join(" "),
+                      }
+                    );
+                  }}
+                >
+                  <IconButton>
+                    <GoogleIcon sx={{ color: "lightgray" }} />
+                  </IconButton>
+                </MenuItem>
+              )}
               <MenuItem>
                 <IconButton
                   title={`Connect Apple Calendar`}

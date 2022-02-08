@@ -152,6 +152,19 @@ export const dashboardFragment = gql`
   }
 `;
 
+export const accountFragment = gql`
+  fragment AccountFragment on Account {
+    __typename
+    id
+    provider
+    providerAccountId
+    scopes
+    accessToken
+    accessTokenExpiry
+    refreshToken
+  }
+`;
+
 export const userFragment = gql`
   fragment UserFragment on User {
     __typename
@@ -159,7 +172,11 @@ export const userFragment = gql`
     name
     email
     settings
+    accounts {
+      ...AccountFragment
+    }
   }
+  ${accountFragment}
 `;
 
 export const noteFragment = gql`

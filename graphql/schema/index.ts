@@ -2,6 +2,7 @@
 
 import * as generatedSchemaExports from "@/prisma/generated";
 import {
+  Account as _Account,
   Act as _Act,
   Action as _Action,
   ActionSchedule as _ActionSchedule,
@@ -49,6 +50,7 @@ type FromPrismaWithOmission<T, K extends keyof T> = Pick<
   Exclude<keyof FromPrisma<T>, K>
 >;
 
+export type Account = FromPrisma<_Account>;
 export type Act = FromPrisma<_Act>;
 export type Habit = FromPrismaWithOmission<_Habit, "act" | "actions"> & {
   act: Act;
@@ -94,12 +96,10 @@ export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "en
 //   end?: string | null;
 // };
 export type UserValue = FromPrisma<_UserValue>;
-export interface UserSettings {
-  [key: string]: any;
-}
-export type User = FromPrismaWithOmission<_User, "settings"> & {
+export type User = FromPrismaWithOmission<_User, "settings" | "accounts"> & {
   // settings: { [key: string]: any; };
-  settings: string | UserSettings;
+  settings: string;
+  accounts: Account[];
 };
 export type Dashboard = FromPrismaWithOmission<_Dashboard, "layouts"> & {
   layouts: string;

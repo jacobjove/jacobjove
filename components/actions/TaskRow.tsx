@@ -2,6 +2,7 @@ import ActionDialog from "@/components/actions/ActionDialog";
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
 import DateContext from "@/components/contexts/DateContext";
+import UserContext from "@/components/contexts/UserContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
 import { gql, useMutation, useQuery } from "@apollo/client";
@@ -53,6 +54,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const completed = Boolean(task.completedAt);
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
+  const user = useContext(UserContext);
   const today = useContext(DateContext);
   const ref = useRef<HTMLTableRowElement>(null);
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -110,7 +112,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       title: task.title,
       position: task.position,
       index: index,
-      calendarId: session?.user?.settings?.defaultCalendarId,
+      calendarId: user?.settings?.defaultCalendarId,
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),

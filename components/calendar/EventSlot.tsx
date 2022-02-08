@@ -111,7 +111,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           const start = date;
           const end = addMinutes(date, durationInMinutes ?? DEFAULT_EVENT_LENGTH_IN_MINUTES);
           let { scheduleId, calendarId, ...calendarEventData } = itemData;
-          calendarId = calendarId ?? defaultCalendarId; // TODO: session.user.settings.defaultCalendarId
+          calendarId = calendarId ?? defaultCalendarId; // TODO: user.settings.defaultCalendarId
           scheduleId = scheduleId ?? null;
           calendarEventData = {
             start: start.toISOString(),

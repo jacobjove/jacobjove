@@ -2,9 +2,9 @@ import ColorModeContext from "@/components/contexts/ColorModeContext";
 import DateContext from "@/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@/components/contexts/DeviceContext";
 import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
-import UserContext from "@/components/contexts/UserContext";
+import UserContext, { UserSettings } from "@/components/contexts/UserContext";
 import { userFragment } from "@/graphql/fragments";
-import { User, UserSettings } from "@/graphql/schema";
+import { User } from "@/graphql/schema";
 import { useApollo } from "@/lib/apollo/apolloClient";
 import "@/node_modules/react-grid-layout/css/styles.css";
 import "@/node_modules/react-resizable/css/styles.css";
@@ -22,13 +22,15 @@ import { NextPage } from "next";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
-import { FC, ReactElement, useContext, useEffect, useMemo, useState } from "react";
+import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { getSelectorsByUserAgent } from "react-device-detect";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import TagManager from "react-gtm-module";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
+
+const DEFAULT_COLOR_MODE = "light";
 
 const QUERY = gql`
   query GetUser($userId: Int!) {
@@ -123,20 +125,38 @@ export type PageWithAuth = NextPage & {
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
+  const { data, loading } = useQuery<{ user: User }>(QUERY, {
+    client: apolloClient,
+    skip: !session?.user?.id,
+    variables: { userId: session?.user?.id },
+  });
+
+  // TODO: Is this correct usage of memoization?
+  const user = useMemo(() => {
+    const rawUser = data?.user;
+    if (!rawUser) return null;
+    let settings: UserSettings = {};
+    if (rawUser?.settings) {
+      if (isObject(rawUser.settings)) {
+        console.log("Ara? user.settings is already an object...");
+        settings = rawUser.settings;
+      } else {
+        settings = JSON.parse(rawUser.settings);
+      }
+    }
+    return { ...rawUser, settings };
+  }, [data]);
+
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState<PaletteMode>(session?.user?.settings?.colorMode ?? "light");
-  const colorMode = useMemo(
-    () => ({
-      set: (mode: PaletteMode) => {
-        setMode(mode);
-      },
-    }),
-    []
-  );
+
+  const [mode, setMode] = useState<PaletteMode>(user?.settings?.colorMode ?? DEFAULT_COLOR_MODE);
+  const colorMode = useMemo(() => ({ set: (mode: PaletteMode) => setMode(mode) }), []);
+
   const isMobileWidth = useMediaQuery("(max-width: 600px)");
   const [isLandscape, setIsLandscape] = useState<boolean>();
   const [deviceContextData, setDeviceContextData] = useState<DeviceContextData>({});
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
   useEffect(() => {
     // Update the current time every minute.
     const intervalId = setInterval(function () {
@@ -146,6 +166,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       clearInterval(intervalId);
     };
   }, [setDate]);
+
   useEffect(() => {
     const handleOrientationChange = function (e: Event) {
       setIsLandscape((e.target as ScreenOrientation).type.toString().includes("landscape"));
@@ -157,6 +178,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       window.screen.orientation.removeEventListener("change", handleOrientationChange);
     };
   }, []);
+
   useEffect(() => {
     if (typeof window !== "undefined" && navigator.userAgent) {
       setDeviceContextData({
@@ -166,81 +188,97 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       });
     }
   }, [isMobileWidth, isLandscape]);
+
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
+
+  useEffect(() => {
+    if (user?.settings?.colorMode) {
+      console.log("user?.settings?.colorMode changed");
+      setMode(user?.settings?.colorMode);
+    }
+    // TODO: Otherwise, read from operating system preferences.
+  }, [user?.settings?.colorMode]);
+
+  console.log("App.render");
+
   return (
     <SessionProvider session={session}>
-      <DeviceContext.Provider value={deviceContextData}>
-        <PageTransitionContextProvider>
-          <ApolloProvider client={apolloClient}>
-            <ColorModeContext.Provider value={colorMode}>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <LocalizationProvider dateAdapter={DateAdapter}>
-                  <DndProvider backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}>
-                    <DateContext.Provider value={date}>
-                      <DefaultSeo
-                        description={"Build good habits, break bad habits, and be your best self."}
-                        openGraph={{
-                          type: "website",
-                          url: "https://www.habitbuilder.com/",
-                          site_name: "SelfBuilder",
-                          // images: [
-                          //   {
-                          //     url: 'https://www.example.ie/og-image.jpg',
-                          //     width: 800,
-                          //     height: 600,
-                          //     alt: 'Og Image Alt',
-                          //   },
-                          //   {
-                          //     url: 'https://www.example.ie/og-image-2.jpg',
-                          //     width: 800,
-                          //     height: 600,
-                          //     alt: 'Og Image Alt 2',
-                          //   },
-                          // ],
-                        }}
-                        twitter={{ handle: "@habitbuilder" }}
-                        facebook={{
-                          appId: `${process.env.FACEBOOK_APP_ID}`,
-                        }}
-                        titleTemplate="%s | SelfBuilder" // https://github.com/garmeeh/next-seo#title-template
-                        defaultTitle="SelfBuilder" // https://github.com/garmeeh/next-seo#default-title
-                        additionalMetaTags={[
-                          {
-                            httpEquiv: "content-type",
-                            content: "text/html; charset=utf-8",
-                          },
-                          {
-                            name: "application-name",
-                            content: "SelfBuilder",
-                          },
-                        ]}
-                        additionalLinkTags={
-                          [
-                            // {
-                            //   rel: 'icon',
-                            //   href: '/static/favicon.ico',
-                            // }
-                          ]
-                        }
-                      />
-                      {(Component as PageWithAuth).auth ? (
-                        <Auth>
+      <UserContext.Provider value={user ?? null}>
+        <DeviceContext.Provider value={deviceContextData}>
+          <PageTransitionContextProvider>
+            <ApolloProvider client={apolloClient}>
+              <ColorModeContext.Provider value={colorMode}>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  <LocalizationProvider dateAdapter={DateAdapter}>
+                    <DndProvider backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}>
+                      <DateContext.Provider value={date}>
+                        <DefaultSeo
+                          description={
+                            "Build good habits, break bad habits, and be your best self."
+                          }
+                          openGraph={{
+                            type: "website",
+                            url: "https://www.habitbuilder.com/",
+                            site_name: "SelfBuilder",
+                            // images: [
+                            //   {
+                            //     url: 'https://www.example.ie/og-image.jpg',
+                            //     width: 800,
+                            //     height: 600,
+                            //     alt: 'Og Image Alt',
+                            //   },
+                            //   {
+                            //     url: 'https://www.example.ie/og-image-2.jpg',
+                            //     width: 800,
+                            //     height: 600,
+                            //     alt: 'Og Image Alt 2',
+                            //   },
+                            // ],
+                          }}
+                          twitter={{ handle: "@habitbuilder" }}
+                          facebook={{
+                            appId: `${process.env.FACEBOOK_APP_ID}`,
+                          }}
+                          titleTemplate="%s | SelfBuilder" // https://github.com/garmeeh/next-seo#title-template
+                          defaultTitle="SelfBuilder" // https://github.com/garmeeh/next-seo#default-title
+                          additionalMetaTags={[
+                            {
+                              httpEquiv: "content-type",
+                              content: "text/html; charset=utf-8",
+                            },
+                            {
+                              name: "application-name",
+                              content: "SelfBuilder",
+                            },
+                          ]}
+                          additionalLinkTags={
+                            [
+                              // {
+                              //   rel: 'icon',
+                              //   href: '/static/favicon.ico',
+                              // }
+                            ]
+                          }
+                        />
+                        {(Component as PageWithAuth).auth ? (
+                          <Auth>
+                            <Component {...pageProps} />
+                          </Auth>
+                        ) : (
                           <Component {...pageProps} />
-                        </Auth>
-                      ) : (
-                        <Component {...pageProps} />
-                      )}
-                    </DateContext.Provider>
-                  </DndProvider>
-                </LocalizationProvider>
-              </ThemeProvider>
-            </ColorModeContext.Provider>
-          </ApolloProvider>
-        </PageTransitionContextProvider>
-      </DeviceContext.Provider>
+                        )}
+                      </DateContext.Provider>
+                    </DndProvider>
+                  </LocalizationProvider>
+                </ThemeProvider>
+              </ColorModeContext.Provider>
+            </ApolloProvider>
+          </PageTransitionContextProvider>
+        </DeviceContext.Provider>
+      </UserContext.Provider>
     </SessionProvider>
   );
 }
@@ -251,22 +289,8 @@ interface AuthProps {
 
 const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
   const { data: session, status } = useSession({ required: true });
-  const colorMode = useContext(ColorModeContext);
-  const { data, loading: loadingData } = useQuery<{ user: User }>(QUERY, {
-    variables: { userId: session?.user?.id },
-  });
   const loadingAuth = status === "loading";
   const isAuthenticated = !!session?.user;
-  const loading = loadingAuth || loadingData;
-  const user = data?.user;
-  let settings: UserSettings = {};
-  if (user?.settings) {
-    if (isObject(user.settings)) {
-      settings = user.settings;
-    } else {
-      settings = JSON.parse(user.settings);
-    }
-  }
 
   // Require authentication.
   useEffect(() => {
@@ -276,14 +300,7 @@ const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
     if (!isAuthenticated) signIn();
   }, [isAuthenticated, loadingAuth]);
 
-  // Update the color mode if the user's color mode setting changes.
-  useEffect(() => {
-    if (!loading && settings?.colorMode) colorMode.set(settings.colorMode);
-  }, [loading, colorMode, settings?.colorMode]);
-
-  if (isAuthenticated) {
-    return <UserContext.Provider value={user ?? null}>{children}</UserContext.Provider>;
-  }
+  if (isAuthenticated) return children;
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.

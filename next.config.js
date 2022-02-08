@@ -39,7 +39,7 @@ const nextConfig = {
     const redirects = [
       {
         source: "/app",
-        destination: "/app/dashboard",
+        destination: "/app/home",
         permanent: true,
       },
     ];

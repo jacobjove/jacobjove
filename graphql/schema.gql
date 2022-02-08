@@ -4,11 +4,14 @@
 # -----------------------------------------------
 
 type Account {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime!
   id: Int!
   provider: String!
   providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  scopes: [String!]!
   user: User!
   userId: Int!
 }
@@ -25,51 +28,70 @@ input AccountAvgOrderByAggregateInput {
 
 type AccountCountAggregate {
   _all: Int!
+  accessToken: Int!
+  accessTokenExpiry: Int!
+  createdAt: Int!
   id: Int!
   provider: Int!
   providerAccountId: Int!
-  type: Int!
-  uid: Int!
+  refreshToken: Int!
+  scopes: Int!
   userId: Int!
 }
 
 input AccountCountOrderByAggregateInput {
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
   providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
+  scopes: SortOrder
   userId: SortOrder
 }
 
 input AccountCreateInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   provider: String!
   providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  scopes: AccountCreatescopesInput
   user: UserCreateNestedOneWithoutAccountsInput!
 }
 
 input AccountCreateManyInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   id: Int
   provider: String!
   providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  scopes: AccountCreateManyscopesInput
   userId: Int!
 }
 
 input AccountCreateManyUserInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   id: Int
   provider: String!
   providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  scopes: AccountCreateManyscopesInput
 }
 
 input AccountCreateManyUserInputEnvelope {
   data: [AccountCreateManyUserInput!]!
   skipDuplicates: Boolean
+}
+
+input AccountCreateManyscopesInput {
+  set: [String!]!
 }
 
 input AccountCreateNestedManyWithoutUserInput {
@@ -85,10 +107,17 @@ input AccountCreateOrConnectWithoutUserInput {
 }
 
 input AccountCreateWithoutUserInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   provider: String!
   providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  scopes: AccountCreatescopesInput
+}
+
+input AccountCreatescopesInput {
+  set: [String!]!
 }
 
 type AccountGroupBy {
@@ -97,11 +126,14 @@ type AccountGroupBy {
   _max: AccountMaxAggregate
   _min: AccountMinAggregate
   _sum: AccountSumAggregate
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime!
   id: Int!
   provider: String!
   providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  scopes: [String!]
   userId: Int!
 }
 
@@ -112,38 +144,46 @@ input AccountListRelationFilter {
 }
 
 type AccountMaxAggregate {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   id: Int
   provider: String
   providerAccountId: String
-  type: String
-  uid: String
+  refreshToken: String
   userId: Int
 }
 
 input AccountMaxOrderByAggregateInput {
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
   providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
   userId: SortOrder
 }
 
 type AccountMinAggregate {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   id: Int
   provider: String
   providerAccountId: String
-  type: String
-  uid: String
+  refreshToken: String
   userId: Int
 }
 
 input AccountMinOrderByAggregateInput {
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
   providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
   userId: SortOrder
 }
 
@@ -157,20 +197,26 @@ input AccountOrderByWithAggregationInput {
   _max: AccountMaxOrderByAggregateInput
   _min: AccountMinOrderByAggregateInput
   _sum: AccountSumOrderByAggregateInput
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
   providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
+  scopes: SortOrder
   userId: SortOrder
 }
 
 input AccountOrderByWithRelationInput {
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
   providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
+  scopes: SortOrder
   user: UserOrderByWithRelationInput
   userId: SortOrder
 }
@@ -181,11 +227,14 @@ input AccountProviderProviderAccountIdCompoundUniqueInput {
 }
 
 enum AccountScalarFieldEnum {
+  accessToken
+  accessTokenExpiry
+  createdAt
   id
   provider
   providerAccountId
-  type
-  uid
+  refreshToken
+  scopes
   userId
 }
 
@@ -193,11 +242,14 @@ input AccountScalarWhereInput {
   AND: [AccountScalarWhereInput!]
   NOT: [AccountScalarWhereInput!]
   OR: [AccountScalarWhereInput!]
+  accessToken: StringNullableFilter
+  accessTokenExpiry: DateTimeNullableFilter
+  createdAt: DateTimeFilter
   id: IntFilter
   provider: StringFilter
   providerAccountId: StringFilter
-  type: StringFilter
-  uid: StringFilter
+  refreshToken: StringNullableFilter
+  scopes: StringNullableListFilter
   userId: IntFilter
 }
 
@@ -205,11 +257,14 @@ input AccountScalarWhereWithAggregatesInput {
   AND: [AccountScalarWhereWithAggregatesInput!]
   NOT: [AccountScalarWhereWithAggregatesInput!]
   OR: [AccountScalarWhereWithAggregatesInput!]
+  accessToken: StringNullableWithAggregatesFilter
+  accessTokenExpiry: DateTimeNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   provider: StringWithAggregatesFilter
   providerAccountId: StringWithAggregatesFilter
-  type: StringWithAggregatesFilter
-  uid: StringWithAggregatesFilter
+  refreshToken: StringNullableWithAggregatesFilter
+  scopes: StringNullableListFilter
   userId: IntWithAggregatesFilter
 }
 
@@ -224,18 +279,24 @@ input AccountSumOrderByAggregateInput {
 }
 
 input AccountUpdateInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
   providerAccountId: StringFieldUpdateOperationsInput
-  type: StringFieldUpdateOperationsInput
-  uid: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
   user: UserUpdateOneRequiredWithoutAccountsInput
 }
 
 input AccountUpdateManyMutationInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
   providerAccountId: StringFieldUpdateOperationsInput
-  type: StringFieldUpdateOperationsInput
-  uid: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
 }
 
 input AccountUpdateManyWithWhereWithoutUserInput {
@@ -263,10 +324,18 @@ input AccountUpdateWithWhereUniqueWithoutUserInput {
 }
 
 input AccountUpdateWithoutUserInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
   providerAccountId: StringFieldUpdateOperationsInput
-  type: StringFieldUpdateOperationsInput
-  uid: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
+}
+
+input AccountUpdatescopesInput {
+  push: [String!]
+  set: [String!]
 }
 
 input AccountUpsertWithWhereUniqueWithoutUserInput {
@@ -279,11 +348,14 @@ input AccountWhereInput {
   AND: [AccountWhereInput!]
   NOT: [AccountWhereInput!]
   OR: [AccountWhereInput!]
+  accessToken: StringNullableFilter
+  accessTokenExpiry: DateTimeNullableFilter
+  createdAt: DateTimeFilter
   id: IntFilter
   provider: StringFilter
   providerAccountId: StringFilter
-  type: StringFilter
-  uid: StringFilter
+  refreshToken: StringNullableFilter
+  scopes: StringNullableListFilter
   user: UserRelationFilter
   userId: IntFilter
 }
@@ -16250,6 +16322,7 @@ type User {
   identities(cursor: IdentificationWhereUniqueInput, distinct: [IdentificationScalarFieldEnum!], orderBy: [IdentificationOrderByWithRelationInput!], skip: Int, take: Int, where: IdentificationWhereInput): [Identification!]!
   image: String
   isAdmin: Boolean!
+  lastLogin: DateTime
   lists(cursor: ListWhereUniqueInput, distinct: [ListScalarFieldEnum!], orderBy: [ListOrderByWithRelationInput!], skip: Int, take: Int, where: ListWhereInput): [List!]!
   name: String
   notebookPermissions(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermission!]!
@@ -16659,6 +16732,7 @@ type UserCountAggregate {
   id: Int!
   image: Int!
   isAdmin: Int!
+  lastLogin: Int!
   name: Int!
   settings: Int!
   uid: Int!
@@ -16670,6 +16744,7 @@ input UserCountOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   name: SortOrder
   settings: SortOrder
   uid: SortOrder
@@ -16687,6 +16762,7 @@ input UserCreateInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16705,6 +16781,7 @@ input UserCreateManyInput {
   id: Int
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   name: String
   settings: JSON
   uid: String
@@ -16875,6 +16952,7 @@ input UserCreateWithoutAccountsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16898,6 +16976,7 @@ input UserCreateWithoutBookReviewsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16921,6 +17000,7 @@ input UserCreateWithoutBookshelvesInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16944,6 +17024,7 @@ input UserCreateWithoutCalendarsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16967,6 +17048,7 @@ input UserCreateWithoutDashboardsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16990,6 +17072,7 @@ input UserCreateWithoutHabitsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17013,6 +17096,7 @@ input UserCreateWithoutIdentitiesInput {
   habits: HabitCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17037,6 +17121,7 @@ input UserCreateWithoutListsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
   notebooks: NotebookCreateNestedManyWithoutOwnerInput
@@ -17060,6 +17145,7 @@ input UserCreateWithoutNotebookPermissionsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebooks: NotebookCreateNestedManyWithoutOwnerInput
@@ -17083,6 +17169,7 @@ input UserCreateWithoutNotebooksInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17106,6 +17193,7 @@ input UserCreateWithoutReadingsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17129,6 +17217,7 @@ input UserCreateWithoutTasksInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17152,6 +17241,7 @@ input UserCreateWithoutUserBeliefsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17175,6 +17265,7 @@ input UserCreateWithoutUserValuesInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17197,6 +17288,7 @@ type UserGroupBy {
   id: Int!
   image: String
   isAdmin: Boolean!
+  lastLogin: DateTime
   name: String
   settings: JSON!
   uid: String!
@@ -17208,6 +17300,7 @@ type UserMaxAggregate {
   id: Int
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   name: String
   uid: String
 }
@@ -17218,6 +17311,7 @@ input UserMaxOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   name: SortOrder
   uid: SortOrder
 }
@@ -17228,6 +17322,7 @@ type UserMinAggregate {
   id: Int
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   name: String
   uid: String
 }
@@ -17238,6 +17333,7 @@ input UserMinOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   name: SortOrder
   uid: SortOrder
 }
@@ -17253,6 +17349,7 @@ input UserOrderByWithAggregationInput {
   id: SortOrder
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   name: SortOrder
   settings: SortOrder
   uid: SortOrder
@@ -17271,6 +17368,7 @@ input UserOrderByWithRelationInput {
   identities: IdentificationOrderByRelationAggregateInput
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   lists: ListOrderByRelationAggregateInput
   name: SortOrder
   notebookPermissions: NotebookUserPermissionOrderByRelationAggregateInput
@@ -17294,6 +17392,7 @@ enum UserScalarFieldEnum {
   id
   image
   isAdmin
+  lastLogin
   name
   settings
   uid
@@ -17308,6 +17407,7 @@ input UserScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   image: StringNullableWithAggregatesFilter
   isAdmin: BoolWithAggregatesFilter
+  lastLogin: DateTimeNullableWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
   settings: JsonWithAggregatesFilter
   uid: StringWithAggregatesFilter
@@ -17333,6 +17433,7 @@ input UserUpdateInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17350,6 +17451,7 @@ input UserUpdateManyMutationInput {
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   settings: JSON
   uid: StringFieldUpdateOperationsInput
@@ -17478,6 +17580,7 @@ input UserUpdateWithoutAccountsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17501,6 +17604,7 @@ input UserUpdateWithoutBookReviewsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17524,6 +17628,7 @@ input UserUpdateWithoutBookshelvesInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17547,6 +17652,7 @@ input UserUpdateWithoutCalendarsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17570,6 +17676,7 @@ input UserUpdateWithoutDashboardsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17593,6 +17700,7 @@ input UserUpdateWithoutHabitsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17616,6 +17724,7 @@ input UserUpdateWithoutIdentitiesInput {
   habits: HabitUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17640,6 +17749,7 @@ input UserUpdateWithoutListsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
   notebooks: NotebookUpdateManyWithoutOwnerInput
@@ -17663,6 +17773,7 @@ input UserUpdateWithoutNotebookPermissionsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebooks: NotebookUpdateManyWithoutOwnerInput
@@ -17686,6 +17797,7 @@ input UserUpdateWithoutNotebooksInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17709,6 +17821,7 @@ input UserUpdateWithoutReadingsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17732,6 +17845,7 @@ input UserUpdateWithoutTasksInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17755,6 +17869,7 @@ input UserUpdateWithoutUserBeliefsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17778,6 +17893,7 @@ input UserUpdateWithoutUserValuesInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -18240,6 +18356,7 @@ input UserWhereInput {
   identities: IdentificationListRelationFilter
   image: StringNullableFilter
   isAdmin: BoolFilter
+  lastLogin: DateTimeNullableFilter
   lists: ListListRelationFilter
   name: StringNullableFilter
   notebookPermissions: NotebookUserPermissionListRelationFilter

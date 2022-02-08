@@ -25,14 +25,16 @@ model Redirect {
 }
 
 model Account {
-  id                Int    @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
-  type              String
   provider          String
   providerAccountId String
-  uid               String
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scopes            String[]
+  accessToken       String?
+  refreshToken      String?
+  accessTokenExpiry DateTime?
+  createdAt         DateTime  @default(now())
 
   @@unique([provider, providerAccountId])
 }
@@ -51,6 +53,7 @@ model User {
   image               String?
   isAdmin             Boolean                  @default(false)
   settings            Json                     @default("{}")
+  lastLogin           DateTime?
   accounts            Account[]
   calendars           Calendar[]               @relation("calendars")
   identities          Identification[]

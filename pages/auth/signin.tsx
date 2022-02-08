@@ -1,4 +1,3 @@
-import { handleLogout } from "@/auth";
 import SocialLogin, { Provider } from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
 import Alert from "@mui/material/Alert";
@@ -8,10 +7,10 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps } from "next";
-import { getProviders, useSession } from "next-auth/react";
+import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 
 interface SignInPageProps {
   providers: Provider[];
@@ -21,19 +20,33 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
   const router = useRouter();
   const { data: session } = useSession();
   const [errors, setErrors] = useState<Record<string, string[]>>({});
-  const callbackUrl = Array.isArray(router.query?.callbackUrl)
-    ? router.query.callbackUrl[0]
-    : router.query?.callbackUrl;
+  const callbackUrl = useMemo(() => {
+    return Array.isArray(router.query?.callbackUrl)
+      ? router.query.callbackUrl[0]
+      : router.query?.callbackUrl;
+  }, [router.query]);
   useEffect(() => {
-    if (router.query?.error) {
+    console.log(">>>", router.query);
+    console.log(">>>", router.query.scope, typeof router.query.scope);
+    if (typeof router.query.provider === "string") {
+      const scope =
+        typeof router.query.scope === "string"
+          ? router.query.scope.split(",").join(" ")
+          : undefined;
+      console.log("signing in with", router.query.provider, callbackUrl, scope);
+      signIn(
+        router.query.provider,
+        { ...(typeof callbackUrl === "string" ? { callbackUrl } : {}) },
+        { ...(scope ? { scope } : {}) }
+      );
+    } else if (router.query.error) {
       setErrors({ _: [`${router.query?.error}`] });
     }
-  }, [router.query?.error]);
+  }, [router.query, callbackUrl]);
   useEffect(() => {
-    if (session?.user && callbackUrl) {
-      router.push(callbackUrl);
-    }
+    if (session?.user && callbackUrl) router.push(callbackUrl);
   }, [session, router, callbackUrl]);
+  if (router.query.provider) return <div>{"Redirecting..."}</div>;
   return (
     <Layout>
       <NextSeo
@@ -72,12 +85,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
                 </Typography>
               </Grid>
               <Grid item container xs={12} justifyContent={"center"}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="large"
-                  onClick={() => handleLogout(session)}
-                >
+                <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>
                   Sign Out
                 </Button>
               </Grid>
