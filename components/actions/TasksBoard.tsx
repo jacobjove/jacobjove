@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import { FC, useCallback, useEffect, useState } from "react";
 
 export const fragment = gql`
-  fragment TasksTable on Query {
+  fragment TasksBoard on Query {
     tasks(where: { userId: { equals: $userId } }) {
       ...TaskFragment
     }
@@ -26,7 +26,7 @@ export const fragment = gql`
   ${taskFragment}
 `;
 
-export interface TasksTableProps {
+export interface TasksBoardProps {
   contained?: boolean;
   data: {
     tasks: Task[];
@@ -35,7 +35,7 @@ export interface TasksTableProps {
 
 const PREFERRED_FONT_SIZE = "0.8rem";
 
-const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
+const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
   const { data } = props;
   const { tasks: allTasks } = data;
   const { data: session } = useSession();
@@ -252,7 +252,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   );
 };
 
-export default TasksTable;
+export default TasksBoard;
 
 // import * as React from 'react';
 // import { alpha } from '@mui/material/styles';
