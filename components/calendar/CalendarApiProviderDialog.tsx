@@ -4,7 +4,9 @@ import { GET_USER } from "@/graphql/queries";
 import { Account, Calendar } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
+import CloseIcon from "@mui/icons-material/Close";
 import GoogleIcon from "@mui/icons-material/Google";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -13,6 +15,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -117,10 +120,26 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   const retrieveCalendars = async () => {
     return await axios.get(`/api/calendars/${provider}/calendars`);
   };
+  const retrieveCalendarEvents = async (calendarId: string) => {
+    return await axios.get(`/api/calendars/${provider}/calendars/${calendarId}/events`);
+  };
   return (
     <Dialog fullWidth {...dialogProps} onClose={onClose}>
+      <IconButton
+        onClick={onClose}
+        sx={{
+          position: "absolute",
+          top: "0.5rem",
+          right: "0.5rem",
+          ml: "auto",
+          zIndex: 1,
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
       <DialogTitle
         sx={{
+          position: "relative",
           display: "flex",
           alignItems: "center",
           mb: 2,
@@ -144,7 +163,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
             </Box>
             <TableContainer sx={{ mt: 2 }}>
               <Box display="flex" justifyContent="right">
-                <Button
+                <IconButton
                   title={`Refresh data from ${name} Calendar`}
                   sx={{ ml: "auto" }}
                   onClick={() => {
@@ -153,7 +172,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                         .then((response) => {
                           if (response.data?.calendars?.length) {
                             // Create calendars that don't already exist.
-                            const calendarsToAdd = response.data.calendars
+                            const calendarsToAdd: Calendar[] = response.data.calendars
                               .filter(
                                 (calendar: Calendar) =>
                                   !calendars.find((_) => _.sourceId == calendar.sourceId)
@@ -163,14 +182,23 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                                 disabled: true,
                                 userId: user.id,
                               }));
-                            addCalendars({ variables: { data: calendarsToAdd } }).catch(alert);
+                            addCalendars({ variables: { data: calendarsToAdd } })
+                              .then(() => {
+                                response.data.calendars.forEach((calendar: Calendar) => {
+                                  if (calendar.sourceId) {
+                                    retrieveCalendarEvents(calendar.sourceId);
+                                  }
+                                });
+                              })
+                              .catch(alert);
+                            // TODO: Delete or disassociate calendars that have been removed from their source.
                           }
                         })
                         .catch(alert); // TODO: fix before publishing
                   }}
                 >
-                  {"Refresh data"}
-                </Button>
+                  <RefreshIcon />
+                </IconButton>
               </Box>
               {calendars.length > 0 ? (
                 <Table>
@@ -188,7 +216,12 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                           <Checkbox
                             color="primary"
                             checked={!calendar.disabled}
-                            onChange={() => alert("TODO")}
+                            title={`${calendar.disabled ? "Connect" : "Disconnect"} ${
+                              calendar.name
+                            }`}
+                            onChange={(event) => {
+                              console.log(event);
+                            }}
                           />
                         </TableCell>
                         <TableCell>{calendar.name}</TableCell>
@@ -225,14 +258,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        {/* <Button
-          onClick={() => {
-            console.log("do something");
-          }}
-        >
-          Subscribe
-        </Button> */}
+        <Button onClick={onClose}>Done</Button>
       </DialogActions>
     </Dialog>
   );

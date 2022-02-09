@@ -160,9 +160,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
             <ToggleButtonGroup
               exclusive
               value={view}
-              onChange={(_, value: ViewMode) => {
-                setView(value);
-              }}
+              onChange={(_, value: ViewMode) => setView(value)}
               size="small"
               color="primary"
               aria-label="text alignment"

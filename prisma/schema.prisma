@@ -113,6 +113,7 @@ model Calendar {
 model CalendarEvent {
   id         Int             @id @default(autoincrement())
   uid        String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
+  sourceId   String
   calendar   Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
   calendarId Int
   schedule   ActionSchedule? @relation(fields: [scheduleId], references: [id])
@@ -132,6 +133,7 @@ model CalendarEvent {
   updatedAt  DateTime?
   archivedAt DateTime?
 
+  @@unique([calendarId, sourceId])
   @@map(name: "calendarEvents")
 }
 
