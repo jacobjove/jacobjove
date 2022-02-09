@@ -122,20 +122,14 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     variables: { userId: session?.user?.id },
   });
 
-  // TODO: Is this correct usage of memoization?
   const user = useMemo(() => {
-    const rawUser = data?.user;
-    if (!rawUser) return null;
-    let settings: UserSettings = {};
-    if (rawUser?.settings) {
-      if (isObject(rawUser.settings)) {
-        console.log("Ara? user.settings is already an object...");
-        settings = rawUser.settings;
-      } else {
-        settings = JSON.parse(rawUser.settings);
-      }
+    let user = data?.user;
+    if (user?.settings) {
+      if (!isObject(user.settings)) {
+        user = { ...user, settings: JSON.parse(user.settings) };
+      } else console.log("あら?");
     }
-    return { ...rawUser, settings };
+    return user as undefined | (Omit<User, "settings"> & { settings: UserSettings });
   }, [data]);
 
   const [date, setDate] = useState(new Date());

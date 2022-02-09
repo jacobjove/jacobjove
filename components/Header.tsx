@@ -30,7 +30,7 @@ const pages = [["About", "/about"]];
 
 const settings = [
   ["Profile", "/profile"],
-  ["Settings", "/settings"],
+  ["Settings", "/app/settings"],
 ];
 
 const AppBar = styled(_AppBar)(({ theme }) => ({
@@ -112,15 +112,15 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
               }}
             >
               {pages.map((item) => (
-                <MenuItem
-                  key={item[0]}
-                  sx={{ textAlign: "center" }}
-                  className={isActive(item[1]) ? "active" : ""}
-                >
-                  <Link href={item[1]} passHref>
-                    <Typography component="a">{item[0]}</Typography>
-                  </Link>
-                </MenuItem>
+                <Link key={item[0]} href={item[1]} passHref>
+                  <MenuItem
+                    component="a"
+                    sx={{ textAlign: "center" }}
+                    className={isActive(item[1]) ? "active" : ""}
+                  >
+                    {item[0]}
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -171,11 +171,11 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                   }}
                 >
                   {settings.map((page) => (
-                    <MenuItem key={page[0]} sx={{ textAlign: "center" }}>
-                      <Link href={page[1]}>
-                        <a>{page[0]}</a>
-                      </Link>
-                    </MenuItem>
+                    <Link key={page[0]} href={page[1]} passHref>
+                      <MenuItem component="a" sx={{ textAlign: "center" }}>
+                        {page[0]}
+                      </MenuItem>
+                    </Link>
                   ))}
                   {session.user.isAdmin ||
                     (true && (

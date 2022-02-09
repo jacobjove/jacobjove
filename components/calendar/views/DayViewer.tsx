@@ -100,7 +100,7 @@ const DayViewer: FC<ViewerProps> = ({
   const currentTimeOffsetPx = minuteHeightPx * currentTimeDiffInMinutes;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
+  const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.primary);
 
   const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
   const filteredEvents = calendarEvents

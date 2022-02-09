@@ -25,8 +25,8 @@ model Redirect {
 }
 
 model Account {
-  id                Int       @id @default(autoincrement())
-  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                Int        @id @default(autoincrement())
+  user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
   provider          String
   providerAccountId String
@@ -34,7 +34,8 @@ model Account {
   accessToken       String?
   refreshToken      String?
   accessTokenExpiry DateTime?
-  createdAt         DateTime  @default(now())
+  createdAt         DateTime   @default(now())
+  calendars         Calendar[]
 
   @@unique([provider, providerAccountId])
 }
@@ -86,19 +87,27 @@ model Dashboard {
   @@unique([name, userId])
 }
 
-enum Color {
-  BLUE
+enum CalendarProvider {
+  google
+  apple
 }
 
 model Calendar {
-  id       Int             @id @default(autoincrement())
-  uid      String          @unique(map: "Calendar_uid_unique_constraint") @default(cuid())
-  user     User            @relation("calendars", fields: [userId], references: [id], onDelete: Cascade)
-  userId   Int
-  name     String?
-  color    Color?
-  isPublic Boolean         @default(false)
-  events   CalendarEvent[]
+  id              Int               @id @default(autoincrement())
+  uid             String            @unique(map: "Calendar_uid_unique_constraint") @default(cuid())
+  user            User              @relation("calendars", fields: [userId], references: [id], onDelete: Cascade)
+  userId          Int
+  name            String?
+  color           String?
+  provider        CalendarProvider?
+  sourceId        String?
+  sourceAccount   Account?          @relation(fields: [sourceAccountId], references: [id], onDelete: Cascade)
+  sourceAccountId Int?
+  primary         Boolean?          @default(false)
+  public          Boolean?          @default(false)
+  disabled        Boolean?          @default(false)
+
+  events CalendarEvent[]
 }
 
 model CalendarEvent {

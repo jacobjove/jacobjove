@@ -4,8 +4,10 @@
 # -----------------------------------------------
 
 type Account {
+  _count: AccountCount
   accessToken: String
   accessTokenExpiry: DateTime
+  calendars(cursor: CalendarWhereUniqueInput, distinct: [CalendarScalarFieldEnum!], orderBy: [CalendarOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarWhereInput): [Calendar!]!
   createdAt: DateTime!
   id: Int!
   provider: String!
@@ -24,6 +26,10 @@ type AccountAvgAggregate {
 input AccountAvgOrderByAggregateInput {
   id: SortOrder
   userId: SortOrder
+}
+
+type AccountCount {
+  calendars: Int!
 }
 
 type AccountCountAggregate {
@@ -54,6 +60,7 @@ input AccountCountOrderByAggregateInput {
 input AccountCreateInput {
   accessToken: String
   accessTokenExpiry: DateTime
+  calendars: CalendarCreateNestedManyWithoutSourceAccountInput
   createdAt: DateTime
   provider: String!
   providerAccountId: String!
@@ -101,14 +108,37 @@ input AccountCreateNestedManyWithoutUserInput {
   createMany: AccountCreateManyUserInputEnvelope
 }
 
+input AccountCreateNestedOneWithoutCalendarsInput {
+  connect: AccountWhereUniqueInput
+  connectOrCreate: AccountCreateOrConnectWithoutCalendarsInput
+  create: AccountCreateWithoutCalendarsInput
+}
+
+input AccountCreateOrConnectWithoutCalendarsInput {
+  create: AccountCreateWithoutCalendarsInput!
+  where: AccountWhereUniqueInput!
+}
+
 input AccountCreateOrConnectWithoutUserInput {
   create: AccountCreateWithoutUserInput!
   where: AccountWhereUniqueInput!
 }
 
+input AccountCreateWithoutCalendarsInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
+  provider: String!
+  providerAccountId: String!
+  refreshToken: String
+  scopes: AccountCreatescopesInput
+  user: UserCreateNestedOneWithoutAccountsInput!
+}
+
 input AccountCreateWithoutUserInput {
   accessToken: String
   accessTokenExpiry: DateTime
+  calendars: CalendarCreateNestedManyWithoutSourceAccountInput
   createdAt: DateTime
   provider: String!
   providerAccountId: String!
@@ -211,6 +241,7 @@ input AccountOrderByWithAggregationInput {
 input AccountOrderByWithRelationInput {
   accessToken: SortOrder
   accessTokenExpiry: SortOrder
+  calendars: CalendarOrderByRelationAggregateInput
   createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
@@ -224,6 +255,11 @@ input AccountOrderByWithRelationInput {
 input AccountProviderProviderAccountIdCompoundUniqueInput {
   provider: String!
   providerAccountId: String!
+}
+
+input AccountRelationFilter {
+  is: AccountWhereInput
+  isNot: AccountWhereInput
 }
 
 enum AccountScalarFieldEnum {
@@ -281,6 +317,7 @@ input AccountSumOrderByAggregateInput {
 input AccountUpdateInput {
   accessToken: NullableStringFieldUpdateOperationsInput
   accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  calendars: CalendarUpdateManyWithoutSourceAccountInput
   createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
   providerAccountId: StringFieldUpdateOperationsInput
@@ -318,14 +355,36 @@ input AccountUpdateManyWithoutUserInput {
   upsert: [AccountUpsertWithWhereUniqueWithoutUserInput!]
 }
 
+input AccountUpdateOneWithoutCalendarsInput {
+  connect: AccountWhereUniqueInput
+  connectOrCreate: AccountCreateOrConnectWithoutCalendarsInput
+  create: AccountCreateWithoutCalendarsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: AccountUpdateWithoutCalendarsInput
+  upsert: AccountUpsertWithoutCalendarsInput
+}
+
 input AccountUpdateWithWhereUniqueWithoutUserInput {
   data: AccountUpdateWithoutUserInput!
   where: AccountWhereUniqueInput!
 }
 
+input AccountUpdateWithoutCalendarsInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  provider: StringFieldUpdateOperationsInput
+  providerAccountId: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
+  user: UserUpdateOneRequiredWithoutAccountsInput
+}
+
 input AccountUpdateWithoutUserInput {
   accessToken: NullableStringFieldUpdateOperationsInput
   accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  calendars: CalendarUpdateManyWithoutSourceAccountInput
   createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
   providerAccountId: StringFieldUpdateOperationsInput
@@ -344,12 +403,18 @@ input AccountUpsertWithWhereUniqueWithoutUserInput {
   where: AccountWhereUniqueInput!
 }
 
+input AccountUpsertWithoutCalendarsInput {
+  create: AccountCreateWithoutCalendarsInput!
+  update: AccountUpdateWithoutCalendarsInput!
+}
+
 input AccountWhereInput {
   AND: [AccountWhereInput!]
   NOT: [AccountWhereInput!]
   OR: [AccountWhereInput!]
   accessToken: StringNullableFilter
   accessTokenExpiry: DateTimeNullableFilter
+  calendars: CalendarListRelationFilter
   createdAt: DateTimeFilter
   id: IntFilter
   provider: StringFilter
@@ -5253,6 +5318,19 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
+input BoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
+}
+
+input BoolNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedBoolNullableFilter
+  _min: NestedBoolNullableFilter
+  equals: Boolean
+  not: NestedBoolNullableWithAggregatesFilter
+}
+
 input BoolWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedBoolFilter
@@ -5263,11 +5341,17 @@ input BoolWithAggregatesFilter {
 
 type Calendar {
   _count: CalendarCount
-  color: Color
+  color: String
+  disabled: Boolean
   events(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
   id: Int!
-  isPublic: Boolean!
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccount: Account
+  sourceAccountId: Int
+  sourceId: String
   uid: String!
   user: User!
   userId: Int!
@@ -5275,11 +5359,13 @@ type Calendar {
 
 type CalendarAvgAggregate {
   id: Float
+  sourceAccountId: Float
   userId: Float
 }
 
 input CalendarAvgOrderByAggregateInput {
   id: SortOrder
+  sourceAccountId: SortOrder
   userId: SortOrder
 }
 
@@ -5290,51 +5376,101 @@ type CalendarCount {
 type CalendarCountAggregate {
   _all: Int!
   color: Int!
+  disabled: Int!
   id: Int!
-  isPublic: Int!
   name: Int!
+  primary: Int!
+  provider: Int!
+  public: Int!
+  sourceAccountId: Int!
+  sourceId: Int!
   uid: Int!
   userId: Int!
 }
 
 input CalendarCountOrderByAggregateInput {
   color: SortOrder
+  disabled: SortOrder
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  sourceAccountId: SortOrder
+  sourceId: SortOrder
   uid: SortOrder
   userId: SortOrder
 }
 
 input CalendarCreateInput {
-  color: Color
+  color: String
+  disabled: Boolean
   events: CalendarEventCreateNestedManyWithoutCalendarInput
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccount: AccountCreateNestedOneWithoutCalendarsInput
+  sourceId: String
   uid: String
   user: UserCreateNestedOneWithoutCalendarsInput!
 }
 
 input CalendarCreateManyInput {
-  color: Color
+  color: String
+  disabled: Boolean
   id: Int
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccountId: Int
+  sourceId: String
   uid: String
   userId: Int!
 }
 
-input CalendarCreateManyUserInput {
-  color: Color
+input CalendarCreateManySourceAccountInput {
+  color: String
+  disabled: Boolean
   id: Int
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceId: String
+  uid: String
+  userId: Int!
+}
+
+input CalendarCreateManySourceAccountInputEnvelope {
+  data: [CalendarCreateManySourceAccountInput!]!
+  skipDuplicates: Boolean
+}
+
+input CalendarCreateManyUserInput {
+  color: String
+  disabled: Boolean
+  id: Int
+  name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccountId: Int
+  sourceId: String
   uid: String
 }
 
 input CalendarCreateManyUserInputEnvelope {
   data: [CalendarCreateManyUserInput!]!
   skipDuplicates: Boolean
+}
+
+input CalendarCreateNestedManyWithoutSourceAccountInput {
+  connect: [CalendarWhereUniqueInput!]
+  connectOrCreate: [CalendarCreateOrConnectWithoutSourceAccountInput!]
+  create: [CalendarCreateWithoutSourceAccountInput!]
+  createMany: CalendarCreateManySourceAccountInputEnvelope
 }
 
 input CalendarCreateNestedManyWithoutUserInput {
@@ -5355,24 +5491,52 @@ input CalendarCreateOrConnectWithoutEventsInput {
   where: CalendarWhereUniqueInput!
 }
 
+input CalendarCreateOrConnectWithoutSourceAccountInput {
+  create: CalendarCreateWithoutSourceAccountInput!
+  where: CalendarWhereUniqueInput!
+}
+
 input CalendarCreateOrConnectWithoutUserInput {
   create: CalendarCreateWithoutUserInput!
   where: CalendarWhereUniqueInput!
 }
 
 input CalendarCreateWithoutEventsInput {
-  color: Color
-  isPublic: Boolean
+  color: String
+  disabled: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccount: AccountCreateNestedOneWithoutCalendarsInput
+  sourceId: String
+  uid: String
+  user: UserCreateNestedOneWithoutCalendarsInput!
+}
+
+input CalendarCreateWithoutSourceAccountInput {
+  color: String
+  disabled: Boolean
+  events: CalendarEventCreateNestedManyWithoutCalendarInput
+  name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceId: String
   uid: String
   user: UserCreateNestedOneWithoutCalendarsInput!
 }
 
 input CalendarCreateWithoutUserInput {
-  color: Color
+  color: String
+  disabled: Boolean
   events: CalendarEventCreateNestedManyWithoutCalendarInput
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccount: AccountCreateNestedOneWithoutCalendarsInput
+  sourceId: String
   uid: String
 }
 
@@ -6132,10 +6296,15 @@ type CalendarGroupBy {
   _max: CalendarMaxAggregate
   _min: CalendarMinAggregate
   _sum: CalendarSumAggregate
-  color: Color
+  color: String
+  disabled: Boolean
   id: Int!
-  isPublic: Boolean!
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccountId: Int
+  sourceId: String
   uid: String!
   userId: Int!
 }
@@ -6147,37 +6316,57 @@ input CalendarListRelationFilter {
 }
 
 type CalendarMaxAggregate {
-  color: Color
+  color: String
+  disabled: Boolean
   id: Int
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccountId: Int
+  sourceId: String
   uid: String
   userId: Int
 }
 
 input CalendarMaxOrderByAggregateInput {
   color: SortOrder
+  disabled: SortOrder
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  sourceAccountId: SortOrder
+  sourceId: SortOrder
   uid: SortOrder
   userId: SortOrder
 }
 
 type CalendarMinAggregate {
-  color: Color
+  color: String
+  disabled: Boolean
   id: Int
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  sourceAccountId: Int
+  sourceId: String
   uid: String
   userId: Int
 }
 
 input CalendarMinOrderByAggregateInput {
   color: SortOrder
+  disabled: SortOrder
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  sourceAccountId: SortOrder
+  sourceId: SortOrder
   uid: SortOrder
   userId: SortOrder
 }
@@ -6193,22 +6382,38 @@ input CalendarOrderByWithAggregationInput {
   _min: CalendarMinOrderByAggregateInput
   _sum: CalendarSumOrderByAggregateInput
   color: SortOrder
+  disabled: SortOrder
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  sourceAccountId: SortOrder
+  sourceId: SortOrder
   uid: SortOrder
   userId: SortOrder
 }
 
 input CalendarOrderByWithRelationInput {
   color: SortOrder
+  disabled: SortOrder
   events: CalendarEventOrderByRelationAggregateInput
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  sourceAccount: AccountOrderByWithRelationInput
+  sourceAccountId: SortOrder
+  sourceId: SortOrder
   uid: SortOrder
   user: UserOrderByWithRelationInput
   userId: SortOrder
+}
+
+enum CalendarProvider {
+  apple
+  google
 }
 
 input CalendarRelationFilter {
@@ -6218,9 +6423,14 @@ input CalendarRelationFilter {
 
 enum CalendarScalarFieldEnum {
   color
+  disabled
   id
-  isPublic
   name
+  primary
+  provider
+  public
+  sourceAccountId
+  sourceId
   uid
   userId
 }
@@ -6229,10 +6439,15 @@ input CalendarScalarWhereInput {
   AND: [CalendarScalarWhereInput!]
   NOT: [CalendarScalarWhereInput!]
   OR: [CalendarScalarWhereInput!]
-  color: EnumColorNullableFilter
+  color: StringNullableFilter
+  disabled: BoolNullableFilter
   id: IntFilter
-  isPublic: BoolFilter
   name: StringNullableFilter
+  primary: BoolNullableFilter
+  provider: EnumCalendarProviderNullableFilter
+  public: BoolNullableFilter
+  sourceAccountId: IntNullableFilter
+  sourceId: StringNullableFilter
   uid: StringFilter
   userId: IntFilter
 }
@@ -6241,43 +6456,78 @@ input CalendarScalarWhereWithAggregatesInput {
   AND: [CalendarScalarWhereWithAggregatesInput!]
   NOT: [CalendarScalarWhereWithAggregatesInput!]
   OR: [CalendarScalarWhereWithAggregatesInput!]
-  color: EnumColorNullableWithAggregatesFilter
+  color: StringNullableWithAggregatesFilter
+  disabled: BoolNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
-  isPublic: BoolWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
+  primary: BoolNullableWithAggregatesFilter
+  provider: EnumCalendarProviderNullableWithAggregatesFilter
+  public: BoolNullableWithAggregatesFilter
+  sourceAccountId: IntNullableWithAggregatesFilter
+  sourceId: StringNullableWithAggregatesFilter
   uid: StringWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
 type CalendarSumAggregate {
   id: Int
+  sourceAccountId: Int
   userId: Int
 }
 
 input CalendarSumOrderByAggregateInput {
   id: SortOrder
+  sourceAccountId: SortOrder
   userId: SortOrder
 }
 
 input CalendarUpdateInput {
-  color: NullableEnumColorFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  disabled: NullableBoolFieldUpdateOperationsInput
   events: CalendarEventUpdateManyWithoutCalendarInput
-  isPublic: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  sourceAccount: AccountUpdateOneWithoutCalendarsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutCalendarsInput
 }
 
 input CalendarUpdateManyMutationInput {
-  color: NullableEnumColorFieldUpdateOperationsInput
-  isPublic: BoolFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  disabled: NullableBoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
+}
+
+input CalendarUpdateManyWithWhereWithoutSourceAccountInput {
+  data: CalendarUpdateManyMutationInput!
+  where: CalendarScalarWhereInput!
 }
 
 input CalendarUpdateManyWithWhereWithoutUserInput {
   data: CalendarUpdateManyMutationInput!
   where: CalendarScalarWhereInput!
+}
+
+input CalendarUpdateManyWithoutSourceAccountInput {
+  connect: [CalendarWhereUniqueInput!]
+  connectOrCreate: [CalendarCreateOrConnectWithoutSourceAccountInput!]
+  create: [CalendarCreateWithoutSourceAccountInput!]
+  createMany: CalendarCreateManySourceAccountInputEnvelope
+  delete: [CalendarWhereUniqueInput!]
+  deleteMany: [CalendarScalarWhereInput!]
+  disconnect: [CalendarWhereUniqueInput!]
+  set: [CalendarWhereUniqueInput!]
+  update: [CalendarUpdateWithWhereUniqueWithoutSourceAccountInput!]
+  updateMany: [CalendarUpdateManyWithWhereWithoutSourceAccountInput!]
+  upsert: [CalendarUpsertWithWhereUniqueWithoutSourceAccountInput!]
 }
 
 input CalendarUpdateManyWithoutUserInput {
@@ -6302,25 +6552,59 @@ input CalendarUpdateOneRequiredWithoutEventsInput {
   upsert: CalendarUpsertWithoutEventsInput
 }
 
+input CalendarUpdateWithWhereUniqueWithoutSourceAccountInput {
+  data: CalendarUpdateWithoutSourceAccountInput!
+  where: CalendarWhereUniqueInput!
+}
+
 input CalendarUpdateWithWhereUniqueWithoutUserInput {
   data: CalendarUpdateWithoutUserInput!
   where: CalendarWhereUniqueInput!
 }
 
 input CalendarUpdateWithoutEventsInput {
-  color: NullableEnumColorFieldUpdateOperationsInput
-  isPublic: BoolFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  disabled: NullableBoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  sourceAccount: AccountUpdateOneWithoutCalendarsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
+  uid: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutCalendarsInput
+}
+
+input CalendarUpdateWithoutSourceAccountInput {
+  color: NullableStringFieldUpdateOperationsInput
+  disabled: NullableBoolFieldUpdateOperationsInput
+  events: CalendarEventUpdateManyWithoutCalendarInput
+  name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutCalendarsInput
 }
 
 input CalendarUpdateWithoutUserInput {
-  color: NullableEnumColorFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  disabled: NullableBoolFieldUpdateOperationsInput
   events: CalendarEventUpdateManyWithoutCalendarInput
-  isPublic: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  sourceAccount: AccountUpdateOneWithoutCalendarsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
+}
+
+input CalendarUpsertWithWhereUniqueWithoutSourceAccountInput {
+  create: CalendarCreateWithoutSourceAccountInput!
+  update: CalendarUpdateWithoutSourceAccountInput!
+  where: CalendarWhereUniqueInput!
 }
 
 input CalendarUpsertWithWhereUniqueWithoutUserInput {
@@ -6338,11 +6622,17 @@ input CalendarWhereInput {
   AND: [CalendarWhereInput!]
   NOT: [CalendarWhereInput!]
   OR: [CalendarWhereInput!]
-  color: EnumColorNullableFilter
+  color: StringNullableFilter
+  disabled: BoolNullableFilter
   events: CalendarEventListRelationFilter
   id: IntFilter
-  isPublic: BoolFilter
   name: StringNullableFilter
+  primary: BoolNullableFilter
+  provider: EnumCalendarProviderNullableFilter
+  public: BoolNullableFilter
+  sourceAccount: AccountRelationFilter
+  sourceAccountId: IntNullableFilter
+  sourceId: StringNullableFilter
   uid: StringFilter
   user: UserRelationFilter
   userId: IntFilter
@@ -6935,10 +7225,6 @@ input CategoryWhereUniqueInput {
   id: Int
 }
 
-enum Color {
-  BLUE
-}
-
 type Dashboard {
   archivedAt: DateTime
   createdAt: DateTime!
@@ -7345,21 +7631,21 @@ input DateTimeWithAggregatesFilter {
   notIn: [DateTime!]
 }
 
-input EnumColorNullableFilter {
-  equals: Color
-  in: [Color!]
-  not: NestedEnumColorNullableFilter
-  notIn: [Color!]
+input EnumCalendarProviderNullableFilter {
+  equals: CalendarProvider
+  in: [CalendarProvider!]
+  not: NestedEnumCalendarProviderNullableFilter
+  notIn: [CalendarProvider!]
 }
 
-input EnumColorNullableWithAggregatesFilter {
+input EnumCalendarProviderNullableWithAggregatesFilter {
   _count: NestedIntNullableFilter
-  _max: NestedEnumColorNullableFilter
-  _min: NestedEnumColorNullableFilter
-  equals: Color
-  in: [Color!]
-  not: NestedEnumColorNullableWithAggregatesFilter
-  notIn: [Color!]
+  _max: NestedEnumCalendarProviderNullableFilter
+  _min: NestedEnumCalendarProviderNullableFilter
+  equals: CalendarProvider
+  in: [CalendarProvider!]
+  not: NestedEnumCalendarProviderNullableWithAggregatesFilter
+  notIn: [CalendarProvider!]
 }
 
 input EnumFREQUENCYFieldUpdateOperationsInput {
@@ -11980,6 +12266,19 @@ input NestedBoolFilter {
   not: NestedBoolFilter
 }
 
+input NestedBoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
+}
+
+input NestedBoolNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedBoolNullableFilter
+  _min: NestedBoolNullableFilter
+  equals: Boolean
+  not: NestedBoolNullableWithAggregatesFilter
+}
+
 input NestedBoolWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedBoolFilter
@@ -12038,21 +12337,21 @@ input NestedDateTimeWithAggregatesFilter {
   notIn: [DateTime!]
 }
 
-input NestedEnumColorNullableFilter {
-  equals: Color
-  in: [Color!]
-  not: NestedEnumColorNullableFilter
-  notIn: [Color!]
+input NestedEnumCalendarProviderNullableFilter {
+  equals: CalendarProvider
+  in: [CalendarProvider!]
+  not: NestedEnumCalendarProviderNullableFilter
+  notIn: [CalendarProvider!]
 }
 
-input NestedEnumColorNullableWithAggregatesFilter {
+input NestedEnumCalendarProviderNullableWithAggregatesFilter {
   _count: NestedIntNullableFilter
-  _max: NestedEnumColorNullableFilter
-  _min: NestedEnumColorNullableFilter
-  equals: Color
-  in: [Color!]
-  not: NestedEnumColorNullableWithAggregatesFilter
-  notIn: [Color!]
+  _max: NestedEnumCalendarProviderNullableFilter
+  _min: NestedEnumCalendarProviderNullableFilter
+  equals: CalendarProvider
+  in: [CalendarProvider!]
+  not: NestedEnumCalendarProviderNullableWithAggregatesFilter
+  notIn: [CalendarProvider!]
 }
 
 input NestedEnumFREQUENCYFilter {
@@ -13307,12 +13606,16 @@ input NotebookWhereUniqueInput {
   ownerId_title: NotebookOwnerIdTitleCompoundUniqueInput
 }
 
+input NullableBoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
 input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
 
-input NullableEnumColorFieldUpdateOperationsInput {
-  set: Color
+input NullableEnumCalendarProviderFieldUpdateOperationsInput {
+  set: CalendarProvider
 }
 
 input NullableIntFieldUpdateOperationsInput {

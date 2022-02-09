@@ -4,6 +4,7 @@ import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
 import DateContext from "@/components/contexts/DateContext";
+import UserContext from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
@@ -28,12 +29,19 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { addMinutes } from "date-fns";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+
+type CalendarApiProvider = "google" | "apple";
 
 const ICON_MAP = {
   google: GoogleIcon,
   apple: AppleIcon,
+};
+
+const SCOPE_MAP: Record<CalendarApiProvider, string> = {
+  google: "https://www.googleapis.com/auth/calendar",
+  apple: "",
 };
 
 export const fragment = gql`
@@ -56,12 +64,20 @@ interface CalendarApiMenuItemProps extends MenuItemProps {
 }
 
 const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children, ...props }) => {
+  const user = useContext(UserContext);
   const dialogState = usePopupState({ variant: "popover", popupId: `${provider}-calendar-dialog` });
   const Icon = ICON_MAP[provider];
+  const enabled = useMemo(() => {
+    return Boolean(
+      user?.accounts?.find(
+        (account) => account.provider === provider && account.scopes.includes(SCOPE_MAP[provider])
+      )
+    );
+  }, [user, provider]);
   return (
     <>
       <MenuItem {...props} {...bindTrigger(dialogState)}>
-        <ListItemIcon>
+        <ListItemIcon sx={{ visibility: enabled ? "visible" : "hidden" }}>
           <Check />
         </ListItemIcon>
         <Icon sx={{ color: "lightgray" }} />

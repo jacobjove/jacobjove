@@ -98,6 +98,12 @@ export const calendarFragment = gql`
     id
     name
     color
+    provider
+    sourceId
+    sourceAccountId
+    public
+    primary
+    disabled
   }
 `;
 
@@ -175,8 +181,12 @@ export const userFragment = gql`
     accounts {
       ...AccountFragment
     }
+    calendars {
+      ...CalendarFragment
+    }
   }
   ${accountFragment}
+  ${calendarFragment}
 `;
 
 export const noteFragment = gql`

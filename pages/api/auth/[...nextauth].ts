@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import NextAuth, { CallbacksOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { AppProviders } from "next-auth/providers";
-import AppleProvider from "next-auth/providers/apple";
+// import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
@@ -65,10 +65,11 @@ if (useMockProviders) {
   );
 } else {
   providers.push(
-    AppleProvider({
-      clientId: process.env.AUTH_APPLE_ID ?? "",
-      clientSecret: process.env.AUTH_APPLE_SECRET ?? "",
-    }),
+    // TODO
+    // AppleProvider({
+    //   clientId: process.env.AUTH_APPLE_ID ?? "",
+    //   clientSecret: process.env.AUTH_APPLE_SECRET ?? "",
+    // }),
     GoogleProvider({
       clientId: process.env.AUTH_GOOGLE_ID ?? "",
       clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
@@ -118,7 +119,6 @@ const callbacks: CallbacksOptions = {
     return true;
   },
   async redirect({ url, baseUrl }) {
-    // console.log("🔗 redirect", { url, baseUrl });
     if (url.startsWith(baseUrl)) return url;
     // Allow relative callback URLs.
     if (url.startsWith("/")) return new URL(url, baseUrl).toString();
@@ -126,9 +126,9 @@ const callbacks: CallbacksOptions = {
   },
   // https://next-auth.js.org/configuration/callbacks#jwt-callback
   async jwt({ token, account }) {
-    // console.log("🔑 jwt", { token, account });
     // The account is only passed the first time this callback is called on a new session.
     // In subsequent calls, only the token is available.
+    // console.log("🔑 jwt", { token, account });
     if (account) {
       // Persist necessary data to the token.
       token.provider = account.provider;
@@ -141,6 +141,7 @@ const callbacks: CallbacksOptions = {
     // Return the previous token if the access token has not expired yet.
     if (token.accessTokenExpiry && Date.now() < token.accessTokenExpiry) return token;
     // Attempt to update the token.
+    console.log(`🔑 Attempting to update token because ${Date.now()} > ${token.accessTokenExpiry}`);
     return refreshAccessToken(token);
   },
   async session({ session, token }) {
@@ -241,49 +242,48 @@ const callbacks: CallbacksOptions = {
 
 /**
  * Takes a token, and returns a new token with updated
- * `accessToken` and `accessTokenExpires`. If an error occurs,
+ * `accessToken` and `accessTokenExpiry`. If an error occurs,
  * returns the old token and an error property
  */
 async function refreshAccessToken(token: JWT) {
-  console.log("🔑 refreshAccessToken");
   // console.log("🔑 refreshAccessToken", { token });
-  try {
-    const url =
-      "https://oauth2.googleapis.com/token?" +
-      new URLSearchParams({
-        client_id: `${process.env.AUTH_GOOGLE_ID}`,
-        client_secret: `${process.env.AUTH_GOOGLE_SECRET}`,
-        grant_type: "refresh_token",
-        refresh_token: `${token.refreshToken}`,
-      });
-
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      method: "POST",
-    });
-
-    const refreshedTokens = await response.json();
-
-    if (!response.ok) {
-      throw refreshedTokens;
-    }
-
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-    };
-  } catch (error) {
-    console.log(error);
-
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
+  let url: string;
+  switch (token.provider) {
+    case "google":
+      url =
+        "https://oauth2.googleapis.com/token?" +
+        new URLSearchParams({
+          client_id: `${process.env.AUTH_GOOGLE_ID}`,
+          client_secret: `${process.env.AUTH_GOOGLE_SECRET}`,
+          grant_type: "refresh_token",
+          refresh_token: `${token.refreshToken}`,
+        });
+      break;
+    default:
+      console.error(`Unsupported provider: ${token.provider}`);
+      return token;
   }
+  return await fetch(url, {
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    method: "POST",
+  })
+    .then(async (response) => {
+      const refreshedTokens = await response.json();
+      if (!response.ok) throw refreshedTokens;
+      return {
+        ...token,
+        accessToken: refreshedTokens.access_token,
+        accessTokenExpiry: Date.now() + refreshedTokens.expires_in * 1000,
+        refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+      };
+    })
+    .catch((error) => {
+      console.error(error);
+      return {
+        ...token,
+        error: "RefreshAccessTokenError",
+      };
+    });
 }
 
 export default NextAuth({

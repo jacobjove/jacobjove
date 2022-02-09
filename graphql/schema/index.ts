@@ -96,10 +96,11 @@ export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "en
 //   end?: string | null;
 // };
 export type UserValue = FromPrisma<_UserValue>;
-export type User = FromPrismaWithOmission<_User, "settings" | "accounts"> & {
+export type User = FromPrismaWithOmission<_User, "settings" | "accounts" | "calendars"> & {
   // settings: { [key: string]: any; };
   settings: string;
   accounts: Account[];
+  calendars: Calendar[];
 };
 export type Dashboard = FromPrismaWithOmission<_Dashboard, "layouts"> & {
   layouts: string;

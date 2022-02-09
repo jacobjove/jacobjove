@@ -145,23 +145,19 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
   const layouts = selectedDashboard?.layouts ? JSON.parse(selectedDashboard.layouts) : undefined;
 
   useEffect(() => {
-    if (session && data && !dashboards?.length) {
-      (async () => {
-        await createDashboard({
-          variables: {
-            data: {
-              name: "Daily Planner",
-              isDefault: true,
-              layouts: JSON.stringify(DEFAULT_LAYOUTS),
-              user: { connect: { id: session.user.id } },
-            },
+    if (session && !loading && data && !dashboards?.length) {
+      createDashboard({
+        variables: {
+          data: {
+            name: "Daily Planner",
+            isDefault: true,
+            layouts: JSON.stringify(DEFAULT_LAYOUTS),
+            user: { connect: { id: session.user.id } },
           },
-        }).catch((error) => {
-          console.error(error);
-        });
-      })();
+        },
+      }).catch(console.error);
     }
-  }, [data, dashboards, createDashboard, session]);
+  }, [loading, data, dashboards, createDashboard, session]);
   useEffect(() => {
     if (dashboards?.length && !selectedDashboard) setSelectedDashboardId(dashboards[0].id);
   }, [dashboards, selectedDashboard, setSelectedDashboardId]);
