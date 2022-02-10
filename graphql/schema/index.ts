@@ -29,6 +29,7 @@ import { NonEmptyArray } from "type-graphql";
 import { ActionCompletionToggleResolver } from "./resolvers/ActionCompletionToggleResolver";
 import { HabitAdoptionToggleResolver } from "./resolvers/HabitAdoptionToggleResolver";
 import { IdentificationToggleResolver } from "./resolvers/IdentificationToggleResolver";
+import { UpdateManyTaskRankResolver } from "./resolvers/UpdateManyTaskRankResolver";
 import { UserBeliefToggleResolver } from "./resolvers/UserBeliefToggleResolver";
 import { UserValueToggleResolver } from "./resolvers/UserValueToggleResolver";
 
@@ -41,6 +42,7 @@ export const resolvers = [
   ActionCompletionToggleResolver,
   UserValueToggleResolver,
   UserBeliefToggleResolver,
+  UpdateManyTaskRankResolver,
 ] as unknown as NonEmptyArray<Function>;
 
 type OmitCount<T> = Pick<T, Exclude<keyof T, "_count">>;

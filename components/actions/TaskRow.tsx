@@ -5,7 +5,7 @@ import DateContext from "@/components/contexts/DateContext";
 import UserContext from "@/components/contexts/UserContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
@@ -27,61 +27,45 @@ import { format, isPast, isSameDay, isSameYear, parseISO } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useSession } from "next-auth/react";
-import { FC, useContext, useRef, useState } from "react";
+import { FC, RefObject, useContext, useMemo, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
-interface TaskRowProps {
-  task: Task;
-  collapsed?: boolean;
-  index?: number;
+interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
+  index: number;
   move?: (dragIndex: number, hoverIndex: number) => void;
+  onDrop?: (dropIndex: number) => void;
 }
 
-const READ_TASKS = gql`
-  query ReadTasks($where: TaskWhereInput) {
-    tasks(where: $where) {
-      id
-      position
-    }
-  }
-`;
+interface TaskRowContentProps {
+  task: Task;
+  collapsed?: boolean;
+  dndRef: RefObject<HTMLTableRowElement>;
+  isDragging: boolean;
+  onLoading: (isLoading: boolean) => void;
+  onEditing: (isEditing: boolean) => void;
+}
 
-type DraggedTask = Pick<Task, "id" | "title" | "position"> & { index: number };
+type DraggedTask = Pick<Task, "id" | "completedAt"> & { index: number };
 
-const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
-  const { task, collapsed: _collapsed, index: _index, move } = props;
-  const index = _index ?? task.position;
-  const completed = Boolean(task.completedAt);
+const TaskRowContent: FC<TaskRowContentProps> = (props) => {
+  const { task, collapsed: _collapsed, dndRef, isDragging, onLoading, onEditing } = props;
+  const completed = !!task.completedAt;
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
   const user = useContext(UserContext);
   const today = useContext(DateContext);
-  const ref = useRef<HTMLTableRowElement>(null);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [editing, setEditing] = useState(false);
   const [actionInProgress, setActionInProgress] = useState(false);
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const menuState = usePopupState({ variant: "popper", popupId: `task-${task.id}-menu` });
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
-  const {
-    data: tasksData,
-    loading: loadingTasks,
-    error: errorLoadingTasks,
-  } = useQuery<{
-    tasks: Task[];
-  }>(READ_TASKS, {
-    variables: {
-      where: {
-        userId: {
-          equals: session?.user?.id,
-        },
-      },
-    },
-    fetchPolicy: "cache-only",
-  });
-  const { tasks } = tasksData ?? { tasks: [] };
-  const [updateTask, { loading: loadingUpdateTask }] = useMutation(UPDATE_TASK);
-  const loading = loadingTasks || loadingUpdateTask;
+
+  const [updateTask, { loading }] = useMutation(UPDATE_TASK);
+
+  onLoading(loading);
+  onEditing(editing);
+
   const toggleCompletion = (complete: boolean) => {
     if (!session?.user.id) return;
     const completedAt = complete ? new Date().toISOString() : null;
@@ -104,88 +88,6 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       console.error(error);
     });
   };
-  const [{ isDragging }, dragRef] = useDrag(() => ({
-    type: "task",
-    item: {
-      type: "task",
-      id: task.id,
-      title: task.title,
-      position: task.position,
-      index: index,
-      calendarId: user?.settings?.defaultCalendarId,
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  }));
-  const [{ handlerId, canDrop }, dropRef] = useDrop(
-    () => ({
-      accept: ["task"],
-      canDrop: () => !loading,
-      drop: (item: DraggedTask) => {
-        if (!session) return;
-        console.log("dropped", item.position);
-        if (errorLoadingTasks) {
-          console.error(errorLoadingTasks);
-          return;
-        }
-      },
-      hover(item: DraggedTask, monitor: DropTargetMonitor) {
-        if (!ref.current || !move) {
-          return;
-        }
-        const dragIndex = item.index;
-        const hoverIndex = index;
-
-        // Don't replace items with themselves.
-        if (dragIndex === hoverIndex) {
-          return;
-        }
-
-        // Determine rectangle on screen
-        const hoverBoundingRect = ref.current?.getBoundingClientRect();
-
-        // Get vertical middle
-        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-        // Determine mouse position
-        const clientOffset = monitor.getClientOffset();
-
-        // Get pixels to the top
-        const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-
-        // Only perform the move when the mouse has crossed half of the items height.
-        // When dragging downwards, only move when the cursor is below 50%.
-        // When dragging upwards, only move when the cursor is above 50%.
-
-        // Dragging downwards
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-          return;
-        }
-
-        // Dragging upwards
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-          return;
-        }
-
-        // Time to actually perform the action
-        move(dragIndex, hoverIndex);
-
-        // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
-        item.index = hoverIndex;
-        console.log("item.index", item.index);
-      },
-      collect: (monitor) => ({
-        handlerId: monitor.getHandlerId(),
-        isOver: !!monitor.isOver(),
-        canDrop: !!monitor.canDrop(),
-      }),
-    }),
-    []
-  );
 
   const isHabit = Boolean(task.habit);
 
@@ -197,7 +99,6 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     )
   ) : "";
 
-  dragRef(dropRef(ref));
   const bindTriggerProps = bindTrigger(dialogState);
   const menuTriggerProps = bindTrigger(menuState);
   const originalOnClick = menuTriggerProps.onClick;
@@ -205,12 +106,14 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
     event.stopPropagation();
     originalOnClick(event);
   };
+
   return (
     <>
       <TableRow
-        ref={ref}
-        data-handler-id={handlerId}
-        onClick={bindTriggerProps.onClick}
+        ref={dndRef}
+        onClick={(e) => {
+          if (!editing) bindTriggerProps.onClick(e);
+        }}
         sx={{
           opacity: isDragging ? 0 : 1,
           // TODO: A CSS transition would be nice here...
@@ -339,7 +242,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                       }}
                       {...bindTriggerProps}
                     >
-                      {task.title} (i: {index}, pos: {task.position})
+                      {task.title} (rank: {task.rank})
                     </Button>
                   </Box>
                 </Box>
@@ -456,7 +359,10 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
                           e.networkError.result.errors.forEach(
                             (error: {
                               message: string;
-                              extensions: { code: string; exception: { stacktrace: string[] } };
+                              extensions: {
+                                code: string;
+                                exception: { stacktrace: string[] };
+                              };
                             }) => {
                               console.error(error.message);
                               console.log(error.extensions.exception.stacktrace.join("\n"), {
@@ -497,12 +403,122 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         )}
       </TableRow>
       {!collapsed &&
-        task.subtasks?.map((subtask) => {
-          return <TaskRow key={subtask.id} task={subtask} collapsed={!subtasksExpanded} />;
-        })}
+        task.subtasks?.map((subtask, index) => (
+          <TaskRow
+            key={subtask.id}
+            task={subtask}
+            collapsed={!subtasksExpanded || isDragging}
+            index={index}
+          />
+        ))}
       <ActionDialog {...bindPopover(dialogState)} task={task} />
     </>
   );
+};
+
+const TaskRow = (props: TaskRowProps) => {
+  const { task, index, onDrop, move } = props;
+
+  const { data: session } = useSession();
+  const dndRef = useRef<HTMLTableRowElement>(null);
+  const loadingRef = useRef(false);
+  const editingRef = useRef(false);
+
+  const [{ isDragging }, dragRef] = useDrag(
+    () => ({
+      type: "task",
+      item: {
+        type: "task",
+        id: task.id,
+        completedAt: task.completedAt,
+        index,
+      } as DraggedTask,
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+      canDrag: () => !(editingRef.current || loadingRef.current || task.parentId != null),
+    }),
+    [index, editingRef, loadingRef]
+  );
+
+  const [, dropRef] = useDrop(
+    () => ({
+      accept: ["task"],
+      canDrop: (draggedTask: DraggedTask) =>
+        // prevent moving between complete/incomplete
+        !loadingRef.current && !(draggedTask.completedAt ? !task.completedAt : task.completedAt),
+      drop: (item: DraggedTask) => {
+        if (!session) return;
+        onDrop?.(item.index);
+      },
+      hover(item: DraggedTask, monitor: DropTargetMonitor) {
+        if (!dndRef.current || !move || !monitor.canDrop()) {
+          return;
+        }
+        const dragIndex = item.index;
+        const hoverIndex = index;
+
+        // Don't replace items with themselves.
+        if (dragIndex === hoverIndex) {
+          return;
+        }
+
+        // Determine rectangle on screen
+        const hoverBoundingRect = dndRef.current?.getBoundingClientRect();
+
+        // Get vertical middle
+        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+        // Determine mouse position
+        const clientOffset = monitor.getClientOffset();
+
+        // Get pixels to the top
+        const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+
+        // Only perform the move when the mouse has crossed half of the items height.
+        // When dragging downwards, only move when the cursor is below 50%.
+        // When dragging upwards, only move when the cursor is above 50%.
+
+        // Dragging downwards
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+
+        // Dragging upwards
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
+
+        // Time to actually perform the action
+        move(dragIndex, hoverIndex);
+
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        item.index = hoverIndex;
+      },
+    }),
+    [move, loadingRef, index]
+  );
+
+  dragRef(dropRef(dndRef));
+
+  return useMemo(() => {
+    return (
+      <TaskRowContent
+        {...props}
+        dndRef={dndRef}
+        isDragging={isDragging}
+        onLoading={(isLoading) => {
+          loadingRef.current = isLoading;
+        }}
+        onEditing={(isEditing) => {
+          editingRef.current = isEditing;
+        }}
+      />
+    );
+  }, [props.task, props.collapsed, isDragging, dndRef, editingRef, loadingRef]);
 };
 
 export default TaskRow;

@@ -46,7 +46,7 @@ export const taskFragment = gql`
     id
     title
     dueDate
-    position
+    rank
     description
     completedAt
     archivedAt
