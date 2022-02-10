@@ -184,6 +184,7 @@ const callbacks: CallbacksOptions = {
             id: true,
             name: true,
             email: true,
+            isAdmin: true,
           },
         })
         .catch(console.error);
