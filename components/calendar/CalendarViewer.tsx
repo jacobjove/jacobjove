@@ -22,6 +22,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { addMinutes } from "date-fns";
+import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import Link from "next/link";
 import { FC, useContext, useState } from "react";
 import { createPortal } from "react-dom";
@@ -56,11 +57,10 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
-  const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
-    calendars.map((calendar) => calendar.id)
-  );
-  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
+  // const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
+  //   calendars.map((calendar) => calendar.id)
+  // );
+  const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
   const [initialEventFormData, setInitialEventFormData] = useState({
     title: "",
     start: date,
@@ -148,18 +148,11 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               },
             }}
           >
-            <IconButton
-              title={`Display calendar menu`}
-              id="calendar-menu-button-x"
-              onClick={(e) => {
-                setMenuAnchorEl(e.currentTarget);
-                setMenuOpen(true);
-              }}
-            >
+            <IconButton title={`Display calendar menu`} {...bindTrigger(menuState)}>
               <MoreVertIcon />
             </IconButton>
             <Menu
-              anchorEl={menuAnchorEl}
+              {...bindMenu(menuState)}
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "center",
@@ -167,13 +160,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               transformOrigin={{
                 vertical: "top",
                 horizontal: "center",
-              }}
-              open={menuOpen}
-              onClose={() => {
-                setMenuOpen(false);
-              }}
-              MenuListProps={{
-                "aria-labelledby": "calendar-menu-button-x",
               }}
               keepMounted
             >
@@ -213,13 +199,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                   </Button>
                 </MenuItem>
               ))}
-              <MenuItem
-                onClick={() => {
-                  setMenuOpen(false);
-                }}
-              >
-                Close
-              </MenuItem>
             </Menu>
             <IconButton
               title={!fullScreen ? `Expand to full screen` : `Exit full screen`}
