@@ -278,20 +278,21 @@ model MetricRecord {
 
 // One-off tasks
 model Task {
-  id             Int             @id @default(autoincrement())
-  title          String
-  description    String?
-  dueDate        DateTime?
-  userId         Int
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  parentId       Int?
-  parent         Task?           @relation("children", fields: [parentId], references: [id])
-  habitId        Int?
-  habit          Habit?          @relation(fields: [habitId], references: [id])
-  subtasks       Task[]          @relation("children")
-  rank           Int             @default(dbgenerated("floor(random() * power(10, 9))"))
-  completedAt    DateTime?
-  calendarEvents CalendarEvent[]
+  id               Int             @id @default(autoincrement())
+  title            String
+  description      String?
+  plannedStartDate DateTime?       @default(now())
+  dueDate          DateTime?
+  userId           Int
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId         Int?
+  parent           Task?           @relation("children", fields: [parentId], references: [id])
+  habitId          Int?
+  habit            Habit?          @relation(fields: [habitId], references: [id])
+  subtasks         Task[]          @relation("children")
+  rank             Int             @default(dbgenerated("floor(random() * power(10, 9))"))
+  completedAt      DateTime?
+  calendarEvents   CalendarEvent[]
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime?

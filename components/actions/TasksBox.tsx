@@ -1,5 +1,6 @@
 import TasksBoard from "@/components/actions/TasksBoard";
 import TasksTable, { TasksTableProps } from "@/components/actions/TasksTable";
+import DateContext from "@/components/contexts/DateContext";
 import DateSelector from "@/components/dates/DateSelector";
 // import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
@@ -10,7 +11,8 @@ import { Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { FC, useState } from "react";
+import { parseISO } from "date-fns";
+import { FC, useContext, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
 type ViewMode = "list" | "board";
@@ -20,8 +22,15 @@ interface TasksBoxProps extends TasksTableProps {
 }
 
 const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
-  const { defaultView, ...tasksTableProps } = props;
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const { defaultView, data, ...tasksTableProps } = props;
+  const date = useContext(DateContext);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(date);
+  const selectedTasks = useMemo(() => {
+    if (!selectedDate) return data.tasks;
+    return data.tasks.filter((task) =>
+      !task.plannedStartDate ? true : parseISO(task.plannedStartDate) <= selectedDate
+    );
+  }, [selectedDate, data.tasks]);
   const [view, setView] = useState<ViewMode>(defaultView ?? "list");
   const [fullScreen, setFullScreen] = useState(false);
   const renderedComponent = (
@@ -64,7 +73,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
-        <DateSelector date={selectedDate} setDate={setSelectedDate} />
+        <DateSelector date={selectedDate} setDate={setSelectedDate} minDate={date} />
         <Box
           display={"flex"}
           alignItems={"start"}
@@ -86,9 +95,9 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
       </Box>
       <Box flex={"1 1 auto"} minHeight={0}>
         {view === "list" ? (
-          <TasksTable {...tasksTableProps} />
+          <TasksTable data={{ tasks: selectedTasks }} {...tasksTableProps} />
         ) : (
-          <TasksBoard {...tasksTableProps} />
+          <TasksBoard data={{ tasks: selectedTasks }} {...tasksTableProps} />
         )}
       </Box>
     </Box>
