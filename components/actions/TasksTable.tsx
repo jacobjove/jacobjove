@@ -21,8 +21,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, useCallback, useMemo, useState } from "react";
 
-const MAX_TASK_RANK = 2 ** 31 - 1;
-
 export const fragment = gql`
   fragment TasksTable on Query {
     tasks(where: { userId: { equals: $userId } }) {
@@ -32,14 +30,24 @@ export const fragment = gql`
   ${taskFragment}
 `;
 
+const UPDATE_MANY_TASK_RANK = gql`
+  mutation UpdateManyTaskRank($data: [UpdateManyTaskRankData!]!, $userId: Int!) {
+    updateManyTaskRank(data: $data, userId: $userId) {
+      id
+      rank
+    }
+  }
+`;
+
+const PREFERRED_FONT_SIZE = "0.8rem";
+const MAX_TASK_RANK = 2 ** 31 - 1;
+
 interface TasksTableProps {
   contained?: boolean;
   data: {
     tasks: Task[];
   };
 }
-
-const PREFERRED_FONT_SIZE = "0.8rem";
 
 const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const { data } = props;
@@ -48,6 +56,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 
   const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] =
     useMutation(UPDATE_TASK);
+  const [updateManyTaskRank] = useMutation(UPDATE_MANY_TASK_RANK);
   const [addingNewTask, setAddingNewTask] = useState(false);
   const [newTask, setNewTask] = useState<Partial<Task>>({});
 
@@ -90,24 +99,21 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   // should already contain their subtasks. Otherwise, if there are no top-level tasks,
   // just show all the tasks, so that, e.g., a table of a task's subtasks can be
   // rendered in a task's detail dialog... TODO.
-  const [topLevelTasks, subtasks] = partition(filteredTasks, (task) => {
-    return !task.parentId;
-  });
-  filteredTasks = topLevelTasks.length ? topLevelTasks : subtasks;
-
-  // Distinguish incomplete tasks from completed tasks.
-  const [incompleteTasks, completeTasks] = useMemo(
+  const [topLevelTasks, subtasks] = useMemo(
     () =>
       partition(filteredTasks, (task) => {
-        return !task.completedAt;
+        return !task.parentId;
       }),
     [filteredTasks]
   );
 
-  // const tasksById = Object.fromEntries(incompleteTasks.map((task) => [task.id, task]));
-  // const [orderedTasks, setOrderedTasks] = useState<number[]>(() =>
-  //   incompleteTasks.sort((a, b) => (a.rank > b.rank ? 1 : -1)).map((task) => task.id)
-  // );
+  filteredTasks = topLevelTasks.length ? topLevelTasks : subtasks;
+
+  // Distinguish incomplete tasks from completed tasks.
+  const [incompleteTasks, completeTasks] = useMemo(() => {
+    // console.log("incompleteTasks dependency change")
+    return partition(filteredTasks, (task) => !task.completedAt);
+  }, [filteredTasks]);
 
   // Enable re-ordering the tasks.
   const moveTaskRow = useCallback(
@@ -122,16 +128,12 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
       apolloClient.cache.writeFragment({
         id: `${draggedTask.__typename}:${draggedTask.id}`,
         data: {
-          rank:
-            hoverIndex == 0
-              ? 0
-              : incompleteTasks[hoverIndex].rank + (dragIndex < hoverIndex ? 1 : -1),
+          rank: incompleteTasks[hoverIndex].rank + (dragIndex < hoverIndex ? 1 : -1),
         },
         fragment: gql`
           fragment UpdateTaskRank on Task {
             rank
           }
-          ${taskFragment}
         `,
         fragmentName: "UpdateTaskRank",
       });
@@ -142,8 +144,6 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const updateTaskRank = useCallback(
     (dropIndex: number) => {
       const task = incompleteTasks[dropIndex];
-      // const parseRank = (rank: string) => parseInt(rank, 36);
-
       const lowerRank = dropIndex == 0 ? 0 : incompleteTasks[dropIndex - 1].rank;
       const upperRank =
         dropIndex == incompleteTasks.length - 1
@@ -151,8 +151,22 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
           : incompleteTasks[dropIndex + 1].rank;
 
       const newRank = lowerRank + Math.floor((upperRank - lowerRank) / 2);
+
       if ([lowerRank, upperRank].includes(newRank)) {
-        // re-rank all tasks
+        const increment = Math.floor(MAX_TASK_RANK / (incompleteTasks.length + 1));
+        const newRanks = incompleteTasks.map(({ id }, index) => ({
+          id,
+          rank: increment * (index + 1),
+        }));
+        updateManyTaskRank({
+          variables: {
+            userId: session?.user.id,
+            data: newRanks,
+          },
+          optimisticResponse: {
+            updateManyTaskRank: newRanks.map((task) => ({ __typename: "Task", ...task })),
+          },
+        });
       } else {
         updateTask({
           variables: {
@@ -166,14 +180,13 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
               rank: newRank,
             },
           },
-        }).then(console.log);
+        });
       }
     },
-    [incompleteTasks, updateTask]
+    [incompleteTasks, updateTask, updateManyTaskRank]
   );
 
   const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
-    // console.log(field, value);
     setNewTask({ ...newTask, [field]: value });
   };
 
@@ -215,6 +228,10 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     }
     setNewTask({});
   };
+
+  const renderTaskRow = (task: Task, index: number) => (
+    <TaskRow key={task.id} task={task} index={index} move={moveTaskRow} onDrop={updateTaskRank} />
+  );
 
   return (
     <div>
@@ -258,15 +275,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {incompleteTasks.map((task, index) => (
-              <TaskRow
-                key={task.id}
-                task={task}
-                index={index}
-                move={moveTaskRow}
-                onDrop={updateTaskRank}
-              />
-            ))}
+            {incompleteTasks.map(renderTaskRow)}
             <TableRow>
               {(addingNewTask && (
                 <EditingModeTaskCells
@@ -308,9 +317,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                     </Typography>
                   </TableCell>
                 </TableRow>
-                {completeTasks.map((task) => (
-                  <TaskRow key={task.id} task={task} />
-                ))}
+                {completeTasks.map(renderTaskRow)}
               </>
             )}
           </TableBody>

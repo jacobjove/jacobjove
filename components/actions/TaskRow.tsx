@@ -26,43 +26,43 @@ import { format, isPast, isSameDay, isSameYear, parseISO } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useSession } from "next-auth/react";
-import { FC, RefObject, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { FC, RefObject, useContext, useMemo, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
-interface TaskRowProps {
-  task: Task;
-  collapsed?: boolean;
-  index?: number;
+interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
+  index: number;
   move?: (dragIndex: number, hoverIndex: number) => void;
   onDrop?: (dropIndex: number) => void;
 }
 
-interface TaskRowContentProps extends TaskRowProps {
+interface TaskRowContentProps {
+  task: Task;
+  collapsed?: boolean;
   dndRef: RefObject<HTMLTableRowElement>;
   isDragging: boolean;
-  onLoading: (loading: boolean) => void;
-  editing: boolean;
-  setEditing: (editing: boolean) => void;
+  onLoading: (isLoading: boolean) => void;
+  onEditing: (isEditing: boolean) => void;
 }
 
-type DraggedTask = Pick<Task, "id" | "title" | "rank"> & { index: number };
+type DraggedTask = Pick<Task, "id" | "completedAt"> & { index: number };
 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
-  const { task, collapsed: _collapsed, dndRef, isDragging, onLoading, editing, setEditing } = props;
-  const completed = Boolean(task.completedAt);
+  const { task, collapsed: _collapsed, dndRef, isDragging, onLoading, onEditing } = props;
+  const completed = !!task.completedAt;
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
   const today = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
+  const [editing, setEditing] = useState(false);
   const [actionInProgress, setActionInProgress] = useState(false);
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const menuState = usePopupState({ variant: "popper", popupId: `task-${task.id}-menu` });
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
 
   const [updateTask, { loading }] = useMutation(UPDATE_TASK);
-  useEffect(() => {
-    onLoading(loading);
-  }, [loading]);
+
+  onLoading(loading);
+  onEditing(editing);
 
   const toggleCompletion = (complete: boolean) => {
     if (!session?.user.id) return;
@@ -357,7 +357,10 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                           e.networkError.result.errors.forEach(
                             (error: {
                               message: string;
-                              extensions: { code: string; exception: { stacktrace: string[] } };
+                              extensions: {
+                                code: string;
+                                exception: { stacktrace: string[] };
+                              };
                             }) => {
                               console.error(error.message);
                               console.log(error.extensions.exception.stacktrace.join("\n"), {
@@ -398,8 +401,13 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
         )}
       </TableRow>
       {!collapsed &&
-        task.subtasks?.map((subtask) => (
-          <TaskRow key={subtask.id} task={subtask} collapsed={!subtasksExpanded} />
+        task.subtasks?.map((subtask, index) => (
+          <TaskRow
+            key={subtask.id}
+            task={subtask}
+            collapsed={!subtasksExpanded || isDragging}
+            index={index}
+          />
         ))}
       <ActionDialog {...bindPopover(dialogState)} task={task} />
     </>
@@ -407,13 +415,12 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
 };
 
 const TaskRow = (props: TaskRowProps) => {
-  const { task, index: _index, onDrop, move } = props;
-  const index = _index ?? 0;
+  const { task, index, onDrop, move } = props;
 
   const { data: session } = useSession();
-  const ref = useRef<HTMLTableRowElement>(null);
-  const [loading, setLoading] = useState(false);
-  const [editing, setEditing] = useState(false);
+  const dndRef = useRef<HTMLTableRowElement>(null);
+  const loadingRef = useRef(false);
+  const editingRef = useRef(false);
 
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
@@ -421,26 +428,29 @@ const TaskRow = (props: TaskRowProps) => {
       item: {
         type: "task",
         id: task.id,
+        completedAt: task.completedAt,
         index,
-      },
+      } as DraggedTask,
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      canDrag: () => !(editing || loading),
+      canDrag: () => !(editingRef.current || loadingRef.current || task.parentId != null),
     }),
-    [index, editing, loading]
+    [index, editingRef, loadingRef]
   );
 
-  const [{ handlerId, canDrop }, dropRef] = useDrop(
+  const [, dropRef] = useDrop(
     () => ({
       accept: ["task"],
-      canDrop: () => !loading,
+      canDrop: (draggedTask: DraggedTask) =>
+        // prevent moving between complete/incomplete
+        !loadingRef.current && !(draggedTask.completedAt ? !task.completedAt : task.completedAt),
       drop: (item: DraggedTask) => {
         if (!session) return;
         onDrop?.(item.index);
       },
       hover(item: DraggedTask, monitor: DropTargetMonitor) {
-        if (!ref.current || !move) {
+        if (!dndRef.current || !move || !monitor.canDrop()) {
           return;
         }
         const dragIndex = item.index;
@@ -452,7 +462,7 @@ const TaskRow = (props: TaskRowProps) => {
         }
 
         // Determine rectangle on screen
-        const hoverBoundingRect = ref.current?.getBoundingClientRect();
+        const hoverBoundingRect = dndRef.current?.getBoundingClientRect();
 
         // Get vertical middle
         const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
@@ -485,32 +495,28 @@ const TaskRow = (props: TaskRowProps) => {
         // but it's good here for the sake of performance
         // to avoid expensive index searches.
         item.index = hoverIndex;
-        console.log("item.index", item.index);
       },
-      collect: (monitor) => ({
-        handlerId: monitor.getHandlerId(),
-        isOver: !!monitor.isOver(),
-        canDrop: !!monitor.canDrop(),
-      }),
     }),
-    [move, loading]
+    [move, loadingRef, index]
   );
 
-  dragRef(dropRef(ref));
+  dragRef(dropRef(dndRef));
 
   return useMemo(() => {
-    // console.log("TASK ROW RENDER");
     return (
       <TaskRowContent
         {...props}
-        dndRef={ref}
+        dndRef={dndRef}
         isDragging={isDragging}
-        onLoading={setLoading}
-        editing={editing}
-        setEditing={setEditing}
+        onLoading={(isLoading) => {
+          loadingRef.current = isLoading;
+        }}
+        onEditing={(isEditing) => {
+          editingRef.current = isEditing;
+        }}
       />
     );
-  }, [props.task, isDragging, editing]);
+  }, [props.task, props.collapsed, isDragging, dndRef, editingRef, loadingRef]);
 };
 
 export default TaskRow;
