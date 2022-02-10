@@ -289,15 +289,15 @@ model Task {
   habitId        Int?
   habit          Habit?          @relation(fields: [habitId], references: [id])
   subtasks       Task[]          @relation("children")
-  // Autoincrementing position should ensure that new tasks are assigned a position that is
-  // unique among a given user's tasks.
-  position       Int             @default(autoincrement())
+  rank           Int             @default(dbgenerated("floor(random() * power(10, 9))"))
   completedAt    DateTime?
   calendarEvents CalendarEvent[]
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime?
   archivedAt DateTime?
+
+  @@unique([userId, parentId, rank])
 }
 
 model Action {
