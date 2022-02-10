@@ -63,8 +63,9 @@ export type Habit = FromPrismaWithOmission<_Habit, "act" | "actions"> & {
 };
 export type Task = FromPrismaWithOmission<
   _Task,
-  "dueDate" | "completedAt" | "subtasks" | "userId" | "createdAt"
+  "plannedStartDate" | "dueDate" | "completedAt" | "subtasks" | "userId" | "createdAt"
 > & {
+  plannedStartDate?: string | null;
   dueDate?: string | null;
   completedAt?: string | null;
   subtasks?: Task[];
