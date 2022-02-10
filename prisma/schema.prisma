@@ -37,6 +37,7 @@ model Account {
   createdAt         DateTime   @default(now())
   calendars         Calendar[]
 
+  CalendarEvent CalendarEvent[]
   @@unique([provider, providerAccountId])
 }
 
@@ -105,35 +106,38 @@ model Calendar {
   sourceAccountId Int?
   primary         Boolean?          @default(false)
   public          Boolean?          @default(false)
-  disabled        Boolean?          @default(false)
+  enabled         Boolean?          @default(true)
 
   events CalendarEvent[]
 }
 
 model CalendarEvent {
-  id         Int             @id @default(autoincrement())
-  uid        String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
-  sourceId   String
-  calendar   Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
-  calendarId Int
-  schedule   ActionSchedule? @relation(fields: [scheduleId], references: [id])
-  scheduleId Int?
+  id               Int             @id @default(autoincrement())
+  uid              String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
+  sourceId         String?
+  sourceAccount    Account?        @relation(fields: [sourceAccountId], references: [id], onDelete: Cascade)
+  sourceAccountId  Int?
+  calendar         Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  calendarId       Int
+  sourceCalendarId String?
+  schedule         ActionSchedule? @relation(fields: [scheduleId], references: [id])
+  scheduleId       Int?
   // TODO: remove habit and habitId
-  habit      Habit?          @relation(fields: [habitId], references: [id])
-  habitId    Int?
-  task       Task?           @relation(fields: [taskId], references: [id])
-  taskId     Int?
-  title      String
-  start      DateTime
-  end        DateTime?
-  allDay     Boolean         @default(false)
-  notes      String?
+  habit            Habit?          @relation(fields: [habitId], references: [id])
+  habitId          Int?
+  task             Task?           @relation(fields: [taskId], references: [id])
+  taskId           Int?
+  title            String
+  start            DateTime
+  end              DateTime?
+  allDay           Boolean         @default(false)
+  notes            String?
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime?
   archivedAt DateTime?
 
-  @@unique([calendarId, sourceId])
+  @@unique([sourceId, sourceCalendarId])
   @@map(name: "calendarEvents")
 }
 

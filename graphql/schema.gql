@@ -4,6 +4,7 @@
 # -----------------------------------------------
 
 type Account {
+  CalendarEvent(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
   _count: AccountCount
   accessToken: String
   accessTokenExpiry: DateTime
@@ -29,6 +30,7 @@ input AccountAvgOrderByAggregateInput {
 }
 
 type AccountCount {
+  CalendarEvent: Int!
   calendars: Int!
 }
 
@@ -58,6 +60,7 @@ input AccountCountOrderByAggregateInput {
 }
 
 input AccountCreateInput {
+  CalendarEvent: CalendarEventCreateNestedManyWithoutSourceAccountInput
   accessToken: String
   accessTokenExpiry: DateTime
   calendars: CalendarCreateNestedManyWithoutSourceAccountInput
@@ -108,10 +111,21 @@ input AccountCreateNestedManyWithoutUserInput {
   createMany: AccountCreateManyUserInputEnvelope
 }
 
+input AccountCreateNestedOneWithoutCalendarEventInput {
+  connect: AccountWhereUniqueInput
+  connectOrCreate: AccountCreateOrConnectWithoutCalendarEventInput
+  create: AccountCreateWithoutCalendarEventInput
+}
+
 input AccountCreateNestedOneWithoutCalendarsInput {
   connect: AccountWhereUniqueInput
   connectOrCreate: AccountCreateOrConnectWithoutCalendarsInput
   create: AccountCreateWithoutCalendarsInput
+}
+
+input AccountCreateOrConnectWithoutCalendarEventInput {
+  create: AccountCreateWithoutCalendarEventInput!
+  where: AccountWhereUniqueInput!
 }
 
 input AccountCreateOrConnectWithoutCalendarsInput {
@@ -124,7 +138,20 @@ input AccountCreateOrConnectWithoutUserInput {
   where: AccountWhereUniqueInput!
 }
 
+input AccountCreateWithoutCalendarEventInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  calendars: CalendarCreateNestedManyWithoutSourceAccountInput
+  createdAt: DateTime
+  provider: String!
+  providerAccountId: String!
+  refreshToken: String
+  scopes: AccountCreatescopesInput
+  user: UserCreateNestedOneWithoutAccountsInput!
+}
+
 input AccountCreateWithoutCalendarsInput {
+  CalendarEvent: CalendarEventCreateNestedManyWithoutSourceAccountInput
   accessToken: String
   accessTokenExpiry: DateTime
   createdAt: DateTime
@@ -136,6 +163,7 @@ input AccountCreateWithoutCalendarsInput {
 }
 
 input AccountCreateWithoutUserInput {
+  CalendarEvent: CalendarEventCreateNestedManyWithoutSourceAccountInput
   accessToken: String
   accessTokenExpiry: DateTime
   calendars: CalendarCreateNestedManyWithoutSourceAccountInput
@@ -239,6 +267,7 @@ input AccountOrderByWithAggregationInput {
 }
 
 input AccountOrderByWithRelationInput {
+  CalendarEvent: CalendarEventOrderByRelationAggregateInput
   accessToken: SortOrder
   accessTokenExpiry: SortOrder
   calendars: CalendarOrderByRelationAggregateInput
@@ -315,6 +344,7 @@ input AccountSumOrderByAggregateInput {
 }
 
 input AccountUpdateInput {
+  CalendarEvent: CalendarEventUpdateManyWithoutSourceAccountInput
   accessToken: NullableStringFieldUpdateOperationsInput
   accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
   calendars: CalendarUpdateManyWithoutSourceAccountInput
@@ -355,6 +385,16 @@ input AccountUpdateManyWithoutUserInput {
   upsert: [AccountUpsertWithWhereUniqueWithoutUserInput!]
 }
 
+input AccountUpdateOneWithoutCalendarEventInput {
+  connect: AccountWhereUniqueInput
+  connectOrCreate: AccountCreateOrConnectWithoutCalendarEventInput
+  create: AccountCreateWithoutCalendarEventInput
+  delete: Boolean
+  disconnect: Boolean
+  update: AccountUpdateWithoutCalendarEventInput
+  upsert: AccountUpsertWithoutCalendarEventInput
+}
+
 input AccountUpdateOneWithoutCalendarsInput {
   connect: AccountWhereUniqueInput
   connectOrCreate: AccountCreateOrConnectWithoutCalendarsInput
@@ -370,7 +410,20 @@ input AccountUpdateWithWhereUniqueWithoutUserInput {
   where: AccountWhereUniqueInput!
 }
 
+input AccountUpdateWithoutCalendarEventInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  calendars: CalendarUpdateManyWithoutSourceAccountInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  provider: StringFieldUpdateOperationsInput
+  providerAccountId: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
+  user: UserUpdateOneRequiredWithoutAccountsInput
+}
+
 input AccountUpdateWithoutCalendarsInput {
+  CalendarEvent: CalendarEventUpdateManyWithoutSourceAccountInput
   accessToken: NullableStringFieldUpdateOperationsInput
   accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
@@ -382,6 +435,7 @@ input AccountUpdateWithoutCalendarsInput {
 }
 
 input AccountUpdateWithoutUserInput {
+  CalendarEvent: CalendarEventUpdateManyWithoutSourceAccountInput
   accessToken: NullableStringFieldUpdateOperationsInput
   accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
   calendars: CalendarUpdateManyWithoutSourceAccountInput
@@ -403,6 +457,11 @@ input AccountUpsertWithWhereUniqueWithoutUserInput {
   where: AccountWhereUniqueInput!
 }
 
+input AccountUpsertWithoutCalendarEventInput {
+  create: AccountCreateWithoutCalendarEventInput!
+  update: AccountUpdateWithoutCalendarEventInput!
+}
+
 input AccountUpsertWithoutCalendarsInput {
   create: AccountCreateWithoutCalendarsInput!
   update: AccountUpdateWithoutCalendarsInput!
@@ -410,6 +469,7 @@ input AccountUpsertWithoutCalendarsInput {
 
 input AccountWhereInput {
   AND: [AccountWhereInput!]
+  CalendarEvent: CalendarEventListRelationFilter
   NOT: [AccountWhereInput!]
   OR: [AccountWhereInput!]
   accessToken: StringNullableFilter
@@ -5342,7 +5402,7 @@ input BoolWithAggregatesFilter {
 type Calendar {
   _count: CalendarCount
   color: String
-  disabled: Boolean
+  enabled: Boolean
   events(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
   id: Int!
   name: String
@@ -5376,7 +5436,7 @@ type CalendarCount {
 type CalendarCountAggregate {
   _all: Int!
   color: Int!
-  disabled: Int!
+  enabled: Int!
   id: Int!
   name: Int!
   primary: Int!
@@ -5390,7 +5450,7 @@ type CalendarCountAggregate {
 
 input CalendarCountOrderByAggregateInput {
   color: SortOrder
-  disabled: SortOrder
+  enabled: SortOrder
   id: SortOrder
   name: SortOrder
   primary: SortOrder
@@ -5404,7 +5464,7 @@ input CalendarCountOrderByAggregateInput {
 
 input CalendarCreateInput {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   events: CalendarEventCreateNestedManyWithoutCalendarInput
   name: String
   primary: Boolean
@@ -5418,7 +5478,7 @@ input CalendarCreateInput {
 
 input CalendarCreateManyInput {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   id: Int
   name: String
   primary: Boolean
@@ -5432,7 +5492,7 @@ input CalendarCreateManyInput {
 
 input CalendarCreateManySourceAccountInput {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   id: Int
   name: String
   primary: Boolean
@@ -5450,7 +5510,7 @@ input CalendarCreateManySourceAccountInputEnvelope {
 
 input CalendarCreateManyUserInput {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   id: Int
   name: String
   primary: Boolean
@@ -5503,7 +5563,7 @@ input CalendarCreateOrConnectWithoutUserInput {
 
 input CalendarCreateWithoutEventsInput {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   name: String
   primary: Boolean
   provider: CalendarProvider
@@ -5516,7 +5576,7 @@ input CalendarCreateWithoutEventsInput {
 
 input CalendarCreateWithoutSourceAccountInput {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   events: CalendarEventCreateNestedManyWithoutCalendarInput
   name: String
   primary: Boolean
@@ -5529,7 +5589,7 @@ input CalendarCreateWithoutSourceAccountInput {
 
 input CalendarCreateWithoutUserInput {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   events: CalendarEventCreateNestedManyWithoutCalendarInput
   name: String
   primary: Boolean
@@ -5553,6 +5613,10 @@ type CalendarEvent {
   notes: String
   schedule: ActionSchedule
   scheduleId: Int
+  sourceAccount: Account
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   task: Task
   taskId: Int
@@ -5566,6 +5630,7 @@ type CalendarEventAvgAggregate {
   habitId: Float
   id: Float
   scheduleId: Float
+  sourceAccountId: Float
   taskId: Float
 }
 
@@ -5574,6 +5639,7 @@ input CalendarEventAvgOrderByAggregateInput {
   habitId: SortOrder
   id: SortOrder
   scheduleId: SortOrder
+  sourceAccountId: SortOrder
   taskId: SortOrder
 }
 
@@ -5588,6 +5654,9 @@ type CalendarEventCountAggregate {
   id: Int!
   notes: Int!
   scheduleId: Int!
+  sourceAccountId: Int!
+  sourceCalendarId: Int!
+  sourceId: Int!
   start: Int!
   taskId: Int!
   title: Int!
@@ -5605,6 +5674,9 @@ input CalendarEventCountOrderByAggregateInput {
   id: SortOrder
   notes: SortOrder
   scheduleId: SortOrder
+  sourceAccountId: SortOrder
+  sourceCalendarId: SortOrder
+  sourceId: SortOrder
   start: SortOrder
   taskId: SortOrder
   title: SortOrder
@@ -5621,6 +5693,9 @@ input CalendarEventCreateInput {
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
+  sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
   title: String!
@@ -5637,6 +5712,9 @@ input CalendarEventCreateManyCalendarInput {
   id: Int
   notes: String
   scheduleId: Int
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   taskId: Int
   title: String!
@@ -5658,6 +5736,9 @@ input CalendarEventCreateManyHabitInput {
   id: Int
   notes: String
   scheduleId: Int
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   taskId: Int
   title: String!
@@ -5680,6 +5761,9 @@ input CalendarEventCreateManyInput {
   id: Int
   notes: String
   scheduleId: Int
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   taskId: Int
   title: String!
@@ -5696,6 +5780,9 @@ input CalendarEventCreateManyScheduleInput {
   habitId: Int
   id: Int
   notes: String
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   taskId: Int
   title: String!
@@ -5705,6 +5792,30 @@ input CalendarEventCreateManyScheduleInput {
 
 input CalendarEventCreateManyScheduleInputEnvelope {
   data: [CalendarEventCreateManyScheduleInput!]!
+  skipDuplicates: Boolean
+}
+
+input CalendarEventCreateManySourceAccountInput {
+  allDay: Boolean
+  archivedAt: DateTime
+  calendarId: Int!
+  createdAt: DateTime
+  end: DateTime
+  habitId: Int
+  id: Int
+  notes: String
+  scheduleId: Int
+  sourceCalendarId: String
+  sourceId: String
+  start: DateTime!
+  taskId: Int
+  title: String!
+  uid: String
+  updatedAt: DateTime
+}
+
+input CalendarEventCreateManySourceAccountInputEnvelope {
+  data: [CalendarEventCreateManySourceAccountInput!]!
   skipDuplicates: Boolean
 }
 
@@ -5718,6 +5829,9 @@ input CalendarEventCreateManyTaskInput {
   id: Int
   notes: String
   scheduleId: Int
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   title: String!
   uid: String
@@ -5750,6 +5864,13 @@ input CalendarEventCreateNestedManyWithoutScheduleInput {
   createMany: CalendarEventCreateManyScheduleInputEnvelope
 }
 
+input CalendarEventCreateNestedManyWithoutSourceAccountInput {
+  connect: [CalendarEventWhereUniqueInput!]
+  connectOrCreate: [CalendarEventCreateOrConnectWithoutSourceAccountInput!]
+  create: [CalendarEventCreateWithoutSourceAccountInput!]
+  createMany: CalendarEventCreateManySourceAccountInputEnvelope
+}
+
 input CalendarEventCreateNestedManyWithoutTaskInput {
   connect: [CalendarEventWhereUniqueInput!]
   connectOrCreate: [CalendarEventCreateOrConnectWithoutTaskInput!]
@@ -5772,6 +5893,11 @@ input CalendarEventCreateOrConnectWithoutScheduleInput {
   where: CalendarEventWhereUniqueInput!
 }
 
+input CalendarEventCreateOrConnectWithoutSourceAccountInput {
+  create: CalendarEventCreateWithoutSourceAccountInput!
+  where: CalendarEventWhereUniqueInput!
+}
+
 input CalendarEventCreateOrConnectWithoutTaskInput {
   create: CalendarEventCreateWithoutTaskInput!
   where: CalendarEventWhereUniqueInput!
@@ -5785,6 +5911,9 @@ input CalendarEventCreateWithoutCalendarInput {
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
+  sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
   title: String!
@@ -5800,6 +5929,9 @@ input CalendarEventCreateWithoutHabitInput {
   end: DateTime
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
+  sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
   title: String!
@@ -5815,6 +5947,27 @@ input CalendarEventCreateWithoutScheduleInput {
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
+  sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
+  sourceCalendarId: String
+  sourceId: String
+  start: DateTime!
+  task: TaskCreateNestedOneWithoutCalendarEventsInput
+  title: String!
+  uid: String
+  updatedAt: DateTime
+}
+
+input CalendarEventCreateWithoutSourceAccountInput {
+  allDay: Boolean
+  archivedAt: DateTime
+  calendar: CalendarCreateNestedOneWithoutEventsInput!
+  createdAt: DateTime
+  end: DateTime
+  habit: HabitCreateNestedOneWithoutCalendarEventsInput
+  notes: String
+  schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
   title: String!
@@ -5831,6 +5984,9 @@ input CalendarEventCreateWithoutTaskInput {
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
+  sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   title: String!
   uid: String
@@ -5852,6 +6008,9 @@ type CalendarEventGroupBy {
   id: Int!
   notes: String
   scheduleId: Int
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime!
   taskId: Int
   title: String!
@@ -5875,6 +6034,9 @@ type CalendarEventMaxAggregate {
   id: Int
   notes: String
   scheduleId: Int
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime
   taskId: Int
   title: String
@@ -5892,6 +6054,9 @@ input CalendarEventMaxOrderByAggregateInput {
   id: SortOrder
   notes: SortOrder
   scheduleId: SortOrder
+  sourceAccountId: SortOrder
+  sourceCalendarId: SortOrder
+  sourceId: SortOrder
   start: SortOrder
   taskId: SortOrder
   title: SortOrder
@@ -5909,6 +6074,9 @@ type CalendarEventMinAggregate {
   id: Int
   notes: String
   scheduleId: Int
+  sourceAccountId: Int
+  sourceCalendarId: String
+  sourceId: String
   start: DateTime
   taskId: Int
   title: String
@@ -5926,6 +6094,9 @@ input CalendarEventMinOrderByAggregateInput {
   id: SortOrder
   notes: SortOrder
   scheduleId: SortOrder
+  sourceAccountId: SortOrder
+  sourceCalendarId: SortOrder
+  sourceId: SortOrder
   start: SortOrder
   taskId: SortOrder
   title: SortOrder
@@ -5952,6 +6123,9 @@ input CalendarEventOrderByWithAggregationInput {
   id: SortOrder
   notes: SortOrder
   scheduleId: SortOrder
+  sourceAccountId: SortOrder
+  sourceCalendarId: SortOrder
+  sourceId: SortOrder
   start: SortOrder
   taskId: SortOrder
   title: SortOrder
@@ -5972,6 +6146,10 @@ input CalendarEventOrderByWithRelationInput {
   notes: SortOrder
   schedule: ActionScheduleOrderByWithRelationInput
   scheduleId: SortOrder
+  sourceAccount: AccountOrderByWithRelationInput
+  sourceAccountId: SortOrder
+  sourceCalendarId: SortOrder
+  sourceId: SortOrder
   start: SortOrder
   task: TaskOrderByWithRelationInput
   taskId: SortOrder
@@ -5990,6 +6168,9 @@ enum CalendarEventScalarFieldEnum {
   id
   notes
   scheduleId
+  sourceAccountId
+  sourceCalendarId
+  sourceId
   start
   taskId
   title
@@ -6010,6 +6191,9 @@ input CalendarEventScalarWhereInput {
   id: IntFilter
   notes: StringNullableFilter
   scheduleId: IntNullableFilter
+  sourceAccountId: IntNullableFilter
+  sourceCalendarId: StringNullableFilter
+  sourceId: StringNullableFilter
   start: DateTimeFilter
   taskId: IntNullableFilter
   title: StringFilter
@@ -6030,6 +6214,9 @@ input CalendarEventScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   notes: StringNullableWithAggregatesFilter
   scheduleId: IntNullableWithAggregatesFilter
+  sourceAccountId: IntNullableWithAggregatesFilter
+  sourceCalendarId: StringNullableWithAggregatesFilter
+  sourceId: StringNullableWithAggregatesFilter
   start: DateTimeWithAggregatesFilter
   taskId: IntNullableWithAggregatesFilter
   title: StringWithAggregatesFilter
@@ -6037,11 +6224,17 @@ input CalendarEventScalarWhereWithAggregatesInput {
   updatedAt: DateTimeNullableWithAggregatesFilter
 }
 
+input CalendarEventSourceIdSourceCalendarIdCompoundUniqueInput {
+  sourceCalendarId: String!
+  sourceId: String!
+}
+
 type CalendarEventSumAggregate {
   calendarId: Int
   habitId: Int
   id: Int
   scheduleId: Int
+  sourceAccountId: Int
   taskId: Int
 }
 
@@ -6050,6 +6243,7 @@ input CalendarEventSumOrderByAggregateInput {
   habitId: SortOrder
   id: SortOrder
   scheduleId: SortOrder
+  sourceAccountId: SortOrder
   taskId: SortOrder
 }
 
@@ -6062,6 +6256,9 @@ input CalendarEventUpdateInput {
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
+  sourceAccount: AccountUpdateOneWithoutCalendarEventInput
+  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
   title: StringFieldUpdateOperationsInput
@@ -6075,6 +6272,8 @@ input CalendarEventUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
+  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
@@ -6092,6 +6291,11 @@ input CalendarEventUpdateManyWithWhereWithoutHabitInput {
 }
 
 input CalendarEventUpdateManyWithWhereWithoutScheduleInput {
+  data: CalendarEventUpdateManyMutationInput!
+  where: CalendarEventScalarWhereInput!
+}
+
+input CalendarEventUpdateManyWithWhereWithoutSourceAccountInput {
   data: CalendarEventUpdateManyMutationInput!
   where: CalendarEventScalarWhereInput!
 }
@@ -6143,6 +6347,20 @@ input CalendarEventUpdateManyWithoutScheduleInput {
   upsert: [CalendarEventUpsertWithWhereUniqueWithoutScheduleInput!]
 }
 
+input CalendarEventUpdateManyWithoutSourceAccountInput {
+  connect: [CalendarEventWhereUniqueInput!]
+  connectOrCreate: [CalendarEventCreateOrConnectWithoutSourceAccountInput!]
+  create: [CalendarEventCreateWithoutSourceAccountInput!]
+  createMany: CalendarEventCreateManySourceAccountInputEnvelope
+  delete: [CalendarEventWhereUniqueInput!]
+  deleteMany: [CalendarEventScalarWhereInput!]
+  disconnect: [CalendarEventWhereUniqueInput!]
+  set: [CalendarEventWhereUniqueInput!]
+  update: [CalendarEventUpdateWithWhereUniqueWithoutSourceAccountInput!]
+  updateMany: [CalendarEventUpdateManyWithWhereWithoutSourceAccountInput!]
+  upsert: [CalendarEventUpsertWithWhereUniqueWithoutSourceAccountInput!]
+}
+
 input CalendarEventUpdateManyWithoutTaskInput {
   connect: [CalendarEventWhereUniqueInput!]
   connectOrCreate: [CalendarEventCreateOrConnectWithoutTaskInput!]
@@ -6172,6 +6390,11 @@ input CalendarEventUpdateWithWhereUniqueWithoutScheduleInput {
   where: CalendarEventWhereUniqueInput!
 }
 
+input CalendarEventUpdateWithWhereUniqueWithoutSourceAccountInput {
+  data: CalendarEventUpdateWithoutSourceAccountInput!
+  where: CalendarEventWhereUniqueInput!
+}
+
 input CalendarEventUpdateWithWhereUniqueWithoutTaskInput {
   data: CalendarEventUpdateWithoutTaskInput!
   where: CalendarEventWhereUniqueInput!
@@ -6185,6 +6408,9 @@ input CalendarEventUpdateWithoutCalendarInput {
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
+  sourceAccount: AccountUpdateOneWithoutCalendarEventInput
+  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
   title: StringFieldUpdateOperationsInput
@@ -6200,6 +6426,9 @@ input CalendarEventUpdateWithoutHabitInput {
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
+  sourceAccount: AccountUpdateOneWithoutCalendarEventInput
+  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
   title: StringFieldUpdateOperationsInput
@@ -6215,6 +6444,27 @@ input CalendarEventUpdateWithoutScheduleInput {
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
+  sourceAccount: AccountUpdateOneWithoutCalendarEventInput
+  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
+  task: TaskUpdateOneWithoutCalendarEventsInput
+  title: StringFieldUpdateOperationsInput
+  uid: StringFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input CalendarEventUpdateWithoutSourceAccountInput {
+  allDay: BoolFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  calendar: CalendarUpdateOneRequiredWithoutEventsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  end: NullableDateTimeFieldUpdateOperationsInput
+  habit: HabitUpdateOneWithoutCalendarEventsInput
+  notes: NullableStringFieldUpdateOperationsInput
+  schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
+  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
   title: StringFieldUpdateOperationsInput
@@ -6231,6 +6481,9 @@ input CalendarEventUpdateWithoutTaskInput {
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
+  sourceAccount: AccountUpdateOneWithoutCalendarEventInput
+  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
@@ -6252,6 +6505,12 @@ input CalendarEventUpsertWithWhereUniqueWithoutHabitInput {
 input CalendarEventUpsertWithWhereUniqueWithoutScheduleInput {
   create: CalendarEventCreateWithoutScheduleInput!
   update: CalendarEventUpdateWithoutScheduleInput!
+  where: CalendarEventWhereUniqueInput!
+}
+
+input CalendarEventUpsertWithWhereUniqueWithoutSourceAccountInput {
+  create: CalendarEventCreateWithoutSourceAccountInput!
+  update: CalendarEventUpdateWithoutSourceAccountInput!
   where: CalendarEventWhereUniqueInput!
 }
 
@@ -6277,6 +6536,10 @@ input CalendarEventWhereInput {
   notes: StringNullableFilter
   schedule: ActionScheduleRelationFilter
   scheduleId: IntNullableFilter
+  sourceAccount: AccountRelationFilter
+  sourceAccountId: IntNullableFilter
+  sourceCalendarId: StringNullableFilter
+  sourceId: StringNullableFilter
   start: DateTimeFilter
   task: TaskRelationFilter
   taskId: IntNullableFilter
@@ -6287,6 +6550,7 @@ input CalendarEventWhereInput {
 
 input CalendarEventWhereUniqueInput {
   id: Int
+  sourceId_sourceCalendarId: CalendarEventSourceIdSourceCalendarIdCompoundUniqueInput
   uid: String
 }
 
@@ -6297,7 +6561,7 @@ type CalendarGroupBy {
   _min: CalendarMinAggregate
   _sum: CalendarSumAggregate
   color: String
-  disabled: Boolean
+  enabled: Boolean
   id: Int!
   name: String
   primary: Boolean
@@ -6317,7 +6581,7 @@ input CalendarListRelationFilter {
 
 type CalendarMaxAggregate {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   id: Int
   name: String
   primary: Boolean
@@ -6331,7 +6595,7 @@ type CalendarMaxAggregate {
 
 input CalendarMaxOrderByAggregateInput {
   color: SortOrder
-  disabled: SortOrder
+  enabled: SortOrder
   id: SortOrder
   name: SortOrder
   primary: SortOrder
@@ -6345,7 +6609,7 @@ input CalendarMaxOrderByAggregateInput {
 
 type CalendarMinAggregate {
   color: String
-  disabled: Boolean
+  enabled: Boolean
   id: Int
   name: String
   primary: Boolean
@@ -6359,7 +6623,7 @@ type CalendarMinAggregate {
 
 input CalendarMinOrderByAggregateInput {
   color: SortOrder
-  disabled: SortOrder
+  enabled: SortOrder
   id: SortOrder
   name: SortOrder
   primary: SortOrder
@@ -6382,7 +6646,7 @@ input CalendarOrderByWithAggregationInput {
   _min: CalendarMinOrderByAggregateInput
   _sum: CalendarSumOrderByAggregateInput
   color: SortOrder
-  disabled: SortOrder
+  enabled: SortOrder
   id: SortOrder
   name: SortOrder
   primary: SortOrder
@@ -6396,7 +6660,7 @@ input CalendarOrderByWithAggregationInput {
 
 input CalendarOrderByWithRelationInput {
   color: SortOrder
-  disabled: SortOrder
+  enabled: SortOrder
   events: CalendarEventOrderByRelationAggregateInput
   id: SortOrder
   name: SortOrder
@@ -6423,7 +6687,7 @@ input CalendarRelationFilter {
 
 enum CalendarScalarFieldEnum {
   color
-  disabled
+  enabled
   id
   name
   primary
@@ -6440,7 +6704,7 @@ input CalendarScalarWhereInput {
   NOT: [CalendarScalarWhereInput!]
   OR: [CalendarScalarWhereInput!]
   color: StringNullableFilter
-  disabled: BoolNullableFilter
+  enabled: BoolNullableFilter
   id: IntFilter
   name: StringNullableFilter
   primary: BoolNullableFilter
@@ -6457,7 +6721,7 @@ input CalendarScalarWhereWithAggregatesInput {
   NOT: [CalendarScalarWhereWithAggregatesInput!]
   OR: [CalendarScalarWhereWithAggregatesInput!]
   color: StringNullableWithAggregatesFilter
-  disabled: BoolNullableWithAggregatesFilter
+  enabled: BoolNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
   primary: BoolNullableWithAggregatesFilter
@@ -6483,7 +6747,7 @@ input CalendarSumOrderByAggregateInput {
 
 input CalendarUpdateInput {
   color: NullableStringFieldUpdateOperationsInput
-  disabled: NullableBoolFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
   events: CalendarEventUpdateManyWithoutCalendarInput
   name: NullableStringFieldUpdateOperationsInput
   primary: NullableBoolFieldUpdateOperationsInput
@@ -6497,7 +6761,7 @@ input CalendarUpdateInput {
 
 input CalendarUpdateManyMutationInput {
   color: NullableStringFieldUpdateOperationsInput
-  disabled: NullableBoolFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   primary: NullableBoolFieldUpdateOperationsInput
   provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
@@ -6564,7 +6828,7 @@ input CalendarUpdateWithWhereUniqueWithoutUserInput {
 
 input CalendarUpdateWithoutEventsInput {
   color: NullableStringFieldUpdateOperationsInput
-  disabled: NullableBoolFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   primary: NullableBoolFieldUpdateOperationsInput
   provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
@@ -6577,7 +6841,7 @@ input CalendarUpdateWithoutEventsInput {
 
 input CalendarUpdateWithoutSourceAccountInput {
   color: NullableStringFieldUpdateOperationsInput
-  disabled: NullableBoolFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
   events: CalendarEventUpdateManyWithoutCalendarInput
   name: NullableStringFieldUpdateOperationsInput
   primary: NullableBoolFieldUpdateOperationsInput
@@ -6590,7 +6854,7 @@ input CalendarUpdateWithoutSourceAccountInput {
 
 input CalendarUpdateWithoutUserInput {
   color: NullableStringFieldUpdateOperationsInput
-  disabled: NullableBoolFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
   events: CalendarEventUpdateManyWithoutCalendarInput
   name: NullableStringFieldUpdateOperationsInput
   primary: NullableBoolFieldUpdateOperationsInput
@@ -6623,7 +6887,7 @@ input CalendarWhereInput {
   NOT: [CalendarWhereInput!]
   OR: [CalendarWhereInput!]
   color: StringNullableFilter
-  disabled: BoolNullableFilter
+  enabled: BoolNullableFilter
   events: CalendarEventListRelationFilter
   id: IntFilter
   name: StringNullableFilter

@@ -86,7 +86,7 @@ export type UserBelief = FromPrismaWithOmission<_UserBelief, "belief"> & { belie
 export type Identification = FromPrismaWithOmission<_Identification, "identity"> & {
   identity: Identity;
 };
-export type Calendar = Omit<_Calendar, "_count">;
+export type Calendar = FromPrisma<_Calendar>;
 export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "end"> & {
   start: string;
   end?: string | null;

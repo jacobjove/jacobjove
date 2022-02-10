@@ -103,7 +103,7 @@ export const calendarFragment = gql`
     sourceAccountId
     public
     primary
-    disabled
+    enabled
   }
 `;
 
@@ -111,11 +111,15 @@ export const calendarEventFragment = gql`
   fragment CalendarEventFragment on CalendarEvent {
     __typename
     id
+    sourceId
+    sourceAccountId
+    sourceCalendarId
     scheduleId
     calendarId
     title
     start
     end
+    taskId
     createdAt
     updatedAt
     archivedAt

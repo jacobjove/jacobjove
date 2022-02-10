@@ -1,7 +1,8 @@
 import { GET_USER } from "@/graphql/queries";
-import { User } from "@/graphql/schema";
+import { CalendarEvent, User } from "@/graphql/schema";
 import { initializeApollo } from "@/lib/apollo/apolloClient";
 import rateLimit from "@/utils/rate-limit";
+import { addYears } from "date-fns";
 import { google } from "googleapis";
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/react";
@@ -13,7 +14,7 @@ const limiter = rateLimit({
 
 const MAX_REQUESTS_PER_MINUTE = 10;
 
-const GoogleCalendar: NextApiHandler = async (req, res) => {
+const GoogleCalendarEvents: NextApiHandler = async (req, res) => {
   const calendarId = req.query.id as string;
   const session = await getSession({ req });
   if (!session?.user) return res.status(401).json({ error: "Not authenticated" });
@@ -59,14 +60,17 @@ const GoogleCalendar: NextApiHandler = async (req, res) => {
     version: "v3",
     auth: googleAuth,
   });
-
+  const startMin = new Date();
+  const startMax = addYears(startMin, 1);
   return await googleCalendar.events
-    .list({ calendarId })
+    .list({ calendarId, timeMin: startMin.toISOString(), timeMax: startMax.toISOString() })
     .then((data) =>
       res.json({
-        calendars: data.data.items?.map((item) => {
-          console.log(">>>", item);
-          /* 
+        calendars: data.data.items
+          ?.filter((item) => Boolean(item.start))
+          .map((item) => {
+            const start = item.start as NonNullable<typeof item.start>;
+            /* 
             {
               kind: 'calendar#event',
               etag: '"303275348453600"',
@@ -88,16 +92,21 @@ const GoogleCalendar: NextApiHandler = async (req, res) => {
               eventType: 'default'
             }
           */
-          // TODO: match our Calendar type
-          return {
-            sourceId: item.id,
-            title: item.summary,
-            start: item.start?.dateTime,
-            end: item.end?.dateTime,
-            createdAt: item.created,
-            updatedAt: item.updated,
-          };
-        }),
+            const event: Omit<
+              CalendarEvent,
+              "id" | "uid" | "createdAt" | "updatedAt" | "calendarId"
+            > = {
+              sourceId: item.id as string,
+              title: item.summary || "",
+              start: (start.dateTime ?? start.date) as string,
+              allDay: !!start.date,
+              end: item.end?.dateTime,
+              ...(item.created && { createdAt: item.created }),
+              ...(item.updated && { updatedAt: item.updated }),
+            };
+            console.log(">>>", event);
+            return event;
+          }),
       })
     )
     .catch((e) => {
@@ -106,4 +115,4 @@ const GoogleCalendar: NextApiHandler = async (req, res) => {
     });
 };
 
-export default GoogleCalendar;
+export default GoogleCalendarEvents;

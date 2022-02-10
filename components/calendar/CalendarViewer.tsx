@@ -7,6 +7,7 @@ import DateContext from "@/components/contexts/DateContext";
 import UserContext from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
+import { Calendar } from "@/graphql/schema";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
@@ -18,17 +19,18 @@ import GoogleIcon from "@mui/icons-material/Google";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { Box } from "@mui/material";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { addMinutes } from "date-fns";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import Image from "next/image";
 import { FC, useContext, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -59,28 +61,59 @@ export const fragment = gql`
   ${calendarEventFragment}
 `;
 
-interface CalendarApiMenuItemProps extends MenuItemProps {
-  provider: "google" | "apple";
+interface CalendarMenuItemProps extends MenuItemProps {
+  calendar: Calendar;
 }
 
-const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children, ...props }) => {
-  const user = useContext(UserContext);
-  const dialogState = usePopupState({ variant: "popover", popupId: `${provider}-calendar-dialog` });
-  const Icon = ICON_MAP[provider];
-  const enabled = useMemo(() => {
-    return Boolean(
-      user?.accounts?.find(
-        (account) => account.provider === provider && account.scopes.includes(SCOPE_MAP[provider])
-      )
-    );
-  }, [user, provider]);
+const CalendarMenuItem: FC<CalendarMenuItemProps> = ({ calendar, children, ...props }) => {
+  const dialogState = usePopupState({
+    variant: "popover",
+    popupId: `calendar-${calendar.id}-dialog`,
+  });
+  const Icon = calendar.provider ? ICON_MAP[calendar.provider] : null;
+  const iconElement = Icon ? (
+    <Icon sx={{ color: "lightgray" }} />
+  ) : (
+    <Box display="flex" alignItems="center">
+      <Image alt="SelfBuilder logo" src="/logo.png" width={24} height={24} />
+    </Box>
+  );
+  const enabled = calendar.enabled;
   return (
     <>
       <MenuItem {...props} {...bindTrigger(dialogState)}>
         <ListItemIcon sx={{ visibility: enabled ? "visible" : "hidden" }}>
           <Check />
         </ListItemIcon>
-        <Icon sx={{ color: "lightgray" }} />
+        {iconElement}
+        {children}
+      </MenuItem>
+      {/* <CalendarApiProviderDialog provider={provider} {...bindMenu(dialogState)} /> */}
+    </>
+  );
+};
+
+interface CalendarApiMenuItemProps extends MenuItemProps {
+  provider: CalendarApiProvider;
+  enabled: boolean;
+}
+
+const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({
+  provider,
+  enabled,
+  children,
+  ...props
+}) => {
+  const dialogState = usePopupState({ variant: "popover", popupId: `${provider}-calendar-dialog` });
+  const Icon = ICON_MAP[provider];
+  const iconElement = <Icon sx={{ color: "lightgray" }} />;
+  return (
+    <>
+      <MenuItem {...props} {...bindTrigger(dialogState)}>
+        <ListItemIcon sx={{ visibility: enabled ? "visible" : "hidden" }}>
+          <Check />
+        </ListItemIcon>
+        {iconElement}
         {children}
       </MenuItem>
       <CalendarApiProviderDialog provider={provider} {...bindMenu(dialogState)} />
@@ -99,10 +132,22 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const { data, defaultView, ...rest } = props;
   const { calendars } = data;
   const defaultCalendar = calendars[0]; // TODO
+  const user = useContext(UserContext);
   const date = useContext(DateContext);
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
+  // TODO: refactor
+  const apiIsEnabled = useMemo(
+    () => (provider: CalendarApiProvider) => {
+      return Boolean(
+        user?.accounts?.find(
+          (account) => account.provider === provider && account.scopes.includes(SCOPE_MAP[provider])
+        ) && calendars.find((calendar) => calendar.provider === provider && calendar.enabled)
+      );
+    },
+    [user, calendars]
+  );
   // const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
   //   calendars.map((calendar) => calendar.id)
   // );
@@ -207,25 +252,35 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               }}
               keepMounted
             >
-              <CalendarApiMenuItem provider={"google"}>
-                <Typography ml={1}>{"Google Calendar"}</Typography>
-              </CalendarApiMenuItem>
-              <CalendarApiMenuItem provider={"apple"}>
-                <Typography ml={1}>{"Apple Calendar"}</Typography>
-              </CalendarApiMenuItem>
+              <Typography variant="h4" sx={{ ml: 1, color: "gray" }}>
+                {"Integrations"}
+              </Typography>
+              <MenuList dense>
+                <CalendarApiMenuItem provider={"google"} enabled={apiIsEnabled("google")}>
+                  <Typography ml={"1rem"}>{"Google Calendar"}</Typography>
+                </CalendarApiMenuItem>
+                <CalendarApiMenuItem provider={"apple"} enabled={apiIsEnabled("apple")}>
+                  <Typography ml={"1rem"}>{"Apple Calendar"}</Typography>
+                </CalendarApiMenuItem>
+              </MenuList>
               <Divider />
-              {calendars?.map((calendar) => (
-                <MenuItem key={calendar.id}>
-                  <Button
-                    title={`Connect ${calendar.name}`}
-                    onClick={() => {
-                      console.log("connecting to calendar...");
-                    }}
-                  >
-                    {calendar.name} {calendar.id}
-                  </Button>
-                </MenuItem>
-              ))}
+              <Typography variant="h4" sx={{ ml: 1, mt: 1, color: "gray" }}>
+                {"Calendars"}
+              </Typography>
+              <MenuList dense>
+                {calendars?.map((calendar) => (
+                  <CalendarMenuItem key={calendar.id} calendar={calendar}>
+                    <Typography ml={"1rem"}>{calendar.name}</Typography>
+                  </CalendarMenuItem>
+                ))}
+              </MenuList>
+              <Divider />
+              <MenuItem
+                onClick={() => alert("Not yet implemeneted")}
+                sx={{ textAlign: "center", justifyContent: "center" }}
+              >
+                {"Manage calendars"}
+              </MenuItem>
             </Menu>
             <IconButton
               title={!fullScreen ? `Expand to full screen` : `Exit full screen`}

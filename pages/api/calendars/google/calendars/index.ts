@@ -96,7 +96,6 @@ const GoogleCalendar: NextApiHandler = async (req, res) => {
     )
     .catch((e) => {
       const error = e?.stack ?? e?.response?.data?.error;
-      console.log("...", error ?? e);
       return res.status(error?.code ?? 500).json(error ?? e);
     });
 };

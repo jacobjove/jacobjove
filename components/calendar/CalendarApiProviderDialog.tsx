@@ -1,15 +1,18 @@
 import UserContext from "@/components/contexts/UserContext";
-import { accountFragment } from "@/graphql/fragments";
+import { accountFragment, calendarFragment } from "@/graphql/fragments";
 import { GET_USER } from "@/graphql/queries";
 import { Account, Calendar } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
+import ClearIcon from "@mui/icons-material/Clear";
 import CloseIcon from "@mui/icons-material/Close";
+import DoneIcon from "@mui/icons-material/Done";
 import GoogleIcon from "@mui/icons-material/Google";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -26,7 +29,7 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { signIn } from "next-auth/react";
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 
 const CREATE_CALENDARS = gql`
   mutation createCalendars($data: [CalendarCreateManyInput!]!) {
@@ -37,12 +40,21 @@ const CREATE_CALENDARS = gql`
 `;
 
 const UPDATE_ACCOUNT = gql`
-  mutation UpdateAccount($accountId: Int!, $data: NoteUpdateInput!) {
+  mutation UpdateAccount($accountId: Int!, $data: AccountUpdateInput!) {
     updateAccount(where: { id: $accountId }, data: $data) {
       ...AccountFragment
     }
   }
   ${accountFragment}
+`;
+
+const UPDATE_CALENDAR = gql`
+  mutation UpdateCalendar($calendarId: Int!, $data: CalendarUpdateInput!) {
+    updateCalendar(where: { id: $calendarId }, data: $data) {
+      ...CalendarFragment
+    }
+  }
+  ${calendarFragment}
 `;
 
 type CalendarProvider = "google" | "apple";
@@ -86,12 +98,16 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   const [updateAccount, { loading: loadingUpdateAccount }] = useMutation<{
     updateAccount: Account;
   }>(UPDATE_ACCOUNT);
+  const [updateCalendar, { loading: loadingUpdateCalendar }] = useMutation<{
+    updateCalendar: Calendar;
+  }>(UPDATE_CALENDAR);
   const [addCalendars, { loading: loadingAddCalendars }] = useMutation<{
     addCalendars: Calendar[];
   }>(CREATE_CALENDARS, {
     // TODO
     refetchQueries: [GET_USER, "GetUser"],
   });
+  const [refreshing, setRefreshing] = useState(false);
   const { name, Icon, scope, defaultScopes, disabled } = useMemo(() => {
     return CALENDAR_PROVIDERS[provider];
   }, [provider]);
@@ -101,7 +117,6 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   }, [user, provider]);
   const calendars = useMemo(() => {
     if (!user || !account) return [];
-    console.log("calculated calendars", calendars);
     return user.calendars.filter((calendar) => calendar.provider === provider);
   }, [user, account, provider]);
   // TODO: this also needs to remove associated calendars and events.
@@ -120,8 +135,8 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   const retrieveCalendars = async () => {
     return await axios.get(`/api/calendars/${provider}/calendars`);
   };
-  const retrieveCalendarEvents = async (calendarId: string) => {
-    return await axios.get(`/api/calendars/${provider}/calendars/${calendarId}/events`);
+  const refreshCalendarEvents = async (calendarId: string) => {
+    await axios.get(`/api/calendars/${provider}/calendars/${calendarId}/events/refresh`);
   };
   return (
     <Dialog fullWidth {...dialogProps} onClose={onClose}>
@@ -146,28 +161,35 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         }}
       >
         <Icon />{" "}
-        <Typography mx={1}>
+        <Typography variant="h2" component="span" mx={1}>
           {name} {"Calendar integration"}
         </Typography>
       </DialogTitle>
       <DialogContent sx={{ minHeight: "33vh" }}>
         {account?.scopes.includes(scope) ? (
           <>
-            <DialogContentText sx={{ textAlign: "center" }}>
-              {account.providerAccountId}
+            <DialogContentText sx={{ display: "flex", alignItems: "center" }}>
+              <DoneIcon />{" "}
+              <Typography
+                mx={1}
+                component="span"
+              >{`Your ${name} Calendar account is connected.`}</Typography>
             </DialogContentText>
-            <Box sx={{ textAlign: "center" }}>
-              <Button onClick={removeCalendarScope} color="warning">
-                {`Disconnect ${name} calendar`}
-              </Button>
-            </Box>
-            <TableContainer sx={{ mt: 2 }}>
-              <Box display="flex" justifyContent="right">
+            {!calendars.filter((calendar) => calendar.enabled).length ? (
+              <DialogContentText sx={{ display: "flex", alignItems: "center" }}>
+                <ClearIcon />{" "}
+                <Typography mx={1} component="span">{`No calendars are selected.`}</Typography>
+              </DialogContentText>
+            ) : null}
+            <TableContainer sx={{ mt: "4rem" }}>
+              <Box display="flex" justifyContent="space-between">
+                <Typography variant="h3">{"Available calendars"}</Typography>
                 <IconButton
                   title={`Refresh data from ${name} Calendar`}
                   sx={{ ml: "auto" }}
                   onClick={() => {
-                    user &&
+                    if (user) {
+                      setRefreshing(true);
                       retrieveCalendars()
                         .then((response) => {
                           if (response.data?.calendars?.length) {
@@ -179,32 +201,33 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                               )
                               .map((calendar: Calendar) => ({
                                 ...calendar,
-                                disabled: true,
+                                enabled: false,
                                 userId: user.id,
                               }));
                             addCalendars({ variables: { data: calendarsToAdd } })
                               .then(() => {
                                 response.data.calendars.forEach((calendar: Calendar) => {
-                                  if (calendar.sourceId) {
-                                    retrieveCalendarEvents(calendar.sourceId);
-                                  }
+                                  calendar.sourceId &&
+                                    refreshCalendarEvents(calendar.sourceId).catch(alert);
                                 });
                               })
-                              .catch(alert);
+                              .catch(alert)
+                              .finally(() => setRefreshing(false));
                             // TODO: Delete or disassociate calendars that have been removed from their source.
                           }
                         })
                         .catch(alert); // TODO: fix before publishing
+                    }
                   }}
                 >
-                  <RefreshIcon />
+                  {refreshing ? <CircularProgress size={18} /> : <RefreshIcon />}
                 </IconButton>
               </Box>
               {calendars.length > 0 ? (
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell></TableCell>
+                      <TableCell>Connected</TableCell>
                       <TableCell>Name</TableCell>
                       <TableCell>Color</TableCell>
                     </TableRow>
@@ -215,12 +238,26 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                         <TableCell>
                           <Checkbox
                             color="primary"
-                            checked={!calendar.disabled}
-                            title={`${calendar.disabled ? "Connect" : "Disconnect"} ${
+                            checked={!!calendar.enabled}
+                            title={`${calendar.enabled ? "Disconnect" : "Connect"} ${
                               calendar.name
                             }`}
                             onChange={(event) => {
                               console.log(event);
+                              // TODO: debounce
+                              updateCalendar({
+                                variables: {
+                                  calendarId: calendar.id,
+                                  data: { enabled: { set: event.target.checked } },
+                                },
+                                optimisticResponse: {
+                                  updateCalendar: {
+                                    __typename: "Calendar",
+                                    ...calendar,
+                                    enabled: event.target.checked,
+                                  },
+                                },
+                              }).catch(alert);
                             }}
                           />
                         </TableCell>
@@ -238,7 +275,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
             </TableContainer>
           </>
         ) : (
-          <Box textAlign="center">
+          <Box height="100%" display="flex" alignItems={"center"} justifyContent={"center"}>
             <Button
               title={`Connect ${name} Calendar`}
               onClick={() => {
@@ -258,6 +295,11 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         )}
       </DialogContent>
       <DialogActions>
+        {account?.scopes.includes(scope) && (
+          <Button onClick={removeCalendarScope} color="warning" sx={{ mr: "auto" }}>
+            {`Disconnect ${name} calendar`}
+          </Button>
+        )}
         <Button onClick={onClose}>Done</Button>
       </DialogActions>
     </Dialog>
