@@ -68,9 +68,9 @@ const DateSelector: FC<DateSelectorProps> = ({
       height="100%"
       px="0.5rem"
     >
-      {canStepBack && canIncludeSteppers && (
+      {canIncludeSteppers && (
         <IconButton
-          disabled={!currentDate}
+          disabled={!currentDate || !canStepBack}
           onClick={() => {
             if (currentDate) {
               setDate(subDays(currentDate, 1));
@@ -115,9 +115,9 @@ const DateSelector: FC<DateSelectorProps> = ({
           );
         }}
       />
-      {canStepForward && canIncludeSteppers && (
+      {canIncludeSteppers && (
         <IconButton
-          disabled={!currentDate}
+          disabled={!currentDate || !canStepForward}
           onClick={() => {
             if (currentDate) {
               setDate(addDays(currentDate, 1));

@@ -15505,6 +15505,7 @@ type Task {
   id: Int!
   parent: Task
   parentId: Int
+  plannedStartDate: DateTime
   rank: Int!
   subtasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum!], orderBy: [TaskOrderByWithRelationInput!], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
   title: String!
@@ -15544,6 +15545,7 @@ type TaskCountAggregate {
   habitId: Int!
   id: Int!
   parentId: Int!
+  plannedStartDate: Int!
   rank: Int!
   title: Int!
   updatedAt: Int!
@@ -15559,6 +15561,7 @@ input TaskCountOrderByAggregateInput {
   habitId: SortOrder
   id: SortOrder
   parentId: SortOrder
+  plannedStartDate: SortOrder
   rank: SortOrder
   title: SortOrder
   updatedAt: SortOrder
@@ -15574,6 +15577,7 @@ input TaskCreateInput {
   dueDate: DateTime
   habit: HabitCreateNestedOneWithoutTasksInput
   parent: TaskCreateNestedOneWithoutSubtasksInput
+  plannedStartDate: DateTime
   rank: Int
   subtasks: TaskCreateNestedManyWithoutParentInput
   title: String!
@@ -15589,6 +15593,7 @@ input TaskCreateManyHabitInput {
   dueDate: DateTime
   id: Int
   parentId: Int
+  plannedStartDate: DateTime
   rank: Int
   title: String!
   updatedAt: DateTime
@@ -15609,6 +15614,7 @@ input TaskCreateManyInput {
   habitId: Int
   id: Int
   parentId: Int
+  plannedStartDate: DateTime
   rank: Int
   title: String!
   updatedAt: DateTime
@@ -15623,6 +15629,7 @@ input TaskCreateManyParentInput {
   dueDate: DateTime
   habitId: Int
   id: Int
+  plannedStartDate: DateTime
   rank: Int
   title: String!
   updatedAt: DateTime
@@ -15643,6 +15650,7 @@ input TaskCreateManyUserInput {
   habitId: Int
   id: Int
   parentId: Int
+  plannedStartDate: DateTime
   rank: Int
   title: String!
   updatedAt: DateTime
@@ -15719,6 +15727,7 @@ input TaskCreateWithoutCalendarEventsInput {
   dueDate: DateTime
   habit: HabitCreateNestedOneWithoutTasksInput
   parent: TaskCreateNestedOneWithoutSubtasksInput
+  plannedStartDate: DateTime
   rank: Int
   subtasks: TaskCreateNestedManyWithoutParentInput
   title: String!
@@ -15734,6 +15743,7 @@ input TaskCreateWithoutHabitInput {
   description: String
   dueDate: DateTime
   parent: TaskCreateNestedOneWithoutSubtasksInput
+  plannedStartDate: DateTime
   rank: Int
   subtasks: TaskCreateNestedManyWithoutParentInput
   title: String!
@@ -15749,6 +15759,7 @@ input TaskCreateWithoutParentInput {
   description: String
   dueDate: DateTime
   habit: HabitCreateNestedOneWithoutTasksInput
+  plannedStartDate: DateTime
   rank: Int
   subtasks: TaskCreateNestedManyWithoutParentInput
   title: String!
@@ -15765,6 +15776,7 @@ input TaskCreateWithoutSubtasksInput {
   dueDate: DateTime
   habit: HabitCreateNestedOneWithoutTasksInput
   parent: TaskCreateNestedOneWithoutSubtasksInput
+  plannedStartDate: DateTime
   rank: Int
   title: String!
   updatedAt: DateTime
@@ -15780,6 +15792,7 @@ input TaskCreateWithoutUserInput {
   dueDate: DateTime
   habit: HabitCreateNestedOneWithoutTasksInput
   parent: TaskCreateNestedOneWithoutSubtasksInput
+  plannedStartDate: DateTime
   rank: Int
   subtasks: TaskCreateNestedManyWithoutParentInput
   title: String!
@@ -15800,6 +15813,7 @@ type TaskGroupBy {
   habitId: Int
   id: Int!
   parentId: Int
+  plannedStartDate: DateTime
   rank: Int!
   title: String!
   updatedAt: DateTime
@@ -15821,6 +15835,7 @@ type TaskMaxAggregate {
   habitId: Int
   id: Int
   parentId: Int
+  plannedStartDate: DateTime
   rank: Int
   title: String
   updatedAt: DateTime
@@ -15836,6 +15851,7 @@ input TaskMaxOrderByAggregateInput {
   habitId: SortOrder
   id: SortOrder
   parentId: SortOrder
+  plannedStartDate: SortOrder
   rank: SortOrder
   title: SortOrder
   updatedAt: SortOrder
@@ -15851,6 +15867,7 @@ type TaskMinAggregate {
   habitId: Int
   id: Int
   parentId: Int
+  plannedStartDate: DateTime
   rank: Int
   title: String
   updatedAt: DateTime
@@ -15866,6 +15883,7 @@ input TaskMinOrderByAggregateInput {
   habitId: SortOrder
   id: SortOrder
   parentId: SortOrder
+  plannedStartDate: SortOrder
   rank: SortOrder
   title: SortOrder
   updatedAt: SortOrder
@@ -15890,6 +15908,7 @@ input TaskOrderByWithAggregationInput {
   habitId: SortOrder
   id: SortOrder
   parentId: SortOrder
+  plannedStartDate: SortOrder
   rank: SortOrder
   title: SortOrder
   updatedAt: SortOrder
@@ -15908,6 +15927,7 @@ input TaskOrderByWithRelationInput {
   id: SortOrder
   parent: TaskOrderByWithRelationInput
   parentId: SortOrder
+  plannedStartDate: SortOrder
   rank: SortOrder
   subtasks: TaskOrderByRelationAggregateInput
   title: SortOrder
@@ -15930,6 +15950,7 @@ enum TaskScalarFieldEnum {
   habitId
   id
   parentId
+  plannedStartDate
   rank
   title
   updatedAt
@@ -15948,6 +15969,7 @@ input TaskScalarWhereInput {
   habitId: IntNullableFilter
   id: IntFilter
   parentId: IntNullableFilter
+  plannedStartDate: DateTimeNullableFilter
   rank: IntFilter
   title: StringFilter
   updatedAt: DateTimeNullableFilter
@@ -15966,6 +15988,7 @@ input TaskScalarWhereWithAggregatesInput {
   habitId: IntNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   parentId: IntNullableWithAggregatesFilter
+  plannedStartDate: DateTimeNullableWithAggregatesFilter
   rank: IntWithAggregatesFilter
   title: StringWithAggregatesFilter
   updatedAt: DateTimeNullableWithAggregatesFilter
@@ -15997,6 +16020,7 @@ input TaskUpdateInput {
   dueDate: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutTasksInput
   parent: TaskUpdateOneWithoutSubtasksInput
+  plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
@@ -16010,6 +16034,7 @@ input TaskUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: NullableStringFieldUpdateOperationsInput
   dueDate: NullableDateTimeFieldUpdateOperationsInput
+  plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -16115,6 +16140,7 @@ input TaskUpdateWithoutCalendarEventsInput {
   dueDate: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutTasksInput
   parent: TaskUpdateOneWithoutSubtasksInput
+  plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
@@ -16130,6 +16156,7 @@ input TaskUpdateWithoutHabitInput {
   description: NullableStringFieldUpdateOperationsInput
   dueDate: NullableDateTimeFieldUpdateOperationsInput
   parent: TaskUpdateOneWithoutSubtasksInput
+  plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
@@ -16145,6 +16172,7 @@ input TaskUpdateWithoutParentInput {
   description: NullableStringFieldUpdateOperationsInput
   dueDate: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutTasksInput
+  plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
@@ -16161,6 +16189,7 @@ input TaskUpdateWithoutSubtasksInput {
   dueDate: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutTasksInput
   parent: TaskUpdateOneWithoutSubtasksInput
+  plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
@@ -16176,6 +16205,7 @@ input TaskUpdateWithoutUserInput {
   dueDate: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutTasksInput
   parent: TaskUpdateOneWithoutSubtasksInput
+  plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
@@ -16231,6 +16261,7 @@ input TaskWhereInput {
   id: IntFilter
   parent: TaskRelationFilter
   parentId: IntNullableFilter
+  plannedStartDate: DateTimeNullableFilter
   rank: IntFilter
   subtasks: TaskListRelationFilter
   title: StringFilter
