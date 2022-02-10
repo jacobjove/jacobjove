@@ -9,7 +9,7 @@ import EventEditingDialog from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import { ViewerProps } from "@/components/calendar/views/props";
-import DateContext from "@/components/DateContext";
+import DateContext from "@/components/contexts/DateContext";
 import { CalendarEvent } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";

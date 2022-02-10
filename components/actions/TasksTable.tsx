@@ -4,11 +4,7 @@ import { taskFragment } from "@/graphql/fragments";
 import { CREATE_TASK, UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
-import AddIcon from "@mui/icons-material/Add";
-import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@mui/material";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -16,9 +12,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import { partition } from "lodash";
+import partition from "lodash/partition";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { FC, useCallback, useMemo, useState } from "react";
 
 export const fragment = gql`
@@ -42,7 +37,7 @@ const UPDATE_MANY_TASK_RANK = gql`
 const PREFERRED_FONT_SIZE = "0.8rem";
 const MAX_TASK_RANK = 2 ** 31 - 1;
 
-interface TasksTableProps {
+export interface TasksTableProps {
   contained?: boolean;
   data: {
     tasks: Task[];
@@ -234,96 +229,75 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   );
 
   return (
-    <div>
-      <Box display="flex" padding="0.25rem">
-        <Box marginLeft="auto">
-          <IconButton
-            title={"Add task"}
-            size="small"
-            onClick={() => {
-              console.log("handle click");
-            }}
-          >
-            <AddIcon />
-          </IconButton>
-          <Link href="/habits" passHref>
-            <IconButton component={"a"} color="info" title="Explore habits">
-              <SearchIcon />
-            </IconButton>
-          </Link>
-        </Box>
-      </Box>
-      <TableContainer>
-        <Table
-          sx={{
-            minWidth: 100,
-            "& th": { padding: 0 },
-            "& td": { padding: 0, fontSize: PREFERRED_FONT_SIZE },
-          }}
-          size="small"
-          aria-label="table of tasks"
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell>Task</TableCell>
-              <TableCell style={{ width: "5rem", textAlign: "center" }}>Due date</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {incompleteTasks.map(renderTaskRow)}
-            <TableRow>
-              {(addingNewTask && (
-                <EditingModeTaskCells
-                  task={newTask}
-                  handleFieldChange={handleNewTaskFieldChange}
-                  handleSubmit={handleNewTaskSubmit}
-                  handleCancel={() => setAddingNewTask(false)}
-                />
-              )) || (
-                <>
-                  <TableCell colSpan={2} />
-                  <TableCell colSpan={5}>
-                    <Button
-                      variant="text"
-                      onClick={() => setAddingNewTask(true)}
-                      sx={{
-                        textTransform: "none",
-                        fontStyle: "italic",
-                        color: (theme) =>
-                          theme.palette.mode === "light" ? "lightgray" : "darkgray",
-                        py: "0.25rem",
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "start",
-                      }}
-                    >
-                      {incompleteTasks.length ? "Add another task..." : "Add a task..."}
-                    </Button>
-                  </TableCell>
-                </>
-              )}
-            </TableRow>
-            {!!completeTasks.length && (
+    <TableContainer className="no-scrollbar" sx={{ mt: 1 }}>
+      <Table
+        sx={{
+          minWidth: 100,
+          "& th": { padding: 0 },
+          "& td": { padding: 0, fontSize: PREFERRED_FONT_SIZE },
+        }}
+        size="small"
+        aria-label="table of tasks"
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell>Task</TableCell>
+            <TableCell style={{ width: "5rem", textAlign: "center" }}>Due date</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {incompleteTasks.map(renderTaskRow)}
+          <TableRow>
+            {(addingNewTask && (
+              <EditingModeTaskCells
+                task={newTask}
+                handleFieldChange={handleNewTaskFieldChange}
+                handleSubmit={handleNewTaskSubmit}
+                handleCancel={() => setAddingNewTask(false)}
+              />
+            )) || (
               <>
-                <TableRow>
-                  <TableCell colSpan={7} style={{ paddingTop: "1rem", paddingBottom: "0.25rem" }}>
-                    <Typography variant="h4" mx="0.25rem">
-                      {"Recently completed"}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-                {completeTasks.map(renderTaskRow)}
+                <TableCell colSpan={2} />
+                <TableCell colSpan={5}>
+                  <Button
+                    variant="text"
+                    onClick={() => setAddingNewTask(true)}
+                    sx={{
+                      textTransform: "none",
+                      fontStyle: "italic",
+                      color: (theme) => (theme.palette.mode === "light" ? "lightgray" : "darkgray"),
+                      py: "0.25rem",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "start",
+                    }}
+                  >
+                    {incompleteTasks.length ? "Add another task..." : "Add a task..."}
+                  </Button>
+                </TableCell>
               </>
             )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+          </TableRow>
+          {!!completeTasks.length && (
+            <>
+              <TableRow>
+                <TableCell colSpan={7} style={{ paddingTop: "1rem", paddingBottom: "0.25rem" }}>
+                  <Typography variant="h4" mx="0.25rem">
+                    {"Recently completed"}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              {completeTasks.map(renderTaskRow)}
+            </>
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

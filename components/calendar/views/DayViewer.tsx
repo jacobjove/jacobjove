@@ -4,7 +4,7 @@ import EventEditingDialog from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import { ViewerProps } from "@/components/calendar/views/props";
-import DateContext from "@/components/DateContext";
+import DateContext from "@/components/contexts/DateContext";
 import { CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";

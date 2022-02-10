@@ -40,73 +40,76 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
 
   const handleSave = async () => {
     if (!start) {
-      return; // TODO: show error
+      alert("Start date is required.");
+      return;
     }
-    if (event.id) {
-      const mutationVars: {
-        data: CalendarEventUpdateInput;
-        where: CalendarEventWhereUniqueInput;
-      } = {
-        where: { id: event.id },
-        data: {
-          title: { set: title },
-          start: { set: start },
-          end: { set: end || undefined },
-          notes: { set: notes },
-          calendar: {
-            connect: {
-              id: calendarId,
+    const mutationVars:
+      | {
+          data: CalendarEventUpdateInput;
+          where: CalendarEventWhereUniqueInput;
+        }
+      | {
+          data: CalendarEventCreateInput;
+        } = {
+      ...(event.id
+        ? {
+            where: { id: event.id },
+            data: {
+              title: { set: title },
+              start: { set: start },
+              end: { set: end || undefined },
+              notes: { set: notes },
+              calendar: {
+                connect: {
+                  id: calendarId,
+                },
+              },
             },
-          },
-        },
-      };
-      await mutate({
-        variables: mutationVars,
-        optimisticResponse: {
-          updateCalendarEvent: {
-            id: event.id,
-            __typename: "CalendarEvent",
-            title,
-            start,
-            end,
-            notes,
-            scheduleId: null,
-            calendarId,
-          },
-        },
-      });
-    } else {
-      const mutationVars: {
-        data: CalendarEventCreateInput;
-      } = {
-        data: {
-          title,
-          start,
-          end: end || undefined,
-          notes,
-          calendar: {
-            connect: {
-              id: calendarId,
+          }
+        : {
+            data: {
+              title,
+              start,
+              end: end || undefined,
+              notes,
+              calendar: {
+                connect: {
+                  id: calendarId,
+                },
+              },
             },
-          },
-        },
-      };
-      await mutate({
-        variables: mutationVars,
-        optimisticResponse: {
-          createCalendarEvent: {
-            id: "tmp-id",
-            __typename: "CalendarEvent",
-            title,
-            start,
-            end,
-            notes,
-            scheduleId: null,
-            calendarId,
-          },
-        },
-      });
-    }
+          }),
+    };
+    await mutate({
+      variables: mutationVars,
+      optimisticResponse: {
+        ...(event.id
+          ? {
+              updateCalendarEvent: {
+                id: event.id,
+                __typename: "CalendarEvent",
+                title,
+                start,
+                end,
+                notes,
+                scheduleId: null,
+                calendarId,
+              },
+            }
+          : {
+              createCalendarEvent: {
+                id: "tmp-id",
+                __typename: "CalendarEvent",
+                title,
+                start,
+                end,
+                notes,
+                scheduleId: null,
+                calendarId,
+              },
+            }),
+      },
+    });
     onClose();
   };
   useEffect(() => {

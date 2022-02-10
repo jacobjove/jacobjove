@@ -1,7 +1,7 @@
 import ActionDialog from "@/components/actions/ActionDialog";
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
-import DateContext from "@/components/DateContext";
+import DateContext from "@/components/contexts/DateContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
