@@ -1,5 +1,5 @@
 import ColorModeContext from "@/components/contexts/ColorModeContext";
-import DateContext from "@/components/contexts/DateContext";
+import { DateContextProvider } from "@/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@/components/contexts/DeviceContext";
 import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
 import UserContext from "@/components/contexts/UserContext";
@@ -123,7 +123,6 @@ export type PageWithAuth = NextPage & {
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
-  const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState<PaletteMode>(session?.user?.settings?.colorMode ?? "light");
   const colorMode = useMemo(
     () => ({
@@ -137,15 +136,6 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   const [isLandscape, setIsLandscape] = useState<boolean>();
   const [deviceContextData, setDeviceContextData] = useState<DeviceContextData>({});
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-  useEffect(() => {
-    // Update the current time every minute.
-    const intervalId = setInterval(function () {
-      setDate(new Date());
-    }, 1000 * 60);
-    return function cleanup() {
-      clearInterval(intervalId);
-    };
-  }, [setDate]);
   useEffect(() => {
     const handleOrientationChange = function (e: Event) {
       setIsLandscape((e.target as ScreenOrientation).type.toString().includes("landscape"));
@@ -169,6 +159,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
+  console.log("app render");
   return (
     <SessionProvider session={session}>
       <DeviceContext.Provider value={deviceContextData}>
@@ -179,7 +170,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                 <CssBaseline />
                 <LocalizationProvider dateAdapter={DateAdapter}>
                   <DndProvider backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}>
-                    <DateContext.Provider value={date}>
+                    <DateContextProvider>
                       <DefaultSeo
                         description={"Build good habits, break bad habits, and be your best self."}
                         openGraph={{
@@ -233,7 +224,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                       ) : (
                         <Component {...pageProps} />
                       )}
-                    </DateContext.Provider>
+                    </DateContextProvider>
                   </DndProvider>
                 </LocalizationProvider>
               </ThemeProvider>
