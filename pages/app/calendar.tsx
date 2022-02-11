@@ -5,7 +5,8 @@ import { CalendarData } from "@/components/calendar/views/props";
 import Layout from "@/components/Layout";
 import { GET_CALENDAR_EVENTS } from "@/graphql/queries";
 import { Task } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
+import { addApolloState, initializeApollo } from "@/utils/apollo/client";
+import { printError } from "@/utils/apollo/error-handling";
 import { gql, useQuery } from "@apollo/client";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -130,20 +131,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         date: new Date().toISOString(),
       },
     })
-    .catch((e) => {
-      if (e.networkError?.result?.errors) {
-        e.networkError.result.errors.forEach(
-          (error: {
-            message: string;
-            extensions: { code: string; exception: { stacktrace: string[] } };
-          }) => {
-            console.error(error.message);
-            console.log(error.extensions.exception.stacktrace.join("\n"), { depth: null });
-          }
-        );
-      } else {
-        console.error(e);
-      }
-    });
+    .catch(printError);
   return addApolloState(apolloClient, { props });
 };

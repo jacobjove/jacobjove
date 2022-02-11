@@ -100,7 +100,8 @@ export const calendarFragment = gql`
     color
     provider
     sourceId
-    sourceAccountId
+    accountSourceId
+    syncToken
     public
     primary
     enabled
@@ -112,8 +113,8 @@ export const calendarEventFragment = gql`
     __typename
     id
     sourceId
-    sourceAccountId
-    sourceCalendarId
+    accountSourceId
+    calendarSourceId
     scheduleId
     calendarId
     title

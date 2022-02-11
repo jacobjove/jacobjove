@@ -1,5 +1,5 @@
 import sampleSize from "lodash/sampleSize";
-import prisma from "../lib/prisma";
+import prisma from "../utils/prisma";
 import actsData from "./seeds/acts";
 import identitiesData from "./seeds/identities";
 import metricsData from "./seeds/metrics";

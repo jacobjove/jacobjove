@@ -1,22 +1,20 @@
 import { GET_USER } from "@/graphql/queries";
 import { User } from "@/graphql/schema";
-import { initializeApollo } from "@/lib/apollo/apolloClient";
+import { initializeApollo } from "@/utils/apollo/client";
+import { printError } from "@/utils/apollo/error-handling";
 import rateLimit from "@/utils/rate-limit";
 import { google } from "googleapis";
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/react";
 
 const limiter = rateLimit({
-  interval: 60 * 1000, // 60 seconds
-  uniqueTokenPerInterval: 500, // Max 500 users per second
+  ttl: 60 * 1000, // 60 seconds
 });
 
-const MAX_REQUESTS_PER_MINUTE = 10;
-
-const GoogleCalendar: NextApiHandler = async (req, res) => {
+const GetCalendars: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
   if (!session?.user) return res.status(401).json({ error: "Not authenticated" });
-  await limiter.check(res, MAX_REQUESTS_PER_MINUTE, "CACHE_TOKEN").catch(() => {
+  await limiter.check(res, `_${session.user.id}`).catch(() => {
     return res.status(429).json({ error: "Rate limit exceeded" });
   });
   const apolloClient = initializeApollo();
@@ -26,21 +24,7 @@ const GoogleCalendar: NextApiHandler = async (req, res) => {
       variables: { userId: session.user.id },
     })
     .then((result) => result.data.user)
-    .catch((e) => {
-      if (e.networkError?.result?.errors) {
-        e.networkError.result.errors.forEach(
-          (error: {
-            message: string;
-            extensions: { code: string; exception: { stacktrace: string[] } };
-          }) => {
-            console.error(error.message);
-            console.log(error.extensions.exception.stacktrace.join("\n"), { depth: null });
-          }
-        );
-      } else {
-        console.error(e);
-      }
-    });
+    .catch(printError);
   if (!user) return res.status(401).json({ error: "Failed to retrieve user data" });
 
   const googleAccount = user.accounts.find((account) => account.provider === "google") || null;
@@ -59,13 +43,21 @@ const GoogleCalendar: NextApiHandler = async (req, res) => {
     auth: googleAuth,
   });
 
+  const syncToken = googleAccount.syncToken;
+
   return await googleCalendar.calendarList
-    .list({ minAccessRole: "owner" })
-    .then((data) =>
-      res.json({
+    .list({
+      minAccessRole: "owner",
+      // https://developers.google.com/calendar/api/guides/sync
+      ...(syncToken ? { syncToken } : {}),
+    })
+    .then((data) => {
+      // TODO
+      if (data.data.nextSyncToken || data.data.nextPageToken)
+        throw new Error("Sync token not implemented");
+      return res.json({
         calendars: data.data.items?.map((item) => {
-          /* 
-          {
+          /* {
             accessRole: "owner"
             backgroundColor: "#9fc6e7"
             colorId: "15"
@@ -80,24 +72,23 @@ const GoogleCalendar: NextApiHandler = async (req, res) => {
             selected: true
             summary: "blahblahblah@gmail.com"
             timeZone: "America/Chicago"
-          }
-        */
+          } */
           // TODO: match our Calendar type
           return {
             name: item.summary,
             color: item.backgroundColor,
             sourceId: item.id,
-            sourceAccountId: googleAccount.id,
+            accountSourceId: googleAccount.id,
             primary: item.primary,
             provider: "google",
           };
         }),
-      })
-    )
+      });
+    })
     .catch((e) => {
       const error = e?.stack ?? e?.response?.data?.error;
       return res.status(error?.code ?? 500).json(error ?? e);
     });
 };
 
-export default GoogleCalendar;
+export default GetCalendars;

@@ -132,7 +132,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
       },
     }).catch(alert);
   }, [updateAccount, account, scope]);
-  const retrieveCalendars = async () => {
+  const getCalendars = async () => {
     return await axios.get(`/api/calendars/${provider}/calendars`);
   };
   const refreshCalendarEvents = async (calendarId: string) => {
@@ -188,36 +188,36 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                   title={`Refresh data from ${name} Calendar`}
                   sx={{ ml: "auto" }}
                   onClick={() => {
-                    if (user) {
-                      setRefreshing(true);
-                      retrieveCalendars()
-                        .then((response) => {
-                          if (response.data?.calendars?.length) {
-                            // Create calendars that don't already exist.
-                            const calendarsToAdd: Calendar[] = response.data.calendars
-                              .filter(
-                                (calendar: Calendar) =>
-                                  !calendars.find((_) => _.sourceId == calendar.sourceId)
-                              )
-                              .map((calendar: Calendar) => ({
-                                ...calendar,
-                                enabled: false,
-                                userId: user.id,
-                              }));
-                            addCalendars({ variables: { data: calendarsToAdd } })
-                              .then(() => {
-                                response.data.calendars.forEach((calendar: Calendar) => {
-                                  calendar.sourceId &&
-                                    refreshCalendarEvents(calendar.sourceId).catch(alert);
-                                });
-                              })
-                              .catch(alert)
-                              .finally(() => setRefreshing(false));
-                            // TODO: Delete or disassociate calendars that have been removed from their source.
-                          }
-                        })
-                        .catch(alert); // TODO: fix before publishing
-                    }
+                    if (!user) return;
+                    setRefreshing(true);
+                    getCalendars()
+                      .then((response) => {
+                        if (response.data?.calendars?.length) {
+                          // Create calendars that don't already exist.
+                          const calendarsToAdd: Calendar[] = response.data.calendars
+                            .filter(
+                              (calendar: Calendar) =>
+                                !calendars.find((_) => _.sourceId == calendar.sourceId)
+                            )
+                            .map((calendar: Calendar) => ({
+                              ...calendar,
+                              enabled: false,
+                              userId: user.id,
+                            }));
+                          addCalendars({ variables: { data: calendarsToAdd } })
+                            .then(() => {
+                              response.data.calendars.forEach((calendar: Calendar) => {
+                                if (calendar.enabled && calendar.sourceId) {
+                                  refreshCalendarEvents(calendar.sourceId).catch(alert);
+                                }
+                              });
+                            })
+                            .catch(alert)
+                            .finally(() => setRefreshing(false));
+                          // TODO: Delete or disassociate calendars that have been removed from their source.
+                        }
+                      })
+                      .catch(alert); // TODO: fix before publishing
                   }}
                 >
                   {refreshing ? <CircularProgress size={18} /> : <RefreshIcon />}
@@ -284,7 +284,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                   { callbackUrl: window.location.href },
                   { scope: [...(account?.scopes ?? defaultScopes), scope].join(" ") }
                 )
-                  .then(() => retrieveCalendars())
+                  .then(() => getCalendars())
                   .catch(alert);
               }}
               disabled={disabled}

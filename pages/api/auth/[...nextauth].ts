@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import prisma from "@/utils/prisma";
 import NextAuth, { CallbacksOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { AppProviders } from "next-auth/providers";

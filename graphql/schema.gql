@@ -5410,7 +5410,7 @@ type Calendar {
   provider: CalendarProvider
   public: Boolean
   sourceAccount: Account
-  sourceAccountId: Int
+  accountSourceId: Int
   sourceId: String
   uid: String!
   user: User!
@@ -5419,13 +5419,13 @@ type Calendar {
 
 type CalendarAvgAggregate {
   id: Float
-  sourceAccountId: Float
+  accountSourceId: Float
   userId: Float
 }
 
 input CalendarAvgOrderByAggregateInput {
   id: SortOrder
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   userId: SortOrder
 }
 
@@ -5442,7 +5442,7 @@ type CalendarCountAggregate {
   primary: Int!
   provider: Int!
   public: Int!
-  sourceAccountId: Int!
+  accountSourceId: Int!
   sourceId: Int!
   uid: Int!
   userId: Int!
@@ -5456,7 +5456,7 @@ input CalendarCountOrderByAggregateInput {
   primary: SortOrder
   provider: SortOrder
   public: SortOrder
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   sourceId: SortOrder
   uid: SortOrder
   userId: SortOrder
@@ -5484,7 +5484,7 @@ input CalendarCreateManyInput {
   primary: Boolean
   provider: CalendarProvider
   public: Boolean
-  sourceAccountId: Int
+  accountSourceId: Int
   sourceId: String
   uid: String
   userId: Int!
@@ -5516,7 +5516,7 @@ input CalendarCreateManyUserInput {
   primary: Boolean
   provider: CalendarProvider
   public: Boolean
-  sourceAccountId: Int
+  accountSourceId: Int
   sourceId: String
   uid: String
 }
@@ -5614,8 +5614,8 @@ type CalendarEvent {
   schedule: ActionSchedule
   scheduleId: Int
   sourceAccount: Account
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   task: Task
@@ -5630,7 +5630,7 @@ type CalendarEventAvgAggregate {
   habitId: Float
   id: Float
   scheduleId: Float
-  sourceAccountId: Float
+  accountSourceId: Float
   taskId: Float
 }
 
@@ -5639,7 +5639,7 @@ input CalendarEventAvgOrderByAggregateInput {
   habitId: SortOrder
   id: SortOrder
   scheduleId: SortOrder
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   taskId: SortOrder
 }
 
@@ -5654,8 +5654,8 @@ type CalendarEventCountAggregate {
   id: Int!
   notes: Int!
   scheduleId: Int!
-  sourceAccountId: Int!
-  sourceCalendarId: Int!
+  accountSourceId: Int!
+  calendarSourceId: Int!
   sourceId: Int!
   start: Int!
   taskId: Int!
@@ -5674,8 +5674,8 @@ input CalendarEventCountOrderByAggregateInput {
   id: SortOrder
   notes: SortOrder
   scheduleId: SortOrder
-  sourceAccountId: SortOrder
-  sourceCalendarId: SortOrder
+  accountSourceId: SortOrder
+  calendarSourceId: SortOrder
   sourceId: SortOrder
   start: SortOrder
   taskId: SortOrder
@@ -5694,7 +5694,7 @@ input CalendarEventCreateInput {
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
   sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
-  sourceCalendarId: String
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
@@ -5712,8 +5712,8 @@ input CalendarEventCreateManyCalendarInput {
   id: Int
   notes: String
   scheduleId: Int
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   taskId: Int
@@ -5736,8 +5736,8 @@ input CalendarEventCreateManyHabitInput {
   id: Int
   notes: String
   scheduleId: Int
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   taskId: Int
@@ -5761,8 +5761,8 @@ input CalendarEventCreateManyInput {
   id: Int
   notes: String
   scheduleId: Int
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   taskId: Int
@@ -5780,8 +5780,8 @@ input CalendarEventCreateManyScheduleInput {
   habitId: Int
   id: Int
   notes: String
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   taskId: Int
@@ -5805,7 +5805,7 @@ input CalendarEventCreateManySourceAccountInput {
   id: Int
   notes: String
   scheduleId: Int
-  sourceCalendarId: String
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   taskId: Int
@@ -5829,8 +5829,8 @@ input CalendarEventCreateManyTaskInput {
   id: Int
   notes: String
   scheduleId: Int
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   title: String!
@@ -5912,7 +5912,7 @@ input CalendarEventCreateWithoutCalendarInput {
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
   sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
-  sourceCalendarId: String
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
@@ -5930,7 +5930,7 @@ input CalendarEventCreateWithoutHabitInput {
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
   sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
-  sourceCalendarId: String
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
@@ -5948,7 +5948,7 @@ input CalendarEventCreateWithoutScheduleInput {
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
   sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
-  sourceCalendarId: String
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
@@ -5966,7 +5966,7 @@ input CalendarEventCreateWithoutSourceAccountInput {
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
-  sourceCalendarId: String
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
@@ -5985,7 +5985,7 @@ input CalendarEventCreateWithoutTaskInput {
   notes: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
   sourceAccount: AccountCreateNestedOneWithoutCalendarEventInput
-  sourceCalendarId: String
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   title: String!
@@ -6008,8 +6008,8 @@ type CalendarEventGroupBy {
   id: Int!
   notes: String
   scheduleId: Int
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime!
   taskId: Int
@@ -6034,8 +6034,8 @@ type CalendarEventMaxAggregate {
   id: Int
   notes: String
   scheduleId: Int
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime
   taskId: Int
@@ -6054,8 +6054,8 @@ input CalendarEventMaxOrderByAggregateInput {
   id: SortOrder
   notes: SortOrder
   scheduleId: SortOrder
-  sourceAccountId: SortOrder
-  sourceCalendarId: SortOrder
+  accountSourceId: SortOrder
+  calendarSourceId: SortOrder
   sourceId: SortOrder
   start: SortOrder
   taskId: SortOrder
@@ -6074,8 +6074,8 @@ type CalendarEventMinAggregate {
   id: Int
   notes: String
   scheduleId: Int
-  sourceAccountId: Int
-  sourceCalendarId: String
+  accountSourceId: Int
+  calendarSourceId: String
   sourceId: String
   start: DateTime
   taskId: Int
@@ -6094,8 +6094,8 @@ input CalendarEventMinOrderByAggregateInput {
   id: SortOrder
   notes: SortOrder
   scheduleId: SortOrder
-  sourceAccountId: SortOrder
-  sourceCalendarId: SortOrder
+  accountSourceId: SortOrder
+  calendarSourceId: SortOrder
   sourceId: SortOrder
   start: SortOrder
   taskId: SortOrder
@@ -6123,8 +6123,8 @@ input CalendarEventOrderByWithAggregationInput {
   id: SortOrder
   notes: SortOrder
   scheduleId: SortOrder
-  sourceAccountId: SortOrder
-  sourceCalendarId: SortOrder
+  accountSourceId: SortOrder
+  calendarSourceId: SortOrder
   sourceId: SortOrder
   start: SortOrder
   taskId: SortOrder
@@ -6147,8 +6147,8 @@ input CalendarEventOrderByWithRelationInput {
   schedule: ActionScheduleOrderByWithRelationInput
   scheduleId: SortOrder
   sourceAccount: AccountOrderByWithRelationInput
-  sourceAccountId: SortOrder
-  sourceCalendarId: SortOrder
+  accountSourceId: SortOrder
+  calendarSourceId: SortOrder
   sourceId: SortOrder
   start: SortOrder
   task: TaskOrderByWithRelationInput
@@ -6168,8 +6168,8 @@ enum CalendarEventScalarFieldEnum {
   id
   notes
   scheduleId
-  sourceAccountId
-  sourceCalendarId
+  accountSourceId
+  calendarSourceId
   sourceId
   start
   taskId
@@ -6191,8 +6191,8 @@ input CalendarEventScalarWhereInput {
   id: IntFilter
   notes: StringNullableFilter
   scheduleId: IntNullableFilter
-  sourceAccountId: IntNullableFilter
-  sourceCalendarId: StringNullableFilter
+  accountSourceId: IntNullableFilter
+  calendarSourceId: StringNullableFilter
   sourceId: StringNullableFilter
   start: DateTimeFilter
   taskId: IntNullableFilter
@@ -6214,8 +6214,8 @@ input CalendarEventScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   notes: StringNullableWithAggregatesFilter
   scheduleId: IntNullableWithAggregatesFilter
-  sourceAccountId: IntNullableWithAggregatesFilter
-  sourceCalendarId: StringNullableWithAggregatesFilter
+  accountSourceId: IntNullableWithAggregatesFilter
+  calendarSourceId: StringNullableWithAggregatesFilter
   sourceId: StringNullableWithAggregatesFilter
   start: DateTimeWithAggregatesFilter
   taskId: IntNullableWithAggregatesFilter
@@ -6225,7 +6225,7 @@ input CalendarEventScalarWhereWithAggregatesInput {
 }
 
 input CalendarEventSourceIdSourceCalendarIdCompoundUniqueInput {
-  sourceCalendarId: String!
+  calendarSourceId: String!
   sourceId: String!
 }
 
@@ -6234,7 +6234,7 @@ type CalendarEventSumAggregate {
   habitId: Int
   id: Int
   scheduleId: Int
-  sourceAccountId: Int
+  accountSourceId: Int
   taskId: Int
 }
 
@@ -6243,7 +6243,7 @@ input CalendarEventSumOrderByAggregateInput {
   habitId: SortOrder
   id: SortOrder
   scheduleId: SortOrder
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   taskId: SortOrder
 }
 
@@ -6257,7 +6257,7 @@ input CalendarEventUpdateInput {
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
   sourceAccount: AccountUpdateOneWithoutCalendarEventInput
-  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  calendarSourceId: NullableStringFieldUpdateOperationsInput
   sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
@@ -6272,7 +6272,7 @@ input CalendarEventUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
-  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  calendarSourceId: NullableStringFieldUpdateOperationsInput
   sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
@@ -6409,7 +6409,7 @@ input CalendarEventUpdateWithoutCalendarInput {
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
   sourceAccount: AccountUpdateOneWithoutCalendarEventInput
-  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  calendarSourceId: NullableStringFieldUpdateOperationsInput
   sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
@@ -6427,7 +6427,7 @@ input CalendarEventUpdateWithoutHabitInput {
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
   sourceAccount: AccountUpdateOneWithoutCalendarEventInput
-  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  calendarSourceId: NullableStringFieldUpdateOperationsInput
   sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
@@ -6445,7 +6445,7 @@ input CalendarEventUpdateWithoutScheduleInput {
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
   sourceAccount: AccountUpdateOneWithoutCalendarEventInput
-  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  calendarSourceId: NullableStringFieldUpdateOperationsInput
   sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
@@ -6463,7 +6463,7 @@ input CalendarEventUpdateWithoutSourceAccountInput {
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
-  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  calendarSourceId: NullableStringFieldUpdateOperationsInput
   sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
@@ -6482,7 +6482,7 @@ input CalendarEventUpdateWithoutTaskInput {
   notes: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
   sourceAccount: AccountUpdateOneWithoutCalendarEventInput
-  sourceCalendarId: NullableStringFieldUpdateOperationsInput
+  calendarSourceId: NullableStringFieldUpdateOperationsInput
   sourceId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
@@ -6537,8 +6537,8 @@ input CalendarEventWhereInput {
   schedule: ActionScheduleRelationFilter
   scheduleId: IntNullableFilter
   sourceAccount: AccountRelationFilter
-  sourceAccountId: IntNullableFilter
-  sourceCalendarId: StringNullableFilter
+  accountSourceId: IntNullableFilter
+  calendarSourceId: StringNullableFilter
   sourceId: StringNullableFilter
   start: DateTimeFilter
   task: TaskRelationFilter
@@ -6550,7 +6550,7 @@ input CalendarEventWhereInput {
 
 input CalendarEventWhereUniqueInput {
   id: Int
-  sourceId_sourceCalendarId: CalendarEventSourceIdSourceCalendarIdCompoundUniqueInput
+  sourceId_calendarSourceId: CalendarEventSourceIdSourceCalendarIdCompoundUniqueInput
   uid: String
 }
 
@@ -6567,7 +6567,7 @@ type CalendarGroupBy {
   primary: Boolean
   provider: CalendarProvider
   public: Boolean
-  sourceAccountId: Int
+  accountSourceId: Int
   sourceId: String
   uid: String!
   userId: Int!
@@ -6587,7 +6587,7 @@ type CalendarMaxAggregate {
   primary: Boolean
   provider: CalendarProvider
   public: Boolean
-  sourceAccountId: Int
+  accountSourceId: Int
   sourceId: String
   uid: String
   userId: Int
@@ -6601,7 +6601,7 @@ input CalendarMaxOrderByAggregateInput {
   primary: SortOrder
   provider: SortOrder
   public: SortOrder
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   sourceId: SortOrder
   uid: SortOrder
   userId: SortOrder
@@ -6615,7 +6615,7 @@ type CalendarMinAggregate {
   primary: Boolean
   provider: CalendarProvider
   public: Boolean
-  sourceAccountId: Int
+  accountSourceId: Int
   sourceId: String
   uid: String
   userId: Int
@@ -6629,7 +6629,7 @@ input CalendarMinOrderByAggregateInput {
   primary: SortOrder
   provider: SortOrder
   public: SortOrder
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   sourceId: SortOrder
   uid: SortOrder
   userId: SortOrder
@@ -6652,7 +6652,7 @@ input CalendarOrderByWithAggregationInput {
   primary: SortOrder
   provider: SortOrder
   public: SortOrder
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   sourceId: SortOrder
   uid: SortOrder
   userId: SortOrder
@@ -6668,7 +6668,7 @@ input CalendarOrderByWithRelationInput {
   provider: SortOrder
   public: SortOrder
   sourceAccount: AccountOrderByWithRelationInput
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   sourceId: SortOrder
   uid: SortOrder
   user: UserOrderByWithRelationInput
@@ -6693,7 +6693,7 @@ enum CalendarScalarFieldEnum {
   primary
   provider
   public
-  sourceAccountId
+  accountSourceId
   sourceId
   uid
   userId
@@ -6710,7 +6710,7 @@ input CalendarScalarWhereInput {
   primary: BoolNullableFilter
   provider: EnumCalendarProviderNullableFilter
   public: BoolNullableFilter
-  sourceAccountId: IntNullableFilter
+  accountSourceId: IntNullableFilter
   sourceId: StringNullableFilter
   uid: StringFilter
   userId: IntFilter
@@ -6727,7 +6727,7 @@ input CalendarScalarWhereWithAggregatesInput {
   primary: BoolNullableWithAggregatesFilter
   provider: EnumCalendarProviderNullableWithAggregatesFilter
   public: BoolNullableWithAggregatesFilter
-  sourceAccountId: IntNullableWithAggregatesFilter
+  accountSourceId: IntNullableWithAggregatesFilter
   sourceId: StringNullableWithAggregatesFilter
   uid: StringWithAggregatesFilter
   userId: IntWithAggregatesFilter
@@ -6735,13 +6735,13 @@ input CalendarScalarWhereWithAggregatesInput {
 
 type CalendarSumAggregate {
   id: Int
-  sourceAccountId: Int
+  accountSourceId: Int
   userId: Int
 }
 
 input CalendarSumOrderByAggregateInput {
   id: SortOrder
-  sourceAccountId: SortOrder
+  accountSourceId: SortOrder
   userId: SortOrder
 }
 
@@ -6895,7 +6895,7 @@ input CalendarWhereInput {
   provider: EnumCalendarProviderNullableFilter
   public: BoolNullableFilter
   sourceAccount: AccountRelationFilter
-  sourceAccountId: IntNullableFilter
+  accountSourceId: IntNullableFilter
   sourceId: StringNullableFilter
   uid: StringFilter
   user: UserRelationFilter

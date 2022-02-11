@@ -19,7 +19,8 @@ import {
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { FC, useContext, useEffect, useRef, useState } from "react";
+import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { FC, useContext, useEffect, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
   const dividerColor = theme.palette.divider;
@@ -79,11 +80,9 @@ type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
 
 const DayViewer: FC<ViewerProps> = ({
   selectedDate,
-  setSelectedDate,
   initialEventFormData,
   setInitialEventFormData,
   defaultCalendar,
-  // includeDateSelector,
   hidden,
   data,
   loading,
@@ -91,7 +90,13 @@ const DayViewer: FC<ViewerProps> = ({
   const { calendarEvents } = data;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
-  const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
+
+  const eventEditingDialogState = usePopupState({
+    variant: "popover",
+    popupId: `event-editing-dialog`,
+  });
+
+  const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
 
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
@@ -106,7 +111,12 @@ const DayViewer: FC<ViewerProps> = ({
   const filteredEvents = calendarEvents
     ?.filter((event) => {
       // TODO: partition events to separate all-day events based on event.end presence
-      return isSameDay(parseISO(event.start), selectedDate) && !event.archivedAt && event.end;
+      return (
+        isSameDay(parseISO(event.start), selectedDate) &&
+        !event.archivedAt &&
+        !event.cancelled &&
+        event.end
+      );
     })
     ?.sort((a, b) => {
       return parseISO(a.start) > parseISO(b.start) ? 1 : -1;
@@ -216,7 +226,7 @@ const DayViewer: FC<ViewerProps> = ({
                             notes: initialEventFormData.notes ?? "",
                             calendarId: initialEventFormData.calendarId ?? primaryCalendarId,
                           });
-                          setEventEditingDialogOpen(true);
+                          eventEditingDialogTriggerProps.onClick(e);
                         }
                       }}
                     />
@@ -262,8 +272,7 @@ const DayViewer: FC<ViewerProps> = ({
                 />
               )}
               <EventEditingDialog
-                open={eventDialogOpen}
-                setOpen={setEventEditingDialogOpen}
+                {...bindPopover(eventEditingDialogState)}
                 event={initialEventFormData}
               />
             </div>
@@ -278,9 +287,4 @@ export default DayViewer;
 
 const zeroToHour = (date: Date, hour: number) => {
   return setHours(setMinutes(setSeconds(date, 0), 0), hour);
-};
-
-const convertHourAndMinutesToTimeString = (hour: number, minutes = 0) => {
-  const suffix = hour >= 12 ? "PM" : "AM";
-  return `${((hour + 11) % 12) + 1}:${minutes.toString().padStart(2, "0")} ${suffix}`;
 };

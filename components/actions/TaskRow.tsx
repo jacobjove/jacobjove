@@ -5,6 +5,7 @@ import DateContext from "@/components/contexts/DateContext";
 import UserContext from "@/components/contexts/UserContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
+import { printError } from "@/utils/apollo/error-handling";
 import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -358,26 +359,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                             archivedAt,
                           },
                         },
-                      }).catch((e) => {
-                        if (e.networkError?.result?.errors) {
-                          e.networkError.result.errors.forEach(
-                            (error: {
-                              message: string;
-                              extensions: {
-                                code: string;
-                                exception: { stacktrace: string[] };
-                              };
-                            }) => {
-                              console.error(error.message);
-                              console.log(error.extensions.exception.stacktrace.join("\n"), {
-                                depth: null,
-                              });
-                            }
-                          );
-                        } else {
-                          console.error(e);
-                        }
-                      });
+                      }).catch(printError);
                     }}
                   >
                     <DeleteIcon />

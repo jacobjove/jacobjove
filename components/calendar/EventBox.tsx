@@ -26,7 +26,6 @@ interface EventBoxProps extends ComponentProps<typeof Box> {
 const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   const { event, ...rest } = props;
   const [hovered, setHovered] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const detailDialogState = usePopupState({
     variant: "popover",
     popupId: `event-${event.id}-detail-dialog`,

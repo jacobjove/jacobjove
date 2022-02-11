@@ -2,7 +2,7 @@ import SelectableAction from "@/components/actions/SelectableAction";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { Act, Habit } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
+import { addApolloState, initializeApollo } from "@/utils/apollo/client";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";

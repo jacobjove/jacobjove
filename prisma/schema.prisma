@@ -34,6 +34,7 @@ model Account {
   accessToken       String?
   refreshToken      String?
   accessTokenExpiry DateTime?
+  syncToken         String?
   createdAt         DateTime   @default(now())
   calendars         Calendar[]
 
@@ -102,8 +103,9 @@ model Calendar {
   color           String?
   provider        CalendarProvider?
   sourceId        String?
-  sourceAccount   Account?          @relation(fields: [sourceAccountId], references: [id], onDelete: Cascade)
-  sourceAccountId Int?
+  syncToken       String?
+  sourceAccount   Account?          @relation(fields: [accountSourceId], references: [id], onDelete: Cascade)
+  accountSourceId Int?
   primary         Boolean?          @default(false)
   public          Boolean?          @default(false)
   enabled         Boolean?          @default(true)
@@ -115,11 +117,11 @@ model CalendarEvent {
   id               Int             @id @default(autoincrement())
   uid              String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
   sourceId         String?
-  sourceAccount    Account?        @relation(fields: [sourceAccountId], references: [id], onDelete: Cascade)
-  sourceAccountId  Int?
+  sourceAccount    Account?        @relation(fields: [accountSourceId], references: [id], onDelete: Cascade)
+  accountSourceId  Int?
   calendar         Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
   calendarId       Int
-  sourceCalendarId String?
+  calendarSourceId String?
   schedule         ActionSchedule? @relation(fields: [scheduleId], references: [id])
   scheduleId       Int?
   // TODO: remove habit and habitId
@@ -132,12 +134,13 @@ model CalendarEvent {
   end              DateTime?
   allDay           Boolean         @default(false)
   notes            String?
+  cancelled        Boolean?        @default(false)
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime?
   archivedAt DateTime?
 
-  @@unique([sourceId, sourceCalendarId])
+  @@unique([sourceId, calendarSourceId])
   @@map(name: "calendarEvents")
 }
 

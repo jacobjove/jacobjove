@@ -5,10 +5,10 @@ import { PageTransitionContextProvider } from "@/components/contexts/PageTransit
 import UserContext, { UserSettings } from "@/components/contexts/UserContext";
 import { GET_USER } from "@/graphql/queries";
 import { User } from "@/graphql/schema";
-import { useApollo } from "@/lib/apollo/apolloClient";
 import "@/node_modules/react-grid-layout/css/styles.css";
 import "@/node_modules/react-resizable/css/styles.css";
 import "@/public/styles/global.css";
+import { useApollo } from "@/utils/apollo/client";
 import { ApolloProvider, useQuery } from "@apollo/client";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";

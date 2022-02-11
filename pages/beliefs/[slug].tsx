@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { Belief } from "@/graphql/schema";
-import prisma from "@/lib/prisma";
+import prisma from "@/utils/prisma";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";

@@ -43,7 +43,7 @@ const nextConfig = {
         permanent: true,
       },
     ];
-    // const prisma = require("./lib/prisma");
+    // const prisma = require("./utils/prisma");
     // await prisma.redirect.findMany({
     //   where: {
     //     active: true,
