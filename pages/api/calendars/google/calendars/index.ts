@@ -2,6 +2,7 @@ import { GET_USER } from "@/graphql/queries";
 import { User } from "@/graphql/schema";
 import { initializeApollo } from "@/utils/apollo/client";
 import { printError } from "@/utils/apollo/error-handling";
+import prisma from "@/utils/prisma";
 import rateLimit from "@/utils/rate-limit";
 import { google } from "googleapis";
 import { NextApiHandler } from "next";
@@ -14,9 +15,9 @@ const limiter = rateLimit({
 const GetCalendars: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
   if (!session?.user) return res.status(401).json({ error: "Not authenticated" });
-  await limiter.check(res, `_${session.user.id}`).catch(() => {
+  if (await limiter.check(res, `GetCalendars_${session.user.id}`).catch(() => false)) {
     return res.status(429).json({ error: "Rate limit exceeded" });
-  });
+  }
   const apolloClient = initializeApollo();
   const user = await apolloClient
     .query<{ user: User }>({
@@ -51,10 +52,18 @@ const GetCalendars: NextApiHandler = async (req, res) => {
       // https://developers.google.com/calendar/api/guides/sync
       ...(syncToken ? { syncToken } : {}),
     })
-    .then((data) => {
+    .then(async (data) => {
       // TODO
-      if (data.data.nextSyncToken || data.data.nextPageToken)
-        throw new Error("Sync token not implemented");
+      if (data.data.nextSyncToken) {
+        prisma.account
+          .update({
+            where: { id: googleAccount.id },
+            data: { syncToken: data.data.nextSyncToken },
+          })
+          .catch(console.error);
+      } else if (data.data.nextPageToken) {
+        throw new Error("nextPageToken token not implemented");
+      }
       return res.json({
         calendars: data.data.items?.map((item) => {
           /* {

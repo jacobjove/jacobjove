@@ -109,8 +109,10 @@ model Calendar {
   primary         Boolean?          @default(false)
   public          Boolean?          @default(false)
   enabled         Boolean?          @default(true)
+  events          CalendarEvent[]
 
-  events CalendarEvent[]
+  @@unique([id, sourceId])
+  @@unique([sourceId, accountSourceId])
 }
 
 model CalendarEvent {
@@ -140,6 +142,7 @@ model CalendarEvent {
   updatedAt  DateTime?
   archivedAt DateTime?
 
+  @@unique([id, sourceId])
   @@unique([sourceId, calendarSourceId])
   @@map(name: "calendarEvents")
 }

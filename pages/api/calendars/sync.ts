@@ -16,9 +16,9 @@ const limiter = rateLimiter({
 const SyncCalendars: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
   if (!session?.user) return res.status(401).json({ error: "Not authenticated" });
-  await limiter.check(res, `_${session.user.id}`).catch(() => {
+  if (await limiter.check(res, `SyncCalendars_${session.user.id}`).catch(() => false)) {
     return res.status(429).json({ error: "Rate limit exceeded" });
-  });
+  }
   const apolloClient = initializeApollo();
   const user = await apolloClient
     .query<{ user: User }>({
@@ -70,8 +70,12 @@ const SyncCalendars: NextApiHandler = async (req, res) => {
         })
         .then((data) => {
           if (data.data.nextSyncToken) {
-            console.log("TODO: update the sync token!");
-            // TODO: update the sync token!
+            prisma.calendar
+              .update({
+                where: { id: calendar.id },
+                data: { syncToken: data.data.nextSyncToken },
+              })
+              .catch(console.error);
           } else if (data.data.nextPageToken) {
             console.log("TODO: handle paginated responses!");
           }

@@ -2,7 +2,7 @@ import LRU from "lru-cache";
 import { NextApiResponse } from "next";
 
 const DEFAULT_MAX_REQUESTS = 1;
-const DEFAULT_TTL = 60000;
+const DEFAULT_TTL = 60000; // 60 seconds
 const DEFAULT_MAX_UNIQUE_TOKENS = 500;
 
 interface RateLimitOptions {

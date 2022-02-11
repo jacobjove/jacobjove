@@ -6069,6 +6069,11 @@ type CalendarEventGroupBy {
   updatedAt: DateTime
 }
 
+input CalendarEventIdSourceIdCompoundUniqueInput {
+  id: Int!
+  sourceId: String!
+}
+
 input CalendarEventListRelationFilter {
   every: CalendarEventWhereInput
   none: CalendarEventWhereInput
@@ -6618,6 +6623,7 @@ input CalendarEventWhereInput {
 
 input CalendarEventWhereUniqueInput {
   id: Int
+  id_sourceId: CalendarEventIdSourceIdCompoundUniqueInput
   sourceId_calendarSourceId: CalendarEventSourceIdCalendarSourceIdCompoundUniqueInput
   uid: String
 }
@@ -6640,6 +6646,11 @@ type CalendarGroupBy {
   syncToken: String
   uid: String!
   userId: Int!
+}
+
+input CalendarIdSourceIdCompoundUniqueInput {
+  id: Int!
+  sourceId: String!
 }
 
 input CalendarListRelationFilter {
@@ -6809,6 +6820,11 @@ input CalendarScalarWhereWithAggregatesInput {
   syncToken: StringNullableWithAggregatesFilter
   uid: StringWithAggregatesFilter
   userId: IntWithAggregatesFilter
+}
+
+input CalendarSourceIdAccountSourceIdCompoundUniqueInput {
+  accountSourceId: Int!
+  sourceId: String!
 }
 
 type CalendarSumAggregate {
@@ -6988,6 +7004,8 @@ input CalendarWhereInput {
 
 input CalendarWhereUniqueInput {
   id: Int
+  id_sourceId: CalendarIdSourceIdCompoundUniqueInput
+  sourceId_accountSourceId: CalendarSourceIdAccountSourceIdCompoundUniqueInput
   uid: String
 }
 
