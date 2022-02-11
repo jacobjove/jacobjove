@@ -25,17 +25,10 @@ const rateLimiter = (options: RateLimitOptions) => {
     check: (res: NextApiResponse, token: string) =>
       new Promise<void>((resolve, reject) => {
         const tokenCount = tokenCache.get(token) || [0];
-        if (tokenCount[0] === 0) {
-          tokenCache.set(token, tokenCount);
-        }
+        if (tokenCount[0] === 0) tokenCache.set(token, tokenCount);
         tokenCount[0] += 1;
-
         const currentUsage = tokenCount[0];
-        const isRateLimited = currentUsage >= maxRequests;
-        res.setHeader("X-RateLimit-Limit", maxRequests);
-        res.setHeader("X-RateLimit-Remaining", isRateLimited ? 0 : maxRequests - currentUsage);
-
-        return isRateLimited ? reject() : resolve();
+        return currentUsage >= maxRequests ? reject() : resolve();
       }),
   };
 };

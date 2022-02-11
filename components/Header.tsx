@@ -177,14 +177,14 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                       </MenuItem>
                     </Link>
                   ))}
-                  {session.user.isAdmin ||
-                    (true && (
-                      <MenuItem>
-                        <Link href="/_admin">
-                          <a>Administration</a>
-                        </Link>
-                      </MenuItem>
-                    ))}
+
+                  {!!session.user.isAdmin && (
+                    <MenuItem>
+                      <Link href="/_admin">
+                        <a>Administration</a>
+                      </Link>
+                    </MenuItem>
+                  )}
                   <Divider />
                   <MenuItem onClick={logout}>
                     Sign out <LogoutIcon sx={{ marginLeft: "0.5rem" }} />

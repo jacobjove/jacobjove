@@ -29,7 +29,7 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { signIn } from "next-auth/react";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 const CREATE_CALENDARS = gql`
   mutation createCalendars($data: [CalendarCreateManyInput!]!) {
@@ -108,21 +108,66 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     refetchQueries: [GET_USER, "GetUser"],
   });
   const [refreshing, setRefreshing] = useState(false);
+
+  const loading =
+    refreshing || loadingUpdateAccount || loadingUpdateCalendar || loadingAddCalendars;
+
   const { name, Icon, scope, defaultScopes, disabled } = useMemo(() => {
     return CALENDAR_PROVIDERS[provider];
   }, [provider]);
+
   const account = useMemo(() => {
     if (!user) return null;
     return user.accounts.find((account) => account.provider === provider) || null;
   }, [user, provider]);
+
   const calendars = useMemo(() => {
     if (!user || !account) return [];
     return user.calendars.filter((calendar) => calendar.provider === provider);
   }, [user, account, provider]);
+
+  const refreshCalendarList = useCallback(async () => {
+    if (loading || !user) return;
+    console.log(">>>>>>>>>>> refreshCalendarList");
+    setRefreshing(true);
+    return await axios
+      .get(`/api/calendars/${provider}/calendars`)
+      .then(async (response) => {
+        if (response.data?.calendars?.length) {
+          // Create calendars that don't already exist.
+          const calendarsToAdd: Calendar[] = response.data.calendars
+            .filter((calendar: Calendar) => !calendars.find((_) => _.sourceId == calendar.sourceId))
+            .map((calendar: Calendar) => ({
+              ...calendar,
+              enabled: false,
+              userId: user.id,
+            }));
+          // TODO: Delete or disassociate calendars that have been removed from their source.
+          await addCalendars({ variables: { data: calendarsToAdd } })
+            .then(() => {
+              response.data.calendars.forEach((calendar: Calendar) => {
+                if (calendar.enabled && calendar.sourceId) {
+                  // TODO: sync calendar.
+                  // Note: Since calendars begin with enabled=false, this should
+                  // only apply to calendars that were already connected.
+                }
+              });
+            })
+            .catch(alert);
+        }
+      })
+      .catch(alert) // TODO: fix before publishing;
+      .finally(() => setRefreshing(false));
+  }, [loading, user, provider, calendars, addCalendars]);
+
+  useEffect(() => {
+    if (!loading && dialogProps.open && !calendars.length) refreshCalendarList();
+  }, [loading, calendars, dialogProps.open, refreshCalendarList]);
+
   // TODO: this also needs to remove associated calendars and events.
   // We should show a confirmation dialog first.
   const removeCalendarScope = useCallback(() => {
-    if (!account) return;
+    if (!account || loading) return;
     updateAccount({
       variables: {
         accountId: account.id,
@@ -131,13 +176,8 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         },
       },
     }).catch(alert);
-  }, [updateAccount, account, scope]);
-  const getCalendars = async () => {
-    return await axios.get(`/api/calendars/${provider}/calendars`);
-  };
-  const refreshCalendarEvents = async (calendarId: string) => {
-    await axios.get(`/api/calendars/${provider}/calendars/${calendarId}/events/refresh`);
-  };
+  }, [loading, account, scope, updateAccount]);
+
   return (
     <Dialog fullWidth {...dialogProps} onClose={onClose}>
       <IconButton
@@ -188,36 +228,8 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                   title={`Refresh data from ${name} Calendar`}
                   sx={{ ml: "auto" }}
                   onClick={() => {
-                    if (!user) return;
                     setRefreshing(true);
-                    getCalendars()
-                      .then((response) => {
-                        if (response.data?.calendars?.length) {
-                          // Create calendars that don't already exist.
-                          const calendarsToAdd: Calendar[] = response.data.calendars
-                            .filter(
-                              (calendar: Calendar) =>
-                                !calendars.find((_) => _.sourceId == calendar.sourceId)
-                            )
-                            .map((calendar: Calendar) => ({
-                              ...calendar,
-                              enabled: false,
-                              userId: user.id,
-                            }));
-                          addCalendars({ variables: { data: calendarsToAdd } })
-                            .then(() => {
-                              response.data.calendars.forEach((calendar: Calendar) => {
-                                if (calendar.enabled && calendar.sourceId) {
-                                  refreshCalendarEvents(calendar.sourceId).catch(alert);
-                                }
-                              });
-                            })
-                            .catch(alert)
-                            .finally(() => setRefreshing(false));
-                          // TODO: Delete or disassociate calendars that have been removed from their source.
-                        }
-                      })
-                      .catch(alert); // TODO: fix before publishing
+                    refreshCalendarList().finally(() => setRefreshing(false));
                   }}
                 >
                   {refreshing ? <CircularProgress size={18} /> : <RefreshIcon />}
@@ -284,7 +296,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                   { callbackUrl: window.location.href },
                   { scope: [...(account?.scopes ?? defaultScopes), scope].join(" ") }
                 )
-                  .then(() => getCalendars())
+                  .then(async () => await refreshCalendarList())
                   .catch(alert);
               }}
               disabled={disabled}
