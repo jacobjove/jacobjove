@@ -225,32 +225,33 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                             : "rgba(255, 255, 255, 0.08)"
                         }`
                       : "transparent",
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                <Box display="flex" justifyContent={"space-between"} alignItems="center">
-                  <Box display="flex" alignItems="center">
-                    <Button
-                      variant="text"
-                      sx={{
-                        color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
-                        padding: "0 0.25rem",
-                        margin: 0,
-                        fontSize: "0.8rem",
-                        textTransform: "none",
-                        minWidth: 0,
-                        lineHeight: "1rem",
-                        textAlign: "left",
-                      }}
-                      {...bindTriggerProps}
-                    >
-                      {task.title}
-                      {/* TODO: clean up */}
-                      {session?.user.isAdmin && (
-                        <small style={{ color: "gray", margin: 2 }}>&nbsp;{task.rank}</small>
-                      )}
-                    </Button>
-                  </Box>
-                </Box>
+                <Button
+                  variant="text"
+                  sx={{
+                    color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
+                    padding: "0 0.25rem",
+                    margin: 0,
+                    fontSize: "0.8rem",
+                    textTransform: "none",
+                    minWidth: 0,
+                    width: "100%",
+                    lineHeight: "1rem",
+                    textAlign: "left",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                  {...bindTriggerProps}
+                >
+                  <div>{task.title}</div>
+                  {/* TODO: clean up */}
+                  {session?.user.isAdmin && (
+                    <small style={{ color: "gray", margin: 2 }}>&nbsp;{task.rank}</small>
+                  )}
+                </Button>
               </Box>
             </TableCell>
             <TableCell>
