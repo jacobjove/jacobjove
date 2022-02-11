@@ -1,5 +1,5 @@
 import ColorModeContext from "@/components/contexts/ColorModeContext";
-import DateContext from "@/components/contexts/DateContext";
+import { DateContextProvider } from "@/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@/components/contexts/DeviceContext";
 import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
 import UserContext, { UserSettings } from "@/components/contexts/UserContext";
@@ -121,7 +121,6 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     skip: !session?.user?.id,
     variables: { userId: session?.user?.id },
   });
-
   const user = useMemo(() => {
     let user = data?.user;
     if (user?.settings) {
@@ -132,25 +131,14 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     return user as undefined | (Omit<User, "settings"> & { settings: UserSettings });
   }, [data]);
 
-  const [date, setDate] = useState(new Date());
-
   const [mode, setMode] = useState<PaletteMode>(user?.settings?.colorMode ?? DEFAULT_COLOR_MODE);
   const colorMode = useMemo(() => ({ set: (mode: PaletteMode) => setMode(mode) }), []);
 
   const isMobileWidth = useMediaQuery("(max-width: 600px)");
   const [isLandscape, setIsLandscape] = useState<boolean>();
   const [deviceContextData, setDeviceContextData] = useState<DeviceContextData>({});
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
-  useEffect(() => {
-    // Update the current time every minute.
-    const intervalId = setInterval(function () {
-      setDate(new Date());
-    }, 1000 * 60);
-    return function cleanup() {
-      clearInterval(intervalId);
-    };
-  }, [setDate]);
+  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   useEffect(() => {
     const handleOrientationChange = function (e: Event) {
@@ -199,7 +187,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                   <CssBaseline />
                   <LocalizationProvider dateAdapter={DateAdapter}>
                     <DndProvider backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}>
-                      <DateContext.Provider value={date}>
+                      <DateContextProvider>
                         <DefaultSeo
                           description={
                             "Build good habits, break bad habits, and be your best self."
@@ -255,7 +243,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                         ) : (
                           <Component {...pageProps} />
                         )}
-                      </DateContext.Provider>
+                      </DateContextProvider>
                     </DndProvider>
                   </LocalizationProvider>
                 </ThemeProvider>
