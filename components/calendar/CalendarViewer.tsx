@@ -128,8 +128,12 @@ type CalendarViewerProps = Omit<CalendarProps, "data"> & {
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
   const { data, defaultView, ...rest } = props;
-  const { calendars } = data;
-  const defaultCalendar = calendars[0]; // TODO
+  // Exclude calendars that are not enabled or have been archived.
+  const enabledCalendars = data.calendars?.filter(
+    (calendar) => calendar.enabled && !calendar.archivedAt
+  );
+  const defaultCalendar = enabledCalendars[0]; // TODO
+
   const user = useContext(UserContext);
   const date = useContext(DateContext);
   const [fullScreen, setFullScreen] = useState(false);
@@ -141,10 +145,10 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
       return Boolean(
         user?.accounts?.find(
           (account) => account.provider === provider && account.scopes.includes(SCOPE_MAP[provider])
-        ) && calendars.find((calendar) => calendar.provider === provider && calendar.enabled)
+        ) && enabledCalendars.find((calendar) => calendar.provider === provider)
       );
     },
-    [user, calendars]
+    [user, enabledCalendars]
   );
   // const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
   //   calendars.map((calendar) => calendar.id)
@@ -266,7 +270,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                 {"Calendars"}
               </Typography>
               <MenuList dense>
-                {calendars?.map((calendar) => (
+                {enabledCalendars?.map((calendar) => (
                   <CalendarMenuItem key={calendar.id} calendar={calendar}>
                     <Typography ml={"1rem"}>{calendar.name}</Typography>
                   </CalendarMenuItem>

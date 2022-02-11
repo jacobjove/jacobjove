@@ -5,6 +5,7 @@ import { Account, Calendar } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CloseIcon from "@mui/icons-material/Close";
+import DoneIcon from "@mui/icons-material/Done";
 import GoogleIcon from "@mui/icons-material/Google";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@mui/material/Box";
@@ -29,7 +30,7 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { signIn } from "next-auth/react";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 const CREATE_CALENDARS = gql`
   mutation createCalendars($data: [CalendarCreateManyInput!]!) {
@@ -130,29 +131,44 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
 
   const enabledCalendars = calendars.filter((calendar) => !!calendar.enabled);
 
-  // const applyCalendarConnectionChanges = useCallback(async () => {
-  //   // Disable calendars.
-  //   enabledCalendarIds.forEach((calendarId) => {
-  //     if (!selectedCalendarIds.includes(calendarId)) {
-  //       console.log("Remove", calendarId);
-  //     }
-  //   });
-  //   // Enable calendars.
-  //   selectedCalendarIds.forEach((calendarId) => {
-  //     if (!enabledCalendarIds.includes(calendarId)) {
-  //       updateCalendar({
-  //         variables: {
-  //           calendarId,
-  //           data: { enabled: { set: true } },
-  //         },
-  //       }).catch(alert);
-  //     }
-  //   });
-  // }, [updateCalendar]);
+  // TODO: use state, so we can show a loading spinner and/or enable the "Apply changes" button
+  const changes = useRef({
+    enabled: [],
+    disabled: [],
+  });
+
+  const applyChanges = useCallback(async () => {
+    // Enable calendars.
+    const enablementPromises = changes.current.enabled.map((calendarId) => {
+      updateCalendar({
+        variables: {
+          calendarId,
+          data: { enabled: { set: true } },
+        },
+      })
+        .then(() => {
+          return axios.get(`/api/calendars/${provider}/calendars/${calendarId}/sync`);
+        })
+        .catch(alert);
+    });
+    // Disable calendars.
+    const disablementPromises = changes.current.disabled.map((calendarId) => {
+      // TODO: confirm this results in the calendar events being removed
+      updateCalendar({
+        variables: {
+          calendarId,
+          data: { enabled: { set: false } },
+        },
+      }).catch(alert);
+    });
+    // Wait for all changes to be applied.
+    await Promise.all([...enablementPromises, ...disablementPromises]);
+    // Clear the ref for to-be-applied changes.
+    changes.current = { enabled: [], disabled: [] };
+  }, [provider, updateCalendar]);
 
   const refreshCalendarList = useCallback(async () => {
     if (!user) return;
-    console.log("A.refreshCalendarList");
     setRefreshing(true);
     return await axios
       .get(`/api/calendars/${provider}/calendars`)
@@ -167,16 +183,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
               userId: user.id,
             }));
           // TODO: Delete or disassociate calendars that have been removed from their source.
-          await addCalendars({ variables: { data: calendarsToAdd } }).then(() => {
-            response.data.calendars.forEach((calendar: Calendar) => {
-              console.log(calendar);
-              if (calendar.enabled && calendar.sourceId) {
-                // TODO: sync calendar.
-                // Note: Since calendars begin with enabled=false, this should
-                // only apply to calendars that were already connected.
-              }
-            });
-          });
+          await addCalendars({ variables: { data: calendarsToAdd } });
         }
       })
       .catch(console.error) // TODO: fix before publishing;
@@ -184,17 +191,14 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   }, [user, provider, calendars, addCalendars]);
 
   useEffect(() => {
-    console.log("useEffect.A");
     if (dialogProps.open && !loading && !calendars.length) {
-      console.log("useEffect.B:", !loading, !calendars.length);
       (async () => await refreshCalendarList())();
-      console.log("useEffect.C");
     }
   }, [dialogProps.open, loading, calendars.length, refreshCalendarList]);
 
   // TODO: this also needs to remove associated calendars and events.
   // We should show a confirmation dialog first.
-  const removeCalendarScope = useCallback(() => {
+  const removeCalendarScope = useCallback(async () => {
     if (!account || loading) return;
     updateAccount({
       variables: {
@@ -206,20 +210,16 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     }).catch(alert);
   }, [loading, account, scope, updateAccount]);
 
-  const steps = useMemo(
-    () => [
-      [
-        `Connect ${name} account`,
-        `Sign in with your ${name} account, and permit the calendar integration.`,
-      ],
-      [
-        "Select calendars to sync",
-        `Select one or more calendars to connect from your ${name} account to your SelfBuilder account.`,
-      ],
+  const steps = [
+    [
+      `Connect ${name} account`,
+      `Sign in with your ${name} account, and permit the calendar integration.`,
     ],
-    [name]
-  );
-
+    [
+      "Select calendars to sync",
+      `Select one or more calendars to connect from your ${name} account to your SelfBuilder account.`,
+    ],
+  ];
   const nextStep = enabledCalendars.length ? null : account ? 1 : 0;
   console.log("nextStep:", nextStep);
 
@@ -251,7 +251,12 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         </Typography>
       </DialogTitle>
       <DialogContent sx={{ minHeight: "33vh" }}>
-        {nextStep === null ? null : (
+        {nextStep === null ? (
+          <Box display="flex" alignItems="center">
+            <DoneIcon />
+            <Typography sx={{ mx: 1 }}>{`${name} Calendar integration is enabled.`}</Typography>
+          </Box>
+        ) : (
           <Stepper activeStep={nextStep}>
             {steps.map(([label, caption], index) => {
               return (
@@ -274,7 +279,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
           </Stepper>
         )}
         {calendarIntegrationIsEnabled ? (
-          <TableContainer sx={{ mt: "4rem" }}>
+          <TableContainer sx={{ mt: "3rem" }}>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h3">{"Available calendars"}</Typography>
               <IconButton
@@ -292,9 +297,9 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Connected</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Color</TableCell>
+                    <TableCell>{"Connect"}</TableCell>
+                    <TableCell>{"Name"}</TableCell>
+                    <TableCell>{"Color"}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -306,7 +311,6 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                           checked={!!calendar.enabled}
                           title={`${calendar.enabled ? "Disconnect" : "Connect"} ${calendar.name}`}
                           onChange={(event) => {
-                            console.log(event);
                             // TODO: debounce
                             updateCalendar({
                               variables: {
@@ -331,8 +335,8 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                 </TableBody>
               </Table>
             ) : (
-              <Box sx={{ textAlign: "center" }}>
-                <Typography>{`You don't have any calendars from ${name} yet.`}</Typography>
+              <Box sx={{ textAlign: "center", my: 2 }}>
+                <Typography>{`No calendars are available from ${name}.`}</Typography>
               </Box>
             )}
           </TableContainer>
@@ -362,9 +366,12 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
             {`Disconnect ${name} calendar`}
           </Button>
         )}
+        <Button disabled onClick={() => applyChanges()}>
+          {"Apply changes"}
+        </Button>
         <Button
           onClick={() => {
-            alert("TODO: sync calendar events based on changes to selected calendars");
+            applyChanges();
             onClose();
           }}
         >

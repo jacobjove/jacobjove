@@ -109,7 +109,12 @@ model Calendar {
   primary         Boolean?          @default(false)
   public          Boolean?          @default(false)
   enabled         Boolean?          @default(true)
-  events          CalendarEvent[]
+
+  events CalendarEvent[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
 
   @@unique([id, sourceId])
   @@unique([sourceId, accountSourceId])
@@ -139,7 +144,7 @@ model CalendarEvent {
   cancelled        Boolean?        @default(false)
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([id, sourceId])
@@ -189,7 +194,7 @@ model Act {
   parentId Int?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   variants           Act[]                    @relation("variants")
@@ -209,7 +214,7 @@ model MetricApplication {
   metric   Metric @relation(fields: [metricId], references: [id], onDelete: Cascade)
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@id([actId, metricId])
@@ -254,7 +259,7 @@ model Habit {
   actions                  Action[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -268,7 +273,7 @@ model RoutineHabit {
   durationInMinutes Int
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@id([routineId, position])
@@ -283,7 +288,7 @@ model Routine {
   notes             String?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -296,7 +301,7 @@ model MetricRecord {
   value         Int
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -319,7 +324,7 @@ model Task {
   calendarEvents   CalendarEvent[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([userId, parentId, rank])
@@ -335,7 +340,7 @@ model Action {
   metricRecords MetricRecord[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -352,7 +357,7 @@ model ActionSchedule {
   templateId     Int?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -449,7 +454,7 @@ model Belief {
   description String?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   userBelief UserBelief[]
@@ -463,7 +468,7 @@ model UserBelief {
   beliefId Int
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([userId, beliefId])
@@ -476,7 +481,7 @@ model Value {
   description String?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   userValues UserValue[]
@@ -490,7 +495,7 @@ model UserValue {
   valueId Int
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([userId, valueId])
@@ -527,7 +532,7 @@ model Notebook {
   userPermissions NotebookUserPermission[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([ownerId, title])

@@ -12,8 +12,6 @@ const limiter = rateLimit({
   ttl: 60 * 1000, // 60 seconds
 });
 
-const MAX_REQUESTS_PER_MINUTE = 10;
-
 const GoogleCalendarEvents: NextApiHandler = async (req, res) => {
   const calendarId = req.query.id as string;
   const session = await getSession({ req });
