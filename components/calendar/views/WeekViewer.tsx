@@ -25,7 +25,8 @@ import {
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
+import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { FC, Fragment, useContext, useEffect, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
   const borderDef = `1px solid ${theme.palette.divider}`;
@@ -79,7 +80,13 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const { calendarEvents } = data;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
-  const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
+
+  const eventEditingDialogState = usePopupState({
+    variant: "popover",
+    popupId: `event-editing-dialog`,
+  });
+  const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
+
   const selectedDayIndex = getDay(selectedDate);
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
@@ -241,7 +248,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                                     calendarId:
                                       initialEventFormData.calendarId ?? primaryCalendarId,
                                   });
-                                  setEventEditingDialogOpen(true);
+                                  eventEditingDialogTriggerProps.onClick(e);
                                 }
                               }}
                             />
@@ -255,9 +262,8 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
             );
           })}
           <EventEditingDialog
-            open={eventDialogOpen}
-            setOpen={setEventEditingDialogOpen}
-            event={initialEventFormData}
+            {...bindPopover(eventEditingDialogState)}
+            eventData={initialEventFormData}
           />
         </Box>
       </Box>
@@ -269,9 +275,4 @@ export default WeekViewer;
 
 const zeroToHour = (date: Date, hour: number) => {
   return setHours(setMinutes(setSeconds(date, 0), 0), hour);
-};
-
-const convertHourAndMinutesToTimeString = (hour: number, minutes = 0) => {
-  const suffix = hour >= 12 ? "PM" : "AM";
-  return `${((hour + 11) % 12) + 1}:${minutes.toString().padStart(2, "0")} ${suffix}`;
 };

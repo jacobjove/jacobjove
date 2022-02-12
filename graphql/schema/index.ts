@@ -52,6 +52,8 @@ type FromPrismaWithOmission<T, K extends keyof T> = Pick<
   Exclude<keyof FromPrisma<T>, K>
 >;
 
+// TODO: we're not DRY here...
+
 export type Account = FromPrisma<_Account>;
 export type Act = FromPrisma<_Act>;
 export type Habit = FromPrismaWithOmission<_Habit, "act" | "actions"> & {
@@ -63,13 +65,14 @@ export type Habit = FromPrismaWithOmission<_Habit, "act" | "actions"> & {
 };
 export type Task = FromPrismaWithOmission<
   _Task,
-  "plannedStartDate" | "dueDate" | "completedAt" | "subtasks" | "userId" | "createdAt"
+  "plannedStartDate" | "dueDate" | "completedAt" | "subtasks" | "userId" | "createdAt" | "updatedAt"
 > & {
   plannedStartDate?: string | null;
   dueDate?: string | null;
   completedAt?: string | null;
   subtasks?: Task[];
   createdAt: string;
+  updatedAt: string;
 };
 export type Action = FromPrismaWithOmission<_Action, "habit" | "start" | "end"> & {
   start: string;
@@ -90,9 +93,14 @@ export type Identification = FromPrismaWithOmission<_Identification, "identity">
   identity: Identity;
 };
 export type Calendar = FromPrisma<_Calendar>;
-export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "end"> & {
+export type CalendarEvent = FromPrismaWithOmission<
+  _CalendarEvent,
+  "start" | "end" | "createdAt" | "updatedAt"
+> & {
   start: string;
   end?: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 // export type ActionTheme = FromPrismaWithOmission<_ActionTheme, "start" | "end"> & {
 //   start: string;

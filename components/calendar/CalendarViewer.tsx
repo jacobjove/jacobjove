@@ -35,14 +35,12 @@ import Image from "next/image";
 import { FC, useContext, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
-type CalendarApiProvider = "google" | "apple";
-
 const ICON_MAP = {
   google: GoogleIcon,
   apple: AppleIcon,
 };
 
-const SCOPE_MAP: Record<CalendarApiProvider, string> = {
+const SCOPE_MAP: Record<CalendarProvider, string> = {
   google: "https://www.googleapis.com/auth/calendar",
   apple: "",
 };
@@ -93,7 +91,7 @@ const CalendarMenuItem: FC<CalendarMenuItemProps> = ({ calendar, children, ...pr
 };
 
 interface CalendarApiMenuItemProps extends MenuItemProps {
-  provider: CalendarApiProvider;
+  provider: CalendarProvider;
   enabled: boolean;
 }
 
@@ -106,11 +104,7 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({
   const dialogState = usePopupState({ variant: "popover", popupId: `${provider}-calendar-dialog` });
   const Icon = ICON_MAP[provider];
   const iconElement = <Icon sx={{ color: "lightgray" }} />;
-  props.sx = {
-    ...props.sx,
-    display: "flex",
-    alignItems: "center",
-  };
+  props.sx = { display: "flex", alignItems: "center", ...props.sx };
   return (
     <>
       <MenuItem {...props} {...bindTrigger(dialogState)}>
@@ -154,7 +148,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
 
   // TODO: refactor
   const apiIsEnabled = useMemo(
-    () => (provider: CalendarApiProvider) => {
+    () => (provider: CalendarProvider) => {
       return Boolean(
         user?.accounts?.find(
           (account) => account.provider === provider && account.scopes.includes(SCOPE_MAP[provider])

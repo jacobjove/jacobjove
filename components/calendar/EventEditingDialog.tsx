@@ -16,26 +16,33 @@ import { addMinutes } from "date-fns/esm";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { FC, useEffect, useState } from "react";
 
+export type CalendarEventInputData = Omit<
+  CalendarEvent,
+  "start" | "end" | "id" | "uid" | "createdAt" | "updatedAt"
+> & {
+  start: string | Date;
+  end?: string | Date | null;
+  id?: number | undefined;
+};
+
 interface EventEditingDialogProps extends ReturnType<typeof bindPopover> {
-  event: Omit<CalendarEvent, "start" | "end" | "id" | "uid" | "createdAt"> & {
-    start: Date | string;
-    end?: Date | string | null;
-    id?: number | undefined;
-  };
+  eventData: CalendarEventInputData;
 }
 
 const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDialogProps) => {
-  const { event, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
-  const [title, setTitle] = useState(event.title ?? "");
-  const [start, setStart] = useState<Date | null>(event.start ? new Date(event.start) : new Date());
-  const [end, setEnd] = useState<Date | null>(
-    event.end ? new Date(event.end) : start ? addMinutes(start, 29) : null
+  const { eventData, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const [title, setTitle] = useState(eventData.title ?? "");
+  const [start, setStart] = useState<Date | null>(
+    eventData.start ? new Date(eventData.start) : new Date()
   );
-  const [notes, setNotes] = useState(event.notes ?? "");
-  const [calendarId, setCalendarId] = useState(event.calendarId);
+  const [end, setEnd] = useState<Date | null>(
+    eventData.end ? new Date(eventData.end) : start ? addMinutes(start, 29) : null
+  );
+  const [notes, setNotes] = useState(eventData.notes ?? "");
+  const [calendarId, setCalendarId] = useState(eventData.calendarId);
 
   const [mutate, { loading }] = useMutation(
-    event.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
+    eventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
   );
 
   const handleSave = async () => {
@@ -51,9 +58,9 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
       | {
           data: CalendarEventCreateInput;
         } = {
-      ...(event.id
+      ...(eventData.id
         ? {
-            where: { id: event.id },
+            where: { id: eventData.id },
             data: {
               title: { set: title },
               start: { set: start },
@@ -83,10 +90,10 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     await mutate({
       variables: mutationVars,
       optimisticResponse: {
-        ...(event.id
+        ...(eventData.id
           ? {
               updateCalendarEvent: {
-                id: event.id,
+                id: eventData.id,
                 __typename: "CalendarEvent",
                 title,
                 start,
@@ -113,15 +120,15 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     onClose();
   };
   useEffect(() => {
-    setTitle(event.title);
-    setStart(event.start ? new Date(event.start) : null);
-    setEnd(event.end ? new Date(event.end) : null);
-    setNotes(event.notes ?? "");
-    setCalendarId(event.calendarId); // TODO
-  }, [event]);
+    setTitle(eventData.title);
+    setStart(eventData.start ? new Date(eventData.start) : null);
+    setEnd(eventData.end ? new Date(eventData.end) : null);
+    setNotes(eventData.notes ?? "");
+    setCalendarId(eventData.calendarId); // TODO
+  }, [eventData]);
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
-      <DialogTitle>{event.id ? "Modify" : "Create"} calendar event</DialogTitle>
+      <DialogTitle>{eventData.id ? "Modify" : "Create"} calendar event</DialogTitle>
       <DialogContent>
         <EventFormFields
           title={title}

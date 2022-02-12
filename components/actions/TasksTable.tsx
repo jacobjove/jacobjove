@@ -188,6 +188,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const handleNewTaskSubmit = async () => {
     setAddingNewTask(false);
     if (session?.user) {
+      const now = new Date().toISOString();
       await createTask({
         variables: {
           data: {
@@ -211,7 +212,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             completedAt: null,
             archivedAt: null,
             rank: MAX_TASK_RANK,
-            createdAt: new Date().toISOString(),
+            createdAt: now,
+            updatedAt: now,
             ...newTask,
             __typename: "Task",
             id: -1,

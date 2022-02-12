@@ -1,3 +1,3 @@
 declare global {
-    let prisma: PrismaClient;
+  let prisma: PrismaClient;
 }

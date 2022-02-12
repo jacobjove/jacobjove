@@ -23,6 +23,10 @@ interface EventBoxProps extends ComponentProps<typeof Box> {
   event: CalendarEvent;
 }
 
+export interface DraggedCalendarEvent extends CalendarEvent {
+  type: "event";
+}
+
 const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   const { event, ...rest } = props;
   const [hovered, setHovered] = useState(false);
@@ -34,13 +38,15 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
     variant: "popover",
     popupId: `event-${event.id}-editing-dialog`,
   });
-  const [{ opacity }, dragRef] = useDrag(() => ({
-    type: "event",
-    item: { type: "event", ...event },
-    collect: (monitor) => ({
-      opacity: monitor.isDragging() ? 0.5 : 1,
-    }),
-  }));
+  const [{ opacity }, dragRef] = useDrag<DraggedCalendarEvent, unknown, { opacity: number }>(
+    () => ({
+      type: "event",
+      item: { type: "event", ...event },
+      collect: (monitor) => ({
+        opacity: monitor.isDragging() ? 0.5 : 1,
+      }),
+    })
+  );
   const startTime = parseISO(event.start);
   const endTime = event.end ? parseISO(event.end) : null;
   if (!endTime) {
@@ -118,7 +124,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         event={event}
         editingDialogState={editingDialogState}
       />
-      <EventEditingDialog event={event} {...bindPopover(editingDialogState)} />
+      <EventEditingDialog eventData={event} {...bindPopover(editingDialogState)} />
     </>
   );
 };

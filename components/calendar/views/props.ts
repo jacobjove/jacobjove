@@ -14,7 +14,7 @@ export interface CalendarProps {
   includeDateSelector: boolean;
 }
 
-interface EventFormData {
+export interface EventFormData {
   title: string;
   start: Date;
   end: Date | null;

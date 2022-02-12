@@ -59,8 +59,6 @@ const UPDATE_CALENDAR = gql`
   ${calendarFragment}
 `;
 
-type CalendarProvider = "google" | "apple";
-
 interface CalendarProviderProps {
   name: string;
   Icon: typeof GoogleIcon | typeof AppleIcon;
@@ -91,7 +89,7 @@ const CALENDAR_PROVIDERS: Record<CalendarProvider, CalendarProviderProps> = {
 };
 
 type CalendarApiProviderDialogProps = ReturnType<typeof bindPopover> & {
-  provider: "google" | "apple";
+  provider: CalendarProvider;
 };
 
 const CalendarSelectionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {

@@ -95,7 +95,6 @@ const DayViewer: FC<ViewerProps> = ({
     variant: "popover",
     popupId: `event-editing-dialog`,
   });
-
   const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
 
   const dayStart = zeroToHour(date, START_HOUR);
@@ -273,7 +272,7 @@ const DayViewer: FC<ViewerProps> = ({
               )}
               <EventEditingDialog
                 {...bindPopover(eventEditingDialogState)}
-                event={initialEventFormData}
+                eventData={initialEventFormData}
               />
             </div>
           </Box>

@@ -1,3 +1,5 @@
+import { DraggedTask } from "@/components/actions/TaskRow";
+import { DraggedCalendarEvent } from "@/components/calendar/EventBox";
 import { calendarEventFragment } from "@/graphql/fragments";
 import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
@@ -16,6 +18,8 @@ interface EventSlotProps {
   onClick?: MouseEventHandler<HTMLDivElement>;
   past?: boolean;
 }
+
+type ItemDroppableOnEventSlot = DraggedCalendarEvent | DraggedTask;
 
 const Root = styled("div")(({ theme }) => ({
   display: "flex",
@@ -72,27 +76,20 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
     () => ({
       accept: ["event", "task"],
       canDrop: () => !loading,
-      drop: (
-        item: Partial<CalendarEvent> & {
-          durationInMinutes?: number;
-          type: "event" | "task";
-        } & Pick<CalendarEvent, "title">
-      ) => {
+      drop: (item: ItemDroppableOnEventSlot) => {
         if (!session) return;
-        const { type, durationInMinutes, ...itemData } = item;
-        if (type === "event" && itemData.start && itemData.end) {
-          const oldStart = parseISO(itemData.start);
-          const oldEnd = parseISO(itemData.end);
+        if (item.type === "event") {
+          const { type: _, ...draggedEvent } = item;
+          if (!draggedEvent.start || !draggedEvent.end) return;
+          const oldStart = parseISO(draggedEvent.start);
+          const oldEnd = parseISO(draggedEvent.end);
           const newStart = date.toISOString();
-          const newEnd = addMinutes(
-            date,
-            durationInMinutes ?? differenceInMinutes(oldEnd, oldStart)
-          ).toISOString();
-          if (itemData.id) {
+          const newEnd = addMinutes(date, differenceInMinutes(oldEnd, oldStart)).toISOString();
+          if (draggedEvent.id) {
             rescheduleEvent({
               variables: {
                 where: {
-                  id: itemData.id,
+                  id: draggedEvent.id,
                 },
                 data: {
                   start: { set: newStart },
@@ -102,28 +99,29 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
               optimisticResponse: {
                 updateCalendarEvent: {
                   __typename: "CalendarEvent",
-                  ...(itemData as CalendarEvent),
+                  ...draggedEvent,
                 },
               },
             });
           }
-        } else {
+        } else if (item.type === "task") {
           const start = date;
-          const end = addMinutes(date, durationInMinutes ?? DEFAULT_EVENT_LENGTH_IN_MINUTES);
-          let { scheduleId, calendarId, ...calendarEventData } = itemData;
-          calendarId = calendarId ?? defaultCalendarId; // TODO: user.settings.defaultCalendarId
-          scheduleId = scheduleId ?? null;
-          calendarEventData = {
+          const end = addMinutes(date, DEFAULT_EVENT_LENGTH_IN_MINUTES);
+          const { type: _, ...draggedTask } = item;
+          const calendarId = draggedTask.calendarId ?? defaultCalendarId; // TODO: user.settings.defaultCalendarId
+          const scheduleId = draggedTask.scheduleId ?? null;
+          const calendarEventData = {
+            title: draggedTask.title,
             start: start.toISOString(),
             end: end.toISOString(),
             allDay: false,
-            ...calendarEventData, // This overrides the default values specified above.
           };
           const calendarEventDataWithConnections = {
             ...calendarEventData,
             calendar: { connect: { id: calendarId } },
             schedule: scheduleId ? { connect: { id: scheduleId } } : undefined,
           };
+          const now = new Date().toISOString();
           addEvent({
             variables: {
               data: calendarEventDataWithConnections,
@@ -135,13 +133,11 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
                 uid: "tmp-id",
                 calendarId,
                 scheduleId,
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: now,
+                updatedAt: now,
                 archivedAt: null,
-                ...(calendarEventData as Omit<
-                  CalendarEvent,
-                  "__typename" | "id" | "uid" | "calendarId" | "createdAt"
-                >),
+                ...calendarEventData,
+                allDay: calendarEventData.allDay ?? false,
               },
             },
           });

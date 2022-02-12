@@ -2,7 +2,6 @@ import ActionDialog from "@/components/actions/ActionDialog";
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
 import DateContext from "@/components/contexts/DateContext";
-import UserContext from "@/components/contexts/UserContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
 import { printError } from "@/utils/apollo/error-handling";
@@ -46,14 +45,17 @@ interface TaskRowContentProps {
   onEditing: (isEditing: boolean) => void;
 }
 
-type DraggedTask = Pick<Task, "id" | "completedAt"> & { index: number };
+export type DraggedTask = { type: "task" } & Pick<Task, "id" | "title" | "completedAt"> & {
+    index: number;
+    calendarId?: number;
+    scheduleId?: number | null;
+  };
 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const { task, collapsed: _collapsed, dndRef, isDragging, onLoading, onEditing } = props;
   const completed = !!task.completedAt;
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
-  const user = useContext(UserContext);
   const today = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [editing, setEditing] = useState(false);
@@ -411,15 +413,17 @@ const TaskRow = (props: TaskRowProps) => {
   const loadingRef = useRef(false);
   const editingRef = useRef(false);
 
-  const [{ isDragging }, dragRef] = useDrag(
+  const [{ isDragging }, dragRef] = useDrag<DraggedTask, unknown, { isDragging: boolean }>(
     () => ({
       type: "task",
       item: {
         type: "task",
         id: task.id,
+        title: task.title,
         completedAt: task.completedAt,
         index,
-      } as DraggedTask,
+        // TODO: add calendarId and scheduleId.
+      },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
