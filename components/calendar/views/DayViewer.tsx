@@ -114,7 +114,7 @@ const DayViewer: FC<ViewerProps> = ({
       return (
         isSameDay(parseISO(event.start), selectedDate) &&
         !event.archivedAt &&
-        !event.cancelled &&
+        !event.canceled &&
         event.end
       );
     })

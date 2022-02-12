@@ -28,6 +28,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import isEqual from "lodash/isEqual";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { signIn } from "next-auth/react";
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -127,7 +128,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
 
   const loading = loadingUpdateAccount || loadingUpdateCalendar || loadingAddCalendars;
 
-  // TODO: should any of this be memoized?
+  // TODO: should any of this be memoized or put into a useEffect?
   const { name, Icon, scope, defaultScopes, disabled } = CALENDAR_PROVIDERS[provider];
   const account = user?.accounts.find((account) => account.provider === provider) || null;
   const calendarIntegrationIsEnabled = account?.scopes.includes(scope);
@@ -137,7 +138,18 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   // TODO: Show a loading spinner and/or enable the "Apply changes" button
   const [enabledBefore, setEnabledBefore] = useState<number[]>([]);
   const [enabledAfter, setEnabledAfter] = useState<number[]>([]);
+
+  // TODO: This seems to not work well for updating the UI while applying changes,
+  // perhaps because by the time the components are ready to re-render, we're done
+  // applying changes? See if there's a better way to update the UI while applying changes.
   const [applyingChanges, setApplyingChanges] = useState(false);
+
+  useEffect(() => {
+    if (enabledCalendars?.length) {
+      const enabledCalendarIds = enabledCalendars.map((calendar) => calendar.id);
+      if (!isEqual(enabledCalendarIds, enabledBefore)) setEnabledBefore(enabledCalendarIds);
+    }
+  }, [enabledCalendars, enabledBefore]);
 
   // TODO: is this an inappropriate use of useMemo?
   const changesHaveBeenMade = useMemo(() => {
@@ -147,7 +159,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     );
   }, [enabledAfter, enabledBefore]);
 
-  const applyChanges = useCallback(async () => {
+  const applyChanges = useCallback(() => {
     setApplyingChanges(true);
     const calendarIdsToEnable = enabledAfter.filter(
       (calendarId) => !enabledBefore.includes(calendarId)
@@ -163,9 +175,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
           data: { enabled: { set: true } },
         },
       })
-        .then(() => {
-          return axios.get(`/api/calendars/${provider}/calendars/${calendarId}/sync`);
-        })
+        .then(() => axios.get(`/api/calendars/${calendarId}/sync`))
         .catch(alert);
     });
     // Disable calendars.
@@ -178,12 +188,16 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         },
       }).catch(alert);
     });
-    // Wait for all changes to be applied.
-    await Promise.all([...enablementPromises, ...disablementPromises]);
-    // Update state.
-    setEnabledBefore(enabledAfter);
-    setApplyingChanges(false);
-  }, [provider, enabledBefore, enabledAfter, updateCalendar]);
+    // Wait for changes to be applied, then update state.
+    Promise.all([...enablementPromises, ...disablementPromises])
+      .then(() => {
+        setEnabledBefore(enabledAfter);
+      })
+      .catch(alert)
+      .finally(() => {
+        setApplyingChanges(false);
+      });
+  }, [enabledBefore, enabledAfter, updateCalendar]);
 
   const refreshCalendarList = useCallback(async () => {
     if (!user) return;

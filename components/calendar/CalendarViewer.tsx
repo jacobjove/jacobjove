@@ -17,6 +17,7 @@ import Check from "@mui/icons-material/Check";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import GoogleIcon from "@mui/icons-material/Google";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import WarningIcon from "@mui/icons-material/Warning";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { Box } from "@mui/material";
 import Divider from "@mui/material/Divider";
@@ -108,9 +109,7 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({
   return (
     <>
       <MenuItem {...props} {...bindTrigger(dialogState)}>
-        <ListItemIcon sx={{ visibility: enabled ? "visible" : "hidden" }}>
-          <Check />
-        </ListItemIcon>
+        <ListItemIcon>{enabled ? <Check /> : <WarningIcon />}</ListItemIcon>
         {iconElement}
         {children}
       </MenuItem>
@@ -128,17 +127,24 @@ type CalendarViewerProps = Omit<CalendarProps, "data"> & {
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
   const { data, defaultView, ...rest } = props;
-  // Exclude calendars that are not enabled or have been archived.
-  const enabledCalendars = data.calendars?.filter(
-    (calendar) => calendar.enabled && !calendar.archivedAt
-  );
-  const defaultCalendar = enabledCalendars[0]; // TODO
-
   const user = useContext(UserContext);
   const date = useContext(DateContext);
+  // Exclude calendars that are not enabled or have been archived.
+  const enabledCalendars = data.calendars?.filter(
+    (calendar) =>
+      calendar.enabled &&
+      !calendar.archivedAt &&
+      user?.accounts?.find(
+        (account) =>
+          account.provider === calendar.provider &&
+          account.scopes.includes(SCOPE_MAP[calendar.provider])
+      )
+  );
+  const defaultCalendar = enabledCalendars[0]; // TODO
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
+
   // TODO: refactor
   const apiIsEnabled = useMemo(
     () => (provider: CalendarApiProvider) => {
@@ -150,6 +156,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     },
     [user, enabledCalendars]
   );
+
   // const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
   //   calendars.map((calendar) => calendar.id)
   // );
@@ -244,14 +251,8 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
             </IconButton>
             <Menu
               {...bindMenu(menuState)}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{ vertical: "top", horizontal: "center" }}
               keepMounted
             >
               <Typography variant="h4" sx={{ ml: 1, color: "gray" }}>
@@ -266,17 +267,21 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                 </CalendarApiMenuItem>
               </MenuList>
               <Divider />
-              <Typography variant="h4" sx={{ ml: 1, mt: 1, color: "gray" }}>
-                {"Calendars"}
-              </Typography>
-              <MenuList dense>
-                {enabledCalendars?.map((calendar) => (
-                  <CalendarMenuItem key={calendar.id} calendar={calendar}>
-                    <Typography ml={"1rem"}>{calendar.name}</Typography>
-                  </CalendarMenuItem>
-                ))}
-              </MenuList>
-              <Divider />
+              {!!enabledCalendars?.length && (
+                <>
+                  <Typography variant="h4" sx={{ ml: 1, mt: 1, color: "gray" }}>
+                    {"Calendars"}
+                  </Typography>
+                  <MenuList dense>
+                    {enabledCalendars?.map((calendar) => (
+                      <CalendarMenuItem key={calendar.id} calendar={calendar}>
+                        <Typography ml={"1rem"}>{calendar.name}</Typography>
+                      </CalendarMenuItem>
+                    ))}
+                  </MenuList>
+                  <Divider />
+                </>
+              )}
               <MenuItem
                 onClick={() => alert("Not yet implemeneted")}
                 sx={{ textAlign: "center", justifyContent: "center" }}

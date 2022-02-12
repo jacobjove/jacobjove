@@ -118,6 +118,7 @@ const SyncCalendars: NextApiHandler = async (req, res) => {
                 eventType: 'default'
               } */
               const start = item.start as NonNullable<typeof item.start>;
+              // Note: Google uses the British English spelling of "canceled."
               const canceled = item.status === "cancelled";
               const eventData = {
                 sourceId: item.id,

@@ -5672,7 +5672,7 @@ type CalendarEvent {
   calendar: Calendar!
   calendarId: Int!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime!
   end: DateTime
   habit: Habit
@@ -5716,7 +5716,7 @@ type CalendarEventCountAggregate {
   archivedAt: Int!
   calendarId: Int!
   calendarSourceId: Int!
-  cancelled: Int!
+  canceled: Int!
   createdAt: Int!
   end: Int!
   habitId: Int!
@@ -5737,7 +5737,7 @@ input CalendarEventCountOrderByAggregateInput {
   archivedAt: SortOrder
   calendarId: SortOrder
   calendarSourceId: SortOrder
-  cancelled: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habitId: SortOrder
@@ -5757,7 +5757,7 @@ input CalendarEventCreateInput {
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
@@ -5777,7 +5777,7 @@ input CalendarEventCreateManyCalendarInput {
   allDay: Boolean
   archivedAt: DateTime
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
@@ -5803,7 +5803,7 @@ input CalendarEventCreateManyHabitInput {
   archivedAt: DateTime
   calendarId: Int!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   id: Int
@@ -5828,7 +5828,7 @@ input CalendarEventCreateManyInput {
   archivedAt: DateTime
   calendarId: Int!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
@@ -5849,7 +5849,7 @@ input CalendarEventCreateManyScheduleInput {
   archivedAt: DateTime
   calendarId: Int!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
@@ -5873,7 +5873,7 @@ input CalendarEventCreateManySourceAccountInput {
   archivedAt: DateTime
   calendarId: Int!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
@@ -5899,7 +5899,7 @@ input CalendarEventCreateManyTaskInput {
   archivedAt: DateTime
   calendarId: Int!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
@@ -5982,7 +5982,7 @@ input CalendarEventCreateWithoutCalendarInput {
   allDay: Boolean
   archivedAt: DateTime
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
@@ -6002,7 +6002,7 @@ input CalendarEventCreateWithoutHabitInput {
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   notes: String
@@ -6021,7 +6021,7 @@ input CalendarEventCreateWithoutScheduleInput {
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
@@ -6040,7 +6040,7 @@ input CalendarEventCreateWithoutSourceAccountInput {
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
@@ -6059,7 +6059,7 @@ input CalendarEventCreateWithoutTaskInput {
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
@@ -6084,7 +6084,7 @@ type CalendarEventGroupBy {
   archivedAt: DateTime
   calendarId: Int!
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime!
   end: DateTime
   habitId: Int
@@ -6116,7 +6116,7 @@ type CalendarEventMaxAggregate {
   archivedAt: DateTime
   calendarId: Int
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
@@ -6137,7 +6137,7 @@ input CalendarEventMaxOrderByAggregateInput {
   archivedAt: SortOrder
   calendarId: SortOrder
   calendarSourceId: SortOrder
-  cancelled: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habitId: SortOrder
@@ -6158,7 +6158,7 @@ type CalendarEventMinAggregate {
   archivedAt: DateTime
   calendarId: Int
   calendarSourceId: String
-  cancelled: Boolean
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
@@ -6179,7 +6179,7 @@ input CalendarEventMinOrderByAggregateInput {
   archivedAt: SortOrder
   calendarId: SortOrder
   calendarSourceId: SortOrder
-  cancelled: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habitId: SortOrder
@@ -6209,7 +6209,7 @@ input CalendarEventOrderByWithAggregationInput {
   archivedAt: SortOrder
   calendarId: SortOrder
   calendarSourceId: SortOrder
-  cancelled: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habitId: SortOrder
@@ -6231,7 +6231,7 @@ input CalendarEventOrderByWithRelationInput {
   calendar: CalendarOrderByWithRelationInput
   calendarId: SortOrder
   calendarSourceId: SortOrder
-  cancelled: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habit: HabitOrderByWithRelationInput
@@ -6256,7 +6256,7 @@ enum CalendarEventScalarFieldEnum {
   archivedAt
   calendarId
   calendarSourceId
-  cancelled
+  canceled
   createdAt
   end
   habitId
@@ -6280,7 +6280,7 @@ input CalendarEventScalarWhereInput {
   archivedAt: DateTimeNullableFilter
   calendarId: IntFilter
   calendarSourceId: StringNullableFilter
-  cancelled: BoolNullableFilter
+  canceled: BoolNullableFilter
   createdAt: DateTimeFilter
   end: DateTimeNullableFilter
   habitId: IntNullableFilter
@@ -6304,7 +6304,7 @@ input CalendarEventScalarWhereWithAggregatesInput {
   archivedAt: DateTimeNullableWithAggregatesFilter
   calendarId: IntWithAggregatesFilter
   calendarSourceId: StringNullableWithAggregatesFilter
-  cancelled: BoolNullableWithAggregatesFilter
+  canceled: BoolNullableWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   end: DateTimeNullableWithAggregatesFilter
   habitId: IntNullableWithAggregatesFilter
@@ -6347,7 +6347,7 @@ input CalendarEventUpdateInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   calendarSourceId: NullableStringFieldUpdateOperationsInput
-  cancelled: NullableBoolFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
@@ -6366,7 +6366,7 @@ input CalendarEventUpdateManyMutationInput {
   allDay: BoolFieldUpdateOperationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarSourceId: NullableStringFieldUpdateOperationsInput
-  cancelled: NullableBoolFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
@@ -6501,7 +6501,7 @@ input CalendarEventUpdateWithoutCalendarInput {
   allDay: BoolFieldUpdateOperationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendarSourceId: NullableStringFieldUpdateOperationsInput
-  cancelled: NullableBoolFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
@@ -6521,7 +6521,7 @@ input CalendarEventUpdateWithoutHabitInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   calendarSourceId: NullableStringFieldUpdateOperationsInput
-  cancelled: NullableBoolFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
@@ -6540,7 +6540,7 @@ input CalendarEventUpdateWithoutScheduleInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   calendarSourceId: NullableStringFieldUpdateOperationsInput
-  cancelled: NullableBoolFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
@@ -6559,7 +6559,7 @@ input CalendarEventUpdateWithoutSourceAccountInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   calendarSourceId: NullableStringFieldUpdateOperationsInput
-  cancelled: NullableBoolFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
@@ -6578,7 +6578,7 @@ input CalendarEventUpdateWithoutTaskInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
   calendarSourceId: NullableStringFieldUpdateOperationsInput
-  cancelled: NullableBoolFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
@@ -6632,7 +6632,7 @@ input CalendarEventWhereInput {
   calendar: CalendarRelationFilter
   calendarId: IntFilter
   calendarSourceId: StringNullableFilter
-  cancelled: BoolNullableFilter
+  canceled: BoolNullableFilter
   createdAt: DateTimeFilter
   end: DateTimeNullableFilter
   habit: HabitRelationFilter
