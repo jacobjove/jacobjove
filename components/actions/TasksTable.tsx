@@ -36,6 +36,7 @@ const UPDATE_MANY_TASK_RANK = gql`
 
 const PREFERRED_FONT_SIZE = "0.8rem";
 const MAX_TASK_RANK = 2 ** 31 - 1;
+const MIN_TASK_RANK = -MAX_TASK_RANK - 1;
 
 export interface TasksTableProps {
   contained?: boolean;
@@ -112,18 +113,23 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 
   // Enable re-ordering the tasks.
   const moveTaskRow = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
-      if (dragIndex === hoverIndex || loadingUpdateTask) return;
-      // const draggedTaskId = orderedTasks[dragIndex];
-      const draggedTask = incompleteTasks[dragIndex];
+    (draggedTaskId: number, hoveredTaskId: number) => {
+      if (draggedTaskId === hoveredTaskId || loadingUpdateTask) return false;
+
+      const draggedTaskIndex = incompleteTasks.findIndex(({ id }) => id === draggedTaskId);
+      const hoveredTaskIndex = incompleteTasks.findIndex(({ id }) => id === hoveredTaskId);
+      const draggedTask = incompleteTasks[draggedTaskIndex];
+      const hoveredTask = incompleteTasks[hoveredTaskIndex];
+
       if (!draggedTask) {
         console.error("Unable to identify dragged task ID; the dragIndex is invalid.");
-        return;
+        return false;
       }
+
       apolloClient.cache.writeFragment({
         id: `${draggedTask.__typename}:${draggedTask.id}`,
         data: {
-          rank: incompleteTasks[hoverIndex].rank + (dragIndex < hoverIndex ? 1 : -1),
+          rank: hoveredTask.rank + (draggedTaskIndex < hoveredTaskIndex ? 1 : -1),
         },
         fragment: gql`
           fragment UpdateTaskRank on Task {
@@ -132,6 +138,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         `,
         fragmentName: "UpdateTaskRank",
       });
+      return true;
     },
     [incompleteTasks, loadingUpdateTask, apolloClient.cache]
   );
@@ -139,7 +146,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const updateTaskRank = useCallback(
     (dropIndex: number) => {
       const task = incompleteTasks[dropIndex];
-      const lowerRank = dropIndex == 0 ? 0 : incompleteTasks[dropIndex - 1].rank;
+      const lowerRank = dropIndex == 0 ? MIN_TASK_RANK : incompleteTasks[dropIndex - 1].rank;
       const upperRank =
         dropIndex == incompleteTasks.length - 1
           ? MAX_TASK_RANK
@@ -147,11 +154,15 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 
       const newRank = lowerRank + Math.floor((upperRank - lowerRank) / 2);
 
-      if ([lowerRank, upperRank].includes(newRank)) {
-        const increment = Math.floor(MAX_TASK_RANK / (incompleteTasks.length + 1));
+      // check bounds and their neighbors to prevent rank conflicts
+      // while actively dragging a task
+      if ([lowerRank, upperRank, lowerRank + 1, upperRank - 1].includes(newRank)) {
+        const increment = Math.floor(
+          (MAX_TASK_RANK - MIN_TASK_RANK) / (incompleteTasks.length + 1)
+        );
         const newRanks = incompleteTasks.map(({ id }, index) => ({
           id,
-          rank: increment * (index + 1),
+          rank: MIN_TASK_RANK + increment * (index + 1),
         }));
         updateManyTaskRank({
           variables: {
@@ -187,13 +198,17 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 
   const handleNewTaskSubmit = async () => {
     setAddingNewTask(false);
+
+    const greatestRank = incompleteTasks[incompleteTasks.length - 1]?.rank ?? MIN_TASK_RANK;
+    const defaultRank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
+
     if (session?.user) {
       const now = new Date().toISOString();
       await createTask({
         variables: {
           data: {
             ...newTask,
-            rank: MAX_TASK_RANK,
+            rank: defaultRank,
             user: {
               connect: {
                 id: session.user.id,
