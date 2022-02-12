@@ -30,7 +30,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { addMinutes } from "date-fns";
-import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import Image from "next/image";
 import { FC, useContext, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
@@ -114,7 +114,7 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({
         {iconElement}
         {children}
       </MenuItem>
-      <CalendarApiProviderDialog provider={provider} {...bindMenu(dialogState)} />
+      <CalendarApiProviderDialog provider={provider} {...bindPopover(dialogState)} />
     </>
   );
 };

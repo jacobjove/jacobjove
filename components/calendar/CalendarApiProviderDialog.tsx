@@ -390,7 +390,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
             {`Disconnect ${name} calendar`}
           </Button>
         )}
-        <Button disabled={applyingChanges || !changesHaveBeenMade} onClick={() => applyChanges()}>
+        <Button disabled={applyingChanges || !changesHaveBeenMade} onClick={applyChanges}>
           {applyingChanges ? "Applying changes..." : "Apply changes"}
         </Button>
         <Button

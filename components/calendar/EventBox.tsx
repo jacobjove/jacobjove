@@ -49,10 +49,8 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   );
   const startTime = parseISO(event.start);
   const endTime = event.end ? parseISO(event.end) : null;
-  if (!endTime) {
-    console.error("EventBox: endTime is null");
-    return null;
-  }
+  // TODO
+  if (!endTime) return null;
   const detailDialogTriggerProps = bindTrigger(detailDialogState);
   return (
     <>
@@ -105,13 +103,14 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
           <Typography
             component="div"
             fontWeight={"600"}
-            fontSize={"0.65rem"}
+            fontSize={"0.75rem"}
             marginBottom="0.15rem"
             lineHeight={"0.7rem"}
+            mx="0.1rem"
           >
             {event.title}
           </Typography>
-          <Typography component="div" fontSize={"0.5rem"} lineHeight={"0.6rem"}>
+          <Typography component="div" fontSize={"0.6rem"} lineHeight={"0.6rem"} mx="0.1rem">
             {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}
           </Typography>
         </div>

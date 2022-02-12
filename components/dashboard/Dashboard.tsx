@@ -38,7 +38,9 @@ export const fragment = gql`
     calendars(where: { userId: { equals: $userId } }) {
       ...CalendarFragment
     }
-    calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
+    calendarEvents(
+      where: { calendar: { is: { userId: { equals: $userId }, enabled: { equals: true } } } }
+    ) {
       ...CalendarEventFragment
     }
     habits(where: { userId: { equals: $userId } }) {
