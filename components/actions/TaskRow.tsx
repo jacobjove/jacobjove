@@ -249,7 +249,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                   {...bindTriggerProps}
                 >
                   <div>{task.title}</div>
-                  {/* TODO: clean up */}
+                  {/* TODO: clean up after task ranking is fully implemented and stable. */}
                   {session?.user.isAdmin && (
                     <small style={{ color: "gray", margin: 2 }}>&nbsp;{task.rank}</small>
                   )}

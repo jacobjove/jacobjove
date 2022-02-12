@@ -1,4 +1,5 @@
 import CalendarApiProviderDialog from "@/components/calendar/CalendarApiProviderDialog";
+import CalendarLegend from "@/components/calendar/CalendarLegend";
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
@@ -32,7 +33,7 @@ import Typography from "@mui/material/Typography";
 import { addMinutes } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import Image from "next/image";
-import { FC, useContext, useMemo, useState } from "react";
+import { FC, useContext, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
 const ICON_MAP = {
@@ -127,11 +128,11 @@ type CalendarViewerProps = Omit<CalendarProps, "data"> & {
 };
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
-  const { data, defaultView, ...rest } = props;
+  const { loading, data: _data, defaultView, ...rest } = props;
   const user = useContext(UserContext);
   const date = useContext(DateContext);
   // Exclude calendars that are not enabled or have been archived.
-  const enabledCalendars = data.calendars?.filter(
+  const enabledCalendars = _data.calendars?.filter(
     (calendar) =>
       calendar.enabled &&
       !calendar.archivedAt &&
@@ -142,6 +143,22 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
       )
   );
   const defaultCalendar = enabledCalendars[0]; // TODO
+
+  const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>();
+  useEffect(() => {
+    if (!loading && !selectedCalendarIds && enabledCalendars?.length) {
+      setSelectedCalendarIds(enabledCalendars.map((calendar) => calendar.id));
+    }
+  }, [loading, enabledCalendars, selectedCalendarIds]);
+
+  // TODO: refactor how data is passed between calendar components?
+  const data = {
+    ..._data,
+    calendarEvents: _data.calendarEvents?.filter((event) =>
+      selectedCalendarIds?.includes(event.calendarId)
+    ),
+  };
+
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
@@ -298,10 +315,20 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
           </Box>
         </Box>
       )}
-      <Box flex={"1 1 auto"} minHeight={0}>
-        <DayViewer data={data} {...commonViewProps} hidden={view != "day"} />
-        <WeekViewer data={data} {...commonViewProps} hidden={view != "week"} />
-        <MonthViewer data={data} {...commonViewProps} hidden={view != "month"} />
+      <Box flex={"1 1 auto"} minHeight={0} position="relative">
+        <DayViewer loading={loading} data={data} {...commonViewProps} hidden={view != "day"} />
+        <WeekViewer loading={loading} data={data} {...commonViewProps} hidden={view != "week"} />
+        <MonthViewer loading={loading} data={data} {...commonViewProps} hidden={view != "month"} />
+        {/* TODO: After prettifying the legend, change `>= 1` to `> 1` so that the legend is only displayed if there are multiple calendars */}
+        {(enabledCalendars?.length || 0) >= 1 && (
+          <Box position="absolute" bottom={1} right={1}>
+            <CalendarLegend
+              calendars={enabledCalendars}
+              selectedCalendarIds={selectedCalendarIds}
+              setSelectedCalendarIds={setSelectedCalendarIds}
+            />
+          </Box>
+        )}
       </Box>
     </Box>
   );
