@@ -31,7 +31,7 @@ import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
 interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
   index: number;
-  move?: (draggedTaskId: number, hoveredTaskId: number) => boolean;
+  move?: (draggedTask: DraggedTask, hoveredTask: Task) => Partial<DraggedTask> | null;
   onDrop?: (dropIndex: number) => void;
 }
 
@@ -44,7 +44,9 @@ interface TaskRowContentProps {
   onEditing: (isEditing: boolean) => void;
 }
 
-type DraggedTask = Pick<Task, "id" | "completedAt"> & { index: number };
+export type DraggedTask = Pick<Task, "id" | "rank" | "completedAt" | "__typename"> & {
+  index: number;
+};
 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const { task, collapsed: _collapsed, dndRef, isDragging, onLoading, onEditing } = props;
@@ -426,9 +428,7 @@ const TaskRow = (props: TaskRowProps) => {
     () => ({
       type: "task",
       item: {
-        type: "task",
-        id: task.id,
-        completedAt: task.completedAt,
+        ...task,
         index,
       } as DraggedTask,
       collect: (monitor) => ({
@@ -436,7 +436,7 @@ const TaskRow = (props: TaskRowProps) => {
       }),
       canDrag: () => !(editingRef.current || loadingRef.current || task.parentId != null),
     }),
-    [index, editingRef, loadingRef]
+    [task, index]
   );
 
   const [, dropRef] = useDrop(
@@ -487,17 +487,20 @@ const TaskRow = (props: TaskRowProps) => {
           return;
         }
 
-        // Time to actually perform the action
-        if (move(draggedTask.id, task.id)) {
+        // Time to actually perform the action.
+        const updatedTaskFields = move(draggedTask, task);
+
+        if (updatedTaskFields != null) {
           // Note: we're mutating the monitor item here!
           // Generally it's better to avoid mutations,
           // but it's good here for the sake of performance
           // to avoid expensive index searches.
-          draggedTask.index = hoverIndex;
+          Object.assign(draggedTask, updatedTaskFields);
+          draggedTask.index = index;
         }
       },
     }),
-    [move, loadingRef, index]
+    [move, task, index]
   );
 
   dragRef(dropRef(dndRef));

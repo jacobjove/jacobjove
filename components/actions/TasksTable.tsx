@@ -1,5 +1,5 @@
 import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
-import TaskRow from "@/components/actions/TaskRow";
+import TaskRow, { DraggedTask } from "@/components/actions/TaskRow";
 import { taskFragment } from "@/graphql/fragments";
 import { CREATE_TASK, UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
@@ -113,23 +113,14 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 
   // Enable re-ordering the tasks.
   const moveTaskRow = useCallback(
-    (draggedTaskId: number, hoveredTaskId: number) => {
-      if (draggedTaskId === hoveredTaskId || loadingUpdateTask) return false;
+    (draggedTask: DraggedTask, hoveredTask: Task) => {
+      if (draggedTask.id === hoveredTask.id || loadingUpdateTask) return null;
 
-      const draggedTaskIndex = incompleteTasks.findIndex(({ id }) => id === draggedTaskId);
-      const hoveredTaskIndex = incompleteTasks.findIndex(({ id }) => id === hoveredTaskId);
-      const draggedTask = incompleteTasks[draggedTaskIndex];
-      const hoveredTask = incompleteTasks[hoveredTaskIndex];
-
-      if (!draggedTask) {
-        console.error("Unable to identify dragged task ID; the dragIndex is invalid.");
-        return false;
-      }
-
+      const temporaryRank = hoveredTask.rank + (draggedTask.rank < hoveredTask.rank ? 1 : -1);
       apolloClient.cache.writeFragment({
         id: `${draggedTask.__typename}:${draggedTask.id}`,
         data: {
-          rank: hoveredTask.rank + (draggedTaskIndex < hoveredTaskIndex ? 1 : -1),
+          rank: temporaryRank,
         },
         fragment: gql`
           fragment UpdateTaskRank on Task {
@@ -138,7 +129,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         `,
         fragmentName: "UpdateTaskRank",
       });
-      return true;
+      // returning modified fields allows an actively dragging task to update
+      return { rank: temporaryRank };
     },
     [incompleteTasks, loadingUpdateTask, apolloClient.cache]
   );
