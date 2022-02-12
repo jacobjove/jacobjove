@@ -10,7 +10,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
+import Checkbox, { CheckboxProps } from "@mui/material/Checkbox";
 import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -30,7 +30,7 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { signIn } from "next-auth/react";
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 const CREATE_CALENDARS = gql`
   mutation createCalendars($data: [CalendarCreateManyInput!]!) {
@@ -93,6 +93,21 @@ type CalendarApiProviderDialogProps = ReturnType<typeof bindPopover> & {
   provider: "google" | "apple";
 };
 
+const CalendarSelectionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
+  const { checked: initiallyChecked, onChange, ...rest } = props;
+  const [checked, setChecked] = useState(initiallyChecked);
+  return (
+    <Checkbox
+      checked={checked}
+      onChange={(event, checked) => {
+        setChecked(checked);
+        onChange?.(event, checked);
+      }}
+      {...rest}
+    />
+  );
+};
+
 export default function CalendarApiProviderDialog(props: CalendarApiProviderDialogProps) {
   const { provider, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
   const user = useContext(UserContext);
@@ -112,34 +127,36 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
 
   const loading = loadingUpdateAccount || loadingUpdateCalendar || loadingAddCalendars;
 
-  const { name, Icon, scope, defaultScopes, disabled } = useMemo(() => {
-    return CALENDAR_PROVIDERS[provider];
-  }, [provider]);
-
-  const account = useMemo(() => {
-    if (!user) return null;
-    return user.accounts.find((account) => account.provider === provider) || null;
-  }, [user, provider]);
-
-  // TODO: Does this cause `calendars` below to be recomputed on every render?
+  // TODO: should any of this be memoized?
+  const { name, Icon, scope, defaultScopes, disabled } = CALENDAR_PROVIDERS[provider];
+  const account = user?.accounts.find((account) => account.provider === provider) || null;
   const calendarIntegrationIsEnabled = account?.scopes.includes(scope);
+  const calendars = user?.calendars.filter((calendar) => calendar.provider === provider);
+  const enabledCalendars = calendars?.filter((calendar) => !!calendar.enabled);
 
-  const calendars = useMemo(() => {
-    if (!user || !calendarIntegrationIsEnabled) return [];
-    return user.calendars.filter((calendar) => calendar.provider === provider);
-  }, [user, provider, calendarIntegrationIsEnabled]);
+  // TODO: Show a loading spinner and/or enable the "Apply changes" button
+  const [enabledBefore, setEnabledBefore] = useState<number[]>([]);
+  const [enabledAfter, setEnabledAfter] = useState<number[]>([]);
+  const [applyingChanges, setApplyingChanges] = useState(false);
 
-  const enabledCalendars = calendars.filter((calendar) => !!calendar.enabled);
-
-  // TODO: use state, so we can show a loading spinner and/or enable the "Apply changes" button
-  const changes = useRef({
-    enabled: [],
-    disabled: [],
-  });
+  // TODO: is this an inappropriate use of useMemo?
+  const changesHaveBeenMade = useMemo(() => {
+    return !(
+      enabledAfter.every((calendarId) => enabledBefore.includes(calendarId)) &&
+      enabledBefore.every((calendarId) => enabledAfter.includes(calendarId))
+    );
+  }, [enabledAfter, enabledBefore]);
 
   const applyChanges = useCallback(async () => {
+    setApplyingChanges(true);
+    const calendarIdsToEnable = enabledAfter.filter(
+      (calendarId) => !enabledBefore.includes(calendarId)
+    );
+    const calendarIdsToDisable = enabledBefore.filter(
+      (calendarId) => !enabledAfter.includes(calendarId)
+    );
     // Enable calendars.
-    const enablementPromises = changes.current.enabled.map((calendarId) => {
+    const enablementPromises = calendarIdsToEnable.map((calendarId) => {
       updateCalendar({
         variables: {
           calendarId,
@@ -152,7 +169,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         .catch(alert);
     });
     // Disable calendars.
-    const disablementPromises = changes.current.disabled.map((calendarId) => {
+    const disablementPromises = calendarIdsToDisable.map((calendarId) => {
       // TODO: confirm this results in the calendar events being removed
       updateCalendar({
         variables: {
@@ -163,9 +180,10 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     });
     // Wait for all changes to be applied.
     await Promise.all([...enablementPromises, ...disablementPromises]);
-    // Clear the ref for to-be-applied changes.
-    changes.current = { enabled: [], disabled: [] };
-  }, [provider, updateCalendar]);
+    // Update state.
+    setEnabledBefore(enabledAfter);
+    setApplyingChanges(false);
+  }, [provider, enabledBefore, enabledAfter, updateCalendar]);
 
   const refreshCalendarList = useCallback(async () => {
     if (!user) return;
@@ -176,7 +194,9 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         if (response.data?.calendars?.length) {
           // Create calendars that don't already exist.
           const calendarsToAdd: Calendar[] = response.data.calendars
-            .filter((calendar: Calendar) => !calendars.find((_) => _.sourceId == calendar.sourceId))
+            .filter(
+              (calendar: Calendar) => !calendars?.find((_) => _.sourceId == calendar.sourceId)
+            )
             .map((calendar: Calendar) => ({
               ...calendar,
               enabled: false,
@@ -191,10 +211,10 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   }, [user, provider, calendars, addCalendars]);
 
   useEffect(() => {
-    if (dialogProps.open && !loading && !calendars.length) {
+    if (dialogProps.open && !loading && !calendars?.length) {
       (async () => await refreshCalendarList())();
     }
-  }, [dialogProps.open, loading, calendars.length, refreshCalendarList]);
+  }, [dialogProps.open, loading, calendars?.length, refreshCalendarList]);
 
   // TODO: this also needs to remove associated calendars and events.
   // We should show a confirmation dialog first.
@@ -220,9 +240,9 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
       `Select one or more calendars to connect from your ${name} account to your SelfBuilder account.`,
     ],
   ];
-  const nextStep = enabledCalendars.length ? null : account ? 1 : 0;
+  const nextStep = enabledCalendars?.length ? null : account ? 1 : 0;
   console.log("nextStep:", nextStep);
-
+  // TODO: reduce unnecessary re-renders
   return (
     <Dialog fullWidth {...dialogProps} onClose={onClose}>
       <IconButton
@@ -293,7 +313,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                 {refreshing ? <CircularProgress size={18} /> : <RefreshIcon />}
               </IconButton>
             </Box>
-            {calendars.length > 0 ? (
+            {calendars?.length ? (
               <Table>
                 <TableHead>
                   <TableRow>
@@ -306,25 +326,17 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                   {calendars?.map((calendar) => (
                     <TableRow key={calendar.id}>
                       <TableCell>
-                        <Checkbox
+                        <CalendarSelectionCheckbox
                           color="primary"
                           checked={!!calendar.enabled}
                           title={`${calendar.enabled ? "Disconnect" : "Connect"} ${calendar.name}`}
-                          onChange={(event) => {
-                            // TODO: debounce
-                            updateCalendar({
-                              variables: {
-                                calendarId: calendar.id,
-                                data: { enabled: { set: event.target.checked } },
-                              },
-                              optimisticResponse: {
-                                updateCalendar: {
-                                  __typename: "Calendar",
-                                  ...calendar,
-                                  enabled: event.target.checked,
-                                },
-                              },
-                            }).catch(alert);
+                          onChange={(_event, checked) => {
+                            // TODO: debounce?
+                            setEnabledAfter(
+                              checked
+                                ? [...new Set([...enabledAfter, calendar.id])]
+                                : enabledAfter.filter((_) => _ !== calendar.id)
+                            );
                           }}
                         />
                       </TableCell>
@@ -366,8 +378,8 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
             {`Disconnect ${name} calendar`}
           </Button>
         )}
-        <Button disabled onClick={() => applyChanges()}>
-          {"Apply changes"}
+        <Button disabled={applyingChanges || !changesHaveBeenMade} onClick={() => applyChanges()}>
+          {applyingChanges ? "Applying changes..." : "Apply changes"}
         </Button>
         <Button
           onClick={() => {
