@@ -56,7 +56,7 @@ const SyncCalendar: NextApiHandler = async (req, res) => {
 
     const startMin = new Date();
     const startMax = addYears(startMin, 1);
-    return await googleCalendar.events
+    await googleCalendar.events
       .list({
         calendarId: calendar.sourceId,
         // https://developers.google.com/calendar/api/guides/sync

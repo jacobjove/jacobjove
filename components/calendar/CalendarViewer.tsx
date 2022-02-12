@@ -106,10 +106,17 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({
   const dialogState = usePopupState({ variant: "popover", popupId: `${provider}-calendar-dialog` });
   const Icon = ICON_MAP[provider];
   const iconElement = <Icon sx={{ color: "lightgray" }} />;
+  props.sx = {
+    ...props.sx,
+    display: "flex",
+    alignItems: "center",
+  };
   return (
     <>
       <MenuItem {...props} {...bindTrigger(dialogState)}>
-        <ListItemIcon>{enabled ? <Check /> : <WarningIcon />}</ListItemIcon>
+        <ListItemIcon title={enabled ? "Connected" : "Not connected"}>
+          {enabled ? <Check /> : <WarningIcon />}
+        </ListItemIcon>
         {iconElement}
         {children}
       </MenuItem>
@@ -268,7 +275,10 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               </MenuList>
               <Divider />
               {!!enabledCalendars?.length && (
-                <>
+                // Note: Use a div rather than a fragment, in order to MUI warnings
+                // about Menu not allowing a fragment as a child.
+                // https://github.com/mui/material-ui/issues/16181
+                <div>
                   <Typography variant="h4" sx={{ ml: 1, mt: 1, color: "gray" }}>
                     {"Calendars"}
                   </Typography>
@@ -280,7 +290,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                     ))}
                   </MenuList>
                   <Divider />
-                </>
+                </div>
               )}
               <MenuItem
                 onClick={() => alert("Not yet implemeneted")}
