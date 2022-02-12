@@ -159,7 +159,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
-  console.log("app render");
+
   return (
     <SessionProvider session={session}>
       <DeviceContext.Provider value={deviceContextData}>
