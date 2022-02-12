@@ -146,6 +146,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 
       const newRank = lowerRank + Math.floor((upperRank - lowerRank) / 2);
 
+      // check bounds and their neighbors to prevent rank conflicts
+      // while actively dragging a task
       if ([lowerRank, upperRank, lowerRank + 1, upperRank - 1].includes(newRank)) {
         const increment = Math.floor(
           (MAX_TASK_RANK - MIN_TASK_RANK) / (incompleteTasks.length + 1)
