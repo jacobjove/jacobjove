@@ -17,7 +17,9 @@ type UserValue = _UserValue & {
 };
 
 interface ValueTableProps {
-  userValues: UserValue[];
+  data: {
+    userValues: UserValue[];
+  };
 }
 
 const ONBOARDING_STEPS = [
@@ -33,7 +35,9 @@ const ONBOARDING_STEPS = [
 
 // TODO: https://mui.com/components/tables/#sorting-amp-selecting
 const ValueTable: FC<ValueTableProps> = (props: ValueTableProps) => {
-  const { userValues } = props;
+  const {
+    data: { userValues },
+  } = props;
   let content;
   if (!userValues.length) {
     content = <Onboarder steps={ONBOARDING_STEPS} />;

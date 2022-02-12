@@ -144,13 +144,13 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "identities":
           return (
             <DashboardCard title={"Identities"} editing={editing} loading={loading}>
-              <IdentityTableMemoized identifications={identifications} />
+              <IdentityTableMemoized data={{ identifications }} />
             </DashboardCard>
           );
         case "values":
           return (
             <DashboardCard title={"Values"} editing={editing} loading={loading}>
-              <ValuesTableMemoized userValues={userValues} />
+              <ValuesTableMemoized data={{ userValues }} />
             </DashboardCard>
           );
         case "topics":
@@ -296,28 +296,17 @@ function valuesAreEqual<T extends Record<string, any>>(a: T, b: T) {
   return true;
 }
 
-const CalendarViewerMemoized = memo(CalendarViewer, function propsAreEqual(prevProps, nextProps) {
-  const { data: prevData, ...prevOther } = prevProps;
-  const { data: nextData, ...nextOther } = nextProps;
-  return valuesAreEqual(prevData, nextData) && valuesAreEqual(prevOther, nextOther);
-});
+function memoize<P extends { data: Record<string, any> }>(component: FC<P>) {
+  return memo(component, function propsAreEqual(prevProps, nextProps) {
+    const { data: prevData, ...prevOther } = prevProps;
+    const { data: nextData, ...nextOther } = nextProps;
+    return valuesAreEqual(prevData, nextData) && valuesAreEqual(prevOther, nextOther);
+  });
+}
 
-const TasksBoxMemoized = memo(TasksBox, function propsAreEqual(prevProps, nextProps) {
-  const { data: prevData, ...prevOther } = prevProps;
-  const { data: nextData, ...nextOther } = nextProps;
-  return valuesAreEqual(prevData, nextData) && valuesAreEqual(prevOther, nextOther);
-});
-
-const ValuesTableMemoized = memo(ValuesTable, function propsAreEqual(prevProps, nextProps) {
-  const { userValues: prevUserValues, ...prevOther } = prevProps;
-  const { userValues: nextUserValues, ...nextOther } = nextProps;
-  return prevUserValues === nextUserValues && valuesAreEqual(prevOther, nextOther);
-});
-
-const IdentityTableMemoized = memo(IdentityTable, function propsAreEqual(prevProps, nextProps) {
-  const { identifications: prevIdentifications, ...prevOther } = prevProps;
-  const { identifications: nextIdentifications, ...nextOther } = nextProps;
-  return prevIdentifications === nextIdentifications && valuesAreEqual(prevOther, nextOther);
-});
+const CalendarViewerMemoized = memoize(CalendarViewer);
+const TasksBoxMemoized = memoize(TasksBox);
+const ValuesTableMemoized = memoize(ValuesTable);
+const IdentityTableMemoized = memoize(IdentityTable);
 
 export default Dashboard;

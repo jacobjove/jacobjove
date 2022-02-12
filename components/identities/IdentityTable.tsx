@@ -18,7 +18,9 @@ type Identification = _Identification & {
 };
 
 interface IdentityTableProps {
-  identifications: Identification[];
+  data: {
+    identifications: Identification[];
+  };
 }
 
 const ONBOARDING_STEPS = [
@@ -35,7 +37,9 @@ const ONBOARDING_STEPS = [
 // TODO: https://mui.com/components/tables/#sorting-amp-selecting
 const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   // console.log("IdentityTable", props);
-  const { identifications } = props;
+  const {
+    data: { identifications },
+  } = props;
   let content;
   if (!identifications.length) {
     content = <Onboarder steps={ONBOARDING_STEPS} />;
