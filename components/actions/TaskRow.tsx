@@ -31,7 +31,7 @@ import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
 interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
   index: number;
-  move?: (dragIndex: number, hoverIndex: number) => void;
+  move?: (draggedTaskId: number, hoveredTaskId: number) => boolean;
   onDrop?: (dropIndex: number) => void;
 }
 
@@ -240,7 +240,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                       }}
                       {...bindTriggerProps}
                     >
-                      {task.title} (rank: {task.rank})
+                      {task.title}
                     </Button>
                   </Box>
                 </Box>
@@ -445,15 +445,15 @@ const TaskRow = (props: TaskRowProps) => {
       canDrop: (draggedTask: DraggedTask) =>
         // prevent moving between complete/incomplete
         !loadingRef.current && !(draggedTask.completedAt ? !task.completedAt : task.completedAt),
-      drop: (item: DraggedTask) => {
+      drop: (draggedTask: DraggedTask) => {
         if (!session) return;
-        onDrop?.(item.index);
+        onDrop?.(draggedTask.index);
       },
-      hover(item: DraggedTask, monitor: DropTargetMonitor) {
+      hover(draggedTask: DraggedTask, monitor: DropTargetMonitor) {
         if (!dndRef.current || !move || !monitor.canDrop()) {
           return;
         }
-        const dragIndex = item.index;
+        const dragIndex = draggedTask.index;
         const hoverIndex = index;
 
         // Don't replace items with themselves.
@@ -488,13 +488,13 @@ const TaskRow = (props: TaskRowProps) => {
         }
 
         // Time to actually perform the action
-        move(dragIndex, hoverIndex);
-
-        // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
-        item.index = hoverIndex;
+        if (move(draggedTask.id, task.id)) {
+          // Note: we're mutating the monitor item here!
+          // Generally it's better to avoid mutations,
+          // but it's good here for the sake of performance
+          // to avoid expensive index searches.
+          draggedTask.index = hoverIndex;
+        }
       },
     }),
     [move, loadingRef, index]
