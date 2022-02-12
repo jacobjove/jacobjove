@@ -164,9 +164,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     [user, enabledCalendars]
   );
 
-  // const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>(
-  //   calendars.map((calendar) => calendar.id)
-  // );
   const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
   const [initialEventFormData, setInitialEventFormData] = useState({
     title: "",
@@ -260,7 +257,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               {...bindMenu(menuState)}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               transformOrigin={{ vertical: "top", horizontal: "center" }}
-              keepMounted
             >
               <Typography variant="h4" sx={{ ml: 1, color: "gray" }}>
                 {"Integrations"}

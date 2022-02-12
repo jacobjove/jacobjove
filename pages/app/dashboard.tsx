@@ -243,13 +243,10 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
           <Menu
             anchorEl={menuAnchorEl}
             open={menuOpen}
-            onClose={() => {
-              setMenuOpen(false);
-            }}
+            onClose={() => setMenuOpen(false)}
             MenuListProps={{
               "aria-labelledby": "menu-button-x",
             }}
-            keepMounted
           >
             {/* <Link href="/app/routines">
               <a>
