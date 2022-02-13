@@ -15,6 +15,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { FC, useEffect, useReducer } from "react";
 
+// TODO: Figure out what to do about non-nullability of fields that are supposed
+// to be nullable... https://github.com/MichalLytek/typegraphql-prisma/issues/32
+// It's not hugely problematic at the moment, but it's annoying and may cause problems
+// in the future. Fields like `archivedAt` need to be able to be updated to null.
+// And fields like `notes` can be set to an empty string rather than null, but
+// since the database allows such optional string fields to be null (and our types
+// are generated accordingly), it's unexpected that TypeGraphQL then proceeds to
+// generate a schema that does not allow us to set a nullable field to null.
 export type EventData = Omit<
   CalendarEvent,
   | "id"
