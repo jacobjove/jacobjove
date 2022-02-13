@@ -1,4 +1,5 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
+import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/components/calendar/EventSlot";
 import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
 import {
@@ -57,7 +58,7 @@ export const initializeEventData = (eventData: CalendarEvent | EventData): Event
     start,
     end: eventData.end ? new Date(eventData.end) : (
       // TODO: fix magic number
-      !eventData.allDay ? addMinutes(start, 30) : undefined
+      !eventData.allDay ? addMinutes(start, DEFAULT_EVENT_LENGTH_IN_MINUTES) : undefined
     ),
     createdAt: eventData.createdAt ? new Date(eventData.createdAt) : undefined,
     notes: eventData.notes || "",

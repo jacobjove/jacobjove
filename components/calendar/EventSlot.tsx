@@ -34,7 +34,7 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 
-const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
+export const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 // TODO: https://www.apollographql.com/blog/apollo-client/caching/when-to-use-refetch-queries/
 
