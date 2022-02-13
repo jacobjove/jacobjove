@@ -289,7 +289,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               </MenuList>
               <Divider />
               {!!enabledCalendars?.length && (
-                // Note: Use a div rather than a fragment, in order to MUI warnings
+                // Use a div rather than a fragment, in order to MUI warnings
                 // about Menu not allowing a fragment as a child.
                 // https://github.com/mui/material-ui/issues/16181
                 <div>

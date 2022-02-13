@@ -11,14 +11,17 @@ interface EventFormFieldsProps {
   dispatch: Dispatch<{ field: string; value: unknown }>;
 }
 
-const EventFormFields: FC<EventFormFieldsProps> = ({ state, dispatch }: EventFormFieldsProps) => {
+const EventFormFields: FC<EventFormFieldsProps> = ({
+  state: formData,
+  dispatch,
+}: EventFormFieldsProps) => {
   return (
     <div>
       <TextField
         id="title"
         label="Title"
         variant="standard"
-        value={state.title}
+        value={formData.title}
         onChange={(event) => dispatch({ field: "title", value: event.target.value })}
         fullWidth
         autoFocus
@@ -27,15 +30,15 @@ const EventFormFields: FC<EventFormFieldsProps> = ({ state, dispatch }: EventFor
         <DateTimePicker
           label="Start"
           openTo="minutes"
-          value={state.start}
+          value={formData.start}
           onChange={(value) => dispatch({ field: "start", value: value })}
           renderInput={(params) => <TextField {...params} sx={{ marginY: "1rem" }} required />}
         />
         <DateTimePicker
           label="End"
           openTo="minutes"
-          minDateTime={state.start}
-          value={state.end}
+          minDateTime={formData.start}
+          value={formData.end}
           // inputFormat="yyyy/MM/dd hh:mm a"
           onChange={(value) => dispatch({ field: "end", value: value })}
           renderInput={(params) => <TextField {...params} sx={{ marginY: "1rem" }} />}
@@ -52,7 +55,7 @@ const EventFormFields: FC<EventFormFieldsProps> = ({ state, dispatch }: EventFor
         label="Notes"
         variant="outlined"
         margin="dense"
-        value={state.notes}
+        value={formData.notes}
         onChange={(event) => dispatch({ field: "notes", value: event.target.value })}
       />
     </div>
