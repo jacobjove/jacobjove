@@ -7,10 +7,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
-type NoUndefinedField<T> = {
-  [P in keyof T]-?: Exclude<T[P], null | undefined>;
-};
-
 const GOOGLE_AUTHORIZATION_URL =
   "https://accounts.google.com/o/oauth2/v2/auth?" +
   new URLSearchParams({

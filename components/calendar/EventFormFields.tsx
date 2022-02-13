@@ -1,31 +1,25 @@
+import { EventData } from "@/components/calendar/EventEditingDialog";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
-import { FC } from "react";
+import { Dispatch, FC } from "react";
 
 interface EventFormFieldsProps {
-  title?: string;
-  setTitle: (title: string) => void;
-  start: Date | null;
-  setStart: (start: Date | null) => void;
-  end: Date | null;
-  setEnd: (end: Date | null) => void;
+  state: EventData;
+  dispatch: Dispatch<{ field: string; value: unknown }>;
 }
 
-const EventFormFields: FC<EventFormFieldsProps> = (props: EventFormFieldsProps) => {
-  const { title, setTitle, start, setStart, end, setEnd } = props;
+const EventFormFields: FC<EventFormFieldsProps> = ({ state, dispatch }: EventFormFieldsProps) => {
   return (
     <div>
       <TextField
         id="title"
         label="Title"
         variant="standard"
-        value={title}
-        onChange={(event) => {
-          setTitle(event.target.value);
-        }}
+        value={state.title}
+        onChange={(event) => dispatch({ field: "title", value: event.target.value })}
         fullWidth
         autoFocus
       />
@@ -33,21 +27,17 @@ const EventFormFields: FC<EventFormFieldsProps> = (props: EventFormFieldsProps) 
         <DateTimePicker
           label="Start"
           openTo="minutes"
-          value={start}
-          onChange={(value) => {
-            setStart(value);
-          }}
+          value={state.start}
+          onChange={(value) => dispatch({ field: "start", value: value })}
           renderInput={(params) => <TextField {...params} sx={{ marginY: "1rem" }} required />}
         />
         <DateTimePicker
           label="End"
           openTo="minutes"
-          minDateTime={start}
-          value={end}
+          minDateTime={state.start}
+          value={state.end}
           // inputFormat="yyyy/MM/dd hh:mm a"
-          onChange={(value) => {
-            setEnd(value);
-          }}
+          onChange={(value) => dispatch({ field: "end", value: value })}
           renderInput={(params) => <TextField {...params} sx={{ marginY: "1rem" }} />}
         />
       </FormGroup>
@@ -55,7 +45,16 @@ const EventFormFields: FC<EventFormFieldsProps> = (props: EventFormFieldsProps) 
         <FormControlLabel control={<Checkbox />} label="All day" />
         <FormControlLabel control={<Checkbox />} label="Repeat" />
       </FormGroup>
-      <TextField id="notes" label="Notes" variant="outlined" margin="dense" fullWidth multiline />
+      <TextField
+        fullWidth
+        multiline
+        id="notes"
+        label="Notes"
+        variant="outlined"
+        margin="dense"
+        value={state.notes}
+        onChange={(event) => dispatch({ field: "notes", value: event.target.value })}
+      />
     </div>
   );
 };

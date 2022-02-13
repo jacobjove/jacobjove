@@ -12,80 +12,82 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { addMinutes } from "date-fns/esm";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useReducer } from "react";
 
-export type CalendarEventInputData = Omit<
+export type EventData = Omit<
   CalendarEvent,
-  "start" | "end" | "id" | "uid" | "createdAt" | "updatedAt"
+  | "id"
+  | "start"
+  | "end"
+  | "notes"
+  | "sourceId"
+  | "canceled"
+  | "createdAt"
+  | "updatedAt"
+  | "schedule"
+  | "habit"
+  | "task"
 > & {
-  start: string | Date;
-  end?: string | Date | null;
-  id?: number | undefined;
+  id?: number;
+  start: Date;
+  end?: Date;
+  notes?: string;
+  sourceId?: string;
+  calendarSourceId?: string;
+  canceled?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  archivedAt: Date;
 };
 
 interface EventEditingDialogProps extends ReturnType<typeof bindPopover> {
-  eventData: CalendarEventInputData;
+  eventData: EventData;
 }
 
-const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDialogProps) => {
-  const { eventData, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
-  const [title, setTitle] = useState(eventData.title ?? "");
-  const [start, setStart] = useState<Date | null>(
-    eventData.start ? new Date(eventData.start) : new Date()
-  );
-  const [end, setEnd] = useState<Date | null>(
-    eventData.end ? new Date(eventData.end) : start ? addMinutes(start, 29) : null
-  );
-  const [notes, setNotes] = useState(eventData.notes ?? "");
-  const [calendarId, setCalendarId] = useState(eventData.calendarId);
+const initializeEventData = (eventData: EventData): EventData => {
+  return {
+    // title: eventData.title || "",
+    ...eventData,
+  };
+};
 
+const eventDataReducer = (state: EventData, payload: { field: string; value: unknown }) => {
+  if (payload.field === "init") return initializeEventData(payload.value as EventData);
+  return { ...state, [payload.field]: payload.value };
+};
+
+const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDialogProps) => {
+  const { eventData: initialEventData, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const [eventData, dispatch] = useReducer(eventDataReducer, initialEventData, initializeEventData);
   const [mutate, { loading }] = useMutation(
     eventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
   );
-
   const handleSave = async () => {
-    if (!start) {
+    if (!eventData.start) {
       alert("Start date is required.");
       return;
     }
-    const mutationVars:
-      | {
-          data: CalendarEventUpdateInput;
-          where: CalendarEventWhereUniqueInput;
-        }
-      | {
-          data: CalendarEventCreateInput;
-        } = {
-      ...(eventData.id
-        ? {
-            where: { id: eventData.id },
-            data: {
-              title: { set: title },
-              start: { set: start },
-              end: { set: end || undefined },
-              notes: { set: notes },
-              calendar: {
-                connect: {
-                  id: calendarId,
-                },
-              },
-            },
-          }
-        : {
-            data: {
-              title,
-              start,
-              end: end || undefined,
-              notes,
-              calendar: {
-                connect: {
-                  id: calendarId,
-                },
-              },
-            },
-          }),
+    const { calendarId, ...commonEventData } = eventData;
+    // prettier-ignore
+    const mutationVars: {
+      data: CalendarEventUpdateInput;
+      where: CalendarEventWhereUniqueInput;
+    } | {
+      data: CalendarEventCreateInput;
+    } = eventData.id ? {
+      where: { id: eventData.id },
+      data: {
+        ...Object.fromEntries(
+          Object.entries(commonEventData).map(([key, value]) => [key, { set: value }])
+        ),
+        calendar: { connect: { id: calendarId } },
+      },
+    } : {
+      data: {
+        ...commonEventData,
+        calendar: { connect: { id: eventData.calendarId } },
+      },
     };
     await mutate({
       variables: mutationVars,
@@ -95,24 +97,16 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
               updateCalendarEvent: {
                 id: eventData.id,
                 __typename: "CalendarEvent",
-                title,
-                start,
-                end,
-                notes,
                 scheduleId: null,
-                calendarId,
+                ...eventData,
               },
             }
           : {
               createCalendarEvent: {
                 id: "tmp-id",
                 __typename: "CalendarEvent",
-                title,
-                start,
-                end,
-                notes,
                 scheduleId: null,
-                calendarId,
+                ...eventData,
               },
             }),
       },
@@ -120,24 +114,13 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     onClose();
   };
   useEffect(() => {
-    setTitle(eventData.title);
-    setStart(eventData.start ? new Date(eventData.start) : null);
-    setEnd(eventData.end ? new Date(eventData.end) : null);
-    setNotes(eventData.notes ?? "");
-    setCalendarId(eventData.calendarId); // TODO
-  }, [eventData]);
+    dispatch({ field: "init", value: initialEventData });
+  }, [initialEventData]);
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
       <DialogTitle>{eventData.id ? "Modify" : "Create"} calendar event</DialogTitle>
       <DialogContent>
-        <EventFormFields
-          title={title}
-          setTitle={setTitle}
-          start={start}
-          setStart={setStart}
-          end={end}
-          setEnd={setEnd}
-        />
+        <EventFormFields state={eventData} dispatch={dispatch} />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
