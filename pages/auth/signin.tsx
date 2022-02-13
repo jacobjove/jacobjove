@@ -10,7 +10,7 @@ import { GetServerSideProps } from "next";
 import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 
 interface SignInPageProps {
   providers: Provider[];
@@ -20,20 +20,15 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
   const router = useRouter();
   const { data: session } = useSession();
   const [errors, setErrors] = useState<Record<string, string[]>>({});
-  const callbackUrl = useMemo(() => {
-    return Array.isArray(router.query?.callbackUrl)
-      ? router.query.callbackUrl[0]
-      : router.query?.callbackUrl;
-  }, [router.query]);
+  const callbackUrl = Array.isArray(router.query?.callbackUrl)
+    ? router.query.callbackUrl[0]
+    : router.query?.callbackUrl;
   useEffect(() => {
-    console.log(">>>", router.query);
-    console.log(">>>", router.query.scope, typeof router.query.scope);
     if (typeof router.query.provider === "string") {
       const scope =
         typeof router.query.scope === "string"
           ? router.query.scope.split(",").join(" ")
           : undefined;
-      console.log("signing in with", router.query.provider, callbackUrl, scope);
       signIn(
         router.query.provider,
         { ...(typeof callbackUrl === "string" ? { callbackUrl } : {}) },

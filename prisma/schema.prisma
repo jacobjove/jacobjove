@@ -38,7 +38,6 @@ model Account {
   createdAt         DateTime   @default(now())
   calendars         Calendar[]
 
-  CalendarEvent CalendarEvent[]
   @@unique([provider, providerAccountId])
 }
 
@@ -124,8 +123,6 @@ model CalendarEvent {
   id               Int             @id @default(autoincrement())
   uid              String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
   sourceId         String?
-  sourceAccount    Account?        @relation(fields: [accountSourceId], references: [id], onDelete: Cascade)
-  accountSourceId  Int?
   calendar         Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
   calendarId       Int
   calendarSourceId String?
@@ -141,7 +138,7 @@ model CalendarEvent {
   end              DateTime?
   allDay           Boolean         @default(false)
   notes            String?
-  canceled        Boolean?        @default(false)
+  canceled         Boolean?        @default(false)
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())

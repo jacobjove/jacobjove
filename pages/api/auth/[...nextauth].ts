@@ -106,6 +106,17 @@ const callbacks: CallbacksOptions = {
         })
         .catch(console.error);
       if (userFromDb && userFromDb.accounts.length) {
+        // Unfortunately, if we have requested an additional scope (e.g., for calendar
+        // integration), that scope is lost the next time the user authenticates with
+        // their third-party (...Google) account. This will require a proper solution
+        // of some kind, but for now, we check to see if scopes have been reset, and if
+        // so, we require the user to re-authenticate while explicitly requesting the
+        // previously granted scopes. This would be totally unnecessary if we just
+        // configured NextAuth to always request all the scopes that we might want
+        // (including calendar, etc.), but if we want to allow the user to use OAuth
+        // without providing access to their calendar or other data, we'll need to
+        // figure out a way to keep track of what scopes should be requested during
+        // the sign-in process, so that scopes are not reset.
         const oldScopes = userFromDb.accounts[0].scopes;
         const newScopes = account.scope?.split(" ") ?? [];
         if (!oldScopes.every((scope) => newScopes.includes(scope))) {

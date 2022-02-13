@@ -44,20 +44,6 @@ const nextConfig = {
         permanent: true,
       },
     ];
-    // const prisma = require("./utils/prisma");
-    // await prisma.redirect.findMany({
-    //   where: {
-    //     active: true,
-    //   },
-    // }).then((redirects) => {
-    //   redirects.forEach((redirect) => {
-    //     redirects.push({
-    //       source: redirect.from,
-    //       destination: redirect.to,
-    //       permanent: redirect.permanent,
-    //     });
-    //   });
-    // });
     return redirects;
   },
 };
