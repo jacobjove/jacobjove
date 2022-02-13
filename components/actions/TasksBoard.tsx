@@ -1,5 +1,5 @@
 import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
-import TaskRow from "@/components/actions/TaskRow";
+import TaskRow, { DraggedTask } from "@/components/actions/TaskRow";
 import { taskFragment } from "@/graphql/fragments";
 import { CREATE_TASK, UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
@@ -36,6 +36,7 @@ const UPDATE_MANY_TASK_RANK = gql`
 
 const PREFERRED_FONT_SIZE = "0.8rem";
 const MAX_TASK_RANK = 2 ** 31 - 1;
+const MIN_TASK_RANK = -MAX_TASK_RANK - 1;
 
 export interface TasksBoardProps {
   contained?: boolean;
@@ -112,18 +113,14 @@ const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
 
   // Enable re-ordering the tasks.
   const moveTaskRow = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
-      if (dragIndex === hoverIndex || loadingUpdateTask) return;
-      // const draggedTaskId = orderedTasks[dragIndex];
-      const draggedTask = incompleteTasks[dragIndex];
-      if (!draggedTask) {
-        console.error("Unable to identify dragged task ID; the dragIndex is invalid.");
-        return;
-      }
+    (draggedTask: DraggedTask, hoveredTask: Task) => {
+      if (draggedTask.id === hoveredTask.id || loadingUpdateTask) return null;
+
+      const temporaryRank = hoveredTask.rank + (draggedTask.rank < hoveredTask.rank ? 1 : -1);
       apolloClient.cache.writeFragment({
         id: `${draggedTask.__typename}:${draggedTask.id}`,
         data: {
-          rank: incompleteTasks[hoverIndex].rank + (dragIndex < hoverIndex ? 1 : -1),
+          rank: temporaryRank,
         },
         fragment: gql`
           fragment UpdateTaskRank on Task {
@@ -132,6 +129,8 @@ const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
         `,
         fragmentName: "UpdateTaskRank",
       });
+      // returning modified fields allows an actively dragging task to update
+      return { rank: temporaryRank };
     },
     [incompleteTasks, loadingUpdateTask, apolloClient.cache]
   );
@@ -139,7 +138,7 @@ const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
   const updateTaskRank = useCallback(
     (dropIndex: number) => {
       const task = incompleteTasks[dropIndex];
-      const lowerRank = dropIndex == 0 ? 0 : incompleteTasks[dropIndex - 1].rank;
+      const lowerRank = dropIndex == 0 ? MIN_TASK_RANK : incompleteTasks[dropIndex - 1].rank;
       const upperRank =
         dropIndex == incompleteTasks.length - 1
           ? MAX_TASK_RANK
@@ -147,11 +146,15 @@ const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
 
       const newRank = lowerRank + Math.floor((upperRank - lowerRank) / 2);
 
-      if ([lowerRank, upperRank].includes(newRank)) {
-        const increment = Math.floor(MAX_TASK_RANK / (incompleteTasks.length + 1));
+      // check bounds and their neighbors to prevent rank conflicts
+      // while actively dragging a task
+      if ([lowerRank, upperRank, lowerRank + 1, upperRank - 1].includes(newRank)) {
+        const increment = Math.floor(
+          (MAX_TASK_RANK - MIN_TASK_RANK) / (incompleteTasks.length + 1)
+        );
         const newRanks = incompleteTasks.map(({ id }, index) => ({
           id,
-          rank: increment * (index + 1),
+          rank: MIN_TASK_RANK + increment * (index + 1),
         }));
         updateManyTaskRank({
           variables: {
@@ -187,13 +190,17 @@ const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
 
   const handleNewTaskSubmit = async () => {
     setAddingNewTask(false);
+
+    const greatestRank = incompleteTasks[incompleteTasks.length - 1]?.rank ?? MIN_TASK_RANK;
+    const defaultRank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
+
     if (session?.user) {
       const now = new Date().toISOString();
       await createTask({
         variables: {
           data: {
             ...newTask,
-            rank: MAX_TASK_RANK,
+            rank: defaultRank,
             user: {
               connect: {
                 id: session.user.id,
