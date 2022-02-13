@@ -29,16 +29,18 @@
   },
   "include": [
     "types/*.ts",
+    "next-env.d.ts",
+    "next.config.js",
+    "prisma/seed.ts",
+    "prisma/generated/*.ts",
+    "graphql/*.ts",
+    "graphql/**/*.ts",
+    "utils/*.ts",
+    "utils/**/*.ts",
     "components/*",
     "components/**/*",
     "pages/*",
-    "pages/**/*",
-    "graphql/*.ts",
-    "graphql/**/*.ts",
-    "prisma/seed.ts",
-    "prisma/generated/*.ts",
-    "next-env.d.ts",
-    "next.config.js"
+    "pages/**/*"
   ],
   "exclude": ["node_modules", "cypress"]
 }

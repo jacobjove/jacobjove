@@ -10,6 +10,7 @@ import UserContext from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { Calendar } from "@/graphql/schema";
+import { getCalendarScope } from "@/utils/calendar/providers";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
@@ -39,11 +40,6 @@ import { createPortal } from "react-dom";
 const ICON_MAP = {
   google: GoogleIcon,
   apple: AppleIcon,
-};
-
-const SCOPE_MAP: Record<CalendarProvider, string> = {
-  google: "https://www.googleapis.com/auth/calendar",
-  apple: "",
 };
 
 export const fragment = gql`
@@ -142,7 +138,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
       user?.accounts?.find(
         (account) =>
           account.provider === calendar.provider &&
-          account.scopes.includes(SCOPE_MAP[calendar.provider])
+          account.scopes.includes(getCalendarScope(calendar.provider))
       )
   );
   const defaultCalendar = enabledCalendars[0]; // TODO
@@ -171,7 +167,8 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     () => (provider: CalendarProvider) => {
       return Boolean(
         user?.accounts?.find(
-          (account) => account.provider === provider && account.scopes.includes(SCOPE_MAP[provider])
+          (account) =>
+            account.provider === provider && account.scopes.includes(getCalendarScope(provider))
         ) && enabledCalendars.find((calendar) => calendar.provider === provider)
       );
     },
