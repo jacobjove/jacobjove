@@ -1,5 +1,6 @@
+import { EventData } from "@/components/calendar/EventEditingDialog";
 import { Calendar, CalendarEvent } from "@/graphql/schema";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch } from "react";
 
 export type CalendarData = {
   calendars: Calendar[];
@@ -14,20 +15,11 @@ export interface CalendarProps {
   includeDateSelector: boolean;
 }
 
-export interface EventFormData {
-  title: string;
-  start: Date;
-  end: Date | null;
-  allDay: boolean;
-  notes: string;
-  calendarId: number;
-}
-
 export interface ViewerProps extends CalendarProps {
   selectedDate: Date;
   setSelectedDate: (date: Date | null) => void;
-  initialEventFormData: EventFormData;
-  setInitialEventFormData: Dispatch<SetStateAction<EventFormData>>;
+  initialEventFormData: EventData;
+  dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
   defaultCalendar: Calendar;
   hidden: boolean;
 }

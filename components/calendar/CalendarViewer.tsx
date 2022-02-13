@@ -1,5 +1,6 @@
 import CalendarApiProviderDialog from "@/components/calendar/CalendarApiProviderDialog";
 import CalendarLegend from "@/components/calendar/CalendarLegend";
+import { eventDataReducer, initializeEventData } from "@/components/calendar/EventEditingDialog";
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
@@ -33,7 +34,7 @@ import Typography from "@mui/material/Typography";
 import { addMinutes } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import Image from "next/image";
-import { FC, useContext, useEffect, useMemo, useState } from "react";
+import { FC, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import { createPortal } from "react-dom";
 
 const ICON_MAP = {
@@ -176,20 +177,23 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   );
 
   const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
-  const [initialEventFormData, setInitialEventFormData] = useState({
+
+  const [initialEventFormData, dispatchInitialEventFormData] = useReducer(eventDataReducer, {
     title: "",
     start: date,
-    end: date ? addMinutes(date, 29) : null,
+    end: date ? addMinutes(date, 30) : undefined,
     allDay: false,
     notes: "",
     calendarId: defaultCalendar?.id,
   });
+
   const commonViewProps = {
     ...rest,
     selectedDate: selectedDate || date,
     setSelectedDate,
     initialEventFormData,
-    setInitialEventFormData,
+    dispatchInitialEventFormData,
+    initializeEventFormData: initializeEventData,
     defaultCalendar,
   };
   const renderedComponent = (

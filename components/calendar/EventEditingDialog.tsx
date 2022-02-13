@@ -12,6 +12,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { addMinutes } from "date-fns";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { FC, useEffect, useReducer } from "react";
 
@@ -26,6 +27,7 @@ import { FC, useEffect, useReducer } from "react";
 export type EventData = Omit<
   CalendarEvent,
   | "id"
+  | "uid"
   | "start"
   | "end"
   | "notes"
@@ -42,32 +44,35 @@ export type EventData = Omit<
   id?: number;
   start: Date;
   end?: Date;
+  createdAt?: Date;
   notes?: string;
   canceled?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+};
+
+export const initializeEventData = (eventData: CalendarEvent | EventData): EventData => {
+  const start = new Date(eventData.start);
+  // prettier-ignore
+  return {
+    ...eventData,
+    start,
+    end: eventData.end ? new Date(eventData.end) : (
+      // TODO: fix magic number
+      !eventData.allDay ? addMinutes(start, 30) : undefined
+    ),
+    createdAt: eventData.createdAt ? new Date(eventData.createdAt) : undefined,
+    notes: eventData.notes || "",
+    canceled: eventData.canceled || false,
+  };
+};
+
+export const eventDataReducer = (state: EventData, payload: { field: string; value: unknown }) => {
+  if (payload.field === "init") return initializeEventData(payload.value as EventData);
+  return { ...state, [payload.field]: payload.value };
 };
 
 interface EventEditingDialogProps extends ReturnType<typeof bindPopover> {
   eventData: CalendarEvent | EventData;
 }
-
-const initializeEventData = (eventData: CalendarEvent | EventData): EventData => {
-  return {
-    ...eventData,
-    start: new Date(eventData.start),
-    end: new Date(eventData.start),
-    notes: eventData.notes || "",
-    canceled: eventData.canceled || false,
-    createdAt: new Date(eventData.createdAt),
-    updatedAt: new Date(eventData.updatedAt),
-  };
-};
-
-const eventDataReducer = (state: EventData, payload: { field: string; value: unknown }) => {
-  if (payload.field === "init") return initializeEventData(payload.value as EventData);
-  return { ...state, [payload.field]: payload.value };
-};
 
 const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDialogProps) => {
   const { eventData: initialEventData, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
@@ -81,6 +86,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
       return;
     }
     const { calendarId, ...commonEventData } = eventData;
+    const now = new Date();
     // prettier-ignore
     const mutationVars: {
       data: CalendarEventUpdateInput;
@@ -94,6 +100,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
           Object.entries(commonEventData).map(([key, value]) => [key, { set: value }])
         ),
         calendar: { connect: { id: calendarId } },
+        updatedAt: { set: now },
       },
     } : {
       data: {
@@ -110,6 +117,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
               __typename: "CalendarEvent",
               scheduleId: null,
               ...eventData,
+              updatedAt: now,
             },
           }
         : {
@@ -118,6 +126,8 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
               __typename: "CalendarEvent",
               scheduleId: null,
               ...eventData,
+              createdAt: now,
+              updatedAt: now,
             },
           },
     });

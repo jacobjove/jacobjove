@@ -15,7 +15,6 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import {
-  addMinutes,
   differenceInMinutes,
   getDay,
   isSameDay,
@@ -72,7 +71,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const {
     selectedDate,
     initialEventFormData,
-    setInitialEventFormData,
+    dispatchInitialEventFormData,
     defaultCalendar,
     hidden,
     data,
@@ -239,14 +238,9 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                                 // allows us to avoid stopping propagation on click events for
                                 // other elements in the slot.
                                 if (e.target === e.currentTarget) {
-                                  setInitialEventFormData({
-                                    title: initialEventFormData.title ?? "",
-                                    start: eventSlotDate,
-                                    end: addMinutes(eventSlotDate, 29),
-                                    allDay: false,
-                                    notes: initialEventFormData.notes ?? "",
-                                    calendarId:
-                                      initialEventFormData.calendarId ?? primaryCalendarId,
+                                  dispatchInitialEventFormData({
+                                    field: "init",
+                                    value: { start: eventSlotDate },
                                   });
                                   eventEditingDialogTriggerProps.onClick(e);
                                 }

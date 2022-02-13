@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import {
-  addMinutes,
   differenceInMinutes,
   isBefore,
   isSameDay,
@@ -81,7 +80,7 @@ type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
 const DayViewer: FC<ViewerProps> = ({
   selectedDate,
   initialEventFormData,
-  setInitialEventFormData,
+  dispatchInitialEventFormData,
   defaultCalendar,
   hidden,
   data,
@@ -217,13 +216,9 @@ const DayViewer: FC<ViewerProps> = ({
                         // allows us to avoid stopping propagation on click events for
                         // other elements in the slot.
                         if (e.target === e.currentTarget) {
-                          setInitialEventFormData({
-                            title: initialEventFormData.title ?? "",
-                            start: eventSlotDate,
-                            end: addMinutes(eventSlotDate, 29),
-                            allDay: false,
-                            notes: initialEventFormData.notes ?? "",
-                            calendarId: initialEventFormData.calendarId ?? primaryCalendarId,
+                          dispatchInitialEventFormData({
+                            field: "init",
+                            value: { start: eventSlotDate },
                           });
                           eventEditingDialogTriggerProps.onClick(e);
                         }
