@@ -1,6 +1,7 @@
 import CalendarApiProviderDialog from "@/components/calendar/CalendarApiProviderDialog";
 import CalendarLegend from "@/components/calendar/CalendarLegend";
 import { eventDataReducer, initializeEventData } from "@/components/calendar/EventEditingDialog";
+import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/components/calendar/EventSlot";
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
@@ -184,7 +185,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const [initialEventFormData, dispatchInitialEventFormData] = useReducer(eventDataReducer, {
     title: "",
     start: date,
-    end: date ? addMinutes(date, 30) : undefined,
+    end: date ? addMinutes(date, DEFAULT_EVENT_LENGTH_IN_MINUTES) : undefined,
     allDay: false,
     notes: "",
     calendarId: defaultCalendar?.id,
