@@ -50,15 +50,22 @@ export type EventData = Omit<
   canceled?: boolean;
 };
 
-export const initializeEventData = (eventData: CalendarEvent | EventData): EventData => {
+export const initializeEventData = (
+  eventData: {
+    start: string | Date;
+    calendarId: number;
+  } & Partial<CalendarEvent | EventData>
+): EventData => {
   const start = new Date(eventData.start);
   // prettier-ignore
   return {
     ...eventData,
+    title: eventData.title || "",
     start,
     end: eventData.end ? new Date(eventData.end) : (
       !eventData.allDay ? addMinutes(start, DEFAULT_EVENT_LENGTH_IN_MINUTES) : undefined
     ),
+    allDay: eventData.allDay ?? false,
     createdAt: eventData.createdAt ? new Date(eventData.createdAt) : undefined,
     notes: eventData.notes || "",
     canceled: eventData.canceled || false,
