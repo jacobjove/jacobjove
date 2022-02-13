@@ -57,7 +57,6 @@ export const initializeEventData = (eventData: CalendarEvent | EventData): Event
     ...eventData,
     start,
     end: eventData.end ? new Date(eventData.end) : (
-      // TODO: fix magic number
       !eventData.allDay ? addMinutes(start, DEFAULT_EVENT_LENGTH_IN_MINUTES) : undefined
     ),
     createdAt: eventData.createdAt ? new Date(eventData.createdAt) : undefined,
