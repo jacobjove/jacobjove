@@ -22,13 +22,6 @@ declare module "next-auth" {
     user: User;
     accessToken: string;
   }
-  // interface JWT {
-  //   provider: string;
-  //   providerAccountId: string;
-  //   accessToken?: string;
-  //   accessTokenExpiry?: number;
-  //   refreshToken?: string;
-  // }
   interface PageWithAuth extends NextPage {
     auth?: boolean;
   }
