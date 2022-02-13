@@ -22,9 +22,11 @@ export type EventData = Omit<
   | "end"
   | "notes"
   | "sourceId"
+  | "calendarSourceId"
   | "canceled"
   | "createdAt"
   | "updatedAt"
+  | "archivedAt"
   | "schedule"
   | "habit"
   | "task"
@@ -33,22 +35,24 @@ export type EventData = Omit<
   start: Date;
   end?: Date;
   notes?: string;
-  sourceId?: string;
-  calendarSourceId?: string;
   canceled?: boolean;
   createdAt: Date;
   updatedAt: Date;
-  archivedAt: Date;
 };
 
 interface EventEditingDialogProps extends ReturnType<typeof bindPopover> {
-  eventData: EventData;
+  eventData: CalendarEvent | EventData;
 }
 
-const initializeEventData = (eventData: EventData): EventData => {
+const initializeEventData = (eventData: CalendarEvent | EventData): EventData => {
   return {
-    // title: eventData.title || "",
     ...eventData,
+    start: new Date(eventData.start),
+    end: new Date(eventData.start),
+    notes: eventData.notes || "",
+    canceled: eventData.canceled || false,
+    createdAt: new Date(eventData.createdAt),
+    updatedAt: new Date(eventData.updatedAt),
   };
 };
 
@@ -91,25 +95,23 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
     };
     await mutate({
       variables: mutationVars,
-      optimisticResponse: {
-        ...(eventData.id
-          ? {
-              updateCalendarEvent: {
-                id: eventData.id,
-                __typename: "CalendarEvent",
-                scheduleId: null,
-                ...eventData,
-              },
-            }
-          : {
-              createCalendarEvent: {
-                id: "tmp-id",
-                __typename: "CalendarEvent",
-                scheduleId: null,
-                ...eventData,
-              },
-            }),
-      },
+      optimisticResponse: eventData.id
+        ? {
+            updateCalendarEvent: {
+              id: eventData.id,
+              __typename: "CalendarEvent",
+              scheduleId: null,
+              ...eventData,
+            },
+          }
+        : {
+            createCalendarEvent: {
+              id: "tmp-id",
+              __typename: "CalendarEvent",
+              scheduleId: null,
+              ...eventData,
+            },
+          },
     });
     onClose();
   };
