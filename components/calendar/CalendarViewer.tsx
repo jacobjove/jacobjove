@@ -94,6 +94,9 @@ const CalendarMenuItem: FC<CalendarMenuItemProps> = ({ calendar, children, ...pr
 
 interface CalendarApiMenuItemProps extends MenuItemProps {
   provider: CalendarProvider;
+  // TODO: I feel like this shouldn't be a prop...
+  // Seems like it would be better to have the logic within this component,
+  // if it potentially should differ from "enabled"-determining logic elsewhere.
   enabled: boolean;
 }
 
