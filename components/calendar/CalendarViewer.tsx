@@ -102,6 +102,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
           flex={"0 0 auto"}
           display="flex"
           width={"100%"}
+          alignItems={"center"}
           justifyContent={"space-between"}
           pb="0.12rem"
           sx={{
@@ -114,9 +115,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
             <ToggleButtonGroup
               exclusive
               value={view}
-              onChange={(_, value: ViewMode) => {
-                setView(value);
-              }}
+              onChange={(_, value: ViewMode) => setView(value)}
               size="small"
               color="primary"
               aria-label="text alignment"
