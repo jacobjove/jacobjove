@@ -59,7 +59,10 @@ interface CalendarApiMenuItemProps extends MenuItemProps {
 
 const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children, ...props }) => {
   const user = useContext(UserContext);
-  const dialogState = usePopupState({ variant: "popover", popupId: `${provider}-calendar-dialog` });
+  const dialogState = usePopupState({
+    variant: "popover",
+    popupId: `${provider}-calendar-api-dialog`,
+  });
   const Icon = ICON_MAP[provider];
   const iconElement = <Icon sx={{ color: "lightgray" }} />;
   const apiIsEnabled = useMemo(() => {
