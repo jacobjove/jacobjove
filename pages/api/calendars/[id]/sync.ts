@@ -1,4 +1,4 @@
-import syncCalendar from "@/utils/calendar/sync";
+import { syncCalendar } from "@/utils/calendar/sync";
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/react";
 
