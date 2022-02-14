@@ -100,7 +100,8 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children,
     const account = user?.accounts?.find((account) => account.provider === provider);
     const integrationIsEnabled = account?.scopes.includes(getCalendarScope(provider));
     const providedCalendars = user?.calendars.filter((calendar) => calendar.provider === provider);
-    return Boolean(integrationIsEnabled && providedCalendars?.length);
+    const connectedCalendars = providedCalendars?.filter((calendar) => calendar.enabled);
+    return Boolean(integrationIsEnabled && connectedCalendars?.length);
   }, [user, provider]);
   props.sx = { display: "flex", alignItems: "center", ...props.sx };
   return (
