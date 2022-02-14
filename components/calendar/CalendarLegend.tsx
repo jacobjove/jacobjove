@@ -20,7 +20,6 @@ const CalendarLegend: FC<CalendarLegendProps> = ({
   selectedCalendarIds,
   dispatchCalendarIds,
 }: CalendarLegendProps) => {
-  console.log("CalendarLegend", selectedCalendarIds);
   return (
     <Box
       sx={{
