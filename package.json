@@ -95,7 +95,8 @@
     "superjson": "^1.8.0",
     "throttle-debounce": "^3.0.1",
     "type-graphql": "^1.1.1",
-    "typeface-open-sans": "^1.1.13"
+    "typeface-open-sans": "^1.1.13",
+    "use-debounce": "^7.0.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.16.0",

@@ -41,7 +41,7 @@ const GetCalendars: NextApiHandler = async (req, res) => {
   });
   return Promise.all(promises)
     .then((results) => {
-      return res.json({ results });
+      return res.json({ calendars: results.flat() });
     })
     .catch((e) => {
       const error = e?.stack ?? e?.response?.data?.error;
