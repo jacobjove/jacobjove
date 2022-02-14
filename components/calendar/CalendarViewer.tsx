@@ -97,13 +97,10 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children,
   const Icon = ICON_MAP[provider];
   const iconElement = <Icon sx={{ color: "lightgray" }} />;
   const apiIsEnabled = useMemo(() => {
-    const enabledCalendars = user?.calendars.filter((calendar) => calendar.provider === provider);
-    return Boolean(
-      user?.accounts?.find(
-        (account) =>
-          account.provider === provider && account.scopes.includes(getCalendarScope(provider))
-      ) && enabledCalendars?.find((calendar) => calendar.provider === provider)
-    );
+    const account = user?.accounts?.find((account) => account.provider === provider);
+    const integrationIsEnabled = account?.scopes.includes(getCalendarScope(provider));
+    const providedCalendars = user?.calendars.filter((calendar) => calendar.provider === provider);
+    return Boolean(integrationIsEnabled && providedCalendars?.length);
   }, [user, provider]);
   props.sx = { display: "flex", alignItems: "center", ...props.sx };
   return (
