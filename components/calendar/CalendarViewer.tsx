@@ -32,7 +32,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { FC, useContext, useEffect, useMemo, useReducer, useState } from "react";
+import { FC, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const ICON_MAP = {
@@ -128,13 +128,15 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     [],
     initializeSelectedCalendarIds
   );
-
+  // TODO: is this a good way to make the useEffect only run once?
+  const initialCalendarSelectionComplete = useRef(false);
   useEffect(() => {
-    if (!loading && !selectedCalendarIds?.length && enabledCalendars?.length) {
+    if (!initialCalendarSelectionComplete.current && !loading && enabledCalendars?.length) {
       const calendarIdsToSelect = enabledCalendars.map((calendar) => calendar.id);
       dispatchCalendarIds({ type: "init", value: calendarIdsToSelect });
+      initialCalendarSelectionComplete.current = true;
     }
-  }, [loading, enabledCalendars, selectedCalendarIds]);
+  }, [loading, enabledCalendars]);
 
   // TODO: refactor how data is passed between calendar components?
   const data = {
