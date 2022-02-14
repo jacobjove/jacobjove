@@ -89,27 +89,28 @@ const CalendarMenuItem: FC<CalendarMenuItemProps> = ({ calendar, children, ...pr
 
 interface CalendarApiMenuItemProps extends MenuItemProps {
   provider: CalendarProvider;
-  // TODO: I feel like this shouldn't be a prop...
-  // Seems like it would be better to have the logic within this component,
-  // if it potentially should differ from "enabled"-determining logic elsewhere.
-  enabled: boolean;
 }
 
-const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({
-  provider,
-  enabled,
-  children,
-  ...props
-}) => {
+const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children, ...props }) => {
+  const user = useContext(UserContext);
   const dialogState = usePopupState({ variant: "popover", popupId: `${provider}-calendar-dialog` });
   const Icon = ICON_MAP[provider];
   const iconElement = <Icon sx={{ color: "lightgray" }} />;
+  const apiIsEnabled = useMemo(() => {
+    const enabledCalendars = user?.calendars.filter((calendar) => calendar.provider === provider);
+    return Boolean(
+      user?.accounts?.find(
+        (account) =>
+          account.provider === provider && account.scopes.includes(getCalendarScope(provider))
+      ) && enabledCalendars?.find((calendar) => calendar.provider === provider)
+    );
+  }, [user, provider]);
   props.sx = { display: "flex", alignItems: "center", ...props.sx };
   return (
     <>
       <MenuItem {...props} {...bindTrigger(dialogState)}>
-        <ListItemIcon title={enabled ? "Connected" : "Not connected"}>
-          {enabled ? <Check /> : <WarningIcon />}
+        <ListItemIcon title={apiIsEnabled ? "Connected" : "Not connected"}>
+          {apiIsEnabled ? <Check /> : <WarningIcon />}
         </ListItemIcon>
         {iconElement}
         {children}
@@ -161,19 +162,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
-
-  // TODO: refactor
-  const apiIsEnabled = useMemo(
-    () => (provider: CalendarProvider) => {
-      return Boolean(
-        user?.accounts?.find(
-          (account) =>
-            account.provider === provider && account.scopes.includes(getCalendarScope(provider))
-        ) && enabledCalendars.find((calendar) => calendar.provider === provider)
-      );
-    },
-    [user, enabledCalendars]
-  );
 
   const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
 
@@ -277,10 +265,10 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                 {"Integrations"}
               </Typography>
               <MenuList dense>
-                <CalendarApiMenuItem provider={"google"} enabled={apiIsEnabled("google")}>
+                <CalendarApiMenuItem provider={"google"}>
                   <Typography ml={"1rem"}>{"Google Calendar"}</Typography>
                 </CalendarApiMenuItem>
-                <CalendarApiMenuItem provider={"apple"} enabled={apiIsEnabled("apple")}>
+                <CalendarApiMenuItem provider={"apple"}>
                   <Typography ml={"1rem"}>{"Apple Calendar"}</Typography>
                 </CalendarApiMenuItem>
               </MenuList>
