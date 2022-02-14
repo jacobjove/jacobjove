@@ -1,4 +1,5 @@
 import { CalendarClient } from "@/utils/calendar/client";
+import { isProviderEnabled } from "@/utils/calendar/providers";
 import prisma from "@/utils/prisma";
 import rateLimit from "@/utils/rate-limit";
 import { NextApiHandler } from "next";
@@ -9,7 +10,12 @@ const limiter = rateLimit({
 });
 
 const GetCalendars: NextApiHandler = async (req, res) => {
-  const provider = "google";
+  if (!req.query.provider) {
+    return res.status(400).json({ error: "Missing provider" });
+  } else if (!isProviderEnabled(req.query.provider as string)) {
+    return res.status(400).json({ error: "Invalid provider" });
+  }
+  const provider = req.query.provider as CalendarProvider; // "google"
   const session = await getSession({ req });
   if (!session?.user) return res.status(401).json({ error: "Not authenticated" });
   if (await limiter.check(`GetCalendars_${session.user.id}`).catch(() => false)) {

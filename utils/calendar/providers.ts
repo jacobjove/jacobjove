@@ -1,6 +1,12 @@
 import { Account } from "@/prisma/generated";
 import { google } from "googleapis";
 
+const ENABLED_PROVIDERS: CalendarProvider[] = ["google"];
+
+export const isProviderEnabled = (provider: string) => {
+  return ENABLED_PROVIDERS.includes(provider as CalendarProvider);
+};
+
 export const getCalendarScope = (provider: CalendarProvider): string => {
   switch (provider) {
     case "google":

@@ -201,7 +201,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     if (!user) return;
     setRefreshing(true);
     return await axios
-      .get(`/api/calendars/${provider}/calendars`)
+      .get(`/api/calendars?provider=${provider}`)
       .then(async (response) => {
         if (response.data?.calendars?.length) {
           // Create calendars that don't already exist.
