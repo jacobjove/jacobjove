@@ -32,7 +32,7 @@ import isEqual from "lodash/isEqual";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { signIn } from "next-auth/react";
 import { FC, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { useDebouncedCallback, useThrottledCallback } from "use-debounce";
+import { useThrottledCallback } from "use-debounce";
 
 const CREATE_CALENDARS = gql`
   mutation createCalendars($data: [CalendarCreateManyInput!]!) {
@@ -159,7 +159,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     );
   }, [enabledAfter, enabledBefore]);
 
-  const applyChanges = useDebouncedCallback(() => {
+  const applyChanges = useThrottledCallback(() => {
     setApplyingChanges(true);
     const calendarIdsToEnable = enabledAfter.filter(
       (calendarId) => !enabledBefore.includes(calendarId)

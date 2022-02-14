@@ -27,10 +27,10 @@ const CalendarLegend: FC<CalendarLegendProps> = ({
         height: "100%",
         m: "-0.2rem",
         p: "0.5rem",
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: (theme) => "white", // theme.palette.background.paper,
         border: (theme) => `1px solid ${theme.palette.divider}`,
         borderRadius: "2px",
-        zIndex: 1,
+        zIndex: 20,
       }}
     >
       {calendars.map((calendar) => (

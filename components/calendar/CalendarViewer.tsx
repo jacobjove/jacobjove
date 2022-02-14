@@ -197,7 +197,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               bottom: 0,
               backgroundColor: (theme) => theme.palette.background.default,
               padding: "0.5rem",
-              zIndex: 1e14,
+              zIndex: 1e13,
             }
           : {}),
       }}
@@ -311,7 +311,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
         <MonthViewer loading={loading} data={data} {...commonViewProps} hidden={view != "month"} />
         {/* TODO: After prettifying the legend, change `>= 1` to `> 1` so that the legend is only displayed if there are multiple calendars */}
         {(enabledCalendars?.length || 0) >= 1 && (
-          <Box position="absolute" bottom={1} right={1}>
+          <Box position="absolute" bottom={1} right={1} zIndex={1e14}>
             <CalendarLegend
               calendars={enabledCalendars}
               selectedCalendarIds={selectedCalendarIds}
