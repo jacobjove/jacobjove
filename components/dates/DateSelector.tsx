@@ -95,6 +95,7 @@ const DateSelector: FC<DateSelectorProps> = ({
           if (inputProps) {
             inputProps.style = {
               ...inputProps.style,
+              minWidth: "3rem",
               width: FORMAT_CH_LENGTHS[dateFormat] ? `${FORMAT_CH_LENGTHS[dateFormat]}ch` : "100%",
               height: "100%",
               border: "none",

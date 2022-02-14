@@ -190,10 +190,10 @@ const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
       >
         <TableHead>
           <TableRow>
+            <TableCell>{"Done?"}</TableCell>
             <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell>Task</TableCell>
-            <TableCell style={{ width: "5rem", textAlign: "center" }}>Due date</TableCell>
+            <TableCell>{"Task"}</TableCell>
+            <TableCell style={{ width: "5rem", textAlign: "center" }}>{"Due"}</TableCell>
             <TableCell></TableCell>
             <TableCell></TableCell>
             <TableCell></TableCell>

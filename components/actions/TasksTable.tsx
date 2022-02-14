@@ -132,7 +132,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
       // returning modified fields allows an actively dragging task to update
       return { rank: temporaryRank };
     },
-    [incompleteTasks, loadingUpdateTask, apolloClient.cache]
+    [loadingUpdateTask, apolloClient.cache]
   );
 
   const updateTaskRank = useCallback(
@@ -240,7 +240,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
       <Table
         sx={{
           minWidth: 100,
-          "& th": { padding: 0 },
+          "& th": { padding: 0, fontSize: "0.75rem", lineHeight: "0.9rem", px: "0.25rem" },
           "& td": { padding: 0, fontSize: PREFERRED_FONT_SIZE },
         }}
         size="small"
@@ -248,10 +248,11 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
       >
         <TableHead>
           <TableRow>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell>Task</TableCell>
-            <TableCell style={{ width: "5rem", textAlign: "center" }}>Due date</TableCell>
+            <TableCell component={"th"}>{"Done?"}</TableCell>
+            <TableCell component={"th"}>{"Task"}</TableCell>
+            <TableCell component={"th"} style={{ textAlign: "center" }}>
+              {"Due"}
+            </TableCell>
             <TableCell></TableCell>
             <TableCell></TableCell>
             <TableCell></TableCell>
@@ -269,7 +270,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
               />
             )) || (
               <>
-                <TableCell colSpan={2} />
+                <TableCell colSpan={1} />
                 <TableCell colSpan={5}>
                   <Button
                     variant="text"
@@ -293,7 +294,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
           {!!completeTasks.length && (
             <>
               <TableRow>
-                <TableCell colSpan={7} style={{ paddingTop: "1rem", paddingBottom: "0.25rem" }}>
+                <TableCell colSpan={6} style={{ paddingTop: "1rem", paddingBottom: "0.25rem" }}>
                   <Typography variant="h4" mx="0.25rem">
                     {"Recently completed"}
                   </Typography>

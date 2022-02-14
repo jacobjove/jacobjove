@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { parseISO } from "date-fns";
-import { FC, useContext, useMemo, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 
 type ViewMode = "list" | "board";
@@ -25,12 +25,17 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const { defaultView, data, ...tasksTableProps } = props;
   const date = useContext(DateContext);
   const [selectedDate, setSelectedDate] = useState<Date | null>(date);
-  const selectedTasks = useMemo(() => {
-    if (!selectedDate) return data.tasks;
-    return data.tasks.filter((task) =>
-      !task.plannedStartDate ? true : parseISO(task.plannedStartDate) <= selectedDate
-    );
-  }, [selectedDate, data.tasks]);
+  // TODO: which of the following is more performant?
+  // const selectedTasks = useMemo(() => {
+  //   if (!selectedDate) return data.tasks;
+  //   return data.tasks.filter((task) =>
+  //     !task.plannedStartDate ? true : parseISO(task.plannedStartDate) <= selectedDate
+  //   );
+  // }, [selectedDate, data.tasks]);
+  //prettier-ignore
+  const selectedTasks = !selectedDate ? data.tasks : data.tasks.filter((task) => {
+    return !task.plannedStartDate ? true : parseISO(task.plannedStartDate) <= selectedDate;
+  });
   const [view, setView] = useState<ViewMode>(defaultView ?? "list");
   const [fullScreen, setFullScreen] = useState(false);
   const renderedComponent = (
@@ -64,6 +69,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
             size="small"
             color="primary"
             aria-label="text alignment"
+            sx={{ "& button": { px: "5px", py: "2px" } }}
           >
             <ToggleButton value="list" aria-label="list view">
               <TableRowsIcon />
