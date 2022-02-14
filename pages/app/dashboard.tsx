@@ -215,22 +215,10 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
             )}
           </Box>
           {editing ? (
-            <IconButton
-              onClick={() => {
-                setEditing(false);
-              }}
-            >
+            <IconButton onClick={() => setEditing(false)}>
               <DoneIcon />
             </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => {
-                setEditing(true);
-              }}
-            >
-              <ModeEditIcon />
-            </IconButton>
-          )}
+          ) : null}
           <IconButton
             id="menu-button-x"
             onClick={(e) => {
@@ -251,18 +239,17 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
             }}
             keepMounted
           >
-            {/* <Link href="/app/routines">
-              <a>
-                <MenuItem>Routines</MenuItem>
-              </a>
-            </Link> */}
-            <MenuItem
-              onClick={() => {
-                setMenuOpen(false);
-              }}
-            >
-              Close
+            <MenuItem>
+              <IconButton
+                onClick={() => {
+                  setEditing(true);
+                  setMenuOpen(false);
+                }}
+              >
+                <ModeEditIcon />
+              </IconButton>
             </MenuItem>
+            <MenuItem onClick={() => setMenuOpen(false)}>{"Close"}</MenuItem>
           </Menu>
         </Box>
       )}
