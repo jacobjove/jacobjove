@@ -30,7 +30,7 @@ import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Session } from "next-auth";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 import { ItemCallback, Responsive, WidthProvider } from "react-grid-layout";
 
 export const fragment = gql`
@@ -129,7 +129,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "calendar":
           return (
             <DashboardCard title={"Calendar"} editing={editing} loading={loading}>
-              <CalendarViewer
+              <CalendarViewerMemoized
                 data={{ calendarEvents, calendars }}
                 loading={loading}
                 defaultView="day"
@@ -140,19 +140,19 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "tasks":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <TasksBox data={{ tasks }} />
+              <TasksBoxMemoized data={{ tasks }} />
             </DashboardCard>
           );
         case "identities":
           return (
             <DashboardCard title={"Identities"} editing={editing} loading={loading}>
-              <IdentityTable identifications={identifications} />
+              <IdentityTableMemoized data={{ identifications }} />
             </DashboardCard>
           );
         case "values":
           return (
             <DashboardCard title={"Values"} editing={editing} loading={loading}>
-              <ValuesTable userValues={userValues} />
+              <ValuesTableMemoized data={{ userValues }} />
             </DashboardCard>
           );
         case "topics":
@@ -287,5 +287,28 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     </div>
   );
 };
+
+function valuesAreEqual<T extends Record<string, any>>(a: T, b: T) {
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  if (aKeys.length !== new Set([...aKeys, ...bKeys]).size) return false;
+  for (const key of aKeys) {
+    if (a[key] !== b[key]) return false;
+  }
+  return true;
+}
+
+function memoize<P extends { data: Record<string, any> }>(component: FC<P>) {
+  return memo(component, function propsAreEqual(prevProps, nextProps) {
+    const { data: prevData, ...prevOther } = prevProps;
+    const { data: nextData, ...nextOther } = nextProps;
+    return valuesAreEqual(prevData, nextData) && valuesAreEqual(prevOther, nextOther);
+  });
+}
+
+const CalendarViewerMemoized = memoize(CalendarViewer);
+const TasksBoxMemoized = memoize(TasksBox);
+const ValuesTableMemoized = memoize(ValuesTable);
+const IdentityTableMemoized = memoize(IdentityTable);
 
 export default Dashboard;

@@ -2,14 +2,10 @@ import { Layout as LayoutItem } from "react-grid-layout";
 
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
 
-export interface CompleteDashboardLayouts {
-  xxs: DashboardComponent[];
-  xs: DashboardComponent[];
-  sm: DashboardComponent[];
-  md: DashboardComponent[];
-  lg: DashboardComponent[];
-  xl: DashboardComponent[];
-}
+export type CompleteDashboardLayouts = Record<
+  "xxs" | "xs" | "sm" | "md" | "lg" | "xl",
+  DashboardComponent[]
+>;
 
 export type DashboardLayouts = AtLeastOne<CompleteDashboardLayouts>;
 

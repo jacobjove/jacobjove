@@ -66,8 +66,6 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     TagManager.initialize(tagManagerArgs);
   }, []);
 
-  console.log("App.render");
-
   return (
     <SessionProvider session={session}>
       <ApolloProvider client={apolloClient}>
