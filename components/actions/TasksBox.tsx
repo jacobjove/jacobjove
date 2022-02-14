@@ -69,7 +69,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
             size="small"
             color="primary"
             aria-label="text alignment"
-            sx={{ "& button": { px: "5px", py: "2px" } }}
+            sx={{ "& button": { px: "5px", py: "3px" } }}
           >
             <ToggleButton value="list" aria-label="list view">
               <TableRowsIcon />
