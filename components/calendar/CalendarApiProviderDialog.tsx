@@ -223,10 +223,16 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   }, [user, provider, calendars, addCalendars]);
 
   useEffect(() => {
-    if (dialogProps.open && !loading && !calendars?.length) {
-      (async () => await refreshCalendarList())();
+    if (dialogProps.open && !loading && calendarIntegrationIsEnabled && !calendars?.length) {
+      (async () => await refreshCalendarList().catch(alert))();
     }
-  }, [dialogProps.open, loading, calendars?.length, refreshCalendarList]);
+  }, [
+    dialogProps.open,
+    loading,
+    calendarIntegrationIsEnabled,
+    calendars?.length,
+    refreshCalendarList,
+  ]);
 
   // TODO: this also needs to remove associated calendars and events.
   // We should show a confirmation dialog first.
@@ -252,7 +258,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
       `Select one or more calendars to connect from your ${name} account to your SelfBuilder account.`,
     ],
   ];
-  const nextStep = enabledCalendars?.length ? null : account ? 1 : 0;
+  const nextStep = enabledCalendars?.length ? null : calendarIntegrationIsEnabled ? 1 : 0;
   console.log("nextStep:", nextStep);
   // TODO: reduce unnecessary re-renders
   return (
@@ -282,7 +288,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
           {name} {"Calendar integration"}
         </Typography>
       </DialogTitle>
-      <DialogContent sx={{ minHeight: "33vh" }}>
+      <DialogContent sx={{ minHeight: "33vh", display: "flex", flexDirection: "column" }}>
         {nextStep === null ? (
           <Box display="flex" alignItems="center">
             <DoneIcon />
@@ -365,8 +371,9 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
             )}
           </TableContainer>
         ) : (
-          <Box height="100%" display="flex" alignItems={"center"} justifyContent={"center"}>
+          <Box flexGrow={1} display="flex" alignItems={"center"} justifyContent={"center"}>
             <Button
+              variant="contained"
               title={`Connect ${name} Calendar`}
               onClick={() => {
                 signIn(
