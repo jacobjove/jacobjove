@@ -2,7 +2,7 @@ import { Calendar } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox, { CheckboxProps } from "@mui/material/Checkbox";
-import { FC } from "react";
+import { Dispatch, FC } from "react";
 
 const CalendarInclusionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
   const { checked, disabled, onChange } = props;
@@ -11,23 +11,23 @@ const CalendarInclusionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 
 interface CalendarLegendProps {
   calendars: Calendar[];
-  selectedCalendarIds?: number[];
-  setSelectedCalendarIds: (calendarIds: number[]) => void;
+  selectedCalendarIds: number[];
+  dispatchCalendarIds: Dispatch<{ type: "add" | "remove"; value: number[] }>;
 }
 
 const CalendarLegend: FC<CalendarLegendProps> = ({
   calendars,
-  selectedCalendarIds: _selectedCalendarIds,
-  setSelectedCalendarIds,
+  selectedCalendarIds,
+  dispatchCalendarIds,
 }: CalendarLegendProps) => {
-  const selectedCalendarIds = _selectedCalendarIds || [];
+  console.log("CalendarLegend", selectedCalendarIds);
   return (
     <Box
       sx={{
         height: "100%",
         m: "-0.2rem",
         p: "0.5rem",
-        backgroundColor: (theme) => "white", // theme.palette.background.paper,
+        backgroundColor: (theme) => theme.palette.background.paper,
         border: (theme) => `1px solid ${theme.palette.divider}`,
         borderRadius: "2px",
       }}
@@ -35,13 +35,9 @@ const CalendarLegend: FC<CalendarLegendProps> = ({
       {calendars.map((calendar) => (
         <Box key={calendar.id} display={"flex"} alignItems={"center"}>
           <CalendarInclusionCheckbox
-            checked={selectedCalendarIds.includes(calendar.id)}
+            checked={selectedCalendarIds?.includes(calendar.id)}
             onChange={(_, checked) => {
-              setSelectedCalendarIds(
-                checked
-                  ? [...new Set([...selectedCalendarIds, calendar.id])]
-                  : selectedCalendarIds.filter((_) => _ !== calendar.id)
-              );
+              dispatchCalendarIds({ type: checked ? "add" : "remove", value: [calendar.id] });
             }}
           />
           <Typography

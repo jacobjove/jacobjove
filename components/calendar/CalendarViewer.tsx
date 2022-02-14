@@ -91,6 +91,21 @@ type CalendarViewerProps = Omit<CalendarProps, "data"> & {
   defaultView?: ViewMode;
 };
 
+const initializeSelectedCalendarIds = (calendarIds: number[]) => calendarIds;
+
+const reducer = (state: number[], action: { type: "add" | "remove" | "init"; value: number[] }) => {
+  switch (action.type) {
+    case "add":
+      return [...new Set([...state, ...action.value])];
+    case "remove":
+      return state.filter((id) => !action.value.includes(id));
+    case "init":
+      return initializeSelectedCalendarIds(action.value);
+    default:
+      throw new Error();
+  }
+};
+
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
   const { loading, data: _data, defaultView, ...rest } = props;
   const user = useContext(UserContext);
@@ -108,10 +123,16 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   );
   const defaultCalendar = enabledCalendars[0]; // TODO
 
-  const [selectedCalendarIds, setSelectedCalendarIds] = useState<number[]>();
+  const [selectedCalendarIds, dispatchCalendarIds] = useReducer(
+    reducer,
+    [],
+    initializeSelectedCalendarIds
+  );
+
   useEffect(() => {
-    if (!loading && !selectedCalendarIds && enabledCalendars?.length) {
-      setSelectedCalendarIds(enabledCalendars.map((calendar) => calendar.id));
+    if (!loading && !selectedCalendarIds?.length && enabledCalendars?.length) {
+      const calendarIdsToSelect = enabledCalendars.map((calendar) => calendar.id);
+      dispatchCalendarIds({ type: "init", value: calendarIdsToSelect });
     }
   }, [loading, enabledCalendars, selectedCalendarIds]);
 
@@ -263,7 +284,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
             <CalendarLegend
               calendars={enabledCalendars}
               selectedCalendarIds={selectedCalendarIds}
-              setSelectedCalendarIds={setSelectedCalendarIds}
+              dispatchCalendarIds={dispatchCalendarIds}
             />
           </Box>
         )}
