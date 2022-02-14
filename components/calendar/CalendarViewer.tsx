@@ -9,7 +9,6 @@ import DateContext from "@/components/contexts/DateContext";
 import UserContext from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
-import { Calendar } from "@/graphql/schema";
 import { getCalendarScope } from "@/utils/calendar/providers";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -33,7 +32,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import Image from "next/image";
 import { FC, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -54,38 +52,6 @@ export const fragment = gql`
   ${calendarFragment}
   ${calendarEventFragment}
 `;
-
-interface CalendarMenuItemProps extends MenuItemProps {
-  calendar: Calendar;
-}
-
-const CalendarMenuItem: FC<CalendarMenuItemProps> = ({ calendar, children, ...props }) => {
-  const dialogState = usePopupState({
-    variant: "popover",
-    popupId: `calendar-${calendar.id}-dialog`,
-  });
-  const Icon = calendar.provider ? ICON_MAP[calendar.provider] : null;
-  const iconElement = Icon ? (
-    <Icon sx={{ color: "lightgray" }} />
-  ) : (
-    <Box display="flex" alignItems="center">
-      <Image alt="SelfBuilder logo" src="/logo.png" width={24} height={24} />
-    </Box>
-  );
-  const enabled = calendar.enabled;
-  return (
-    <>
-      <MenuItem {...props} {...bindTrigger(dialogState)}>
-        <ListItemIcon sx={{ visibility: enabled ? "visible" : "hidden" }}>
-          <Check />
-        </ListItemIcon>
-        {iconElement}
-        {children}
-      </MenuItem>
-      {/* <CalendarApiProviderDialog provider={provider} {...bindMenu(dialogState)} /> */}
-    </>
-  );
-};
 
 interface CalendarApiMenuItemProps extends MenuItemProps {
   provider: CalendarProvider;
@@ -271,24 +237,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                 </CalendarApiMenuItem>
               </MenuList>
               <Divider />
-              {!!enabledCalendars?.length && (
-                // Use a div rather than a fragment, in order to MUI warnings
-                // about Menu not allowing a fragment as a child.
-                // https://github.com/mui/material-ui/issues/16181
-                <div>
-                  <Typography variant="h4" sx={{ ml: 1, mt: 1, color: "gray" }}>
-                    {"Calendars"}
-                  </Typography>
-                  <MenuList dense>
-                    {enabledCalendars?.map((calendar) => (
-                      <CalendarMenuItem key={calendar.id} calendar={calendar}>
-                        <Typography ml={"1rem"}>{calendar.name}</Typography>
-                      </CalendarMenuItem>
-                    ))}
-                  </MenuList>
-                  <Divider />
-                </div>
-              )}
               <MenuItem
                 onClick={() => alert("Not yet implemeneted")}
                 sx={{ textAlign: "center", justifyContent: "center" }}
