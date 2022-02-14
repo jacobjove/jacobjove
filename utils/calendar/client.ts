@@ -1,15 +1,36 @@
+/*
+THIS IS A SERVER-SIDE-ONLY MODULE.
+Importing from this module in client-side code will result in an error.
+*/
+
 import { Account, Calendar } from "@/prisma/generated";
-import { getCalendarClient } from "@/utils/calendar/providers";
 import prisma from "@/utils/prisma";
-import { calendar_v3 } from "googleapis";
+import { calendar_v3, google } from "googleapis";
 
 type RequiredAccountData = Pick<
   Account,
   "id" | "provider" | "accessToken" | "refreshToken" | "syncToken"
 >;
 
+export const getCalendarClient = (
+  account: Pick<Account, "provider" | "accessToken" | "refreshToken">
+) => {
+  let auth;
+  switch (account.provider) {
+    case "google":
+      auth = new google.auth.OAuth2(process.env.AUTH_GOOGLE_ID, process.env.AUTH_GOOGLE_SECRET);
+      auth.setCredentials({
+        access_token: account.accessToken,
+        refresh_token: account.refreshToken,
+      });
+      return google.calendar({ version: "v3", auth });
+    default:
+      throw new Error("Provider not supported");
+  }
+};
+
 /*
-  This is a wrapper for the different clients of all supported calendar providers.
+  This is a wrapper for the different clients of supported calendar providers.
   Whenever we add support for another calendar provider, we need to update this
   wrapper class to support the new provider's calendar client.
 */
