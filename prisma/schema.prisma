@@ -29,7 +29,7 @@ model Account {
   user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
   provider          String
-  providerAccountId String
+  remoteId          String
   scopes            String[]
   accessToken       String?
   refreshToken      String?
@@ -38,7 +38,7 @@ model Account {
   createdAt         DateTime   @default(now())
   calendars         Calendar[]
 
-  @@unique([provider, providerAccountId])
+  @@unique([provider, remoteId])
 }
 
 enum Role {
@@ -94,20 +94,20 @@ enum CalendarProvider {
 }
 
 model Calendar {
-  id              Int               @id @default(autoincrement())
-  uid             String            @unique(map: "Calendar_uid_unique_constraint") @default(cuid())
-  user            User              @relation("calendars", fields: [userId], references: [id], onDelete: Cascade)
-  userId          Int
-  name            String?
-  color           String?
-  provider        CalendarProvider?
-  sourceId        String?
-  syncToken       String?
-  sourceAccount   Account?          @relation(fields: [accountSourceId], references: [id], onDelete: Cascade)
-  accountSourceId Int?
-  primary         Boolean?          @default(false)
-  public          Boolean?          @default(false)
-  enabled         Boolean?          @default(true)
+  id        Int               @id @default(autoincrement())
+  uid       String            @unique(map: "Calendar_uid_unique_constraint") @default(cuid())
+  user      User              @relation("calendars", fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  name      String?
+  color     String?
+  provider  CalendarProvider?
+  remoteId  String?
+  syncToken String?
+  account   Account?          @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId Int?
+  primary   Boolean?          @default(false)
+  public    Boolean?          @default(false)
+  enabled   Boolean?          @default(true)
 
   events CalendarEvent[]
 
@@ -115,37 +115,34 @@ model Calendar {
   updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
-  @@unique([id, sourceId])
-  @@unique([sourceId, accountSourceId])
+  @@unique([remoteId, accountId])
 }
 
 model CalendarEvent {
-  id               Int             @id @default(autoincrement())
-  uid              String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
-  sourceId         String?
-  calendar         Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
-  calendarId       Int
-  calendarSourceId String?
-  schedule         ActionSchedule? @relation(fields: [scheduleId], references: [id])
-  scheduleId       Int?
+  id         Int             @id @default(autoincrement())
+  uid        String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
+  remoteId   String?
+  calendar   Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  calendarId Int
+  schedule   ActionSchedule? @relation(fields: [scheduleId], references: [id])
+  scheduleId Int?
   // TODO: remove habit and habitId
-  habit            Habit?          @relation(fields: [habitId], references: [id])
-  habitId          Int?
-  task             Task?           @relation(fields: [taskId], references: [id])
-  taskId           Int?
-  title            String
-  start            DateTime
-  end              DateTime?
-  allDay           Boolean         @default(false)
-  notes            String?
-  canceled         Boolean?        @default(false)
+  habit      Habit?          @relation(fields: [habitId], references: [id])
+  habitId    Int?
+  task       Task?           @relation(fields: [taskId], references: [id])
+  taskId     Int?
+  title      String
+  start      DateTime
+  end        DateTime?
+  allDay     Boolean         @default(false)
+  notes      String?
+  canceled   Boolean?        @default(false)
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
-  @@unique([id, sourceId])
-  @@unique([sourceId, calendarSourceId])
+  @@unique([remoteId, calendarId])
   @@map(name: "calendarEvents")
 }
 

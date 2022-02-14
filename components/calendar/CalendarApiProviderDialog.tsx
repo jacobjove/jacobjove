@@ -207,7 +207,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
           // Create calendars that don't already exist.
           const calendarsToAdd: Calendar[] = response.data.calendars
             .filter(
-              (calendar: Calendar) => !calendars?.find((_) => _.sourceId == calendar.sourceId)
+              (calendar: Calendar) => !calendars?.find((_) => _.remoteId == calendar.remoteId)
             )
             .map((calendar: Calendar) => ({
               ...calendar,

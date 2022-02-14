@@ -99,8 +99,8 @@ export const calendarFragment = gql`
     name
     color
     provider
-    sourceId
-    accountSourceId
+    remoteId
+    accountId
     syncToken
     public
     primary
@@ -112,9 +112,7 @@ export const calendarEventFragment = gql`
   fragment CalendarEventFragment on CalendarEvent {
     __typename
     id
-    sourceId
-    accountSourceId
-    calendarSourceId
+    remoteId
     scheduleId
     calendarId
     title

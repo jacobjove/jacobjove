@@ -32,7 +32,7 @@ export type EventData = Omit<
   | "start"
   | "end"
   | "notes"
-  | "sourceId"
+  | "remoteId"
   | "calendarSourceId"
   | "canceled"
   | "createdAt"

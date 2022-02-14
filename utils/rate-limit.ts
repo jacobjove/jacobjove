@@ -1,5 +1,4 @@
 import LRU from "lru-cache";
-import { NextApiResponse } from "next";
 
 const DEFAULT_MAX_REQUESTS = 1;
 const DEFAULT_TTL = 60000; // 60 seconds
@@ -22,7 +21,7 @@ const rateLimiter = (options: RateLimitOptions) => {
   const maxRequests = options.maxRequests || DEFAULT_MAX_REQUESTS;
 
   return {
-    check: (res: NextApiResponse, token: string) =>
+    check: (token: string) =>
       new Promise<void>((resolve, reject) => {
         const tokenCount = tokenCache.get(token) || [0];
         if (tokenCount[0] === 0) tokenCache.set(token, tokenCount);
