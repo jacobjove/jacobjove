@@ -12,7 +12,7 @@ type Account {
   createdAt: DateTime!
   id: Int!
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
   refreshToken: String
   scopes: [String!]!
   syncToken: String
@@ -42,7 +42,7 @@ type AccountCountAggregate {
   createdAt: Int!
   id: Int!
   provider: Int!
-  providerAccountId: Int!
+  remoteId: Int!
   refreshToken: Int!
   scopes: Int!
   syncToken: Int!
@@ -55,7 +55,7 @@ input AccountCountOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
+  remoteId: SortOrder
   refreshToken: SortOrder
   scopes: SortOrder
   syncToken: SortOrder
@@ -69,7 +69,7 @@ input AccountCreateInput {
   calendars: CalendarCreateNestedManyWithoutSourceAccountInput
   createdAt: DateTime
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
   refreshToken: String
   scopes: AccountCreatescopesInput
   syncToken: String
@@ -82,7 +82,7 @@ input AccountCreateManyInput {
   createdAt: DateTime
   id: Int
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
   refreshToken: String
   scopes: AccountCreateManyscopesInput
   syncToken: String
@@ -95,7 +95,7 @@ input AccountCreateManyUserInput {
   createdAt: DateTime
   id: Int
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
   refreshToken: String
   scopes: AccountCreateManyscopesInput
   syncToken: String
@@ -150,7 +150,7 @@ input AccountCreateWithoutCalendarEventInput {
   calendars: CalendarCreateNestedManyWithoutSourceAccountInput
   createdAt: DateTime
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
   refreshToken: String
   scopes: AccountCreatescopesInput
   syncToken: String
@@ -163,7 +163,7 @@ input AccountCreateWithoutCalendarsInput {
   accessTokenExpiry: DateTime
   createdAt: DateTime
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
   refreshToken: String
   scopes: AccountCreatescopesInput
   syncToken: String
@@ -177,7 +177,7 @@ input AccountCreateWithoutUserInput {
   calendars: CalendarCreateNestedManyWithoutSourceAccountInput
   createdAt: DateTime
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
   refreshToken: String
   scopes: AccountCreatescopesInput
   syncToken: String
@@ -198,7 +198,7 @@ type AccountGroupBy {
   createdAt: DateTime!
   id: Int!
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
   refreshToken: String
   scopes: [String!]
   syncToken: String
@@ -217,7 +217,7 @@ type AccountMaxAggregate {
   createdAt: DateTime
   id: Int
   provider: String
-  providerAccountId: String
+  remoteId: String
   refreshToken: String
   syncToken: String
   userId: Int
@@ -229,7 +229,7 @@ input AccountMaxOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
+  remoteId: SortOrder
   refreshToken: SortOrder
   syncToken: SortOrder
   userId: SortOrder
@@ -241,7 +241,7 @@ type AccountMinAggregate {
   createdAt: DateTime
   id: Int
   provider: String
-  providerAccountId: String
+  remoteId: String
   refreshToken: String
   syncToken: String
   userId: Int
@@ -253,7 +253,7 @@ input AccountMinOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
+  remoteId: SortOrder
   refreshToken: SortOrder
   syncToken: SortOrder
   userId: SortOrder
@@ -274,7 +274,7 @@ input AccountOrderByWithAggregationInput {
   createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
+  remoteId: SortOrder
   refreshToken: SortOrder
   scopes: SortOrder
   syncToken: SortOrder
@@ -289,7 +289,7 @@ input AccountOrderByWithRelationInput {
   createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
+  remoteId: SortOrder
   refreshToken: SortOrder
   scopes: SortOrder
   syncToken: SortOrder
@@ -299,7 +299,7 @@ input AccountOrderByWithRelationInput {
 
 input AccountProviderProviderAccountIdCompoundUniqueInput {
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
 }
 
 input AccountRelationFilter {
@@ -313,7 +313,7 @@ enum AccountScalarFieldEnum {
   createdAt
   id
   provider
-  providerAccountId
+  remoteId
   refreshToken
   scopes
   syncToken
@@ -329,7 +329,7 @@ input AccountScalarWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   provider: StringFilter
-  providerAccountId: StringFilter
+  remoteId: StringFilter
   refreshToken: StringNullableFilter
   scopes: StringNullableListFilter
   syncToken: StringNullableFilter
@@ -345,7 +345,7 @@ input AccountScalarWhereWithAggregatesInput {
   createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   provider: StringWithAggregatesFilter
-  providerAccountId: StringWithAggregatesFilter
+  remoteId: StringWithAggregatesFilter
   refreshToken: StringNullableWithAggregatesFilter
   scopes: StringNullableListFilter
   syncToken: StringNullableWithAggregatesFilter
@@ -369,7 +369,7 @@ input AccountUpdateInput {
   calendars: CalendarUpdateManyWithoutSourceAccountInput
   createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
-  providerAccountId: StringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
   refreshToken: NullableStringFieldUpdateOperationsInput
   scopes: AccountUpdatescopesInput
   syncToken: NullableStringFieldUpdateOperationsInput
@@ -381,7 +381,7 @@ input AccountUpdateManyMutationInput {
   accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
-  providerAccountId: StringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
   refreshToken: NullableStringFieldUpdateOperationsInput
   scopes: AccountUpdatescopesInput
   syncToken: NullableStringFieldUpdateOperationsInput
@@ -437,7 +437,7 @@ input AccountUpdateWithoutCalendarEventInput {
   calendars: CalendarUpdateManyWithoutSourceAccountInput
   createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
-  providerAccountId: StringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
   refreshToken: NullableStringFieldUpdateOperationsInput
   scopes: AccountUpdatescopesInput
   syncToken: NullableStringFieldUpdateOperationsInput
@@ -450,7 +450,7 @@ input AccountUpdateWithoutCalendarsInput {
   accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
-  providerAccountId: StringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
   refreshToken: NullableStringFieldUpdateOperationsInput
   scopes: AccountUpdatescopesInput
   syncToken: NullableStringFieldUpdateOperationsInput
@@ -464,7 +464,7 @@ input AccountUpdateWithoutUserInput {
   calendars: CalendarUpdateManyWithoutSourceAccountInput
   createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
-  providerAccountId: StringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
   refreshToken: NullableStringFieldUpdateOperationsInput
   scopes: AccountUpdatescopesInput
   syncToken: NullableStringFieldUpdateOperationsInput
@@ -502,7 +502,7 @@ input AccountWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   provider: StringFilter
-  providerAccountId: StringFilter
+  remoteId: StringFilter
   refreshToken: StringNullableFilter
   scopes: StringNullableListFilter
   syncToken: StringNullableFilter
@@ -512,7 +512,7 @@ input AccountWhereInput {
 
 input AccountWhereUniqueInput {
   id: Int
-  provider_providerAccountId: AccountProviderProviderAccountIdCompoundUniqueInput
+  provider_remoteId: AccountProviderProviderAccountIdCompoundUniqueInput
 }
 
 type Act {

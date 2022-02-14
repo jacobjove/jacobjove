@@ -166,7 +166,7 @@ export const accountFragment = gql`
     __typename
     id
     provider
-    providerAccountId
+    remoteId
     scopes
     accessToken
     accessTokenExpiry

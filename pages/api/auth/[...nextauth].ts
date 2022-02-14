@@ -94,7 +94,7 @@ const callbacks: CallbacksOptions = {
             accounts: {
               where: {
                 provider: account.provider,
-                providerAccountId: account.providerAccountId,
+                remoteId: account.providerAccountId,
               },
               select: { scopes: true },
             },
@@ -199,7 +199,7 @@ const callbacks: CallbacksOptions = {
         const freshToken = token as NoUndefinedField<typeof token>;
         const accountIdData = {
           provider: freshToken.provider,
-          providerAccountId: freshToken.providerAccountId,
+          remoteId: freshToken.providerAccountId,
         };
         const commonAccountData = {
           scopes: freshToken.scopes,
@@ -216,7 +216,7 @@ const callbacks: CallbacksOptions = {
                 lastLogin: new Date(),
                 accounts: {
                   upsert: {
-                    where: { provider_providerAccountId: accountIdData },
+                    where: { provider_remoteId: accountIdData },
                     create: { ...accountIdData, ...commonAccountData },
                     update: commonAccountData,
                   },
