@@ -30,7 +30,6 @@ const CalendarLegend: FC<CalendarLegendProps> = ({
         backgroundColor: (theme) => "white", // theme.palette.background.paper,
         border: (theme) => `1px solid ${theme.palette.divider}`,
         borderRadius: "2px",
-        zIndex: 20,
       }}
     >
       {calendars.map((calendar) => (
