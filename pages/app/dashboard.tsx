@@ -137,11 +137,13 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
   const [editing, setEditing] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
   const [selectedDashboardId, setSelectedDashboardId] = useState<number | null>(
     (defaultDashboard || dashboards?.[0])?.id || null
   );
   const selectedDashboard =
     dashboards?.find((dashboard) => dashboard.id === selectedDashboardId) || dashboards?.[0];
+
   const layouts = selectedDashboard?.layouts ? JSON.parse(selectedDashboard.layouts) : undefined;
 
   useEffect(() => {
@@ -158,9 +160,11 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
       }).catch(console.error);
     }
   }, [loading, data, dashboards, createDashboard, session]);
+
   useEffect(() => {
-    if (dashboards?.length && !selectedDashboard) setSelectedDashboardId(dashboards[0].id);
-  }, [dashboards, selectedDashboard, setSelectedDashboardId]);
+    if (dashboards?.length && !selectedDashboardId) setSelectedDashboardId(dashboards[0].id);
+  }, [dashboards, selectedDashboardId, setSelectedDashboardId]);
+
   if (!data || isEmpty(dashboardData)) return null;
   return (
     <Layout>
