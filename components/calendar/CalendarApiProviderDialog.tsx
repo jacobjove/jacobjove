@@ -254,7 +254,6 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   const removeCalendarScope = useCallback(() => {
     if (!account || loading) return;
     const newScopes = account.scopes.filter((_scope) => _scope !== scope);
-    console.log("newScopes", newScopes);
     updateAccount({
       variables: {
         accountId: account.id,
