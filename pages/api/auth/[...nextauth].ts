@@ -146,10 +146,16 @@ const callbacks: CallbacksOptions = {
       token.refreshToken = account.refresh_token;
     }
     // Return the previous token if the access token has not expired yet.
-    if (token.accessTokenExpiry && Date.now() < token.accessTokenExpiry) return token;
-    // Attempt to update the token.
-    console.log(`🔑 Attempting to update token because ${Date.now()} > ${token.accessTokenExpiry}`);
-    return refreshAccessToken(token);
+    if (token.accessTokenExpiry && Date.now() < token.accessTokenExpiry) {
+      return token;
+    } else if (token) {
+      // Attempt to update the token.
+      console.log(
+        `🔑 Attempting to update token because ${Date.now()} > ${token.accessTokenExpiry}`
+      );
+      return refreshAccessToken(token);
+    }
+    return token;
   },
   async session({ session, token }) {
     /*
