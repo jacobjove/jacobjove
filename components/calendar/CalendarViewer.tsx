@@ -138,6 +138,10 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     initializeSelectedCalendarIds
   );
 
+  // Note: This is just a way to make sure the initialization logic only runs once. An
+  // alternative might be to explicitly check for `enabledCalendars` being undefined
+  // (rather than checking for `enabledCalendars?.length` being falsy), since it should
+  // only be undefined until the initialization logic runs. (This would need to be tested.)
   const initialCalendarSelectionComplete = useRef(false);
 
   useEffect(() => {
