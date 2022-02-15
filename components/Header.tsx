@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
@@ -58,7 +58,6 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
   const navMenuState = usePopupState({ variant: "popover", popupId: "nav-menu" });
 
   const [colorMode, setColorMode] = useContext(ColorModeContext);
-  const theme = useTheme();
 
   const isActive = (pathname: string) => router.pathname === pathname;
 
@@ -142,10 +141,10 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
             ))}
             <IconButton
               sx={{ ml: 1 }}
-              onClick={() => setColorMode(theme.palette.mode === "light" ? "dark" : "light")}
+              onClick={() => setColorMode(colorMode === "light" ? "dark" : "light")}
               color="inherit"
             >
-              {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+              {colorMode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
