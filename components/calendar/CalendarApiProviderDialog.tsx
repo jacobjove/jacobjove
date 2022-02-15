@@ -251,14 +251,14 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
 
   // TODO: this also needs to remove associated calendars and events.
   // We should show a confirmation dialog first.
-  const removeCalendarScope = useCallback(async () => {
+  const removeCalendarScope = useCallback(() => {
     if (!account || loading) return;
+    const newScopes = account.scopes.filter((_scope) => _scope !== scope);
+    console.log("newScopes", newScopes);
     updateAccount({
       variables: {
         accountId: account.id,
-        data: {
-          scopes: account.scopes.filter((_scope) => _scope !== scope),
-        },
+        data: { scopes: { set: newScopes } },
       },
     }).catch(alert);
   }, [loading, account, scope, updateAccount]);
