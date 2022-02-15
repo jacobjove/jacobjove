@@ -218,7 +218,7 @@ const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
             subtasks: [],
             completedAt: null,
             archivedAt: null,
-            rank: MAX_TASK_RANK,
+            rank: defaultRank,
             createdAt: now,
             updatedAt: now,
             ...newTask,
