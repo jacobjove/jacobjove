@@ -96,7 +96,10 @@ type CalendarViewerProps = Omit<CalendarProps, "data"> & {
 
 const initializeSelectedCalendarIds = (calendarIds: number[]) => calendarIds;
 
-const reducer = (state: number[], action: { type: "add" | "remove" | "init"; value: number[] }) => {
+const selectedCalendarIdsReducer = (
+  state: number[],
+  action: { type: "add" | "remove" | "init"; value: number[] }
+) => {
   switch (action.type) {
     case "add":
       return [...new Set([...state, ...action.value])];
@@ -127,12 +130,13 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const defaultCalendar = enabledCalendars[0]; // TODO
 
   const [selectedCalendarIds, dispatchCalendarIds] = useReducer(
-    reducer,
+    selectedCalendarIdsReducer,
     [],
     initializeSelectedCalendarIds
   );
-  // TODO: is this a good way to make the useEffect only run once?
+
   const initialCalendarSelectionComplete = useRef(false);
+
   useEffect(() => {
     if (!initialCalendarSelectionComplete.current && !loading && enabledCalendars?.length) {
       const calendarIdsToSelect = enabledCalendars.map((calendar) => calendar.id);
