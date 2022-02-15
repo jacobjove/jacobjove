@@ -31,8 +31,8 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
           : undefined;
       signIn(
         router.query.provider,
-        { ...(typeof callbackUrl === "string" ? { callbackUrl } : {}) },
-        { ...(scope ? { scope } : {}) }
+        typeof callbackUrl === "string" ? { callbackUrl } : {},
+        scope ? { scope } : {}
       );
     } else if (router.query.error) {
       setErrors({ _: [`${router.query?.error}`] });
