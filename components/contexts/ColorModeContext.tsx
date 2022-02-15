@@ -14,6 +14,9 @@ import {
   useState,
 } from "react";
 
+// NOTE: It's probably best to stick with "light" as the default color mode,
+// to match the prefers-color-scheme default:
+// https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme
 const DEFAULT_COLOR_MODE = "light";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -111,7 +114,7 @@ export const ColorModeContextProvider: FC = ({ children }) => {
     } else if (prefersDarkMode) {
       setMode("dark");
     } else {
-      setMode("light");
+      setMode(DEFAULT_COLOR_MODE);
     }
   }, [user?.settings?.colorMode, prefersDarkMode, setMode]);
 
