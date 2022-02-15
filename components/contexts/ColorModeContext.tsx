@@ -2,14 +2,25 @@ import UserContext from "@/components/contexts/UserContext";
 import { createTheme, PaletteMode } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { ThemeProvider } from "@mui/material/styles";
-import { createContext, FC, useContext, useEffect, useMemo, useState } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {
+  createContext,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 const DEFAULT_COLOR_MODE = "light";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-const ColorModeContext = createContext<{
-  set: (mode: PaletteMode) => void;
-}>({ set: () => null });
+// prettier-ignore
+const ColorModeContext = createContext<[PaletteMode, Dispatch<SetStateAction<PaletteMode>>]>(
+  [DEFAULT_COLOR_MODE, () => undefined]
+);
 
 export default ColorModeContext;
 
@@ -87,20 +98,25 @@ const getDesignTokens = (mode: PaletteMode) => {
 };
 
 export const ColorModeContextProvider: FC = ({ children }) => {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const user = useContext(UserContext);
-
-  const [mode, setMode] = useState<PaletteMode>(user?.settings?.colorMode ?? DEFAULT_COLOR_MODE);
-  const colorMode = useMemo(() => ({ set: (mode: PaletteMode) => setMode(mode) }), []);
+  const colorModeState = useState<PaletteMode>(user?.settings?.colorMode ?? DEFAULT_COLOR_MODE);
+  const [mode, setMode] = colorModeState;
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   useEffect(() => {
-    if (user?.settings?.colorMode) setMode(user?.settings?.colorMode);
-    // TODO: Otherwise, read from operating system preferences.
-  }, [user?.settings?.colorMode]);
+    if (user?.settings?.colorMode) {
+      setMode(user.settings.colorMode);
+    } else if (prefersDarkMode) {
+      setMode("dark");
+    } else {
+      setMode("light");
+    }
+  }, [user?.settings?.colorMode, prefersDarkMode, setMode]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <ColorModeContext.Provider value={colorModeState}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ColorModeContext.Provider>
   );

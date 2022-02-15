@@ -57,7 +57,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
   const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
   const navMenuState = usePopupState({ variant: "popover", popupId: "nav-menu" });
 
-  const colorMode = useContext(ColorModeContext);
+  const [colorMode, setColorMode] = useContext(ColorModeContext);
   const theme = useTheme();
 
   const isActive = (pathname: string) => router.pathname === pathname;
@@ -142,7 +142,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
             ))}
             <IconButton
               sx={{ ml: 1 }}
-              onClick={() => colorMode.set(theme.palette.mode === "light" ? "dark" : "light")}
+              onClick={() => setColorMode(theme.palette.mode === "light" ? "dark" : "light")}
               color="inherit"
             >
               {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
