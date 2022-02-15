@@ -9,7 +9,7 @@ import DateContext from "@/components/contexts/DateContext";
 import UserContext from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
-import { getCalendarScope, providerIsEnabledForUser } from "@/utils/calendar/providers";
+import { providerIsEnabledForUser } from "@/utils/calendar/providers";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
@@ -66,10 +66,11 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children,
   const Icon = ICON_MAP[provider];
   const iconElement = <Icon sx={{ color: "lightgray" }} />;
   const apiIsEnabled = useMemo(() => {
-    const account = user?.accounts?.find((account) => account.provider === provider);
-    const integrationIsEnabled = account?.scopes.includes(getCalendarScope(provider));
-    const providedCalendars = user?.calendars.filter((calendar) => calendar.provider === provider);
-    const connectedCalendars = providedCalendars?.filter((calendar) => calendar.enabled);
+    if (!user) return false;
+    const integrationIsEnabled = providerIsEnabledForUser(provider, user);
+    const connectedCalendars = user?.calendars.filter(
+      (calendar) => calendar.provider === provider && calendar.enabled
+    );
     return Boolean(integrationIsEnabled && connectedCalendars?.length);
   }, [user, provider]);
   props.sx = { display: "flex", alignItems: "center", ...props.sx };
