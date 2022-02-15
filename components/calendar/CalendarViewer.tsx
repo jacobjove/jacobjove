@@ -295,7 +295,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
         <WeekViewer loading={loading} data={data} {...commonViewProps} hidden={view != "week"} />
         <MonthViewer loading={loading} data={data} {...commonViewProps} hidden={view != "month"} />
         {/* TODO: After prettifying the legend, change `>= 1` to `> 1` so that the legend is only displayed if there are multiple calendars */}
-        {(enabledCalendars?.length || 0) >= 1 && (
+        {(enabledCalendars?.length ?? 0) >= 1 && (
           <Box position="absolute" bottom={1} right={1} zIndex={1e14}>
             <CalendarLegend
               calendars={enabledCalendars}
