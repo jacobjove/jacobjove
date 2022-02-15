@@ -23,7 +23,8 @@ interface CalendarPageProps {
 }
 
 const QUERY = gql`
-  query CalendarPage($userId: Int!, $date: DateTime!) {
+  query CalendarPage($userId: Int!) # $date: DateTime!
+  {
     ...CalendarViewer
     ...TasksTable
   }
@@ -128,7 +129,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       query: GET_CALENDAR_EVENTS,
       variables: {
         userId: session.user.id,
-        date: new Date().toISOString(),
+        // date: new Date().toISOString(),
       },
     })
     .catch(printError);

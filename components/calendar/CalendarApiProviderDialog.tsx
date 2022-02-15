@@ -380,7 +380,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                   ))}
                 </TableBody>
               </Table>
-            ) : (
+            ) : refreshing ? null : (
               <Box sx={{ textAlign: "center", my: 2 }}>
                 <Typography>{`No calendars are available from ${name}.`}</Typography>
               </Box>
