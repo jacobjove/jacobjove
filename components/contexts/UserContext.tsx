@@ -1,12 +1,13 @@
 import { GET_USER } from "@/graphql/queries";
 import { User as RawUser } from "@/graphql/schema";
 import { useQuery } from "@apollo/client";
+import { PaletteMode } from "@mui/material";
 import isObject from "lodash/isObject";
 import { useSession } from "next-auth/react";
 import { createContext, FC, useMemo } from "react";
 
 export interface UserSettings {
-  [key: string]: any;
+  colorMode?: PaletteMode;
 }
 
 export type User = Omit<RawUser, "settings"> & {
