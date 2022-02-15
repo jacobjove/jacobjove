@@ -9,7 +9,7 @@ import DateContext from "@/components/contexts/DateContext";
 import UserContext from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
-import { getCalendarScope } from "@/utils/calendar/providers";
+import { getCalendarScope, providerIsEnabledForUser } from "@/utils/calendar/providers";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
@@ -116,17 +116,19 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const { loading, data: _data, defaultView, ...rest } = props;
   const user = useContext(UserContext);
   const date = useContext(DateContext);
+
   // Exclude calendars that are not enabled or have been archived.
-  const enabledCalendars = _data.calendars?.filter(
-    (calendar) =>
-      calendar.enabled &&
-      !calendar.archivedAt &&
-      user?.accounts?.find(
-        (account) =>
-          account.provider === calendar.provider &&
-          account.scopes.includes(getCalendarScope(calendar.provider))
-      )
-  );
+  const enabledCalendars = useMemo(() => {
+    // prettier-ignore
+    return user ? (
+      _data.calendars?.filter((calendar) => (
+        calendar.enabled &&
+        !calendar.archivedAt &&
+        (!calendar.provider || providerIsEnabledForUser(calendar.provider, user))
+      ))
+    ) : [];
+  }, [user, _data]);
+
   const defaultCalendar = enabledCalendars[0]; // TODO
 
   const [selectedCalendarIds, dispatchCalendarIds] = useReducer(
