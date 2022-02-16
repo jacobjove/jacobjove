@@ -30,8 +30,17 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import isEqual from "lodash/isEqual";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { signIn } from "next-auth/react";
-import { FC, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { signIn, signOut } from "next-auth/react";
+import {
+  FC,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useThrottledCallback } from "use-debounce";
 
 const CREATE_CALENDARS = gql`
@@ -259,13 +268,46 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
         accountId: account.id,
         data: { scopes: { set: newScopes } },
       },
-    }).catch(alert);
+    })
+      .then(() => {
+        // TODO: This is a poor UX, but improving it will require non-trivial effort,
+        // and it's a low-priority flow. Eventually, we will need to figure out how to
+        // smoothly handle Google auth tokens with dynamic scopes.
+        const continueToLogOut = window.confirm(
+          "Calendar integration has been temporarily disabled. " +
+            "To finish removing the calendar integration, you must log out and log back in. " +
+            "To continue and log out, click OK. Otherwise, to re-enable the calendar " +
+            "integration, click Cancel."
+        );
+        continueToLogOut ? signOut() : window.location.reload();
+      })
+      .catch(alert);
   }, [loading, account, scope, updateAccount]);
 
-  const steps = [
+  const steps: [string, ReactNode][] = [
     [
       `Connect ${name} account`,
-      `Sign in with your ${name} account, and permit the calendar integration.`,
+      <div key="1">
+        <span>{`Sign in with your ${name} account, and permit the calendar integration.`}</span>
+        <Button
+          key="9"
+          variant="contained"
+          title={`Connect ${name} Calendar`}
+          sx={{ my: "0.5rem" }}
+          onClick={() => {
+            signIn(
+              provider,
+              { callbackUrl: window.location.href },
+              { scope: [...(account?.scopes ?? defaultScopes), scope].join(" ") }
+            )
+              .then(async () => await refreshCalendarList(user, provider, calendars))
+              .catch(alert);
+          }}
+          disabled={disabled}
+        >
+          {`Connect ${name} calendar`}
+        </Button>
+      </div>,
     ],
     [
       "Select calendars to sync",
@@ -314,11 +356,35 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
             orientation={"vertical"}
             activeStep={nextStep}
             sx={{
-              "& .MuiStepLabel-root": {
-                alignItems: "start",
+              "& .MuiStepConnector-root": {
+                display: "none",
               },
-              "& .MuiStepConnector-line": {
-                mx: "0.5rem",
+              "& .MuiStep-root": {
+                "& .MuiStepLabel-root": {
+                  alignItems: "stretch",
+                  flexGrow: 1,
+                },
+                "& .MuiStepLabel-iconContainer": {
+                  px: "4px",
+                  alignSelf: "stretch",
+                  alignItems: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                },
+                "&:not(:last-of-type)": {
+                  "& .MuiStepLabel-iconContainer::after": {
+                    content: "''",
+                    mt: "0.33rem",
+                    mb: "-10px",
+                    width: "1px",
+                    flexGrow: 1,
+                    alignSelf: "center",
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === "light"
+                        ? "rgba(0, 0, 0, 0.16)"
+                        : "rgba(255, 255, 255, 0.16)",
+                  },
+                },
               },
             }}
           >
@@ -404,26 +470,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
               </Box>
             )}
           </TableContainer>
-        ) : (
-          <Box flexGrow={1} display="flex" alignItems={"center"} justifyContent={"center"}>
-            <Button
-              variant="contained"
-              title={`Connect ${name} Calendar`}
-              onClick={() => {
-                signIn(
-                  provider,
-                  { callbackUrl: window.location.href },
-                  { scope: [...(account?.scopes ?? defaultScopes), scope].join(" ") }
-                )
-                  .then(async () => await refreshCalendarList(user, provider, calendars))
-                  .catch(alert);
-              }}
-              disabled={disabled}
-            >
-              {`Connect ${name} calendar`}
-            </Button>
-          </Box>
-        )}
+        ) : null}
       </DialogContent>
       <DialogActions>
         {account?.scopes.includes(scope) && (
