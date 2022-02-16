@@ -1,4 +1,3 @@
-import { handleLogout } from "@/auth";
 import ColorModeContext from "@/components/contexts/ColorModeContext";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
@@ -12,16 +11,16 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { useSession } from "next-auth/react";
+import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 
 const DynamicPageTransitionProgressBar = dynamic(
   () => import("@/components/PageTransitionProgressBar")
@@ -31,7 +30,7 @@ const pages = [["About", "/about"]];
 
 const settings = [
   ["Profile", "/profile"],
-  ["Settings", "/settings"],
+  ["Settings", "/app/settings"],
 ];
 
 const AppBar = styled(_AppBar)(({ theme }) => ({
@@ -55,31 +54,16 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
+  const navMenuState = usePopupState({ variant: "popover", popupId: "nav-menu" });
 
-  const colorMode = useContext(ColorModeContext);
-  const theme = useTheme();
+  const [colorMode, setColorMode] = useContext(ColorModeContext);
 
   const isActive = (pathname: string) => router.pathname === pathname;
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   const logout: React.MouseEventHandler = (e) => {
     e.preventDefault();
-    session && handleLogout(session);
+    session && signOut({ callbackUrl: "/" });
   };
   return (
     <AppBar position="static">
@@ -108,19 +92,11 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
             </a>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+            <IconButton {...bindTrigger(navMenuState)} size="large" color="inherit">
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
+              {...bindMenu(navMenuState)}
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "left",
@@ -130,23 +106,20 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                 vertical: "top",
                 horizontal: "left",
               }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((item) => (
-                <MenuItem
-                  key={item[0]}
-                  onClick={handleCloseNavMenu}
-                  sx={{ textAlign: "center" }}
-                  className={isActive(item[1]) ? "active" : ""}
-                >
-                  <Link href={item[1]} passHref>
-                    <Typography component="a">{item[0]}</Typography>
-                  </Link>
-                </MenuItem>
+                <Link key={item[0]} href={item[1]} passHref>
+                  <MenuItem
+                    component="a"
+                    sx={{ textAlign: "center" }}
+                    className={isActive(item[1]) ? "active" : ""}
+                  >
+                    {item[0]}
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -168,24 +141,24 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
             ))}
             <IconButton
               sx={{ ml: 1 }}
-              onClick={() => colorMode.set(theme.palette.mode === "light" ? "dark" : "light")}
+              onClick={() => setColorMode(colorMode === "light" ? "dark" : "light")}
               color="inherit"
             >
-              {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+              {colorMode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             {(session?.user && (
               <>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={`${session.user.name}`} src={`${session.user.image}`} />
-                  </IconButton>
-                </Tooltip>
+                <IconButton {...bindTrigger(accountMenuState)} sx={{ p: 0 }}>
+                  <Avatar alt={`${session.user.name}`} src={`${session.user.image}`} />
+                </IconButton>
                 <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
+                  sx={{
+                    mt: "45px",
+                    "& a": { color: "text.primary" },
+                  }}
+                  {...bindMenu(accountMenuState)}
                   anchorOrigin={{
                     vertical: "top",
                     horizontal: "right",
@@ -195,28 +168,22 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                     vertical: "top",
                     horizontal: "right",
                   }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
                 >
                   {settings.map((page) => (
-                    <MenuItem
-                      key={page[0]}
-                      onClick={handleCloseNavMenu}
-                      sx={{ textAlign: "center" }}
-                    >
-                      <Link href={page[1]}>
-                        <a>{page[0]}</a>
+                    <Link key={page[0]} href={page[1]} passHref>
+                      <MenuItem component="a" sx={{ textAlign: "center" }}>
+                        {page[0]}
+                      </MenuItem>
+                    </Link>
+                  ))}
+
+                  {!!session.user.isAdmin && (
+                    <MenuItem>
+                      <Link href="/_admin">
+                        <a>Administration</a>
                       </Link>
                     </MenuItem>
-                  ))}
-                  {session.user.isAdmin ||
-                    (true && (
-                      <MenuItem>
-                        <Link href="/_admin">
-                          <a>Administration</a>
-                        </Link>
-                      </MenuItem>
-                    ))}
+                  )}
                   <Divider />
                   <MenuItem onClick={logout}>
                     Sign out <LogoutIcon sx={{ marginLeft: "0.5rem" }} />

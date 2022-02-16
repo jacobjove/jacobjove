@@ -5,7 +5,7 @@ import SearchDialog from "@/components/search/SearchDialog";
 import Select from "@/components/Select";
 import { notebookFragment, noteFragment } from "@/graphql/fragments";
 import { Note, Notebook } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
+import { addApolloState, initializeApollo } from "@/utils/apollo/client";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";

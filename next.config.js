@@ -31,6 +31,7 @@ const nextConfig = {
   // Delegate static file compression to Nginx in production.
   // https://nextjs.org/docs/api-reference/next.config.js/compression
   compress: process.env.NODE_ENV != "production",
+  reactStrictMode: true,
   swcMinify: true,
   webpack: (config) => {
     return config;
@@ -39,24 +40,10 @@ const nextConfig = {
     const redirects = [
       {
         source: "/app",
-        destination: "/app/dashboard",
+        destination: "/app/home",
         permanent: true,
       },
     ];
-    // const prisma = require("./lib/prisma");
-    // await prisma.redirect.findMany({
-    //   where: {
-    //     active: true,
-    //   },
-    // }).then((redirects) => {
-    //   redirects.forEach((redirect) => {
-    //     redirects.push({
-    //       source: redirect.from,
-    //       destination: redirect.to,
-    //       permanent: redirect.permanent,
-    //     });
-    //   });
-    // });
     return redirects;
   },
 };

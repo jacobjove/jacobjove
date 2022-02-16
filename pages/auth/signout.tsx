@@ -1,16 +1,13 @@
-import { handleLogout } from "@/auth";
 import Layout from "@/components/Layout";
 import { Box, Container, Typography } from "@mui/material";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React, { FunctionComponent, useEffect } from "react";
 
 const SignOut: FunctionComponent = () => {
   const { data: session } = useSession();
   useEffect(() => {
-    if (session) {
-      handleLogout(session);
-    }
+    if (session) signOut();
   }, [session]);
   return (
     <Layout>

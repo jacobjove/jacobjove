@@ -1,28 +1,22 @@
-import ColorModeContext from "@/components/contexts/ColorModeContext";
+import { ColorModeContextProvider } from "@/components/contexts/ColorModeContext";
 import { DateContextProvider } from "@/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@/components/contexts/DeviceContext";
 import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
-import UserContext from "@/components/contexts/UserContext";
-import { userFragment } from "@/graphql/fragments";
-import { User, UserSettings } from "@/graphql/schema";
-import { useApollo } from "@/lib/apollo/apolloClient";
+import { UserContextProvider } from "@/components/contexts/UserContext";
 import "@/node_modules/react-grid-layout/css/styles.css";
 import "@/node_modules/react-resizable/css/styles.css";
 import "@/public/styles/global.css";
-import { ApolloProvider, gql, useQuery } from "@apollo/client";
+import { useApollo } from "@/utils/apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { createTheme, PaletteMode } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import isObject from "lodash/isObject";
 import { NextPage } from "next";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
-import { FC, ReactElement, useContext, useEffect, useMemo, useState } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 import { getSelectorsByUserAgent } from "react-device-detect";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -30,91 +24,9 @@ import { TouchBackend } from "react-dnd-touch-backend";
 import TagManager from "react-gtm-module";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
-const QUERY = gql`
-  query GetUser($userId: Int!) {
-    user(where: { id: $userId }) {
-      ...UserFragment
-    }
-  }
-  ${userFragment}
-`;
-
 // TODO: https://github.com/vercel/next.js/discussions/15518#discussioncomment-42875
 const tagManagerArgs = {
   gtmId: `${process.env.NEXT_PUBLIC_GTM_ID}`, // e.g., 'GTM-XXXXXX'
-};
-
-const getDesignTokens = (mode: PaletteMode) => {
-  const dividerColor = mode === "light" ? "rgb(224, 224, 224)" : "rgba(81, 81, 81, 0.6)";
-  return {
-    components: {
-      MuiTableCell: {
-        styleOverrides: {
-          root: {
-            borderBottom: `1px solid ${dividerColor}`,
-          },
-        },
-      },
-    },
-    palette: {
-      mode,
-      primary: {
-        main: "#42a5f5",
-        light: "#80d6ff",
-        dark: "#0077c2",
-        contrastText: "#fff",
-      },
-      secondary: {
-        main: "#757575",
-        light: "#a4a4a4",
-        dark: "#494949",
-        contrastText: mode === "light" ? "#fff" : "#000",
-      },
-      divider: dividerColor,
-      text: {
-        ...(mode === "light"
-          ? {
-              primary: grey[900],
-              secondary: grey[800],
-            }
-          : {
-              primary: "#fff",
-              secondary: grey[500],
-            }),
-      },
-      action: {
-        selectedOpacity: 0.33,
-      },
-    },
-    typography: {
-      fontFamily: ["Open Sans", "sans-serif"].join(","),
-      h1: {
-        fontSize: "2rem",
-      },
-      h2: {
-        fontSize: "1.4rem",
-      },
-      h3: {
-        fontSize: "1.2rem",
-      },
-      h4: {
-        fontSize: "1.1rem",
-        fontWeight: 600,
-      },
-      h5: {
-        fontSize: "1.0rem",
-        fontWeight: 500,
-        fontStyle: "italic",
-      },
-      body1: {
-        fontStyle: "normal",
-        fontWeight: 400,
-      },
-      body2: {
-        fontStyle: "normal",
-      },
-    },
-  };
 };
 
 export type PageWithAuth = NextPage & {
@@ -123,19 +35,11 @@ export type PageWithAuth = NextPage & {
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
-  const [mode, setMode] = useState<PaletteMode>(session?.user?.settings?.colorMode ?? "light");
-  const colorMode = useMemo(
-    () => ({
-      set: (mode: PaletteMode) => {
-        setMode(mode);
-      },
-    }),
-    []
-  );
+
   const isMobileWidth = useMediaQuery("(max-width: 600px)");
   const [isLandscape, setIsLandscape] = useState<boolean>();
   const [deviceContextData, setDeviceContextData] = useState<DeviceContextData>({});
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
   useEffect(() => {
     const handleOrientationChange = function (e: Event) {
       setIsLandscape((e.target as ScreenOrientation).type.toString().includes("landscape"));
@@ -147,6 +51,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       window.screen.orientation.removeEventListener("change", handleOrientationChange);
     };
   }, []);
+
   useEffect(() => {
     if (typeof window !== "undefined" && navigator.userAgent) {
       setDeviceContextData({
@@ -156,17 +61,18 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       });
     }
   }, [isMobileWidth, isLandscape]);
+
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
   }, []);
 
   return (
     <SessionProvider session={session}>
-      <DeviceContext.Provider value={deviceContextData}>
-        <PageTransitionContextProvider>
-          <ApolloProvider client={apolloClient}>
-            <ColorModeContext.Provider value={colorMode}>
-              <ThemeProvider theme={theme}>
+      <ApolloProvider client={apolloClient}>
+        <UserContextProvider>
+          <DeviceContext.Provider value={deviceContextData}>
+            <ColorModeContextProvider>
+              <PageTransitionContextProvider>
                 <CssBaseline />
                 <LocalizationProvider dateAdapter={DateAdapter}>
                   <DndProvider backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}>
@@ -227,11 +133,11 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                     </DateContextProvider>
                   </DndProvider>
                 </LocalizationProvider>
-              </ThemeProvider>
-            </ColorModeContext.Provider>
-          </ApolloProvider>
-        </PageTransitionContextProvider>
-      </DeviceContext.Provider>
+              </PageTransitionContextProvider>
+            </ColorModeContextProvider>
+          </DeviceContext.Provider>
+        </UserContextProvider>
+      </ApolloProvider>
     </SessionProvider>
   );
 }
@@ -242,22 +148,8 @@ interface AuthProps {
 
 const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
   const { data: session, status } = useSession({ required: true });
-  const colorMode = useContext(ColorModeContext);
-  const { data, loading: loadingData } = useQuery<{ user: User }>(QUERY, {
-    variables: { userId: session?.user?.id },
-  });
   const loadingAuth = status === "loading";
   const isAuthenticated = !!session?.user;
-  const loading = loadingAuth || loadingData;
-  const user = data?.user;
-  let settings: UserSettings = {};
-  if (user?.settings) {
-    if (isObject(user.settings)) {
-      settings = user.settings;
-    } else {
-      settings = JSON.parse(user.settings);
-    }
-  }
 
   // Require authentication.
   useEffect(() => {
@@ -267,14 +159,7 @@ const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
     if (!isAuthenticated) signIn();
   }, [isAuthenticated, loadingAuth]);
 
-  // Update the color mode if the user's color mode setting changes.
-  useEffect(() => {
-    if (!loading && settings?.colorMode) colorMode.set(settings.colorMode);
-  }, [loading, colorMode, settings?.colorMode]);
-
-  if (isAuthenticated) {
-    return <UserContext.Provider value={user ?? null}>{children}</UserContext.Provider>;
-  }
+  if (isAuthenticated) return children;
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.

@@ -15,7 +15,6 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import {
-  addMinutes,
   differenceInMinutes,
   getDay,
   isSameDay,
@@ -25,7 +24,8 @@ import {
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { FC, Fragment, useContext, useEffect, useRef, useState } from "react";
+import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { FC, Fragment, useContext, useEffect, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
   const borderDef = `1px solid ${theme.palette.divider}`;
@@ -71,7 +71,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const {
     selectedDate,
     initialEventFormData,
-    setInitialEventFormData,
+    dispatchInitialEventFormData,
     defaultCalendar,
     hidden,
     data,
@@ -79,7 +79,13 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const { calendarEvents } = data;
   const date = useContext(DateContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
-  const [eventDialogOpen, setEventEditingDialogOpen] = useState(false);
+
+  const eventEditingDialogState = usePopupState({
+    variant: "popover",
+    popupId: `event-editing-dialog`,
+  });
+  const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
+
   const selectedDayIndex = getDay(selectedDate);
   const dayStart = zeroToHour(date, START_HOUR);
   const allDayBoxHeight = HALF_HOUR_HEIGHT;
@@ -87,7 +93,7 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
     (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.isPrimary);
+  const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.primary);
 
   useEffect(() => {
     // Scroll to the current time.
@@ -232,16 +238,11 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
                                 // allows us to avoid stopping propagation on click events for
                                 // other elements in the slot.
                                 if (e.target === e.currentTarget) {
-                                  setInitialEventFormData({
-                                    title: initialEventFormData.title ?? "",
-                                    start: eventSlotDate,
-                                    end: addMinutes(eventSlotDate, 29),
-                                    allDay: false,
-                                    notes: initialEventFormData.notes ?? "",
-                                    calendarId:
-                                      initialEventFormData.calendarId ?? primaryCalendarId,
+                                  dispatchInitialEventFormData({
+                                    field: "init",
+                                    value: { start: eventSlotDate },
                                   });
-                                  setEventEditingDialogOpen(true);
+                                  eventEditingDialogTriggerProps.onClick(e);
                                 }
                               }}
                             />
@@ -255,9 +256,8 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
             );
           })}
           <EventEditingDialog
-            open={eventDialogOpen}
-            setOpen={setEventEditingDialogOpen}
-            event={initialEventFormData}
+            {...bindPopover(eventEditingDialogState)}
+            eventData={initialEventFormData}
           />
         </Box>
       </Box>
@@ -269,9 +269,4 @@ export default WeekViewer;
 
 const zeroToHour = (date: Date, hour: number) => {
   return setHours(setMinutes(setSeconds(date, 0), 0), hour);
-};
-
-const convertHourAndMinutesToTimeString = (hour: number, minutes = 0) => {
-  const suffix = hour >= 12 ? "PM" : "AM";
-  return `${((hour + 11) % 12) + 1}:${minutes.toString().padStart(2, "0")} ${suffix}`;
 };

@@ -3,7 +3,8 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SelectableValue from "@/components/values/SelectableValue";
 import { Value } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
+import { addApolloState, initializeApollo } from "@/utils/apollo/client";
+import { printError } from "@/utils/apollo/error-handling";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -89,21 +90,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           );
         }
       })
-      .catch((e) => {
-        if (e.networkError?.result?.errors) {
-          e.networkError.result.errors.forEach(
-            (error: {
-              message: string;
-              extensions: { code: string; exception: { stacktrace: string[] } };
-            }) => {
-              console.error(error.message);
-              console.log(error.extensions.exception.stacktrace.join("\n"), { depth: null });
-            }
-          );
-        } else {
-          console.error(e);
-        }
-      });
+      .catch(printError);
   }
   return addApolloState(apolloClient, { props });
 };

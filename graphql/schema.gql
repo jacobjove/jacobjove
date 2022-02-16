@@ -4,11 +4,17 @@
 # -----------------------------------------------
 
 type Account {
+  _count: AccountCount
+  accessToken: String
+  accessTokenExpiry: DateTime
+  calendars(cursor: CalendarWhereUniqueInput, distinct: [CalendarScalarFieldEnum!], orderBy: [CalendarOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarWhereInput): [Calendar!]!
+  createdAt: DateTime!
   id: Int!
   provider: String!
-  providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  remoteId: String!
+  scopes: [String!]!
+  syncToken: String
   user: User!
   userId: Int!
 }
@@ -23,53 +29,82 @@ input AccountAvgOrderByAggregateInput {
   userId: SortOrder
 }
 
+type AccountCount {
+  calendars: Int!
+}
+
 type AccountCountAggregate {
   _all: Int!
+  accessToken: Int!
+  accessTokenExpiry: Int!
+  createdAt: Int!
   id: Int!
   provider: Int!
-  providerAccountId: Int!
-  type: Int!
-  uid: Int!
+  refreshToken: Int!
+  remoteId: Int!
+  scopes: Int!
+  syncToken: Int!
   userId: Int!
 }
 
 input AccountCountOrderByAggregateInput {
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
+  remoteId: SortOrder
+  scopes: SortOrder
+  syncToken: SortOrder
   userId: SortOrder
 }
 
 input AccountCreateInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  calendars: CalendarCreateNestedManyWithoutAccountInput
+  createdAt: DateTime
   provider: String!
-  providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  remoteId: String!
+  scopes: AccountCreatescopesInput
+  syncToken: String
   user: UserCreateNestedOneWithoutAccountsInput!
 }
 
 input AccountCreateManyInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   id: Int
   provider: String!
-  providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  remoteId: String!
+  scopes: AccountCreateManyscopesInput
+  syncToken: String
   userId: Int!
 }
 
 input AccountCreateManyUserInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   id: Int
   provider: String!
-  providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  remoteId: String!
+  scopes: AccountCreateManyscopesInput
+  syncToken: String
 }
 
 input AccountCreateManyUserInputEnvelope {
   data: [AccountCreateManyUserInput!]!
   skipDuplicates: Boolean
+}
+
+input AccountCreateManyscopesInput {
+  set: [String!]!
 }
 
 input AccountCreateNestedManyWithoutUserInput {
@@ -79,16 +114,48 @@ input AccountCreateNestedManyWithoutUserInput {
   createMany: AccountCreateManyUserInputEnvelope
 }
 
+input AccountCreateNestedOneWithoutCalendarsInput {
+  connect: AccountWhereUniqueInput
+  connectOrCreate: AccountCreateOrConnectWithoutCalendarsInput
+  create: AccountCreateWithoutCalendarsInput
+}
+
+input AccountCreateOrConnectWithoutCalendarsInput {
+  create: AccountCreateWithoutCalendarsInput!
+  where: AccountWhereUniqueInput!
+}
+
 input AccountCreateOrConnectWithoutUserInput {
   create: AccountCreateWithoutUserInput!
   where: AccountWhereUniqueInput!
 }
 
-input AccountCreateWithoutUserInput {
+input AccountCreateWithoutCalendarsInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   provider: String!
-  providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  remoteId: String!
+  scopes: AccountCreatescopesInput
+  syncToken: String
+  user: UserCreateNestedOneWithoutAccountsInput!
+}
+
+input AccountCreateWithoutUserInput {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  calendars: CalendarCreateNestedManyWithoutAccountInput
+  createdAt: DateTime
+  provider: String!
+  refreshToken: String
+  remoteId: String!
+  scopes: AccountCreatescopesInput
+  syncToken: String
+}
+
+input AccountCreatescopesInput {
+  set: [String!]!
 }
 
 type AccountGroupBy {
@@ -97,11 +164,15 @@ type AccountGroupBy {
   _max: AccountMaxAggregate
   _min: AccountMinAggregate
   _sum: AccountSumAggregate
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime!
   id: Int!
   provider: String!
-  providerAccountId: String!
-  type: String!
-  uid: String!
+  refreshToken: String
+  remoteId: String!
+  scopes: [String!]
+  syncToken: String
   userId: Int!
 }
 
@@ -112,38 +183,50 @@ input AccountListRelationFilter {
 }
 
 type AccountMaxAggregate {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   id: Int
   provider: String
-  providerAccountId: String
-  type: String
-  uid: String
+  refreshToken: String
+  remoteId: String
+  syncToken: String
   userId: Int
 }
 
 input AccountMaxOrderByAggregateInput {
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
+  remoteId: SortOrder
+  syncToken: SortOrder
   userId: SortOrder
 }
 
 type AccountMinAggregate {
+  accessToken: String
+  accessTokenExpiry: DateTime
+  createdAt: DateTime
   id: Int
   provider: String
-  providerAccountId: String
-  type: String
-  uid: String
+  refreshToken: String
+  remoteId: String
+  syncToken: String
   userId: Int
 }
 
 input AccountMinOrderByAggregateInput {
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
+  remoteId: SortOrder
+  syncToken: SortOrder
   userId: SortOrder
 }
 
@@ -157,35 +240,53 @@ input AccountOrderByWithAggregationInput {
   _max: AccountMaxOrderByAggregateInput
   _min: AccountMinOrderByAggregateInput
   _sum: AccountSumOrderByAggregateInput
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
+  remoteId: SortOrder
+  scopes: SortOrder
+  syncToken: SortOrder
   userId: SortOrder
 }
 
 input AccountOrderByWithRelationInput {
+  accessToken: SortOrder
+  accessTokenExpiry: SortOrder
+  calendars: CalendarOrderByRelationAggregateInput
+  createdAt: SortOrder
   id: SortOrder
   provider: SortOrder
-  providerAccountId: SortOrder
-  type: SortOrder
-  uid: SortOrder
+  refreshToken: SortOrder
+  remoteId: SortOrder
+  scopes: SortOrder
+  syncToken: SortOrder
   user: UserOrderByWithRelationInput
   userId: SortOrder
 }
 
-input AccountProviderProviderAccountIdCompoundUniqueInput {
+input AccountProviderRemoteIdCompoundUniqueInput {
   provider: String!
-  providerAccountId: String!
+  remoteId: String!
+}
+
+input AccountRelationFilter {
+  is: AccountWhereInput
+  isNot: AccountWhereInput
 }
 
 enum AccountScalarFieldEnum {
+  accessToken
+  accessTokenExpiry
+  createdAt
   id
   provider
-  providerAccountId
-  type
-  uid
+  refreshToken
+  remoteId
+  scopes
+  syncToken
   userId
 }
 
@@ -193,11 +294,15 @@ input AccountScalarWhereInput {
   AND: [AccountScalarWhereInput!]
   NOT: [AccountScalarWhereInput!]
   OR: [AccountScalarWhereInput!]
+  accessToken: StringNullableFilter
+  accessTokenExpiry: DateTimeNullableFilter
+  createdAt: DateTimeFilter
   id: IntFilter
   provider: StringFilter
-  providerAccountId: StringFilter
-  type: StringFilter
-  uid: StringFilter
+  refreshToken: StringNullableFilter
+  remoteId: StringFilter
+  scopes: StringNullableListFilter
+  syncToken: StringNullableFilter
   userId: IntFilter
 }
 
@@ -205,11 +310,15 @@ input AccountScalarWhereWithAggregatesInput {
   AND: [AccountScalarWhereWithAggregatesInput!]
   NOT: [AccountScalarWhereWithAggregatesInput!]
   OR: [AccountScalarWhereWithAggregatesInput!]
+  accessToken: StringNullableWithAggregatesFilter
+  accessTokenExpiry: DateTimeNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   provider: StringWithAggregatesFilter
-  providerAccountId: StringWithAggregatesFilter
-  type: StringWithAggregatesFilter
-  uid: StringWithAggregatesFilter
+  refreshToken: StringNullableWithAggregatesFilter
+  remoteId: StringWithAggregatesFilter
+  scopes: StringNullableListFilter
+  syncToken: StringNullableWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
@@ -224,18 +333,27 @@ input AccountSumOrderByAggregateInput {
 }
 
 input AccountUpdateInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  calendars: CalendarUpdateManyWithoutAccountInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
-  providerAccountId: StringFieldUpdateOperationsInput
-  type: StringFieldUpdateOperationsInput
-  uid: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
+  syncToken: NullableStringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutAccountsInput
 }
 
 input AccountUpdateManyMutationInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
-  providerAccountId: StringFieldUpdateOperationsInput
-  type: StringFieldUpdateOperationsInput
-  uid: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
+  syncToken: NullableStringFieldUpdateOperationsInput
 }
 
 input AccountUpdateManyWithWhereWithoutUserInput {
@@ -257,16 +375,48 @@ input AccountUpdateManyWithoutUserInput {
   upsert: [AccountUpsertWithWhereUniqueWithoutUserInput!]
 }
 
+input AccountUpdateOneWithoutCalendarsInput {
+  connect: AccountWhereUniqueInput
+  connectOrCreate: AccountCreateOrConnectWithoutCalendarsInput
+  create: AccountCreateWithoutCalendarsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: AccountUpdateWithoutCalendarsInput
+  upsert: AccountUpsertWithoutCalendarsInput
+}
+
 input AccountUpdateWithWhereUniqueWithoutUserInput {
   data: AccountUpdateWithoutUserInput!
   where: AccountWhereUniqueInput!
 }
 
-input AccountUpdateWithoutUserInput {
+input AccountUpdateWithoutCalendarsInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   provider: StringFieldUpdateOperationsInput
-  providerAccountId: StringFieldUpdateOperationsInput
-  type: StringFieldUpdateOperationsInput
-  uid: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
+  syncToken: NullableStringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAccountsInput
+}
+
+input AccountUpdateWithoutUserInput {
+  accessToken: NullableStringFieldUpdateOperationsInput
+  accessTokenExpiry: NullableDateTimeFieldUpdateOperationsInput
+  calendars: CalendarUpdateManyWithoutAccountInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  provider: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
+  remoteId: StringFieldUpdateOperationsInput
+  scopes: AccountUpdatescopesInput
+  syncToken: NullableStringFieldUpdateOperationsInput
+}
+
+input AccountUpdatescopesInput {
+  push: [String!]
+  set: [String!]
 }
 
 input AccountUpsertWithWhereUniqueWithoutUserInput {
@@ -275,22 +425,32 @@ input AccountUpsertWithWhereUniqueWithoutUserInput {
   where: AccountWhereUniqueInput!
 }
 
+input AccountUpsertWithoutCalendarsInput {
+  create: AccountCreateWithoutCalendarsInput!
+  update: AccountUpdateWithoutCalendarsInput!
+}
+
 input AccountWhereInput {
   AND: [AccountWhereInput!]
   NOT: [AccountWhereInput!]
   OR: [AccountWhereInput!]
+  accessToken: StringNullableFilter
+  accessTokenExpiry: DateTimeNullableFilter
+  calendars: CalendarListRelationFilter
+  createdAt: DateTimeFilter
   id: IntFilter
   provider: StringFilter
-  providerAccountId: StringFilter
-  type: StringFilter
-  uid: StringFilter
+  refreshToken: StringNullableFilter
+  remoteId: StringFilter
+  scopes: StringNullableListFilter
+  syncToken: StringNullableFilter
   user: UserRelationFilter
   userId: IntFilter
 }
 
 input AccountWhereUniqueInput {
   id: Int
-  provider_providerAccountId: AccountProviderProviderAccountIdCompoundUniqueInput
+  provider_remoteId: AccountProviderRemoteIdCompoundUniqueInput
 }
 
 type Act {
@@ -309,7 +469,7 @@ type Act {
   parentId: Int
   scheduleTemplates(cursor: ActionScheduleTemplateWhereUniqueInput, distinct: [ActionScheduleTemplateScalarFieldEnum!], orderBy: [ActionScheduleTemplateOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleTemplateWhereInput): [ActionScheduleTemplate!]!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   variants(cursor: ActWhereUniqueInput, distinct: [ActScalarFieldEnum!], orderBy: [ActOrderByWithRelationInput!], skip: Int, take: Int, where: ActWhereInput): [Act!]!
 }
 
@@ -606,7 +766,7 @@ type ActGroupBy {
   name: String!
   parentId: Int
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input ActListRelationFilter {
@@ -732,7 +892,7 @@ input ActScalarWhereInput {
   name: StringFilter
   parentId: IntNullableFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ActScalarWhereWithAggregatesInput {
@@ -747,7 +907,7 @@ input ActScalarWhereWithAggregatesInput {
   name: StringWithAggregatesFilter
   parentId: IntNullableWithAggregatesFilter
   slug: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type ActSumAggregate {
@@ -773,7 +933,7 @@ input ActUpdateInput {
   parent: ActUpdateOneWithoutVariantsInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   variants: ActUpdateManyWithoutParentInput
 }
 
@@ -784,7 +944,7 @@ input ActUpdateManyMutationInput {
   isPublic: BoolFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActUpdateManyWithWhereWithoutParentInput {
@@ -873,7 +1033,7 @@ input ActUpdateWithoutCategorizationsInput {
   parent: ActUpdateOneWithoutVariantsInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   variants: ActUpdateManyWithoutParentInput
 }
 
@@ -889,7 +1049,7 @@ input ActUpdateWithoutHabitsInput {
   parent: ActUpdateOneWithoutVariantsInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   variants: ActUpdateManyWithoutParentInput
 }
 
@@ -905,7 +1065,7 @@ input ActUpdateWithoutIdentityRelationsInput {
   parent: ActUpdateOneWithoutVariantsInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   variants: ActUpdateManyWithoutParentInput
 }
 
@@ -921,7 +1081,7 @@ input ActUpdateWithoutMetricApplicationsInput {
   parent: ActUpdateOneWithoutVariantsInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   variants: ActUpdateManyWithoutParentInput
 }
 
@@ -937,7 +1097,7 @@ input ActUpdateWithoutParentInput {
   name: StringFieldUpdateOperationsInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   variants: ActUpdateManyWithoutParentInput
 }
 
@@ -953,7 +1113,7 @@ input ActUpdateWithoutScheduleTemplatesInput {
   name: StringFieldUpdateOperationsInput
   parent: ActUpdateOneWithoutVariantsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   variants: ActUpdateManyWithoutParentInput
 }
 
@@ -970,7 +1130,7 @@ input ActUpdateWithoutVariantsInput {
   parent: ActUpdateOneWithoutVariantsInput
   scheduleTemplates: ActionScheduleTemplateUpdateManyWithoutActInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActUpsertWithWhereUniqueWithoutParentInput {
@@ -1027,7 +1187,7 @@ input ActWhereInput {
   parentId: IntNullableFilter
   scheduleTemplates: ActionScheduleTemplateListRelationFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   variants: ActListRelationFilter
 }
 
@@ -1047,7 +1207,7 @@ type Action {
   metricRecords(cursor: MetricRecordWhereUniqueInput, distinct: [MetricRecordScalarFieldEnum!], orderBy: [MetricRecordOrderByWithRelationInput!], skip: Int, take: Int, where: MetricRecordWhereInput): [MetricRecord!]!
   notes: String
   start: DateTime!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type ActionAvgAggregate {
@@ -1180,7 +1340,7 @@ type ActionGroupBy {
   id: Int!
   notes: String
   start: DateTime!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input ActionListRelationFilter {
@@ -1293,7 +1453,7 @@ input ActionScalarWhereInput {
   id: IntFilter
   notes: StringNullableFilter
   start: DateTimeFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ActionScalarWhereWithAggregatesInput {
@@ -1307,7 +1467,7 @@ input ActionScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   notes: StringNullableWithAggregatesFilter
   start: DateTimeWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type ActionSchedule {
@@ -1324,7 +1484,7 @@ type ActionSchedule {
   quantity: Int!
   template: ActionScheduleTemplate
   templateId: Int
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type ActionScheduleAvgAggregate {
@@ -1520,7 +1680,7 @@ type ActionScheduleGroupBy {
   multiplier: Int!
   quantity: Int!
   templateId: Int
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input ActionScheduleListRelationFilter {
@@ -1650,7 +1810,7 @@ input ActionScheduleScalarWhereInput {
   multiplier: IntFilter
   quantity: IntFilter
   templateId: IntNullableFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ActionScheduleScalarWhereWithAggregatesInput {
@@ -1666,7 +1826,7 @@ input ActionScheduleScalarWhereWithAggregatesInput {
   multiplier: IntWithAggregatesFilter
   quantity: IntWithAggregatesFilter
   templateId: IntNullableWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type ActionScheduleSumAggregate {
@@ -2130,7 +2290,7 @@ input ActionScheduleUpdateInput {
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
   template: ActionScheduleTemplateUpdateOneWithoutActionSchedulesInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionScheduleUpdateManyMutationInput {
@@ -2140,7 +2300,7 @@ input ActionScheduleUpdateManyMutationInput {
   frequency: EnumFREQUENCYFieldUpdateOperationsInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionScheduleUpdateManyWithWhereWithoutHabitInput {
@@ -2210,7 +2370,7 @@ input ActionScheduleUpdateWithoutCalendarEventsInput {
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
   template: ActionScheduleTemplateUpdateOneWithoutActionSchedulesInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionScheduleUpdateWithoutHabitInput {
@@ -2222,7 +2382,7 @@ input ActionScheduleUpdateWithoutHabitInput {
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
   template: ActionScheduleTemplateUpdateOneWithoutActionSchedulesInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionScheduleUpdateWithoutTemplateInput {
@@ -2234,7 +2394,7 @@ input ActionScheduleUpdateWithoutTemplateInput {
   habit: HabitUpdateOneRequiredWithoutSchedulesInput
   multiplier: IntFieldUpdateOperationsInput
   quantity: IntFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionScheduleUpsertWithWhereUniqueWithoutHabitInput {
@@ -2270,7 +2430,7 @@ input ActionScheduleWhereInput {
   quantity: IntFilter
   template: ActionScheduleTemplateRelationFilter
   templateId: IntNullableFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ActionScheduleWhereUniqueInput {
@@ -2295,7 +2455,7 @@ input ActionUpdateInput {
   metricRecords: MetricRecordUpdateManyWithoutActionInput
   notes: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionUpdateManyMutationInput {
@@ -2304,7 +2464,7 @@ input ActionUpdateManyMutationInput {
   end: DateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionUpdateManyWithWhereWithoutHabitInput {
@@ -2346,7 +2506,7 @@ input ActionUpdateWithoutHabitInput {
   metricRecords: MetricRecordUpdateManyWithoutActionInput
   notes: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionUpdateWithoutMetricRecordsInput {
@@ -2356,7 +2516,7 @@ input ActionUpdateWithoutMetricRecordsInput {
   habit: HabitUpdateOneWithoutActionsInput
   notes: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ActionUpsertWithWhereUniqueWithoutHabitInput {
@@ -2383,7 +2543,7 @@ input ActionWhereInput {
   metricRecords: MetricRecordListRelationFilter
   notes: StringNullableFilter
   start: DateTimeFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input ActionWhereUniqueInput {
@@ -3366,7 +3526,7 @@ type Belief {
   id: Int!
   name: String!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userBelief(cursor: UserBeliefWhereUniqueInput, distinct: [UserBeliefScalarFieldEnum!], orderBy: [UserBeliefOrderByWithRelationInput!], skip: Int, take: Int, where: UserBeliefWhereInput): [UserBelief!]!
 }
 
@@ -3455,7 +3615,7 @@ type BeliefGroupBy {
   id: Int!
   name: String!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type BeliefMaxAggregate {
@@ -3549,7 +3709,7 @@ input BeliefScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   name: StringWithAggregatesFilter
   slug: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type BeliefSumAggregate {
@@ -3566,7 +3726,7 @@ input BeliefUpdateInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   userBelief: UserBeliefUpdateManyWithoutBeliefInput
 }
 
@@ -3576,7 +3736,7 @@ input BeliefUpdateManyMutationInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BeliefUpdateOneRequiredWithoutUserBeliefInput {
@@ -3593,7 +3753,7 @@ input BeliefUpdateWithoutUserBeliefInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input BeliefUpsertWithoutUserBeliefInput {
@@ -3611,7 +3771,7 @@ input BeliefWhereInput {
   id: IntFilter
   name: StringFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userBelief: UserBeliefListRelationFilter
 }
 
@@ -5181,6 +5341,19 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
+input BoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
+}
+
+input BoolNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedBoolNullableFilter
+  _min: NestedBoolNullableFilter
+  equals: Boolean
+  not: NestedBoolNullableWithAggregatesFilter
+}
+
 input BoolWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedBoolFilter
@@ -5191,22 +5364,34 @@ input BoolWithAggregatesFilter {
 
 type Calendar {
   _count: CalendarCount
-  color: Color
+  account: Account
+  accountId: Int
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime!
+  enabled: Boolean
   events(cursor: CalendarEventWhereUniqueInput, distinct: [CalendarEventScalarFieldEnum!], orderBy: [CalendarEventOrderByWithRelationInput!], skip: Int, take: Int, where: CalendarEventWhereInput): [CalendarEvent!]!
   id: Int!
-  isPublic: Boolean!
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String!
+  updatedAt: DateTime!
   user: User!
   userId: Int!
 }
 
 type CalendarAvgAggregate {
+  accountId: Float
   id: Float
   userId: Float
 }
 
 input CalendarAvgOrderByAggregateInput {
+  accountId: SortOrder
   id: SortOrder
   userId: SortOrder
 }
@@ -5217,52 +5402,126 @@ type CalendarCount {
 
 type CalendarCountAggregate {
   _all: Int!
+  accountId: Int!
+  archivedAt: Int!
   color: Int!
+  createdAt: Int!
+  enabled: Int!
   id: Int!
-  isPublic: Int!
   name: Int!
+  primary: Int!
+  provider: Int!
+  public: Int!
+  remoteId: Int!
+  syncToken: Int!
   uid: Int!
+  updatedAt: Int!
   userId: Int!
 }
 
 input CalendarCountOrderByAggregateInput {
+  accountId: SortOrder
+  archivedAt: SortOrder
   color: SortOrder
+  createdAt: SortOrder
+  enabled: SortOrder
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  remoteId: SortOrder
+  syncToken: SortOrder
   uid: SortOrder
+  updatedAt: SortOrder
   userId: SortOrder
 }
 
 input CalendarCreateInput {
-  color: Color
+  account: AccountCreateNestedOneWithoutCalendarsInput
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
   events: CalendarEventCreateNestedManyWithoutCalendarInput
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String
+  updatedAt: DateTime
   user: UserCreateNestedOneWithoutCalendarsInput!
 }
 
-input CalendarCreateManyInput {
-  color: Color
+input CalendarCreateManyAccountInput {
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
   id: Int
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String
+  updatedAt: DateTime
+  userId: Int!
+}
+
+input CalendarCreateManyAccountInputEnvelope {
+  data: [CalendarCreateManyAccountInput!]!
+  skipDuplicates: Boolean
+}
+
+input CalendarCreateManyInput {
+  accountId: Int
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
+  id: Int
+  name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
+  uid: String
+  updatedAt: DateTime
   userId: Int!
 }
 
 input CalendarCreateManyUserInput {
-  color: Color
+  accountId: Int
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
   id: Int
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String
+  updatedAt: DateTime
 }
 
 input CalendarCreateManyUserInputEnvelope {
   data: [CalendarCreateManyUserInput!]!
   skipDuplicates: Boolean
+}
+
+input CalendarCreateNestedManyWithoutAccountInput {
+  connect: [CalendarWhereUniqueInput!]
+  connectOrCreate: [CalendarCreateOrConnectWithoutAccountInput!]
+  create: [CalendarCreateWithoutAccountInput!]
+  createMany: CalendarCreateManyAccountInputEnvelope
 }
 
 input CalendarCreateNestedManyWithoutUserInput {
@@ -5278,6 +5537,11 @@ input CalendarCreateNestedOneWithoutEventsInput {
   create: CalendarCreateWithoutEventsInput
 }
 
+input CalendarCreateOrConnectWithoutAccountInput {
+  create: CalendarCreateWithoutAccountInput!
+  where: CalendarWhereUniqueInput!
+}
+
 input CalendarCreateOrConnectWithoutEventsInput {
   create: CalendarCreateWithoutEventsInput!
   where: CalendarWhereUniqueInput!
@@ -5288,20 +5552,55 @@ input CalendarCreateOrConnectWithoutUserInput {
   where: CalendarWhereUniqueInput!
 }
 
-input CalendarCreateWithoutEventsInput {
-  color: Color
-  isPublic: Boolean
+input CalendarCreateWithoutAccountInput {
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
+  events: CalendarEventCreateNestedManyWithoutCalendarInput
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String
+  updatedAt: DateTime
+  user: UserCreateNestedOneWithoutCalendarsInput!
+}
+
+input CalendarCreateWithoutEventsInput {
+  account: AccountCreateNestedOneWithoutCalendarsInput
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
+  name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
+  uid: String
+  updatedAt: DateTime
   user: UserCreateNestedOneWithoutCalendarsInput!
 }
 
 input CalendarCreateWithoutUserInput {
-  color: Color
+  account: AccountCreateNestedOneWithoutCalendarsInput
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
   events: CalendarEventCreateNestedManyWithoutCalendarInput
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String
+  updatedAt: DateTime
 }
 
 type CalendarEvent {
@@ -5309,12 +5608,14 @@ type CalendarEvent {
   archivedAt: DateTime
   calendar: Calendar!
   calendarId: Int!
+  canceled: Boolean
   createdAt: DateTime!
   end: DateTime
   habit: Habit
   habitId: Int
   id: Int!
   notes: String
+  remoteId: String
   schedule: ActionSchedule
   scheduleId: Int
   start: DateTime!
@@ -5322,7 +5623,7 @@ type CalendarEvent {
   taskId: Int
   title: String!
   uid: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type CalendarEventAvgAggregate {
@@ -5346,11 +5647,13 @@ type CalendarEventCountAggregate {
   allDay: Int!
   archivedAt: Int!
   calendarId: Int!
+  canceled: Int!
   createdAt: Int!
   end: Int!
   habitId: Int!
   id: Int!
   notes: Int!
+  remoteId: Int!
   scheduleId: Int!
   start: Int!
   taskId: Int!
@@ -5363,11 +5666,13 @@ input CalendarEventCountOrderByAggregateInput {
   allDay: SortOrder
   archivedAt: SortOrder
   calendarId: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habitId: SortOrder
   id: SortOrder
   notes: SortOrder
+  remoteId: SortOrder
   scheduleId: SortOrder
   start: SortOrder
   taskId: SortOrder
@@ -5380,10 +5685,12 @@ input CalendarEventCreateInput {
   allDay: Boolean
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
+  remoteId: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
@@ -5395,11 +5702,13 @@ input CalendarEventCreateInput {
 input CalendarEventCreateManyCalendarInput {
   allDay: Boolean
   archivedAt: DateTime
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
   id: Int
   notes: String
+  remoteId: String
   scheduleId: Int
   start: DateTime!
   taskId: Int
@@ -5417,10 +5726,12 @@ input CalendarEventCreateManyHabitInput {
   allDay: Boolean
   archivedAt: DateTime
   calendarId: Int!
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   id: Int
   notes: String
+  remoteId: String
   scheduleId: Int
   start: DateTime!
   taskId: Int
@@ -5438,11 +5749,13 @@ input CalendarEventCreateManyInput {
   allDay: Boolean
   archivedAt: DateTime
   calendarId: Int!
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
   id: Int
   notes: String
+  remoteId: String
   scheduleId: Int
   start: DateTime!
   taskId: Int
@@ -5455,11 +5768,13 @@ input CalendarEventCreateManyScheduleInput {
   allDay: Boolean
   archivedAt: DateTime
   calendarId: Int!
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
   id: Int
   notes: String
+  remoteId: String
   start: DateTime!
   taskId: Int
   title: String!
@@ -5476,11 +5791,13 @@ input CalendarEventCreateManyTaskInput {
   allDay: Boolean
   archivedAt: DateTime
   calendarId: Int!
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
   id: Int
   notes: String
+  remoteId: String
   scheduleId: Int
   start: DateTime!
   title: String!
@@ -5544,10 +5861,12 @@ input CalendarEventCreateOrConnectWithoutTaskInput {
 input CalendarEventCreateWithoutCalendarInput {
   allDay: Boolean
   archivedAt: DateTime
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
+  remoteId: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
@@ -5560,9 +5879,11 @@ input CalendarEventCreateWithoutHabitInput {
   allDay: Boolean
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   notes: String
+  remoteId: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
@@ -5575,10 +5896,12 @@ input CalendarEventCreateWithoutScheduleInput {
   allDay: Boolean
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
+  remoteId: String
   start: DateTime!
   task: TaskCreateNestedOneWithoutCalendarEventsInput
   title: String!
@@ -5590,10 +5913,12 @@ input CalendarEventCreateWithoutTaskInput {
   allDay: Boolean
   archivedAt: DateTime
   calendar: CalendarCreateNestedOneWithoutEventsInput!
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habit: HabitCreateNestedOneWithoutCalendarEventsInput
   notes: String
+  remoteId: String
   schedule: ActionScheduleCreateNestedOneWithoutCalendarEventsInput
   start: DateTime!
   title: String!
@@ -5610,17 +5935,19 @@ type CalendarEventGroupBy {
   allDay: Boolean!
   archivedAt: DateTime
   calendarId: Int!
+  canceled: Boolean
   createdAt: DateTime!
   end: DateTime
   habitId: Int
   id: Int!
   notes: String
+  remoteId: String
   scheduleId: Int
   start: DateTime!
   taskId: Int
   title: String!
   uid: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input CalendarEventListRelationFilter {
@@ -5633,11 +5960,13 @@ type CalendarEventMaxAggregate {
   allDay: Boolean
   archivedAt: DateTime
   calendarId: Int
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
   id: Int
   notes: String
+  remoteId: String
   scheduleId: Int
   start: DateTime
   taskId: Int
@@ -5650,11 +5979,13 @@ input CalendarEventMaxOrderByAggregateInput {
   allDay: SortOrder
   archivedAt: SortOrder
   calendarId: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habitId: SortOrder
   id: SortOrder
   notes: SortOrder
+  remoteId: SortOrder
   scheduleId: SortOrder
   start: SortOrder
   taskId: SortOrder
@@ -5667,11 +5998,13 @@ type CalendarEventMinAggregate {
   allDay: Boolean
   archivedAt: DateTime
   calendarId: Int
+  canceled: Boolean
   createdAt: DateTime
   end: DateTime
   habitId: Int
   id: Int
   notes: String
+  remoteId: String
   scheduleId: Int
   start: DateTime
   taskId: Int
@@ -5684,11 +6017,13 @@ input CalendarEventMinOrderByAggregateInput {
   allDay: SortOrder
   archivedAt: SortOrder
   calendarId: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habitId: SortOrder
   id: SortOrder
   notes: SortOrder
+  remoteId: SortOrder
   scheduleId: SortOrder
   start: SortOrder
   taskId: SortOrder
@@ -5710,11 +6045,13 @@ input CalendarEventOrderByWithAggregationInput {
   allDay: SortOrder
   archivedAt: SortOrder
   calendarId: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habitId: SortOrder
   id: SortOrder
   notes: SortOrder
+  remoteId: SortOrder
   scheduleId: SortOrder
   start: SortOrder
   taskId: SortOrder
@@ -5728,12 +6065,14 @@ input CalendarEventOrderByWithRelationInput {
   archivedAt: SortOrder
   calendar: CalendarOrderByWithRelationInput
   calendarId: SortOrder
+  canceled: SortOrder
   createdAt: SortOrder
   end: SortOrder
   habit: HabitOrderByWithRelationInput
   habitId: SortOrder
   id: SortOrder
   notes: SortOrder
+  remoteId: SortOrder
   schedule: ActionScheduleOrderByWithRelationInput
   scheduleId: SortOrder
   start: SortOrder
@@ -5744,15 +6083,22 @@ input CalendarEventOrderByWithRelationInput {
   updatedAt: SortOrder
 }
 
+input CalendarEventRemoteIdCalendarIdCompoundUniqueInput {
+  calendarId: Int!
+  remoteId: String!
+}
+
 enum CalendarEventScalarFieldEnum {
   allDay
   archivedAt
   calendarId
+  canceled
   createdAt
   end
   habitId
   id
   notes
+  remoteId
   scheduleId
   start
   taskId
@@ -5768,17 +6114,19 @@ input CalendarEventScalarWhereInput {
   allDay: BoolFilter
   archivedAt: DateTimeNullableFilter
   calendarId: IntFilter
+  canceled: BoolNullableFilter
   createdAt: DateTimeFilter
   end: DateTimeNullableFilter
   habitId: IntNullableFilter
   id: IntFilter
   notes: StringNullableFilter
+  remoteId: StringNullableFilter
   scheduleId: IntNullableFilter
   start: DateTimeFilter
   taskId: IntNullableFilter
   title: StringFilter
   uid: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input CalendarEventScalarWhereWithAggregatesInput {
@@ -5788,17 +6136,19 @@ input CalendarEventScalarWhereWithAggregatesInput {
   allDay: BoolWithAggregatesFilter
   archivedAt: DateTimeNullableWithAggregatesFilter
   calendarId: IntWithAggregatesFilter
+  canceled: BoolNullableWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   end: DateTimeNullableWithAggregatesFilter
   habitId: IntNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
   notes: StringNullableWithAggregatesFilter
+  remoteId: StringNullableWithAggregatesFilter
   scheduleId: IntNullableWithAggregatesFilter
   start: DateTimeWithAggregatesFilter
   taskId: IntNullableWithAggregatesFilter
   title: StringWithAggregatesFilter
   uid: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type CalendarEventSumAggregate {
@@ -5821,28 +6171,32 @@ input CalendarEventUpdateInput {
   allDay: BoolFieldUpdateOperationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
   title: StringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpdateManyMutationInput {
   allDay: BoolFieldUpdateOperationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpdateManyWithWhereWithoutCalendarInput {
@@ -5944,61 +6298,69 @@ input CalendarEventUpdateWithWhereUniqueWithoutTaskInput {
 input CalendarEventUpdateWithoutCalendarInput {
   allDay: BoolFieldUpdateOperationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
   title: StringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpdateWithoutHabitInput {
   allDay: BoolFieldUpdateOperationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
   title: StringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpdateWithoutScheduleInput {
   allDay: BoolFieldUpdateOperationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
   task: TaskUpdateOneWithoutCalendarEventsInput
   title: StringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpdateWithoutTaskInput {
   allDay: BoolFieldUpdateOperationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   calendar: CalendarUpdateOneRequiredWithoutEventsInput
+  canceled: NullableBoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   end: NullableDateTimeFieldUpdateOperationsInput
   habit: HabitUpdateOneWithoutCalendarEventsInput
   notes: NullableStringFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
   schedule: ActionScheduleUpdateOneWithoutCalendarEventsInput
   start: DateTimeFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input CalendarEventUpsertWithWhereUniqueWithoutCalendarInput {
@@ -6033,12 +6395,14 @@ input CalendarEventWhereInput {
   archivedAt: DateTimeNullableFilter
   calendar: CalendarRelationFilter
   calendarId: IntFilter
+  canceled: BoolNullableFilter
   createdAt: DateTimeFilter
   end: DateTimeNullableFilter
   habit: HabitRelationFilter
   habitId: IntNullableFilter
   id: IntFilter
   notes: StringNullableFilter
+  remoteId: StringNullableFilter
   schedule: ActionScheduleRelationFilter
   scheduleId: IntNullableFilter
   start: DateTimeFilter
@@ -6046,11 +6410,12 @@ input CalendarEventWhereInput {
   taskId: IntNullableFilter
   title: StringFilter
   uid: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input CalendarEventWhereUniqueInput {
   id: Int
+  remoteId_calendarId: CalendarEventRemoteIdCalendarIdCompoundUniqueInput
   uid: String
 }
 
@@ -6060,11 +6425,20 @@ type CalendarGroupBy {
   _max: CalendarMaxAggregate
   _min: CalendarMinAggregate
   _sum: CalendarSumAggregate
-  color: Color
+  accountId: Int
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime!
+  enabled: Boolean
   id: Int!
-  isPublic: Boolean!
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String!
+  updatedAt: DateTime!
   userId: Int!
 }
 
@@ -6075,38 +6449,74 @@ input CalendarListRelationFilter {
 }
 
 type CalendarMaxAggregate {
-  color: Color
+  accountId: Int
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
   id: Int
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String
+  updatedAt: DateTime
   userId: Int
 }
 
 input CalendarMaxOrderByAggregateInput {
+  accountId: SortOrder
+  archivedAt: SortOrder
   color: SortOrder
+  createdAt: SortOrder
+  enabled: SortOrder
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  remoteId: SortOrder
+  syncToken: SortOrder
   uid: SortOrder
+  updatedAt: SortOrder
   userId: SortOrder
 }
 
 type CalendarMinAggregate {
-  color: Color
+  accountId: Int
+  archivedAt: DateTime
+  color: String
+  createdAt: DateTime
+  enabled: Boolean
   id: Int
-  isPublic: Boolean
   name: String
+  primary: Boolean
+  provider: CalendarProvider
+  public: Boolean
+  remoteId: String
+  syncToken: String
   uid: String
+  updatedAt: DateTime
   userId: Int
 }
 
 input CalendarMinOrderByAggregateInput {
+  accountId: SortOrder
+  archivedAt: SortOrder
   color: SortOrder
+  createdAt: SortOrder
+  enabled: SortOrder
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  remoteId: SortOrder
+  syncToken: SortOrder
   uid: SortOrder
+  updatedAt: SortOrder
   userId: SortOrder
 }
 
@@ -6120,23 +6530,47 @@ input CalendarOrderByWithAggregationInput {
   _max: CalendarMaxOrderByAggregateInput
   _min: CalendarMinOrderByAggregateInput
   _sum: CalendarSumOrderByAggregateInput
+  accountId: SortOrder
+  archivedAt: SortOrder
   color: SortOrder
+  createdAt: SortOrder
+  enabled: SortOrder
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  remoteId: SortOrder
+  syncToken: SortOrder
   uid: SortOrder
+  updatedAt: SortOrder
   userId: SortOrder
 }
 
 input CalendarOrderByWithRelationInput {
+  account: AccountOrderByWithRelationInput
+  accountId: SortOrder
+  archivedAt: SortOrder
   color: SortOrder
+  createdAt: SortOrder
+  enabled: SortOrder
   events: CalendarEventOrderByRelationAggregateInput
   id: SortOrder
-  isPublic: SortOrder
   name: SortOrder
+  primary: SortOrder
+  provider: SortOrder
+  public: SortOrder
+  remoteId: SortOrder
+  syncToken: SortOrder
   uid: SortOrder
+  updatedAt: SortOrder
   user: UserOrderByWithRelationInput
   userId: SortOrder
+}
+
+enum CalendarProvider {
+  apple
+  google
 }
 
 input CalendarRelationFilter {
@@ -6144,12 +6578,26 @@ input CalendarRelationFilter {
   isNot: CalendarWhereInput
 }
 
+input CalendarRemoteIdAccountIdCompoundUniqueInput {
+  accountId: Int!
+  remoteId: String!
+}
+
 enum CalendarScalarFieldEnum {
+  accountId
+  archivedAt
   color
+  createdAt
+  enabled
   id
-  isPublic
   name
+  primary
+  provider
+  public
+  remoteId
+  syncToken
   uid
+  updatedAt
   userId
 }
 
@@ -6157,11 +6605,20 @@ input CalendarScalarWhereInput {
   AND: [CalendarScalarWhereInput!]
   NOT: [CalendarScalarWhereInput!]
   OR: [CalendarScalarWhereInput!]
-  color: EnumColorNullableFilter
+  accountId: IntNullableFilter
+  archivedAt: DateTimeNullableFilter
+  color: StringNullableFilter
+  createdAt: DateTimeFilter
+  enabled: BoolNullableFilter
   id: IntFilter
-  isPublic: BoolFilter
   name: StringNullableFilter
+  primary: BoolNullableFilter
+  provider: EnumCalendarProviderNullableFilter
+  public: BoolNullableFilter
+  remoteId: StringNullableFilter
+  syncToken: StringNullableFilter
   uid: StringFilter
+  updatedAt: DateTimeFilter
   userId: IntFilter
 }
 
@@ -6169,43 +6626,90 @@ input CalendarScalarWhereWithAggregatesInput {
   AND: [CalendarScalarWhereWithAggregatesInput!]
   NOT: [CalendarScalarWhereWithAggregatesInput!]
   OR: [CalendarScalarWhereWithAggregatesInput!]
-  color: EnumColorNullableWithAggregatesFilter
+  accountId: IntNullableWithAggregatesFilter
+  archivedAt: DateTimeNullableWithAggregatesFilter
+  color: StringNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  enabled: BoolNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
-  isPublic: BoolWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
+  primary: BoolNullableWithAggregatesFilter
+  provider: EnumCalendarProviderNullableWithAggregatesFilter
+  public: BoolNullableWithAggregatesFilter
+  remoteId: StringNullableWithAggregatesFilter
+  syncToken: StringNullableWithAggregatesFilter
   uid: StringWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
 type CalendarSumAggregate {
+  accountId: Int
   id: Int
   userId: Int
 }
 
 input CalendarSumOrderByAggregateInput {
+  accountId: SortOrder
   id: SortOrder
   userId: SortOrder
 }
 
 input CalendarUpdateInput {
-  color: NullableEnumColorFieldUpdateOperationsInput
+  account: AccountUpdateOneWithoutCalendarsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
   events: CalendarEventUpdateManyWithoutCalendarInput
-  isPublic: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
+  syncToken: NullableStringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutCalendarsInput
 }
 
 input CalendarUpdateManyMutationInput {
-  color: NullableEnumColorFieldUpdateOperationsInput
-  isPublic: BoolFieldUpdateOperationsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
+  syncToken: NullableStringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input CalendarUpdateManyWithWhereWithoutAccountInput {
+  data: CalendarUpdateManyMutationInput!
+  where: CalendarScalarWhereInput!
 }
 
 input CalendarUpdateManyWithWhereWithoutUserInput {
   data: CalendarUpdateManyMutationInput!
   where: CalendarScalarWhereInput!
+}
+
+input CalendarUpdateManyWithoutAccountInput {
+  connect: [CalendarWhereUniqueInput!]
+  connectOrCreate: [CalendarCreateOrConnectWithoutAccountInput!]
+  create: [CalendarCreateWithoutAccountInput!]
+  createMany: CalendarCreateManyAccountInputEnvelope
+  delete: [CalendarWhereUniqueInput!]
+  deleteMany: [CalendarScalarWhereInput!]
+  disconnect: [CalendarWhereUniqueInput!]
+  set: [CalendarWhereUniqueInput!]
+  update: [CalendarUpdateWithWhereUniqueWithoutAccountInput!]
+  updateMany: [CalendarUpdateManyWithWhereWithoutAccountInput!]
+  upsert: [CalendarUpsertWithWhereUniqueWithoutAccountInput!]
 }
 
 input CalendarUpdateManyWithoutUserInput {
@@ -6230,25 +6734,71 @@ input CalendarUpdateOneRequiredWithoutEventsInput {
   upsert: CalendarUpsertWithoutEventsInput
 }
 
+input CalendarUpdateWithWhereUniqueWithoutAccountInput {
+  data: CalendarUpdateWithoutAccountInput!
+  where: CalendarWhereUniqueInput!
+}
+
 input CalendarUpdateWithWhereUniqueWithoutUserInput {
   data: CalendarUpdateWithoutUserInput!
   where: CalendarWhereUniqueInput!
 }
 
-input CalendarUpdateWithoutEventsInput {
-  color: NullableEnumColorFieldUpdateOperationsInput
-  isPublic: BoolFieldUpdateOperationsInput
+input CalendarUpdateWithoutAccountInput {
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
+  events: CalendarEventUpdateManyWithoutCalendarInput
   name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
+  syncToken: NullableStringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutCalendarsInput
+}
+
+input CalendarUpdateWithoutEventsInput {
+  account: AccountUpdateOneWithoutCalendarsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
+  syncToken: NullableStringFieldUpdateOperationsInput
+  uid: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutCalendarsInput
 }
 
 input CalendarUpdateWithoutUserInput {
-  color: NullableEnumColorFieldUpdateOperationsInput
+  account: AccountUpdateOneWithoutCalendarsInput
+  archivedAt: NullableDateTimeFieldUpdateOperationsInput
+  color: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  enabled: NullableBoolFieldUpdateOperationsInput
   events: CalendarEventUpdateManyWithoutCalendarInput
-  isPublic: BoolFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  primary: NullableBoolFieldUpdateOperationsInput
+  provider: NullableEnumCalendarProviderFieldUpdateOperationsInput
+  public: NullableBoolFieldUpdateOperationsInput
+  remoteId: NullableStringFieldUpdateOperationsInput
+  syncToken: NullableStringFieldUpdateOperationsInput
   uid: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input CalendarUpsertWithWhereUniqueWithoutAccountInput {
+  create: CalendarCreateWithoutAccountInput!
+  update: CalendarUpdateWithoutAccountInput!
+  where: CalendarWhereUniqueInput!
 }
 
 input CalendarUpsertWithWhereUniqueWithoutUserInput {
@@ -6266,18 +6816,29 @@ input CalendarWhereInput {
   AND: [CalendarWhereInput!]
   NOT: [CalendarWhereInput!]
   OR: [CalendarWhereInput!]
-  color: EnumColorNullableFilter
+  account: AccountRelationFilter
+  accountId: IntNullableFilter
+  archivedAt: DateTimeNullableFilter
+  color: StringNullableFilter
+  createdAt: DateTimeFilter
+  enabled: BoolNullableFilter
   events: CalendarEventListRelationFilter
   id: IntFilter
-  isPublic: BoolFilter
   name: StringNullableFilter
+  primary: BoolNullableFilter
+  provider: EnumCalendarProviderNullableFilter
+  public: BoolNullableFilter
+  remoteId: StringNullableFilter
+  syncToken: StringNullableFilter
   uid: StringFilter
+  updatedAt: DateTimeFilter
   user: UserRelationFilter
   userId: IntFilter
 }
 
 input CalendarWhereUniqueInput {
   id: Int
+  remoteId_accountId: CalendarRemoteIdAccountIdCompoundUniqueInput
   uid: String
 }
 
@@ -6863,10 +7424,6 @@ input CategoryWhereUniqueInput {
   id: Int
 }
 
-enum Color {
-  BLUE
-}
-
 type Dashboard {
   archivedAt: DateTime
   createdAt: DateTime!
@@ -7273,21 +7830,21 @@ input DateTimeWithAggregatesFilter {
   notIn: [DateTime!]
 }
 
-input EnumColorNullableFilter {
-  equals: Color
-  in: [Color!]
-  not: NestedEnumColorNullableFilter
-  notIn: [Color!]
+input EnumCalendarProviderNullableFilter {
+  equals: CalendarProvider
+  in: [CalendarProvider!]
+  not: NestedEnumCalendarProviderNullableFilter
+  notIn: [CalendarProvider!]
 }
 
-input EnumColorNullableWithAggregatesFilter {
+input EnumCalendarProviderNullableWithAggregatesFilter {
   _count: NestedIntNullableFilter
-  _max: NestedEnumColorNullableFilter
-  _min: NestedEnumColorNullableFilter
-  equals: Color
-  in: [Color!]
-  not: NestedEnumColorNullableWithAggregatesFilter
-  notIn: [Color!]
+  _max: NestedEnumCalendarProviderNullableFilter
+  _min: NestedEnumCalendarProviderNullableFilter
+  equals: CalendarProvider
+  in: [CalendarProvider!]
+  not: NestedEnumCalendarProviderNullableWithAggregatesFilter
+  notIn: [CalendarProvider!]
 }
 
 input EnumFREQUENCYFieldUpdateOperationsInput {
@@ -7709,7 +8266,7 @@ type Habit {
   routines(cursor: RoutineHabitWhereUniqueInput, distinct: [RoutineHabitScalarFieldEnum!], orderBy: [RoutineHabitOrderByWithRelationInput!], skip: Int, take: Int, where: RoutineHabitWhereInput): [RoutineHabit!]!
   schedules(cursor: ActionScheduleWhereUniqueInput, distinct: [ActionScheduleScalarFieldEnum!], orderBy: [ActionScheduleOrderByWithRelationInput!], skip: Int, take: Int, where: ActionScheduleWhereInput): [ActionSchedule!]!
   tasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum!], orderBy: [TaskOrderByWithRelationInput!], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   user: User!
   userId: Int!
 }
@@ -8092,7 +8649,7 @@ type HabitGroupBy {
   id: Int!
   isPublic: Boolean!
   name: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userId: Int!
 }
 
@@ -8220,7 +8777,7 @@ input HabitScalarWhereInput {
   id: IntFilter
   isPublic: BoolFilter
   name: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userId: IntFilter
 }
 
@@ -8235,7 +8792,7 @@ input HabitScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   isPublic: BoolWithAggregatesFilter
   name: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
@@ -8267,7 +8824,7 @@ input HabitUpdateInput {
   routines: RoutineHabitUpdateManyWithoutHabitInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8277,7 +8834,7 @@ input HabitUpdateManyMutationInput {
   defaultDurationInMinutes: NullableIntFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input HabitUpdateManyWithWhereWithoutActInput {
@@ -8403,7 +8960,7 @@ input HabitUpdateWithoutActInput {
   routines: RoutineHabitUpdateManyWithoutHabitInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8420,7 +8977,7 @@ input HabitUpdateWithoutActionsInput {
   routines: RoutineHabitUpdateManyWithoutHabitInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8437,7 +8994,7 @@ input HabitUpdateWithoutCalendarEventsInput {
   routines: RoutineHabitUpdateManyWithoutHabitInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8454,7 +9011,7 @@ input HabitUpdateWithoutGoalsInput {
   routines: RoutineHabitUpdateManyWithoutHabitInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8471,7 +9028,7 @@ input HabitUpdateWithoutMetricsInput {
   routines: RoutineHabitUpdateManyWithoutHabitInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8488,7 +9045,7 @@ input HabitUpdateWithoutRoutinesInput {
   name: StringFieldUpdateOperationsInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8505,7 +9062,7 @@ input HabitUpdateWithoutSchedulesInput {
   name: StringFieldUpdateOperationsInput
   routines: RoutineHabitUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8522,7 +9079,7 @@ input HabitUpdateWithoutTasksInput {
   name: StringFieldUpdateOperationsInput
   routines: RoutineHabitUpdateManyWithoutHabitInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutHabitsInput
 }
 
@@ -8540,7 +9097,7 @@ input HabitUpdateWithoutUserInput {
   routines: RoutineHabitUpdateManyWithoutHabitInput
   schedules: ActionScheduleUpdateManyWithoutHabitInput
   tasks: TaskUpdateManyWithoutHabitInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input HabitUpsertWithWhereUniqueWithoutActInput {
@@ -8609,7 +9166,7 @@ input HabitWhereInput {
   routines: RoutineHabitListRelationFilter
   schedules: ActionScheduleListRelationFilter
   tasks: TaskListRelationFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   user: UserRelationFilter
   userId: IntFilter
 }
@@ -10284,7 +10841,7 @@ type MetricApplication {
   id: Int!
   metric: Metric!
   metricId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input MetricApplicationActIdMetricIdCompoundUniqueInput {
@@ -10418,7 +10975,7 @@ type MetricApplicationGroupBy {
   createdAt: DateTime!
   id: Int!
   metricId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input MetricApplicationListRelationFilter {
@@ -10510,7 +11067,7 @@ input MetricApplicationScalarWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   metricId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input MetricApplicationScalarWhereWithAggregatesInput {
@@ -10522,7 +11079,7 @@ input MetricApplicationScalarWhereWithAggregatesInput {
   createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   metricId: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type MetricApplicationSumAggregate {
@@ -10542,13 +11099,13 @@ input MetricApplicationUpdateInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   metric: MetricUpdateOneRequiredWithoutApplicationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input MetricApplicationUpdateManyMutationInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input MetricApplicationUpdateManyWithWhereWithoutActInput {
@@ -10603,14 +11160,14 @@ input MetricApplicationUpdateWithoutActInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   metric: MetricUpdateOneRequiredWithoutApplicationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input MetricApplicationUpdateWithoutMetricInput {
   act: ActUpdateOneRequiredWithoutMetricApplicationsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input MetricApplicationUpsertWithWhereUniqueWithoutActInput {
@@ -10636,7 +11193,7 @@ input MetricApplicationWhereInput {
   id: IntFilter
   metric: MetricRelationFilter
   metricId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input MetricApplicationWhereUniqueInput {
@@ -10766,7 +11323,7 @@ type MetricRecord {
   id: Int!
   metricUsage: MetricUsage!
   metricUsageId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   value: Int!
 }
 
@@ -10903,7 +11460,7 @@ type MetricRecordGroupBy {
   createdAt: DateTime!
   id: Int!
   metricUsageId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   value: Int!
 }
 
@@ -11003,7 +11560,7 @@ input MetricRecordScalarWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   metricUsageId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   value: IntFilter
 }
 
@@ -11016,7 +11573,7 @@ input MetricRecordScalarWhereWithAggregatesInput {
   createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   metricUsageId: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   value: IntWithAggregatesFilter
 }
 
@@ -11039,14 +11596,14 @@ input MetricRecordUpdateInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   metricUsage: MetricUsageUpdateOneRequiredWithoutRecordsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   value: IntFieldUpdateOperationsInput
 }
 
 input MetricRecordUpdateManyMutationInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   value: IntFieldUpdateOperationsInput
 }
 
@@ -11102,7 +11659,7 @@ input MetricRecordUpdateWithoutActionInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   metricUsage: MetricUsageUpdateOneRequiredWithoutRecordsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   value: IntFieldUpdateOperationsInput
 }
 
@@ -11110,7 +11667,7 @@ input MetricRecordUpdateWithoutMetricUsageInput {
   action: ActionUpdateOneRequiredWithoutMetricRecordsInput
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   value: IntFieldUpdateOperationsInput
 }
 
@@ -11137,7 +11694,7 @@ input MetricRecordWhereInput {
   id: IntFilter
   metricUsage: MetricUsageRelationFilter
   metricUsageId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   value: IntFilter
 }
 
@@ -11909,6 +12466,19 @@ input NestedBoolFilter {
   not: NestedBoolFilter
 }
 
+input NestedBoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
+}
+
+input NestedBoolNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedBoolNullableFilter
+  _min: NestedBoolNullableFilter
+  equals: Boolean
+  not: NestedBoolNullableWithAggregatesFilter
+}
+
 input NestedBoolWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedBoolFilter
@@ -11967,21 +12537,21 @@ input NestedDateTimeWithAggregatesFilter {
   notIn: [DateTime!]
 }
 
-input NestedEnumColorNullableFilter {
-  equals: Color
-  in: [Color!]
-  not: NestedEnumColorNullableFilter
-  notIn: [Color!]
+input NestedEnumCalendarProviderNullableFilter {
+  equals: CalendarProvider
+  in: [CalendarProvider!]
+  not: NestedEnumCalendarProviderNullableFilter
+  notIn: [CalendarProvider!]
 }
 
-input NestedEnumColorNullableWithAggregatesFilter {
+input NestedEnumCalendarProviderNullableWithAggregatesFilter {
   _count: NestedIntNullableFilter
-  _max: NestedEnumColorNullableFilter
-  _min: NestedEnumColorNullableFilter
-  equals: Color
-  in: [Color!]
-  not: NestedEnumColorNullableWithAggregatesFilter
-  notIn: [Color!]
+  _max: NestedEnumCalendarProviderNullableFilter
+  _min: NestedEnumCalendarProviderNullableFilter
+  equals: CalendarProvider
+  in: [CalendarProvider!]
+  not: NestedEnumCalendarProviderNullableWithAggregatesFilter
+  notIn: [CalendarProvider!]
 }
 
 input NestedEnumFREQUENCYFilter {
@@ -12481,7 +13051,7 @@ type Notebook {
   owner: User!
   ownerId: Int!
   title: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userPermissions(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermission!]!
 }
 
@@ -12641,7 +13211,7 @@ type NotebookGroupBy {
   isPublic: Boolean!
   ownerId: Int!
   title: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input NotebookListRelationFilter {
@@ -12760,7 +13330,7 @@ input NotebookScalarWhereInput {
   isPublic: BoolFilter
   ownerId: IntFilter
   title: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input NotebookScalarWhereWithAggregatesInput {
@@ -12774,7 +13344,7 @@ input NotebookScalarWhereWithAggregatesInput {
   isPublic: BoolWithAggregatesFilter
   ownerId: IntWithAggregatesFilter
   title: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type NotebookSumAggregate {
@@ -12795,7 +13365,7 @@ input NotebookUpdateInput {
   notes: NoteUpdateManyWithoutNotebookInput
   owner: UserUpdateOneRequiredWithoutNotebooksInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
 }
 
@@ -12805,7 +13375,7 @@ input NotebookUpdateManyMutationInput {
   description: NullableStringFieldUpdateOperationsInput
   isPublic: BoolFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input NotebookUpdateManyWithWhereWithoutOwnerInput {
@@ -12855,7 +13425,7 @@ input NotebookUpdateWithoutNotesInput {
   isPublic: BoolFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutNotebooksInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
 }
 
@@ -12866,7 +13436,7 @@ input NotebookUpdateWithoutOwnerInput {
   isPublic: BoolFieldUpdateOperationsInput
   notes: NoteUpdateManyWithoutNotebookInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   userPermissions: NotebookUserPermissionUpdateManyWithoutNotebookInput
 }
 
@@ -12878,7 +13448,7 @@ input NotebookUpdateWithoutUserPermissionsInput {
   notes: NoteUpdateManyWithoutNotebookInput
   owner: UserUpdateOneRequiredWithoutNotebooksInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input NotebookUpsertWithWhereUniqueWithoutOwnerInput {
@@ -13227,7 +13797,7 @@ input NotebookWhereInput {
   owner: UserRelationFilter
   ownerId: IntFilter
   title: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userPermissions: NotebookUserPermissionListRelationFilter
 }
 
@@ -13236,12 +13806,16 @@ input NotebookWhereUniqueInput {
   ownerId_title: NotebookOwnerIdTitleCompoundUniqueInput
 }
 
+input NullableBoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
 input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
 
-input NullableEnumColorFieldUpdateOperationsInput {
-  set: Color
+input NullableEnumCalendarProviderFieldUpdateOperationsInput {
+  set: CalendarProvider
 }
 
 input NullableIntFieldUpdateOperationsInput {
@@ -14081,7 +14655,7 @@ type Routine {
   id: Int!
   name: String!
   notes: String
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userId: Int!
 }
 
@@ -14179,7 +14753,7 @@ type RoutineGroupBy {
   id: Int!
   name: String!
   notes: String
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userId: Int!
 }
 
@@ -14193,7 +14767,7 @@ type RoutineHabit {
   position: Int!
   routine: Routine!
   routineId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type RoutineHabitAvgAggregate {
@@ -14344,7 +14918,7 @@ type RoutineHabitGroupBy {
   id: Int!
   position: Int!
   routineId: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input RoutineHabitListRelationFilter {
@@ -14457,7 +15031,7 @@ input RoutineHabitScalarWhereInput {
   id: IntFilter
   position: IntFilter
   routineId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input RoutineHabitScalarWhereWithAggregatesInput {
@@ -14471,7 +15045,7 @@ input RoutineHabitScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   position: IntWithAggregatesFilter
   routineId: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type RoutineHabitSumAggregate {
@@ -14497,7 +15071,7 @@ input RoutineHabitUpdateInput {
   habit: HabitUpdateOneRequiredWithoutRoutinesInput
   position: IntFieldUpdateOperationsInput
   routine: RoutineUpdateOneRequiredWithoutHabitsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input RoutineHabitUpdateManyMutationInput {
@@ -14505,7 +15079,7 @@ input RoutineHabitUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   durationInMinutes: IntFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input RoutineHabitUpdateManyWithWhereWithoutHabitInput {
@@ -14562,7 +15136,7 @@ input RoutineHabitUpdateWithoutHabitInput {
   durationInMinutes: IntFieldUpdateOperationsInput
   position: IntFieldUpdateOperationsInput
   routine: RoutineUpdateOneRequiredWithoutHabitsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input RoutineHabitUpdateWithoutRoutineInput {
@@ -14571,7 +15145,7 @@ input RoutineHabitUpdateWithoutRoutineInput {
   durationInMinutes: IntFieldUpdateOperationsInput
   habit: HabitUpdateOneRequiredWithoutRoutinesInput
   position: IntFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input RoutineHabitUpsertWithWhereUniqueWithoutHabitInput {
@@ -14599,7 +15173,7 @@ input RoutineHabitWhereInput {
   position: IntFilter
   routine: RoutineRelationFilter
   routineId: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
 }
 
 input RoutineHabitWhereUniqueInput {
@@ -14705,7 +15279,7 @@ input RoutineScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   name: StringWithAggregatesFilter
   notes: StringNullableWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
@@ -14728,7 +15302,7 @@ input RoutineUpdateInput {
   habits: RoutineHabitUpdateManyWithoutRoutineInput
   name: StringFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
 }
 
@@ -14738,7 +15312,7 @@ input RoutineUpdateManyMutationInput {
   durationInMinutes: NullableIntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
 }
 
@@ -14756,7 +15330,7 @@ input RoutineUpdateWithoutHabitsInput {
   durationInMinutes: NullableIntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   notes: NullableStringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
 }
 
@@ -14776,7 +15350,7 @@ input RoutineWhereInput {
   id: IntFilter
   name: StringFilter
   notes: StringNullableFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userId: IntFilter
 }
 
@@ -15509,7 +16083,7 @@ type Task {
   rank: Int!
   subtasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum!], orderBy: [TaskOrderByWithRelationInput!], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
   title: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   user: User!
   userId: Int!
 }
@@ -15816,7 +16390,7 @@ type TaskGroupBy {
   plannedStartDate: DateTime
   rank: Int!
   title: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userId: Int!
 }
 
@@ -15972,7 +16546,7 @@ input TaskScalarWhereInput {
   plannedStartDate: DateTimeNullableFilter
   rank: IntFilter
   title: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userId: IntFilter
 }
 
@@ -15991,7 +16565,7 @@ input TaskScalarWhereWithAggregatesInput {
   plannedStartDate: DateTimeNullableWithAggregatesFilter
   rank: IntWithAggregatesFilter
   title: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
@@ -16024,7 +16598,7 @@ input TaskUpdateInput {
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutTasksInput
 }
 
@@ -16037,7 +16611,7 @@ input TaskUpdateManyMutationInput {
   plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input TaskUpdateManyWithWhereWithoutHabitInput {
@@ -16144,7 +16718,7 @@ input TaskUpdateWithoutCalendarEventsInput {
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutTasksInput
 }
 
@@ -16160,7 +16734,7 @@ input TaskUpdateWithoutHabitInput {
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutTasksInput
 }
 
@@ -16176,7 +16750,7 @@ input TaskUpdateWithoutParentInput {
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutTasksInput
 }
 
@@ -16192,7 +16766,7 @@ input TaskUpdateWithoutSubtasksInput {
   plannedStartDate: NullableDateTimeFieldUpdateOperationsInput
   rank: IntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutTasksInput
 }
 
@@ -16209,7 +16783,7 @@ input TaskUpdateWithoutUserInput {
   rank: IntFieldUpdateOperationsInput
   subtasks: TaskUpdateManyWithoutParentInput
   title: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input TaskUpsertWithWhereUniqueWithoutHabitInput {
@@ -16265,7 +16839,7 @@ input TaskWhereInput {
   rank: IntFilter
   subtasks: TaskListRelationFilter
   title: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   user: UserRelationFilter
   userId: IntFilter
 }
@@ -16294,6 +16868,7 @@ type User {
   identities(cursor: IdentificationWhereUniqueInput, distinct: [IdentificationScalarFieldEnum!], orderBy: [IdentificationOrderByWithRelationInput!], skip: Int, take: Int, where: IdentificationWhereInput): [Identification!]!
   image: String
   isAdmin: Boolean!
+  lastLogin: DateTime
   lists(cursor: ListWhereUniqueInput, distinct: [ListScalarFieldEnum!], orderBy: [ListOrderByWithRelationInput!], skip: Int, take: Int, where: ListWhereInput): [List!]!
   name: String
   notebookPermissions(cursor: NotebookUserPermissionWhereUniqueInput, distinct: [NotebookUserPermissionScalarFieldEnum!], orderBy: [NotebookUserPermissionOrderByWithRelationInput!], skip: Int, take: Int, where: NotebookUserPermissionWhereInput): [NotebookUserPermission!]!
@@ -16320,7 +16895,7 @@ type UserBelief {
   beliefId: Int!
   createdAt: DateTime!
   id: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   user: User!
   userId: Int!
 }
@@ -16447,7 +17022,7 @@ type UserBeliefGroupBy {
   beliefId: Int!
   createdAt: DateTime!
   id: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userId: Int!
 }
 
@@ -16539,7 +17114,7 @@ input UserBeliefScalarWhereInput {
   beliefId: IntFilter
   createdAt: DateTimeFilter
   id: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userId: IntFilter
 }
 
@@ -16551,7 +17126,7 @@ input UserBeliefScalarWhereWithAggregatesInput {
   beliefId: IntWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
 }
 
@@ -16571,14 +17146,14 @@ input UserBeliefUpdateInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   belief: BeliefUpdateOneRequiredWithoutUserBeliefInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutUserBeliefsInput
 }
 
 input UserBeliefUpdateManyMutationInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input UserBeliefUpdateManyWithWhereWithoutBeliefInput {
@@ -16632,7 +17207,7 @@ input UserBeliefUpdateWithWhereUniqueWithoutUserInput {
 input UserBeliefUpdateWithoutBeliefInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutUserBeliefsInput
 }
 
@@ -16640,7 +17215,7 @@ input UserBeliefUpdateWithoutUserInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   belief: BeliefUpdateOneRequiredWithoutUserBeliefInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input UserBeliefUpsertWithWhereUniqueWithoutBeliefInput {
@@ -16669,7 +17244,7 @@ input UserBeliefWhereInput {
   beliefId: IntFilter
   createdAt: DateTimeFilter
   id: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   user: UserRelationFilter
   userId: IntFilter
 }
@@ -16703,6 +17278,7 @@ type UserCountAggregate {
   id: Int!
   image: Int!
   isAdmin: Int!
+  lastLogin: Int!
   name: Int!
   settings: Int!
   uid: Int!
@@ -16714,6 +17290,7 @@ input UserCountOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   name: SortOrder
   settings: SortOrder
   uid: SortOrder
@@ -16731,6 +17308,7 @@ input UserCreateInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16749,6 +17327,7 @@ input UserCreateManyInput {
   id: Int
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   name: String
   settings: JSON
   uid: String
@@ -16919,6 +17498,7 @@ input UserCreateWithoutAccountsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16942,6 +17522,7 @@ input UserCreateWithoutBookReviewsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16965,6 +17546,7 @@ input UserCreateWithoutBookshelvesInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -16988,6 +17570,7 @@ input UserCreateWithoutCalendarsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17011,6 +17594,7 @@ input UserCreateWithoutDashboardsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17034,6 +17618,7 @@ input UserCreateWithoutHabitsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17057,6 +17642,7 @@ input UserCreateWithoutIdentitiesInput {
   habits: HabitCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17081,6 +17667,7 @@ input UserCreateWithoutListsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
   notebooks: NotebookCreateNestedManyWithoutOwnerInput
@@ -17104,6 +17691,7 @@ input UserCreateWithoutNotebookPermissionsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebooks: NotebookCreateNestedManyWithoutOwnerInput
@@ -17127,6 +17715,7 @@ input UserCreateWithoutNotebooksInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17150,6 +17739,7 @@ input UserCreateWithoutReadingsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17173,6 +17763,7 @@ input UserCreateWithoutTasksInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17196,6 +17787,7 @@ input UserCreateWithoutUserBeliefsInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17219,6 +17811,7 @@ input UserCreateWithoutUserValuesInput {
   identities: IdentificationCreateNestedManyWithoutUserInput
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   lists: ListCreateNestedManyWithoutOwnerInput
   name: String
   notebookPermissions: NotebookUserPermissionCreateNestedManyWithoutUserInput
@@ -17241,6 +17834,7 @@ type UserGroupBy {
   id: Int!
   image: String
   isAdmin: Boolean!
+  lastLogin: DateTime
   name: String
   settings: JSON!
   uid: String!
@@ -17252,6 +17846,7 @@ type UserMaxAggregate {
   id: Int
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   name: String
   uid: String
 }
@@ -17262,6 +17857,7 @@ input UserMaxOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   name: SortOrder
   uid: SortOrder
 }
@@ -17272,6 +17868,7 @@ type UserMinAggregate {
   id: Int
   image: String
   isAdmin: Boolean
+  lastLogin: DateTime
   name: String
   uid: String
 }
@@ -17282,6 +17879,7 @@ input UserMinOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   name: SortOrder
   uid: SortOrder
 }
@@ -17297,6 +17895,7 @@ input UserOrderByWithAggregationInput {
   id: SortOrder
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   name: SortOrder
   settings: SortOrder
   uid: SortOrder
@@ -17315,6 +17914,7 @@ input UserOrderByWithRelationInput {
   identities: IdentificationOrderByRelationAggregateInput
   image: SortOrder
   isAdmin: SortOrder
+  lastLogin: SortOrder
   lists: ListOrderByRelationAggregateInput
   name: SortOrder
   notebookPermissions: NotebookUserPermissionOrderByRelationAggregateInput
@@ -17338,6 +17938,7 @@ enum UserScalarFieldEnum {
   id
   image
   isAdmin
+  lastLogin
   name
   settings
   uid
@@ -17352,6 +17953,7 @@ input UserScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   image: StringNullableWithAggregatesFilter
   isAdmin: BoolWithAggregatesFilter
+  lastLogin: DateTimeNullableWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
   settings: JsonWithAggregatesFilter
   uid: StringWithAggregatesFilter
@@ -17377,6 +17979,7 @@ input UserUpdateInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17394,6 +17997,7 @@ input UserUpdateManyMutationInput {
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   settings: JSON
   uid: StringFieldUpdateOperationsInput
@@ -17522,6 +18126,7 @@ input UserUpdateWithoutAccountsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17545,6 +18150,7 @@ input UserUpdateWithoutBookReviewsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17568,6 +18174,7 @@ input UserUpdateWithoutBookshelvesInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17591,6 +18198,7 @@ input UserUpdateWithoutCalendarsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17614,6 +18222,7 @@ input UserUpdateWithoutDashboardsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17637,6 +18246,7 @@ input UserUpdateWithoutHabitsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17660,6 +18270,7 @@ input UserUpdateWithoutIdentitiesInput {
   habits: HabitUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17684,6 +18295,7 @@ input UserUpdateWithoutListsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
   notebooks: NotebookUpdateManyWithoutOwnerInput
@@ -17707,6 +18319,7 @@ input UserUpdateWithoutNotebookPermissionsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebooks: NotebookUpdateManyWithoutOwnerInput
@@ -17730,6 +18343,7 @@ input UserUpdateWithoutNotebooksInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17753,6 +18367,7 @@ input UserUpdateWithoutReadingsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17776,6 +18391,7 @@ input UserUpdateWithoutTasksInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17799,6 +18415,7 @@ input UserUpdateWithoutUserBeliefsInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17822,6 +18439,7 @@ input UserUpdateWithoutUserValuesInput {
   identities: IdentificationUpdateManyWithoutUserInput
   image: NullableStringFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
+  lastLogin: NullableDateTimeFieldUpdateOperationsInput
   lists: ListUpdateManyWithoutOwnerInput
   name: NullableStringFieldUpdateOperationsInput
   notebookPermissions: NotebookUserPermissionUpdateManyWithoutUserInput
@@ -17907,7 +18525,7 @@ type UserValue {
   archivedAt: DateTime
   createdAt: DateTime!
   id: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   user: User!
   userId: Int!
   value: Value!
@@ -18035,7 +18653,7 @@ type UserValueGroupBy {
   archivedAt: DateTime
   createdAt: DateTime!
   id: Int!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userId: Int!
   valueId: Int!
 }
@@ -18127,7 +18745,7 @@ input UserValueScalarWhereInput {
   archivedAt: DateTimeNullableFilter
   createdAt: DateTimeFilter
   id: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userId: IntFilter
   valueId: IntFilter
 }
@@ -18139,7 +18757,7 @@ input UserValueScalarWhereWithAggregatesInput {
   archivedAt: DateTimeNullableWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
   valueId: IntWithAggregatesFilter
 }
@@ -18159,7 +18777,7 @@ input UserValueSumOrderByAggregateInput {
 input UserValueUpdateInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutUserValuesInput
   value: ValueUpdateOneRequiredWithoutUserValuesInput
 }
@@ -18167,7 +18785,7 @@ input UserValueUpdateInput {
 input UserValueUpdateManyMutationInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input UserValueUpdateManyWithWhereWithoutUserInput {
@@ -18221,14 +18839,14 @@ input UserValueUpdateWithWhereUniqueWithoutValueInput {
 input UserValueUpdateWithoutUserInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   value: ValueUpdateOneRequiredWithoutUserValuesInput
 }
 
 input UserValueUpdateWithoutValueInput {
   archivedAt: NullableDateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutUserValuesInput
 }
 
@@ -18256,7 +18874,7 @@ input UserValueWhereInput {
   archivedAt: DateTimeNullableFilter
   createdAt: DateTimeFilter
   id: IntFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   user: UserRelationFilter
   userId: IntFilter
   value: ValueRelationFilter
@@ -18284,6 +18902,7 @@ input UserWhereInput {
   identities: IdentificationListRelationFilter
   image: StringNullableFilter
   isAdmin: BoolFilter
+  lastLogin: DateTimeNullableFilter
   lists: ListListRelationFilter
   name: StringNullableFilter
   notebookPermissions: NotebookUserPermissionListRelationFilter
@@ -18310,7 +18929,7 @@ type Value {
   id: Int!
   name: String!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
   userValues(cursor: UserValueWhereUniqueInput, distinct: [UserValueScalarFieldEnum!], orderBy: [UserValueOrderByWithRelationInput!], skip: Int, take: Int, where: UserValueWhereInput): [UserValue!]!
 }
 
@@ -18399,7 +19018,7 @@ type ValueGroupBy {
   id: Int!
   name: String!
   slug: String!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 type ValueMaxAggregate {
@@ -18493,7 +19112,7 @@ input ValueScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   name: StringWithAggregatesFilter
   slug: StringWithAggregatesFilter
-  updatedAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
 }
 
 type ValueSumAggregate {
@@ -18510,7 +19129,7 @@ input ValueUpdateInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
   userValues: UserValueUpdateManyWithoutValueInput
 }
 
@@ -18520,7 +19139,7 @@ input ValueUpdateManyMutationInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ValueUpdateOneRequiredWithoutUserValuesInput {
@@ -18537,7 +19156,7 @@ input ValueUpdateWithoutUserValuesInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   slug: StringFieldUpdateOperationsInput
-  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ValueUpsertWithoutUserValuesInput {
@@ -18555,7 +19174,7 @@ input ValueWhereInput {
   id: IntFilter
   name: StringFilter
   slug: StringFilter
-  updatedAt: DateTimeNullableFilter
+  updatedAt: DateTimeFilter
   userValues: UserValueListRelationFilter
 }
 
