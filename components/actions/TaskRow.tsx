@@ -15,7 +15,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import StopIcon from "@mui/icons-material/Stop";
-import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -115,7 +114,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
     )
   ) : "";
 
-  const bindTriggerProps = bindTrigger(dialogState);
+  const dialogTriggerProps = bindTrigger(dialogState);
   const menuTriggerProps = bindTrigger(menuState);
   const originalOnClick = menuTriggerProps.onClick;
   menuTriggerProps.onClick = (event) => {
@@ -128,10 +127,11 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
       <TableRow
         ref={dndRef}
         onClick={(e) => {
-          if (!editing) bindTriggerProps.onClick(e);
+          if (!editing) dialogTriggerProps.onClick(e);
         }}
         sx={{
           opacity: isDragging ? 0 : 1,
+          cursor: isDragging ? "grabbing" : "pointer",
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
           backgroundColor: (theme) =>
@@ -226,8 +226,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               >
                 <Box display="flex" justifyContent={"space-between"} alignItems="center">
                   <Box display="flex" alignItems="center">
-                    <Button
-                      variant="text"
+                    <Box
                       sx={{
                         color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
                         padding: "0 0.25rem",
@@ -238,7 +237,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                         lineHeight: "1rem",
                         textAlign: "left",
                       }}
-                      {...bindTriggerProps}
                     >
                       {task.title}
                       {task.subtasks?.length ? (
@@ -256,7 +254,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                           {subtasksExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         </IconButton>
                       ) : null}
-                    </Button>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
