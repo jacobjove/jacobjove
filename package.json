@@ -92,7 +92,7 @@
     "recharts": "^1.8.5",
     "reflect-metadata": "^0.1.13",
     "sass": "^1.42.0",
-    "superjson": "^1.8.0",
+    "superjson": "^1.8.1",
     "throttle-debounce": "^3.0.1",
     "type-graphql": "^1.1.1",
     "typeface-open-sans": "^1.1.13",
