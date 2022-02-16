@@ -231,14 +231,19 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                         color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
                         padding: "0 0.25rem",
                         margin: 0,
-                        fontSize: asSubtask ? "0.7rem" : "0.8rem",
-                        textTransform: "none",
                         minWidth: 0,
-                        lineHeight: "1rem",
-                        textAlign: "left",
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
-                      {task.title}
+                      <Typography
+                        sx={{
+                          fontSize: asSubtask ? "0.7rem" : "0.8rem",
+                          textTransform: "none",
+                        }}
+                      >
+                        {task.title}
+                      </Typography>
                       {task.subtasks?.length ? (
                         <IconButton
                           title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
