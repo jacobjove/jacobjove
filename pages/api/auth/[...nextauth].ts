@@ -113,6 +113,7 @@ const callbacks: CallbacksOptions = {
         // without providing access to their calendar or other data, we'll need to
         // figure out a way to keep track of what scopes should be requested during
         // the sign-in process, so that scopes are not reset.
+
         const oldScopes = userFromDb.accounts[0].scopes;
         const newScopes = account.scope?.split(" ") ?? [];
         if (!oldScopes.every((scope) => newScopes.includes(scope))) {

@@ -310,7 +310,18 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
             <Typography sx={{ mx: 1 }}>{`${name} Calendar integration is enabled.`}</Typography>
           </Box>
         ) : (
-          <Stepper activeStep={nextStep}>
+          <Stepper
+            orientation={"vertical"}
+            activeStep={nextStep}
+            sx={{
+              "& .MuiStepLabel-root": {
+                alignItems: "start",
+              },
+              "& .MuiStepConnector-line": {
+                mx: "0.5rem",
+              },
+            }}
+          >
             {steps.map(([label, caption], index) => {
               return (
                 <Step key={label}>
@@ -318,7 +329,15 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
                     sx={{ mx: 1, "& .MuiStepLabel-labelContainer": { mx: 1 } }}
                     {...(nextStep === index && {
                       optional: (
-                        <Typography variant="caption" minHeight={0}>
+                        <Typography
+                          variant="caption"
+                          minHeight={0}
+                          sx={{
+                            display: "block",
+                            mt: "0.25rem",
+                            lineHeight: "1rem",
+                          }}
+                        >
                           {caption}
                         </Typography>
                       ),
