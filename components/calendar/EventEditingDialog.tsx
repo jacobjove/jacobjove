@@ -1,4 +1,5 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
+import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/components/calendar/EventSlot";
 import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
 import {
@@ -12,125 +13,141 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { addMinutes } from "date-fns/esm";
+import { addMinutes } from "date-fns";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useReducer } from "react";
+
+// TODO: Figure out what to do about non-nullability of fields that are supposed
+// to be nullable... https://github.com/MichalLytek/typegraphql-prisma/issues/32
+// It's not hugely problematic at the moment, but it's annoying and may cause problems
+// in the future. Fields like `archivedAt` need to be able to be updated to null.
+// And fields like `notes` can be set to an empty string rather than null, but
+// since the database allows such optional string fields to be null (and our types
+// are generated accordingly), it's unexpected that TypeGraphQL then proceeds to
+// generate a schema that does not allow us to set a nullable field to null.
+export type EventData = Omit<
+  CalendarEvent,
+  | "id"
+  | "uid"
+  | "start"
+  | "end"
+  | "notes"
+  | "remoteId"
+  | "calendarSourceId"
+  | "canceled"
+  | "createdAt"
+  | "updatedAt"
+  | "archivedAt"
+  | "schedule"
+  | "habit"
+  | "task"
+> & {
+  id?: number;
+  start: Date;
+  end?: Date;
+  createdAt?: Date;
+  notes?: string;
+  canceled?: boolean;
+};
+
+export const initializeEventData = (
+  eventData: {
+    start: string | Date;
+    calendarId: number;
+  } & Partial<CalendarEvent | EventData>
+): EventData => {
+  const start = new Date(eventData.start);
+  // prettier-ignore
+  return {
+    ...eventData,
+    title: eventData.title || "",
+    start,
+    end: eventData.end ? new Date(eventData.end) : (
+      !eventData.allDay ? addMinutes(start, DEFAULT_EVENT_LENGTH_IN_MINUTES) : undefined
+    ),
+    allDay: eventData.allDay ?? false,
+    createdAt: eventData.createdAt ? new Date(eventData.createdAt) : undefined,
+    notes: eventData.notes || "",
+    canceled: eventData.canceled || false,
+  };
+};
+
+export const eventDataReducer = (state: EventData, payload: { field: string; value: unknown }) => {
+  if (payload.field === "init") return initializeEventData(payload.value as EventData);
+  return { ...state, [payload.field]: payload.value };
+};
 
 interface EventEditingDialogProps extends ReturnType<typeof bindPopover> {
-  event: Omit<CalendarEvent, "start" | "end" | "id" | "uid" | "createdAt"> & {
-    start: Date | string;
-    end?: Date | string | null;
-    id?: number | undefined;
-  };
+  eventData: CalendarEvent | EventData;
 }
 
 const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDialogProps) => {
-  const { event, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
-  const [title, setTitle] = useState(event.title ?? "");
-  const [start, setStart] = useState<Date | null>(event.start ? new Date(event.start) : new Date());
-  const [end, setEnd] = useState<Date | null>(
-    event.end ? new Date(event.end) : start ? addMinutes(start, 29) : null
-  );
-  const [notes, setNotes] = useState(event.notes ?? "");
-  const [calendarId, setCalendarId] = useState(event.calendarId);
-
+  const { eventData: initialEventData, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const [eventData, dispatch] = useReducer(eventDataReducer, initialEventData, initializeEventData);
   const [mutate, { loading }] = useMutation(
-    event.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
+    eventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
   );
-
   const handleSave = async () => {
-    if (!start) {
+    if (!eventData.start) {
       alert("Start date is required.");
       return;
     }
-    const mutationVars:
-      | {
-          data: CalendarEventUpdateInput;
-          where: CalendarEventWhereUniqueInput;
-        }
-      | {
-          data: CalendarEventCreateInput;
-        } = {
-      ...(event.id
-        ? {
-            where: { id: event.id },
-            data: {
-              title: { set: title },
-              start: { set: start },
-              end: { set: end || undefined },
-              notes: { set: notes },
-              calendar: {
-                connect: {
-                  id: calendarId,
-                },
-              },
-            },
-          }
-        : {
-            data: {
-              title,
-              start,
-              end: end || undefined,
-              notes,
-              calendar: {
-                connect: {
-                  id: calendarId,
-                },
-              },
-            },
-          }),
+    const { calendarId, ...commonEventData } = eventData;
+    const now = new Date();
+    // prettier-ignore
+    const mutationVars: {
+      data: CalendarEventUpdateInput;
+      where: CalendarEventWhereUniqueInput;
+    } | {
+      data: CalendarEventCreateInput;
+    } = eventData.id ? {
+      where: { id: eventData.id },
+      data: {
+        ...Object.fromEntries(
+          Object.entries(commonEventData).map(([key, value]) => [key, { set: value }])
+        ),
+        calendar: { connect: { id: calendarId } },
+        updatedAt: { set: now },
+      },
+    } : {
+      data: {
+        ...commonEventData,
+        calendar: { connect: { id: eventData.calendarId } },
+      },
     };
     await mutate({
       variables: mutationVars,
-      optimisticResponse: {
-        ...(event.id
-          ? {
-              updateCalendarEvent: {
-                id: event.id,
-                __typename: "CalendarEvent",
-                title,
-                start,
-                end,
-                notes,
-                scheduleId: null,
-                calendarId,
-              },
-            }
-          : {
-              createCalendarEvent: {
-                id: "tmp-id",
-                __typename: "CalendarEvent",
-                title,
-                start,
-                end,
-                notes,
-                scheduleId: null,
-                calendarId,
-              },
-            }),
-      },
+      optimisticResponse: eventData.id
+        ? {
+            updateCalendarEvent: {
+              id: eventData.id,
+              __typename: "CalendarEvent",
+              scheduleId: null,
+              ...eventData,
+              updatedAt: now,
+            },
+          }
+        : {
+            createCalendarEvent: {
+              id: "tmp-id",
+              __typename: "CalendarEvent",
+              scheduleId: null,
+              ...eventData,
+              createdAt: now,
+              updatedAt: now,
+            },
+          },
     });
     onClose();
   };
   useEffect(() => {
-    setTitle(event.title);
-    setStart(event.start ? new Date(event.start) : null);
-    setEnd(event.end ? new Date(event.end) : null);
-    setNotes(event.notes ?? "");
-    setCalendarId(event.calendarId); // TODO
-  }, [event]);
+    dispatch({ field: "init", value: initialEventData });
+  }, [initialEventData]);
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
-      <DialogTitle>{event.id ? "Modify" : "Create"} calendar event</DialogTitle>
+      <DialogTitle>{eventData.id ? "Modify" : "Create"} calendar event</DialogTitle>
       <DialogContent>
-        <EventFormFields
-          title={title}
-          setTitle={setTitle}
-          start={start}
-          setStart={setStart}
-          end={end}
-          setEnd={setEnd}
-        />
+        <EventFormFields state={eventData} dispatch={dispatch} />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

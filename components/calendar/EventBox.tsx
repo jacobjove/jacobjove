@@ -23,10 +23,13 @@ interface EventBoxProps extends ComponentProps<typeof Box> {
   event: CalendarEvent;
 }
 
+export interface DraggedCalendarEvent extends CalendarEvent {
+  type: "event";
+}
+
 const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   const { event, ...rest } = props;
   const [hovered, setHovered] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const detailDialogState = usePopupState({
     variant: "popover",
     popupId: `event-${event.id}-detail-dialog`,
@@ -35,19 +38,19 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
     variant: "popover",
     popupId: `event-${event.id}-editing-dialog`,
   });
-  const [{ opacity }, dragRef] = useDrag(() => ({
-    type: "event",
-    item: { type: "event", ...event },
-    collect: (monitor) => ({
-      opacity: monitor.isDragging() ? 0.5 : 1,
-    }),
-  }));
+  const [{ opacity }, dragRef] = useDrag<DraggedCalendarEvent, unknown, { opacity: number }>(
+    () => ({
+      type: "event",
+      item: { type: "event", ...event },
+      collect: (monitor) => ({
+        opacity: monitor.isDragging() ? 0.5 : 1,
+      }),
+    })
+  );
   const startTime = parseISO(event.start);
   const endTime = event.end ? parseISO(event.end) : null;
-  if (!endTime) {
-    console.error("EventBox: endTime is null");
-    return null;
-  }
+  // TODO
+  if (!endTime) return null;
   const detailDialogTriggerProps = bindTrigger(detailDialogState);
   return (
     <>
@@ -100,13 +103,14 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
           <Typography
             component="div"
             fontWeight={"600"}
-            fontSize={"0.65rem"}
+            fontSize={"0.75rem"}
             marginBottom="0.15rem"
             lineHeight={"0.7rem"}
+            mx="0.1rem"
           >
             {event.title}
           </Typography>
-          <Typography component="div" fontSize={"0.5rem"} lineHeight={"0.6rem"}>
+          <Typography component="div" fontSize={"0.6rem"} lineHeight={"0.6rem"} mx="0.1rem">
             {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}
           </Typography>
         </div>
@@ -119,7 +123,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         event={event}
         editingDialogState={editingDialogState}
       />
-      <EventEditingDialog event={event} {...bindPopover(editingDialogState)} />
+      <EventEditingDialog eventData={event} {...bindPopover(editingDialogState)} />
     </>
   );
 };

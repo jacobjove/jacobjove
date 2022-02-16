@@ -7,7 +7,8 @@ import Layout from "@/components/Layout";
 import Select from "@/components/Select";
 import { dashboardFragment } from "@/graphql/fragments";
 import { Dashboard } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/lib/apollo/apolloClient";
+import { addApolloState, initializeApollo } from "@/utils/apollo/client";
+import { printError } from "@/utils/apollo/error-handling";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
@@ -23,7 +24,6 @@ import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-// import Link from "next/link";
 import { useEffect, useState } from "react";
 
 // cols={{ xl: 24, lg: 18, md: 12, sm: 6, xs: 4, xxs: 2 }}
@@ -137,15 +137,17 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
   const [editing, setEditing] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
   const [selectedDashboardId, setSelectedDashboardId] = useState<number | null>(
     (defaultDashboard || dashboards?.[0])?.id || null
   );
   const selectedDashboard =
     dashboards?.find((dashboard) => dashboard.id === selectedDashboardId) || dashboards?.[0];
+
   const layouts = selectedDashboard?.layouts ? JSON.parse(selectedDashboard.layouts) : undefined;
 
   useEffect(() => {
-    if (session && data && !dashboards?.length) {
+    if (session && !loading && data && !dashboards?.length) {
       createDashboard({
         variables: {
           data: {
@@ -157,10 +159,12 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
         },
       }).catch(console.error);
     }
-  }, [data, dashboards, createDashboard, session]);
+  }, [loading, data, dashboards, createDashboard, session]);
+
   useEffect(() => {
-    if (dashboards?.length && !selectedDashboard) setSelectedDashboardId(dashboards[0].id);
-  }, [dashboards, selectedDashboard, setSelectedDashboardId]);
+    if (dashboards?.length && !selectedDashboardId) setSelectedDashboardId(dashboards[0].id);
+  }, [dashboards, selectedDashboardId, setSelectedDashboardId]);
+
   if (!data || isEmpty(dashboardData)) return null;
   return (
     <Layout>
@@ -243,13 +247,10 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
           <Menu
             anchorEl={menuAnchorEl}
             open={menuOpen}
-            onClose={() => {
-              setMenuOpen(false);
-            }}
+            onClose={() => setMenuOpen(false)}
             MenuListProps={{
               "aria-labelledby": "menu-button-x",
             }}
-            keepMounted
           >
             {/* <Link href="/app/routines">
               <a>
@@ -306,24 +307,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         date: new Date().toISOString(),
       },
     })
-    // .then((response) => {
-    //   console.log("Dashboard page data:", response.data.dashboards);
-    // })
-    .catch((e) => {
-      if (e.networkError?.result?.errors) {
-        e.networkError.result.errors.forEach(
-          (error: {
-            message: string;
-            extensions: { code: string; exception: { stacktrace: string[] } };
-          }) => {
-            console.error(error.message);
-            console.log(error.extensions.exception.stacktrace.join("\n"), { depth: null });
-          }
-        );
-      } else {
-        console.error(e);
-      }
-    });
+    .catch(printError);
   const props: DashboardPageProps = {
     layouts: DEFAULT_LAYOUTS,
     session,

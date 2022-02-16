@@ -1,5 +1,5 @@
 import sampleSize from "lodash/sampleSize";
-import prisma from "../lib/prisma";
+import prisma from "../utils/prisma";
 import actsData from "./seeds/acts";
 import identitiesData from "./seeds/identities";
 import metricsData from "./seeds/metrics";
@@ -10,32 +10,34 @@ import valuesData from "./seeds/values";
 async function main() {
   const adminEmail = process.env.ADMIN_USER || `test@gmail.com`;
 
-  const deleteValues = prisma.value.deleteMany();
-  const deleteIdentities = prisma.identity.deleteMany();
-  const deleteTasks = prisma.task.deleteMany();
-  const deleteMetrics = prisma.metric.deleteMany();
+  const deleteAccounts = prisma.account.deleteMany();
   const deleteActions = prisma.action.deleteMany();
+  const deleteActs = prisma.act.deleteMany();
   const deleteActionSchedules = prisma.actionSchedule.deleteMany();
-  const deleteRoutineHabits = prisma.routineHabit.deleteMany();
-  const deleteRoutines = prisma.routine.deleteMany();
+  const deleteIdentities = prisma.identity.deleteMany();
+  const deleteMetrics = prisma.metric.deleteMany();
   const deleteNotes = prisma.note.deleteMany();
   const deleteNotebooks = prisma.notebook.deleteMany();
-  const deleteActs = prisma.act.deleteMany();
+  const deleteTasks = prisma.task.deleteMany();
+  const deleteRoutineHabits = prisma.routineHabit.deleteMany();
+  const deleteRoutines = prisma.routine.deleteMany();
   const deleteUsers = prisma.user.deleteMany();
+  const deleteValues = prisma.value.deleteMany();
 
   await prisma.$transaction([
-    deleteValues,
-    deleteIdentities,
-    deleteTasks,
-    deleteMetrics,
+    deleteAccounts,
     deleteActions,
+    deleteActs,
     deleteActionSchedules,
-    deleteRoutineHabits,
-    deleteRoutines,
+    deleteIdentities,
+    deleteMetrics,
     deleteNotes,
     deleteNotebooks,
-    deleteActs,
+    deleteTasks,
+    deleteRoutineHabits,
+    deleteRoutines,
     deleteUsers,
+    deleteValues,
   ]);
 
   await prisma.user.create({

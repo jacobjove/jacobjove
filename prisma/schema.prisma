@@ -25,16 +25,20 @@ model Redirect {
 }
 
 model Account {
-  id                Int    @id @default(autoincrement())
+  id                Int        @id @default(autoincrement())
+  user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            Int
-  type              String
   provider          String
-  providerAccountId String
-  uid               String
+  remoteId          String
+  scopes            String[]
+  accessToken       String?
+  refreshToken      String?
+  accessTokenExpiry DateTime?
+  syncToken         String?
+  createdAt         DateTime   @default(now())
+  calendars         Calendar[]
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
+  @@unique([provider, remoteId])
 }
 
 enum Role {
@@ -51,6 +55,7 @@ model User {
   image               String?
   isAdmin             Boolean                  @default(false)
   settings            Json                     @default("{}")
+  lastLogin           DateTime?
   accounts            Account[]
   calendars           Calendar[]               @relation("calendars")
   identities          Identification[]
@@ -83,24 +88,40 @@ model Dashboard {
   @@unique([name, userId])
 }
 
-enum Color {
-  BLUE
+enum CalendarProvider {
+  google
+  apple
 }
 
 model Calendar {
-  id       Int             @id @default(autoincrement())
-  uid      String          @unique(map: "Calendar_uid_unique_constraint") @default(cuid())
-  user     User            @relation("calendars", fields: [userId], references: [id], onDelete: Cascade)
-  userId   Int
-  name     String?
-  color    Color?
-  isPublic Boolean         @default(false)
-  events   CalendarEvent[]
+  id        Int               @id @default(autoincrement())
+  uid       String            @unique(map: "Calendar_uid_unique_constraint") @default(cuid())
+  user      User              @relation("calendars", fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  name      String?
+  color     String?
+  provider  CalendarProvider?
+  remoteId  String?
+  syncToken String?
+  account   Account?          @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId Int?
+  primary   Boolean?          @default(false)
+  public    Boolean?          @default(false)
+  enabled   Boolean?          @default(true)
+
+  events CalendarEvent[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@unique([remoteId, accountId])
 }
 
 model CalendarEvent {
   id         Int             @id @default(autoincrement())
   uid        String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
+  remoteId   String?
   calendar   Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
   calendarId Int
   schedule   ActionSchedule? @relation(fields: [scheduleId], references: [id])
@@ -115,11 +136,13 @@ model CalendarEvent {
   end        DateTime?
   allDay     Boolean         @default(false)
   notes      String?
+  canceled   Boolean?        @default(false)
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
+  @@unique([remoteId, calendarId])
   @@map(name: "calendarEvents")
 }
 
@@ -165,7 +188,7 @@ model Act {
   parentId Int?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   variants           Act[]                    @relation("variants")
@@ -185,7 +208,7 @@ model MetricApplication {
   metric   Metric @relation(fields: [metricId], references: [id], onDelete: Cascade)
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@id([actId, metricId])
@@ -230,7 +253,7 @@ model Habit {
   actions                  Action[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -244,7 +267,7 @@ model RoutineHabit {
   durationInMinutes Int
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@id([routineId, position])
@@ -259,7 +282,7 @@ model Routine {
   notes             String?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -272,7 +295,7 @@ model MetricRecord {
   value         Int
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -295,7 +318,7 @@ model Task {
   calendarEvents   CalendarEvent[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([userId, parentId, rank])
@@ -311,7 +334,7 @@ model Action {
   metricRecords MetricRecord[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -328,7 +351,7 @@ model ActionSchedule {
   templateId     Int?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 }
 
@@ -425,7 +448,7 @@ model Belief {
   description String?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   userBelief UserBelief[]
@@ -439,7 +462,7 @@ model UserBelief {
   beliefId Int
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([userId, beliefId])
@@ -452,7 +475,7 @@ model Value {
   description String?
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   userValues UserValue[]
@@ -466,7 +489,7 @@ model UserValue {
   valueId Int
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([userId, valueId])
@@ -503,7 +526,7 @@ model Notebook {
   userPermissions NotebookUserPermission[]
 
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime  @default(now())
   archivedAt DateTime?
 
   @@unique([ownerId, title])

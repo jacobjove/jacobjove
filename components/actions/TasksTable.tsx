@@ -195,6 +195,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     const defaultRank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
 
     if (session?.user) {
+      const now = new Date().toISOString();
       await createTask({
         variables: {
           data: {
@@ -218,7 +219,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             completedAt: null,
             archivedAt: null,
             rank: defaultRank,
-            createdAt: new Date().toISOString(),
+            createdAt: now,
+            updatedAt: now,
             ...newTask,
             __typename: "Task",
             id: -1,

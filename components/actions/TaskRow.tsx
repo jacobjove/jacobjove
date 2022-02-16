@@ -4,6 +4,7 @@ import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
 import DateContext from "@/components/contexts/DateContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
+import { printError } from "@/utils/apollo/error-handling";
 import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -44,9 +45,14 @@ interface TaskRowContentProps {
   onEditing: (isEditing: boolean) => void;
 }
 
-export type DraggedTask = Pick<Task, "id" | "rank" | "completedAt" | "__typename"> & {
-  index: number;
-};
+export type DraggedTask = { type: "task" } & Pick<
+  Task,
+  "id" | "rank" | "title" | "completedAt" | "__typename"
+> & {
+    index: number;
+    calendarId?: number;
+    scheduleId?: number | null;
+  };
 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const { task, collapsed: _collapsed, dndRef, isDragging, onLoading, onEditing } = props;
@@ -224,28 +230,33 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                             : "rgba(255, 255, 255, 0.08)"
                         }`
                       : "transparent",
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                <Box display="flex" justifyContent={"space-between"} alignItems="center">
-                  <Box display="flex" alignItems="center">
-                    <Button
-                      variant="text"
-                      sx={{
-                        color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
-                        padding: "0 0.25rem",
-                        margin: 0,
-                        fontSize: "0.8rem",
-                        textTransform: "none",
-                        minWidth: 0,
-                        lineHeight: "1rem",
-                        textAlign: "left",
-                      }}
-                      {...bindTriggerProps}
-                    >
-                      {task.title}
-                    </Button>
-                  </Box>
-                </Box>
+                <Button
+                  variant="text"
+                  sx={{
+                    color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
+                    padding: "0 0.25rem",
+                    margin: 0,
+                    fontSize: "0.8rem",
+                    textTransform: "none",
+                    minWidth: 0,
+                    width: "100%",
+                    lineHeight: "1rem",
+                    textAlign: "left",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                  {...bindTriggerProps}
+                >
+                  <div>{task.title}</div>
+                  {/* TODO: clean up after task ranking is fully implemented and stable. */}
+                  {session?.user.isAdmin && (
+                    <small style={{ color: "gray", margin: 2 }}>&nbsp;{task.rank}</small>
+                  )}
+                </Button>
               </Box>
             </TableCell>
             <TableCell>
@@ -354,26 +365,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                             archivedAt,
                           },
                         },
-                      }).catch((e) => {
-                        if (e.networkError?.result?.errors) {
-                          e.networkError.result.errors.forEach(
-                            (error: {
-                              message: string;
-                              extensions: {
-                                code: string;
-                                exception: { stacktrace: string[] };
-                              };
-                            }) => {
-                              console.error(error.message);
-                              console.log(error.extensions.exception.stacktrace.join("\n"), {
-                                depth: null,
-                              });
-                            }
-                          );
-                        } else {
-                          console.error(e);
-                        }
-                      });
+                      }).catch(printError);
                     }}
                   >
                     <DeleteIcon />
@@ -424,13 +416,18 @@ const TaskRow = (props: TaskRowProps) => {
   const loadingRef = useRef(false);
   const editingRef = useRef(false);
 
-  const [{ isDragging }, dragRef] = useDrag(
+  const [{ isDragging }, dragRef] = useDrag<DraggedTask, unknown, { isDragging: boolean }>(
     () => ({
       type: "task",
       item: {
-        ...task,
+        type: "task",
+        id: task.id,
+        rank: task.rank,
+        title: task.title,
+        completedAt: task.completedAt,
         index,
-      } as DraggedTask,
+        // TODO: add calendarId and scheduleId.
+      },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),

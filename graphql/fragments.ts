@@ -98,6 +98,13 @@ export const calendarFragment = gql`
     id
     name
     color
+    provider
+    remoteId
+    accountId
+    syncToken
+    public
+    primary
+    enabled
   }
 `;
 
@@ -105,11 +112,13 @@ export const calendarEventFragment = gql`
   fragment CalendarEventFragment on CalendarEvent {
     __typename
     id
+    remoteId
     scheduleId
     calendarId
     title
     start
     end
+    taskId
     createdAt
     updatedAt
     archivedAt
@@ -152,6 +161,19 @@ export const dashboardFragment = gql`
   }
 `;
 
+export const accountFragment = gql`
+  fragment AccountFragment on Account {
+    __typename
+    id
+    provider
+    remoteId
+    scopes
+    accessToken
+    accessTokenExpiry
+    refreshToken
+  }
+`;
+
 export const userFragment = gql`
   fragment UserFragment on User {
     __typename
@@ -159,7 +181,15 @@ export const userFragment = gql`
     name
     email
     settings
+    accounts {
+      ...AccountFragment
+    }
+    calendars {
+      ...CalendarFragment
+    }
   }
+  ${accountFragment}
+  ${calendarFragment}
 `;
 
 export const noteFragment = gql`

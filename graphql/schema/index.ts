@@ -2,6 +2,7 @@
 
 import * as generatedSchemaExports from "@/prisma/generated";
 import {
+  Account as _Account,
   Act as _Act,
   Action as _Action,
   ActionSchedule as _ActionSchedule,
@@ -51,6 +52,9 @@ type FromPrismaWithOmission<T, K extends keyof T> = Pick<
   Exclude<keyof FromPrisma<T>, K>
 >;
 
+// TODO: we're not DRY here...
+
+export type Account = FromPrisma<_Account>;
 export type Act = FromPrisma<_Act>;
 export type Habit = FromPrismaWithOmission<_Habit, "act" | "actions"> & {
   act: Act;
@@ -61,13 +65,14 @@ export type Habit = FromPrismaWithOmission<_Habit, "act" | "actions"> & {
 };
 export type Task = FromPrismaWithOmission<
   _Task,
-  "plannedStartDate" | "dueDate" | "completedAt" | "subtasks" | "userId" | "createdAt"
+  "plannedStartDate" | "dueDate" | "completedAt" | "subtasks" | "userId" | "createdAt" | "updatedAt"
 > & {
   plannedStartDate?: string | null;
   dueDate?: string | null;
   completedAt?: string | null;
   subtasks?: Task[];
   createdAt: string;
+  updatedAt: string;
 };
 export type Action = FromPrismaWithOmission<_Action, "habit" | "start" | "end"> & {
   start: string;
@@ -87,22 +92,26 @@ export type UserBelief = FromPrismaWithOmission<_UserBelief, "belief"> & { belie
 export type Identification = FromPrismaWithOmission<_Identification, "identity"> & {
   identity: Identity;
 };
-export type Calendar = Omit<_Calendar, "_count">;
-export type CalendarEvent = FromPrismaWithOmission<_CalendarEvent, "start" | "end"> & {
+export type Calendar = FromPrisma<_Calendar>;
+export type CalendarEvent = FromPrismaWithOmission<
+  _CalendarEvent,
+  "start" | "end" | "createdAt" | "updatedAt"
+> & {
   start: string;
   end?: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 // export type ActionTheme = FromPrismaWithOmission<_ActionTheme, "start" | "end"> & {
 //   start: string;
 //   end?: string | null;
 // };
 export type UserValue = FromPrisma<_UserValue>;
-export interface UserSettings {
-  [key: string]: any;
-}
-export type User = FromPrismaWithOmission<_User, "settings"> & {
+export type User = FromPrismaWithOmission<_User, "settings" | "accounts" | "calendars"> & {
   // settings: { [key: string]: any; };
-  settings: string | UserSettings;
+  settings: string;
+  accounts: Account[];
+  calendars: Calendar[];
 };
 export type Dashboard = FromPrismaWithOmission<_Dashboard, "layouts"> & {
   layouts: string;

@@ -14,18 +14,12 @@ declare module "next-auth" {
     email: string;
     image: string;
     isAdmin: boolean;
-    settings: {
-      [key: string]: unknown;
-    };
   }
   /**
    * Returned by `useSession` and `getSession`; received as a prop on `SessionProvider`.
    */
   interface Session {
     user: User;
-    accessToken: string;
-  }
-  interface JWT {
     accessToken: string;
   }
   interface PageWithAuth extends NextPage {
@@ -36,6 +30,11 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken` when using JWT sessions */
   interface JWT {
+    provider?: string;
+    providerAccountId?: string;
+    scopes?: string[];
     accessToken?: string;
+    accessTokenExpiry?: number;
+    refreshToken?: string;
   }
 }
