@@ -2,11 +2,13 @@ import { Calendar } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox, { CheckboxProps } from "@mui/material/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
 import { Dispatch, FC } from "react";
 
 const CalendarInclusionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
   const { checked, disabled, onChange } = props;
-  return <Checkbox checked={checked} disabled={disabled} onChange={onChange} />;
+  return <Checkbox checked={checked} disabled={disabled} onChange={onChange} sx={{ p: 0 }} />;
 };
 
 interface CalendarLegendProps {
@@ -15,11 +17,36 @@ interface CalendarLegendProps {
   dispatchCalendarIds: Dispatch<{ type: "add" | "remove"; value: number[] }>;
 }
 
-const CalendarLegend: FC<CalendarLegendProps> = ({
+export const CalendarLegendItems: FC<CalendarLegendProps> = ({
   calendars,
   selectedCalendarIds,
   dispatchCalendarIds,
 }: CalendarLegendProps) => {
+  return (
+    <>
+      {calendars.map((calendar) => (
+        <MenuItem
+          key={calendar.id}
+          {...(calendar.name ? { title: calendar.name } : {})}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <CalendarInclusionCheckbox
+            checked={selectedCalendarIds?.includes(calendar.id)}
+            onChange={(_, checked) => {
+              dispatchCalendarIds({ type: checked ? "add" : "remove", value: [calendar.id] });
+            }}
+          />
+          <Typography mx="1rem">{calendar.name}</Typography>
+        </MenuItem>
+      ))}
+    </>
+  );
+};
+
+const CalendarLegend: FC<CalendarLegendProps> = (props: CalendarLegendProps) => {
   return (
     <Box
       sx={{
@@ -31,26 +58,9 @@ const CalendarLegend: FC<CalendarLegendProps> = ({
         borderRadius: "2px",
       }}
     >
-      {calendars.map((calendar) => (
-        <Box key={calendar.id} display={"flex"} alignItems={"center"}>
-          <CalendarInclusionCheckbox
-            checked={selectedCalendarIds?.includes(calendar.id)}
-            onChange={(_, checked) => {
-              dispatchCalendarIds({ type: checked ? "add" : "remove", value: [calendar.id] });
-            }}
-          />
-          <Typography
-            component="div"
-            fontWeight={"600"}
-            fontSize={"0.75rem"}
-            marginBottom="0.15rem"
-            lineHeight={"0.7rem"}
-            mx="0.1rem"
-          >
-            {calendar.name}
-          </Typography>
-        </Box>
-      ))}
+      <MenuList>
+        <CalendarLegendItems {...props} />
+      </MenuList>
     </Box>
   );
 };

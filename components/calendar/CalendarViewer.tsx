@@ -1,5 +1,5 @@
 import CalendarApiProviderDialog from "@/components/calendar/CalendarApiProviderDialog";
-import CalendarLegend from "@/components/calendar/CalendarLegend";
+import { CalendarLegendItems } from "@/components/calendar/CalendarLegend";
 import { eventDataReducer, initializeEventData } from "@/components/calendar/EventEditingDialog";
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
@@ -117,6 +117,8 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const { loading, data: _data, defaultView, ...rest } = props;
   const user = useContext(UserContext);
   const date = useContext(DateContext);
+
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
 
   // Exclude calendars that are not enabled or have been archived.
   const enabledCalendars = useMemo(() => {
@@ -276,6 +278,19 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
                 </CalendarApiMenuItem>
               </MenuList>
               <Divider />
+              {(enabledCalendars?.length ?? 0) >= 1 && (
+                <div>
+                  <Typography variant="h4" sx={{ ml: 1, mt: "0.5rem", color: "gray" }}>
+                    {"Calendars"}
+                  </Typography>
+                  <CalendarLegendItems
+                    calendars={enabledCalendars}
+                    selectedCalendarIds={selectedCalendarIds}
+                    dispatchCalendarIds={dispatchCalendarIds}
+                  />
+                  <Divider />
+                </div>
+              )}
               <MenuItem
                 onClick={() => alert("Not yet implemeneted")}
                 sx={{ textAlign: "center", justifyContent: "center" }}
@@ -293,11 +308,23 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
         </Box>
       )}
       <Box flex={"1 1 auto"} minHeight={0} position="relative">
-        <DayViewer loading={loading} data={data} {...commonViewProps} hidden={view != "day"} />
-        <WeekViewer loading={loading} data={data} {...commonViewProps} hidden={view != "week"} />
+        <DayViewer
+          loading={loading}
+          data={data}
+          scrollPosition={scrollPosition}
+          {...commonViewProps}
+          hidden={view != "day"}
+        />
+        <WeekViewer
+          loading={loading}
+          data={data}
+          scrollPosition={scrollPosition}
+          {...commonViewProps}
+          hidden={view != "week"}
+        />
         <MonthViewer loading={loading} data={data} {...commonViewProps} hidden={view != "month"} />
         {/* TODO: After prettifying the legend, change `>= 1` to `> 1` so that the legend is only displayed if there are multiple calendars */}
-        {(enabledCalendars?.length ?? 0) >= 1 && (
+        {/* {(enabledCalendars?.length ?? 0) >= 1 && (
           <Box position="absolute" bottom={1} right={1} zIndex={1e14}>
             <CalendarLegend
               calendars={enabledCalendars}
@@ -305,7 +332,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               dispatchCalendarIds={dispatchCalendarIds}
             />
           </Box>
-        )}
+        )} */}
       </Box>
     </Box>
   );
