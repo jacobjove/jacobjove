@@ -1,14 +1,12 @@
 import Layout from "@/components/Layout";
 import { addApolloState, initializeApollo } from "@/utils/apollo/client";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import Link from "next/link";
 
 interface HomePageProps {
   session: Session | null;
@@ -37,11 +35,11 @@ const HomePage: NextPage<HomePageProps> = (_props: HomePageProps) => {
       >
         <Box textAlign={"center"}>
           <Typography flexBasis={"100%"} my={2}>{`Welcome, ${session?.user?.name}!`}</Typography>
-          <Link href="/app/dashboard" passHref>
+          {/* <Link href="/app/dashboard" passHref>
             <Button variant="contained" component="a">
               Go to dashboard
             </Button>
-          </Link>
+          </Link> */}
         </Box>
       </Container>
     </Layout>

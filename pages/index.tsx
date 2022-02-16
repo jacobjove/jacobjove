@@ -22,7 +22,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
           <Box marginTop="2rem">
             <Link href={props.ctaHref} passHref>
               <Button variant={"contained"} color={"primary"}>
-                {props.ctaHref === "/app/dashboard" ? "Go to dashboard" : "Sign up"}
+                {props.ctaHref === "/app/home" ? "Go to app" : "Sign up"}
               </Button>
             </Link>
           </Box>
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const today = new Date();
   const props: DefaultPageProps = {
     date: today.toISOString(),
-    ctaHref: session?.user?.email ? "/app/dashboard" : "/auth/registration",
+    ctaHref: session?.user?.email ? "/app/home" : "/auth/registration",
   };
   return { props };
 };
