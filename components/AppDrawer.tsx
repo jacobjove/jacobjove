@@ -27,29 +27,29 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, Fragment, ReactNode, useContext } from "react";
 
-type MenuItem = [string, string, typeof DashboardIcon];
+type MenuItem = [string, string, typeof DashboardIcon, boolean];
 
 const MENU_ITEMS: MenuItem[][] = [
-  [["Home", "/app/home", HomeIcon]],
+  [["Home", "/app/home", HomeIcon, true]],
   [
-    ["Dashboard", "/app/dashboard", DashboardIcon],
-    ["Calendar", "/app/calendar", TodayIcon],
+    ["Dashboard", "/app/dashboard", DashboardIcon, true],
+    ["Calendar", "/app/calendar", TodayIcon, true],
   ],
   [
-    ["Psychology", "/app/psychology", PsychologyIcon],
-    ["Nutrition", "/app/nutrition", BentoIcon],
-    ["Fitness", "/app/fitness", FitnessCenterIcon],
-    ["Finances", "/app/finances", AccountBalanceIcon],
+    ["Psychology", "/app/psychology", PsychologyIcon, false],
+    ["Nutrition", "/app/nutrition", BentoIcon, false],
+    ["Fitness", "/app/fitness", FitnessCenterIcon, false],
+    ["Finances", "/app/finances", AccountBalanceIcon, false],
   ],
-  [["Notes", "/app/notes", NotesIcon]],
+  [["Notes", "/app/notes", NotesIcon, true]],
   [
-    ["Book list", "/app/booklist", BookIcon],
-    ["Music", "/app/music", MusicNoteIcon],
-    ["Experiments", "/app/experiments", ScienceIcon],
+    ["Book list", "/app/booklist", BookIcon, false],
+    ["Music", "/app/music", MusicNoteIcon, false],
+    ["Experiments", "/app/experiments", ScienceIcon, false],
   ],
   [
-    ["Settings", "/app/settings", SettingsIcon],
-    ["Notifications", "/app/notifications", NotificationsIcon],
+    ["Settings", "/app/settings", SettingsIcon, true],
+    ["Notifications", "/app/notifications", NotificationsIcon, false],
   ],
 ];
 
@@ -160,9 +160,10 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
         <Fragment key={index}>
           <Divider />
           <List>
-            {menuItems.map(([label, href, Icon]) => (
+            {menuItems.map(([label, href, Icon, enabled]) => (
               <Link key={label} href={href} passHref>
                 <ListItemButton
+                  disabled={!enabled}
                   component={"a"}
                   title={label}
                   selected={router.pathname === href}
