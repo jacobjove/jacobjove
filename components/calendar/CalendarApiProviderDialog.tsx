@@ -258,6 +258,17 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     refreshCalendarList,
   ]);
 
+  const addCalendarScope = () => {
+    if (!user) return;
+    signIn(
+      provider,
+      { callbackUrl: window.location.href },
+      { scope: [...(account?.scopes ?? defaultScopes), scope].join(" ") }
+    )
+      .then(async () => await refreshCalendarList(user, provider, calendars))
+      .catch(alert);
+  };
+
   // TODO: this also needs to remove associated calendars and events.
   // We should show a confirmation dialog first.
   const removeCalendarScope = useCallback(() => {
@@ -290,19 +301,11 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
       <div key="1">
         <span>{`Sign in with your ${name} account, and permit the calendar integration.`}</span>
         <Button
-          key="9"
+          key=""
           variant="contained"
           title={`Connect ${name} Calendar`}
           sx={{ my: "0.5rem" }}
-          onClick={() => {
-            signIn(
-              provider,
-              { callbackUrl: window.location.href },
-              { scope: [...(account?.scopes ?? defaultScopes), scope].join(" ") }
-            )
-              .then(async () => await refreshCalendarList(user, provider, calendars))
-              .catch(alert);
-          }}
+          onClick={addCalendarScope}
           disabled={disabled}
         >
           {`Connect ${name} calendar`}
@@ -315,7 +318,6 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     ],
   ];
   const nextStep = enabledCalendars?.length ? null : calendarIntegrationIsEnabled ? 1 : 0;
-  console.log("nextStep:", nextStep);
   if (!user) return null;
   // TODO: reduce unnecessary re-renders
   return (

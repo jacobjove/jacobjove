@@ -31,6 +31,7 @@ import { FC, RefObject, useContext, useMemo, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
 interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
+  asSubtask?: boolean;
   index: number;
   move?: (draggedTask: DraggedTask, hoveredTask: Task) => Partial<DraggedTask> | null;
   onDrop?: (dropIndex: number) => void;
@@ -38,6 +39,7 @@ interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
 
 interface TaskRowContentProps {
   task: Task;
+  asSubtask?: boolean;
   collapsed?: boolean;
   dndRef: RefObject<HTMLTableRowElement>;
   isDragging: boolean;
@@ -55,7 +57,15 @@ export type DraggedTask = { type: "task" } & Pick<
   };
 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
-  const { task, collapsed: _collapsed, dndRef, isDragging, onLoading, onEditing } = props;
+  const {
+    task,
+    asSubtask,
+    collapsed: _collapsed,
+    dndRef,
+    isDragging,
+    onLoading,
+    onEditing,
+  } = props;
   const completed = !!task.completedAt;
   const collapsed = _collapsed ?? false;
   const { data: session } = useSession();
@@ -124,6 +134,12 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
           opacity: isDragging ? 0 : 1,
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
+          backgroundColor: (theme) =>
+            asSubtask
+              ? theme.palette.mode === "light"
+                ? "rgba(0,0,0,0.05)"
+                : "rgba(255,255,255,0.05)"
+              : "transparent",
           "& .drag-handle": { visibility: "hidden" },
           "& .actions-menu-icon": { visibility: "hidden" },
           "&:hover": {
@@ -176,41 +192,15 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
           />
         ) : (
           <>
-            <TableCell sx={{ visibility: task.parentId ? "hidden" : "visible" }}>
+            <TableCell>
               <CompletionCheckbox
                 checked={completed}
-                disabled={loading || Boolean(task.parentId)}
+                disabled={loading}
                 onClick={(event) => {
                   event.stopPropagation();
                   toggleCompletion(!completed);
                 }}
               />
-            </TableCell>
-            <TableCell>
-              {task.subtasks?.length ? (
-                <IconButton
-                  title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
-                  sx={{
-                    backgroundColor: "transparent",
-                    backgroundOrigin: "content-box",
-                  }}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setSubtasksExpanded(!subtasksExpanded);
-                  }}
-                >
-                  {subtasksExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                </IconButton>
-              ) : task.parentId ? (
-                <CompletionCheckbox
-                  checked={completed}
-                  disabled={loading}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    toggleCompletion(!completed);
-                  }}
-                />
-              ) : null}
             </TableCell>
             <TableCell>
               <Box
@@ -234,29 +224,41 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                   alignItems: "center",
                 }}
               >
-                <Button
-                  variant="text"
-                  sx={{
-                    color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
-                    padding: "0 0.25rem",
-                    margin: 0,
-                    fontSize: "0.8rem",
-                    textTransform: "none",
-                    minWidth: 0,
-                    width: "100%",
-                    lineHeight: "1rem",
-                    textAlign: "left",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                  {...bindTriggerProps}
-                >
-                  <div>{task.title}</div>
-                  {/* TODO: clean up after task ranking is fully implemented and stable. */}
-                  {session?.user.isAdmin && (
-                    <small style={{ color: "gray", margin: 2 }}>&nbsp;{task.rank}</small>
-                  )}
-                </Button>
+                <Box display="flex" justifyContent={"space-between"} alignItems="center">
+                  <Box display="flex" alignItems="center">
+                    <Button
+                      variant="text"
+                      sx={{
+                        color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
+                        padding: "0 0.25rem",
+                        margin: 0,
+                        fontSize: asSubtask ? "0.7rem" : "0.8rem",
+                        textTransform: "none",
+                        minWidth: 0,
+                        lineHeight: "1rem",
+                        textAlign: "left",
+                      }}
+                      {...bindTriggerProps}
+                    >
+                      {task.title}
+                      {task.subtasks?.length ? (
+                        <IconButton
+                          title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
+                          sx={{
+                            backgroundColor: "transparent",
+                            backgroundOrigin: "content-box",
+                          }}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            setSubtasksExpanded(!subtasksExpanded);
+                          }}
+                        >
+                          {subtasksExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        </IconButton>
+                      ) : null}
+                    </Button>
+                  </Box>
+                </Box>
               </Box>
             </TableCell>
             <TableCell>
@@ -287,7 +289,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               </Box>
             </TableCell>
             <TableCell>
-              <Box display="flex" alignItems="center" mx="auto" px="0.5rem">
+              <Box display="flex" alignItems={"center"} justifyContent={"center"} mx="auto">
                 {(!actionInProgress && (
                   <IconButton
                     title={`Begin ${task.title}`}
@@ -313,7 +315,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                 )}
               </Box>
             </TableCell>
-            <TableCell>
+            <TableCell className={`${isMobile ? "hidden" : ""}`}>
               <IconButton
                 title={`Display actions for ${task.title}`}
                 className="actions-menu-icon"
@@ -373,7 +375,10 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                 </Box>
               </Menu>
             </TableCell>
-            <TableCell sx={{ "&:hover": { cursor: "grab" } }}>
+            <TableCell
+              sx={{ "&:hover": { cursor: "grab" } }}
+              className={`${isMobile ? "hidden" : ""}`}
+            >
               <Box
                 sx={{
                   display: "flex",
@@ -399,6 +404,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
           <TaskRow
             key={subtask.id}
             task={subtask}
+            asSubtask={true}
             collapsed={!subtasksExpanded || isDragging}
             index={index}
           />

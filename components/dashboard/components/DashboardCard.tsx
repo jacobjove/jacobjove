@@ -58,7 +58,7 @@ const DashboardCard: FC<DashboardCardProps> = (props: DashboardCardProps) => {
       <CardContent
         className="no-scrollbar"
         style={{
-          padding: "0.5rem",
+          padding: "0.2rem 0.33rem",
           height: "100%",
           maxHeight: "100%",
           overflow: "scroll",

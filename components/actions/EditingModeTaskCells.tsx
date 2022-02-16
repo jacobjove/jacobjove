@@ -32,7 +32,7 @@ const EditingModeTaskCells: FC<EditingModeTaskRowProps> = ({
   };
   return (
     <>
-      <TableCell colSpan={2} />
+      <TableCell colSpan={1} />
       <TableCell>
         <Box height="2.5rem" width="100%" display="flex" justifyContent="center">
           <TextField

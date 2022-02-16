@@ -210,6 +210,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
           flex={"0 0 auto"}
           display="flex"
           width={"100%"}
+          alignItems={"center"}
           justifyContent={"space-between"}
           pb="0.12rem"
           sx={{
@@ -226,6 +227,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               size="small"
               color="primary"
               aria-label="text alignment"
+              sx={{ "& button": { px: "5px", py: "3px" } }}
             >
               <ToggleButton value="day" aria-label="day view">
                 <CalendarViewDayIcon />
