@@ -63,9 +63,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
           <ToggleButtonGroup
             exclusive
             value={view}
-            onChange={(_, value: ViewMode) => {
-              setView(value);
-            }}
+            onChange={(_, value: ViewMode) => setView(value)}
             size="small"
             color="primary"
             aria-label="text alignment"
@@ -74,7 +72,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
             <ToggleButton value="list" aria-label="list view">
               <TableRowsIcon />
             </ToggleButton>
-            <ToggleButton value="board" aria-label="board view">
+            <ToggleButton value="board" aria-label="board view" disabled>
               <ViewColumnIcon />
             </ToggleButton>
           </ToggleButtonGroup>

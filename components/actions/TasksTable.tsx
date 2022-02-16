@@ -264,13 +264,17 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   ];
 
   return (
-    <TableContainer className="no-scrollbar" sx={{ mt: 1 }}>
+    <TableContainer className="no-scrollbar" sx={{ mt: 1, height: "100%", maxHeight: "100%" }}>
       {views.map(([key, label]) => (
         <Accordion
           key={key}
           expanded={key === selectedView}
           onChange={() => {
             key === selectedView ? setSelectedView(null) : setSelectedView(key);
+          }}
+          sx={{
+            "& .MuiAccordionSummary-root.Mui-expanded": { minHeight: 0 },
+            "& .MuiAccordionSummary-content.Mui-expanded": { margin: "0.5rem 0" },
           }}
         >
           <AccordionSummary
