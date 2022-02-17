@@ -66,11 +66,7 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
             </Paper>
           )) || (
             <div id="sign-in">
-              <Typography
-                variant="h1"
-                className="page-title text-center"
-                style={{ margin: "1rem" }}
-              >
+              <Typography variant="h1" className="page-title text-center">
                 Sign in
               </Typography>
               <SocialLogin
