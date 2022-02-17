@@ -77,21 +77,7 @@ const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
   ) : (
     <_Select {...props} onChange={handleChange}>
       {options.map((option, index) => (
-        <MenuItem
-          key={index}
-          value={option.value}
-          // TODO: clean up after confirming the `handleChange` solution works well.
-          // onClick={(event) => {
-          //   if (option.onSelect) {
-          //     event.preventDefault();
-          //     // Note: Rather than stopping propagation via `event.stopPropagation()`
-          //     // (which may have unforeseen consequences), we instead rely on the
-          //     // Select component's `onChange` handler to ignore the change event if
-          //     // the value is falsy (empty string).
-          //     (option.onSelect as CallableFunction)();
-          //   }
-          // }}
-        >
+        <MenuItem key={index} value={option.value}>
           {option.label}
         </MenuItem>
       ))}
