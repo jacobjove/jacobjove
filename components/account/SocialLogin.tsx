@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import { signIn } from "next-auth/react";
 import { FC, ReactElement } from "react";
 import {
@@ -63,9 +63,13 @@ const SocialLogin: FC<SocialLoginProps> = ({
   return (
     <div>
       {(!!socialAuthLoginComponents.length && (
-        <Grid id="social-sign-in" container justifyContent="center">
-          {socialAuthLoginComponents}
-        </Grid>
+        <Box id="social-sign-in" justifyContent="center">
+          {socialAuthLoginComponents.map((component) => (
+            <Box key={component.key} sx={{ my: 1, display: "flex", justifyContent: "center" }}>
+              {component}
+            </Box>
+          ))}
+        </Box>
       )) || <p className="text-center">Other sign-in options are unavailable.</p>}
     </div>
   );
