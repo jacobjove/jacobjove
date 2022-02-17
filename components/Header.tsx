@@ -50,21 +50,12 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = (props: HeaderProps) => {
   const heightInPx = props.heightInPx ?? 60;
-
   const router = useRouter();
   const { data: session } = useSession();
-
   const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
   const navMenuState = usePopupState({ variant: "popover", popupId: "nav-menu" });
-
   const [colorMode, setColorMode] = useContext(ColorModeContext);
-
   const isActive = (pathname: string) => router.pathname === pathname;
-
-  const logout: React.MouseEventHandler = (e) => {
-    e.preventDefault();
-    session && signOut({ callbackUrl: "/" });
-  };
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -185,7 +176,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                     </MenuItem>
                   )}
                   <Divider />
-                  <MenuItem onClick={logout}>
+                  <MenuItem onClick={() => signOut({ callbackUrl: "/" })}>
                     Sign out <LogoutIcon sx={{ marginLeft: "0.5rem" }} />
                   </MenuItem>
                 </Menu>

@@ -90,9 +90,6 @@ export default RegistrationPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
 export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {
-      providers: await getProviders(),
-    }, // passed to the page component as props
-  };
+  const providers = (await getProviders().catch(console.error)) || [];
+  return { props: { providers } };
 };
