@@ -61,7 +61,7 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
               </Typography>
               <br />
               <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>
-                Sign Out
+                {"Sign out"}
               </Button>
             </Paper>
           )) || (

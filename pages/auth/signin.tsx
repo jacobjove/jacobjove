@@ -81,7 +81,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
               </Grid>
               <Grid item container xs={12} justifyContent={"center"}>
                 <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>
-                  Sign Out
+                  {"Sign out"}
                 </Button>
               </Grid>
             </Grid>
