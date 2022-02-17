@@ -4,7 +4,7 @@
   "keywords": [],
   "author": "Jacob Fredericksen <jacob.t.fredericksen@gmail.com>",
   "engines": {
-    "node": "16.x"
+    "node": "14.x"
   },
   "os": [
     "darwin",
