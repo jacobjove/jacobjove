@@ -127,10 +127,22 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
             SelfBuilder
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Box key={page[0]} sx={{ m: 2, display: "block" }}>
-                <Link href={page[1]} passHref>
-                  <Typography component="a">{page[0]}</Typography>
+            {pages.map(([label, href, enabled]) => (
+              <Box key={label} sx={{ m: 2, display: "block" }}>
+                <Link href={href} passHref>
+                  <a
+                    onClick={(event) => {
+                      if (!enabled) event.preventDefault();
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        cursor: !enabled ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      {label}
+                    </Typography>
+                  </a>
                 </Link>
               </Box>
             ))}
