@@ -1,11 +1,16 @@
-import { HALF_HOUR_HEIGHT, HOUR_HEIGHT, START_HOUR } from "@/components/calendar/constants";
+import {
+  ALL_DAY_BOX_HEIGHT,
+  HALF_HOUR_HEIGHT,
+  HOUR_HEIGHT,
+  MINUTE_HEIGHT,
+  START_HOUR,
+} from "@/components/calendar/constants";
 import EventBox from "@/components/calendar/EventBox";
-import EventEditingDialog from "@/components/calendar/EventEditingDialog";
+import EventEditingDialog, { EventData } from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
-import { ViewerProps } from "@/components/calendar/views/props";
 import DateContext from "@/components/contexts/DateContext";
-import { CalendarEvent } from "@/graphql/schema";
+import { Calendar, CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
@@ -19,7 +24,7 @@ import {
   setSeconds,
 } from "date-fns";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { FC, useContext, useEffect, useRef } from "react";
+import { Dispatch, FC, useContext, useEffect, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
   const dividerColor = theme.palette.divider;
@@ -72,35 +77,56 @@ const Root = styled("div")(({ theme }) => {
   };
 });
 
-// type AllDayCalendarEvent = Omit<CalendarEvent, "end">;
 type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
   end: string;
 };
 
-const DayViewer: FC<ViewerProps> = ({
+export type CalendarData = {
+  calendars: Calendar[];
+  calendarEvents: CalendarEvent[];
+};
+
+export interface CalendarProps {
+  collapseMenu?: boolean;
+  data: CalendarData;
+  loading: boolean;
+  error?: Error;
+  includeDateSelector: boolean;
+}
+
+export interface DayViewerProps extends CalendarProps {
+  selectedDate: Date;
+  setSelectedDate: (date: Date | null) => void;
+  viewedHourState: [number, Dispatch<number>];
+  initialEventFormData: EventData;
+  dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
+  defaultCalendar: Calendar;
+  hidden: boolean;
+}
+
+const DayViewer: FC<DayViewerProps> = ({
   selectedDate,
+  viewedHourState,
   initialEventFormData,
   dispatchInitialEventFormData,
   defaultCalendar,
   hidden,
   data,
   loading,
-}: ViewerProps) => {
+}: DayViewerProps) => {
   const { calendarEvents } = data;
   const date = useContext(DateContext);
-  const scrollableDivRef = useRef<HTMLDivElement>(null);
-
+  const [viewedHour, setViewedHour] = viewedHourState;
   const eventEditingDialogState = usePopupState({
     variant: "popover",
     popupId: `event-editing-dialog`,
   });
   const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
+  const scrollableDivRef = useRef<HTMLDivElement>(null);
 
-  const dayStart = zeroToHour(date, START_HOUR);
-  const allDayBoxHeight = HALF_HOUR_HEIGHT;
-  const currentTimeDiffInMinutes = differenceInMinutes(date, dayStart);
-  const minuteHeightPx = HALF_HOUR_HEIGHT / 30;
-  const currentTimeOffsetPx = minuteHeightPx * currentTimeDiffInMinutes;
+  const dayStart = zeroToHour(selectedDate, START_HOUR);
+  const currentTimeOffsetPx = getTimeOffsetPx(setHours(selectedDate, viewedHour));
+  const scrollOffsetPx = currentTimeOffsetPx - HOUR_HEIGHT * 1.5;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
   const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.primary);
@@ -138,13 +164,8 @@ const DayViewer: FC<ViewerProps> = ({
   // Scroll to the current time whenever it changes.
   useEffect(() => {
     const scrollableDiv = scrollableDivRef.current;
-    if (scrollableDiv) {
-      scrollableDiv.scrollTo({
-        top: currentTimeOffsetPx - HOUR_HEIGHT * 1.5,
-        behavior: "smooth",
-      });
-    }
-  }, [currentTimeOffsetPx]);
+    if (scrollableDiv) scrollableDiv.scrollTo({ top: scrollOffsetPx, behavior: "smooth" });
+  }, [scrollOffsetPx]);
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
       {loading ? (
@@ -156,7 +177,7 @@ const DayViewer: FC<ViewerProps> = ({
             <div>
               <Box
                 className="time-label"
-                height={`${allDayBoxHeight}px`}
+                height={`${ALL_DAY_BOX_HEIGHT}px`}
                 sx={{
                   borderBottom: (theme) => `1px solid
                   ${theme.palette.divider}`,
@@ -167,7 +188,7 @@ const DayViewer: FC<ViewerProps> = ({
             </div>
             <div className={`calendar-slots-column`}>
               <Box
-                height={`${allDayBoxHeight}px`}
+                height={`${ALL_DAY_BOX_HEIGHT}px`}
                 display="flex"
                 sx={{
                   borderBottom: (theme) => `1px solid
@@ -236,8 +257,8 @@ const DayViewer: FC<ViewerProps> = ({
                     const eventEnd = parseISO(event.end);
                     const eventDurationInMinutes = differenceInMinutes(eventEnd, eventStart);
                     const dayStartDiffInMinutes = differenceInMinutes(eventStart, dayStart);
-                    const topOffset = `${dayStartDiffInMinutes * minuteHeightPx + 2}px`; // TODO: fix magic number
-                    const height = `${eventDurationInMinutes * minuteHeightPx}px`;
+                    const topOffset = `${dayStartDiffInMinutes * MINUTE_HEIGHT + 2}px`; // TODO: fix magic number
+                    const height = `${eventDurationInMinutes * MINUTE_HEIGHT}px`;
                     return (
                       <EventBox
                         key={indexInGroup}
@@ -282,3 +303,9 @@ export default DayViewer;
 const zeroToHour = (date: Date, hour: number) => {
   return setHours(setMinutes(setSeconds(date, 0), 0), hour);
 };
+
+export function getTimeOffsetPx(date: Date, startHour: number = START_HOUR): number {
+  const dayStart = zeroToHour(date, startHour);
+  const viewedHourDiffInMinutes = differenceInMinutes(date, dayStart);
+  return MINUTE_HEIGHT * viewedHourDiffInMinutes;
+}

@@ -1,16 +1,17 @@
 import CalendarCell from "@/components/calendar/CalendarCell";
 import {
+  ALL_DAY_BOX_HEIGHT,
   HALF_HOUR_HEIGHT,
   HOUR_HEIGHT,
   START_HOUR,
   TIME_LABEL_COLUMN_WIDTH,
 } from "@/components/calendar/constants";
-import EventEditingDialog from "@/components/calendar/EventEditingDialog";
+import EventEditingDialog, { EventData } from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
-import { ViewerProps } from "@/components/calendar/views/props";
+import { getTimeOffsetPx } from "@/components/calendar/views/DayViewer";
 import DateContext from "@/components/contexts/DateContext";
-import { CalendarEvent } from "@/graphql/schema";
+import { Calendar, CalendarEvent } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -25,7 +26,7 @@ import {
   setSeconds,
 } from "date-fns";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { FC, Fragment, useContext, useEffect, useRef } from "react";
+import { Dispatch, FC, Fragment, useContext, useEffect, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
   const borderDef = `1px solid ${theme.palette.divider}`;
@@ -67,17 +68,42 @@ const Root = styled("div")(({ theme }) => {
   };
 });
 
-const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
-  const {
-    selectedDate,
-    initialEventFormData,
-    dispatchInitialEventFormData,
-    defaultCalendar,
-    hidden,
-    data,
-  } = props;
+export type CalendarData = {
+  calendars: Calendar[];
+  calendarEvents: CalendarEvent[];
+};
+
+export interface CalendarProps {
+  collapseMenu?: boolean;
+  data: CalendarData;
+  loading: boolean;
+  error?: Error;
+  includeDateSelector: boolean;
+}
+
+export interface WeekViewerProps extends CalendarProps {
+  selectedDate: Date;
+  setSelectedDate: (date: Date | null) => void;
+  viewedHourState: [number, Dispatch<number>];
+  initialEventFormData: EventData;
+  dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
+  defaultCalendar: Calendar;
+  hidden: boolean;
+}
+
+const WeekViewer: FC<WeekViewerProps> = ({
+  selectedDate,
+  viewedHourState,
+  initialEventFormData,
+  dispatchInitialEventFormData,
+  defaultCalendar,
+  hidden,
+  data,
+}: // loading,
+WeekViewerProps) => {
   const { calendarEvents } = data;
   const date = useContext(DateContext);
+  const [viewedHour, _] = viewedHourState;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
 
   const eventEditingDialogState = usePopupState({
@@ -87,21 +113,18 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
   const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
 
   const selectedDayIndex = getDay(selectedDate);
-  const dayStart = zeroToHour(date, START_HOUR);
-  const allDayBoxHeight = HALF_HOUR_HEIGHT;
-  const currentTimeOffsetPx =
-    (HOUR_HEIGHT / 60) * differenceInMinutes(date, dayStart) + HALF_HOUR_HEIGHT;
+
+  const currentTimeOffsetPx = getTimeOffsetPx(setHours(selectedDate, viewedHour));
+  const scrollOffsetPx = currentTimeOffsetPx - HOUR_HEIGHT * 1.5;
 
   // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
   const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.primary);
 
   useEffect(() => {
-    // Scroll to the current time.
     const scrollableDiv = scrollableDivRef.current;
-    if (scrollableDiv) {
-      scrollableDiv.scrollTo({ top: currentTimeOffsetPx - HOUR_HEIGHT, behavior: "smooth" });
-    }
-  }, [currentTimeOffsetPx]);
+    if (scrollableDiv) scrollableDiv.scrollTo({ top: scrollOffsetPx, behavior: "smooth" });
+  }, [scrollOffsetPx]);
+
   const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const dayHeaderHeight = `${HALF_HOUR_HEIGHT}px`;
   return (
@@ -168,12 +191,12 @@ const WeekViewer: FC<ViewerProps> = (props: ViewerProps) => {
         }}
       >
         <div style={{ width: TIME_LABEL_COLUMN_WIDTH }}>
-          <Box className="time-label" height={`${allDayBoxHeight}px`}>
+          <Box className="time-label" height={`${ALL_DAY_BOX_HEIGHT}px`}>
             All Day
           </Box>
         </div>
         <div className="calendar-slots-column">
-          <Box height={`${allDayBoxHeight}px`} display="flex">
+          <Box height={`${ALL_DAY_BOX_HEIGHT}px`} display="flex">
             <Box flexGrow={1} display="flex">
               {DAYS_OF_WEEK.map((day, i) => {
                 return (

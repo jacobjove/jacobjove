@@ -32,6 +32,13 @@ export const CalendarLegendItems: FC<CalendarLegendProps> = ({
             display: "flex",
             alignItems: "center",
           }}
+          onClick={() => {
+            if (selectedCalendarIds.includes(calendar.id)) {
+              dispatchCalendarIds({ type: "remove", value: [calendar.id] });
+            } else {
+              dispatchCalendarIds({ type: "add", value: [calendar.id] });
+            }
+          }}
         >
           <CalendarInclusionCheckbox
             checked={selectedCalendarIds?.includes(calendar.id)}

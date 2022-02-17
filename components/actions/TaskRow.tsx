@@ -22,7 +22,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { format, isPast, isSameDay, isSameYear, parseISO } from "date-fns";
+import { format, isPast, isSameDay, isSameYear, isToday, parseISO } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useSession } from "next-auth/react";
@@ -108,11 +108,11 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
 
   const dueDate = task.dueDate ? parseISO(task.dueDate) : null;
   // prettier-ignore
-  const dueDateString = dueDate ? (
+  const dueDateString = dueDate ? ((
     isSameDay(dueDate, today) ? "Today" : (
       isSameYear(dueDate, today) ? format(dueDate, "M/d") : dueDate.toLocaleDateString()
     )
-  ) : "";
+  ) + ", " + format(dueDate, "h:mm a")) : "";
 
   const dialogTriggerProps = bindTrigger(dialogState);
   const menuTriggerProps = bindTrigger(menuState);
@@ -271,9 +271,8 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                     component="span"
                     fontSize="0.8rem"
                     sx={{
-                      ...(isPast(dueDate) && {
-                        color: (theme) => theme.palette.error.main,
-                      }),
+                      ...(isToday(dueDate) && { color: (theme) => theme.palette.warning.main }),
+                      ...(isPast(dueDate) && { color: (theme) => theme.palette.error.main }),
                     }}
                   >
                     {dueDateString}

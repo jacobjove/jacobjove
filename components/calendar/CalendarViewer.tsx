@@ -31,6 +31,7 @@ import MenuList from "@mui/material/MenuList";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
+import { getHours } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -117,8 +118,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const { loading, data: _data, defaultView, ...rest } = props;
   const user = useContext(UserContext);
   const date = useContext(DateContext);
-
-  const [scrollPosition, setScrollPosition] = useState<number>(0);
+  const viewedHourState = useState<number>(getHours(date));
 
   // Exclude calendars that are not enabled or have been archived.
   const enabledCalendars = useMemo(() => {
@@ -311,14 +311,14 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
         <DayViewer
           loading={loading}
           data={data}
-          scrollPosition={scrollPosition}
+          viewedHourState={viewedHourState}
           {...commonViewProps}
           hidden={view != "day"}
         />
         <WeekViewer
           loading={loading}
           data={data}
-          scrollPosition={scrollPosition}
+          viewedHourState={viewedHourState}
           {...commonViewProps}
           hidden={view != "week"}
         />
