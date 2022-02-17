@@ -47,7 +47,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
       <NextSeo
         title={"Sign in"}
         canonical={"/auth/signin"}
-        description={"Sign in to your SelfBuilder account, or create a free account now."}
+        description={"Sign in to your SelfBuilder account."}
       />
       <Container>
         <Box m={"auto"} p={4} maxWidth={"40rem"}>
@@ -87,12 +87,8 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
             </Grid>
           )) || (
             <div id="sign-in">
-              <Typography
-                variant="h1"
-                className="page-title text-center"
-                style={{ margin: "1rem" }}
-              >
-                Sign in
+              <Typography variant="h1" textAlign={"center"} my={2}>
+                {"Sign in"}
               </Typography>
               <SocialLogin
                 providers={providers}

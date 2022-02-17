@@ -33,9 +33,9 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
   return (
     <Layout>
       <NextSeo
-        title={"Sign in"}
+        title={"Create an account"}
         canonical={"/auth/signin"}
-        description={"Sign in to your SelfBuilder account, or create a free account now."}
+        description={"Create a free SelfBuilder account."}
       />
       <Container>
         <Box m={"auto"} p={4} style={{ maxWidth: "40rem" }}>
@@ -67,7 +67,7 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
           )) || (
             <div id="sign-in">
               <Typography variant="h1" textAlign={"center"} my={2}>
-                Sign in
+                {"Create an account"}
               </Typography>
               <SocialLogin
                 providers={providers}
