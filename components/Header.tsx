@@ -26,11 +26,14 @@ const DynamicPageTransitionProgressBar = dynamic(
   () => import("@/components/PageTransitionProgressBar")
 );
 
-const pages = [["About", "/about"]];
+// label, href, enabled
+type Page = [string, string, boolean];
 
-const settings = [
-  ["Profile", "/profile"],
-  ["Settings", "/app/settings"],
+const pages: Page[] = [["About", "/about", false]];
+
+const settings: Page[] = [
+  ["Profile", "/profile", false],
+  ["Settings", "/app/settings", true],
 ];
 
 const AppBar = styled(_AppBar)(({ theme }) => ({
@@ -101,14 +104,15 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((item) => (
-                <Link key={item[0]} href={item[1]} passHref>
+              {pages.map(([label, href, enabled]) => (
+                <Link key={label} href={href} passHref>
                   <MenuItem
+                    disabled={!enabled}
                     component="a"
                     sx={{ textAlign: "center" }}
-                    className={isActive(item[1]) ? "active" : ""}
+                    className={isActive(href) ? "active" : ""}
                   >
-                    {item[0]}
+                    {label}
                   </MenuItem>
                 </Link>
               ))}
@@ -160,10 +164,10 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                     horizontal: "right",
                   }}
                 >
-                  {settings.map((page) => (
-                    <Link key={page[0]} href={page[1]} passHref>
-                      <MenuItem component="a" sx={{ textAlign: "center" }}>
-                        {page[0]}
+                  {settings.map(([label, href, enabled]) => (
+                    <Link key={label} href={href} passHref>
+                      <MenuItem disabled={!enabled} component="a" sx={{ textAlign: "center" }}>
+                        {label}
                       </MenuItem>
                     </Link>
                   ))}
