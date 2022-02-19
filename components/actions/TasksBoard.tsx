@@ -272,6 +272,8 @@ const TasksBoard: FC<TasksBoardProps> = (props: TasksBoardProps) => {
           onChange={() => {
             key === selectedView ? setSelectedView(null) : setSelectedView(key);
           }}
+          // https://github.com/vercel/next.js/discussions/16957#discussioncomment-503631
+          TransitionProps={{ unmountOnExit: true }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
