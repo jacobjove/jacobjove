@@ -2,29 +2,29 @@
 # this can be converted to a composite action. In the meantime, we are using
 # https://github.com/mithro/actions-includes to allow `uses`.
 
-name: 'Setup'
-description: 'Set up Python and install dependencies'
+name: "Setup"
+description: "Set up Python and install dependencies"
 inputs:
   os:
-    description: 'Operating system'
+    description: "Operating system"
     required: false
     default: ubuntu-latest
   docker-compose-version:
-    description: 'Docker Compose version'
+    description: "Docker Compose version"
     required: false
     default: 2.2.1
   python-version:
-    description: 'Python version'
+    description: "Python version"
     required: false
     default: 3.9
   fetch-depth:
-    description: 'Fetch depth'
+    description: "Fetch depth"
     required: false
     default: 0
   environment:
     description: 'Environment ("prod", "test", or "dev")'
     required: false
-    default: 'prod'
+    default: "prod"
 
 runs:
   # https://github.com/mithro/actions-includes
@@ -71,7 +71,7 @@ runs:
     - name: Add hosts to /etc/hosts
       shell: bash
       run: |
-        hosts=("postgres" "redis" "elasticsearch" "modularhistory.dev.net")
+        hosts=("postgres" "redis" "elasticsearch" "selfbuilder.dev.net")
         echo "Updating hosts file..."
         for host in "${hosts[@]}"; do
           sudo echo "127.0.0.1 $host" | sudo tee -a /etc/hosts

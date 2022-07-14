@@ -2,43 +2,40 @@
 # this can be converted to a composite action. In the meantime, we are using
 # https://github.com/mithro/actions-includes to allow `uses`.
 
-name: 'Build image'
-description: 'Build a Docker image'
+name: "Build image"
+description: "Build a Docker image"
 inputs:
   os:
-    description: 'Operating system'
+    description: "Operating system"
     required: false
     default: ubuntu-latest
   image:
     description: 'The name of the Docker image (e.g., "django")'
     required: true
   push:
-    description: 'Whether to push the built image to its registry (default: false)'
+    description: "Whether to push the built image to its registry (default: false)"
     required: false
     default: false
   tags:
-    description: 'Comma-delimited string of tags to apply to the image (e.g., "ghcr.io/modularhistory/django:${{ github.sha }},ghcr.io/modularhistory/django:latest")'
+    description: 'Comma-delimited string of tags to apply to the image (e.g., "ghcr.io/selfbuilder/django:${{ github.sha }},ghcr.io/selfbuilder/django:latest")'
     required: true
   environment:
-    description: 'Environment (build argument)'
+    description: "Environment (build argument)"
     required: false
     default: prod
 runs:
   using: "includes"
   steps:
-    -
-      name: Set up Docker Buildx
+    - name: Set up Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v1
-    -
-      name: Login to GitHub Container Registry
+    - name: Login to GitHub Container Registry
       uses: docker/login-action@v1.10.0
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
         password: ${{ secrets.CR_PAT }}
-    -
-      # https://github.com/docker/build-push-action/issues/449
+    - # https://github.com/docker/build-push-action/issues/449
       name: Build image
       id: build
       if: false
@@ -57,8 +54,7 @@ runs:
         push: ${{ inputs.push }}
         secret-files: ENV_FILE=./.env
         tags: ${{ inputs.tags }}
-    -
-      name: Build image without cache
+    - name: Build image without cache
       # https://github.com/docker/build-push-action
       uses: docker/build-push-action@v2
       with:
@@ -72,8 +68,7 @@ runs:
         no-cache: true
         secret-files: ENV_FILE=./.env
         tags: ${{ inputs.tags }}
-    -
-      name: Run Snyk to check image for vulnerabilities
+    - name: Run Snyk to check image for vulnerabilities
       # Snyk can be used to break the build when it detects vulnerabilities.
       # In this case, we want to upload the issues to GitHub Code Scanning.
       continue-on-error: true
@@ -81,5 +76,5 @@ runs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        image: ghcr.io/modularhistory/${{ inputs.image }}:${{ github.sha }}
+        image: ghcr.io/selfbuilder/${{ inputs.image }}:${{ github.sha }}
         args: --file=Dockerfile.${{ inputs.image }}

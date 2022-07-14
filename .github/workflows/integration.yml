@@ -154,14 +154,14 @@ jobs:
           push: true
           no-cache: true
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/modularhistory/${{ matrix.image }}:${{ github.sha }}
+          tags: ghcr.io/selfbuilder/${{ matrix.image }}:${{ github.sha }}
     # - name: Run Snyk to check image for vulnerabilities
     #   continue-on-error: true
     #   uses: snyk/actions/docker@master
     #   env:
     #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     #   with:
-    #     image: ghcr.io/modularhistory/${{ matrix.image }}:${{ github.sha }}
+    #     image: ghcr.io/selfbuilder/${{ matrix.image }}:${{ github.sha }}
     #     args: --file=Dockerfile.${{ matrix.image }}
   # jest:
   #   name: Run frontend unit tests
