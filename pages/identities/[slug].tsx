@@ -1,20 +1,19 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { Identity } from "@/graphql/schema";
-import prisma from "@/utils/prisma";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
-import React, { FC } from "react";
+import { FC } from "react";
 
-interface IdentificationProps {
+interface IdentityProps {
   identity: Identity;
 }
 
 /**
- * A page that renders the HTML of a single identification.
+ * A page that renders the HTML of a single identity.
  */
-const IdentificationDetailPage: FC<IdentificationProps> = ({ identity }: IdentificationProps) => {
+const IdentityDetailPage: FC<IdentityProps> = ({ identity }: IdentityProps) => {
   return (
     <Layout>
       <NextSeo
@@ -29,27 +28,28 @@ const IdentificationDetailPage: FC<IdentificationProps> = ({ identity }: Identif
     </Layout>
   );
 };
-export default IdentificationDetailPage;
+export default IdentityDetailPage;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let identity: Identity | null = null;
-  let notFound = false;
-  const { slug } = params || {};
-  await prisma.identity
-    .findUnique({ where: { slug: `${slug}` } })
-    .then((result) => {
-      identity = result;
-    })
-    .catch(() => {
-      notFound = true;
-    });
-  return {
-    props: {
-      identity,
-    },
-    notFound,
-    revalidate: 10,
-  };
+  throw new Error("Not implemented");
+  // let identity: Identity | null = null;
+  // let notFound = false;
+  // const { slug } = params || {};
+  // await prisma.identity
+  //   .findUnique({ where: { slug: `${slug}` } })
+  //   .then((result) => {
+  //     identity = result;
+  //   })
+  //   .catch(() => {
+  //     notFound = true;
+  //   });
+  // return {
+  //   props: {
+  //     identity,
+  //   },
+  //   notFound,
+  //   revalidate: 10,
+  // };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

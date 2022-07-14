@@ -1,0 +1,16 @@
+import * as TypeGraphQL from "type-graphql";
+
+@TypeGraphQL.InputType("MetricApplicationActIdMetricIdCompoundUniqueInput", {
+  isAbstract: true,
+})
+export class MetricApplicationActIdMetricIdCompoundUniqueInput {
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
+  })
+  actId!: string;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
+  })
+  metricId!: string;
+}

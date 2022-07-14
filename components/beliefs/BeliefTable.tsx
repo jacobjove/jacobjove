@@ -1,4 +1,4 @@
-import { Belief, UserBelief as _UserBelief } from "@/graphql/schema";
+import { Belief } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,17 +9,13 @@ import TableRow from "@mui/material/TableRow";
 import Link from "next/link";
 import { FC } from "react";
 
-type UserBelief = _UserBelief & {
-  belief: Belief;
-};
-
 interface BeliefTableProps {
-  userBeliefs: UserBelief[];
+  beliefs: Belief[];
 }
 
 // TODO: https://mui.com/components/tables/#sorting-amp-selecting
 const BeliefTable: FC<BeliefTableProps> = (props: BeliefTableProps) => {
-  const { userBeliefs } = props;
+  const { beliefs } = props;
   return (
     <TableContainer>
       <Table size="small">
@@ -34,14 +30,11 @@ const BeliefTable: FC<BeliefTableProps> = (props: BeliefTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {userBeliefs.map((userBelief: UserBelief) => (
-            <TableRow
-              key={userBelief.belief.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
+          {beliefs.map((belief: Belief) => (
+            <TableRow key={belief.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               <TableCell component="th" scope="row">
-                <Link href={`/beliefs/${userBelief.belief.slug}`}>
-                  <a>{userBelief.belief.name}</a>
+                <Link href={`/beliefs/${belief.slug}`}>
+                  <a>{belief.name}</a>
                 </Link>
               </TableCell>
               <TableCell component="td">

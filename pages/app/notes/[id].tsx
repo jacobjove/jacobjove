@@ -1,23 +1,22 @@
+import { AuthToken, useAuth } from "@/components/contexts/AuthContext";
 import Layout from "@/components/Layout";
 import NoteViewer from "@/components/notes/NoteViewer";
 import { noteFragment } from "@/graphql/fragments";
 import { Note } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/utils/apollo/client";
-import { printError } from "@/utils/apollo/error-handling";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth, Session } from "next-auth";
-import { getSession, useSession } from "next-auth/react";
+import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
 
 interface NotePageProps {
-  noteId: number;
-  session: Session | null;
+  noteId: string;
+  token: AuthToken | null;
 }
 
 const QUERY = gql`
-  query GetNote($noteId: Int!) {
+  query GetNote($noteId: String!) {
     note(where: { id: $noteId }) {
       ...NoteFragment
     }
@@ -31,7 +30,7 @@ interface NotePageData {
 
 const NotePage: NextPage<NotePageProps> = (props: NotePageProps) => {
   const { noteId } = props;
-  const { data: session } = useSession();
+  const { token } = useAuth();
   const {
     data,
     loading: loadingNote,
@@ -41,7 +40,7 @@ const NotePage: NextPage<NotePageProps> = (props: NotePageProps) => {
   });
   const note = data?.note;
 
-  if (!session || !note) return null;
+  if (!token || !note) return null;
 
   return (
     <Layout>
@@ -64,32 +63,9 @@ export default NotePage;
 (NotePage as PageWithAuth).auth = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const apolloClient = initializeApollo();
   const { id } = context.params || {};
-  const session = await getSession({ req: context.req });
-  if (!session?.user?.id) {
-    return {
-      redirect: {
-        destination: `/auth/signin?callbackUrl=/app/notes/${id}`,
-        permanent: false,
-      },
-    };
-  } else if (typeof id !== "string") {
-    console.error("Invalid note id");
-    return {
-      notFound: true,
-    };
-  }
-  const noteId = parseInt(id);
-  await apolloClient
-    .query({
-      query: QUERY,
-      variables: { noteId },
-    })
-    .catch(printError);
-  const props = {
-    session,
-    noteId,
-  };
-  return addApolloState(apolloClient, { props });
+  const _getServerSideProps = buildGetServerSidePropsFunc({
+    unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/notes/${id}`,
+  });
+  return await _getServerSideProps(context);
 };

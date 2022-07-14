@@ -11,5 +11,6 @@ export const printError = (error: any) => {
     );
   } else {
     console.error(error);
+    typeof alert !== "undefined" && alert(error);
   }
 };

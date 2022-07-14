@@ -13,8 +13,8 @@ const CalendarInclusionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 
 interface CalendarLegendProps {
   calendars: Calendar[];
-  selectedCalendarIds: number[];
-  dispatchCalendarIds: Dispatch<{ type: "add" | "remove"; value: number[] }>;
+  selectedCalendarIds: string[];
+  dispatchCalendarIds: Dispatch<{ type: "add" | "remove"; value: string[] }>;
 }
 
 export const CalendarLegendItems: FC<CalendarLegendProps> = ({

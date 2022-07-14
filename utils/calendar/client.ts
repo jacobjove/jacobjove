@@ -3,7 +3,7 @@ THIS IS A SERVER-SIDE-ONLY MODULE.
 Importing from this module in client-side code will result in an error.
 */
 
-import { Account, Calendar } from "@/prisma/generated";
+import { Account, Calendar } from "@/graphql/schema";
 import prisma from "@/utils/prisma";
 import { calendar_v3, google } from "googleapis";
 
@@ -37,7 +37,7 @@ export const getCalendarClient = (
 export class CalendarClient {
   _client: calendar_v3.Calendar; // Google only, currently.
   provider: CalendarProvider;
-  accountId: number;
+  accountId: string;
   calendarListSyncToken: string | undefined;
 
   constructor(account: RequiredAccountData) {

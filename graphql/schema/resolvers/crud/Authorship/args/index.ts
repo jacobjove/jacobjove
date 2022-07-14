@@ -1,0 +1,12 @@
+export { AggregateAuthorshipArgs } from "./AggregateAuthorshipArgs";
+export { CreateAuthorshipArgs } from "./CreateAuthorshipArgs";
+export { CreateManyAuthorshipArgs } from "./CreateManyAuthorshipArgs";
+export { DeleteAuthorshipArgs } from "./DeleteAuthorshipArgs";
+export { DeleteManyAuthorshipArgs } from "./DeleteManyAuthorshipArgs";
+export { FindFirstAuthorshipArgs } from "./FindFirstAuthorshipArgs";
+export { FindManyAuthorshipArgs } from "./FindManyAuthorshipArgs";
+export { FindUniqueAuthorshipArgs } from "./FindUniqueAuthorshipArgs";
+export { GroupByAuthorshipArgs } from "./GroupByAuthorshipArgs";
+export { UpdateAuthorshipArgs } from "./UpdateAuthorshipArgs";
+export { UpdateManyAuthorshipArgs } from "./UpdateManyAuthorshipArgs";
+export { UpsertAuthorshipArgs } from "./UpsertAuthorshipArgs";

@@ -1,22 +1,29 @@
-import { UserValue } from ".prisma/client";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SelectableValue from "@/components/values/SelectableValue";
 import { Value } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/utils/apollo/client";
-import { printError } from "@/utils/apollo/error-handling";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
 import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React from "react";
 
 interface ValuesPageProps {
   values: Value[];
-  selectedValueIds: number[];
+  selectedValueIds: string[];
 }
+
+const QUERY = gql`
+  query Values {
+    values {
+      id
+      name
+      slug
+    }
+  }
+`;
 
 const ValuesPage: NextPage<ValuesPageProps> = ({ values, selectedValueIds }: ValuesPageProps) => {
   const valuesByLetters: Record<string, typeof values> = {};
@@ -52,45 +59,9 @@ const ValuesPage: NextPage<ValuesPageProps> = ({ values, selectedValueIds }: Val
 export default ValuesPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
-  const apolloClient = initializeApollo();
-  const props: ValuesPageProps = {
-    values: [],
-    selectedValueIds: [],
-  };
-  if (session?.user?.id) {
-    await apolloClient
-      .query({
-        query: gql`
-        query Values {
-          values {
-            id
-            name
-            slug
-          }
-          userValues (
-            where: {
-              userId: {equals: "${session.user.id}"}
-              archivedAt: {equals: null}
-            }
-          ) {
-            value {
-              id
-            }
-          }
-        }
-      `,
-      })
-      .then((res) => {
-        props.values = res.data.values;
-        if (res.data.userValues.length) {
-          props.selectedValueIds = res.data.userValues.map(
-            (userValue: UserValue & { value: Value }) => parseInt(`${userValue.value.id}`)
-          );
-        }
-      })
-      .catch(printError);
-  }
-  return addApolloState(apolloClient, { props });
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  unauthedRedirectDestination: "/auth/signin?callbackUrl=/values",
+  query: {
+    query: QUERY,
+  },
+});

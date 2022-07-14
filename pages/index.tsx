@@ -1,9 +1,9 @@
 import Layout from "@/components/Layout";
+import { getAuth } from "@/utils/auth/ssr";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 
@@ -34,11 +34,11 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
 export default DefaultPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
+  const { token } = await getAuth(context);
   const today = new Date();
   const props: DefaultPageProps = {
     date: today.toISOString(),
-    ctaHref: session?.user?.email ? "/app/home" : "/auth/registration",
+    ctaHref: token ? "/app/home" : "/auth/registration",
   };
   return { props };
 };

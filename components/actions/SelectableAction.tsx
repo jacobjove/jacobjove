@@ -1,15 +1,15 @@
+import { useAuth } from "@/components/contexts/AuthContext";
 import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
 import { Act } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleActionAdoption($actionId: Int!, $userId: Int!, $archivedAt: DateTime) {
-    toggleHabitAdoption(actionId: $actionId, userId: $userId, archivedAt: $archivedAt) {
+  mutation ToggleActionAdoption($actionId: String!, $archivedAt: DateTime) {
+    toggleHabitAdoption(actionId: $actionId, archivedAt: $archivedAt) {
       actId
       archivedAt
     }
@@ -25,19 +25,19 @@ const SelectableAction: FC<SelectableActionProps> = ({
   act,
   selected: initiallySelected,
 }: SelectableActionProps) => {
-  const { data: session } = useSession();
+  const { token } = useAuth();
   const [mutate] = useMutation(TOGGLE_IDENTIFICATION);
   const [selected, setSelected] = useState(initiallySelected);
   const toggleSelection = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (session?.user) {
+    if (token) {
       let archivedAt = null;
       if (selected) {
-        archivedAt = new Date().toISOString();
+        archivedAt = new Date();
       }
       mutate({
-        variables: { actId: act.id, userId: session.user.id, archivedAt },
+        variables: { actId: act.id, archivedAt },
         optimisticResponse: {
           __typename: "Mutation",
           toggleHabitAdoption: {
@@ -58,7 +58,6 @@ const SelectableAction: FC<SelectableActionProps> = ({
           variant="outlined"
           size="small"
           sx={{
-            color: "black",
             margin: "0.6rem 1.2rem",
             display: "inline-block",
             fontSize: "1rem",

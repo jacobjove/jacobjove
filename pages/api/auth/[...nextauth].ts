@@ -1,3 +1,4 @@
+import { USE_FIREBASE } from "@/config";
 import prisma from "@/utils/prisma";
 import NextAuth, { CallbacksOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
@@ -117,6 +118,7 @@ const callbacks: CallbacksOptions = {
         const newScopes = account.scope?.split(" ") ?? [];
         if (!oldScopes.every((scope) => newScopes.includes(scope))) {
           const scopesToRequest = [...new Set([...oldScopes, ...newScopes])];
+          // TODO: figure out how to preserve callback URL instead of redirecting to app home
           return `${process.env.NEXTAUTH_URL}/auth/signin?provider=${
             account.provider
           }&scope=${scopesToRequest.join(",")}&callbackUrl=${process.env.NEXTAUTH_URL}/app`;
@@ -184,6 +186,7 @@ const callbacks: CallbacksOptions = {
       }
     */
     // console.log("🔑 session", { session, token });
+    session.error = token.error;
     if (!session?.user) return session;
     if (token.accessToken) session.accessToken = token.accessToken;
     if (!session.user.id) {
@@ -232,16 +235,21 @@ const callbacks: CallbacksOptions = {
             .catch(console.error);
         } else {
           // Create a new user.
-          user = await prisma.user.create({
-            data: {
-              email: session.user.email,
-              name: session.user.name,
-              lastLogin: new Date(),
-              accounts: {
-                create: { ...accountIdData, ...commonAccountData },
+          if (USE_FIREBASE) {
+            console.error("Not implemented");
+            throw new Error("Not implemented");
+          } else {
+            user = await prisma.user.create({
+              data: {
+                email: session.user.email,
+                name: session.user.name,
+                lastLogin: new Date(),
+                accounts: {
+                  create: { ...accountIdData, ...commonAccountData },
+                },
               },
-            },
-          });
+            });
+          }
         }
         session.user.id = user.id;
       }

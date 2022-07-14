@@ -1,4 +1,4 @@
-export const userUid = "cjld2cjxh0000qzrmn831i7rn";
+export const userId = "cjld2cjxh0000qzrmn831i7rn";
 
 const users = [
   {

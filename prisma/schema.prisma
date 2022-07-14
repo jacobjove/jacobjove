@@ -19,15 +19,15 @@ datasource db {
 }
 
 model Redirect {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(cuid())
   old_path String
   new_path String
 }
 
 model Account {
-  id                Int        @id @default(autoincrement())
+  id                String     @id @default(cuid())
   user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            Int
+  userId            String
   provider          String
   remoteId          String
   scopes            String[]
@@ -47,8 +47,7 @@ enum Role {
 }
 
 model User {
-  id                  Int                      @id @default(autoincrement())
-  uid                 String                   @unique @default(cuid())
+  id                  String                   @id @default(cuid())
   name                String?
   email               String                   @unique
   emailVerified       DateTime?
@@ -58,9 +57,11 @@ model User {
   lastLogin           DateTime?
   accounts            Account[]
   calendars           Calendar[]               @relation("calendars")
-  identities          Identification[]
-  userValues          UserValue[]
-  userBeliefs         UserBelief[]
+  calendarEvents      CalendarEvent[]          @relation("calendarEvents")
+  identities          Identity[]
+  values              Value[]
+  beliefs             Belief[]
+  mantras             Mantra[]
   habits              Habit[]
   tasks               Task[]
   dashboards          Dashboard[]
@@ -73,9 +74,9 @@ model User {
 }
 
 model Dashboard {
-  id        Int     @id @default(autoincrement())
+  id        String  @id @default(cuid())
   name      String
-  userId    Int
+  userId    String
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   layouts   Json    @default("[]")
   isDefault Boolean @default(false)
@@ -94,17 +95,16 @@ enum CalendarProvider {
 }
 
 model Calendar {
-  id        Int               @id @default(autoincrement())
-  uid       String            @unique(map: "Calendar_uid_unique_constraint") @default(cuid())
+  id        String            @id @default(cuid())
   user      User              @relation("calendars", fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    String
   name      String?
   color     String?
   provider  CalendarProvider?
   remoteId  String?
   syncToken String?
   account   Account?          @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  accountId Int?
+  accountId String?
   primary   Boolean?          @default(false)
   public    Boolean?          @default(false)
   enabled   Boolean?          @default(true)
@@ -119,18 +119,19 @@ model Calendar {
 }
 
 model CalendarEvent {
-  id         Int             @id @default(autoincrement())
-  uid        String          @unique(map: "CalendarEvent_uid_unique_constraint") @default(cuid())
+  id         String          @id @default(cuid())
   remoteId   String?
+  user       User            @relation("calendarEvents", fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
   calendar   Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
-  calendarId Int
+  calendarId String
   schedule   ActionSchedule? @relation(fields: [scheduleId], references: [id])
-  scheduleId Int?
+  scheduleId String?
   // TODO: remove habit and habitId
   habit      Habit?          @relation(fields: [habitId], references: [id])
-  habitId    Int?
+  habitId    String?
   task       Task?           @relation(fields: [taskId], references: [id])
-  taskId     Int?
+  taskId     String?
   title      String
   start      DateTime
   end        DateTime?
@@ -147,7 +148,7 @@ model CalendarEvent {
 }
 
 model ScheduleTemplate {
-  id                      Int                      @id @default(autoincrement())
+  id                      String                   @id @default(cuid())
   frequency               FREQUENCY                @default(DAY)
   multiplier              Int                      @default(1)
   chron                   String?
@@ -155,7 +156,7 @@ model ScheduleTemplate {
 }
 
 model Category {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(cuid())
   name            String
   categorizations Categorization[]
 
@@ -165,10 +166,10 @@ model Category {
 }
 
 model Categorization {
-  id         Int      @id @default(autoincrement())
-  categoryId Int
+  id         String   @id @default(cuid())
+  categoryId String
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  actId      Int
+  actId      String
   act        Act      @relation(fields: [actId], references: [id], onDelete: Cascade)
 
   createdAt  DateTime  @default(now())
@@ -178,14 +179,14 @@ model Categorization {
 
 // e.g., running
 model Act {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(cuid())
   name        String
   slug        String  @unique
   description String?
   isPublic    Boolean @default(false)
 
-  parent   Act? @relation("variants", fields: [parentId], references: [id])
-  parentId Int?
+  parent   Act?    @relation("variants", fields: [parentId], references: [id])
+  parentId String?
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
@@ -202,9 +203,9 @@ model Act {
 // e.g., running:miles
 model MetricApplication {
   id       Int    @unique @default(autoincrement())
-  actId    Int
+  actId    String
   act      Act    @relation(fields: [actId], references: [id], onDelete: Cascade)
-  metricId Int
+  metricId String
   metric   Metric @relation(fields: [metricId], references: [id], onDelete: Cascade)
 
   createdAt  DateTime  @default(now())
@@ -215,10 +216,10 @@ model MetricApplication {
 }
 
 model MetricUsage {
-  id         Int            @unique @default(autoincrement())
-  metricId   Int
+  id         String         @unique @default(cuid())
+  metricId   String
   metric     Metric         @relation(fields: [metricId], references: [id], onDelete: Cascade)
-  habitId    Int
+  habitId    String
   habit      Habit          @relation(fields: [habitId], references: [id], onDelete: Cascade)
   records    MetricRecord[]
   archivedAt DateTime?
@@ -228,17 +229,17 @@ model MetricUsage {
 
 // e.g., miles
 model Metric {
-  id           Int                 @id @default(autoincrement())
+  id           String              @id @default(cuid())
   name         String              @unique
   applications MetricApplication[]
   usages       MetricUsage[]
 }
 
 model Habit {
-  id                       Int              @id @default(autoincrement())
-  actId                    Int
+  id                       String           @id @default(cuid())
+  actId                    String
   act                      Act              @relation(fields: [actId], references: [id], onDelete: Cascade)
-  userId                   Int
+  userId                   String
   user                     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   name                     String
   isPublic                 Boolean          @default(false)
@@ -246,7 +247,7 @@ model Habit {
   tasks                    Task[]
   calendarEvents           CalendarEvent[]
   // themes                   ActionTheme[]
-  metrics                  MetricUsage[]
+  metricUsages             MetricUsage[]
   goals                    Goal[]
   routines                 RoutineHabit[]
   defaultDurationInMinutes Int?
@@ -260,9 +261,9 @@ model Habit {
 model RoutineHabit {
   id                Int     @unique @default(autoincrement())
   routine           Routine @relation(fields: [routineId], references: [id])
-  routineId         Int
+  routineId         String
   habit             Habit   @relation(fields: [habitId], references: [id])
-  habitId           Int
+  habitId           String
   position          Int
   durationInMinutes Int
 
@@ -274,8 +275,8 @@ model RoutineHabit {
 }
 
 model Routine {
-  id                Int            @id @default(autoincrement())
-  userId            Int
+  id                String         @id @default(cuid())
+  userId            String
   name              String
   habits            RoutineHabit[]
   durationInMinutes Int?
@@ -287,10 +288,10 @@ model Routine {
 }
 
 model MetricRecord {
-  id            Int         @id @default(autoincrement())
-  metricUsageId Int
+  id            String      @id @default(cuid())
+  metricUsageId String
   metricUsage   MetricUsage @relation(fields: [metricUsageId], references: [id])
-  actionId      Int
+  actionId      String
   action        Action      @relation(fields: [actionId], references: [id])
   value         Int
 
@@ -301,16 +302,16 @@ model MetricRecord {
 
 // One-off tasks
 model Task {
-  id               Int             @id @default(autoincrement())
+  id               String          @id @default(cuid())
   title            String
   description      String?
   plannedStartDate DateTime?       @default(now())
   dueDate          DateTime?
-  userId           Int
+  userId           String
   user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  parentId         Int?
+  parentId         String?
   parent           Task?           @relation("children", fields: [parentId], references: [id])
-  habitId          Int?
+  habitId          String?
   habit            Habit?          @relation(fields: [habitId], references: [id])
   subtasks         Task[]          @relation("children")
   rank             Int             @default(dbgenerated("floor(random() * power(10, 9))"))
@@ -325,9 +326,9 @@ model Task {
 }
 
 model Action {
-  id            Int            @id @default(autoincrement())
+  id            String         @id @default(cuid())
   habit         Habit?         @relation(fields: [habitId], references: [id])
-  habitId       Int?
+  habitId       String?
   start         DateTime
   end           DateTime
   notes         String?
@@ -339,16 +340,16 @@ model Action {
 }
 
 model ActionSchedule {
-  id             Int                     @id @default(autoincrement())
+  id             String                  @id @default(cuid())
   habit          Habit                   @relation(fields: [habitId], references: [id])
-  habitId        Int
+  habitId        String
   frequency      FREQUENCY               @default(DAY)
   multiplier     Int                     @default(1)
   quantity       Int                     @default(1)
   calendarEvents CalendarEvent[]
   active         Boolean                 @default(false)
   template       ActionScheduleTemplate? @relation(fields: [templateId], references: [id])
-  templateId     Int?
+  templateId     String?
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
@@ -357,23 +358,23 @@ model ActionSchedule {
 
 // // theme or focus
 // model ActionTheme {
-//   id       Int       @id @default(autoincrement())
-//   actionId Int?
+//   id       String       @id @default(cuid())
+//   actionId String?
 //   action   Action?   @relation(fields: [actionId], references: [id])
 //   key      String
 //   body     String
 //   start    DateTime
 //   end      DateTime?
 //   habit    Habit    @relation(fields: [habitId], references: [id])
-//   habitId  Int
+//   habitId  String
 // }
 
 model ActionScheduleTemplate {
-  id                 Int              @id @default(autoincrement())
+  id                 String           @id @default(cuid())
   act                Act              @relation(fields: [actId], references: [id])
-  actId              Int
+  actId              String
   scheduleTemplate   ScheduleTemplate @relation(fields: [scheduleTemplateId], references: [id])
-  scheduleTemplateId Int
+  scheduleTemplateId String
   frequency          FREQUENCY        @default(DAY)
   multiplier         Int              @default(1)
   quantity           Int              @default(1)
@@ -397,102 +398,71 @@ enum FREQUENCY {
   YEAR
 }
 
-model Identification {
-  id         Int       @id @default(autoincrement())
-  user       User      @relation(fields: [userId], references: [id])
-  userId     Int
-  identity   Identity  @relation(fields: [identityId], references: [id])
-  identityId Int
-  deleted    DateTime?
-
-  @@unique([userId, identityId])
-  @@map(name: "identifications")
-}
-
 model Identity {
-  id              Int                   @id @default(autoincrement())
+  id              String                @id @default(cuid())
+  userId          String
+  user            User                  @relation(fields: [userId], references: [id])
   name            String
   slug            String                @unique
   description     String?
-  identities      Identification[]
   actionRelations IdentityActRelation[]
 
   @@map(name: "identities")
 }
 
 model Goal {
-  id         Int    @id @default(autoincrement())
-  habit      Habit  @relation(fields: [habitId], references: [id])
-  habitId    Int
-  goalId     Int?
-  goal       Goal?  @relation("GoalMilestones", fields: [goalId], references: [id])
-  milestones Goal[] @relation("GoalMilestones")
+  id         String  @id @default(cuid())
+  habit      Habit   @relation(fields: [habitId], references: [id])
+  habitId    String
+  goalId     String?
+  goal       Goal?   @relation("GoalMilestones", fields: [goalId], references: [id])
+  milestones Goal[]  @relation("GoalMilestones")
   quantity   Int
 }
 
 model IdentityActRelation {
-  id         Int       @id @default(autoincrement())
+  id         String    @id @default(cuid())
   identity   Identity  @relation(fields: [identityId], references: [id])
-  identityId Int
+  identityId String
   action     Act       @relation(fields: [actionId], references: [id])
-  actionId   Int
-  deleted    DateTime?
+  actionId   String
+  archivedAt DateTime?
 
   @@unique([identityId, actionId])
 }
 
 model Belief {
-  id          Int     @id @default(autoincrement())
+  id          String    @id @default(cuid())
   name        String
-  slug        String  @unique
+  slug        String    @unique
   description String?
-
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
-  archivedAt DateTime?
-
-  userBelief UserBelief[]
-}
-
-model UserBelief {
-  id       Int    @id @default(autoincrement())
-  user     User   @relation(fields: [userId], references: [id])
-  userId   Int
-  belief   Belief @relation(fields: [beliefId], references: [id])
-  beliefId Int
-
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
-  archivedAt DateTime?
-
-  @@unique([userId, beliefId])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  archivedAt  DateTime?
+  User        User?     @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model Value {
-  id          Int     @id @default(autoincrement())
+  id          String    @id @default(cuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
   name        String
-  slug        String  @unique
+  slug        String    @unique
   description String?
-
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
-  archivedAt DateTime?
-
-  userValues UserValue[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  archivedAt  DateTime?
 }
 
-model UserValue {
-  id      Int   @id @default(autoincrement())
-  user    User  @relation(fields: [userId], references: [id])
-  userId  Int
-  value   Value @relation(fields: [valueId], references: [id])
-  valueId Int
-
+model Mantra {
+  id         String    @id @default(cuid())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  content    String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
   archivedAt DateTime?
-
-  @@unique([userId, valueId])
 }
 
 enum LIST_FIELD_TYPE {
@@ -505,20 +475,20 @@ enum LIST_FIELD_TYPE {
 }
 
 model NotebookUserPermission {
-  id         Int       @id @default(autoincrement())
+  id         String    @id @default(cuid())
   user       User      @relation(fields: [userId], references: [id])
-  userId     Int
+  userId     String
   notebook   Notebook  @relation(fields: [notebookId], references: [id])
-  notebookId Int
-  deleted    DateTime?
+  notebookId String
+  archivedAt DateTime?
 
   @@unique([userId, notebookId])
 }
 
 model Notebook {
-  id              Int                      @id @default(autoincrement())
+  id              String                   @id @default(cuid())
   owner           User                     @relation(fields: [ownerId], references: [id])
-  ownerId         Int
+  ownerId         String
   title           String
   isPublic        Boolean                  @default(false)
   description     String?
@@ -533,9 +503,9 @@ model Notebook {
 }
 
 model Note {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(cuid())
   notebook   Notebook @relation(fields: [notebookId], references: [id])
-  notebookId Int
+  notebookId String
   title      String?
   body       String?
   isPublic   Boolean  @default(false)
@@ -546,9 +516,9 @@ model Note {
 }
 
 model List {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(cuid())
   owner       User    @relation(fields: [ownerId], references: [id])
-  ownerId     Int
+  ownerId     String
   name        String
   slug        String  @unique
   description String?
@@ -562,10 +532,10 @@ model List {
 }
 
 model Item {
-  id     Int  @id @default(autoincrement())
-  list   List @relation(fields: [listId], references: [id])
-  listId Int
-  data   Json @default("{}")
+  id     String @id @default(cuid())
+  list   List   @relation(fields: [listId], references: [id])
+  listId String
+  data   Json   @default("{}")
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
@@ -573,7 +543,7 @@ model Item {
 }
 
 model Author {
-  id   Int    @id @default(autoincrement())
+  id   String @id @default(cuid())
   name String
   slug String @unique
 
@@ -585,11 +555,11 @@ model Author {
 }
 
 model Authorship {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(cuid())
   author   Author @relation(fields: [authorId], references: [id])
-  authorId Int
+  authorId String
   book     Book   @relation(fields: [bookId], references: [id])
-  bookId   Int
+  bookId   String
   position Int    @default(0)
 
   createdAt  DateTime  @default(now())
@@ -600,7 +570,7 @@ model Authorship {
 }
 
 model Book {
-  id                      Int      @id @default(autoincrement())
+  id                      String   @id @default(cuid())
   // Goodreads ID, etc.
   ids                     Json
   isbn                    String?
@@ -626,11 +596,11 @@ model Book {
 }
 
 model Reading {
-  id           Int         @id @default(autoincrement())
+  id           String      @id @default(cuid())
   user         User        @relation(fields: [userId], references: [id])
-  userId       Int
+  userId       String
   book         Book        @relation(fields: [bookId], references: [id])
-  bookId       Int
+  bookId       String
   dateStarted  DateTime?
   dateFinished DateTime?
   review       BookReview?
@@ -641,9 +611,9 @@ model Reading {
 }
 
 model Bookshelf {
-  id          Int        @id @default(autoincrement())
+  id          String     @id @default(cuid())
   owner       User       @relation(fields: [ownerId], references: [id])
-  ownerId     Int
+  ownerId     String
   name        String
   slug        String     @unique
   isPublic    Boolean    @default(false)
@@ -658,11 +628,11 @@ model Bookshelf {
 }
 
 model Shelving {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(cuid())
   book      Book      @relation(fields: [bookId], references: [id])
-  bookId    Int
+  bookId    String
   shelf     Bookshelf @relation(fields: [shelfId], references: [id])
-  shelfId   Int
+  shelfId   String
   position  Int       @default(0)
   rationale String?
 
@@ -674,15 +644,15 @@ model Shelving {
 }
 
 model BookReview {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   review    String
   rating    Int
   book      Book     @relation(fields: [bookId], references: [id])
-  bookId    Int
+  bookId    String
   user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    String
   reading   Reading? @relation(fields: [readingId], references: [id])
-  readingId Int?     @unique
+  readingId String?  @unique
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())

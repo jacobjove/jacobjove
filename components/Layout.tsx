@@ -1,8 +1,9 @@
 import AppDrawer from "@/components/AppDrawer";
+import DeviceContext from "@/components/contexts/DeviceContext";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { useRouter } from "next/router";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useContext, useState } from "react";
 
 interface LayoutProps {
   children: ReactNode;
@@ -11,11 +12,12 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ scrollable, children }: LayoutProps) => {
   const router = useRouter();
+  const { isDesktop } = useContext(DeviceContext);
   const headerHeightInPx = 60;
   const headerHeight = `${headerHeightInPx}px`;
   const footerHeightRem = 3;
   const footerHeight = `${footerHeightRem}rem`;
-  const [appDrawerOpen, setAppDrawerOpen] = useState(false);
+  const [appDrawerOpen, setAppDrawerOpen] = useState(isDesktop);
   return (
     <>
       <div

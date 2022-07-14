@@ -9,7 +9,7 @@ import debounce from "lodash/debounce";
 import { FC, useEffect, useRef, useState } from "react";
 
 const UPDATE_NOTE = gql`
-  mutation UpdateNote($noteId: Int!, $data: NoteUpdateInput!) {
+  mutation UpdateNote($noteId: String!, $data: NoteUpdateInput!) {
     updateNote(where: { id: $noteId }, data: $data) {
       ...NoteFragment
     }

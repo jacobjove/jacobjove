@@ -10,7 +10,6 @@ export const actFragment = gql`
 
 // export const actionThemeFragment = gql`
 //   fragment ActionThemeFragment on ActionTheme {
-//     __typename
 //     id
 //     body
 //     start
@@ -20,7 +19,6 @@ export const actFragment = gql`
 
 // export const routineHabitFragment = gql`
 //   fragment RoutineHabitFragment on RoutineHabit {
-//     __typename
 //     id
 //     position
 //     durationInMinutes
@@ -39,6 +37,33 @@ export const actionFragment = gql`
     notes
     archivedAt
   }
+`;
+
+export const habitFragment = gql`
+  fragment HabitFragment on Habit {
+    id
+    name
+    act {
+      ...ActFragment
+    }
+    schedules {
+      id
+      frequency
+      multiplier
+    }
+    metricUsages {
+      id
+      metric {
+        id
+        name
+      }
+    }
+    actions {
+      ...ActionFragment
+    }
+  }
+  ${actFragment}
+  ${actionFragment}
 `;
 
 export const taskFragment = gql`
@@ -60,41 +85,11 @@ export const taskFragment = gql`
       archivedAt
       parentId
     }
-    habit {
-      id
-      schedules {
-        id
-        frequency
-        multiplier
-      }
-    }
   }
-`;
-
-export const habitFragment = gql`
-  fragment HabitFragment on Habit {
-    __typename
-    id
-    name
-    act {
-      ...ActFragment
-    }
-    schedules {
-      id
-      frequency
-      multiplier
-    }
-    actions {
-      ...ActionFragment
-    }
-  }
-  ${actFragment}
-  ${actionFragment}
 `;
 
 export const calendarFragment = gql`
   fragment CalendarFragment on Calendar {
-    __typename
     id
     name
     color
@@ -110,7 +105,6 @@ export const calendarFragment = gql`
 
 export const calendarEventFragment = gql`
   fragment CalendarEventFragment on CalendarEvent {
-    __typename
     id
     remoteId
     scheduleId
@@ -125,9 +119,8 @@ export const calendarEventFragment = gql`
   }
 `;
 
-export const userValueFragment = gql`
-  fragment UserValueFragment on UserValue {
-    __typename
+export const valueFragment = gql`
+  fragment ValueFragment on Value {
     id
     value {
       id
@@ -137,9 +130,8 @@ export const userValueFragment = gql`
   }
 `;
 
-export const identificationFragment = gql`
-  fragment IdentificationFragment on Identification {
-    __typename
+export const identityFragment = gql`
+  fragment IdentityFragment on Identity {
     id
     identity {
       id
@@ -151,7 +143,6 @@ export const identificationFragment = gql`
 
 export const dashboardFragment = gql`
   fragment DashboardFragment on Dashboard {
-    __typename
     id
     name
     layouts
@@ -163,7 +154,6 @@ export const dashboardFragment = gql`
 
 export const accountFragment = gql`
   fragment AccountFragment on Account {
-    __typename
     id
     provider
     remoteId
@@ -174,27 +164,15 @@ export const accountFragment = gql`
   }
 `;
 
-export const userFragment = gql`
-  fragment UserFragment on User {
-    __typename
+export const mantraFragment = gql`
+  fragment MantraFragment on Mantra {
     id
-    name
-    email
-    settings
-    accounts {
-      ...AccountFragment
-    }
-    calendars {
-      ...CalendarFragment
-    }
+    content
   }
-  ${accountFragment}
-  ${calendarFragment}
 `;
 
 export const noteFragment = gql`
   fragment NoteFragment on Note {
-    __typename
     id
     title
     body
@@ -207,12 +185,32 @@ export const noteFragment = gql`
 
 export const notebookFragment = gql`
   fragment NotebookFragment on Notebook {
-    __typename
     id
     title
-    notes {
-      ...NoteFragment
+  }
+`;
+
+export const userFragment = gql`
+  fragment UserFragment on User {
+    id
+    name
+    email
+    settings
+    notebooks {
+      ...NotebookFragment
+    }
+    calendars {
+      ...CalendarFragment
+      events {
+        ...CalendarEventFragment
+      }
+    }
+    mantras {
+      ...MantraFragment
     }
   }
-  ${noteFragment}
+  ${calendarFragment}
+  ${calendarEventFragment}
+  ${mantraFragment}
+  ${notebookFragment}
 `;

@@ -4,7 +4,7 @@ import React, { FC } from "react";
 
 const CompletionCheckbox: FC<CheckboxProps> = styled((props: CheckboxProps) => {
   const { checked, disabled, onClick } = props;
-  return <Checkbox checked={checked} disabled={disabled} onClick={onClick} color="success" />;
+  return <Checkbox checked={checked} disabled={disabled} onClick={onClick} />;
 })(() => ({}));
 
 export default CompletionCheckbox;

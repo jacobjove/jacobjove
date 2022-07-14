@@ -1,19 +1,19 @@
+import { AuthToken, useAuth } from "@/components/contexts/AuthContext";
 import Layout from "@/components/Layout";
-import { addApolloState, initializeApollo } from "@/utils/apollo/client";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth, Session } from "next-auth";
-import { getSession, useSession } from "next-auth/react";
+import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
 
 interface HomePageProps {
-  session: Session | null;
+  token: AuthToken;
 }
 
-const HomePage: NextPage<HomePageProps> = (_props: HomePageProps) => {
-  const { data: session } = useSession();
+const HomePage: NextPage<HomePageProps> = () => {
+  const { token } = useAuth();
   return (
     <Layout>
       <NextSeo
@@ -34,7 +34,7 @@ const HomePage: NextPage<HomePageProps> = (_props: HomePageProps) => {
         }}
       >
         <Box textAlign={"center"}>
-          <Typography flexBasis={"100%"} my={2}>{`Welcome, ${session?.user?.name}!`}</Typography>
+          <Typography flexBasis={"100%"} my={2}>{`Welcome, ${token?.displayName}!`}</Typography>
           {/* <Link href="/app/dashboard" passHref>
             <Button variant="contained" component="a">
               Go to dashboard
@@ -49,17 +49,6 @@ export default HomePage;
 
 (HomePage as PageWithAuth).auth = true;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const apolloClient = initializeApollo();
-  const session = await getSession({ req: context.req });
-  if (!session?.user?.id) {
-    return {
-      redirect: {
-        destination: "/auth/signin?callbackUrl=/app/home",
-        permanent: false,
-      },
-    };
-  }
-  const props: HomePageProps = { session };
-  return addApolloState(apolloClient, { props });
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  unauthedRedirectDestination: "/auth/signin?callbackUrl=/app/home",
+});

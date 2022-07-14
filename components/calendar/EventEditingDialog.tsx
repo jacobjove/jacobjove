@@ -1,12 +1,12 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/components/calendar/EventSlot";
 import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
-import { CalendarEvent } from "@/graphql/schema";
 import {
+  CalendarEvent,
   CalendarEventCreateInput,
   CalendarEventUpdateInput,
   CalendarEventWhereUniqueInput,
-} from "@/prisma/generated";
+} from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -17,73 +17,51 @@ import { addMinutes } from "date-fns";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { FC, useEffect, useReducer } from "react";
 
-// TODO: Figure out what to do about non-nullability of fields that are supposed
-// to be nullable... https://github.com/MichalLytek/typegraphql-prisma/issues/32
-// It's not hugely problematic at the moment, but it's annoying and may cause problems
-// in the future. Fields like `archivedAt` need to be able to be updated to null.
-// And fields like `notes` can be set to an empty string rather than null, but
-// since the database allows such optional string fields to be null (and our types
-// are generated accordingly), it's unexpected that TypeGraphQL then proceeds to
-// generate a schema that does not allow us to set a nullable field to null.
-export type EventData = Omit<
-  CalendarEvent,
-  | "id"
-  | "uid"
-  | "start"
-  | "end"
-  | "notes"
-  | "remoteId"
-  | "calendarSourceId"
-  | "canceled"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "schedule"
-  | "habit"
-  | "task"
-> & {
-  id?: number;
-  start: Date;
-  end?: Date;
-  createdAt?: Date;
-  notes?: string;
-  canceled?: boolean;
-};
+export type EventData = Omit<CalendarEvent, "id"> & { id?: string };
 
-export const initializeEventData = (
-  eventData: {
-    start: string | Date;
-    calendarId: number;
-  } & Partial<CalendarEvent | EventData>
-): EventData => {
-  const start = new Date(eventData.start);
+export type InitialEventData = Pick<EventData, "start" | "calendarId"> & Partial<EventData>;
+
+export const initializeEventData = (eventData: InitialEventData): EventData => {
   // prettier-ignore
+  if (!eventData.calendarId) throw new Error("Calendar ID not specified.");
+  const now = new Date();
   return {
+    taskId: null,
+    scheduleId: null,
+    archivedAt: null,
+    remoteId: null,
+    habitId: null,
+    createdAt: now,
+    updatedAt: now,
     ...eventData,
     title: eventData.title || "",
-    start,
-    end: eventData.end ? new Date(eventData.end) : (
-      !eventData.allDay ? addMinutes(start, DEFAULT_EVENT_LENGTH_IN_MINUTES) : undefined
-    ),
+    end:
+      eventData.end ??
+      (!eventData.allDay
+        ? addMinutes(new Date(eventData.start), DEFAULT_EVENT_LENGTH_IN_MINUTES)
+        : undefined),
     allDay: eventData.allDay ?? false,
-    createdAt: eventData.createdAt ? new Date(eventData.createdAt) : undefined,
     notes: eventData.notes || "",
     canceled: eventData.canceled || false,
   };
 };
 
 export const eventDataReducer = (state: EventData, payload: { field: string; value: unknown }) => {
-  if (payload.field === "init") return initializeEventData(payload.value as EventData);
+  if (payload.field === "init") return initializeEventData(payload.value as InitialEventData);
   return { ...state, [payload.field]: payload.value };
 };
 
 interface EventEditingDialogProps extends ReturnType<typeof bindPopover> {
-  eventData: CalendarEvent | EventData;
+  eventData: InitialEventData;
 }
 
 const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDialogProps) => {
   const { eventData: initialEventData, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
-  const [eventData, dispatch] = useReducer(eventDataReducer, initialEventData, initializeEventData);
+  const [eventData, dispatch] = useReducer(
+    eventDataReducer,
+    initializeEventData(initialEventData),
+    initializeEventData
+  );
   const [mutate, { loading }] = useMutation(
     eventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
   );
@@ -92,7 +70,7 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
       alert("Start date is required.");
       return;
     }
-    const { calendarId, ...commonEventData } = eventData;
+    const { calendarId, scheduleId, habitId, taskId, ...commonEventData } = eventData;
     const now = new Date();
     // prettier-ignore
     const mutationVars: {
@@ -107,12 +85,19 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
           Object.entries(commonEventData).map(([key, value]) => [key, { set: value }])
         ),
         calendar: { connect: { id: calendarId } },
+        ...(!!scheduleId && { schedule: { connect: { id: scheduleId } } }),
+        ...(!!habitId && { habit: { connect: { id: habitId } } }),
+        ...(!!taskId && { task: { connect: { id: taskId } } }),
         updatedAt: { set: now },
       },
     } : {
       data: {
         ...commonEventData,
-        calendar: { connect: { id: eventData.calendarId } },
+        createdAt: now,
+        calendar: { connect: { id: calendarId } },
+        schedule: scheduleId ? { connect: { id: scheduleId } } : undefined,
+        habit: habitId ? { connect: { id: habitId } } : undefined,
+        task: taskId ? { connect: { id: taskId } } : undefined,
       },
     };
     await mutate({
@@ -120,18 +105,16 @@ const EventEditingDialog: FC<EventEditingDialogProps> = (props: EventEditingDial
       optimisticResponse: eventData.id
         ? {
             updateCalendarEvent: {
-              id: eventData.id,
               __typename: "CalendarEvent",
-              scheduleId: null,
+              id: eventData.id,
               ...eventData,
               updatedAt: now,
             },
           }
         : {
             createCalendarEvent: {
-              id: "tmp-id",
               __typename: "CalendarEvent",
-              scheduleId: null,
+              id: "tmp-id",
               ...eventData,
               createdAt: now,
               updatedAt: now,

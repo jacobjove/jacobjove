@@ -7,11 +7,11 @@ import Input from "@mui/material/Input";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { addDays, subDays } from "date-fns";
 import json2mq from "json2mq";
-import { FC, useState } from "react";
+import { Dispatch, FC, useState } from "react";
 
 interface DateSelectorProps {
-  date: Date | null;
-  setDate: (date: Date | null) => void;
+  date: Date;
+  setDate: Dispatch<Date>;
   dateFormat?: string;
   clearable?: boolean;
   steppable?: boolean;
@@ -47,7 +47,7 @@ const DateSelector: FC<DateSelectorProps> = ({
   // TODO: determine if there's a more efficient way to do this...
   // Also, it would be way better to use container queries instead of media queries...
   // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries
-  const canUseFormatA = useMediaQuery(json2mq({ minWidth: "720px" }));
+  const canUseFormatA = useMediaQuery(json2mq({ minWidth: "1090px" }));
   const canUseFormatB = useMediaQuery(json2mq({ minWidth: "455px" }));
   const canUseFormatC = useMediaQuery(json2mq({ minWidth: "450px" }));
   const canIncludeSteppers = useMediaQuery(json2mq({ minWidth: "434px" }));
@@ -61,13 +61,7 @@ const DateSelector: FC<DateSelectorProps> = ({
   const canStepForward = steppable && (maxDate ? addDays(referenceDate, 1) <= maxDate : true);
   return (
     // Note: 100% height on the outer box lets the bottom border flesh with any containing element.
-    <Box
-      display="flex"
-      alignItems="stretch"
-      justifyContent={"space-evenly"}
-      height="100%"
-      px="0.5rem"
-    >
+    <Box display="flex" alignItems="stretch" justifyContent={"center"} height="100%" px="0.5rem">
       {canIncludeSteppers && (
         <IconButton
           disabled={!currentDate || !canStepBack}
@@ -88,7 +82,7 @@ const DateSelector: FC<DateSelectorProps> = ({
         mask={undefined} // uncontrolled
         value={currentDate}
         onChange={(newValue) => {
-          setDate(newValue);
+          newValue && setDate(newValue);
         }}
         renderInput={(params) => {
           const { inputRef, inputProps } = params;

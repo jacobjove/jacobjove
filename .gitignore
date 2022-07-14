@@ -5,6 +5,7 @@
 coverage/
 generated/
 node_modules/
+service-account.json
 
 # TODO: remove this after configuring GitHub Actions
 .github

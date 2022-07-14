@@ -1,26 +1,19 @@
 import TasksBox from "@/components/actions/TasksBox";
 import CalendarViewer from "@/components/calendar";
 import DashboardCard from "@/components/dashboard/components/DashboardCard";
-import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
+// import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
 import IdentityTable from "@/components/identities/IdentityTable";
 import ValuesTable from "@/components/values/ValuesTable";
 import {
   calendarEventFragment,
   calendarFragment,
   habitFragment,
-  identificationFragment,
+  identityFragment,
   taskFragment,
-  userValueFragment,
+  valueFragment,
 } from "@/graphql/fragments";
-import {
-  Calendar,
-  CalendarEvent,
-  Habit,
-  Identification,
-  Task,
-  UserValue,
-  Value,
-} from "@/graphql/schema";
+import { Calendar, CalendarEvent, Habit, Identity, Task, Value } from "@/graphql/schema";
+import { DashboardComponentKey, DashboardLayouts } from "@/graphql/schema/models/Dashboard";
 import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Breakpoint } from "@mui/material";
@@ -29,39 +22,37 @@ import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Session } from "next-auth";
 import { FC, memo, useEffect, useMemo, useState } from "react";
 import { ItemCallback, Responsive, WidthProvider } from "react-grid-layout";
+import { useAuth } from "../contexts/AuthContext";
 
 export const fragment = gql`
   fragment DashboardData on Query {
-    calendars(where: { userId: { equals: $userId } }) {
+    calendars {
       ...CalendarFragment
     }
-    calendarEvents(
-      where: { calendar: { is: { userId: { equals: $userId }, enabled: { equals: true } } } }
-    ) {
+    calendarEvents(where: { calendar: { is: { enabled: { equals: true } } } }) {
       ...CalendarEventFragment
     }
-    habits(where: { userId: { equals: $userId } }) {
+    habits {
       ...HabitFragment
     }
-    tasks(where: { userId: { equals: $userId } }) {
+    tasks {
       ...TaskFragment
     }
-    userValues(where: { userId: { equals: $userId } }) {
-      ...UserValueFragment
+    values {
+      ...ValueFragment
     }
-    identifications(where: { userId: { equals: $userId } }) {
-      ...IdentificationFragment
+    identities {
+      ...IdentityFragment
     }
   }
   ${calendarFragment}
   ${calendarEventFragment}
   ${habitFragment}
   ${taskFragment}
-  ${userValueFragment}
-  ${identificationFragment}
+  ${valueFragment}
+  ${identityFragment}
 `;
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -71,10 +62,8 @@ export interface DashboardData {
   calendarEvents: CalendarEvent[];
   habits: Habit[];
   tasks: Task[];
-  identifications: Identification[];
-  userValues: (UserValue & {
-    value: Value;
-  })[];
+  identities: Identity[];
+  values: Value[];
 }
 
 // Do not change these values without also changing the MUI breakpoints!
@@ -94,14 +83,15 @@ interface DashboardProps {
   layouts: DashboardLayouts;
   setLayouts: (layouts: DashboardLayouts) => void;
   editing?: boolean;
-  session: Session | null;
   error?: Error;
   height?: string;
 }
 
 const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
-  const { data, loading, error, layouts, setLayouts, editing, session } = props;
+  const { data, loading, error, layouts, setLayouts, editing } = props;
+  const { token } = useAuth();
   const isMobile = useMediaQuery("(max-width: 600px)");
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xs");
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
   const handleSpeedDialOpen = () => {
@@ -122,8 +112,8 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
     },
   ];
   const children = useMemo(() => {
-    if (!data || !session) return [];
-    const { calendarEvents, calendars, tasks, identifications, userValues } = data;
+    if (!data || !token) return [];
+    const { calendarEvents, calendars, tasks, identities, values } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
       switch (key) {
         case "calendar":
@@ -131,6 +121,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             <DashboardCard title={"Calendar"} editing={editing} loading={loading}>
               <CalendarViewerMemoized
                 data={{ calendarEvents, calendars }}
+                selectedDateState={[selectedDate, setSelectedDate]}
                 loading={loading}
                 defaultView="day"
                 includeDateSelector
@@ -140,19 +131,22 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "tasks":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <TasksBoxMemoized data={{ tasks }} />
+              <TasksBoxMemoized
+                data={{ tasks }}
+                selectedDateState={[selectedDate, setSelectedDate]}
+              />
             </DashboardCard>
           );
         case "identities":
           return (
             <DashboardCard title={"Identities"} editing={editing} loading={loading}>
-              <IdentityTableMemoized data={{ identifications }} />
+              <IdentityTableMemoized data={{ identities }} />
             </DashboardCard>
           );
         case "values":
           return (
             <DashboardCard title={"Values"} editing={editing} loading={loading}>
-              <ValuesTableMemoized data={{ userValues }} />
+              <ValuesTableMemoized data={{ values }} />
             </DashboardCard>
           );
         case "topics":
@@ -173,7 +167,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         </div>
       );
     });
-  }, [layouts, editing, data, loading, session]);
+  }, [layouts, editing, data, loading, token]);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
@@ -188,7 +182,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       setCurrentBreakpoint(breakpoint);
     }
   }, [setCurrentBreakpoint]);
-  if (!session || !data) {
+  if (!token || !data) {
     console.error(error);
     return null;
   }

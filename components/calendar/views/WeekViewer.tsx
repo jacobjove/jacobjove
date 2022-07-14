@@ -6,7 +6,6 @@ import {
   START_HOUR,
   TIME_LABEL_COLUMN_WIDTH,
 } from "@/components/calendar/constants";
-import EventEditingDialog, { EventData } from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import { getTimeOffsetPx } from "@/components/calendar/views/DayViewer";
@@ -19,13 +18,12 @@ import {
   differenceInMinutes,
   getDay,
   isSameDay,
-  parseISO,
   setDay,
   setHours,
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, Fragment, useContext, useEffect, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
@@ -76,16 +74,15 @@ export type CalendarData = {
 export interface CalendarProps {
   collapseMenu?: boolean;
   data: CalendarData;
-  loading: boolean;
+  loading?: boolean;
   error?: Error;
-  includeDateSelector: boolean;
+  includeDateSelector?: boolean;
 }
 
 export interface WeekViewerProps extends CalendarProps {
   selectedDate: Date;
-  setSelectedDate: (date: Date | null) => void;
+  setSelectedDate: Dispatch<Date>;
   viewedHourState: [number, Dispatch<number>];
-  initialEventFormData: EventData;
   dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
   defaultCalendar: Calendar;
   hidden: boolean;
@@ -94,9 +91,7 @@ export interface WeekViewerProps extends CalendarProps {
 const WeekViewer: FC<WeekViewerProps> = ({
   selectedDate,
   viewedHourState,
-  initialEventFormData,
   dispatchInitialEventFormData,
-  defaultCalendar,
   hidden,
   data,
 }: // loading,
@@ -116,9 +111,6 @@ WeekViewerProps) => {
 
   const currentTimeOffsetPx = getTimeOffsetPx(setHours(selectedDate, viewedHour));
   const scrollOffsetPx = currentTimeOffsetPx - HOUR_HEIGHT * 1.5;
-
-  // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.primary);
 
   useEffect(() => {
     const scrollableDiv = scrollableDivRef.current;
@@ -238,7 +230,7 @@ WeekViewerProps) => {
                         );
                         const eventSlotEvents = calendarEvents.filter((event: CalendarEvent) => {
                           const diff = differenceInMinutes(
-                            parseISO(event.start),
+                            event.start,
                             eventSlotDate,
                             // Rounding method options are round, ceil, floor, and trunc (default).
                             // The default rounding method results in diffs that are 1 smaller
@@ -255,7 +247,6 @@ WeekViewerProps) => {
                               date={eventSlotDate}
                               view="week"
                               events={eventSlotEvents}
-                              defaultCalendarId={primaryCalendarId}
                               onClick={(e) => {
                                 // Only trigger if the click was actually on the slot. This check
                                 // allows us to avoid stopping propagation on click events for
@@ -278,10 +269,6 @@ WeekViewerProps) => {
               </div>
             );
           })}
-          <EventEditingDialog
-            {...bindPopover(eventEditingDialogState)}
-            eventData={initialEventFormData}
-          />
         </Box>
       </Box>
     </Root>

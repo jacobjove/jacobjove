@@ -1,0 +1,12 @@
+export { AggregateBookshelfArgs } from "./AggregateBookshelfArgs";
+export { CreateBookshelfArgs } from "./CreateBookshelfArgs";
+export { CreateManyBookshelfArgs } from "./CreateManyBookshelfArgs";
+export { DeleteBookshelfArgs } from "./DeleteBookshelfArgs";
+export { DeleteManyBookshelfArgs } from "./DeleteManyBookshelfArgs";
+export { FindFirstBookshelfArgs } from "./FindFirstBookshelfArgs";
+export { FindManyBookshelfArgs } from "./FindManyBookshelfArgs";
+export { FindUniqueBookshelfArgs } from "./FindUniqueBookshelfArgs";
+export { GroupByBookshelfArgs } from "./GroupByBookshelfArgs";
+export { UpdateBookshelfArgs } from "./UpdateBookshelfArgs";
+export { UpdateManyBookshelfArgs } from "./UpdateManyBookshelfArgs";
+export { UpsertBookshelfArgs } from "./UpsertBookshelfArgs";

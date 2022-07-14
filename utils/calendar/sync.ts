@@ -1,16 +1,16 @@
+import { AuthToken } from "@/components/contexts/AuthContext";
 import { CalendarClient } from "@/utils/calendar/client";
 import prisma from "@/utils/prisma";
 import rateLimiter from "@/utils/rate-limit";
 import { addYears } from "date-fns";
-import { Session } from "next-auth";
 
 const limiter = rateLimiter({
   ttl: 60 * 1000, // 60 seconds
 });
 
-export const syncCalendar = async (calendarId: number, session: Session) => {
-  const token = `SyncCalendars_${session.user.id}`;
-  if (await limiter.check(token).catch(() => false)) {
+export const syncCalendar = async (calendarId: string, token: AuthToken) => {
+  const key = `SyncCalendars_${token.uid}`;
+  if (await limiter.check(key).catch(() => false)) {
     throw new Error("Rate limit exceeded");
   }
   const calendarResponses: Record<string, Record<string, string>> = {};

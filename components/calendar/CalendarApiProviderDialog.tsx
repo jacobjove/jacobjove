@@ -1,7 +1,7 @@
-import UserContext, { User } from "@/components/contexts/UserContext";
+import { useUser } from "@/components/contexts/UserContext";
 import { accountFragment, calendarFragment } from "@/graphql/fragments";
 import { GET_USER } from "@/graphql/queries";
-import { Account, Calendar } from "@/graphql/schema";
+import { Account, Calendar, User } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CloseIcon from "@mui/icons-material/Close";
@@ -31,16 +31,7 @@ import axios from "axios";
 import isEqual from "lodash/isEqual";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { signIn, signOut } from "next-auth/react";
-import {
-  FC,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useThrottledCallback } from "use-debounce";
 
 const CREATE_CALENDARS = gql`
@@ -52,7 +43,7 @@ const CREATE_CALENDARS = gql`
 `;
 
 const UPDATE_ACCOUNT = gql`
-  mutation UpdateAccount($accountId: Int!, $data: AccountUpdateInput!) {
+  mutation UpdateAccount($accountId: String!, $data: AccountUpdateInput!) {
     updateAccount(where: { id: $accountId }, data: $data) {
       ...AccountFragment
     }
@@ -61,7 +52,7 @@ const UPDATE_ACCOUNT = gql`
 `;
 
 const UPDATE_CALENDAR = gql`
-  mutation UpdateCalendar($calendarId: Int!, $data: CalendarUpdateInput!) {
+  mutation UpdateCalendar($calendarId: String!, $data: CalendarUpdateInput!) {
     updateCalendar(where: { id: $calendarId }, data: $data) {
       ...CalendarFragment
     }
@@ -119,7 +110,7 @@ const CalendarSelectionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 
 export default function CalendarApiProviderDialog(props: CalendarApiProviderDialogProps) {
   const { provider, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
-  const user = useContext(UserContext);
+  const user = useUser();
   const [updateAccount, { loading: loadingUpdateAccount }] = useMutation<{
     updateAccount: Account;
   }>(UPDATE_ACCOUNT);
@@ -139,14 +130,14 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
 
   // TODO: should any of this be memoized or put into a useEffect?
   const { name, Icon, scope, defaultScopes, disabled } = CALENDAR_PROVIDERS[provider];
-  const account = user?.accounts.find((account) => account.provider === provider) || null;
+  const account = user?.accounts?.find((account) => account.provider === provider) || null;
   const calendarIntegrationIsEnabled = account?.scopes.includes(scope);
-  const calendars = user?.calendars.filter((calendar) => calendar.provider === provider);
+  const calendars = user?.calendars?.filter((calendar) => calendar.provider === provider);
   const enabledCalendars = calendars?.filter((calendar) => !!calendar.enabled);
 
   // TODO: Show a loading spinner and/or enable the "Apply changes" button
-  const [enabledBefore, setEnabledBefore] = useState<number[]>([]);
-  const [enabledAfter, setEnabledAfter] = useState<number[]>([]);
+  const [enabledBefore, setEnabledBefore] = useState<string[]>([]);
+  const [enabledAfter, setEnabledAfter] = useState<string[]>([]);
 
   // TODO: This seems to not work well for updating the UI while applying changes,
   // perhaps because by the time the components are ready to re-render, we're done
@@ -223,7 +214,6 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
               .map((calendar: Calendar) => ({
                 ...calendar,
                 enabled: false,
-                userId: user.id,
               }));
             // TODO: Delete or disassociate calendars that have been removed from their source.
             await addCalendars({ variables: { data: calendarsToAdd } });

@@ -1,0 +1,1 @@
+export { CategoryCategorizationsArgs } from "./CategoryCategorizationsArgs";

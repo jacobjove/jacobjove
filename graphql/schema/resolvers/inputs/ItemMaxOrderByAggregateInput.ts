@@ -1,0 +1,32 @@
+import * as TypeGraphQL from "type-graphql";
+import { SortOrder } from "../../enums/SortOrder";
+
+@TypeGraphQL.InputType("ItemMaxOrderByAggregateInput", {
+  isAbstract: true,
+})
+export class ItemMaxOrderByAggregateInput {
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  id?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  listId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  createdAt?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  updatedAt?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  archivedAt?: "asc" | "desc" | undefined;
+}

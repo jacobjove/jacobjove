@@ -1,7 +1,9 @@
-import UserContext from "@/components/contexts/UserContext";
+import { useUser } from "@/components/contexts/UserContext";
 import Layout from "@/components/Layout";
 import { userFragment } from "@/graphql/fragments";
-import { addApolloState, initializeApollo } from "@/utils/apollo/client";
+import { UserSettings } from "@/graphql/schema/models/User";
+import { printError } from "@/utils/apollo/error-handling";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation } from "@apollo/client";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,19 +18,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import isObject from "lodash/isObject";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
-import { getSession, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { useContext } from "react";
 
 interface SettingsPageProps {
   session: Session | null;
 }
 
 const UPDATE_SETTINGS = gql`
-  mutation UpdateSettings($userId: Int!, $settings: JSON!) {
+  mutation UpdateSettings($userId: String!, $settings: JSON!) {
     updateUser(where: { id: $userId }, data: { settings: $settings }) {
       ...UserFragment
     }
@@ -36,46 +35,48 @@ const UPDATE_SETTINGS = gql`
   ${userFragment}
 `;
 
+interface SettingOptions {
+  label: string;
+  defaultValue: string;
+  choices?: string[];
+}
+
 const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) => {
-  const { data: session } = useSession();
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const user = useContext(UserContext);
+  const user = useUser();
   const [updateSettings, { loading: loadingUpdateSetting }] = useMutation(UPDATE_SETTINGS);
-  if (!session || !user) return null;
+  if (!user) return null;
   const loading = loadingUpdateSetting;
-  const { settings: settingsJson } = user;
-  const userSettings = settingsJson
-    ? isObject(settingsJson)
-      ? settingsJson
-      : JSON.parse(settingsJson || "{}")
-    : {};
-  const settings = [
-    {
-      fieldName: "colorMode",
+  const { settings: userSettings } = user;
+  const settings: Record<keyof UserSettings, SettingOptions> = {
+    colorMode: {
       label: "Color mode",
       defaultValue: "light",
       choices: ["light", "dark"],
     },
-  ];
+    defaultCalendarId: {
+      label: "Default calendar",
+      defaultValue: "",
+      choices: user.calendars?.map((calendar) => calendar.id) ?? [],
+    },
+  };
   const handleSettingChange = (settingName: string, newValue: string) => {
-    const newSettingsJson = JSON.stringify({
+    const newUserSettings = {
       ...userSettings,
       [settingName]: newValue,
-    });
+    };
     updateSettings({
       variables: {
-        userId: session.user.id,
-        settings: newSettingsJson,
+        userId: user.id,
+        settings: newUserSettings,
       },
       optimisticResponse: {
         updateUser: {
           ...user,
-          settings: newSettingsJson,
+          settings: newUserSettings,
         },
       },
-    }).catch((error) => {
-      console.error(error);
-    });
+    }).catch(printError);
   };
   return (
     <Layout>
@@ -117,7 +118,9 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {settings.map(({ fieldName, label, defaultValue, choices }) => {
+                {Object.keys(settings).map((key) => {
+                  const fieldName = key as keyof UserSettings;
+                  const { label, defaultValue, choices } = settings[fieldName];
                   const currentValue = userSettings[fieldName] ?? defaultValue;
                   return (
                     <TableRow key={fieldName}>
@@ -177,19 +180,6 @@ export default SettingsPage;
 
 (SettingsPage as PageWithAuth).auth = true;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const apolloClient = initializeApollo();
-  const session = await getSession({ req: context.req });
-  if (!session?.user?.id) {
-    return {
-      redirect: {
-        destination: "/auth/signin?callbackUrl=/app/settings",
-        permanent: false,
-      },
-    };
-  }
-  const props: SettingsPageProps = {
-    session,
-  };
-  return addApolloState(apolloClient, { props });
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  unauthedRedirectDestination: "/auth/signin?callbackUrl=/app/settings",
+});

@@ -1,0 +1,12 @@
+export { AggregateShelvingArgs } from "./AggregateShelvingArgs";
+export { CreateManyShelvingArgs } from "./CreateManyShelvingArgs";
+export { CreateShelvingArgs } from "./CreateShelvingArgs";
+export { DeleteManyShelvingArgs } from "./DeleteManyShelvingArgs";
+export { DeleteShelvingArgs } from "./DeleteShelvingArgs";
+export { FindFirstShelvingArgs } from "./FindFirstShelvingArgs";
+export { FindManyShelvingArgs } from "./FindManyShelvingArgs";
+export { FindUniqueShelvingArgs } from "./FindUniqueShelvingArgs";
+export { GroupByShelvingArgs } from "./GroupByShelvingArgs";
+export { UpdateManyShelvingArgs } from "./UpdateManyShelvingArgs";
+export { UpdateShelvingArgs } from "./UpdateShelvingArgs";
+export { UpsertShelvingArgs } from "./UpsertShelvingArgs";

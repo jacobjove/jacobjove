@@ -1,4 +1,5 @@
 import SocialLogin, { Provider } from "@/components/account/SocialLogin";
+import { useAuth } from "@/components/contexts/AuthContext";
 import Layout from "@/components/Layout";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -7,7 +8,7 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps } from "next";
-import { getProviders, signOut, useSession } from "next-auth/react";
+import { getProviders, signOut } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { FunctionComponent, useEffect, useState } from "react";
@@ -20,7 +21,7 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
   providers,
 }: RegistrationPageProps) => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { token } = useAuth();
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const callbackUrl = Array.isArray(router.query?.callbackUrl)
     ? router.query.callbackUrl[0]
@@ -54,10 +55,10 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
               <br />
             </>
           )}
-          {(session?.user && (
+          {(token && (
             <Paper className="p-4 text-center">
               <Typography variant="h5" component="p">
-                You are logged in as <strong>{session.user.email}</strong>.
+                You are logged in as <strong>{token.email}</strong>.
               </Typography>
               <br />
               <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>

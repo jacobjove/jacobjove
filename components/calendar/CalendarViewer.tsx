@@ -1,12 +1,15 @@
 import CalendarApiProviderDialog from "@/components/calendar/CalendarApiProviderDialog";
 import { CalendarLegendItems } from "@/components/calendar/CalendarLegend";
-import { eventDataReducer, initializeEventData } from "@/components/calendar/EventEditingDialog";
+import EventEditingDialog, {
+  eventDataReducer,
+  initializeEventData,
+} from "@/components/calendar/EventEditingDialog";
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
 import WeekViewer from "@/components/calendar/views/WeekViewer";
 import DateContext from "@/components/contexts/DateContext";
-import UserContext from "@/components/contexts/UserContext";
+import { useUser } from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { providerIsEnabledForUser } from "@/utils/calendar/providers";
@@ -33,7 +36,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { getHours } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { FC, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { Dispatch, FC, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const ICON_MAP = {
@@ -43,10 +46,10 @@ const ICON_MAP = {
 
 export const fragment = gql`
   fragment CalendarViewer on Query {
-    calendars(where: { userId: { equals: $userId } }) {
+    calendars {
       ...CalendarFragment
     }
-    calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
+    calendarEvents {
       ...CalendarEventFragment
     }
   }
@@ -59,7 +62,7 @@ interface CalendarApiMenuItemProps extends MenuItemProps {
 }
 
 const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children, ...props }) => {
-  const user = useContext(UserContext);
+  const user = useUser();
   const dialogState = usePopupState({
     variant: "popover",
     popupId: `${provider}-calendar-api-dialog`,
@@ -69,7 +72,7 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children,
   const apiIsEnabled = useMemo(() => {
     if (!user) return false;
     const integrationIsEnabled = providerIsEnabledForUser(provider, user);
-    const connectedCalendars = user?.calendars.filter(
+    const connectedCalendars = user?.calendars?.filter(
       (calendar) => calendar.provider === provider && calendar.enabled
     );
     return Boolean(integrationIsEnabled && connectedCalendars?.length);
@@ -92,15 +95,16 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children,
 type ViewMode = "day" | "week" | "month";
 
 type CalendarViewerProps = Omit<CalendarProps, "data"> & {
+  selectedDateState: [Date, Dispatch<Date>];
   data: CalendarData;
   defaultView?: ViewMode;
 };
 
-const initializeSelectedCalendarIds = (calendarIds: number[]) => calendarIds;
+const initializeSelectedCalendarIds = (calendarIds: string[]) => calendarIds;
 
 const selectedCalendarIdsReducer = (
-  state: number[],
-  action: { type: "add" | "remove" | "init"; value: number[] }
+  state: string[],
+  action: { type: "add" | "remove" | "init"; value: string[] }
 ) => {
   switch (action.type) {
     case "add":
@@ -116,9 +120,15 @@ const selectedCalendarIdsReducer = (
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
   const { loading, data: _data, defaultView, ...rest } = props;
-  const user = useContext(UserContext);
+  const user = useUser();
   const date = useContext(DateContext);
+  const [selectedDate, setSelectedDate] = props.selectedDateState;
   const viewedHourState = useState<number>(getHours(date));
+
+  const eventEditingDialogState = usePopupState({
+    variant: "popover",
+    popupId: `event-editing-dialog`,
+  });
 
   // Exclude calendars that are not enabled or have been archived.
   const enabledCalendars = useMemo(() => {
@@ -164,7 +174,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
 
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
-  const [selectedDate, setSelectedDate] = useState<Date | null>(date);
 
   const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
 
@@ -173,7 +182,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     {
       start: date,
       allDay: false,
-      calendarId: defaultCalendar?.id,
+      calendarId: defaultCalendar.id,
     },
     initializeEventData
   );
@@ -182,7 +191,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     ...rest,
     selectedDate: selectedDate || date,
     setSelectedDate,
-    initialEventFormData,
+    eventEditingDialogState,
     dispatchInitialEventFormData,
     initializeEventFormData: initializeEventData,
     defaultCalendar,
@@ -334,6 +343,10 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
           </Box>
         )} */}
       </Box>
+      <EventEditingDialog
+        {...bindPopover(eventEditingDialogState)}
+        eventData={initialEventFormData}
+      />
     </Box>
   );
   if (fullScreen) return createPortal(renderedComponent, document.body);

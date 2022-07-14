@@ -1,0 +1,17 @@
+import * as TypeGraphQL from "type-graphql";
+import { ItemCreateManyListInput } from "../inputs/ItemCreateManyListInput";
+
+@TypeGraphQL.InputType("ItemCreateManyListInputEnvelope", {
+  isAbstract: true,
+})
+export class ItemCreateManyListInputEnvelope {
+  @TypeGraphQL.Field((_type) => [ItemCreateManyListInput], {
+    nullable: false,
+  })
+  data!: ItemCreateManyListInput[];
+
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
+  })
+  skipDuplicates?: boolean | undefined;
+}

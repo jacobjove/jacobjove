@@ -307,13 +307,13 @@ CREATE TABLE "ActionScheduleTemplate" (
 );
 
 -- CreateTable
-CREATE TABLE "identifications" (
+CREATE TABLE "identities" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "identityId" INTEGER NOT NULL,
-    "deleted" TIMESTAMP(3),
+    "archivedAt" TIMESTAMP(3),
 
-    CONSTRAINT "identifications_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "identities_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -341,7 +341,7 @@ CREATE TABLE "IdentityActRelation" (
     "id" SERIAL NOT NULL,
     "identityId" INTEGER NOT NULL,
     "actionId" INTEGER NOT NULL,
-    "deleted" TIMESTAMP(3),
+    "archivedAt" TIMESTAMP(3),
 
     CONSTRAINT "IdentityActRelation_pkey" PRIMARY KEY ("id")
 );
@@ -360,7 +360,7 @@ CREATE TABLE "Belief" (
 );
 
 -- CreateTable
-CREATE TABLE "UserBelief" (
+CREATE TABLE "Belief" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "beliefId" INTEGER NOT NULL,
@@ -368,7 +368,7 @@ CREATE TABLE "UserBelief" (
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "archivedAt" TIMESTAMP(3),
 
-    CONSTRAINT "UserBelief_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Belief_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -385,7 +385,7 @@ CREATE TABLE "Value" (
 );
 
 -- CreateTable
-CREATE TABLE "UserValue" (
+CREATE TABLE "Value" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "valueId" INTEGER NOT NULL,
@@ -393,7 +393,7 @@ CREATE TABLE "UserValue" (
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "archivedAt" TIMESTAMP(3),
 
-    CONSTRAINT "UserValue_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Value_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -401,7 +401,7 @@ CREATE TABLE "NotebookUserPermission" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "notebookId" INTEGER NOT NULL,
-    "deleted" TIMESTAMP(3),
+    "archivedAt" TIMESTAMP(3),
 
     CONSTRAINT "NotebookUserPermission_pkey" PRIMARY KEY ("id")
 );
@@ -611,7 +611,7 @@ CREATE UNIQUE INDEX "Task_userId_parentId_rank_key" ON "Task"("userId", "parentI
 CREATE UNIQUE INDEX "ActionScheduleTemplate_actId_frequency_multiplier_key" ON "ActionScheduleTemplate"("actId", "frequency", "multiplier");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "identifications_userId_identityId_key" ON "identifications"("userId", "identityId");
+CREATE UNIQUE INDEX "identities_userId_identityId_key" ON "identities"("userId", "identityId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "identities_slug_key" ON "identities"("slug");
@@ -623,13 +623,13 @@ CREATE UNIQUE INDEX "IdentityActRelation_identityId_actionId_key" ON "IdentityAc
 CREATE UNIQUE INDEX "Belief_slug_key" ON "Belief"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "UserBelief_userId_beliefId_key" ON "UserBelief"("userId", "beliefId");
+CREATE UNIQUE INDEX "Belief_userId_beliefId_key" ON "Belief"("userId", "beliefId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Value_slug_key" ON "Value"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "UserValue_userId_valueId_key" ON "UserValue"("userId", "valueId");
+CREATE UNIQUE INDEX "Value_userId_valueId_key" ON "Value"("userId", "valueId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "NotebookUserPermission_userId_notebookId_key" ON "NotebookUserPermission"("userId", "notebookId");
@@ -746,10 +746,10 @@ ALTER TABLE "ActionScheduleTemplate" ADD CONSTRAINT "ActionScheduleTemplate_actI
 ALTER TABLE "ActionScheduleTemplate" ADD CONSTRAINT "ActionScheduleTemplate_scheduleTemplateId_fkey" FOREIGN KEY ("scheduleTemplateId") REFERENCES "ScheduleTemplate"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "identifications" ADD CONSTRAINT "identifications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "identities" ADD CONSTRAINT "identities_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "identifications" ADD CONSTRAINT "identifications_identityId_fkey" FOREIGN KEY ("identityId") REFERENCES "identities"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "identities" ADD CONSTRAINT "identities_identityId_fkey" FOREIGN KEY ("identityId") REFERENCES "identities"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Goal" ADD CONSTRAINT "Goal_habitId_fkey" FOREIGN KEY ("habitId") REFERENCES "Habit"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -764,16 +764,16 @@ ALTER TABLE "IdentityActRelation" ADD CONSTRAINT "IdentityActRelation_identityId
 ALTER TABLE "IdentityActRelation" ADD CONSTRAINT "IdentityActRelation_actionId_fkey" FOREIGN KEY ("actionId") REFERENCES "Act"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserBelief" ADD CONSTRAINT "UserBelief_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Belief" ADD CONSTRAINT "Belief_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserBelief" ADD CONSTRAINT "UserBelief_beliefId_fkey" FOREIGN KEY ("beliefId") REFERENCES "Belief"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Belief" ADD CONSTRAINT "Belief_beliefId_fkey" FOREIGN KEY ("beliefId") REFERENCES "Belief"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserValue" ADD CONSTRAINT "UserValue_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Value" ADD CONSTRAINT "Value_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserValue" ADD CONSTRAINT "UserValue_valueId_fkey" FOREIGN KEY ("valueId") REFERENCES "Value"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Value" ADD CONSTRAINT "Value_valueId_fkey" FOREIGN KEY ("valueId") REFERENCES "Value"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "NotebookUserPermission" ADD CONSTRAINT "NotebookUserPermission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

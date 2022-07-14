@@ -1,5 +1,5 @@
-import TasksBoard from "@/components/actions/TasksBoard";
-import TasksTable, { TasksTableProps } from "@/components/actions/TasksTable";
+// import TasksBoard from "@/components/actions/TasksBoard";
+import TasksAccordion, { TasksAccordionProps } from "@/components/actions/TasksAccordion";
 import DateContext from "@/components/contexts/DateContext";
 import DateSelector from "@/components/dates/DateSelector";
 // import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -11,20 +11,20 @@ import { Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { parseISO } from "date-fns";
-import { FC, useContext, useState } from "react";
+import { Dispatch, FC, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 
 type ViewMode = "list" | "board";
 
-interface TasksBoxProps extends TasksTableProps {
+interface TasksBoxProps extends TasksAccordionProps {
   defaultView?: ViewMode;
+  selectedDateState: [Date, Dispatch<Date>];
 }
 
 const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
-  const { defaultView, data, ...tasksTableProps } = props;
+  const { defaultView, data, selectedDateState, ...tasksTableProps } = props;
   const date = useContext(DateContext);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(date);
+  const [selectedDate, setSelectedDate] = selectedDateState;
   // TODO: which of the following is more performant?
   // const selectedTasks = useMemo(() => {
   //   if (!selectedDate) return data.tasks;
@@ -34,7 +34,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   // }, [selectedDate, data.tasks]);
   //prettier-ignore
   const selectedTasks = !selectedDate ? data.tasks : data.tasks.filter((task) => {
-    return !task.plannedStartDate ? true : parseISO(task.plannedStartDate) <= selectedDate;
+    return !task.plannedStartDate ? true : task.plannedStartDate <= selectedDate;
   });
   const [view, setView] = useState<ViewMode>(defaultView ?? "list");
   const [fullScreen, setFullScreen] = useState(false);
@@ -77,7 +77,9 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
-        <DateSelector date={selectedDate} setDate={setSelectedDate} minDate={date} />
+        {fullScreen && (
+          <DateSelector date={selectedDate} setDate={setSelectedDate} minDate={date} />
+        )}
         <Box
           display={"flex"}
           alignItems={"start"}
@@ -97,13 +99,15 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
           </IconButton>
         </Box>
       </Box>
-      <Box flex={"1 1 auto"} minHeight={0}>
-        {view === "list" ? (
-          <TasksTable data={{ tasks: selectedTasks }} {...tasksTableProps} />
-        ) : (
-          <TasksBoard data={{ tasks: selectedTasks }} {...tasksTableProps} />
-        )}
+      <Box minHeight={0}>
+        {
+          view === "list" ? (
+            <TasksAccordion data={{ tasks: selectedTasks }} {...tasksTableProps} />
+          ) : null
+          // <TasksBoard data={{ tasks: selectedTasks }} {...tasksTableProps} />
+        }
       </Box>
+      <Box id="tasks-box-bottom" flex={"1 1 auto"} minHeight={0} />
     </Box>
   );
   if (fullScreen) return createPortal(renderedComponent, document.body);

@@ -1,0 +1,89 @@
+import * as TypeGraphQL from "type-graphql";
+import { ActionScheduleUpdateManyWithoutHabitInput } from "../inputs/ActionScheduleUpdateManyWithoutHabitInput";
+import { ActionUpdateManyWithoutHabitInput } from "../inputs/ActionUpdateManyWithoutHabitInput";
+import { ActUpdateOneRequiredWithoutHabitsInput } from "../inputs/ActUpdateOneRequiredWithoutHabitsInput";
+import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
+import { CalendarEventUpdateManyWithoutHabitInput } from "../inputs/CalendarEventUpdateManyWithoutHabitInput";
+import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
+import { MetricUsageUpdateManyWithoutHabitInput } from "../inputs/MetricUsageUpdateManyWithoutHabitInput";
+import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import { NullableIntFieldUpdateOperationsInput } from "../inputs/NullableIntFieldUpdateOperationsInput";
+import { RoutineHabitUpdateManyWithoutHabitInput } from "../inputs/RoutineHabitUpdateManyWithoutHabitInput";
+import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
+import { TaskUpdateManyWithoutHabitInput } from "../inputs/TaskUpdateManyWithoutHabitInput";
+import { UserUpdateOneRequiredWithoutHabitsInput } from "../inputs/UserUpdateOneRequiredWithoutHabitsInput";
+
+@TypeGraphQL.InputType("HabitUpdateWithoutGoalsInput", {
+  isAbstract: true,
+})
+export class HabitUpdateWithoutGoalsInput {
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  name?: StringFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  isPublic?: BoolFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  defaultDurationInMinutes?: NullableIntFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  archivedAt?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => ActUpdateOneRequiredWithoutHabitsInput, {
+    nullable: true,
+  })
+  act?: ActUpdateOneRequiredWithoutHabitsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutHabitsInput, {
+    nullable: true,
+  })
+  user?: UserUpdateOneRequiredWithoutHabitsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => ActionScheduleUpdateManyWithoutHabitInput, {
+    nullable: true,
+  })
+  schedules?: ActionScheduleUpdateManyWithoutHabitInput | undefined;
+
+  @TypeGraphQL.Field((_type) => TaskUpdateManyWithoutHabitInput, {
+    nullable: true,
+  })
+  tasks?: TaskUpdateManyWithoutHabitInput | undefined;
+
+  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyWithoutHabitInput, {
+    nullable: true,
+  })
+  calendarEvents?: CalendarEventUpdateManyWithoutHabitInput | undefined;
+
+  @TypeGraphQL.Field((_type) => MetricUsageUpdateManyWithoutHabitInput, {
+    nullable: true,
+  })
+  metricUsages?: MetricUsageUpdateManyWithoutHabitInput | undefined;
+
+  @TypeGraphQL.Field((_type) => RoutineHabitUpdateManyWithoutHabitInput, {
+    nullable: true,
+  })
+  routines?: RoutineHabitUpdateManyWithoutHabitInput | undefined;
+
+  @TypeGraphQL.Field((_type) => ActionUpdateManyWithoutHabitInput, {
+    nullable: true,
+  })
+  actions?: ActionUpdateManyWithoutHabitInput | undefined;
+}
