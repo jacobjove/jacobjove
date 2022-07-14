@@ -181,7 +181,7 @@ jobs:
             ENVIRONMENT=prod
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./build/Dockerfile
+          file: ./Dockerfile
           load: false
           push: true
           no-cache: true
