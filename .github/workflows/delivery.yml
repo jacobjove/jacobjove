@@ -181,7 +181,7 @@ jobs:
             ENVIRONMENT=prod
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./build/Dockerfile.${{ matrix.image }}
+          file: ./build/Dockerfile
           load: false
           push: true
           no-cache: true
@@ -194,7 +194,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ghcr.io/selfbuilder/${{ matrix.image }}:${{ github.sha }}
-          args: --file=Dockerfile.${{ matrix.image }}
+          args: --file=Dockerfile
   deploy:
     needs: [push-image]
     runs-on: ubuntu-latest

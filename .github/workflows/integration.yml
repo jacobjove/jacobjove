@@ -149,7 +149,7 @@ jobs:
             ENVIRONMENT=prod
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./build/Dockerfile.${{ matrix.image }}
+          file: ./build/Dockerfile
           load: false
           push: true
           no-cache: true
@@ -231,21 +231,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      - name: Create writable volume directories
-        run: |
-          dir_names=( "static" "media" "redirects" )
-          for dir_name in "${dir_names[@]}"; do
-            dir_path="_volumes/${dir_name}"
-            mkdir -p "$dir_path"; {
-              sudo chown -R www-data:www-data "$dir_path" && 
-              sudo chmod a+w -R "$dir_path"
-            } || exit 1
-          done
-      - uses: actions/cache@v2
-        id: data-cache
-        with:
-          path: _volumes/db/init
-          key: data
+      # - name: Create writable volume directories
+      #   run: |
+      #     dir_names=( "static" "media" "redirects" )
+      #     for dir_name in "${dir_names[@]}"; do
+      #       dir_path="_volumes/${dir_name}"
+      #       mkdir -p "$dir_path"; {
+      #         sudo chown -R www-data:www-data "$dir_path" &&
+      #         sudo chmod a+w -R "$dir_path"
+      #       } || exit 1
+      #     done
+      # - uses: actions/cache@v2
+      #   id: data-cache
+      #   with:
+      #     path: _volumes/db/init
+      #     key: data
       - name: Start up containers
         run: bash config/scripts/deploy.sh
       - name: Run Cypress
@@ -303,21 +303,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      - name: Create writable volume directories
-        run: |
-          dir_names=( "static" "media" "redirects" )
-          for dir_name in "${dir_names[@]}"; do
-            dir_path="_volumes/${dir_name}"
-            mkdir -p "$dir_path"; {
-              sudo chown -R www-data:www-data "$dir_path" && 
-              sudo chmod a+w -R "$dir_path"
-            } || exit 1
-          done
-      - uses: actions/cache@v2
-        id: data-cache
-        with:
-          path: _volumes/db/init
-          key: data
+      # - name: Create writable volume directories
+      #   run: |
+      #     dir_names=( "static" "media" "redirects" )
+      #     for dir_name in "${dir_names[@]}"; do
+      #       dir_path="_volumes/${dir_name}"
+      #       mkdir -p "$dir_path"; {
+      #         sudo chown -R www-data:www-data "$dir_path" &&
+      #         sudo chmod a+w -R "$dir_path"
+      #       } || exit 1
+      #     done
+      # - uses: actions/cache@v2
+      #   id: data-cache
+      #   with:
+      #     path: _volumes/db/init
+      #     key: data
       - name: Start up containers
         run: bash config/scripts/deploy.sh
       - name: Run deploy script
