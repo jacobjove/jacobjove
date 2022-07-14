@@ -27,7 +27,8 @@ FROM base AS builder
 COPY package*.json /app/
 
 # Install dependencies.
-RUN npm set cache .npm; npm ci || (npm cache clean -f && npm ci)
+# TODO: remove --force
+RUN npm set cache .npm; npm ci || (npm cache clean -f && npm ci --force)
 
 # Copy source files.
 COPY . /app
