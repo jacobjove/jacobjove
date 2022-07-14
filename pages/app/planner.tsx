@@ -80,8 +80,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
         height={"100%"}
         maxWidth={"100%"}
         maxHeight={"100%"}
-        px={"0.25rem"}
-        py={"0.5rem"}
+        py={"0.25rem"}
       >
         <Card
           sx={{
