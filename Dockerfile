@@ -28,7 +28,7 @@ COPY package*.json /app/
 
 # Install dependencies.
 # TODO: remove --force
-RUN npm set cache .npm; npm ci || (npm cache clean -f && npm ci --force)
+RUN npm set cache .npm; npm ci || (npm cache clean -f && npm ci --force) || (npm i --force)
 
 # Copy source files.
 COPY . /app
