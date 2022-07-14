@@ -368,12 +368,12 @@ jobs:
             sudo echo "127.0.0.1 $host" | sudo tee -a /etc/hosts
           done
           echo "Done."
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          languages: ${{ matrix.language }}
-          setup-python-dependencies: false
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
+      # - name: Initialize CodeQL
+      #   uses: github/codeql-action/init@v1
+      #   with:
+      #     languages: ${{ matrix.language }}
+      #     setup-python-dependencies: false
+      # - name: Autobuild
+      #   uses: github/codeql-action/autobuild@v1
+      # - name: Perform CodeQL Analysis
+      #   uses: github/codeql-action/analyze@v1
