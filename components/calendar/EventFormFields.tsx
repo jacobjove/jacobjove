@@ -1,4 +1,4 @@
-import { EventData } from "@/components/calendar/EventEditingDialog";
+import { EventData } from "@/components/calendar/CalendarEventDialog";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";

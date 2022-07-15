@@ -1,12 +1,11 @@
-import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
-import { firestore } from "@/utils/firebase/admin";
 import { GraphQLResolveInfo } from "graphql";
 import graphqlFields from "graphql-fields";
 import * as TypeGraphQL from "type-graphql";
 import {
-  getFirestoreDocDataFromSnapshot,
+  getItem,
   getPrismaFromContext,
+  getUserSubcollectionData,
   transformCountFieldIntoSelectRelationsCount,
   transformFields,
 } from "../../../helpers";
@@ -37,25 +36,7 @@ export class HabitCrudResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: FindUniqueHabitArgs
   ): Promise<Habit | null> {
-    if (USE_FIREBASE) {
-      if (args.where) {
-        const [key, value] = Object.entries(args.where)[0];
-        const doc = await firestore
-          .collection(`users/${ctx.token?.uid}/habits`)
-          .where(key, "==", value)
-          .get()
-          .then((snapshot) => snapshot.docs[0]);
-        return getFirestoreDocDataFromSnapshot(doc) as Promise<Habit | null>;
-      } else {
-        throw new Error("Not implemented");
-      }
-    } else {
-      const { _count } = transformFields(graphqlFields(info));
-      return getPrismaFromContext(ctx).habit.findUnique({
-        ...args,
-        ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-      });
-    }
+    return getItem("habits", ctx, info, args) as Promise<Habit | null>;
   }
 
   @TypeGraphQL.Query((_returns) => Habit, {
@@ -81,11 +62,7 @@ export class HabitCrudResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: FindManyHabitArgs
   ): Promise<Habit[]> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).habit.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getUserSubcollectionData("habits", ctx, info, args) as Promise<Habit[]>;
   }
 
   @TypeGraphQL.Mutation((_returns) => Habit, {

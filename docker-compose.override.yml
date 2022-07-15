@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   # graphql:
   #   build:
@@ -25,7 +23,7 @@ services:
         NODE_ENV: development
       network: host
     image: nextjs:latest
-    command: firebase emulators:start & npm run dev
+    command: npm run dev
     environment:
       NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
       NEXTAUTH_URL: "http://localhost:3000"

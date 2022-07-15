@@ -1,5 +1,5 @@
+import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
-import Layout from "@/components/Layout";
 import { userFragment } from "@/graphql/fragments";
 import { UserSettings } from "@/graphql/schema/models/User";
 import { printError } from "@/utils/apollo/error-handling";
@@ -79,7 +79,7 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
     }).catch(printError);
   };
   return (
-    <Layout>
+    <AppLayout>
       <NextSeo
         title={"Settings"}
         canonical={"/app/settings"}
@@ -173,7 +173,7 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
           </form>
         </TableContainer>
       </Container>
-    </Layout>
+    </AppLayout>
   );
 };
 export default SettingsPage;

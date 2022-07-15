@@ -1,11 +1,9 @@
-version: "3"
-
 services:
   nextjs:
     image: nextjs:latest
-    depends_on:
-      - postgres
-      # - graphql
+    # depends_on:
+    #   - postgres
+    #   - graphql
     ports:
       - 3000:3000 # Next.js application
       - 9229:9229 # Node.js debug port

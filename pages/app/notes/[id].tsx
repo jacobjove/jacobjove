@@ -1,5 +1,5 @@
+import AppLayout from "@/components/AppLayout";
 import { AuthToken, useAuth } from "@/components/contexts/AuthContext";
-import Layout from "@/components/Layout";
 import NoteViewer from "@/components/notes/NoteViewer";
 import { noteFragment } from "@/graphql/fragments";
 import { Note } from "@/graphql/schema";
@@ -43,7 +43,7 @@ const NotePage: NextPage<NotePageProps> = (props: NotePageProps) => {
   if (!token || !note) return null;
 
   return (
-    <Layout>
+    <AppLayout>
       <NextSeo
         title={"Notes"}
         canonical={`/app/notes/${note.id}`}
@@ -54,7 +54,7 @@ const NotePage: NextPage<NotePageProps> = (props: NotePageProps) => {
       <Box height="100%" flexGrow={1} display="flex" alignItems="center" justifyContent="center">
         <NoteViewer note={note} />
       </Box>
-    </Layout>
+    </AppLayout>
   );
 };
 

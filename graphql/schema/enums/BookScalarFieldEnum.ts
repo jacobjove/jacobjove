@@ -2,7 +2,6 @@ import * as TypeGraphQL from "type-graphql";
 
 export enum BookScalarFieldEnum {
   id = "id",
-  ids = "ids",
   isbn = "isbn",
   isbn13 = "isbn13",
   title = "title",

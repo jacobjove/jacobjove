@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-// import { USE_FIREBASE } from "@/config";
 import { Timestamp } from "firebase/firestore";
 import { GraphQLScalarType, Kind } from "graphql";
 

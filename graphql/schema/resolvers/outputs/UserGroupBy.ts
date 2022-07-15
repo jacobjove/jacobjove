@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
 import * as GraphQLScalars from "graphql-scalars";
 import * as TypeGraphQL from "type-graphql";
+import { UserSettings } from "../../models/User";
 import { DateTimeScalar } from "../../scalars";
 import { UserAvgAggregate } from "../outputs/UserAvgAggregate";
 import { UserCountAggregate } from "../outputs/UserCountAggregate";
@@ -50,7 +50,7 @@ export class UserGroupBy {
   @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
     nullable: false,
   })
-  settings!: Prisma.JsonValue;
+  settings!: UserSettings;
 
   @TypeGraphQL.Field((_type) => DateTimeScalar, {
     nullable: true,

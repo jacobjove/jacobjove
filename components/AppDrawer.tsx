@@ -51,7 +51,7 @@ const MENU_ITEMS: MenuItem[][] = [
   ],
 ];
 
-export const DRAWER_WIDTH = 210;
+export const DRAWER_WIDTH = 200;
 
 const drawerWidth = DRAWER_WIDTH;
 

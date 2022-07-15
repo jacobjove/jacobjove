@@ -4,6 +4,7 @@ import { useUser } from "@/components/contexts/UserContext";
 import { calendarEventFragment } from "@/graphql/fragments";
 import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
+import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
 import { gql, useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";
@@ -32,8 +33,6 @@ const Root = styled("div")(({ theme }) => ({
     cursor: "pointer",
   },
 }));
-
-export const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
 // TODO: https://www.apollographql.com/blog/apollo-client/caching/when-to-use-refetch-queries/
 

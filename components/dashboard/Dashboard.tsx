@@ -15,13 +15,7 @@ import {
 import { Calendar, CalendarEvent, Habit, Identity, Task, Value } from "@/graphql/schema";
 import { DashboardComponentKey, DashboardLayouts } from "@/graphql/schema/models/Dashboard";
 import { gql } from "@apollo/client";
-import AddIcon from "@mui/icons-material/Add";
 import { Box, Breakpoint } from "@mui/material";
-import Backdrop from "@mui/material/Backdrop";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { FC, memo, useEffect, useMemo, useState } from "react";
 import { ItemCallback, Responsive, WidthProvider } from "react-grid-layout";
 import { useAuth } from "../contexts/AuthContext";
@@ -90,27 +84,8 @@ interface DashboardProps {
 const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const { data, loading, error, layouts, setLayouts, editing } = props;
   const { token } = useAuth();
-  const isMobile = useMediaQuery("(max-width: 600px)");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xs");
-  const [speedDialOpen, setSpeedDialOpen] = useState(false);
-  const handleSpeedDialOpen = () => {
-    console.log("handleSpeedDialOpen");
-    setSpeedDialOpen(true);
-  };
-  const handleSpeedDialClose = () => {
-    console.log("handleSpeedDialClose");
-    setSpeedDialOpen(false);
-  };
-  const speedDialActions = [
-    {
-      icon: <AddIcon />,
-      name: "Add task",
-      onClick: () => {
-        alert("This functionality is not yet implemented.");
-      },
-    },
-  ];
   const children = useMemo(() => {
     if (!data || !token) return [];
     const { calendarEvents, calendars, tasks, identities, values } = data;
@@ -205,7 +180,6 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         maxHeight: props.height ?? "auto",
       }}
     >
-      <Backdrop open={isMobile && speedDialOpen} />
       <Box
         position="relative"
         sx={{
@@ -255,29 +229,6 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
           {children}
         </ResponsiveGridLayout>
       </Box>
-      <SpeedDial
-        ariaLabel="Dashboard speed dial"
-        sx={{
-          position: "sticky",
-          bottom: 16,
-          right: 0,
-          marginRight: "16px",
-          alignItems: "end",
-        }}
-        icon={<SpeedDialIcon />}
-        onClose={handleSpeedDialClose}
-        onOpen={handleSpeedDialOpen}
-      >
-        {speedDialActions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            tooltipOpen // TODO: on mobile only?
-            onClick={action.onClick}
-          />
-        ))}
-      </SpeedDial>
     </div>
   );
 };

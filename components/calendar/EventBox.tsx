@@ -1,4 +1,4 @@
-import EventEditingDialog from "@/components/calendar/EventEditingDialog";
+import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
 import { UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
 import { useMutation } from "@apollo/client";
@@ -123,7 +123,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         event={event}
         editingDialogState={editingDialogState}
       />
-      <EventEditingDialog eventData={event} {...bindPopover(editingDialogState)} />
+      <CalendarEventDialog eventData={event} {...bindPopover(editingDialogState)} />
     </>
   );
 };

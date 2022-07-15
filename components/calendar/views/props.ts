@@ -17,7 +17,7 @@ export interface CalendarProps {
 export interface ViewerProps extends CalendarProps {
   selectedDate: Date;
   setSelectedDate: Dispatch<Date>;
-  dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
+  // dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
   defaultCalendar: Calendar;
   hidden: boolean;
 }

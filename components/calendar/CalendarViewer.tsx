@@ -1,9 +1,5 @@
 import CalendarApiProviderDialog from "@/components/calendar/CalendarApiProviderDialog";
 import { CalendarLegendItems } from "@/components/calendar/CalendarLegend";
-import EventEditingDialog, {
-  eventDataReducer,
-  initializeEventData,
-} from "@/components/calendar/EventEditingDialog";
 import DayViewer from "@/components/calendar/views/DayViewer";
 import MonthViewer from "@/components/calendar/views/MonthViewer";
 import { CalendarData, CalendarProps } from "@/components/calendar/views/props";
@@ -143,6 +139,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   }, [user, _data]);
 
   const defaultCalendar = enabledCalendars[0]; // TODO
+  if (!defaultCalendar) throw new Error("No default calendar");
 
   const [selectedCalendarIds, dispatchCalendarIds] = useReducer(
     selectedCalendarIdsReducer,
@@ -177,23 +174,22 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
 
   const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
 
-  const [initialEventFormData, dispatchInitialEventFormData] = useReducer(
-    eventDataReducer,
-    {
-      start: date,
-      allDay: false,
-      calendarId: defaultCalendar.id,
-    },
-    initializeEventData
-  );
+  // const [initialEventFormData, dispatchInitialEventFormData] = useReducer(
+  //   calendarEventDataReducer,
+  //   {
+  //     start: date,
+  //     allDay: false,
+  //     calendarId: defaultCalendar.id,
+  //   },
+  //   initializeEventData
+  // );
 
   const commonViewProps = {
     ...rest,
     selectedDate: selectedDate || date,
     setSelectedDate,
     eventEditingDialogState,
-    dispatchInitialEventFormData,
-    initializeEventFormData: initializeEventData,
+    // dispatchInitialEventFormData,
     defaultCalendar,
   };
   const renderedComponent = (
@@ -343,10 +339,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
           </Box>
         )} */}
       </Box>
-      <EventEditingDialog
-        {...bindPopover(eventEditingDialogState)}
-        eventData={initialEventFormData}
-      />
     </Box>
   );
   if (fullScreen) return createPortal(renderedComponent, document.body);

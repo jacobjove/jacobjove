@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
 import * as GraphQLScalars from "graphql-scalars";
 import * as TypeGraphQL from "type-graphql";
+import { DashboardLayouts } from "../../models/Dashboard";
 import { DateTimeScalar } from "../../scalars";
 import { DashboardAvgAggregate } from "../outputs/DashboardAvgAggregate";
 import { DashboardCountAggregate } from "../outputs/DashboardCountAggregate";
@@ -30,7 +30,7 @@ export class DashboardGroupBy {
   @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
     nullable: false,
   })
-  layouts!: Prisma.JsonValue;
+  layouts!: DashboardLayouts;
 
   @TypeGraphQL.Field((_type) => Boolean, {
     nullable: false,

@@ -2078,7 +2078,6 @@ const modelsInfo = {
   Authorship: ["id", "authorId", "bookId", "position", "createdAt", "updatedAt", "archivedAt"],
   Book: [
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -2654,7 +2653,6 @@ const outputsInfo = {
   AggregateBook: ["_count", "_avg", "_sum", "_min", "_max"],
   BookGroupBy: [
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -3579,7 +3577,6 @@ const outputsInfo = {
   BookCount: ["authorships", "readings", "shelvings", "BookReview"],
   BookCountAggregate: [
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -5573,7 +5570,6 @@ const inputsInfo = {
     "OR",
     "NOT",
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -5594,7 +5590,6 @@ const inputsInfo = {
   ],
   BookOrderByWithRelationInput: [
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -5616,7 +5611,6 @@ const inputsInfo = {
   BookWhereUniqueInput: ["id", "slug"],
   BookOrderByWithAggregationInput: [
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -5641,7 +5635,6 @@ const inputsInfo = {
     "OR",
     "NOT",
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -6779,7 +6772,6 @@ const inputsInfo = {
   ],
   AuthorshipUpdateManyMutationInput: ["position", "createdAt", "updatedAt", "archivedAt"],
   BookCreateInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -6799,7 +6791,6 @@ const inputsInfo = {
     "BookReview",
   ],
   BookUpdateInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -6820,7 +6811,6 @@ const inputsInfo = {
   ],
   BookCreateManyInput: [
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -6836,7 +6826,6 @@ const inputsInfo = {
     "authorNamesLf",
   ],
   BookUpdateManyMutationInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -8071,7 +8060,6 @@ const inputsInfo = {
   ShelvingOrderByRelationAggregateInput: ["_count"],
   BookCountOrderByAggregateInput: [
     "id",
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -11989,7 +11977,6 @@ const inputsInfo = {
   AuthorCreateWithoutAuthorshipsInput: ["name", "slug", "createdAt", "updatedAt", "archivedAt"],
   AuthorCreateOrConnectWithoutAuthorshipsInput: ["where", "create"],
   BookCreateWithoutAuthorshipsInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -12012,7 +11999,6 @@ const inputsInfo = {
   AuthorUpdateWithoutAuthorshipsInput: ["name", "slug", "createdAt", "updatedAt", "archivedAt"],
   BookUpsertWithoutAuthorshipsInput: ["update", "create"],
   BookUpdateWithoutAuthorshipsInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -12115,7 +12101,6 @@ const inputsInfo = {
   ],
   UserCreateOrConnectWithoutReadingsInput: ["where", "create"],
   BookCreateWithoutReadingsInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -12170,7 +12155,6 @@ const inputsInfo = {
   ],
   BookUpsertWithoutReadingsInput: ["update", "create"],
   BookUpdateWithoutReadingsInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -12260,7 +12244,6 @@ const inputsInfo = {
   ShelvingUpdateWithWhereUniqueWithoutShelfInput: ["where", "data"],
   ShelvingUpdateManyWithWhereWithoutShelfInput: ["where", "data"],
   BookCreateWithoutShelvingsInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -12292,7 +12275,6 @@ const inputsInfo = {
   BookshelfCreateOrConnectWithoutShelvingsInput: ["where", "create"],
   BookUpsertWithoutShelvingsInput: ["update", "create"],
   BookUpdateWithoutShelvingsInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -12322,7 +12304,6 @@ const inputsInfo = {
     "owner",
   ],
   BookCreateWithoutBookReviewInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",
@@ -12377,7 +12358,6 @@ const inputsInfo = {
   ReadingCreateOrConnectWithoutReviewInput: ["where", "create"],
   BookUpsertWithoutBookReviewInput: ["update", "create"],
   BookUpdateWithoutBookReviewInput: [
-    "ids",
     "isbn",
     "isbn13",
     "title",

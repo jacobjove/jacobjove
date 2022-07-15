@@ -1,6 +1,6 @@
+import AppLayout from "@/components/AppLayout";
 import { useAuth } from "@/components/contexts/AuthContext";
 import { useUser } from "@/components/contexts/UserContext";
-import Layout from "@/components/Layout";
 import { userFragment } from "@/graphql/fragments";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation } from "@apollo/client";
@@ -40,7 +40,7 @@ const MantrasPage: NextPage<MantrasPageProps> = (_props: MantrasPageProps) => {
   if (!token || !user) return null;
   const mantras = user.mantras ?? [];
   return (
-    <Layout>
+    <AppLayout>
       <NextSeo
         title={"Mantras"}
         canonical={"/app/mantras"}
@@ -99,7 +99,7 @@ const MantrasPage: NextPage<MantrasPageProps> = (_props: MantrasPageProps) => {
           </Table>
         </TableContainer>
       </Container>
-    </Layout>
+    </AppLayout>
   );
 };
 export default MantrasPage;

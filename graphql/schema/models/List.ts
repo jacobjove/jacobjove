@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import * as GraphQLScalars from "graphql-scalars";
 import * as TypeGraphQL from "type-graphql";
 import { Item } from "../models/Item";
@@ -41,7 +40,7 @@ export class List extends Model {
   @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
     nullable: false,
   })
-  fields!: Prisma.JsonValue;
+  fields!: Record<string, string>;
 
   items?: Item[];
 

@@ -2,6 +2,8 @@ import { AuthProvider, useAuth } from "@/components/contexts/AuthContext";
 import { ColorModeContextProvider } from "@/components/contexts/ColorModeContext";
 import { DateContextProvider } from "@/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@/components/contexts/DeviceContext";
+import { NewCalendarEventDialogContextProvider } from "@/components/contexts/NewCalendarEventDialogContext";
+import { NewTaskDialogContextProvider } from "@/components/contexts/NewTaskDialogContext";
 import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
 import { UserContextProvider } from "@/components/contexts/UserContext";
 import { USE_FIREBASE } from "@/config";
@@ -77,74 +79,80 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <AuthProvider>
         <ApolloProvider client={apolloClient}>
           <UserContextProvider>
-            <DeviceContext.Provider value={deviceContextData}>
-              <ColorModeContextProvider>
-                <PageTransitionContextProvider>
-                  <CssBaseline />
-                  <LocalizationProvider dateAdapter={DateAdapter}>
-                    <DndProvider backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}>
-                      <DateContextProvider>
-                        <DefaultSeo
-                          description={
-                            "Build good habits, break bad habits, and be your best self."
-                          }
-                          openGraph={{
-                            type: "website",
-                            url: "https://www.habitbuilder.com/",
-                            site_name: "SelfBuilder",
-                            // images: [
-                            //   {
-                            //     url: 'https://www.example.ie/og-image.jpg',
-                            //     width: 800,
-                            //     height: 600,
-                            //     alt: 'Og Image Alt',
-                            //   },
-                            //   {
-                            //     url: 'https://www.example.ie/og-image-2.jpg',
-                            //     width: 800,
-                            //     height: 600,
-                            //     alt: 'Og Image Alt 2',
-                            //   },
-                            // ],
-                          }}
-                          twitter={{ handle: "@habitbuilder" }}
-                          facebook={{
-                            appId: `${process.env.FACEBOOK_APP_ID}`,
-                          }}
-                          titleTemplate="%s | SelfBuilder" // https://github.com/garmeeh/next-seo#title-template
-                          defaultTitle="SelfBuilder" // https://github.com/garmeeh/next-seo#default-title
-                          additionalMetaTags={[
-                            {
-                              httpEquiv: "content-type",
-                              content: "text/html; charset=utf-8",
-                            },
-                            {
-                              name: "application-name",
-                              content: "SelfBuilder",
-                            },
-                          ]}
-                          additionalLinkTags={
-                            [
-                              // {
-                              //   rel: 'icon',
-                              //   href: '/static/favicon.ico',
-                              // }
-                            ]
-                          }
-                        />
-                        {(Component as PageWithAuth).auth ? (
-                          <Auth>
-                            <Component {...pageProps} />
-                          </Auth>
-                        ) : (
-                          <Component {...pageProps} />
-                        )}
-                      </DateContextProvider>
-                    </DndProvider>
-                  </LocalizationProvider>
-                </PageTransitionContextProvider>
-              </ColorModeContextProvider>
-            </DeviceContext.Provider>
+            <NewTaskDialogContextProvider>
+              <NewCalendarEventDialogContextProvider>
+                <DeviceContext.Provider value={deviceContextData}>
+                  <ColorModeContextProvider>
+                    <PageTransitionContextProvider>
+                      <CssBaseline />
+                      <LocalizationProvider dateAdapter={DateAdapter}>
+                        <DndProvider
+                          backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}
+                        >
+                          <DateContextProvider>
+                            <DefaultSeo
+                              description={
+                                "Build good habits, break bad habits, and be your best self."
+                              }
+                              openGraph={{
+                                type: "website",
+                                url: "https://www.habitbuilder.com/",
+                                site_name: "SelfBuilder",
+                                // images: [
+                                //   {
+                                //     url: 'https://www.example.ie/og-image.jpg',
+                                //     width: 800,
+                                //     height: 600,
+                                //     alt: 'Og Image Alt',
+                                //   },
+                                //   {
+                                //     url: 'https://www.example.ie/og-image-2.jpg',
+                                //     width: 800,
+                                //     height: 600,
+                                //     alt: 'Og Image Alt 2',
+                                //   },
+                                // ],
+                              }}
+                              twitter={{ handle: "@habitbuilder" }}
+                              facebook={{
+                                appId: `${process.env.FACEBOOK_APP_ID}`,
+                              }}
+                              titleTemplate="%s | SelfBuilder" // https://github.com/garmeeh/next-seo#title-template
+                              defaultTitle="SelfBuilder" // https://github.com/garmeeh/next-seo#default-title
+                              additionalMetaTags={[
+                                {
+                                  httpEquiv: "content-type",
+                                  content: "text/html; charset=utf-8",
+                                },
+                                {
+                                  name: "application-name",
+                                  content: "SelfBuilder",
+                                },
+                              ]}
+                              additionalLinkTags={
+                                [
+                                  // {
+                                  //   rel: 'icon',
+                                  //   href: '/static/favicon.ico',
+                                  // }
+                                ]
+                              }
+                            />
+                            {(Component as PageWithAuth).auth ? (
+                              <Auth>
+                                <Component {...pageProps} />
+                              </Auth>
+                            ) : (
+                              <Component {...pageProps} />
+                            )}
+                          </DateContextProvider>
+                        </DndProvider>
+                      </LocalizationProvider>
+                    </PageTransitionContextProvider>
+                  </ColorModeContextProvider>
+                </DeviceContext.Provider>
+              </NewCalendarEventDialogContextProvider>
+            </NewTaskDialogContextProvider>
           </UserContextProvider>
         </ApolloProvider>
       </AuthProvider>

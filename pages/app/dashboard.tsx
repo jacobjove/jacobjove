@@ -1,9 +1,9 @@
+import AppLayout from "@/components/AppLayout";
 import { useAuth } from "@/components/contexts/AuthContext";
 import DashboardViewer, {
   DashboardData,
   fragment as dashboardDataFragment,
 } from "@/components/dashboard/Dashboard";
-import Layout from "@/components/Layout";
 import Select from "@/components/Select";
 import { dashboardFragment } from "@/graphql/fragments";
 import { Dashboard } from "@/graphql/schema";
@@ -152,7 +152,7 @@ const DashboardPage: NextPage = () => {
 
   if (!data || isEmpty(dashboardData)) return null;
   return (
-    <Layout>
+    <AppLayout>
       <NextSeo
         title={"Dashboard"}
         canonical={"/app/dashboard"}
@@ -252,7 +252,7 @@ const DashboardPage: NextPage = () => {
           height={`calc(100% - ${TOP_BAR_HEIGHT})`}
         />
       )}
-    </Layout>
+    </AppLayout>
   );
 };
 export default DashboardPage;

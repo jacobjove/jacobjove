@@ -10,6 +10,8 @@ import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import { getTimeOffsetPx } from "@/components/calendar/views/DayViewer";
 import DateContext from "@/components/contexts/DateContext";
+import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
+import { useUser } from "@/components/contexts/UserContext";
 import { Calendar, CalendarEvent } from "@/graphql/schema";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -23,7 +25,7 @@ import {
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindTrigger } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, Fragment, useContext, useEffect, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
@@ -83,7 +85,7 @@ export interface WeekViewerProps extends CalendarProps {
   selectedDate: Date;
   setSelectedDate: Dispatch<Date>;
   viewedHourState: [number, Dispatch<number>];
-  dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
+  // dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
   defaultCalendar: Calendar;
   hidden: boolean;
 }
@@ -91,7 +93,6 @@ export interface WeekViewerProps extends CalendarProps {
 const WeekViewer: FC<WeekViewerProps> = ({
   selectedDate,
   viewedHourState,
-  dispatchInitialEventFormData,
   hidden,
   data,
 }: // loading,
@@ -100,12 +101,11 @@ WeekViewerProps) => {
   const date = useContext(DateContext);
   const [viewedHour, _] = viewedHourState;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
+  const user = useUser();
 
-  const eventEditingDialogState = usePopupState({
-    variant: "popover",
-    popupId: `event-editing-dialog`,
-  });
-  const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
+  const { newCalendarEventDialogState, dispatchNewCalendarEventData } = useNewCalendarEventDialog();
+
+  const eventEditingDialogTriggerProps = bindTrigger(newCalendarEventDialogState);
 
   const selectedDayIndex = getDay(selectedDate);
 
@@ -252,9 +252,12 @@ WeekViewerProps) => {
                                 // allows us to avoid stopping propagation on click events for
                                 // other elements in the slot.
                                 if (e.target === e.currentTarget) {
-                                  dispatchInitialEventFormData({
+                                  dispatchNewCalendarEventData({
                                     field: "init",
-                                    value: { start: eventSlotDate },
+                                    value: {
+                                      calendarId: user?.settings.defaultCalendarId,
+                                      start: eventSlotDate,
+                                    },
                                   });
                                   eventEditingDialogTriggerProps.onClick(e);
                                 }

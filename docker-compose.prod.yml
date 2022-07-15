@@ -1,11 +1,11 @@
-version: "3.8"
-
 services:
   cypress:
     environment:
-      - CYPRESS_baseUrl=https://www.habits.com/
+      - CYPRESS_baseUrl=https://www.orega.org/
 
   nextjs:
+    ports:
+      - "127.0.0.1:3000:3000"
     environment:
-      NEXTAUTH_URL: "https://self-builder.com"
+      NEXTAUTH_URL: "https://www.orega.org/"
       NODE_ENV: production

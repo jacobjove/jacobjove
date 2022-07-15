@@ -1,5 +1,5 @@
+import AppLayout from "@/components/AppLayout";
 import { AuthToken, useAuth } from "@/components/contexts/AuthContext";
-import Layout from "@/components/Layout";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -15,7 +15,7 @@ interface HomePageProps {
 const HomePage: NextPage<HomePageProps> = () => {
   const { token } = useAuth();
   return (
-    <Layout>
+    <AppLayout>
       <NextSeo
         title={"Home"}
         canonical={"/app/home"}
@@ -42,7 +42,7 @@ const HomePage: NextPage<HomePageProps> = () => {
           </Link> */}
         </Box>
       </Container>
-    </Layout>
+    </AppLayout>
   );
 };
 export default HomePage;

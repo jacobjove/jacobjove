@@ -3813,7 +3813,6 @@ type Book {
   description: String
   extra: JSON!
   id: String!
-  ids: JSON!
   isbn: String
   isbn13: String
   originalPublicationYear: Int
@@ -4073,7 +4072,6 @@ type BookGroupBy {
   description: String
   extra: JSON!
   id: String!
-  ids: JSON!
   isbn: String
   isbn13: String
   originalPublicationYear: Int
@@ -4690,7 +4688,6 @@ enum BookScalarFieldEnum {
   description
   extra
   id
-  ids
   isbn
   isbn13
   originalPublicationYear

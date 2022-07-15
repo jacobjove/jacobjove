@@ -37,7 +37,6 @@ export class FindFirstBookArgs {
   distinct?:
     | Array<
         | "id"
-        | "ids"
         | "isbn"
         | "isbn13"
         | "title"

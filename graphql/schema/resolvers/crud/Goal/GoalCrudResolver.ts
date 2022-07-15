@@ -3,7 +3,9 @@ import { GraphQLResolveInfo } from "graphql";
 import graphqlFields from "graphql-fields";
 import * as TypeGraphQL from "type-graphql";
 import {
+  getItem,
   getPrismaFromContext,
+  getUserSubcollectionData,
   transformCountFieldIntoSelectRelationsCount,
   transformFields,
 } from "../../../helpers";
@@ -34,11 +36,7 @@ export class GoalCrudResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: FindUniqueGoalArgs
   ): Promise<Goal | null> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).goal.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getItem("goals", ctx, info, args) as Promise<Goal | null>;
   }
 
   @TypeGraphQL.Query((_returns) => Goal, {
@@ -64,11 +62,7 @@ export class GoalCrudResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: FindManyGoalArgs
   ): Promise<Goal[]> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).goal.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getUserSubcollectionData("goals", ctx, info, args) as Promise<Goal[]>;
   }
 
   @TypeGraphQL.Mutation((_returns) => Goal, {

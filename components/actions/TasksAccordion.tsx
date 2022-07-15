@@ -1,5 +1,4 @@
-import TaskDialog from "@/components/actions/TaskDialog";
-import TaskRow, { DraggedTask } from "@/components/actions/TaskRow";
+import { DraggedTask } from "@/components/actions/TaskRow";
 import TasksTable from "@/components/actions/TasksTable";
 import { taskFragment } from "@/graphql/fragments";
 import { UPDATE_TASK } from "@/graphql/mutations";
@@ -14,7 +13,6 @@ import TableContainer from "@mui/material/TableContainer";
 import Typography from "@mui/material/Typography";
 import { addDays, endOfDay, isSameDay } from "date-fns";
 import partition from "lodash/partition";
-import { bindPopover, usePopupState } from "material-ui-popup-state/hooks";
 import { FC, useCallback, useMemo, useReducer, useState } from "react";
 
 const MAX_TASK_RANK = 2 ** 31 - 1;
@@ -96,8 +94,6 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
   const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] =
     useMutation(UPDATE_TASK);
   const [updateManyTaskRank] = useMutation(UPDATE_MANY_TASK_RANK);
-
-  const newTaskDialogState = usePopupState({ variant: "popover", popupId: `new-task-dialog` });
 
   // TODO: is this efficient enough?
   const tasksBySelection = useMemo(() => {
@@ -187,10 +183,6 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
     [incompleteTasks, updateTask, updateManyTaskRank]
   );
 
-  const renderTaskRow = (task: Task, index: number) => (
-    <TaskRow key={task.id} task={task} index={index} move={moveTaskRow} onDrop={updateTaskRank} />
-  );
-
   // const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
   //   dispatchNewTaskData({ field, value });
   // };
@@ -206,7 +198,17 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
   ];
 
   return (
-    <TableContainer className="no-scrollbar" sx={{ mt: 1, maxHeight: "100%" }}>
+    <TableContainer
+      className="no-scrollbar"
+      sx={{
+        mt: 1,
+        height: "100%",
+        maxHeight: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+      }}
+    >
       {views.map(([key, label]) => (
         <Accordion
           key={key}
@@ -215,23 +217,24 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
             key === selectedView ? setSelectedView(null) : setSelectedView(key);
           }}
           sx={{
+            backgroundImage: "none",
+            backgroundColor: "transparent",
             "& .MuiAccordionSummary-root.Mui-expanded": { minHeight: 0 },
             "& .MuiAccordionSummary-content.Mui-expanded": { margin: "0.5rem 0" },
           }}
         >
-          <AccordionSummary
+          {/* <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
             id="panel1bh-header"
           >
             <Typography sx={{ width: "33%", flexShrink: 0 }}>{label}</Typography>
-          </AccordionSummary>
+          </AccordionSummary> */}
           <AccordionDetails>
             <TasksTable
               tasks={tasksBySelection[key]}
-              moveTaskRow={undefined}
-              updateTaskRank={undefined}
-              newTaskDialogState={newTaskDialogState}
+              moveTaskRow={moveTaskRow}
+              updateTaskRank={updateTaskRank}
               appendable
             />
           </AccordionDetails>
@@ -244,6 +247,7 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
             setRecentlyCompletedTasksExpanded(!recentlyCompletedTasksExpanded);
           }}
           sx={{
+            mt: "auto",
             "& .MuiAccordionSummary-root.Mui-expanded": { minHeight: 0 },
             "& .MuiAccordionSummary-content.Mui-expanded": { margin: "0.5rem 0" },
           }}
@@ -264,11 +268,6 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
           </AccordionDetails>
         </Accordion>
       )}
-      <TaskDialog
-        task={newTaskData}
-        dispatchTaskData={dispatchNewTaskData}
-        {...bindPopover(newTaskDialogState)}
-      />
     </TableContainer>
   );
 };

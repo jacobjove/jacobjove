@@ -21,7 +21,6 @@ export class GroupByBookArgs {
   })
   by!: Array<
     | "id"
-    | "ids"
     | "isbn"
     | "isbn13"
     | "title"

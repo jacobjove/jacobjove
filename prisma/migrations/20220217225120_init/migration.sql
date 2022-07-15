@@ -489,7 +489,6 @@ CREATE TABLE "Authorship" (
 -- CreateTable
 CREATE TABLE "Book" (
     "id" SERIAL NOT NULL,
-    "ids" JSONB NOT NULL,
     "isbn" TEXT,
     "isbn13" TEXT,
     "title" TEXT NOT NULL,

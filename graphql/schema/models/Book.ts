@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import * as GraphQLScalars from "graphql-scalars";
 import * as TypeGraphQL from "type-graphql";
 import { Authorship } from "../models/Authorship";
@@ -17,11 +16,6 @@ export class Book extends Model {
     nullable: false,
   })
   id!: string;
-
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
-    nullable: false,
-  })
-  ids!: Prisma.JsonValue;
 
   @TypeGraphQL.Field((_type) => String, {
     nullable: true,
@@ -71,7 +65,7 @@ export class Book extends Model {
   @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
     nullable: false,
   })
-  extra!: Prisma.JsonValue;
+  extra!: Record<string, string>;
 
   @TypeGraphQL.Field((_type) => DateTimeScalar, {
     nullable: false,

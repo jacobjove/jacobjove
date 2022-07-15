@@ -9,6 +9,8 @@ import EventBox from "@/components/calendar/EventBox";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import DateContext from "@/components/contexts/DateContext";
+import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
+import { useUser } from "@/components/contexts/UserContext";
 import { Calendar, CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -97,33 +99,29 @@ export interface DayViewerProps extends CalendarProps {
   selectedDate: Date;
   setSelectedDate: Dispatch<Date>;
   viewedHourState: [number, Dispatch<number>];
-  dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
-  defaultCalendar: Calendar;
   hidden: boolean;
 }
 
 const DayViewer: FC<DayViewerProps> = ({
   selectedDate,
   viewedHourState,
-  dispatchInitialEventFormData,
-  eventEditingDialogState,
-  defaultCalendar,
   hidden,
   data,
   loading,
 }: DayViewerProps) => {
   const { calendarEvents } = data;
   const date = useContext(DateContext);
+  const user = useUser();
   const [viewedHour, setViewedHour] = viewedHourState;
-  const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
+
+  const { newCalendarEventDialogState, dispatchNewCalendarEventData } = useNewCalendarEventDialog();
+  const eventEditingDialogTriggerProps = bindTrigger(newCalendarEventDialogState);
+
   const scrollableDivRef = useRef<HTMLDivElement>(null);
 
   const dayStart = zeroToHour(selectedDate, START_HOUR);
   const currentTimeOffsetPx = getTimeOffsetPx(setHours(selectedDate, viewedHour));
   const scrollOffsetPx = currentTimeOffsetPx - HOUR_HEIGHT * 1.5;
-
-  // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = defaultCalendar.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.primary);
 
   const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
   const filteredEvents = calendarEvents
@@ -227,9 +225,12 @@ const DayViewer: FC<DayViewerProps> = ({
                         // allows us to avoid stopping propagation on click events for
                         // other elements in the slot.
                         if (e.target === e.currentTarget) {
-                          dispatchInitialEventFormData({
+                          dispatchNewCalendarEventData({
                             field: "init",
-                            value: { start: eventSlotDate },
+                            value: {
+                              calendarId: user?.settings.defaultCalendarId,
+                              start: eventSlotDate,
+                            },
                           });
                           eventEditingDialogTriggerProps.onClick(e);
                         }

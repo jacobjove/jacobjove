@@ -6,21 +6,22 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { bindTrigger, PopupState } from "material-ui-popup-state/hooks";
+import { bindTrigger } from "material-ui-popup-state/hooks";
 import { FC } from "react";
+import { useNewTaskDialog } from "../contexts/NewTaskDialogContext";
 
 const PREFERRED_FONT_SIZE = "0.8rem";
 
 export interface TasksTableProps {
   tasks: Task[];
   appendable?: boolean;
-  newTaskDialogState?: PopupState;
   moveTaskRow: TaskRowProps["move"];
   updateTaskRank: TaskRowProps["onDrop"];
 }
 
 const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
-  const { tasks, appendable, newTaskDialogState, moveTaskRow, updateTaskRank } = props;
+  const { tasks, appendable, moveTaskRow, updateTaskRank } = props;
+  const { newTaskDialogState } = useNewTaskDialog();
   return (
     <Table
       sx={{
@@ -36,6 +37,9 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
           <TableCell component={"th"}>{"Done?"}</TableCell>
           <TableCell component={"th"} sx={{ width: "90%" }}>
             {"Task"}
+          </TableCell>
+          <TableCell component={"th"} sx={{ textAlign: "center", minWidth: "3.5rem" }}>
+            {"Scheduled"}
           </TableCell>
           <TableCell component={"th"} sx={{ textAlign: "center", minWidth: "3.5rem" }}>
             {"Due"}
@@ -58,7 +62,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
             {
               <>
                 <TableCell colSpan={1} />
-                <TableCell colSpan={3}>
+                <TableCell>
                   <Button
                     variant="text"
                     {...(newTaskDialogState && bindTrigger(newTaskDialogState))}
@@ -75,6 +79,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                     {tasks.length ? "Add another task..." : "Add a task..."}
                   </Button>
                 </TableCell>
+                <TableCell colSpan={3} />
               </>
             }
           </TableRow>

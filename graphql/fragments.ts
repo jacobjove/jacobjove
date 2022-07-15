@@ -43,6 +43,13 @@ export const habitFragment = gql`
   fragment HabitFragment on Habit {
     id
     name
+  }
+`;
+
+export const _habitFragment = gql`
+  fragment HabitFragment on Habit {
+    id
+    name
     act {
       ...ActFragment
     }
@@ -64,6 +71,14 @@ export const habitFragment = gql`
   }
   ${actFragment}
   ${actionFragment}
+`;
+
+export const goalFragment = gql`
+  fragment GoalFragment on Goal {
+    id
+    habitId
+    goalId
+  }
 `;
 
 export const taskFragment = gql`

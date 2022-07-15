@@ -10,6 +10,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import NotesIcon from "@mui/icons-material/Notes";
+import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -19,6 +21,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -28,30 +31,36 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { Dispatch, useState } from "react";
+import { Dispatch, FC, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import TasksTable from "./TasksTable";
 
-type TaskDialogProps = ReturnType<typeof bindPopover> & {
+interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   task: TaskData;
   toggleCompletion?: Dispatch<boolean>;
   dispatchTaskData: Dispatch<{ field: string; value: unknown }>;
-};
+}
 
-export default function TaskDialog(props: TaskDialogProps) {
-  const { token } = useAuth();
+const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const {
     task: taskData,
     toggleCompletion,
     dispatchTaskData,
-    onClose,
+    onClose: initialOnClose,
     anchorEl: _anchorEl,
     ...dialogProps
   } = props;
+  const { token } = useAuth();
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
-
   const [editing, setEditing] = useState(!taskData.id);
+
+  const canUpdate = !!taskData.id;
+
+  const onClose = () => {
+    initialOnClose();
+    canUpdate && setEditing(false);
+  };
 
   const menuState = usePopupState({
     variant: "popper",
@@ -86,15 +95,13 @@ export default function TaskDialog(props: TaskDialogProps) {
     },
   });
 
-  const canUpdate = !!taskData.id;
-
   const handleClose = () => {
     if (stopwatchIsRunning) {
       // TODO: ask for confirmation
       setStopwatchIsRunning(false);
     }
+    console.log("calling onClose");
     onClose();
-    canUpdate && setEditing(false);
   };
 
   const handleUpdateField = (field: string, value: unknown) => {
@@ -117,35 +124,20 @@ export default function TaskDialog(props: TaskDialogProps) {
   };
 
   const menuTriggerProps = bindTrigger(menuState);
+  const menuProps = bindMenu(menuState);
+
   const completed = taskData.completedAt ? true : false;
   const habit = taskData.habit;
   const subtasks = taskData.subtasks;
   const metricUsages = habit?.metricUsages;
+
+  // const handleBackgroundClick = (event: MouseEvent) => {
+
+  // }
+
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
       <DialogTitle>
-        {editing ? (
-          <TextField
-            autoFocus
-            id="title"
-            name="title"
-            variant="standard"
-            value={taskData.title}
-            placeholder={"Task title"}
-            // label={"Title"}
-            onChange={(event) => {
-              handleUpdateField("title", event.target.value);
-            }}
-          />
-        ) : (
-          <Typography
-            onClick={() => {
-              setEditing(true);
-            }}
-          >
-            {taskData.title}
-          </Typography>
-        )}
         {!!taskData.id && !!updateTask && (
           <Box
             ml={"auto"}
@@ -165,7 +157,7 @@ export default function TaskDialog(props: TaskDialogProps) {
               <MoreVertIcon />
             </IconButton>
             <Menu
-              {...bindMenu(menuState)}
+              {...menuProps}
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "center",
@@ -178,43 +170,40 @@ export default function TaskDialog(props: TaskDialogProps) {
                 "aria-labelledby": "calendar-menu-button-x",
               }}
             >
-              <Box px="0.5rem">
-                <IconButton
-                  disabled={editing}
-                  title={`Edit ${taskData.title}`}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    setEditing(true);
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  title={`Delete task`}
-                  disabled={!taskData.id}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    const archivedAt = new Date();
-                    updateTask({
-                      variables: {
-                        taskId: taskData.id,
-                        data: { archivedAt: { set: archivedAt } },
+              <MenuItem
+                disabled={editing}
+                title={`Edit ${taskData.title}`}
+                onClick={() => {
+                  setEditing(true);
+                  menuProps.onClose();
+                }}
+              >
+                <EditIcon /> <Typography sx={{ ml: 1 }}>{"Edit task"}</Typography>
+              </MenuItem>
+              <MenuItem
+                disabled={!taskData.id}
+                onClick={() => {
+                  const archivedAt = new Date();
+                  updateTask({
+                    variables: {
+                      taskId: taskData.id,
+                      data: { archivedAt: { set: archivedAt } },
+                    },
+                    optimisticResponse: {
+                      updateTask: {
+                        __typename: "Task",
+                        subtasks: [],
+                        habit: null,
+                        ...taskData,
+                        archivedAt,
                       },
-                      optimisticResponse: {
-                        updateTask: {
-                          __typename: "Task",
-                          subtasks: [],
-                          habit: null,
-                          ...taskData,
-                          archivedAt,
-                        },
-                      },
-                    }).catch(printError);
-                  }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Box>
+                    },
+                  }).catch(printError);
+                  menuProps.onClose();
+                }}
+              >
+                <DeleteIcon /> <Typography sx={{ ml: 1 }}>{"Delete task"}</Typography>
+              </MenuItem>
             </Menu>
             <IconButton aria-label="close" onClick={handleClose}>
               <CloseIcon />
@@ -223,24 +212,85 @@ export default function TaskDialog(props: TaskDialogProps) {
         )}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText component={"div"} onClick={() => !editing && setEditing(true)}>
-          {editing ? (
-            <TextField
-              multiline
-              fullWidth
-              id="description"
-              name="description"
-              // variant="standard"
-              value={taskData.description}
-              placeholder="Task description"
-              onChange={(event) => {
-                handleUpdateField("description", event.target.value);
-              }}
-            />
-          ) : (
-            taskData.description
-          )}
-        </DialogContentText>
+        <Box display="flex">
+          <Box
+            my={2}
+            flexGrow={1}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget) && taskData.id)
+                setEditing(false);
+            }}
+          >
+            {editing ? (
+              <TextField
+                autoFocus
+                id="title"
+                name="title"
+                variant="standard"
+                value={taskData.title}
+                placeholder={"Task title"}
+                // label={"Title"}
+                onChange={(event) => {
+                  handleUpdateField("title", event.target.value);
+                }}
+              />
+            ) : (
+              <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
+                {taskData.title}
+              </Typography>
+            )}
+            {editing ? (
+              <TextField
+                multiline
+                fullWidth
+                id="description"
+                name="description"
+                // variant="standard"
+                value={taskData.description}
+                placeholder="Task description"
+                onChange={(event) => {
+                  handleUpdateField("description", event.target.value);
+                }}
+              />
+            ) : (
+              <DialogContentText component="div" sx={{ mt: 1 }} onClick={() => setEditing(true)}>
+                {taskData.description || (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      color: (theme) =>
+                        theme.palette.mode === "light"
+                          ? "rgba(0,0,0,0.5)"
+                          : "rgba(255,255,255,0.5)",
+                    }}
+                  >
+                    <NotesIcon />
+                    <Typography sx={{ ml: 1 }}>{"Description"}</Typography>
+                  </Box>
+                )}
+              </DialogContentText>
+            )}
+          </Box>
+          <Box ml={2}>
+            <Box my={2}>
+              <Typography>{"Due date"}</Typography>
+              <Box display="flex" alignItems="center">
+                <TodayIcon />
+                <Typography component="span">{taskData.dueDate ?? "No due date"}</Typography>
+              </Box>
+            </Box>
+            <Box my={2}>
+              <Typography>{"Scheduled date"}</Typography>
+              <Box display="flex" alignItems="center">
+                <TodayIcon />
+                <Typography component="span">
+                  {taskData.plannedStartDate ?? "Unscheduled"}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
         {!!subtasks?.length && (
           <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
         )}
@@ -291,66 +341,77 @@ export default function TaskDialog(props: TaskDialogProps) {
         )}
         {!!toggleCompletion && (
           <Box display={"flex"} justifyContent={"center"} alignItems={"center"} mt={5}>
-            <CompletionCheckbox
-              checked={completed}
-              // disabled={loading}
-              onClick={(event) => {
-                event.stopPropagation();
-                toggleCompletion(!completed);
-              }}
-            />
-            <Typography>{"Complete?"}</Typography>
+            {!completed ? (
+              <Button
+                variant={"outlined"}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleCompletion(!completed);
+                }}
+              >
+                {"Mark complete"}
+              </Button>
+            ) : (
+              <>
+                <CompletionCheckbox
+                  checked={completed}
+                  // disabled={loading}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleCompletion(!completed);
+                  }}
+                />
+                <Typography>{"Complete?"}</Typography>
+              </>
+            )}
           </Box>
         )}
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={() => {
-            if (!canUpdate && taskData.title) {
-              console.log("Creating task...", taskData);
-              const now = new Date();
-              const completeTaskData = {
-                createdAt: now,
-                updatedAt: now,
-                ...taskData,
-              };
-              createTask({
-                variables: {
-                  data: {
-                    ...completeTaskData,
+        {editing && (
+          <Button
+            onClick={() => {
+              if (!canUpdate && taskData.title) {
+                console.log("Creating task...", taskData);
+                const now = new Date();
+                const completeTaskData = {
+                  createdAt: now,
+                  updatedAt: now,
+                  ...taskData,
+                };
+                createTask({
+                  variables: {
+                    data: {
+                      ...completeTaskData,
+                    },
                   },
-                },
-                optimisticResponse: {
-                  createTask: {
-                    __typename: "Task",
-                    id: "tmp-id",
-                    subtasks: [],
-                    habitId: null,
-                    userId: token?.uid as string,
-                    ...completeTaskData,
+                  optimisticResponse: {
+                    createTask: {
+                      __typename: "Task",
+                      id: "tmp-id",
+                      subtasks: [],
+                      habitId: null,
+                      userId: token?.uid as string,
+                      ...completeTaskData,
+                    },
                   },
-                },
-              }).catch(printError);
-              dispatchTaskData({
-                field: "init",
-                value: {
-                  rank: taskData.rank + 1,
-                },
-              }); // TODO
-            }
-            handleClose();
-          }}
-        >
-          {"Done"}
-        </Button>
-        {/* <Button
-          onClick={() => {
-            console.log("do something");
-          }}
-        >
-          Subscribe
-        </Button> */}
+                }).catch(printError);
+                dispatchTaskData({
+                  field: "init",
+                  value: {
+                    rank: taskData.rank + 1,
+                  },
+                }); // TODO
+              }
+              handleClose();
+            }}
+          >
+            {"Done"}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
-}
+};
+
+export default TaskDialog;

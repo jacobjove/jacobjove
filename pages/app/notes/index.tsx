@@ -1,6 +1,6 @@
+import AppLayout from "@/components/AppLayout";
 import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
-import Layout from "@/components/Layout";
 import NotesMenu from "@/components/notes/NotesMenu";
 import NoteViewer from "@/components/notes/NoteViewer";
 import { noteFragment } from "@/graphql/fragments";
@@ -132,7 +132,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   };
 
   return (
-    <Layout>
+    <AppLayout>
       <NextSeo
         title={"Notes"}
         canonical={"/app/notes"}
@@ -204,7 +204,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
           </>
         )}
       </Box>
-    </Layout>
+    </AppLayout>
   );
 };
 

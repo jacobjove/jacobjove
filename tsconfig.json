@@ -36,6 +36,7 @@
     "graphql/*.ts",
     "graphql/**/*.ts",
     "hooks/*.ts",
+    "lib/*.ts",
     "pages/*",
     "pages/**/*",
     "prisma/seed.ts",

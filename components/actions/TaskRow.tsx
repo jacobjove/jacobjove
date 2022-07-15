@@ -89,26 +89,10 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const isHabit = Boolean(task.habit);
 
   const dueDate = task.dueDate ?? null;
-  // prettier-ignore
-  const dueDateString = dueDate ? (
-    isSameDay(dueDate, today) ? "Today" : (
-      isSameYear(dueDate, today) ? format(dueDate, "M/d") : dueDate.toLocaleDateString()
-    )
-  ) : "";
-  const dueTimeString = dueDate?.getTime() ? format(dueDate, "h:mm a") : "";
-  const dueDateTextElement = dueDateString ? (
-    <span>
-      {dueDateString}
-      {!!dueTimeString && (
-        <>
-          {", "}
-          <Typography component="small" variant="inherit" sx={{ display: "inline-block" }}>
-            {dueTimeString}
-          </Typography>
-        </>
-      )}
-    </span>
-  ) : null;
+  const scheduledDate = task.plannedStartDate ?? null;
+
+  const dueDateTextElement = getDateTextElement(dueDate);
+  const scheduledDateTextElement = getDateTextElement(scheduledDate);
 
   const dialogTriggerProps = bindTrigger(dialogState);
 
@@ -236,6 +220,33 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
         </TableCell>
         <TableCell>
           <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
+            {scheduledDate ? (
+              <Typography
+                component="span"
+                fontSize="0.8rem"
+                textAlign={"center"}
+                sx={{
+                  ...(isToday(scheduledDate) && { color: (theme) => theme.palette.warning.main }),
+                  ...(isPast(scheduledDate) && { color: (theme) => theme.palette.error.main }),
+                }}
+              >
+                {scheduledDateTextElement}
+              </Typography>
+            ) : task.habit?.schedules?.length ? (
+              <IconButton
+                title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  console.info("You clicked the schedule icon.");
+                }}
+              >
+                <RepeatIcon sx={{ color: "gray" }} />
+              </IconButton>
+            ) : null}
+          </Box>
+        </TableCell>
+        <TableCell>
+          <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
             {dueDate ? (
               <Typography
                 component="span"
@@ -291,7 +302,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
           />
         ))}
       <TaskDialog
-        task={task}
+        task={taskData}
         dispatchTaskData={dispatchTaskData}
         toggleCompletion={toggleCompletion}
         {...bindPopover(dialogState)}
@@ -409,3 +420,28 @@ const TaskRow = (props: TaskRowProps) => {
 };
 
 export default TaskRow;
+
+function getDateTextElement(date: Date | null) {
+  const today = new Date();
+  const dateString = date
+    ? isSameDay(date, today)
+      ? "Today"
+      : isSameYear(date, today)
+      ? format(date, "M/d")
+      : date.toLocaleDateString()
+    : "";
+  const timeString = date?.getTime() ? format(date, "h:mm a") : "";
+  return dateString ? (
+    <span>
+      {dateString}
+      {!!timeString && (
+        <>
+          {", "}
+          <Typography component="small" variant="inherit" sx={{ display: "inline-block" }}>
+            {timeString}
+          </Typography>
+        </>
+      )}
+    </span>
+  ) : null;
+}
