@@ -8,12 +8,12 @@ import { TaskData } from "@/utils/tasks";
 import { gql, useMutation } from "@apollo/client";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+// import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotesIcon from "@mui/icons-material/Notes";
 import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -37,14 +37,12 @@ import TasksTable from "./TasksTable";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   task: TaskData;
-  toggleCompletion?: Dispatch<boolean>;
   dispatchTaskData: Dispatch<{ field: string; value: unknown }>;
 }
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const {
     task: taskData,
-    toggleCompletion,
     dispatchTaskData,
     onClose: initialOnClose,
     anchorEl: _anchorEl,
@@ -131,13 +129,45 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const subtasks = taskData.subtasks;
   const metricUsages = habit?.metricUsages;
 
-  // const handleBackgroundClick = (event: MouseEvent) => {
-
-  // }
+  const saveAndExit = () => {
+    if (!canUpdate && taskData.title) {
+      console.log("Creating task...", taskData);
+      const now = new Date();
+      const completeTaskData = {
+        createdAt: now,
+        updatedAt: now,
+        ...taskData,
+      };
+      createTask({
+        variables: {
+          data: {
+            ...completeTaskData,
+          },
+        },
+        optimisticResponse: {
+          createTask: {
+            __typename: "Task",
+            id: "tmp-id",
+            subtasks: [],
+            habitId: null,
+            userId: token?.uid as string,
+            ...completeTaskData,
+          },
+        },
+      }).catch(printError);
+      dispatchTaskData({
+        field: "init",
+        value: {
+          rank: taskData.rank + 1,
+        },
+      }); // TODO
+    }
+    handleClose();
+  };
 
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
-      <DialogTitle>
+      <DialogTitle sx={{ minHeight: "3.3rem", borderBottom: "1px solid gray" }}>
         {!!taskData.id && !!updateTask && (
           <Box
             ml={"auto"}
@@ -170,7 +200,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 "aria-labelledby": "calendar-menu-button-x",
               }}
             >
-              <MenuItem
+              {/* <MenuItem
                 disabled={editing}
                 title={`Edit ${taskData.title}`}
                 onClick={() => {
@@ -179,7 +209,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 }}
               >
                 <EditIcon /> <Typography sx={{ ml: 1 }}>{"Edit task"}</Typography>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem
                 disabled={!taskData.id}
                 onClick={() => {
@@ -211,34 +241,49 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
           </Box>
         )}
       </DialogTitle>
-      <DialogContent>
-        <Box display="flex">
+      <DialogContent sx={{ px: 0 }}>
+        <Box display="flex" borderBottom={"1px solid gray"}>
+          <CompletionCheckbox
+            sx={{ alignSelf: "start", alignItems: "start" }}
+            checked={completed}
+            disabled={!canUpdate}
+            onClick={() => {
+              handleUpdateField("completedAt", new Date());
+            }}
+          />
           <Box
-            my={2}
+            mb={2}
             flexGrow={1}
+            onKeyUp={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                saveAndExit();
+              }
+            }}
             onBlur={(event) => {
               if (!event.currentTarget.contains(event.relatedTarget) && taskData.id)
                 setEditing(false);
             }}
           >
-            {editing ? (
-              <TextField
-                autoFocus
-                id="title"
-                name="title"
-                variant="standard"
-                value={taskData.title}
-                placeholder={"Task title"}
-                // label={"Title"}
-                onChange={(event) => {
-                  handleUpdateField("title", event.target.value);
-                }}
-              />
-            ) : (
-              <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
-                {taskData.title}
-              </Typography>
-            )}
+            <Box sx={{ "& *": { fontSize: "1.6rem", fontWeight: "400" } }}>
+              {editing ? (
+                <TextField
+                  autoFocus
+                  id="title"
+                  name="title"
+                  variant="standard"
+                  value={taskData.title}
+                  placeholder={"Task title"}
+                  onChange={(event) => {
+                    handleUpdateField("title", event.target.value);
+                  }}
+                />
+              ) : (
+                <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
+                  {taskData.title}
+                </Typography>
+              )}
+            </Box>
             {editing ? (
               <TextField
                 multiline
@@ -253,7 +298,11 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 }}
               />
             ) : (
-              <DialogContentText component="div" sx={{ mt: 1 }} onClick={() => setEditing(true)}>
+              <DialogContentText
+                component="div"
+                sx={{ mt: 1, mb: 2 }}
+                onClick={() => setEditing(true)}
+              >
                 {taskData.description || (
                   <Box
                     sx={{
@@ -271,8 +320,32 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 )}
               </DialogContentText>
             )}
+            <Box my={2}>
+              {subtasks?.length ? (
+                <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
+              ) : (
+                <Typography>{`Add subtasks.`}</Typography>
+              )}
+            </Box>
+            <Box my={2}>
+              {taskData.habitId ? (
+                <Typography>{`This task is associated with habit ${taskData.habitId}.`}</Typography>
+              ) : (
+                <Typography>
+                  {`Trying to build a new habit? Create a habit from this task.`}
+                </Typography>
+              )}
+            </Box>
           </Box>
-          <Box ml={2}>
+          <Box
+            ml={2}
+            p={2}
+            sx={{
+              bgcolor: (theme) =>
+                theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)",
+              // backgroundColor: (theme) => theme.palette.mode === "light" ? "gray" : "black"
+            }}
+          >
             <Box my={2}>
               <Typography>{"Due date"}</Typography>
               <Box display="flex" alignItems="center">
@@ -291,9 +364,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             </Box>
           </Box>
         </Box>
-        {!!subtasks?.length && (
-          <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
-        )}
         {!subtasks?.length && !!habit && (
           <Stopwatch
             time={time}
@@ -339,76 +409,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             </TableContainer>
           </Box>
         )}
-        {!!toggleCompletion && (
-          <Box display={"flex"} justifyContent={"center"} alignItems={"center"} mt={5}>
-            {!completed ? (
-              <Button
-                variant={"outlined"}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleCompletion(!completed);
-                }}
-              >
-                {"Mark complete"}
-              </Button>
-            ) : (
-              <>
-                <CompletionCheckbox
-                  checked={completed}
-                  // disabled={loading}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    toggleCompletion(!completed);
-                  }}
-                />
-                <Typography>{"Complete?"}</Typography>
-              </>
-            )}
-          </Box>
-        )}
       </DialogContent>
       <DialogActions>
-        {editing && (
-          <Button
-            onClick={() => {
-              if (!canUpdate && taskData.title) {
-                console.log("Creating task...", taskData);
-                const now = new Date();
-                const completeTaskData = {
-                  createdAt: now,
-                  updatedAt: now,
-                  ...taskData,
-                };
-                createTask({
-                  variables: {
-                    data: {
-                      ...completeTaskData,
-                    },
-                  },
-                  optimisticResponse: {
-                    createTask: {
-                      __typename: "Task",
-                      id: "tmp-id",
-                      subtasks: [],
-                      habitId: null,
-                      userId: token?.uid as string,
-                      ...completeTaskData,
-                    },
-                  },
-                }).catch(printError);
-                dispatchTaskData({
-                  field: "init",
-                  value: {
-                    rank: taskData.rank + 1,
-                  },
-                }); // TODO
-              }
-              handleClose();
-            }}
-          >
-            {"Done"}
-          </Button>
-        )}
+        {/* {editing && <Button onClick={saveAndExit}>{"Done"}</Button>} */}
       </DialogActions>
     </Dialog>
   );

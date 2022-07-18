@@ -201,7 +201,6 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
     <TableContainer
       className="no-scrollbar"
       sx={{
-        mt: 1,
         height: "100%",
         maxHeight: "100%",
         display: "flex",

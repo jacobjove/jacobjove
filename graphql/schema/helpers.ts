@@ -250,6 +250,7 @@ export async function updateItem(
       updatedAt: new Date(),
       ...transformDataForFirestore(args.data),
     };
+    console.log("data:", data);
     const userDocPath = `users/${userId}`;
     const collectionPath = inUserSubcollection
       ? `${userDocPath}/${collectionName}`
@@ -348,8 +349,8 @@ export function transformDataForFirestore(
     if (typeof value === "object" && value !== null) {
       const input = value as Input;
       if (input["connect"]) {
-        transformedData[`${key}Id`] = input["connect"]?.id ?? null;
-      } else if (input["set"]) {
+        transformedData[`${key}Id`] = input["connect"].id ?? null;
+      } else if ("set" in input) {
         transformedData[key] = typeof input["set"] !== "undefined" ? input["set"] : value;
       } else {
         console.error(JSON.stringify(data[key]));
@@ -359,5 +360,6 @@ export function transformDataForFirestore(
       transformedData[key] = value;
     }
   });
+  console.error("Transformed data", transformedData);
   return transformedData;
 }

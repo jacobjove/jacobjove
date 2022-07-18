@@ -174,16 +174,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
 
   const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
 
-  // const [initialEventFormData, dispatchInitialEventFormData] = useReducer(
-  //   calendarEventDataReducer,
-  //   {
-  //     start: date,
-  //     allDay: false,
-  //     calendarId: defaultCalendar.id,
-  //   },
-  //   initializeEventData
-  // );
-
   const commonViewProps = {
     ...rest,
     selectedDate: selectedDate || date,

@@ -8,7 +8,8 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import TodayIcon from "@mui/icons-material/Today";
 import Backdrop from "@mui/material/Backdrop";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { bindPopover, bindTrigger } from "material-ui-popup-state/hooks";
+import { bindPopover } from "material-ui-popup-state/hooks";
+import { parseCookies, setCookie } from "nookies";
 // import SpeedDial from "@mui/material/SpeedDial";
 // import SpeedDialAction from "@mui/material/SpeedDialAction";
 // import SpeedDialIcon from "@mui/material/SpeedDialIcon";
@@ -23,20 +24,32 @@ export interface LayoutProps {
   inApp?: boolean;
 }
 
+const HEADER_HEIGHT_PX = 60;
+const FOOTER_HEIGHT_REM = 3;
+
+const DRAWER_EXPANDED_COOKIE_NAME = "drawerExpanded";
+
 const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) => {
   const { isDesktop } = useContext(DeviceContext);
-  const headerHeightInPx = 60;
-  const headerHeight = `${headerHeightInPx}px`;
-  const footerHeightRem = 3;
-  const footerHeight = `${footerHeightRem}rem`;
+  const cookies = parseCookies();
+  const drawerExpandedCookieValue = cookies[DRAWER_EXPANDED_COOKIE_NAME];
+  const drawerExpanded = drawerExpandedCookieValue
+    ? drawerExpandedCookieValue === "true"
+    : isDesktop;
+  const headerHeight = `${HEADER_HEIGHT_PX}px`;
+  const footerHeight = `${FOOTER_HEIGHT_REM}rem`;
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const [appDrawerOpen, setAppDrawerOpen] = useState(isDesktop);
+  const [appDrawerOpen, _setAppDrawerOpen] = useState(drawerExpanded);
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
-  const { newTaskData, dispatchNewTaskData, newTaskDialogState } = useNewTaskDialog();
+  const { newTaskData, dispatchNewTaskData, newTaskDialogState, newTaskDialogTriggerProps } =
+    useNewTaskDialog();
   const { newCalendarEventData, dispatchNewCalendarEventData, newCalendarEventDialogState } =
     useNewCalendarEventDialog();
 
-  const newDialogTriggerProps = bindTrigger(newTaskDialogState);
+  const setAppDrawerOpen = (open: boolean) => {
+    _setAppDrawerOpen(open);
+    setCookie(undefined, DRAWER_EXPANDED_COOKIE_NAME, open.toString());
+  };
 
   const handleSpeedDialOpen = () => {
     // console.log("handleSpeedDialOpen");
@@ -50,7 +63,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
     {
       icon: <TaskAltIcon />,
       name: "Task",
-      onClick: newDialogTriggerProps.onClick,
+      onClick: newTaskDialogTriggerProps.onClick,
     },
     {
       icon: <TodayIcon />,
@@ -79,7 +92,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
           overflow: "hidden",
         }}
       >
-        <Header heightInPx={headerHeightInPx} />
+        <Header heightInPx={HEADER_HEIGHT_PX} />
         <Backdrop open={isMobile && speedDialOpen} />
         <div
           style={{

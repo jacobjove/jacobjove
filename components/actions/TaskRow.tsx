@@ -1,6 +1,5 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
-import DateContext from "@/components/contexts/DateContext";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
 import { initializeTaskData, taskDataReducer } from "@/utils/tasks";
@@ -18,7 +17,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { format, isPast, isSameDay, isSameYear, isToday } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { FC, RefObject, useContext, useMemo, useReducer, useRef, useState } from "react";
+import { FC, RefObject, useMemo, useReducer, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
 export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
@@ -48,7 +47,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const { task, asSubtask, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
   const completed = !!task.completedAt;
   const collapsed = _collapsed ?? false;
-  const today = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
 
@@ -304,7 +302,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
       <TaskDialog
         task={taskData}
         dispatchTaskData={dispatchTaskData}
-        toggleCompletion={toggleCompletion}
         {...bindPopover(dialogState)}
       />
     </>

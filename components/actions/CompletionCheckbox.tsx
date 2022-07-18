@@ -3,8 +3,7 @@ import { styled } from "@mui/material/styles";
 import React, { FC } from "react";
 
 const CompletionCheckbox: FC<CheckboxProps> = styled((props: CheckboxProps) => {
-  const { checked, disabled, onClick } = props;
-  return <Checkbox checked={checked} disabled={disabled} onClick={onClick} />;
+  return <Checkbox {...props} />;
 })(() => ({}));
 
 export default CompletionCheckbox;

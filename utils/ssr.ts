@@ -3,10 +3,12 @@ import { addApolloState, initializeApollo } from "@/lib/apollo";
 import { printError } from "@/utils/apollo/error-handling";
 import { QueryOptions } from "@apollo/client";
 import { AuthAction, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
+import nookies from "nookies";
 import { FC } from "react";
 
 interface BuildServerSidePropsOptions {
   unauthedRedirectDestination?: string;
+  readCookies?: boolean;
   query?: QueryOptions;
 }
 
@@ -30,7 +32,10 @@ export const buildGetServerSidePropsFunc = ({
         : {}
     )(async (ctx) => {
       const { req, AuthUser: authUser } = ctx;
+      const props = {} as { [key: string]: unknown };
       console.log(">>> Building server-side props for", req.url);
+      const cookies = nookies.get(ctx);
+      props["cookies"] = cookies;
       const apolloClient = query ? initializeApollo() : null;
       if (EXECUTE_SERVER_SIDE_QUERIES && query && apolloClient) {
         if (unauthedRedirectDestination && !authUser.id) {
@@ -52,7 +57,6 @@ export const buildGetServerSidePropsFunc = ({
           })
           .catch(printError);
       }
-      const props = {};
       return apolloClient ? addApolloState(apolloClient, { props }) : { props };
     });
   } else {

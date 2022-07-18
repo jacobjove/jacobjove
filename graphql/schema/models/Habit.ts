@@ -1,5 +1,4 @@
 import * as TypeGraphQL from "type-graphql";
-import { Act } from "../models/Act";
 import { Action } from "../models/Action";
 import { ActionSchedule } from "../models/ActionSchedule";
 import { CalendarEvent } from "../models/CalendarEvent";
@@ -20,13 +19,6 @@ export class Habit extends Model {
     nullable: false,
   })
   id!: string;
-
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
-  actId!: string;
-
-  act?: Act;
 
   @TypeGraphQL.Field((_type) => String, {
     nullable: false,

@@ -84,8 +84,12 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
     <Box
       sx={{
         width: "100%",
+        height: "100%",
+        flexGrow: 1,
+        display: "flex",
+        flexDirection: "column",
         typography: "body1",
-        "& .MuiTabPanel-root": { p: 0 },
+        "& .MuiTabPanel-root": { p: 0, flexGrow: 1 },
         "& .MuiTabs-flexContainer": {
           justifyContent: "space-between",
         },
@@ -240,7 +244,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
           }}
         >
           <PlannerCompanionStuff
-            useTabs={!displaySideBySide}
+            useTabs={!displaySideBySide || true}
             tasks={tasks ?? []}
             habits={habits ?? []}
             goals={goals ?? []}

@@ -1,20 +1,22 @@
+import AddIcon from "@mui/icons-material/Add";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, SyntheticEvent, useState } from "react";
 import { createPortal } from "react-dom";
 
 export interface DataBoxProps {
   title: string;
   displayTitle?: boolean;
+  onClickAddItem?: (event: SyntheticEvent) => void;
   children: ReactNode;
 }
 
 const DataBox: FC<DataBoxProps> = (props: DataBoxProps) => {
-  const { title, displayTitle: _displayTitle, children } = props;
+  const { title, displayTitle: _displayTitle, onClickAddItem, children } = props;
   const [fullScreen, setFullScreen] = useState(false);
   const displayTitle = fullScreen || (_displayTitle ?? true);
   const renderedComponent = (
@@ -26,6 +28,8 @@ const DataBox: FC<DataBoxProps> = (props: DataBoxProps) => {
         flexDirection: "column",
         flexGrow: 1,
         height: "100%",
+        backgroundColor: (theme) =>
+          theme.palette.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
         ...(fullScreen
           ? {
               position: "fixed",
@@ -42,12 +46,13 @@ const DataBox: FC<DataBoxProps> = (props: DataBoxProps) => {
     >
       <Toolbar
         disableGutters
-        style={{ minHeight: "1.5rem" }}
+        style={{ minHeight: "2rem" }}
         sx={{
           position: "relative",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          pr: "2rem",
         }}
       >
         {displayTitle && (
@@ -67,13 +72,21 @@ const DataBox: FC<DataBoxProps> = (props: DataBoxProps) => {
             {title}
           </Typography>
         )}
+        <Box ml={"auto"}>
+          {onClickAddItem && (
+            <IconButton onClick={onClickAddItem}>
+              <AddIcon />
+            </IconButton>
+          )}
+        </Box>
         <Box
           display={"flex"}
-          alignItems={"start"}
+          alignItems={"center"}
           justifyContent={"center"}
           position="absolute"
           right="0"
           top="0"
+          height="100%"
           sx={{
             "& button svg": {
               fontSize: "1.25rem",

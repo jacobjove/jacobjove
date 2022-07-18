@@ -91,6 +91,7 @@ export const taskFragment = gql`
     completedAt
     archivedAt
     parentId
+    habitId
     subtasks {
       id
       title

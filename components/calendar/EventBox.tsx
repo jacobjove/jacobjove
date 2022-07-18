@@ -1,6 +1,7 @@
 import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
 import { UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
+import { calendarEventDataReducer, initializeCalendarEventData } from "@/utils/calendarEvents";
 import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -16,7 +17,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import { format } from "date-fns";
 import { bindPopover, bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
-import { ComponentProps, FC, useState } from "react";
+import { ComponentProps, FC, useReducer, useState } from "react";
 import { useDrag } from "react-dnd";
 
 interface EventBoxProps extends ComponentProps<typeof Box> {
@@ -30,6 +31,11 @@ export interface DraggedCalendarEvent extends CalendarEvent {
 const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   const { event, ...rest } = props;
   const [hovered, setHovered] = useState(false);
+  const [calendarEventData, dispatchCalendarEventData] = useReducer(
+    calendarEventDataReducer,
+    initializeCalendarEventData(event),
+    initializeCalendarEventData
+  );
   const detailDialogState = usePopupState({
     variant: "popover",
     popupId: `event-${event.id}-detail-dialog`,
@@ -123,7 +129,11 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         event={event}
         editingDialogState={editingDialogState}
       />
-      <CalendarEventDialog eventData={event} {...bindPopover(editingDialogState)} />
+      <CalendarEventDialog
+        calendarEvent={event}
+        dispatchCalendarEventData={dispatchCalendarEventData}
+        {...bindPopover(editingDialogState)}
+      />
     </>
   );
 };

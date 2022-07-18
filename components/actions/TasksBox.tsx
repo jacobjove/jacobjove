@@ -1,5 +1,6 @@
 // import TasksBoard from "@/components/actions/TasksBoard";
 import TasksAccordion, { TasksAccordionProps } from "@/components/actions/TasksAccordion";
+import { useNewTaskDialog } from "@/components/contexts/NewTaskDialogContext";
 import DataBox, { DataBoxProps } from "@/components/DataBox";
 // import DateSelector from "@/components/dates/DateSelector";
 // import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -20,7 +21,8 @@ type TasksBoxProps = TasksAccordionProps &
 
 const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const { defaultView, data, selectedDateState, displayTitle, ...tasksTableProps } = props;
-  const [selectedDate, setSelectedDate] = selectedDateState;
+  const { newTaskDialogTriggerProps } = useNewTaskDialog();
+  const [selectedDate, _setSelectedDate] = selectedDateState;
   // TODO: which of the following is more performant?
   // const selectedTasks = useMemo(() => {
   //   if (!selectedDate) return data.tasks;
@@ -34,7 +36,11 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   });
   const [view, setView] = useState<ViewMode>(defaultView ?? "list");
   return (
-    <DataBox title={"Tasks"} displayTitle={displayTitle}>
+    <DataBox
+      title={"Tasks"}
+      displayTitle={displayTitle}
+      onClickAddItem={newTaskDialogTriggerProps.onClick}
+    >
       <Box minHeight={0} flexGrow={1}>
         {
           view === "list" ? (
