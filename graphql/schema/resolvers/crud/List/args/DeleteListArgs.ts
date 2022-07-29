@@ -3,6 +3,6 @@ import { ListWhereUniqueInput } from "../../../inputs/ListWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteListArgs {
-  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListWhereUniqueInput, { nullable: false })
   where!: ListWhereUniqueInput;
 }

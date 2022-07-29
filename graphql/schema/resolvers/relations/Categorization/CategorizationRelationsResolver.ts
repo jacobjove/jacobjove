@@ -7,7 +7,7 @@ import { Category } from "../../../models/Category";
 
 @TypeGraphQL.Resolver((_of) => Categorization)
 export class CategorizationRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Category, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Category, { nullable: false })
   async category(
     @TypeGraphQL.Root() categorization: Categorization,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -21,7 +21,7 @@ export class CategorizationRelationsResolver {
       .category({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Act, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Act, { nullable: false })
   async act(
     @TypeGraphQL.Root() categorization: Categorization,
     @TypeGraphQL.Ctx() ctx: ApolloContext

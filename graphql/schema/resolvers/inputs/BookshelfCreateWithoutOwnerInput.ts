@@ -6,27 +6,27 @@ import { ShelvingCreateNestedManyWithoutShelfInput } from "../inputs/ShelvingCre
   isAbstract: true,
 })
 export class BookshelfCreateWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   slug!: string;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   isPublic?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   description?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingCreateNestedManyWithoutShelfInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingCreateNestedManyWithoutShelfInput, { nullable: true })
   shelvings?: ShelvingCreateNestedManyWithoutShelfInput | undefined;
 }

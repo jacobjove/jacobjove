@@ -8,7 +8,7 @@ import { BookshelfShelvingsArgs } from "./args/BookshelfShelvingsArgs";
 
 @TypeGraphQL.Resolver((_of) => Bookshelf)
 export class BookshelfRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async owner(
     @TypeGraphQL.Root() bookshelf: Bookshelf,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -22,7 +22,7 @@ export class BookshelfRelationsResolver {
       .owner({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Shelving], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Shelving], { nullable: false })
   async shelvings(
     @TypeGraphQL.Root() bookshelf: Bookshelf,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

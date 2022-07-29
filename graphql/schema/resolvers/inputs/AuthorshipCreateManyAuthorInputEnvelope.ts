@@ -5,9 +5,9 @@ import { AuthorshipCreateManyAuthorInput } from "../inputs/AuthorshipCreateManyA
   isAbstract: true,
 })
 export class AuthorshipCreateManyAuthorInputEnvelope {
-  @TypeGraphQL.Field((_type) => [AuthorshipCreateManyAuthorInput], { nullable: false })
+  @TypeGraphQL.Field(() => [AuthorshipCreateManyAuthorInput], { nullable: false })
   data!: AuthorshipCreateManyAuthorInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -7,12 +7,12 @@ import { AuthorshipWhereUniqueInput } from "../inputs/AuthorshipWhereUniqueInput
   isAbstract: true,
 })
 export class AuthorshipUpsertWithWhereUniqueWithoutBookInput {
-  @TypeGraphQL.Field((_type) => AuthorshipWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipWhereUniqueInput, { nullable: false })
   where!: AuthorshipWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => AuthorshipUpdateWithoutBookInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipUpdateWithoutBookInput, { nullable: false })
   update!: AuthorshipUpdateWithoutBookInput;
 
-  @TypeGraphQL.Field((_type) => AuthorshipCreateWithoutBookInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipCreateWithoutBookInput, { nullable: false })
   create!: AuthorshipCreateWithoutBookInput;
 }

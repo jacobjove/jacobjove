@@ -6,9 +6,9 @@ import { ValueWhereUniqueInput } from "../inputs/ValueWhereUniqueInput";
   isAbstract: true,
 })
 export class ValueCreateOrConnectInput {
-  @TypeGraphQL.Field((_type) => ValueWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueWhereUniqueInput, { nullable: false })
   where!: ValueWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ValueCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueCreateInput, { nullable: false })
   create!: ValueCreateInput;
 }

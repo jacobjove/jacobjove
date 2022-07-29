@@ -6,18 +6,18 @@ import { NestedIntNullableFilter } from "../inputs/NestedIntNullableFilter";
   isAbstract: true,
 })
 export class NestedBoolNullableWithAggregatesFilter {
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   equals?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedBoolNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedBoolNullableWithAggregatesFilter, { nullable: true })
   not?: NestedBoolNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedIntNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedIntNullableFilter, { nullable: true })
   _count?: NestedIntNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedBoolNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedBoolNullableFilter, { nullable: true })
   _min?: NestedBoolNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedBoolNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedBoolNullableFilter, { nullable: true })
   _max?: NestedBoolNullableFilter | undefined;
 }

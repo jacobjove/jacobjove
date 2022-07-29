@@ -5,9 +5,9 @@ import { MantraCreateManyUserInput } from "../inputs/MantraCreateManyUserInput";
   isAbstract: true,
 })
 export class MantraCreateManyUserInputEnvelope {
-  @TypeGraphQL.Field((_type) => [MantraCreateManyUserInput], { nullable: false })
+  @TypeGraphQL.Field(() => [MantraCreateManyUserInput], { nullable: false })
   data!: MantraCreateManyUserInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

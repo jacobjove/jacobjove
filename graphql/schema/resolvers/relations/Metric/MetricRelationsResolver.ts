@@ -9,7 +9,7 @@ import { MetricUsagesArgs } from "./args/MetricUsagesArgs";
 
 @TypeGraphQL.Resolver((_of) => Metric)
 export class MetricRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [MetricApplication], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [MetricApplication], { nullable: false })
   async applications(
     @TypeGraphQL.Root() metric: Metric,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -25,7 +25,7 @@ export class MetricRelationsResolver {
       .applications(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [MetricUsage], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [MetricUsage], { nullable: false })
   async usages(
     @TypeGraphQL.Root() metric: Metric,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

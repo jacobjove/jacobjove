@@ -5,24 +5,24 @@ import { DateTimeScalar } from "../../scalars";
   isAbstract: true,
 })
 export class MetricRecordCreateManyInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   metricUsageId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   actionId!: string;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   value!: number;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 }

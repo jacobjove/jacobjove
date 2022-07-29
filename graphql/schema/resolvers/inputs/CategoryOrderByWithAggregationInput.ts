@@ -10,33 +10,33 @@ import { CategorySumOrderByAggregateInput } from "../inputs/CategorySumOrderByAg
   isAbstract: true,
 })
 export class CategoryOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryCountOrderByAggregateInput, { nullable: true })
   _count?: CategoryCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryAvgOrderByAggregateInput, { nullable: true })
   _avg?: CategoryAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryMaxOrderByAggregateInput, { nullable: true })
   _max?: CategoryMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryMinOrderByAggregateInput, { nullable: true })
   _min?: CategoryMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorySumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategorySumOrderByAggregateInput, { nullable: true })
   _sum?: CategorySumOrderByAggregateInput | undefined;
 }

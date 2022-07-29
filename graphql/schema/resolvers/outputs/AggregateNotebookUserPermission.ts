@@ -9,18 +9,18 @@ import { NotebookUserPermissionSumAggregate } from "../outputs/NotebookUserPermi
   isAbstract: true,
 })
 export class AggregateNotebookUserPermission {
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionCountAggregate, { nullable: true })
   _count!: NotebookUserPermissionCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionAvgAggregate, { nullable: true })
   _avg!: NotebookUserPermissionAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionSumAggregate, { nullable: true })
   _sum!: NotebookUserPermissionSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionMinAggregate, { nullable: true })
   _min!: NotebookUserPermissionMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionMaxAggregate, { nullable: true })
   _max!: NotebookUserPermissionMaxAggregate | null;
 }

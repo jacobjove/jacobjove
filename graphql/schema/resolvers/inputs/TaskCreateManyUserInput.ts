@@ -5,39 +5,39 @@ import { DateTimeScalar } from "../../scalars";
   isAbstract: true,
 })
 export class TaskCreateManyUserInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   title!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   description?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   plannedStartDate?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   dueDate?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   parentId?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   habitId?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   rank?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   completedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 }

@@ -3,6 +3,6 @@ import { CategorizationCreateInput } from "../../../inputs/CategorizationCreateI
 
 @TypeGraphQL.ArgsType()
 export class CreateCategorizationArgs {
-  @TypeGraphQL.Field((_type) => CategorizationCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationCreateInput, { nullable: false })
   data!: CategorizationCreateInput;
 }

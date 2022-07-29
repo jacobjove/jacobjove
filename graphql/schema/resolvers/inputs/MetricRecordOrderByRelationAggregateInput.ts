@@ -5,6 +5,6 @@ import { SortOrder } from "../../enums/SortOrder";
   isAbstract: true,
 })
 export class MetricRecordOrderByRelationAggregateInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   _count?: "asc" | "desc" | undefined;
 }

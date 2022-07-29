@@ -7,12 +7,12 @@ import { BeliefWhereUniqueInput } from "../inputs/BeliefWhereUniqueInput";
   isAbstract: true,
 })
 export class BeliefCreateNestedOneWithoutUserInput {
-  @TypeGraphQL.Field((_type) => BeliefCreateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefCreateInput, { nullable: true })
   create?: BeliefCreateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BeliefCreateOrConnectWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefCreateOrConnectWithoutUserInput, { nullable: true })
   connectOrCreate?: BeliefCreateOrConnectWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BeliefWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefWhereUniqueInput, { nullable: true })
   connect?: BeliefWhereUniqueInput | undefined;
 }

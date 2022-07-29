@@ -6,9 +6,9 @@ import { UserUpdateWithoutHabitsInput } from "../inputs/UserUpdateWithoutHabitsI
   isAbstract: true,
 })
 export class UserUpsertWithoutHabitsInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutHabitsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserUpdateWithoutHabitsInput, { nullable: false })
   update!: UserUpdateWithoutHabitsInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutHabitsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateWithoutHabitsInput, { nullable: false })
   create!: UserCreateWithoutHabitsInput;
 }

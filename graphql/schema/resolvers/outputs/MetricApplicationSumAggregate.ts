@@ -4,12 +4,12 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
   isAbstract: true,
 })
 export class MetricApplicationSumAggregate {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id!: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   actId!: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   metricId!: string | null;
 }

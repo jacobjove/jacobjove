@@ -10,45 +10,45 @@ import { ActSumAggregate } from "../outputs/ActSumAggregate";
   isAbstract: true,
 })
 export class ActGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   slug!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   description!: string | null;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
+  @TypeGraphQL.Field(() => Boolean, { nullable: false })
   isPublic!: boolean;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   parentId!: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => ActCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActCountAggregate, { nullable: true })
   _count!: ActCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActAvgAggregate, { nullable: true })
   _avg!: ActAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActSumAggregate, { nullable: true })
   _sum!: ActSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActMinAggregate, { nullable: true })
   _min!: ActMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActMaxAggregate, { nullable: true })
   _max!: ActMaxAggregate | null;
 }

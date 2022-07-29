@@ -5,9 +5,9 @@ import { ActWhereInput } from "../inputs/ActWhereInput";
   isAbstract: true,
 })
 export class ActRelationFilter {
-  @TypeGraphQL.Field((_type) => ActWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActWhereInput, { nullable: true })
   is?: ActWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActWhereInput, { nullable: true })
   isNot?: ActWhereInput | undefined;
 }

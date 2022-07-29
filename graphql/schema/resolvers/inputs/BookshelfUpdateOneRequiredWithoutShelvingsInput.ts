@@ -9,18 +9,18 @@ import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
   isAbstract: true,
 })
 export class BookshelfUpdateOneRequiredWithoutShelvingsInput {
-  @TypeGraphQL.Field((_type) => BookshelfCreateWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfCreateWithoutShelvingsInput, { nullable: true })
   create?: BookshelfCreateWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateOrConnectWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfCreateOrConnectWithoutShelvingsInput, { nullable: true })
   connectOrCreate?: BookshelfCreateOrConnectWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpsertWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfUpsertWithoutShelvingsInput, { nullable: true })
   upsert?: BookshelfUpsertWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfWhereUniqueInput, { nullable: true })
   connect?: BookshelfWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfUpdateWithoutShelvingsInput, { nullable: true })
   update?: BookshelfUpdateWithoutShelvingsInput | undefined;
 }

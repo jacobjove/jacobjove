@@ -10,42 +10,42 @@ import { RoutineSumOrderByAggregateInput } from "../inputs/RoutineSumOrderByAggr
   isAbstract: true,
 })
 export class RoutineOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   userId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   durationInMinutes?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   notes?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineCountOrderByAggregateInput, { nullable: true })
   _count?: RoutineCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineAvgOrderByAggregateInput, { nullable: true })
   _avg?: RoutineAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineMaxOrderByAggregateInput, { nullable: true })
   _max?: RoutineMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineMinOrderByAggregateInput, { nullable: true })
   _min?: RoutineMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineSumOrderByAggregateInput, { nullable: true })
   _sum?: RoutineSumOrderByAggregateInput | undefined;
 }

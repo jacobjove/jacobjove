@@ -5,9 +5,9 @@ import { ActCreateManyParentInput } from "../inputs/ActCreateManyParentInput";
   isAbstract: true,
 })
 export class ActCreateManyParentInputEnvelope {
-  @TypeGraphQL.Field((_type) => [ActCreateManyParentInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ActCreateManyParentInput], { nullable: false })
   data!: ActCreateManyParentInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

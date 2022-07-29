@@ -6,21 +6,21 @@ import { AuthorWhereUniqueInput } from "../../../inputs/AuthorWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindManyAuthorArgs {
-  @TypeGraphQL.Field((_type) => AuthorWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorWhereInput, { nullable: true })
   where?: AuthorWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AuthorOrderByWithRelationInput], { nullable: true })
   orderBy?: AuthorOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorWhereUniqueInput, { nullable: true })
   cursor?: AuthorWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [AuthorScalarFieldEnum], { nullable: true })
   distinct?: Array<"id" | "name" | "slug" | "createdAt" | "updatedAt" | "archivedAt"> | undefined;
 }

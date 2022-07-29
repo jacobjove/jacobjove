@@ -5,24 +5,24 @@ import { SortOrder } from "../../enums/SortOrder";
   isAbstract: true,
 })
 export class UserMaxOrderByAggregateInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   email?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   emailVerified?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   image?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isAdmin?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   lastLogin?: "asc" | "desc" | undefined;
 }

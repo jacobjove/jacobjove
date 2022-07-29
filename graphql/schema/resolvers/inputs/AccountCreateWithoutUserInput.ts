@@ -6,30 +6,30 @@ import { CalendarCreateNestedManyWithoutAccountInput } from "../inputs/CalendarC
   isAbstract: true,
 })
 export class AccountCreateWithoutUserInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   provider!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   remoteId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   accessToken?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   refreshToken?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   accessTokenExpiry?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   syncToken?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   scopes?: string[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateNestedManyWithoutAccountInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarCreateNestedManyWithoutAccountInput, { nullable: true })
   calendars?: CalendarCreateNestedManyWithoutAccountInput | undefined;
 }

@@ -7,12 +7,12 @@ import { CalendarWhereUniqueInput } from "../inputs/CalendarWhereUniqueInput";
   isAbstract: true,
 })
 export class CalendarCreateNestedOneWithoutEventsInput {
-  @TypeGraphQL.Field((_type) => CalendarCreateWithoutEventsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarCreateWithoutEventsInput, { nullable: true })
   create?: CalendarCreateWithoutEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateOrConnectWithoutEventsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarCreateOrConnectWithoutEventsInput, { nullable: true })
   connectOrCreate?: CalendarCreateOrConnectWithoutEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarWhereUniqueInput, { nullable: true })
   connect?: CalendarWhereUniqueInput | undefined;
 }

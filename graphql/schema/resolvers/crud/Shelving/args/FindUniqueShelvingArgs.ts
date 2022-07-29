@@ -3,6 +3,6 @@ import { ShelvingWhereUniqueInput } from "../../../inputs/ShelvingWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueShelvingArgs {
-  @TypeGraphQL.Field((_type) => ShelvingWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingWhereUniqueInput, { nullable: false })
   where!: ShelvingWhereUniqueInput;
 }

@@ -3,6 +3,6 @@ import { IdentityActRelationWhereUniqueInput } from "../../../inputs/IdentityAct
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueIdentityActRelationArgs {
-  @TypeGraphQL.Field((_type) => IdentityActRelationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationWhereUniqueInput, { nullable: false })
   where!: IdentityActRelationWhereUniqueInput;
 }

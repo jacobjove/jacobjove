@@ -3,6 +3,6 @@ import { IdentityActRelationWhereInput } from "../../../inputs/IdentityActRelati
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyIdentityActRelationArgs {
-  @TypeGraphQL.Field((_type) => IdentityActRelationWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationWhereInput, { nullable: true })
   where?: IdentityActRelationWhereInput | undefined;
 }

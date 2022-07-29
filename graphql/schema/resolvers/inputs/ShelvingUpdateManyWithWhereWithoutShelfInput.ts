@@ -6,9 +6,9 @@ import { ShelvingUpdateManyMutationInput } from "../inputs/ShelvingUpdateManyMut
   isAbstract: true,
 })
 export class ShelvingUpdateManyWithWhereWithoutShelfInput {
-  @TypeGraphQL.Field((_type) => ShelvingScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingScalarWhereInput, { nullable: false })
   where!: ShelvingScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ShelvingUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingUpdateManyMutationInput, { nullable: false })
   data!: ShelvingUpdateManyMutationInput;
 }

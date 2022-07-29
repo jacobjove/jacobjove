@@ -6,9 +6,9 @@ import { CalendarEventWhereUniqueInput } from "../inputs/CalendarEventWhereUniqu
   isAbstract: true,
 })
 export class CalendarEventUpdateWithWhereUniqueWithoutTaskInput {
-  @TypeGraphQL.Field((_type) => CalendarEventWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventWhereUniqueInput, { nullable: false })
   where!: CalendarEventWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateWithoutTaskInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventUpdateWithoutTaskInput, { nullable: false })
   data!: CalendarEventUpdateWithoutTaskInput;
 }

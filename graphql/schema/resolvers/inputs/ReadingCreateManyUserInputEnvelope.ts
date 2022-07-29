@@ -5,9 +5,9 @@ import { ReadingCreateManyUserInput } from "../inputs/ReadingCreateManyUserInput
   isAbstract: true,
 })
 export class ReadingCreateManyUserInputEnvelope {
-  @TypeGraphQL.Field((_type) => [ReadingCreateManyUserInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ReadingCreateManyUserInput], { nullable: false })
   data!: ReadingCreateManyUserInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

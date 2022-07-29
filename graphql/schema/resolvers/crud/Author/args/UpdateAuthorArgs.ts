@@ -4,9 +4,9 @@ import { AuthorWhereUniqueInput } from "../../../inputs/AuthorWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateAuthorArgs {
-  @TypeGraphQL.Field((_type) => AuthorUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorUpdateInput, { nullable: false })
   data!: AuthorUpdateInput;
 
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorWhereUniqueInput, { nullable: false })
   where!: AuthorWhereUniqueInput;
 }

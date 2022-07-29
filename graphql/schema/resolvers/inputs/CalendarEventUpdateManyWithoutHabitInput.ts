@@ -12,42 +12,42 @@ import { CalendarEventWhereUniqueInput } from "../inputs/CalendarEventWhereUniqu
   isAbstract: true,
 })
 export class CalendarEventUpdateManyWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => [CalendarEventCreateWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventCreateWithoutHabitInput], { nullable: true })
   create?: CalendarEventCreateWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventCreateOrConnectWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventCreateOrConnectWithoutHabitInput], { nullable: true })
   connectOrCreate?: CalendarEventCreateOrConnectWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventUpsertWithWhereUniqueWithoutHabitInput], {
+  @TypeGraphQL.Field(() => [CalendarEventUpsertWithWhereUniqueWithoutHabitInput], {
     nullable: true,
   })
   upsert?: CalendarEventUpsertWithWhereUniqueWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventCreateManyHabitInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventCreateManyHabitInputEnvelope, { nullable: true })
   createMany?: CalendarEventCreateManyHabitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventWhereUniqueInput], { nullable: true })
   set?: CalendarEventWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventWhereUniqueInput], { nullable: true })
   disconnect?: CalendarEventWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventWhereUniqueInput], { nullable: true })
   delete?: CalendarEventWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventWhereUniqueInput], { nullable: true })
   connect?: CalendarEventWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventUpdateWithWhereUniqueWithoutHabitInput], {
+  @TypeGraphQL.Field(() => [CalendarEventUpdateWithWhereUniqueWithoutHabitInput], {
     nullable: true,
   })
   update?: CalendarEventUpdateWithWhereUniqueWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventUpdateManyWithWhereWithoutHabitInput], {
+  @TypeGraphQL.Field(() => [CalendarEventUpdateManyWithWhereWithoutHabitInput], {
     nullable: true,
   })
   updateMany?: CalendarEventUpdateManyWithWhereWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventScalarWhereInput], { nullable: true })
   deleteMany?: CalendarEventScalarWhereInput[] | undefined;
 }

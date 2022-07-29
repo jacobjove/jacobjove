@@ -10,24 +10,24 @@ import { MetricSumOrderByAggregateInput } from "../inputs/MetricSumOrderByAggreg
   isAbstract: true,
 })
 export class MetricOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricCountOrderByAggregateInput, { nullable: true })
   _count?: MetricCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricAvgOrderByAggregateInput, { nullable: true })
   _avg?: MetricAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricMaxOrderByAggregateInput, { nullable: true })
   _max?: MetricMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricMinOrderByAggregateInput, { nullable: true })
   _min?: MetricMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricSumOrderByAggregateInput, { nullable: true })
   _sum?: MetricSumOrderByAggregateInput | undefined;
 }

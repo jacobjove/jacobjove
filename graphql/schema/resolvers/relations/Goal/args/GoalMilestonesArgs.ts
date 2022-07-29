@@ -6,21 +6,21 @@ import { GoalWhereUniqueInput } from "../../../inputs/GoalWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class GoalMilestonesArgs {
-  @TypeGraphQL.Field((_type) => GoalWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereInput, { nullable: true })
   where?: GoalWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalOrderByWithRelationInput], { nullable: true })
   orderBy?: GoalOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereUniqueInput, { nullable: true })
   cursor?: GoalWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalScalarFieldEnum], { nullable: true })
   distinct?: Array<"id" | "habitId" | "goalId" | "quantity"> | undefined;
 }

@@ -6,21 +6,21 @@ import { IdentityWhereUniqueInput } from "../../../inputs/IdentityWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UserIdentitiesArgs {
-  @TypeGraphQL.Field((_type) => IdentityWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityWhereInput, { nullable: true })
   where?: IdentityWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityOrderByWithRelationInput], { nullable: true })
   orderBy?: IdentityOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityWhereUniqueInput, { nullable: true })
   cursor?: IdentityWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityScalarFieldEnum], { nullable: true })
   distinct?: Array<"id" | "userId" | "identityId" | "archivedAt"> | undefined;
 }

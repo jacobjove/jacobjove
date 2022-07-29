@@ -8,21 +8,21 @@ import { NotebookUserPermissionWhereUniqueInput } from "../inputs/NotebookUserPe
   isAbstract: true,
 })
 export class NotebookUserPermissionCreateNestedManyWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateWithoutNotebookInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionCreateWithoutNotebookInput], {
     nullable: true,
   })
   create?: NotebookUserPermissionCreateWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateOrConnectWithoutNotebookInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionCreateOrConnectWithoutNotebookInput], {
     nullable: true,
   })
   connectOrCreate?: NotebookUserPermissionCreateOrConnectWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionCreateManyNotebookInputEnvelope, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionCreateManyNotebookInputEnvelope, {
     nullable: true,
   })
   createMany?: NotebookUserPermissionCreateManyNotebookInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   connect?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 }

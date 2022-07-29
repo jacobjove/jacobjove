@@ -7,12 +7,12 @@ import { ListWhereUniqueInput } from "../inputs/ListWhereUniqueInput";
   isAbstract: true,
 })
 export class ListUpsertWithWhereUniqueWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListWhereUniqueInput, { nullable: false })
   where!: ListWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ListUpdateWithoutOwnerInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListUpdateWithoutOwnerInput, { nullable: false })
   update!: ListUpdateWithoutOwnerInput;
 
-  @TypeGraphQL.Field((_type) => ListCreateWithoutOwnerInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListCreateWithoutOwnerInput, { nullable: false })
   create!: ListCreateWithoutOwnerInput;
 }

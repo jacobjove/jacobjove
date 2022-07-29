@@ -5,20 +5,20 @@ import { ActionScheduleTemplateWhereUniqueInput } from "../../../inputs/ActionSc
 
 @TypeGraphQL.ArgsType()
 export class AggregateActionScheduleTemplateArgs {
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateWhereInput, { nullable: true })
   where?: ActionScheduleTemplateWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateOrderByWithRelationInput], {
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateOrderByWithRelationInput], {
     nullable: true,
   })
   orderBy?: ActionScheduleTemplateOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateWhereUniqueInput, { nullable: true })
   cursor?: ActionScheduleTemplateWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 }

@@ -4,9 +4,9 @@ import { ScheduleTemplateWhereUniqueInput } from "../../../inputs/ScheduleTempla
 
 @TypeGraphQL.ArgsType()
 export class UpdateScheduleTemplateArgs {
-  @TypeGraphQL.Field((_type) => ScheduleTemplateUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ScheduleTemplateUpdateInput, { nullable: false })
   data!: ScheduleTemplateUpdateInput;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ScheduleTemplateWhereUniqueInput, { nullable: false })
   where!: ScheduleTemplateWhereUniqueInput;
 }

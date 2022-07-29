@@ -4,9 +4,9 @@ import { IdentityActRelationWhereInput } from "../../../inputs/IdentityActRelati
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyIdentityActRelationArgs {
-  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationUpdateManyMutationInput, { nullable: false })
   data!: IdentityActRelationUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationWhereInput, { nullable: true })
   where?: IdentityActRelationWhereInput | undefined;
 }

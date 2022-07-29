@@ -7,12 +7,12 @@ import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
   isAbstract: true,
 })
 export class BookshelfUpsertWithWhereUniqueWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfWhereUniqueInput, { nullable: false })
   where!: BookshelfWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateWithoutOwnerInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfUpdateWithoutOwnerInput, { nullable: false })
   update!: BookshelfUpdateWithoutOwnerInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateWithoutOwnerInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfCreateWithoutOwnerInput, { nullable: false })
   create!: BookshelfCreateWithoutOwnerInput;
 }

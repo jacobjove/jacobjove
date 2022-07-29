@@ -9,39 +9,39 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class UserScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [UserScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [UserScalarWhereWithAggregatesInput], { nullable: true })
   AND?: UserScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [UserScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [UserScalarWhereWithAggregatesInput], { nullable: true })
   OR?: UserScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [UserScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [UserScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: UserScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   uid?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   name?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   email?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   emailVerified?: DateTimeNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   image?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => BoolWithAggregatesFilter, { nullable: true })
   isAdmin?: BoolWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => JsonWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => JsonWithAggregatesFilter, { nullable: true })
   settings?: JsonWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   lastLogin?: DateTimeNullableWithAggregatesFilter | undefined;
 }

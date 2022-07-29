@@ -9,18 +9,18 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitUpdateOneRequiredWithoutMetricUsagesInput {
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutMetricUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateWithoutMetricUsagesInput, { nullable: true })
   create?: HabitCreateWithoutMetricUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateOrConnectWithoutMetricUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateOrConnectWithoutMetricUsagesInput, { nullable: true })
   connectOrCreate?: HabitCreateOrConnectWithoutMetricUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpsertWithoutMetricUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpsertWithoutMetricUsagesInput, { nullable: true })
   upsert?: HabitUpsertWithoutMetricUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: true })
   connect?: HabitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutMetricUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutMetricUsagesInput, { nullable: true })
   update?: HabitUpdateWithoutMetricUsagesInput | undefined;
 }

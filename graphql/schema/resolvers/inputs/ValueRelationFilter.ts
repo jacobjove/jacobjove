@@ -5,9 +5,9 @@ import { ValueWhereInput } from "../inputs/ValueWhereInput";
   isAbstract: true,
 })
 export class ValueRelationFilter {
-  @TypeGraphQL.Field((_type) => ValueWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueWhereInput, { nullable: true })
   is?: ValueWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueWhereInput, { nullable: true })
   isNot?: ValueWhereInput | undefined;
 }

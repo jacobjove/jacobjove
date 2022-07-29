@@ -6,22 +6,22 @@ import { RoutineWhereUniqueInput } from "../../../inputs/RoutineWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class FindManyRoutineArgs {
-  @TypeGraphQL.Field((_type) => RoutineWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineWhereInput, { nullable: true })
   where?: RoutineWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RoutineOrderByWithRelationInput], { nullable: true })
   orderBy?: RoutineOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineWhereUniqueInput, { nullable: true })
   cursor?: RoutineWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [RoutineScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

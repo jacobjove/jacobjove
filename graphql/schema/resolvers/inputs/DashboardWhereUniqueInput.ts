@@ -5,9 +5,9 @@ import { DashboardNameUserIdCompoundUniqueInput } from "../inputs/DashboardNameU
   isAbstract: true,
 })
 export class DashboardWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => DashboardNameUserIdCompoundUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardNameUserIdCompoundUniqueInput, { nullable: true })
   name_userId?: DashboardNameUserIdCompoundUniqueInput | undefined;
 }

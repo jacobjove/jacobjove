@@ -17,6 +17,6 @@ export class MantraUpdateWithoutMantraInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutMantrasInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateOneRequiredWithoutMantrasInput, { nullable: true })
   user?: UserUpdateOneRequiredWithoutMantrasInput | undefined;
 }

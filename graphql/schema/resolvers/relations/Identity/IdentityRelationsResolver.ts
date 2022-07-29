@@ -7,7 +7,7 @@ import { IdentityActionRelationsArgs } from "./args/IdentityActionRelationsArgs"
 
 @TypeGraphQL.Resolver((_of) => Identity)
 export class IdentityRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [IdentityActRelation], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [IdentityActRelation], { nullable: false })
   async actionRelations(
     @TypeGraphQL.Root() identity: Identity,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

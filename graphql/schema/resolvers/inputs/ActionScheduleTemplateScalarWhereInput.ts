@@ -7,30 +7,30 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class ActionScheduleTemplateScalarWhereInput {
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateScalarWhereInput], { nullable: true })
   AND?: ActionScheduleTemplateScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateScalarWhereInput], { nullable: true })
   OR?: ActionScheduleTemplateScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateScalarWhereInput], { nullable: true })
   NOT?: ActionScheduleTemplateScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   actId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   scheduleTemplateId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => EnumFREQUENCYFilter, { nullable: true })
+  @TypeGraphQL.Field(() => EnumFREQUENCYFilter, { nullable: true })
   frequency?: EnumFREQUENCYFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntFilter, { nullable: true })
   multiplier?: IntFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntFilter, { nullable: true })
   quantity?: IntFilter | undefined;
 }

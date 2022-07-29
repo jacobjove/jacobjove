@@ -6,9 +6,9 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskCreateOrConnectWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskWhereUniqueInput, { nullable: false })
   where!: TaskWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutCalendarEventsInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskCreateWithoutCalendarEventsInput, { nullable: false })
   create!: TaskCreateWithoutCalendarEventsInput;
 }

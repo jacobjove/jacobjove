@@ -6,22 +6,22 @@ import { ActionScheduleWhereUniqueInput } from "../../../inputs/ActionScheduleWh
 
 @TypeGraphQL.ArgsType()
 export class FindFirstActionScheduleArgs {
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleWhereInput, { nullable: true })
   where?: ActionScheduleWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleOrderByWithRelationInput], { nullable: true })
   orderBy?: ActionScheduleOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleWhereUniqueInput, { nullable: true })
   cursor?: ActionScheduleWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

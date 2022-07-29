@@ -11,63 +11,63 @@ import { CalendarSumAggregate } from "../outputs/CalendarSumAggregate";
   isAbstract: true,
 })
 export class CalendarGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   uid!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   name!: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   color!: string | null;
 
-  @TypeGraphQL.Field((_type) => CalendarProvider, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarProvider, { nullable: true })
   provider!: "google" | "apple" | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   remoteId!: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   syncToken!: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   accountId!: string | null;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   primary!: boolean | null;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   public!: boolean | null;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   enabled!: boolean | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => CalendarCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarCountAggregate, { nullable: true })
   _count!: CalendarCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarAvgAggregate, { nullable: true })
   _avg!: CalendarAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarSumAggregate, { nullable: true })
   _sum!: CalendarSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarMinAggregate, { nullable: true })
   _min!: CalendarMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarMaxAggregate, { nullable: true })
   _max!: CalendarMaxAggregate | null;
 }

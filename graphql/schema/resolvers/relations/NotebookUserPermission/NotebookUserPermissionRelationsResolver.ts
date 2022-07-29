@@ -7,7 +7,7 @@ import { User } from "../../../models/User";
 
 @TypeGraphQL.Resolver((_of) => NotebookUserPermission)
 export class NotebookUserPermissionRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() notebookUserPermission: NotebookUserPermission,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -22,7 +22,7 @@ export class NotebookUserPermissionRelationsResolver {
       .user({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Notebook, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Notebook, { nullable: false })
   async notebook(
     @TypeGraphQL.Root() notebookUserPermission: NotebookUserPermission,
     @TypeGraphQL.Ctx() ctx: ApolloContext

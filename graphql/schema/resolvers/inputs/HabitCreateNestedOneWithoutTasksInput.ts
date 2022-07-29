@@ -7,12 +7,12 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitCreateNestedOneWithoutTasksInput {
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutTasksInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateWithoutTasksInput, { nullable: true })
   create?: HabitCreateWithoutTasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateOrConnectWithoutTasksInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateOrConnectWithoutTasksInput, { nullable: true })
   connectOrCreate?: HabitCreateOrConnectWithoutTasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: true })
   connect?: HabitWhereUniqueInput | undefined;
 }

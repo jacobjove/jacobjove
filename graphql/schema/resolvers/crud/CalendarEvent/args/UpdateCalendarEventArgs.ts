@@ -4,9 +4,9 @@ import { CalendarEventWhereUniqueInput } from "../../../inputs/CalendarEventWher
 
 @TypeGraphQL.ArgsType()
 export class UpdateCalendarEventArgs {
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventUpdateInput, { nullable: false })
   data!: CalendarEventUpdateInput;
 
-  @TypeGraphQL.Field((_type) => CalendarEventWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventWhereUniqueInput, { nullable: false })
   where!: CalendarEventWhereUniqueInput;
 }

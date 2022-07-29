@@ -19,66 +19,66 @@ import { TaskListRelationFilter } from "../inputs/TaskListRelationFilter";
   isAbstract: true,
 })
 export class UserWhereInput {
-  @TypeGraphQL.Field((_type) => [UserWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [UserWhereInput], { nullable: true })
   AND?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [UserWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [UserWhereInput], { nullable: true })
   OR?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [UserWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [UserWhereInput], { nullable: true })
   NOT?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableFilter, { nullable: true })
   name?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   email?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   emailVerified?: DateTimeNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableFilter, { nullable: true })
   image?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFilter, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFilter, { nullable: true })
   isAdmin?: BoolFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => JsonFilter, { nullable: true })
+  @TypeGraphQL.Field(() => JsonFilter, { nullable: true })
   settings?: JsonFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   lastLogin?: DateTimeNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => AccountListRelationFilter, { nullable: true })
   accounts?: AccountListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarListRelationFilter, { nullable: true })
   calendars?: CalendarListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => TaskListRelationFilter, { nullable: true })
   tasks?: TaskListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DashboardListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardListRelationFilter, { nullable: true })
   dashboards?: DashboardListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookListRelationFilter, { nullable: true })
   notebooks?: NotebookListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionListRelationFilter, { nullable: true })
   notebookPermissions?: NotebookUserPermissionListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ListListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ListListRelationFilter, { nullable: true })
   lists?: ListListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingListRelationFilter, { nullable: true })
   readings?: ReadingListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfListRelationFilter, { nullable: true })
   bookshelves?: BookshelfListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewListRelationFilter, { nullable: true })
   bookReviews?: BookReviewListRelationFilter | undefined;
 }

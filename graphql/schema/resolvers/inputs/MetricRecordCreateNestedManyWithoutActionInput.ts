@@ -8,15 +8,15 @@ import { MetricRecordWhereUniqueInput } from "../inputs/MetricRecordWhereUniqueI
   isAbstract: true,
 })
 export class MetricRecordCreateNestedManyWithoutActionInput {
-  @TypeGraphQL.Field((_type) => [MetricRecordCreateWithoutActionInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordCreateWithoutActionInput], { nullable: true })
   create?: MetricRecordCreateWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordCreateOrConnectWithoutActionInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordCreateOrConnectWithoutActionInput], { nullable: true })
   connectOrCreate?: MetricRecordCreateOrConnectWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordCreateManyActionInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordCreateManyActionInputEnvelope, { nullable: true })
   createMany?: MetricRecordCreateManyActionInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordWhereUniqueInput], { nullable: true })
   connect?: MetricRecordWhereUniqueInput[] | undefined;
 }

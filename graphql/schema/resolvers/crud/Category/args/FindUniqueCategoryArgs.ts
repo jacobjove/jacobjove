@@ -3,6 +3,6 @@ import { CategoryWhereUniqueInput } from "../../../inputs/CategoryWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueCategoryArgs {
-  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategoryWhereUniqueInput, { nullable: false })
   where!: CategoryWhereUniqueInput;
 }

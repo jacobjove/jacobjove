@@ -3,6 +3,6 @@ import { ScheduleTemplateWhereInput } from "../../../inputs/ScheduleTemplateWher
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyScheduleTemplateArgs {
-  @TypeGraphQL.Field((_type) => ScheduleTemplateWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateWhereInput, { nullable: true })
   where?: ScheduleTemplateWhereInput | undefined;
 }

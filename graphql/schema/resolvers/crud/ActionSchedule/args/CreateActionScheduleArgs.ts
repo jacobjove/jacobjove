@@ -3,6 +3,6 @@ import { ActionScheduleCreateInput } from "../../../inputs/ActionScheduleCreateI
 
 @TypeGraphQL.ArgsType()
 export class CreateActionScheduleArgs {
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleCreateInput, { nullable: false })
   data!: ActionScheduleCreateInput;
 }

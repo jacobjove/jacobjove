@@ -4,9 +4,9 @@ import { CategorizationWhereInput } from "../../../inputs/CategorizationWhereInp
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyCategorizationArgs {
-  @TypeGraphQL.Field((_type) => CategorizationUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationUpdateManyMutationInput, { nullable: false })
   data!: CategorizationUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => CategorizationWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationWhereInput, { nullable: true })
   where?: CategorizationWhereInput | undefined;
 }

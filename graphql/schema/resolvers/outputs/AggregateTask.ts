@@ -9,18 +9,18 @@ import { TaskSumAggregate } from "../outputs/TaskSumAggregate";
   isAbstract: true,
 })
 export class AggregateTask {
-  @TypeGraphQL.Field((_type) => TaskCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => TaskCountAggregate, { nullable: true })
   _count!: TaskCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => TaskAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => TaskAvgAggregate, { nullable: true })
   _avg!: TaskAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => TaskSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => TaskSumAggregate, { nullable: true })
   _sum!: TaskSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => TaskMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => TaskMinAggregate, { nullable: true })
   _min!: TaskMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => TaskMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => TaskMaxAggregate, { nullable: true })
   _max!: TaskMaxAggregate | null;
 }

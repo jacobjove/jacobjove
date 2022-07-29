@@ -6,9 +6,9 @@ import { BookReviewUpdateManyMutationInput } from "../inputs/BookReviewUpdateMan
   isAbstract: true,
 })
 export class BookReviewUpdateManyWithWhereWithoutBookInput {
-  @TypeGraphQL.Field((_type) => BookReviewScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookReviewScalarWhereInput, { nullable: false })
   where!: BookReviewScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => BookReviewUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookReviewUpdateManyMutationInput, { nullable: false })
   data!: BookReviewUpdateManyMutationInput;
 }

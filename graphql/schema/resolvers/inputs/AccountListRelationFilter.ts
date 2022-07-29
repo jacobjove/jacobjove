@@ -5,12 +5,12 @@ import { AccountWhereInput } from "../inputs/AccountWhereInput";
   isAbstract: true,
 })
 export class AccountListRelationFilter {
-  @TypeGraphQL.Field((_type) => AccountWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountWhereInput, { nullable: true })
   every?: AccountWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountWhereInput, { nullable: true })
   some?: AccountWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountWhereInput, { nullable: true })
   none?: AccountWhereInput | undefined;
 }

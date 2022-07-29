@@ -5,12 +5,12 @@ import { AuthorshipWhereInput } from "../inputs/AuthorshipWhereInput";
   isAbstract: true,
 })
 export class AuthorshipListRelationFilter {
-  @TypeGraphQL.Field((_type) => AuthorshipWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipWhereInput, { nullable: true })
   every?: AuthorshipWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipWhereInput, { nullable: true })
   some?: AuthorshipWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipWhereInput, { nullable: true })
   none?: AuthorshipWhereInput | undefined;
 }

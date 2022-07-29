@@ -6,9 +6,9 @@ import { MetricApplicationUpdateManyMutationInput } from "../inputs/MetricApplic
   isAbstract: true,
 })
 export class MetricApplicationUpdateManyWithWhereWithoutMetricInput {
-  @TypeGraphQL.Field((_type) => MetricApplicationScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricApplicationScalarWhereInput, { nullable: false })
   where!: MetricApplicationScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricApplicationUpdateManyMutationInput, { nullable: false })
   data!: MetricApplicationUpdateManyMutationInput;
 }

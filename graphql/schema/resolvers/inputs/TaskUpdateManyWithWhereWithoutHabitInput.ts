@@ -6,9 +6,9 @@ import { TaskUpdateManyMutationInput } from "../inputs/TaskUpdateManyMutationInp
   isAbstract: true,
 })
 export class TaskUpdateManyWithWhereWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => TaskScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskScalarWhereInput, { nullable: false })
   where!: TaskScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskUpdateManyMutationInput, { nullable: false })
   data!: TaskUpdateManyMutationInput;
 }

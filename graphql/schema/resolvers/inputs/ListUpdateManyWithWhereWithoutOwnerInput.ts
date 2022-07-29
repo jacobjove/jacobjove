@@ -6,9 +6,9 @@ import { ListUpdateManyMutationInput } from "../inputs/ListUpdateManyMutationInp
   isAbstract: true,
 })
 export class ListUpdateManyWithWhereWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => ListScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListScalarWhereInput, { nullable: false })
   where!: ListScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ListUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListUpdateManyMutationInput, { nullable: false })
   data!: ListUpdateManyMutationInput;
 }

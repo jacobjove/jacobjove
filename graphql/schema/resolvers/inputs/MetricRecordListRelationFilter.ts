@@ -5,12 +5,12 @@ import { MetricRecordWhereInput } from "../inputs/MetricRecordWhereInput";
   isAbstract: true,
 })
 export class MetricRecordListRelationFilter {
-  @TypeGraphQL.Field((_type) => MetricRecordWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordWhereInput, { nullable: true })
   every?: MetricRecordWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordWhereInput, { nullable: true })
   some?: MetricRecordWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordWhereInput, { nullable: true })
   none?: MetricRecordWhereInput | undefined;
 }

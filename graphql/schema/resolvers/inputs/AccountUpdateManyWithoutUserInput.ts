@@ -12,36 +12,36 @@ import { AccountWhereUniqueInput } from "../inputs/AccountWhereUniqueInput";
   isAbstract: true,
 })
 export class AccountUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [AccountCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountCreateWithoutUserInput], { nullable: true })
   create?: AccountCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: AccountCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
   upsert?: AccountUpsertWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => AccountCreateManyUserInputEnvelope, { nullable: true })
   createMany?: AccountCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountWhereUniqueInput], { nullable: true })
   set?: AccountWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountWhereUniqueInput], { nullable: true })
   disconnect?: AccountWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountWhereUniqueInput], { nullable: true })
   delete?: AccountWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountWhereUniqueInput], { nullable: true })
   connect?: AccountWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
   update?: AccountUpdateWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountUpdateManyWithWhereWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountUpdateManyWithWhereWithoutUserInput], { nullable: true })
   updateMany?: AccountUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountScalarWhereInput], { nullable: true })
   deleteMany?: AccountScalarWhereInput[] | undefined;
 }

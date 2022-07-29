@@ -9,24 +9,24 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskUpdateOneWithoutSubtasksInput {
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskCreateWithoutSubtasksInput, { nullable: true })
   create?: TaskCreateWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateOrConnectWithoutSubtasksInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskCreateOrConnectWithoutSubtasksInput, { nullable: true })
   connectOrCreate?: TaskCreateOrConnectWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpsertWithoutSubtasksInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskUpsertWithoutSubtasksInput, { nullable: true })
   upsert?: TaskUpsertWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskWhereUniqueInput, { nullable: true })
   connect?: TaskWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateWithoutSubtasksInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskUpdateWithoutSubtasksInput, { nullable: true })
   update?: TaskUpdateWithoutSubtasksInput | undefined;
 }

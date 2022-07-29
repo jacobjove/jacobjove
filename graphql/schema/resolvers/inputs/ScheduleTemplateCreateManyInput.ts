@@ -5,15 +5,15 @@ import { FREQUENCY } from "../../enums/FREQUENCY";
   isAbstract: true,
 })
 export class ScheduleTemplateCreateManyInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: true })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: true })
   frequency?: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR" | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   multiplier?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   chron?: string | undefined;
 }

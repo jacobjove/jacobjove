@@ -5,9 +5,9 @@ import { BookReviewCreateManyBookInput } from "../inputs/BookReviewCreateManyBoo
   isAbstract: true,
 })
 export class BookReviewCreateManyBookInputEnvelope {
-  @TypeGraphQL.Field((_type) => [BookReviewCreateManyBookInput], { nullable: false })
+  @TypeGraphQL.Field(() => [BookReviewCreateManyBookInput], { nullable: false })
   data!: BookReviewCreateManyBookInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -3,6 +3,6 @@ import { DashboardCreateInput } from "../../../inputs/DashboardCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateDashboardArgs {
-  @TypeGraphQL.Field((_type) => DashboardCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardCreateInput, { nullable: false })
   data!: DashboardCreateInput;
 }

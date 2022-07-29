@@ -9,12 +9,12 @@ export class IdentityActRelationUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateOneRequiredWithoutActionRelationsInput, {
+  @TypeGraphQL.Field(() => IdentityUpdateOneRequiredWithoutActionRelationsInput, {
     nullable: true,
   })
   identity?: IdentityUpdateOneRequiredWithoutActionRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateOneRequiredWithoutIdentityRelationsInput, {
+  @TypeGraphQL.Field(() => ActUpdateOneRequiredWithoutIdentityRelationsInput, {
     nullable: true,
   })
   action?: ActUpdateOneRequiredWithoutIdentityRelationsInput | undefined;

@@ -5,9 +5,9 @@ import { ShelvingShelfIdPositionCompoundUniqueInput } from "../inputs/ShelvingSh
   isAbstract: true,
 })
 export class ShelvingWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingShelfIdPositionCompoundUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingShelfIdPositionCompoundUniqueInput, { nullable: true })
   shelfId_position?: ShelvingShelfIdPositionCompoundUniqueInput | undefined;
 }

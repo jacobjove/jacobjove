@@ -5,18 +5,18 @@ import { CategoryWhereUniqueInput } from "../../../inputs/CategoryWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class AggregateCategoryArgs {
-  @TypeGraphQL.Field((_type) => CategoryWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryWhereInput, { nullable: true })
   where?: CategoryWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategoryOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategoryOrderByWithRelationInput], { nullable: true })
   orderBy?: CategoryOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryWhereUniqueInput, { nullable: true })
   cursor?: CategoryWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 }

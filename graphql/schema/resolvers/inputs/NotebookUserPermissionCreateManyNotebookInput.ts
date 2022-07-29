@@ -5,12 +5,12 @@ import { DateTimeScalar } from "../../scalars";
   isAbstract: true,
 })
 export class NotebookUserPermissionCreateManyNotebookInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | undefined;
 }

@@ -7,14 +7,14 @@ import { NotebookWhereUniqueInput } from "../inputs/NotebookWhereUniqueInput";
   isAbstract: true,
 })
 export class NotebookCreateNestedOneWithoutUserPermissionsInput {
-  @TypeGraphQL.Field((_type) => NotebookCreateWithoutUserPermissionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookCreateWithoutUserPermissionsInput, { nullable: true })
   create?: NotebookCreateWithoutUserPermissionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateOrConnectWithoutUserPermissionsInput, {
+  @TypeGraphQL.Field(() => NotebookCreateOrConnectWithoutUserPermissionsInput, {
     nullable: true,
   })
   connectOrCreate?: NotebookCreateOrConnectWithoutUserPermissionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereUniqueInput, { nullable: true })
   connect?: NotebookWhereUniqueInput | undefined;
 }

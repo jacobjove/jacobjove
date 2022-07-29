@@ -3,6 +3,6 @@ import { GoalWhereUniqueInput } from "../../../inputs/GoalWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteGoalArgs {
-  @TypeGraphQL.Field((_type) => GoalWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalWhereUniqueInput, { nullable: false })
   where!: GoalWhereUniqueInput;
 }

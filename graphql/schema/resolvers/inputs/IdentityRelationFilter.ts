@@ -5,9 +5,9 @@ import { IdentityWhereInput } from "../inputs/IdentityWhereInput";
   isAbstract: true,
 })
 export class IdentityRelationFilter {
-  @TypeGraphQL.Field((_type) => IdentityWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityWhereInput, { nullable: true })
   is?: IdentityWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityWhereInput, { nullable: true })
   isNot?: IdentityWhereInput | undefined;
 }

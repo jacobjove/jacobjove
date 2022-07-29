@@ -3,6 +3,6 @@ import { NotebookUserPermissionWhereInput } from "../../../inputs/NotebookUserPe
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyNotebookUserPermissionArgs {
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionWhereInput, { nullable: true })
   where?: NotebookUserPermissionWhereInput | undefined;
 }

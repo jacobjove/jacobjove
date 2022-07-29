@@ -7,14 +7,14 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityCreateNestedOneWithoutActionRelationsInput {
-  @TypeGraphQL.Field((_type) => IdentityCreateWithoutActionRelationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityCreateWithoutActionRelationsInput, { nullable: true })
   create?: IdentityCreateWithoutActionRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateOrConnectWithoutActionRelationsInput, {
+  @TypeGraphQL.Field(() => IdentityCreateOrConnectWithoutActionRelationsInput, {
     nullable: true,
   })
   connectOrCreate?: IdentityCreateOrConnectWithoutActionRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityWhereUniqueInput, { nullable: true })
   connect?: IdentityWhereUniqueInput | undefined;
 }

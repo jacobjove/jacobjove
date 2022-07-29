@@ -6,9 +6,9 @@ import { NotebookUpdateWithoutUserPermissionsInput } from "../inputs/NotebookUpd
   isAbstract: true,
 })
 export class NotebookUpsertWithoutUserPermissionsInput {
-  @TypeGraphQL.Field((_type) => NotebookUpdateWithoutUserPermissionsInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUpdateWithoutUserPermissionsInput, { nullable: false })
   update!: NotebookUpdateWithoutUserPermissionsInput;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateWithoutUserPermissionsInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookCreateWithoutUserPermissionsInput, { nullable: false })
   create!: NotebookCreateWithoutUserPermissionsInput;
 }

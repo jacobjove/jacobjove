@@ -5,12 +5,12 @@ import { ReadingWhereInput } from "../inputs/ReadingWhereInput";
   isAbstract: true,
 })
 export class ReadingListRelationFilter {
-  @TypeGraphQL.Field((_type) => ReadingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingWhereInput, { nullable: true })
   every?: ReadingWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingWhereInput, { nullable: true })
   some?: ReadingWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingWhereInput, { nullable: true })
   none?: ReadingWhereInput | undefined;
 }

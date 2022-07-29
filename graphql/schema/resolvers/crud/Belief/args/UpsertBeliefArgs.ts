@@ -5,12 +5,12 @@ import { BeliefWhereUniqueInput } from "../../../inputs/BeliefWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertBeliefArgs {
-  @TypeGraphQL.Field((_type) => BeliefWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefWhereUniqueInput, { nullable: false })
   where!: BeliefWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BeliefCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefCreateInput, { nullable: false })
   create!: BeliefCreateInput;
 
-  @TypeGraphQL.Field((_type) => BeliefUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefUpdateInput, { nullable: false })
   update!: BeliefUpdateInput;
 }

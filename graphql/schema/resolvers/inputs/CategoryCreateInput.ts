@@ -6,19 +6,19 @@ import { CategorizationCreateNestedManyWithoutCategoryInput } from "../inputs/Ca
   isAbstract: true,
 })
 export class CategoryCreateInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationCreateNestedManyWithoutCategoryInput, {
+  @TypeGraphQL.Field(() => CategorizationCreateNestedManyWithoutCategoryInput, {
     nullable: true,
   })
   categorizations?: CategorizationCreateNestedManyWithoutCategoryInput | undefined;

@@ -7,7 +7,7 @@ import { IdentityActRelation } from "../../../models/IdentityActRelation";
 
 @TypeGraphQL.Resolver((_of) => IdentityActRelation)
 export class IdentityActRelationRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Identity, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Identity, { nullable: false })
   async identity(
     @TypeGraphQL.Root() identityActRelation: IdentityActRelation,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -22,7 +22,7 @@ export class IdentityActRelationRelationsResolver {
       .identity({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Act, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Act, { nullable: false })
   async action(
     @TypeGraphQL.Root() identityActRelation: IdentityActRelation,
     @TypeGraphQL.Ctx() ctx: ApolloContext

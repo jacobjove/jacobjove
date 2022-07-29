@@ -7,21 +7,21 @@ import { ActionScheduleCreateNestedManyWithoutTemplateInput } from "../inputs/Ac
   isAbstract: true,
 })
 export class ActionScheduleTemplateCreateWithoutScheduleTemplateInput {
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: true })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: true })
   frequency?: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR" | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   multiplier?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   quantity?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateNestedOneWithoutScheduleTemplatesInput, {
+  @TypeGraphQL.Field(() => ActCreateNestedOneWithoutScheduleTemplatesInput, {
     nullable: false,
   })
   act!: ActCreateNestedOneWithoutScheduleTemplatesInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateNestedManyWithoutTemplateInput, {
+  @TypeGraphQL.Field(() => ActionScheduleCreateNestedManyWithoutTemplateInput, {
     nullable: true,
   })
   actionSchedules?: ActionScheduleCreateNestedManyWithoutTemplateInput | undefined;

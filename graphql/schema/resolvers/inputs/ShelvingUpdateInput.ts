@@ -7,7 +7,7 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
   isAbstract: true,
 })
 export class ShelvingUpdateInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   position?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -22,9 +22,9 @@ export class ShelvingUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateOneRequiredWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateOneRequiredWithoutShelvingsInput, { nullable: true })
   book?: BookUpdateOneRequiredWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateOneRequiredWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfUpdateOneRequiredWithoutShelvingsInput, { nullable: true })
   shelf?: BookshelfUpdateOneRequiredWithoutShelvingsInput | undefined;
 }

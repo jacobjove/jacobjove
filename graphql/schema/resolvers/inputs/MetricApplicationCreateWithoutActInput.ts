@@ -6,18 +6,18 @@ import { MetricCreateNestedOneWithoutApplicationsInput } from "../inputs/MetricC
   isAbstract: true,
 })
 export class MetricApplicationCreateWithoutActInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricCreateNestedOneWithoutApplicationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricCreateNestedOneWithoutApplicationsInput, { nullable: false })
   metric!: MetricCreateNestedOneWithoutApplicationsInput;
 }

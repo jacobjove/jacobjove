@@ -6,9 +6,9 @@ import { HabitUpdateWithoutCalendarEventsInput } from "../inputs/HabitUpdateWith
   isAbstract: true,
 })
 export class HabitUpsertWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutCalendarEventsInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutCalendarEventsInput, { nullable: false })
   update!: HabitUpdateWithoutCalendarEventsInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutCalendarEventsInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateWithoutCalendarEventsInput, { nullable: false })
   create!: HabitCreateWithoutCalendarEventsInput;
 }

@@ -5,12 +5,12 @@ import { NoteWhereInput } from "../inputs/NoteWhereInput";
   isAbstract: true,
 })
 export class NoteListRelationFilter {
-  @TypeGraphQL.Field((_type) => NoteWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NoteWhereInput, { nullable: true })
   every?: NoteWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NoteWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NoteWhereInput, { nullable: true })
   some?: NoteWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NoteWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NoteWhereInput, { nullable: true })
   none?: NoteWhereInput | undefined;
 }

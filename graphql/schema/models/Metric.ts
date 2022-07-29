@@ -8,13 +8,13 @@ import { Model } from "./model";
   isAbstract: true,
 })
 export class Metric extends Model {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
   applications?: MetricApplication[];
 
   usages?: MetricUsage[];
 
-  @TypeGraphQL.Field((_type) => MetricCount, { nullable: true })
+  @TypeGraphQL.Field(() => MetricCount, { nullable: true })
   _count?: MetricCount | null;
 }

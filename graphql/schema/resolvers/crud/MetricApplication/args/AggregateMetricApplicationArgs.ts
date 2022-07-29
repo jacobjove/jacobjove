@@ -5,18 +5,18 @@ import { MetricApplicationWhereUniqueInput } from "../../../inputs/MetricApplica
 
 @TypeGraphQL.ArgsType()
 export class AggregateMetricApplicationArgs {
-  @TypeGraphQL.Field((_type) => MetricApplicationWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationWhereInput, { nullable: true })
   where?: MetricApplicationWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricApplicationOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricApplicationOrderByWithRelationInput], { nullable: true })
   orderBy?: MetricApplicationOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationWhereUniqueInput, { nullable: true })
   cursor?: MetricApplicationWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 }

@@ -6,9 +6,9 @@ import { HabitUpdateWithoutGoalsInput } from "../inputs/HabitUpdateWithoutGoalsI
   isAbstract: true,
 })
 export class HabitUpsertWithoutGoalsInput {
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutGoalsInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutGoalsInput, { nullable: false })
   update!: HabitUpdateWithoutGoalsInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutGoalsInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateWithoutGoalsInput, { nullable: false })
   create!: HabitCreateWithoutGoalsInput;
 }

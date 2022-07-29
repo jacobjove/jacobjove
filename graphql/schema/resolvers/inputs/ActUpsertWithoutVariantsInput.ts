@@ -6,9 +6,9 @@ import { ActUpdateWithoutVariantsInput } from "../inputs/ActUpdateWithoutVariant
   isAbstract: true,
 })
 export class ActUpsertWithoutVariantsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutVariantsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateWithoutVariantsInput, { nullable: false })
   update!: ActUpdateWithoutVariantsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutVariantsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutVariantsInput, { nullable: false })
   create!: ActCreateWithoutVariantsInput;
 }

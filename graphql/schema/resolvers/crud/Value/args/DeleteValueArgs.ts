@@ -3,6 +3,6 @@ import { ValueWhereUniqueInput } from "../../../inputs/ValueWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteValueArgs {
-  @TypeGraphQL.Field((_type) => ValueWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueWhereUniqueInput, { nullable: false })
   where!: ValueWhereUniqueInput;
 }

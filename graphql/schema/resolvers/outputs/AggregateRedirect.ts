@@ -9,18 +9,18 @@ import { RedirectSumAggregate } from "../outputs/RedirectSumAggregate";
   isAbstract: true,
 })
 export class AggregateRedirect {
-  @TypeGraphQL.Field((_type) => RedirectCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectCountAggregate, { nullable: true })
   _count!: RedirectCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RedirectAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectAvgAggregate, { nullable: true })
   _avg!: RedirectAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RedirectSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectSumAggregate, { nullable: true })
   _sum!: RedirectSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RedirectMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectMinAggregate, { nullable: true })
   _min!: RedirectMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RedirectMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectMaxAggregate, { nullable: true })
   _max!: RedirectMaxAggregate | null;
 }

@@ -10,36 +10,36 @@ import { ItemSumOrderByAggregateInput } from "../inputs/ItemSumOrderByAggregateI
   isAbstract: true,
 })
 export class ItemOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   listId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   data?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemCountOrderByAggregateInput, { nullable: true })
   _count?: ItemCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemAvgOrderByAggregateInput, { nullable: true })
   _avg?: ItemAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemMaxOrderByAggregateInput, { nullable: true })
   _max?: ItemMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemMinOrderByAggregateInput, { nullable: true })
   _min?: ItemMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemSumOrderByAggregateInput, { nullable: true })
   _sum?: ItemSumOrderByAggregateInput | undefined;
 }

@@ -6,19 +6,19 @@ import { ActionScheduleTemplateOrderByRelationAggregateInput } from "../inputs/A
   isAbstract: true,
 })
 export class ScheduleTemplateOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   frequency?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   multiplier?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   chron?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateOrderByRelationAggregateInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateOrderByRelationAggregateInput, {
     nullable: true,
   })
   actionScheduleTemplates?: ActionScheduleTemplateOrderByRelationAggregateInput | undefined;

@@ -9,20 +9,20 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityUpdateOneRequiredWithoutActionRelationsInput {
-  @TypeGraphQL.Field((_type) => IdentityCreateWithoutActionRelationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityCreateWithoutActionRelationsInput, { nullable: true })
   create?: IdentityCreateWithoutActionRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateOrConnectWithoutActionRelationsInput, {
+  @TypeGraphQL.Field(() => IdentityCreateOrConnectWithoutActionRelationsInput, {
     nullable: true,
   })
   connectOrCreate?: IdentityCreateOrConnectWithoutActionRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityUpsertWithoutActionRelationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityUpsertWithoutActionRelationsInput, { nullable: true })
   upsert?: IdentityUpsertWithoutActionRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityWhereUniqueInput, { nullable: true })
   connect?: IdentityWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateWithoutActionRelationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityUpdateWithoutActionRelationsInput, { nullable: true })
   update?: IdentityUpdateWithoutActionRelationsInput | undefined;
 }

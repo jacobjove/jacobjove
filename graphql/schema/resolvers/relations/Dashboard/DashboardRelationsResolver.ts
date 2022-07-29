@@ -5,7 +5,7 @@ import { User } from "../../../models/User";
 
 @TypeGraphQL.Resolver((_of) => Dashboard)
 export class DashboardRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() dashboard: Dashboard,
     @TypeGraphQL.Ctx() ctx: ApolloContext

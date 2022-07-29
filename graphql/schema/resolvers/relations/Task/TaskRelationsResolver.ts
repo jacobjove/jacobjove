@@ -12,7 +12,7 @@ import { TaskSubtasksArgs } from "./args/TaskSubtasksArgs";
 
 @TypeGraphQL.Resolver((_of) => Task)
 export class TaskRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async user(@TypeGraphQL.Root() task: Task, @TypeGraphQL.Ctx() ctx: ApolloContext): Promise<User> {
     if (USE_FIREBASE) {
       return firestore
@@ -33,7 +33,7 @@ export class TaskRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Task, { nullable: true })
+  @TypeGraphQL.FieldResolver(() => Task, { nullable: true })
   async parent(
     @TypeGraphQL.Root() task: Task,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -52,7 +52,7 @@ export class TaskRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Habit, { nullable: true })
+  @TypeGraphQL.FieldResolver(() => Habit, { nullable: true })
   async habit(
     @TypeGraphQL.Root() task: Task,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -76,7 +76,7 @@ export class TaskRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Task], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Task], { nullable: false })
   async subtasks(
     @TypeGraphQL.Root() task: Task,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -106,7 +106,7 @@ export class TaskRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [CalendarEvent], { nullable: false })
   async calendarEvents(
     @TypeGraphQL.Root() task: Task,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

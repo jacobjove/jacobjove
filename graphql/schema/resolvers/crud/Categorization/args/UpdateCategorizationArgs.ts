@@ -4,9 +4,9 @@ import { CategorizationWhereUniqueInput } from "../../../inputs/CategorizationWh
 
 @TypeGraphQL.ArgsType()
 export class UpdateCategorizationArgs {
-  @TypeGraphQL.Field((_type) => CategorizationUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationUpdateInput, { nullable: false })
   data!: CategorizationUpdateInput;
 
-  @TypeGraphQL.Field((_type) => CategorizationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationWhereUniqueInput, { nullable: false })
   where!: CategorizationWhereUniqueInput;
 }

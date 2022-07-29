@@ -10,45 +10,45 @@ import { BookshelfSumOrderByAggregateInput } from "../inputs/BookshelfSumOrderBy
   isAbstract: true,
 })
 export class BookshelfOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   ownerId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   slug?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isPublic?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   description?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfCountOrderByAggregateInput, { nullable: true })
   _count?: BookshelfCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfAvgOrderByAggregateInput, { nullable: true })
   _avg?: BookshelfAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfMaxOrderByAggregateInput, { nullable: true })
   _max?: BookshelfMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfMinOrderByAggregateInput, { nullable: true })
   _min?: BookshelfMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfSumOrderByAggregateInput, { nullable: true })
   _sum?: BookshelfSumOrderByAggregateInput | undefined;
 }

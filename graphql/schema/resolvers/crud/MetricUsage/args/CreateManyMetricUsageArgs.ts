@@ -3,9 +3,9 @@ import { MetricUsageCreateManyInput } from "../../../inputs/MetricUsageCreateMan
 
 @TypeGraphQL.ArgsType()
 export class CreateManyMetricUsageArgs {
-  @TypeGraphQL.Field((_type) => [MetricUsageCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [MetricUsageCreateManyInput], { nullable: false })
   data!: MetricUsageCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

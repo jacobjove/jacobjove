@@ -7,21 +7,21 @@ import { IdentityOrderByWithRelationInput } from "../inputs/IdentityOrderByWithR
   isAbstract: true,
 })
 export class IdentityActRelationOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityOrderByWithRelationInput, { nullable: true })
   identity?: IdentityOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   identityId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActOrderByWithRelationInput, { nullable: true })
   action?: ActOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   actionId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 }

@@ -11,48 +11,48 @@ import { ActionScheduleSumAggregate } from "../outputs/ActionScheduleSumAggregat
   isAbstract: true,
 })
 export class ActionScheduleGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   habitId!: string;
 
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: false })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: false })
   frequency!: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR";
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   multiplier!: number;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   quantity!: number;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
+  @TypeGraphQL.Field(() => Boolean, { nullable: false })
   active!: boolean;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   templateId!: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleCountAggregate, { nullable: true })
   _count!: ActionScheduleCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleAvgAggregate, { nullable: true })
   _avg!: ActionScheduleAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleSumAggregate, { nullable: true })
   _sum!: ActionScheduleSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleMinAggregate, { nullable: true })
   _min!: ActionScheduleMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleMaxAggregate, { nullable: true })
   _max!: ActionScheduleMaxAggregate | null;
 }

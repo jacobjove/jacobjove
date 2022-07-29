@@ -5,9 +5,9 @@ import { ActionWhereInput } from "../inputs/ActionWhereInput";
   isAbstract: true,
 })
 export class ActionRelationFilter {
-  @TypeGraphQL.Field((_type) => ActionWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionWhereInput, { nullable: true })
   is?: ActionWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionWhereInput, { nullable: true })
   isNot?: ActionWhereInput | undefined;
 }

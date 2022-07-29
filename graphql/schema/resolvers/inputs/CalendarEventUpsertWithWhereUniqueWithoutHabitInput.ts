@@ -7,12 +7,12 @@ import { CalendarEventWhereUniqueInput } from "../inputs/CalendarEventWhereUniqu
   isAbstract: true,
 })
 export class CalendarEventUpsertWithWhereUniqueWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => CalendarEventWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventWhereUniqueInput, { nullable: false })
   where!: CalendarEventWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateWithoutHabitInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventUpdateWithoutHabitInput, { nullable: false })
   update!: CalendarEventUpdateWithoutHabitInput;
 
-  @TypeGraphQL.Field((_type) => CalendarEventCreateWithoutHabitInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventCreateWithoutHabitInput, { nullable: false })
   create!: CalendarEventCreateWithoutHabitInput;
 }

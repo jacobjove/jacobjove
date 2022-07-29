@@ -6,9 +6,9 @@ import { ItemWhereUniqueInput } from "../inputs/ItemWhereUniqueInput";
   isAbstract: true,
 })
 export class ItemCreateOrConnectWithoutListInput {
-  @TypeGraphQL.Field((_type) => ItemWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ItemWhereUniqueInput, { nullable: false })
   where!: ItemWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ItemCreateWithoutListInput, { nullable: false })
+  @TypeGraphQL.Field(() => ItemCreateWithoutListInput, { nullable: false })
   create!: ItemCreateWithoutListInput;
 }

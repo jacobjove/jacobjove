@@ -6,9 +6,9 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskCreateOrConnectWithoutSubtasksInput {
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskWhereUniqueInput, { nullable: false })
   where!: TaskWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskCreateWithoutSubtasksInput, { nullable: false })
   create!: TaskCreateWithoutSubtasksInput;
 }

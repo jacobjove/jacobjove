@@ -7,12 +7,12 @@ import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUni
   isAbstract: true,
 })
 export class ActionScheduleUpsertWithWhereUniqueWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleWhereUniqueInput, { nullable: false })
   where!: ActionScheduleWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleUpdateWithoutHabitInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleUpdateWithoutHabitInput, { nullable: false })
   update!: ActionScheduleUpdateWithoutHabitInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutHabitInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleCreateWithoutHabitInput, { nullable: false })
   create!: ActionScheduleCreateWithoutHabitInput;
 }

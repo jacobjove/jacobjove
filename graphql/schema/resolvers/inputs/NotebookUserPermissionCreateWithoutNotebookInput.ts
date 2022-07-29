@@ -6,10 +6,10 @@ import { UserCreateNestedOneWithoutNotebookPermissionsInput } from "../inputs/Us
   isAbstract: true,
 })
 export class NotebookUserPermissionCreateWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateNestedOneWithoutNotebookPermissionsInput, {
+  @TypeGraphQL.Field(() => UserCreateNestedOneWithoutNotebookPermissionsInput, {
     nullable: false,
   })
   user!: UserCreateNestedOneWithoutNotebookPermissionsInput;

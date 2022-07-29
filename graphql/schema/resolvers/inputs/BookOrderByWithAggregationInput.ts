@@ -10,63 +10,63 @@ import { BookSumOrderByAggregateInput } from "../inputs/BookSumOrderByAggregateI
   isAbstract: true,
 })
 export class BookOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   ids?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isbn?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isbn13?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   title?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   slug?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   description?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   authorNames?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   authorNamesLf?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   publicationYear?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   originalPublicationYear?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   extra?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookCountOrderByAggregateInput, { nullable: true })
   _count?: BookCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookAvgOrderByAggregateInput, { nullable: true })
   _avg?: BookAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookMaxOrderByAggregateInput, { nullable: true })
   _max?: BookMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookMinOrderByAggregateInput, { nullable: true })
   _min?: BookMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookSumOrderByAggregateInput, { nullable: true })
   _sum?: BookSumOrderByAggregateInput | undefined;
 }

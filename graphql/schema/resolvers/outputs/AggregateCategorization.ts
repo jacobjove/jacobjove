@@ -9,18 +9,18 @@ import { CategorizationSumAggregate } from "../outputs/CategorizationSumAggregat
   isAbstract: true,
 })
 export class AggregateCategorization {
-  @TypeGraphQL.Field((_type) => CategorizationCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationCountAggregate, { nullable: true })
   _count!: CategorizationCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationAvgAggregate, { nullable: true })
   _avg!: CategorizationAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationSumAggregate, { nullable: true })
   _sum!: CategorizationSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationMinAggregate, { nullable: true })
   _min!: CategorizationMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationMaxAggregate, { nullable: true })
   _max!: CategorizationMaxAggregate | null;
 }

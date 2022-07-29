@@ -12,36 +12,36 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskUpdateManyWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => [TaskCreateWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskCreateWithoutHabitInput], { nullable: true })
   create?: TaskCreateWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskCreateOrConnectWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskCreateOrConnectWithoutHabitInput], { nullable: true })
   connectOrCreate?: TaskCreateOrConnectWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskUpsertWithWhereUniqueWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskUpsertWithWhereUniqueWithoutHabitInput], { nullable: true })
   upsert?: TaskUpsertWithWhereUniqueWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateManyHabitInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => TaskCreateManyHabitInputEnvelope, { nullable: true })
   createMany?: TaskCreateManyHabitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   set?: TaskWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   disconnect?: TaskWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   delete?: TaskWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   connect?: TaskWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskUpdateWithWhereUniqueWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskUpdateWithWhereUniqueWithoutHabitInput], { nullable: true })
   update?: TaskUpdateWithWhereUniqueWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskUpdateManyWithWhereWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskUpdateManyWithWhereWithoutHabitInput], { nullable: true })
   updateMany?: TaskUpdateManyWithWhereWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskScalarWhereInput], { nullable: true })
   deleteMany?: TaskScalarWhereInput[] | undefined;
 }

@@ -6,21 +6,21 @@ import { MantraWhereUniqueInput } from "../../../inputs/MantraWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindManyMantraArgs {
-  @TypeGraphQL.Field((_type) => MantraWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraWhereInput, { nullable: true })
   where?: MantraWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraOrderByWithRelationInput], { nullable: true })
   orderBy?: MantraOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraWhereUniqueInput, { nullable: true })
   cursor?: MantraWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraScalarFieldEnum], { nullable: true })
   distinct?: Array<"id" | "content" | "createdAt" | "updatedAt" | "archivedAt"> | undefined;
 }

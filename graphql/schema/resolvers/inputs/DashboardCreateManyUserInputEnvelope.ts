@@ -5,9 +5,9 @@ import { DashboardCreateManyUserInput } from "../inputs/DashboardCreateManyUserI
   isAbstract: true,
 })
 export class DashboardCreateManyUserInputEnvelope {
-  @TypeGraphQL.Field((_type) => [DashboardCreateManyUserInput], { nullable: false })
+  @TypeGraphQL.Field(() => [DashboardCreateManyUserInput], { nullable: false })
   data!: DashboardCreateManyUserInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

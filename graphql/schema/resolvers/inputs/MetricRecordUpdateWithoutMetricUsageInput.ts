@@ -6,7 +6,7 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
   isAbstract: true,
 })
 export class MetricRecordUpdateWithoutMetricUsageInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   value?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -18,7 +18,7 @@ export class MetricRecordUpdateWithoutMetricUsageInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionUpdateOneRequiredWithoutMetricRecordsInput, {
+  @TypeGraphQL.Field(() => ActionUpdateOneRequiredWithoutMetricRecordsInput, {
     nullable: true,
   })
   action?: ActionUpdateOneRequiredWithoutMetricRecordsInput | undefined;

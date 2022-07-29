@@ -9,39 +9,39 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class HabitScalarWhereInput {
-  @TypeGraphQL.Field((_type) => [HabitScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitScalarWhereInput], { nullable: true })
   AND?: HabitScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitScalarWhereInput], { nullable: true })
   OR?: HabitScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitScalarWhereInput], { nullable: true })
   NOT?: HabitScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   actId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   userId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFilter, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFilter, { nullable: true })
   isPublic?: BoolFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntNullableFilter, { nullable: true })
   defaultDurationInMinutes?: IntNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 }

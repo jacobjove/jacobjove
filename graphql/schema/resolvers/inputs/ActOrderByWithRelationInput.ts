@@ -11,55 +11,55 @@ import { MetricApplicationOrderByRelationAggregateInput } from "../inputs/Metric
   isAbstract: true,
 })
 export class ActOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   slug?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   description?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isPublic?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActOrderByWithRelationInput, { nullable: true })
   parent?: ActOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   parentId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActOrderByRelationAggregateInput, { nullable: true })
   variants?: ActOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitOrderByRelationAggregateInput, { nullable: true })
   habits?: HabitOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationOrderByRelationAggregateInput, { nullable: true })
   metricApplications?: MetricApplicationOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationOrderByRelationAggregateInput, {
+  @TypeGraphQL.Field(() => IdentityActRelationOrderByRelationAggregateInput, {
     nullable: true,
   })
   identityRelations?: IdentityActRelationOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateOrderByRelationAggregateInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateOrderByRelationAggregateInput, {
     nullable: true,
   })
   scheduleTemplates?: ActionScheduleTemplateOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationOrderByRelationAggregateInput, { nullable: true })
   categorizations?: CategorizationOrderByRelationAggregateInput | undefined;
 }

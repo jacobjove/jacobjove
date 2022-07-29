@@ -6,22 +6,22 @@ import { ReadingWhereUniqueInput } from "../../../inputs/ReadingWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class FindManyReadingArgs {
-  @TypeGraphQL.Field((_type) => ReadingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingWhereInput, { nullable: true })
   where?: ReadingWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [ReadingOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ReadingOrderByWithRelationInput], { nullable: true })
   orderBy?: ReadingOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingWhereUniqueInput, { nullable: true })
   cursor?: ReadingWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [ReadingScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [ReadingScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

@@ -6,7 +6,7 @@ import { Notebook } from "../../../models/Notebook";
 
 @TypeGraphQL.Resolver((_of) => Note)
 export class NoteRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Notebook, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Notebook, { nullable: false })
   async notebook(
     @TypeGraphQL.Root() note: Note,
     @TypeGraphQL.Ctx() ctx: ApolloContext

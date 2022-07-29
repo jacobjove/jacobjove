@@ -8,17 +8,17 @@ import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUni
   isAbstract: true,
 })
 export class ActionScheduleCreateNestedManyWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => [ActionScheduleCreateWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleCreateWithoutHabitInput], { nullable: true })
   create?: ActionScheduleCreateWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleCreateOrConnectWithoutHabitInput], {
+  @TypeGraphQL.Field(() => [ActionScheduleCreateOrConnectWithoutHabitInput], {
     nullable: true,
   })
   connectOrCreate?: ActionScheduleCreateOrConnectWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateManyHabitInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleCreateManyHabitInputEnvelope, { nullable: true })
   createMany?: ActionScheduleCreateManyHabitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleWhereUniqueInput], { nullable: true })
   connect?: ActionScheduleWhereUniqueInput[] | undefined;
 }

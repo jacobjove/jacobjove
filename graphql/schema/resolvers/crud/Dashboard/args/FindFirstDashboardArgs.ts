@@ -6,22 +6,22 @@ import { DashboardWhereUniqueInput } from "../../../inputs/DashboardWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class FindFirstDashboardArgs {
-  @TypeGraphQL.Field((_type) => DashboardWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardWhereInput, { nullable: true })
   where?: DashboardWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [DashboardOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [DashboardOrderByWithRelationInput], { nullable: true })
   orderBy?: DashboardOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => DashboardWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardWhereUniqueInput, { nullable: true })
   cursor?: DashboardWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [DashboardScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [DashboardScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

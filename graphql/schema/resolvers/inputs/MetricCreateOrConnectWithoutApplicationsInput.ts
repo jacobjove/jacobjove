@@ -6,9 +6,9 @@ import { MetricWhereUniqueInput } from "../inputs/MetricWhereUniqueInput";
   isAbstract: true,
 })
 export class MetricCreateOrConnectWithoutApplicationsInput {
-  @TypeGraphQL.Field((_type) => MetricWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricWhereUniqueInput, { nullable: false })
   where!: MetricWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => MetricCreateWithoutApplicationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricCreateWithoutApplicationsInput, { nullable: false })
   create!: MetricCreateWithoutApplicationsInput;
 }

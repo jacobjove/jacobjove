@@ -3,6 +3,6 @@ import { AuthorWhereUniqueInput } from "../../../inputs/AuthorWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueAuthorArgs {
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorWhereUniqueInput, { nullable: false })
   where!: AuthorWhereUniqueInput;
 }

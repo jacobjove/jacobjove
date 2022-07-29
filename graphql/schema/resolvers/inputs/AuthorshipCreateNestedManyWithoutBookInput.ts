@@ -8,15 +8,15 @@ import { AuthorshipWhereUniqueInput } from "../inputs/AuthorshipWhereUniqueInput
   isAbstract: true,
 })
 export class AuthorshipCreateNestedManyWithoutBookInput {
-  @TypeGraphQL.Field((_type) => [AuthorshipCreateWithoutBookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AuthorshipCreateWithoutBookInput], { nullable: true })
   create?: AuthorshipCreateWithoutBookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipCreateOrConnectWithoutBookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AuthorshipCreateOrConnectWithoutBookInput], { nullable: true })
   connectOrCreate?: AuthorshipCreateOrConnectWithoutBookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipCreateManyBookInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipCreateManyBookInputEnvelope, { nullable: true })
   createMany?: AuthorshipCreateManyBookInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AuthorshipWhereUniqueInput], { nullable: true })
   connect?: AuthorshipWhereUniqueInput[] | undefined;
 }

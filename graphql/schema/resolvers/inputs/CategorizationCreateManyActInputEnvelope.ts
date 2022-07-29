@@ -5,9 +5,9 @@ import { CategorizationCreateManyActInput } from "../inputs/CategorizationCreate
   isAbstract: true,
 })
 export class CategorizationCreateManyActInputEnvelope {
-  @TypeGraphQL.Field((_type) => [CategorizationCreateManyActInput], { nullable: false })
+  @TypeGraphQL.Field(() => [CategorizationCreateManyActInput], { nullable: false })
   data!: CategorizationCreateManyActInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -9,18 +9,18 @@ import { ReadingSumAggregate } from "../outputs/ReadingSumAggregate";
   isAbstract: true,
 })
 export class AggregateReading {
-  @TypeGraphQL.Field((_type) => ReadingCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingCountAggregate, { nullable: true })
   _count!: ReadingCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ReadingAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingAvgAggregate, { nullable: true })
   _avg!: ReadingAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ReadingSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingSumAggregate, { nullable: true })
   _sum!: ReadingSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ReadingMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingMinAggregate, { nullable: true })
   _min!: ReadingMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ReadingMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingMaxAggregate, { nullable: true })
   _max!: ReadingMaxAggregate | null;
 }

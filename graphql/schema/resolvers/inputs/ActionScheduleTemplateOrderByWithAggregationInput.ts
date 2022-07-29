@@ -10,38 +10,38 @@ import { ActionScheduleTemplateSumOrderByAggregateInput } from "../inputs/Action
   isAbstract: true,
 })
 export class ActionScheduleTemplateOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   actId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   scheduleTemplateId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   frequency?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   multiplier?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   quantity?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCountOrderByAggregateInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCountOrderByAggregateInput, {
     nullable: true,
   })
   _count?: ActionScheduleTemplateCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateAvgOrderByAggregateInput, { nullable: true })
   _avg?: ActionScheduleTemplateAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateMaxOrderByAggregateInput, { nullable: true })
   _max?: ActionScheduleTemplateMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateMinOrderByAggregateInput, { nullable: true })
   _min?: ActionScheduleTemplateMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateSumOrderByAggregateInput, { nullable: true })
   _sum?: ActionScheduleTemplateSumOrderByAggregateInput | undefined;
 }

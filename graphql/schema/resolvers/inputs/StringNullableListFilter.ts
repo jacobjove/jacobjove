@@ -4,18 +4,18 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
   isAbstract: true,
 })
 export class StringNullableListFilter {
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   equals?: string[] | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   has?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   hasEvery?: string[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   hasSome?: string[] | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   isEmpty?: boolean | undefined;
 }

@@ -3,6 +3,6 @@ import { IdentityWhereUniqueInput } from "../../../inputs/IdentityWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueIdentityArgs {
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityWhereUniqueInput, { nullable: false })
   where!: IdentityWhereUniqueInput;
 }

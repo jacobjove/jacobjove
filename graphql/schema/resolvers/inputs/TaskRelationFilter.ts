@@ -5,9 +5,9 @@ import { TaskWhereInput } from "../inputs/TaskWhereInput";
   isAbstract: true,
 })
 export class TaskRelationFilter {
-  @TypeGraphQL.Field((_type) => TaskWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskWhereInput, { nullable: true })
   is?: TaskWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskWhereInput, { nullable: true })
   isNot?: TaskWhereInput | undefined;
 }

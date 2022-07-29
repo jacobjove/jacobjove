@@ -12,36 +12,36 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActUpdateManyWithoutParentInput {
-  @TypeGraphQL.Field((_type) => [ActCreateWithoutParentInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActCreateWithoutParentInput], { nullable: true })
   create?: ActCreateWithoutParentInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActCreateOrConnectWithoutParentInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActCreateOrConnectWithoutParentInput], { nullable: true })
   connectOrCreate?: ActCreateOrConnectWithoutParentInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActUpsertWithWhereUniqueWithoutParentInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActUpsertWithWhereUniqueWithoutParentInput], { nullable: true })
   upsert?: ActUpsertWithWhereUniqueWithoutParentInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateManyParentInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateManyParentInputEnvelope, { nullable: true })
   createMany?: ActCreateManyParentInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActWhereUniqueInput], { nullable: true })
   set?: ActWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActWhereUniqueInput], { nullable: true })
   disconnect?: ActWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActWhereUniqueInput], { nullable: true })
   delete?: ActWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActWhereUniqueInput], { nullable: true })
   connect?: ActWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActUpdateWithWhereUniqueWithoutParentInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActUpdateWithWhereUniqueWithoutParentInput], { nullable: true })
   update?: ActUpdateWithWhereUniqueWithoutParentInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActUpdateManyWithWhereWithoutParentInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActUpdateManyWithWhereWithoutParentInput], { nullable: true })
   updateMany?: ActUpdateManyWithWhereWithoutParentInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActScalarWhereInput], { nullable: true })
   deleteMany?: ActScalarWhereInput[] | undefined;
 }

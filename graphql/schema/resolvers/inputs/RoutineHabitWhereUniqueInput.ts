@@ -5,10 +5,10 @@ import { RoutineHabitRoutineIdPositionCompoundUniqueInput } from "../inputs/Rout
   isAbstract: true,
 })
 export class RoutineHabitWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitRoutineIdPositionCompoundUniqueInput, {
+  @TypeGraphQL.Field(() => RoutineHabitRoutineIdPositionCompoundUniqueInput, {
     nullable: true,
   })
   routineId_position?: RoutineHabitRoutineIdPositionCompoundUniqueInput | undefined;

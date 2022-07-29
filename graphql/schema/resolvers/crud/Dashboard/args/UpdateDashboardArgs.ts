@@ -4,9 +4,9 @@ import { DashboardWhereUniqueInput } from "../../../inputs/DashboardWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class UpdateDashboardArgs {
-  @TypeGraphQL.Field((_type) => DashboardUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardUpdateInput, { nullable: false })
   data!: DashboardUpdateInput;
 
-  @TypeGraphQL.Field((_type) => DashboardWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardWhereUniqueInput, { nullable: false })
   where!: DashboardWhereUniqueInput;
 }

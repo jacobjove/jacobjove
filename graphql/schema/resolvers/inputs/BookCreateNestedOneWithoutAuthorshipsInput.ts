@@ -7,12 +7,12 @@ import { BookWhereUniqueInput } from "../inputs/BookWhereUniqueInput";
   isAbstract: true,
 })
 export class BookCreateNestedOneWithoutAuthorshipsInput {
-  @TypeGraphQL.Field((_type) => BookCreateWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookCreateWithoutAuthorshipsInput, { nullable: true })
   create?: BookCreateWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCreateOrConnectWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookCreateOrConnectWithoutAuthorshipsInput, { nullable: true })
   connectOrCreate?: BookCreateOrConnectWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookWhereUniqueInput, { nullable: true })
   connect?: BookWhereUniqueInput | undefined;
 }

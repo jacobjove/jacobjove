@@ -10,33 +10,33 @@ import { MantraSumOrderByAggregateInput } from "../inputs/MantraSumOrderByAggreg
   isAbstract: true,
 })
 export class MantraOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   content?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraCountOrderByAggregateInput, { nullable: true })
   _count?: MantraCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraAvgOrderByAggregateInput, { nullable: true })
   _avg?: MantraAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraMaxOrderByAggregateInput, { nullable: true })
   _max?: MantraMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraMinOrderByAggregateInput, { nullable: true })
   _min?: MantraMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraSumOrderByAggregateInput, { nullable: true })
   _sum?: MantraSumOrderByAggregateInput | undefined;
 }

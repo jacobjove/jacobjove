@@ -6,9 +6,9 @@ import { NotebookWhereUniqueInput } from "../inputs/NotebookWhereUniqueInput";
   isAbstract: true,
 })
 export class NotebookCreateOrConnectWithoutUserPermissionsInput {
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookWhereUniqueInput, { nullable: false })
   where!: NotebookWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateWithoutUserPermissionsInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookCreateWithoutUserPermissionsInput, { nullable: false })
   create!: NotebookCreateWithoutUserPermissionsInput;
 }

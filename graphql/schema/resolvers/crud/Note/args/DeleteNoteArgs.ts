@@ -3,6 +3,6 @@ import { NoteWhereUniqueInput } from "../../../inputs/NoteWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteNoteArgs {
-  @TypeGraphQL.Field((_type) => NoteWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteWhereUniqueInput, { nullable: false })
   where!: NoteWhereUniqueInput;
 }

@@ -9,18 +9,18 @@ import { ListSumAggregate } from "../outputs/ListSumAggregate";
   isAbstract: true,
 })
 export class AggregateList {
-  @TypeGraphQL.Field((_type) => ListCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ListCountAggregate, { nullable: true })
   _count!: ListCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ListAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ListAvgAggregate, { nullable: true })
   _avg!: ListAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ListSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ListSumAggregate, { nullable: true })
   _sum!: ListSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ListMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ListMinAggregate, { nullable: true })
   _min!: ListMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ListMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ListMaxAggregate, { nullable: true })
   _max!: ListMaxAggregate | null;
 }

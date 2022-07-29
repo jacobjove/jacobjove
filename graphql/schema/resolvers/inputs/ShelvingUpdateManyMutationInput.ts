@@ -5,7 +5,7 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
   isAbstract: true,
 })
 export class ShelvingUpdateManyMutationInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   position?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

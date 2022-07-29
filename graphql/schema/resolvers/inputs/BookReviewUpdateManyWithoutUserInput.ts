@@ -12,40 +12,40 @@ import { BookReviewWhereUniqueInput } from "../inputs/BookReviewWhereUniqueInput
   isAbstract: true,
 })
 export class BookReviewUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [BookReviewCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewCreateWithoutUserInput], { nullable: true })
   create?: BookReviewCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: BookReviewCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewUpsertWithWhereUniqueWithoutUserInput], {
+  @TypeGraphQL.Field(() => [BookReviewUpsertWithWhereUniqueWithoutUserInput], {
     nullable: true,
   })
   upsert?: BookReviewUpsertWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewCreateManyUserInputEnvelope, { nullable: true })
   createMany?: BookReviewCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewWhereUniqueInput], { nullable: true })
   set?: BookReviewWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewWhereUniqueInput], { nullable: true })
   disconnect?: BookReviewWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewWhereUniqueInput], { nullable: true })
   delete?: BookReviewWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewWhereUniqueInput], { nullable: true })
   connect?: BookReviewWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewUpdateWithWhereUniqueWithoutUserInput], {
+  @TypeGraphQL.Field(() => [BookReviewUpdateWithWhereUniqueWithoutUserInput], {
     nullable: true,
   })
   update?: BookReviewUpdateWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewUpdateManyWithWhereWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewUpdateManyWithWhereWithoutUserInput], { nullable: true })
   updateMany?: BookReviewUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewScalarWhereInput], { nullable: true })
   deleteMany?: BookReviewScalarWhereInput[] | undefined;
 }

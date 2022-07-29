@@ -5,9 +5,9 @@ import { MetricUsageWhereInput } from "../inputs/MetricUsageWhereInput";
   isAbstract: true,
 })
 export class MetricUsageRelationFilter {
-  @TypeGraphQL.Field((_type) => MetricUsageWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageWhereInput, { nullable: true })
   is?: MetricUsageWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageWhereInput, { nullable: true })
   isNot?: MetricUsageWhereInput | undefined;
 }

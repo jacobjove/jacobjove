@@ -8,15 +8,15 @@ import { MantraWhereUniqueInput } from "../inputs/MantraWhereUniqueInput";
   isAbstract: true,
 })
 export class MantraCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [MantraCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraCreateWithoutUserInput], { nullable: true })
   create?: MantraCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: MantraCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => MantraCreateManyUserInputEnvelope, { nullable: true })
   createMany?: MantraCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraWhereUniqueInput], { nullable: true })
   connect?: MantraWhereUniqueInput[] | undefined;
 }

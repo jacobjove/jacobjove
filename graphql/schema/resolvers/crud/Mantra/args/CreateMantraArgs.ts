@@ -3,6 +3,6 @@ import { MantraCreateInput } from "../../../inputs/MantraCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateMantraArgs {
-  @TypeGraphQL.Field((_type) => MantraCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraCreateInput, { nullable: false })
   data!: MantraCreateInput;
 }

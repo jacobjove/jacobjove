@@ -9,18 +9,18 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActUpdateOneRequiredWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => ActCreateWithoutCategorizationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateWithoutCategorizationsInput, { nullable: true })
   create?: ActCreateWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutCategorizationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateOrConnectWithoutCategorizationsInput, { nullable: true })
   connectOrCreate?: ActCreateOrConnectWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpsertWithoutCategorizationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpsertWithoutCategorizationsInput, { nullable: true })
   upsert?: ActUpsertWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: true })
   connect?: ActWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutCategorizationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpdateWithoutCategorizationsInput, { nullable: true })
   update?: ActUpdateWithoutCategorizationsInput | undefined;
 }

@@ -5,9 +5,9 @@ import { NoteCreateManyNotebookInput } from "../inputs/NoteCreateManyNotebookInp
   isAbstract: true,
 })
 export class NoteCreateManyNotebookInputEnvelope {
-  @TypeGraphQL.Field((_type) => [NoteCreateManyNotebookInput], { nullable: false })
+  @TypeGraphQL.Field(() => [NoteCreateManyNotebookInput], { nullable: false })
   data!: NoteCreateManyNotebookInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

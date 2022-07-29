@@ -9,18 +9,18 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitUpdateOneRequiredWithoutSchedulesInput {
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutSchedulesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateWithoutSchedulesInput, { nullable: true })
   create?: HabitCreateWithoutSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateOrConnectWithoutSchedulesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateOrConnectWithoutSchedulesInput, { nullable: true })
   connectOrCreate?: HabitCreateOrConnectWithoutSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpsertWithoutSchedulesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpsertWithoutSchedulesInput, { nullable: true })
   upsert?: HabitUpsertWithoutSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: true })
   connect?: HabitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutSchedulesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutSchedulesInput, { nullable: true })
   update?: HabitUpdateWithoutSchedulesInput | undefined;
 }

@@ -12,36 +12,36 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [TaskCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskCreateWithoutUserInput], { nullable: true })
   create?: TaskCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: TaskCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
   upsert?: TaskUpsertWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => TaskCreateManyUserInputEnvelope, { nullable: true })
   createMany?: TaskCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   set?: TaskWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   disconnect?: TaskWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   delete?: TaskWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   connect?: TaskWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
   update?: TaskUpdateWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskUpdateManyWithWhereWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskUpdateManyWithWhereWithoutUserInput], { nullable: true })
   updateMany?: TaskUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskScalarWhereInput], { nullable: true })
   deleteMany?: TaskScalarWhereInput[] | undefined;
 }

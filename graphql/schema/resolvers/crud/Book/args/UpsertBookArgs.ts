@@ -5,12 +5,12 @@ import { BookWhereUniqueInput } from "../../../inputs/BookWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertBookArgs {
-  @TypeGraphQL.Field((_type) => BookWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookWhereUniqueInput, { nullable: false })
   where!: BookWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BookCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookCreateInput, { nullable: false })
   create!: BookCreateInput;
 
-  @TypeGraphQL.Field((_type) => BookUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookUpdateInput, { nullable: false })
   update!: BookUpdateInput;
 }

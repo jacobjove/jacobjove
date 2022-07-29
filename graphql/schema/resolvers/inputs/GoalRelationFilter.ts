@@ -5,9 +5,9 @@ import { GoalWhereInput } from "../inputs/GoalWhereInput";
   isAbstract: true,
 })
 export class GoalRelationFilter {
-  @TypeGraphQL.Field((_type) => GoalWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereInput, { nullable: true })
   is?: GoalWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereInput, { nullable: true })
   isNot?: GoalWhereInput | undefined;
 }

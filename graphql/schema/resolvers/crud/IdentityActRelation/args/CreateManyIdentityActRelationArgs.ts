@@ -3,9 +3,9 @@ import { IdentityActRelationCreateManyInput } from "../../../inputs/IdentityActR
 
 @TypeGraphQL.ArgsType()
 export class CreateManyIdentityActRelationArgs {
-  @TypeGraphQL.Field((_type) => [IdentityActRelationCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [IdentityActRelationCreateManyInput], { nullable: false })
   data!: IdentityActRelationCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

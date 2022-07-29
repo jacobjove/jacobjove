@@ -3,6 +3,6 @@ import { IdentityActRelationCreateInput } from "../../../inputs/IdentityActRelat
 
 @TypeGraphQL.ArgsType()
 export class CreateIdentityActRelationArgs {
-  @TypeGraphQL.Field((_type) => IdentityActRelationCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationCreateInput, { nullable: false })
   data!: IdentityActRelationCreateInput;
 }

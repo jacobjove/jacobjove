@@ -8,15 +8,15 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [IdentityCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityCreateWithoutUserInput], { nullable: true })
   create?: IdentityCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: IdentityCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityCreateManyUserInputEnvelope, { nullable: true })
   createMany?: IdentityCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityWhereUniqueInput], { nullable: true })
   connect?: IdentityWhereUniqueInput[] | undefined;
 }

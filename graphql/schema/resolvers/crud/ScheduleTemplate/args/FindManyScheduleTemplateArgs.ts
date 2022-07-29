@@ -6,21 +6,21 @@ import { ScheduleTemplateWhereUniqueInput } from "../../../inputs/ScheduleTempla
 
 @TypeGraphQL.ArgsType()
 export class FindManyScheduleTemplateArgs {
-  @TypeGraphQL.Field((_type) => ScheduleTemplateWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateWhereInput, { nullable: true })
   where?: ScheduleTemplateWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [ScheduleTemplateOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ScheduleTemplateOrderByWithRelationInput], { nullable: true })
   orderBy?: ScheduleTemplateOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateWhereUniqueInput, { nullable: true })
   cursor?: ScheduleTemplateWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [ScheduleTemplateScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [ScheduleTemplateScalarFieldEnum], { nullable: true })
   distinct?: Array<"id" | "frequency" | "multiplier" | "chron"> | undefined;
 }

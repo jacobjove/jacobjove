@@ -6,9 +6,9 @@ import { NoteWhereUniqueInput } from "../inputs/NoteWhereUniqueInput";
   isAbstract: true,
 })
 export class NoteCreateOrConnectWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => NoteWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteWhereUniqueInput, { nullable: false })
   where!: NoteWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NoteCreateWithoutNotebookInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteCreateWithoutNotebookInput, { nullable: false })
   create!: NoteCreateWithoutNotebookInput;
 }

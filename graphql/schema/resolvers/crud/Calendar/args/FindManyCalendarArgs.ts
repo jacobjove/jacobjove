@@ -6,22 +6,22 @@ import { CalendarWhereUniqueInput } from "../../../inputs/CalendarWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class FindManyCalendarArgs {
-  @TypeGraphQL.Field((_type) => CalendarWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarWhereInput, { nullable: true })
   where?: CalendarWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarOrderByWithRelationInput], { nullable: true })
   orderBy?: CalendarOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarWhereUniqueInput, { nullable: true })
   cursor?: CalendarWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

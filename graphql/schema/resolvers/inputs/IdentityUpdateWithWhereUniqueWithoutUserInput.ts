@@ -6,9 +6,9 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityUpdateWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityWhereUniqueInput, { nullable: false })
   where!: IdentityWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityUpdateWithoutUserInput, { nullable: false })
   data!: IdentityUpdateWithoutUserInput;
 }

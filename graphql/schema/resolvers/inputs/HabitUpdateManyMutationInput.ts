@@ -9,10 +9,10 @@ export class HabitUpdateManyMutationInput {
   @TypeGraphQL.Field({ nullable: true })
   name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
   defaultDurationInMinutes?: NullableIntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

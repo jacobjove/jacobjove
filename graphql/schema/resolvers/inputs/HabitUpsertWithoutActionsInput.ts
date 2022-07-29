@@ -6,9 +6,9 @@ import { HabitUpdateWithoutActionsInput } from "../inputs/HabitUpdateWithoutActi
   isAbstract: true,
 })
 export class HabitUpsertWithoutActionsInput {
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutActionsInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutActionsInput, { nullable: false })
   update!: HabitUpdateWithoutActionsInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutActionsInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateWithoutActionsInput, { nullable: false })
   create!: HabitCreateWithoutActionsInput;
 }

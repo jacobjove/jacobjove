@@ -10,7 +10,7 @@ export class BeliefToggleResolver {
   async toggleBelief(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Arg("beliefId", (_type) => String) beliefId: string,
+    @TypeGraphQL.Arg("beliefId", () => String) beliefId: string,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<Belief> {
     return toggleSelection("beliefs", ctx, info, beliefId, archivedAt) as Promise<Belief>;

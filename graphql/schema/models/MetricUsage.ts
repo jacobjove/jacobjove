@@ -10,21 +10,21 @@ import { Model } from "./model";
   isAbstract: true,
 })
 export class MetricUsage extends Model {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   metricId!: string;
 
   metric?: Metric;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   habitId!: string;
 
   habit?: Habit;
 
   records?: MetricRecord[];
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null;
 
-  @TypeGraphQL.Field((_type) => MetricUsageCount, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageCount, { nullable: true })
   _count?: MetricUsageCount | null;
 }

@@ -6,9 +6,9 @@ import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUni
   isAbstract: true,
 })
 export class ActionScheduleCreateOrConnectWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleWhereUniqueInput, { nullable: false })
   where!: ActionScheduleWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutCalendarEventsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleCreateWithoutCalendarEventsInput, { nullable: false })
   create!: ActionScheduleCreateWithoutCalendarEventsInput;
 }

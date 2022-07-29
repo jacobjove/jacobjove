@@ -35,7 +35,7 @@ import { UserValuesArgs } from "./args/UserValuesArgs";
 
 @TypeGraphQL.Resolver((_of) => User)
 export class UserRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [Account], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Account], { nullable: false })
   async accounts(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -44,7 +44,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("accounts", user, ctx, args) as Promise<Account[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Calendar], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Calendar], { nullable: false })
   async calendars(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -55,7 +55,7 @@ export class UserRelationsResolver {
       : (resolveUserRelation("calendars", user, ctx, args) as Promise<Calendar[]>);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Identity], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Identity], { nullable: false })
   async identities(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -64,7 +64,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("identities", user, ctx, args) as Promise<Identity[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Value], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Value], { nullable: false })
   async values(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -73,7 +73,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("values", user, ctx, args) as Promise<Value[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Belief], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Belief], { nullable: false })
   async beliefs(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -82,7 +82,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("beliefs", user, ctx, args) as Promise<Belief[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Mantra], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Mantra], { nullable: false })
   async mantras(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -91,7 +91,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("mantras", user, ctx, args) as Promise<Mantra[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Habit], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Habit], { nullable: false })
   async habits(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -100,7 +100,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("habits", user, ctx, args) as Promise<Habit[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Task], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Task], { nullable: false })
   async tasks(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -109,7 +109,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("tasks", user, ctx, args) as Promise<Task[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Dashboard], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Dashboard], { nullable: false })
   async dashboards(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -118,7 +118,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("dashboards", user, ctx, args) as Promise<Dashboard[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Notebook], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Notebook], { nullable: false })
   async notebooks(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -127,7 +127,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("notebooks", user, ctx, args) as Promise<Notebook[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [NotebookUserPermission], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [NotebookUserPermission], { nullable: false })
   async notebookPermissions(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -138,7 +138,7 @@ export class UserRelationsResolver {
     >;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [List], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [List], { nullable: false })
   async lists(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -147,7 +147,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("lists", user, ctx, args) as Promise<List[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Reading], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Reading], { nullable: false })
   async readings(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -156,7 +156,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("readings", user, ctx, args) as Promise<Reading[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Bookshelf], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Bookshelf], { nullable: false })
   async bookshelves(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -165,7 +165,7 @@ export class UserRelationsResolver {
     return resolveUserRelation("bookshelves", user, ctx, args) as Promise<Bookshelf[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [BookReview], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [BookReview], { nullable: false })
   async bookReviews(
     @TypeGraphQL.Root() user: User,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

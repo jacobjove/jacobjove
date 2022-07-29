@@ -13,37 +13,37 @@ import { Model } from "./model";
 export class ActionSchedule extends Model {
   habit?: Habit;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   habitId!: string;
 
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: false })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: false })
   frequency!: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR";
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   multiplier!: number;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   quantity!: number;
 
   calendarEvents?: CalendarEvent[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
+  @TypeGraphQL.Field(() => Boolean, { nullable: false })
   active!: boolean;
 
   template?: ActionScheduleTemplate | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   templateId?: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCount, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleCount, { nullable: true })
   _count?: ActionScheduleCount | null;
 }

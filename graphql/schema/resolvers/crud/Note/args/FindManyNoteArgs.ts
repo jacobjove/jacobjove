@@ -6,22 +6,22 @@ import { NoteWhereUniqueInput } from "../../../inputs/NoteWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindManyNoteArgs {
-  @TypeGraphQL.Field((_type) => NoteWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NoteWhereInput, { nullable: true })
   where?: NoteWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteOrderByWithRelationInput], { nullable: true })
   orderBy?: NoteOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => NoteWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => NoteWhereUniqueInput, { nullable: true })
   cursor?: NoteWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

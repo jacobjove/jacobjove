@@ -5,12 +5,12 @@ import { RoutineHabitWhereInput } from "../inputs/RoutineHabitWhereInput";
   isAbstract: true,
 })
 export class RoutineHabitListRelationFilter {
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineHabitWhereInput, { nullable: true })
   every?: RoutineHabitWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineHabitWhereInput, { nullable: true })
   some?: RoutineHabitWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineHabitWhereInput, { nullable: true })
   none?: RoutineHabitWhereInput | undefined;
 }

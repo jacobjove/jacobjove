@@ -3,9 +3,9 @@ import { CategorizationCreateManyInput } from "../../../inputs/CategorizationCre
 
 @TypeGraphQL.ArgsType()
 export class CreateManyCategorizationArgs {
-  @TypeGraphQL.Field((_type) => [CategorizationCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [CategorizationCreateManyInput], { nullable: false })
   data!: CategorizationCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -10,13 +10,13 @@ export class DashboardUpdateWithoutUserInput {
   @TypeGraphQL.Field({ nullable: true })
   name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   layouts?: DashboardLayouts | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isDefault?: BoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

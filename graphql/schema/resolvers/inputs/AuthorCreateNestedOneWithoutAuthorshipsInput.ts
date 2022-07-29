@@ -7,12 +7,12 @@ import { AuthorWhereUniqueInput } from "../inputs/AuthorWhereUniqueInput";
   isAbstract: true,
 })
 export class AuthorCreateNestedOneWithoutAuthorshipsInput {
-  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorCreateWithoutAuthorshipsInput, { nullable: true })
   create?: AuthorCreateWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateOrConnectWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorCreateOrConnectWithoutAuthorshipsInput, { nullable: true })
   connectOrCreate?: AuthorCreateOrConnectWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorWhereUniqueInput, { nullable: true })
   connect?: AuthorWhereUniqueInput | undefined;
 }

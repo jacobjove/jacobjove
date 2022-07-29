@@ -9,18 +9,18 @@ import { MetricWhereUniqueInput } from "../inputs/MetricWhereUniqueInput";
   isAbstract: true,
 })
 export class MetricUpdateOneRequiredWithoutUsagesInput {
-  @TypeGraphQL.Field((_type) => MetricCreateWithoutUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricCreateWithoutUsagesInput, { nullable: true })
   create?: MetricCreateWithoutUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricCreateOrConnectWithoutUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricCreateOrConnectWithoutUsagesInput, { nullable: true })
   connectOrCreate?: MetricCreateOrConnectWithoutUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUpsertWithoutUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUpsertWithoutUsagesInput, { nullable: true })
   upsert?: MetricUpsertWithoutUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricWhereUniqueInput, { nullable: true })
   connect?: MetricWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUpdateWithoutUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUpdateWithoutUsagesInput, { nullable: true })
   update?: MetricUpdateWithoutUsagesInput | undefined;
 }

@@ -5,9 +5,9 @@ import { NestedBoolFilter } from "../inputs/NestedBoolFilter";
   isAbstract: true,
 })
 export class BoolFilter {
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   equals?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedBoolFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedBoolFilter, { nullable: true })
   not?: NestedBoolFilter | undefined;
 }

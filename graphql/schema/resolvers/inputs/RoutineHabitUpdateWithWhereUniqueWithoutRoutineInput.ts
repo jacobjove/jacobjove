@@ -6,9 +6,9 @@ import { RoutineHabitWhereUniqueInput } from "../inputs/RoutineHabitWhereUniqueI
   isAbstract: true,
 })
 export class RoutineHabitUpdateWithWhereUniqueWithoutRoutineInput {
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitWhereUniqueInput, { nullable: false })
   where!: RoutineHabitWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateWithoutRoutineInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitUpdateWithoutRoutineInput, { nullable: false })
   data!: RoutineHabitUpdateWithoutRoutineInput;
 }

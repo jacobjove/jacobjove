@@ -8,19 +8,19 @@ import { IdentityActRelationWhereUniqueInput } from "../inputs/IdentityActRelati
   isAbstract: true,
 })
 export class IdentityActRelationCreateNestedManyWithoutActionInput {
-  @TypeGraphQL.Field((_type) => [IdentityActRelationCreateWithoutActionInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityActRelationCreateWithoutActionInput], { nullable: true })
   create?: IdentityActRelationCreateWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationCreateOrConnectWithoutActionInput], {
+  @TypeGraphQL.Field(() => [IdentityActRelationCreateOrConnectWithoutActionInput], {
     nullable: true,
   })
   connectOrCreate?: IdentityActRelationCreateOrConnectWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationCreateManyActionInputEnvelope, {
+  @TypeGraphQL.Field(() => IdentityActRelationCreateManyActionInputEnvelope, {
     nullable: true,
   })
   createMany?: IdentityActRelationCreateManyActionInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityActRelationWhereUniqueInput], { nullable: true })
   connect?: IdentityActRelationWhereUniqueInput[] | undefined;
 }

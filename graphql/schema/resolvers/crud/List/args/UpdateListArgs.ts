@@ -4,9 +4,9 @@ import { ListWhereUniqueInput } from "../../../inputs/ListWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateListArgs {
-  @TypeGraphQL.Field((_type) => ListUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListUpdateInput, { nullable: false })
   data!: ListUpdateInput;
 
-  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListWhereUniqueInput, { nullable: false })
   where!: ListWhereUniqueInput;
 }

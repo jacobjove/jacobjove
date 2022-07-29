@@ -3,6 +3,6 @@ import { RedirectWhereUniqueInput } from "../../../inputs/RedirectWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueRedirectArgs {
-  @TypeGraphQL.Field((_type) => RedirectWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => RedirectWhereUniqueInput, { nullable: false })
   where!: RedirectWhereUniqueInput;
 }

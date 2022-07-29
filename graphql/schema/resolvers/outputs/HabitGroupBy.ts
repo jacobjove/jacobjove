@@ -10,45 +10,45 @@ import { HabitSumAggregate } from "../outputs/HabitSumAggregate";
   isAbstract: true,
 })
 export class HabitGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   actId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
+  @TypeGraphQL.Field(() => Boolean, { nullable: false })
   isPublic!: boolean;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   defaultDurationInMinutes!: number | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => HabitCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCountAggregate, { nullable: true })
   _count!: HabitCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => HabitAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitAvgAggregate, { nullable: true })
   _avg!: HabitAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => HabitSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitSumAggregate, { nullable: true })
   _sum!: HabitSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => HabitMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitMinAggregate, { nullable: true })
   _min!: HabitMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => HabitMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitMaxAggregate, { nullable: true })
   _max!: HabitMaxAggregate | null;
 }

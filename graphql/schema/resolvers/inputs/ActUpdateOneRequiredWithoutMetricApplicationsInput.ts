@@ -9,20 +9,20 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActUpdateOneRequiredWithoutMetricApplicationsInput {
-  @TypeGraphQL.Field((_type) => ActCreateWithoutMetricApplicationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateWithoutMetricApplicationsInput, { nullable: true })
   create?: ActCreateWithoutMetricApplicationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutMetricApplicationsInput, {
+  @TypeGraphQL.Field(() => ActCreateOrConnectWithoutMetricApplicationsInput, {
     nullable: true,
   })
   connectOrCreate?: ActCreateOrConnectWithoutMetricApplicationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpsertWithoutMetricApplicationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpsertWithoutMetricApplicationsInput, { nullable: true })
   upsert?: ActUpsertWithoutMetricApplicationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: true })
   connect?: ActWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutMetricApplicationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpdateWithoutMetricApplicationsInput, { nullable: true })
   update?: ActUpdateWithoutMetricApplicationsInput | undefined;
 }

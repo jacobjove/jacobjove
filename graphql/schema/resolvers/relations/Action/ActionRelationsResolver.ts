@@ -8,7 +8,7 @@ import { ActionMetricRecordsArgs } from "./args/ActionMetricRecordsArgs";
 
 @TypeGraphQL.Resolver((_of) => Action)
 export class ActionRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Habit, { nullable: true })
+  @TypeGraphQL.FieldResolver(() => Habit, { nullable: true })
   async habit(
     @TypeGraphQL.Root() action: Action,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -22,7 +22,7 @@ export class ActionRelationsResolver {
       .habit({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [MetricRecord], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [MetricRecord], { nullable: false })
   async metricRecords(
     @TypeGraphQL.Root() action: Action,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

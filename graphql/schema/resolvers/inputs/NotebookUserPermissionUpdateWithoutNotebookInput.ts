@@ -8,7 +8,7 @@ export class NotebookUserPermissionUpdateWithoutNotebookInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutNotebookPermissionsInput, {
+  @TypeGraphQL.Field(() => UserUpdateOneRequiredWithoutNotebookPermissionsInput, {
     nullable: true,
   })
   user?: UserUpdateOneRequiredWithoutNotebookPermissionsInput | undefined;

@@ -5,10 +5,10 @@ import { IdentityActRelationIdentityIdActionIdCompoundUniqueInput } from "../inp
   isAbstract: true,
 })
 export class IdentityActRelationWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationIdentityIdActionIdCompoundUniqueInput, {
+  @TypeGraphQL.Field(() => IdentityActRelationIdentityIdActionIdCompoundUniqueInput, {
     nullable: true,
   })
   identityId_actionId?: IdentityActRelationIdentityIdActionIdCompoundUniqueInput | undefined;

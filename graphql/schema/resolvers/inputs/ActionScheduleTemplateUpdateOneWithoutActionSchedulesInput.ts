@@ -9,31 +9,31 @@ import { ActionScheduleTemplateWhereUniqueInput } from "../inputs/ActionSchedule
   isAbstract: true,
 })
 export class ActionScheduleTemplateUpdateOneWithoutActionSchedulesInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCreateWithoutActionSchedulesInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCreateWithoutActionSchedulesInput, {
     nullable: true,
   })
   create?: ActionScheduleTemplateCreateWithoutActionSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput, {
     nullable: true,
   })
   connectOrCreate?: ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateUpsertWithoutActionSchedulesInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateUpsertWithoutActionSchedulesInput, {
     nullable: true,
   })
   upsert?: ActionScheduleTemplateUpsertWithoutActionSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateWhereUniqueInput, { nullable: true })
   connect?: ActionScheduleTemplateWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateUpdateWithoutActionSchedulesInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateUpdateWithoutActionSchedulesInput, {
     nullable: true,
   })
   update?: ActionScheduleTemplateUpdateWithoutActionSchedulesInput | undefined;

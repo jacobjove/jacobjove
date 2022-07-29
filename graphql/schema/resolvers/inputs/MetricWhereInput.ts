@@ -7,24 +7,24 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class MetricWhereInput {
-  @TypeGraphQL.Field((_type) => [MetricWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricWhereInput], { nullable: true })
   AND?: MetricWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricWhereInput], { nullable: true })
   OR?: MetricWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricWhereInput], { nullable: true })
   NOT?: MetricWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationListRelationFilter, { nullable: true })
   applications?: MetricApplicationListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageListRelationFilter, { nullable: true })
   usages?: MetricUsageListRelationFilter | undefined;
 }

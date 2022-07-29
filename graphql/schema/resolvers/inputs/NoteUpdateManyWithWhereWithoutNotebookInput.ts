@@ -6,9 +6,9 @@ import { NoteUpdateManyMutationInput } from "../inputs/NoteUpdateManyMutationInp
   isAbstract: true,
 })
 export class NoteUpdateManyWithWhereWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => NoteScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteScalarWhereInput, { nullable: false })
   where!: NoteScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => NoteUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteUpdateManyMutationInput, { nullable: false })
   data!: NoteUpdateManyMutationInput;
 }

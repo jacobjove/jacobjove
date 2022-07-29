@@ -8,15 +8,15 @@ import { ReadingWhereUniqueInput } from "../inputs/ReadingWhereUniqueInput";
   isAbstract: true,
 })
 export class ReadingCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [ReadingCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ReadingCreateWithoutUserInput], { nullable: true })
   create?: ReadingCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ReadingCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ReadingCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: ReadingCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingCreateManyUserInputEnvelope, { nullable: true })
   createMany?: ReadingCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ReadingWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ReadingWhereUniqueInput], { nullable: true })
   connect?: ReadingWhereUniqueInput[] | undefined;
 }

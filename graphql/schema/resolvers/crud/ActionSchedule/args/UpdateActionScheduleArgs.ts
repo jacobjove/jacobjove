@@ -4,9 +4,9 @@ import { ActionScheduleWhereUniqueInput } from "../../../inputs/ActionScheduleWh
 
 @TypeGraphQL.ArgsType()
 export class UpdateActionScheduleArgs {
-  @TypeGraphQL.Field((_type) => ActionScheduleUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleUpdateInput, { nullable: false })
   data!: ActionScheduleUpdateInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleWhereUniqueInput, { nullable: false })
   where!: ActionScheduleWhereUniqueInput;
 }

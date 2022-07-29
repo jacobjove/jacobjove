@@ -6,24 +6,24 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class MetricUsageScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [MetricUsageScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricUsageScalarWhereWithAggregatesInput], { nullable: true })
   AND?: MetricUsageScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricUsageScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricUsageScalarWhereWithAggregatesInput], { nullable: true })
   OR?: MetricUsageScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricUsageScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricUsageScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: MetricUsageScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   metricId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   habitId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   archivedAt?: DateTimeNullableWithAggregatesFilter | undefined;
 }

@@ -5,9 +5,9 @@ import { ShelvingCreateManyBookInput } from "../inputs/ShelvingCreateManyBookInp
   isAbstract: true,
 })
 export class ShelvingCreateManyBookInputEnvelope {
-  @TypeGraphQL.Field((_type) => [ShelvingCreateManyBookInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ShelvingCreateManyBookInput], { nullable: false })
   data!: ShelvingCreateManyBookInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -8,24 +8,24 @@ import { MetricRecordOrderByRelationAggregateInput } from "../inputs/MetricRecor
   isAbstract: true,
 })
 export class MetricUsageOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   metricId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricOrderByWithRelationInput, { nullable: true })
   metric?: MetricOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   habitId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitOrderByWithRelationInput, { nullable: true })
   habit?: HabitOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordOrderByRelationAggregateInput, { nullable: true })
   records?: MetricRecordOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 }

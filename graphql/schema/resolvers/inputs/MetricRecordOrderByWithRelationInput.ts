@@ -7,30 +7,30 @@ import { MetricUsageOrderByWithRelationInput } from "../inputs/MetricUsageOrderB
   isAbstract: true,
 })
 export class MetricRecordOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   metricUsageId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageOrderByWithRelationInput, { nullable: true })
   metricUsage?: MetricUsageOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   actionId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionOrderByWithRelationInput, { nullable: true })
   action?: ActionOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   value?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 }

@@ -10,7 +10,7 @@ export class ActionCompletionToggleResolver {
   async toggleAction(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Arg("actionId", (_type) => String) actionId: string,
+    @TypeGraphQL.Arg("actionId", () => String) actionId: string,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<Action> {
     return toggleSelection("actions", ctx, info, actionId, archivedAt) as Promise<Action>;

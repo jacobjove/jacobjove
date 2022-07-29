@@ -6,9 +6,9 @@ import { MantraUpdateWithoutMantrasInput } from "../inputs/MantraUpdateWithoutMa
   isAbstract: true,
 })
 export class MantraUpsertWithoutMantrasInput {
-  @TypeGraphQL.Field((_type) => MantraUpdateWithoutMantrasInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraUpdateWithoutMantrasInput, { nullable: false })
   update!: MantraUpdateWithoutMantrasInput;
 
-  @TypeGraphQL.Field((_type) => MantraCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraCreateInput, { nullable: false })
   create!: MantraCreateInput;
 }

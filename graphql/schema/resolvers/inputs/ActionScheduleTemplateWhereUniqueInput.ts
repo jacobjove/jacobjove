@@ -5,10 +5,10 @@ import { ActionScheduleTemplateActIdFrequencyMultiplierCompoundUniqueInput } fro
   isAbstract: true,
 })
 export class ActionScheduleTemplateWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateActIdFrequencyMultiplierCompoundUniqueInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateActIdFrequencyMultiplierCompoundUniqueInput, {
     nullable: true,
   })
   actId_frequency_multiplier?:

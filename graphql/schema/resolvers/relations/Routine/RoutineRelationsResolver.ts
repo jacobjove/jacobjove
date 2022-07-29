@@ -7,7 +7,7 @@ import { RoutineHabitsArgs } from "./args/RoutineHabitsArgs";
 
 @TypeGraphQL.Resolver((_of) => Routine)
 export class RoutineRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [RoutineHabit], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [RoutineHabit], { nullable: false })
   async habits(
     @TypeGraphQL.Root() routine: Routine,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

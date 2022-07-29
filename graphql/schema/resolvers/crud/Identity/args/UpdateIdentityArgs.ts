@@ -4,9 +4,9 @@ import { IdentityWhereUniqueInput } from "../../../inputs/IdentityWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UpdateIdentityArgs {
-  @TypeGraphQL.Field((_type) => IdentityUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityUpdateInput, { nullable: false })
   data!: IdentityUpdateInput;
 
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityWhereUniqueInput, { nullable: false })
   where!: IdentityWhereUniqueInput;
 }

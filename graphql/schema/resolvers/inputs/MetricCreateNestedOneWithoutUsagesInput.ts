@@ -7,12 +7,12 @@ import { MetricWhereUniqueInput } from "../inputs/MetricWhereUniqueInput";
   isAbstract: true,
 })
 export class MetricCreateNestedOneWithoutUsagesInput {
-  @TypeGraphQL.Field((_type) => MetricCreateWithoutUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricCreateWithoutUsagesInput, { nullable: true })
   create?: MetricCreateWithoutUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricCreateOrConnectWithoutUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricCreateOrConnectWithoutUsagesInput, { nullable: true })
   connectOrCreate?: MetricCreateOrConnectWithoutUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricWhereUniqueInput, { nullable: true })
   connect?: MetricWhereUniqueInput | undefined;
 }

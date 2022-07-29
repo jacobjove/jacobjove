@@ -9,18 +9,18 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActUpdateOneRequiredWithoutIdentityRelationsInput {
-  @TypeGraphQL.Field((_type) => ActCreateWithoutIdentityRelationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateWithoutIdentityRelationsInput, { nullable: true })
   create?: ActCreateWithoutIdentityRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutIdentityRelationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateOrConnectWithoutIdentityRelationsInput, { nullable: true })
   connectOrCreate?: ActCreateOrConnectWithoutIdentityRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpsertWithoutIdentityRelationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpsertWithoutIdentityRelationsInput, { nullable: true })
   upsert?: ActUpsertWithoutIdentityRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: true })
   connect?: ActWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutIdentityRelationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpdateWithoutIdentityRelationsInput, { nullable: true })
   update?: ActUpdateWithoutIdentityRelationsInput | undefined;
 }

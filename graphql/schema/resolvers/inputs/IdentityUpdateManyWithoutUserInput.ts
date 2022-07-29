@@ -12,36 +12,36 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [IdentityCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityCreateWithoutUserInput], { nullable: true })
   create?: IdentityCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: IdentityCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
   upsert?: IdentityUpsertWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityCreateManyUserInputEnvelope, { nullable: true })
   createMany?: IdentityCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityWhereUniqueInput], { nullable: true })
   set?: IdentityWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityWhereUniqueInput], { nullable: true })
   disconnect?: IdentityWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityWhereUniqueInput], { nullable: true })
   delete?: IdentityWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityWhereUniqueInput], { nullable: true })
   connect?: IdentityWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
   update?: IdentityUpdateWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityUpdateManyWithWhereWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityUpdateManyWithWhereWithoutUserInput], { nullable: true })
   updateMany?: IdentityUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityScalarWhereInput], { nullable: true })
   deleteMany?: IdentityScalarWhereInput[] | undefined;
 }

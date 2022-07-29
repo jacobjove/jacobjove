@@ -7,12 +7,12 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitUpsertWithWhereUniqueWithoutActInput {
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: false })
   where!: HabitWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutActInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutActInput, { nullable: false })
   update!: HabitUpdateWithoutActInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutActInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateWithoutActInput, { nullable: false })
   create!: HabitCreateWithoutActInput;
 }

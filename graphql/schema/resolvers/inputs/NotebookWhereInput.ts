@@ -12,45 +12,45 @@ import { UserRelationFilter } from "../inputs/UserRelationFilter";
   isAbstract: true,
 })
 export class NotebookWhereInput {
-  @TypeGraphQL.Field((_type) => [NotebookWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookWhereInput], { nullable: true })
   AND?: NotebookWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookWhereInput], { nullable: true })
   OR?: NotebookWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookWhereInput], { nullable: true })
   NOT?: NotebookWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => UserRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => UserRelationFilter, { nullable: true })
   owner?: UserRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   ownerId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   title?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFilter, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFilter, { nullable: true })
   isPublic?: BoolFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableFilter, { nullable: true })
   description?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NoteListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NoteListRelationFilter, { nullable: true })
   notes?: NoteListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionListRelationFilter, { nullable: true })
   userPermissions?: NotebookUserPermissionListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 }

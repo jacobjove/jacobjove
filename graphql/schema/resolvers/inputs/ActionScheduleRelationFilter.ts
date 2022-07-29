@@ -5,9 +5,9 @@ import { ActionScheduleWhereInput } from "../inputs/ActionScheduleWhereInput";
   isAbstract: true,
 })
 export class ActionScheduleRelationFilter {
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleWhereInput, { nullable: true })
   is?: ActionScheduleWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleWhereInput, { nullable: true })
   isNot?: ActionScheduleWhereInput | undefined;
 }

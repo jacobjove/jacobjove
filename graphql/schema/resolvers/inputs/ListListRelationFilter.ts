@@ -5,12 +5,12 @@ import { ListWhereInput } from "../inputs/ListWhereInput";
   isAbstract: true,
 })
 export class ListListRelationFilter {
-  @TypeGraphQL.Field((_type) => ListWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListWhereInput, { nullable: true })
   every?: ListWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ListWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListWhereInput, { nullable: true })
   some?: ListWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ListWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListWhereInput, { nullable: true })
   none?: ListWhereInput | undefined;
 }

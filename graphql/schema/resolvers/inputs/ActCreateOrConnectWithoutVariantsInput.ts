@@ -6,9 +6,9 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActCreateOrConnectWithoutVariantsInput {
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: false })
   where!: ActWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutVariantsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutVariantsInput, { nullable: false })
   create!: ActCreateWithoutVariantsInput;
 }

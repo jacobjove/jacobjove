@@ -4,9 +4,9 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
   isAbstract: true,
 })
 export class UpdateManyTaskRankInput {
-  @TypeGraphQL.Field((_type) => String)
+  @TypeGraphQL.Field(() => String)
   id!: string;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int)
+  @TypeGraphQL.Field(() => TypeGraphQL.Int)
   rank!: number;
 }

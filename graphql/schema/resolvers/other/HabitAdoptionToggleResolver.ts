@@ -10,7 +10,7 @@ export class HabitAdoptionToggleResolver {
   async toggleHabitAdoption(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Arg("habitId", (_type) => String) habitId: string,
+    @TypeGraphQL.Arg("habitId", () => String) habitId: string,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<Habit> {
     return toggleSelection("habits", ctx, info, habitId, archivedAt) as Promise<Habit>;

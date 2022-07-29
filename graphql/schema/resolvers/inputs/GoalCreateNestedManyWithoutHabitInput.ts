@@ -8,15 +8,15 @@ import { GoalWhereUniqueInput } from "../inputs/GoalWhereUniqueInput";
   isAbstract: true,
 })
 export class GoalCreateNestedManyWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => [GoalCreateWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalCreateWithoutHabitInput], { nullable: true })
   create?: GoalCreateWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalCreateOrConnectWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalCreateOrConnectWithoutHabitInput], { nullable: true })
   connectOrCreate?: GoalCreateOrConnectWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalCreateManyHabitInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => GoalCreateManyHabitInputEnvelope, { nullable: true })
   createMany?: GoalCreateManyHabitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalWhereUniqueInput], { nullable: true })
   connect?: GoalWhereUniqueInput[] | undefined;
 }

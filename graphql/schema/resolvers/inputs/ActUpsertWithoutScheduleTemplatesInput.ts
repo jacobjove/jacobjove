@@ -6,9 +6,9 @@ import { ActUpdateWithoutScheduleTemplatesInput } from "../inputs/ActUpdateWitho
   isAbstract: true,
 })
 export class ActUpsertWithoutScheduleTemplatesInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutScheduleTemplatesInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateWithoutScheduleTemplatesInput, { nullable: false })
   update!: ActUpdateWithoutScheduleTemplatesInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutScheduleTemplatesInput, { nullable: false })
   create!: ActCreateWithoutScheduleTemplatesInput;
 }

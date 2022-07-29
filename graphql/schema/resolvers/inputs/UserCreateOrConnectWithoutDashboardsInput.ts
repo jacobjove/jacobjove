@@ -6,9 +6,9 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserCreateOrConnectWithoutDashboardsInput {
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserWhereUniqueInput, { nullable: false })
   where!: UserWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutDashboardsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateWithoutDashboardsInput, { nullable: false })
   create!: UserCreateWithoutDashboardsInput;
 }

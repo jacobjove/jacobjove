@@ -8,17 +8,17 @@ import { RoutineHabitWhereUniqueInput } from "../inputs/RoutineHabitWhereUniqueI
   isAbstract: true,
 })
 export class RoutineHabitCreateNestedManyWithoutRoutineInput {
-  @TypeGraphQL.Field((_type) => [RoutineHabitCreateWithoutRoutineInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RoutineHabitCreateWithoutRoutineInput], { nullable: true })
   create?: RoutineHabitCreateWithoutRoutineInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineHabitCreateOrConnectWithoutRoutineInput], {
+  @TypeGraphQL.Field(() => [RoutineHabitCreateOrConnectWithoutRoutineInput], {
     nullable: true,
   })
   connectOrCreate?: RoutineHabitCreateOrConnectWithoutRoutineInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitCreateManyRoutineInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineHabitCreateManyRoutineInputEnvelope, { nullable: true })
   createMany?: RoutineHabitCreateManyRoutineInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RoutineHabitWhereUniqueInput], { nullable: true })
   connect?: RoutineHabitWhereUniqueInput[] | undefined;
 }

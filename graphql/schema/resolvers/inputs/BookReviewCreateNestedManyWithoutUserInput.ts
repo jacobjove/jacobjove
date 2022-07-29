@@ -8,15 +8,15 @@ import { BookReviewWhereUniqueInput } from "../inputs/BookReviewWhereUniqueInput
   isAbstract: true,
 })
 export class BookReviewCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [BookReviewCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewCreateWithoutUserInput], { nullable: true })
   create?: BookReviewCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: BookReviewCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewCreateManyUserInputEnvelope, { nullable: true })
   createMany?: BookReviewCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewWhereUniqueInput], { nullable: true })
   connect?: BookReviewWhereUniqueInput[] | undefined;
 }

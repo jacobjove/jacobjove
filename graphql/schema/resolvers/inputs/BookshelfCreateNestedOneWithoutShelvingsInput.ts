@@ -7,12 +7,12 @@ import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
   isAbstract: true,
 })
 export class BookshelfCreateNestedOneWithoutShelvingsInput {
-  @TypeGraphQL.Field((_type) => BookshelfCreateWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfCreateWithoutShelvingsInput, { nullable: true })
   create?: BookshelfCreateWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateOrConnectWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfCreateOrConnectWithoutShelvingsInput, { nullable: true })
   connectOrCreate?: BookshelfCreateOrConnectWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfWhereUniqueInput, { nullable: true })
   connect?: BookshelfWhereUniqueInput | undefined;
 }

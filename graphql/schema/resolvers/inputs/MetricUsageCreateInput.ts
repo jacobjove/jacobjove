@@ -8,19 +8,19 @@ import { MetricRecordCreateNestedManyWithoutMetricUsageInput } from "../inputs/M
   isAbstract: true,
 })
 export class MetricUsageCreateInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricCreateNestedOneWithoutUsagesInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricCreateNestedOneWithoutUsagesInput, { nullable: false })
   metric!: MetricCreateNestedOneWithoutUsagesInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateNestedOneWithoutMetricUsagesInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateNestedOneWithoutMetricUsagesInput, { nullable: false })
   habit!: HabitCreateNestedOneWithoutMetricUsagesInput;
 
-  @TypeGraphQL.Field((_type) => MetricRecordCreateNestedManyWithoutMetricUsageInput, {
+  @TypeGraphQL.Field(() => MetricRecordCreateNestedManyWithoutMetricUsageInput, {
     nullable: true,
   })
   records?: MetricRecordCreateNestedManyWithoutMetricUsageInput | undefined;

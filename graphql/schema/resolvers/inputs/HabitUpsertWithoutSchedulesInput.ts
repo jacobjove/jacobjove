@@ -6,9 +6,9 @@ import { HabitUpdateWithoutSchedulesInput } from "../inputs/HabitUpdateWithoutSc
   isAbstract: true,
 })
 export class HabitUpsertWithoutSchedulesInput {
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutSchedulesInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutSchedulesInput, { nullable: false })
   update!: HabitUpdateWithoutSchedulesInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutSchedulesInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateWithoutSchedulesInput, { nullable: false })
   create!: HabitCreateWithoutSchedulesInput;
 }

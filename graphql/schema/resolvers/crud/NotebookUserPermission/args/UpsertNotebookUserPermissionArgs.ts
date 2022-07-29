@@ -5,12 +5,12 @@ import { NotebookUserPermissionWhereUniqueInput } from "../../../inputs/Notebook
 
 @TypeGraphQL.ArgsType()
 export class UpsertNotebookUserPermissionArgs {
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionWhereUniqueInput, { nullable: false })
   where!: NotebookUserPermissionWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionCreateInput, { nullable: false })
   create!: NotebookUserPermissionCreateInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionUpdateInput, { nullable: false })
   update!: NotebookUserPermissionUpdateInput;
 }

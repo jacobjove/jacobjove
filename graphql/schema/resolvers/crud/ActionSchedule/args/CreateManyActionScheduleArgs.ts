@@ -3,9 +3,9 @@ import { ActionScheduleCreateManyInput } from "../../../inputs/ActionScheduleCre
 
 @TypeGraphQL.ArgsType()
 export class CreateManyActionScheduleArgs {
-  @TypeGraphQL.Field((_type) => [ActionScheduleCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ActionScheduleCreateManyInput], { nullable: false })
   data!: ActionScheduleCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

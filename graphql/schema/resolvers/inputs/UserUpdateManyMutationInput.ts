@@ -21,10 +21,10 @@ export class UserUpdateManyMutationInput {
   @TypeGraphQL.Field({ nullable: true })
   image?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isAdmin?: BoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   settings?: Record<string, string> | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

@@ -6,15 +6,15 @@ import { NestedEnumFREQUENCYFilter } from "../inputs/NestedEnumFREQUENCYFilter";
   isAbstract: true,
 })
 export class EnumFREQUENCYFilter {
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: true })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: true })
   equals?: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR" | undefined;
 
-  @TypeGraphQL.Field((_type) => [FREQUENCY], { nullable: true })
+  @TypeGraphQL.Field(() => [FREQUENCY], { nullable: true })
   in?: Array<"MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR"> | undefined;
 
-  @TypeGraphQL.Field((_type) => [FREQUENCY], { nullable: true })
+  @TypeGraphQL.Field(() => [FREQUENCY], { nullable: true })
   notIn?: Array<"MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR"> | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedEnumFREQUENCYFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedEnumFREQUENCYFilter, { nullable: true })
   not?: NestedEnumFREQUENCYFilter | undefined;
 }

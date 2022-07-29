@@ -9,7 +9,7 @@ import { ActionScheduleTemplateActionSchedulesArgs } from "./args/ActionSchedule
 
 @TypeGraphQL.Resolver((_of) => ActionScheduleTemplate)
 export class ActionScheduleTemplateRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Act, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Act, { nullable: false })
   async act(
     @TypeGraphQL.Root() actionScheduleTemplate: ActionScheduleTemplate,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -23,7 +23,7 @@ export class ActionScheduleTemplateRelationsResolver {
       .act({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => ScheduleTemplate, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => ScheduleTemplate, { nullable: false })
   async scheduleTemplate(
     @TypeGraphQL.Root() actionScheduleTemplate: ActionScheduleTemplate,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -37,7 +37,7 @@ export class ActionScheduleTemplateRelationsResolver {
       .scheduleTemplate({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [ActionSchedule], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [ActionSchedule], { nullable: false })
   async actionSchedules(
     @TypeGraphQL.Root() actionScheduleTemplate: ActionScheduleTemplate,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

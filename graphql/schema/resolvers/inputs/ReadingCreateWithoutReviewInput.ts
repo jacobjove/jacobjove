@@ -7,24 +7,24 @@ import { UserCreateNestedOneWithoutReadingsInput } from "../inputs/UserCreateNes
   isAbstract: true,
 })
 export class ReadingCreateWithoutReviewInput {
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   dateStarted?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   dateFinished?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateNestedOneWithoutReadingsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateNestedOneWithoutReadingsInput, { nullable: false })
   user!: UserCreateNestedOneWithoutReadingsInput;
 
-  @TypeGraphQL.Field((_type) => BookCreateNestedOneWithoutReadingsInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookCreateNestedOneWithoutReadingsInput, { nullable: false })
   book!: BookCreateNestedOneWithoutReadingsInput;
 }

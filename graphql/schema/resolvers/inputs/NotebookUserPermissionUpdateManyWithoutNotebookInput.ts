@@ -12,48 +12,48 @@ import { NotebookUserPermissionWhereUniqueInput } from "../inputs/NotebookUserPe
   isAbstract: true,
 })
 export class NotebookUserPermissionUpdateManyWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateWithoutNotebookInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionCreateWithoutNotebookInput], {
     nullable: true,
   })
   create?: NotebookUserPermissionCreateWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateOrConnectWithoutNotebookInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionCreateOrConnectWithoutNotebookInput], {
     nullable: true,
   })
   connectOrCreate?: NotebookUserPermissionCreateOrConnectWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionUpsertWithWhereUniqueWithoutNotebookInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionUpsertWithWhereUniqueWithoutNotebookInput], {
     nullable: true,
   })
   upsert?: NotebookUserPermissionUpsertWithWhereUniqueWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionCreateManyNotebookInputEnvelope, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionCreateManyNotebookInputEnvelope, {
     nullable: true,
   })
   createMany?: NotebookUserPermissionCreateManyNotebookInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   set?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   disconnect?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   delete?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   connect?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionUpdateWithWhereUniqueWithoutNotebookInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionUpdateWithWhereUniqueWithoutNotebookInput], {
     nullable: true,
   })
   update?: NotebookUserPermissionUpdateWithWhereUniqueWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionUpdateManyWithWhereWithoutNotebookInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionUpdateManyWithWhereWithoutNotebookInput], {
     nullable: true,
   })
   updateMany?: NotebookUserPermissionUpdateManyWithWhereWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionScalarWhereInput], { nullable: true })
   deleteMany?: NotebookUserPermissionScalarWhereInput[] | undefined;
 }

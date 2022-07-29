@@ -12,36 +12,36 @@ import { NoteWhereUniqueInput } from "../inputs/NoteWhereUniqueInput";
   isAbstract: true,
 })
 export class NoteUpdateManyWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => [NoteCreateWithoutNotebookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteCreateWithoutNotebookInput], { nullable: true })
   create?: NoteCreateWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteCreateOrConnectWithoutNotebookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteCreateOrConnectWithoutNotebookInput], { nullable: true })
   connectOrCreate?: NoteCreateOrConnectWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteUpsertWithWhereUniqueWithoutNotebookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteUpsertWithWhereUniqueWithoutNotebookInput], { nullable: true })
   upsert?: NoteUpsertWithWhereUniqueWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => NoteCreateManyNotebookInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => NoteCreateManyNotebookInputEnvelope, { nullable: true })
   createMany?: NoteCreateManyNotebookInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteWhereUniqueInput], { nullable: true })
   set?: NoteWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteWhereUniqueInput], { nullable: true })
   disconnect?: NoteWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteWhereUniqueInput], { nullable: true })
   delete?: NoteWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteWhereUniqueInput], { nullable: true })
   connect?: NoteWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteUpdateWithWhereUniqueWithoutNotebookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteUpdateWithWhereUniqueWithoutNotebookInput], { nullable: true })
   update?: NoteUpdateWithWhereUniqueWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteUpdateManyWithWhereWithoutNotebookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteUpdateManyWithWhereWithoutNotebookInput], { nullable: true })
   updateMany?: NoteUpdateManyWithWhereWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteScalarWhereInput], { nullable: true })
   deleteMany?: NoteScalarWhereInput[] | undefined;
 }

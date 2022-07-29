@@ -6,9 +6,9 @@ import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
   isAbstract: true,
 })
 export class BookshelfUpdateWithWhereUniqueWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfWhereUniqueInput, { nullable: false })
   where!: BookshelfWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateWithoutOwnerInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfUpdateWithoutOwnerInput, { nullable: false })
   data!: BookshelfUpdateWithoutOwnerInput;
 }

@@ -3,6 +3,6 @@ import { AccountWhereInput } from "../../../inputs/AccountWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyAccountArgs {
-  @TypeGraphQL.Field((_type) => AccountWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountWhereInput, { nullable: true })
   where?: AccountWhereInput | undefined;
 }

@@ -7,12 +7,12 @@ import { CategorizationWhereUniqueInput } from "../inputs/CategorizationWhereUni
   isAbstract: true,
 })
 export class CategorizationUpsertWithWhereUniqueWithoutActInput {
-  @TypeGraphQL.Field((_type) => CategorizationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationWhereUniqueInput, { nullable: false })
   where!: CategorizationWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => CategorizationUpdateWithoutActInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationUpdateWithoutActInput, { nullable: false })
   update!: CategorizationUpdateWithoutActInput;
 
-  @TypeGraphQL.Field((_type) => CategorizationCreateWithoutActInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationCreateWithoutActInput, { nullable: false })
   create!: CategorizationCreateWithoutActInput;
 }

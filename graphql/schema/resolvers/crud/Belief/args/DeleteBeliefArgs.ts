@@ -3,6 +3,6 @@ import { BeliefWhereUniqueInput } from "../../../inputs/BeliefWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteBeliefArgs {
-  @TypeGraphQL.Field((_type) => BeliefWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefWhereUniqueInput, { nullable: false })
   where!: BeliefWhereUniqueInput;
 }

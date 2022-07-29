@@ -11,9 +11,9 @@ export class UpdateManyTaskRankResolver {
   async updateManyTaskRank(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Arg("data", (_type) => [UpdateManyTaskRankInput]) data: Pick<Task, "id" | "rank">[]
-    // @TypeGraphQL.Arg("taskId", (_type) => String) taskId: string,
-    // @TypeGraphQL.Arg("rank", (_type) => TypeGraphQL.Int) rank: number,
+    @TypeGraphQL.Arg("data", () => [UpdateManyTaskRankInput]) data: Pick<Task, "id" | "rank">[]
+    // @TypeGraphQL.Arg("taskId", () => String) taskId: string,
+    // @TypeGraphQL.Arg("rank", () => TypeGraphQL.Int) rank: number,
   ): Promise<Task[]> {
     const userId = ctx.session?.user.id;
     const tasks = await firestore.runTransaction(async (transaction) => {

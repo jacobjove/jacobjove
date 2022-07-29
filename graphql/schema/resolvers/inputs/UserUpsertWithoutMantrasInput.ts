@@ -6,9 +6,9 @@ import { UserUpdateWithoutMantrasInput } from "../inputs/UserUpdateWithoutMantra
   isAbstract: true,
 })
 export class UserUpsertWithoutMantrasInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutMantrasInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserUpdateWithoutMantrasInput, { nullable: false })
   update!: UserUpdateWithoutMantrasInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutMantrasInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateWithoutMantrasInput, { nullable: false })
   create!: UserCreateWithoutMantrasInput;
 }

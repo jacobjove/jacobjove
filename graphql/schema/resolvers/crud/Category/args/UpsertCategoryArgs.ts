@@ -5,12 +5,12 @@ import { CategoryWhereUniqueInput } from "../../../inputs/CategoryWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UpsertCategoryArgs {
-  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategoryWhereUniqueInput, { nullable: false })
   where!: CategoryWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => CategoryCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategoryCreateInput, { nullable: false })
   create!: CategoryCreateInput;
 
-  @TypeGraphQL.Field((_type) => CategoryUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategoryUpdateInput, { nullable: false })
   update!: CategoryUpdateInput;
 }

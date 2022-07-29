@@ -5,12 +5,12 @@ import { DashboardWhereInput } from "../inputs/DashboardWhereInput";
   isAbstract: true,
 })
 export class DashboardListRelationFilter {
-  @TypeGraphQL.Field((_type) => DashboardWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardWhereInput, { nullable: true })
   every?: DashboardWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => DashboardWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardWhereInput, { nullable: true })
   some?: DashboardWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => DashboardWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardWhereInput, { nullable: true })
   none?: DashboardWhereInput | undefined;
 }

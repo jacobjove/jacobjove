@@ -5,9 +5,9 @@ import { BookshelfCreateManyOwnerInput } from "../inputs/BookshelfCreateManyOwne
   isAbstract: true,
 })
 export class BookshelfCreateManyOwnerInputEnvelope {
-  @TypeGraphQL.Field((_type) => [BookshelfCreateManyOwnerInput], { nullable: false })
+  @TypeGraphQL.Field(() => [BookshelfCreateManyOwnerInput], { nullable: false })
   data!: BookshelfCreateManyOwnerInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

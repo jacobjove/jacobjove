@@ -9,19 +9,19 @@ import { Model } from "./model";
 export class Goal extends Model {
   habit?: Habit;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   habitId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   goalId?: string | null;
 
   goal?: Goal | null;
 
   milestones?: Goal[];
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   quantity!: number;
 
-  @TypeGraphQL.Field((_type) => GoalCount, { nullable: true })
+  @TypeGraphQL.Field(() => GoalCount, { nullable: true })
   _count?: GoalCount | null;
 }

@@ -3,6 +3,6 @@ import { MetricApplicationCreateInput } from "../../../inputs/MetricApplicationC
 
 @TypeGraphQL.ArgsType()
 export class CreateMetricApplicationArgs {
-  @TypeGraphQL.Field((_type) => MetricApplicationCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricApplicationCreateInput, { nullable: false })
   data!: MetricApplicationCreateInput;
 }

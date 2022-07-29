@@ -7,7 +7,7 @@ import { AuthorAuthorshipsArgs } from "./args/AuthorAuthorshipsArgs";
 
 @TypeGraphQL.Resolver((_of) => Author)
 export class AuthorRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [Authorship], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Authorship], { nullable: false })
   async authorships(
     @TypeGraphQL.Root() author: Author,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

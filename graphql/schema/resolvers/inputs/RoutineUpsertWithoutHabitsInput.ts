@@ -6,9 +6,9 @@ import { RoutineUpdateWithoutHabitsInput } from "../inputs/RoutineUpdateWithoutH
   isAbstract: true,
 })
 export class RoutineUpsertWithoutHabitsInput {
-  @TypeGraphQL.Field((_type) => RoutineUpdateWithoutHabitsInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineUpdateWithoutHabitsInput, { nullable: false })
   update!: RoutineUpdateWithoutHabitsInput;
 
-  @TypeGraphQL.Field((_type) => RoutineCreateWithoutHabitsInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineCreateWithoutHabitsInput, { nullable: false })
   create!: RoutineCreateWithoutHabitsInput;
 }

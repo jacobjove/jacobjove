@@ -4,9 +4,9 @@ import { AuthorWhereInput } from "../../../inputs/AuthorWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyAuthorArgs {
-  @TypeGraphQL.Field((_type) => AuthorUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorUpdateManyMutationInput, { nullable: false })
   data!: AuthorUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => AuthorWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorWhereInput, { nullable: true })
   where?: AuthorWhereInput | undefined;
 }

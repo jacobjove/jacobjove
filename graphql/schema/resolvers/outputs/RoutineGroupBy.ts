@@ -10,42 +10,42 @@ import { RoutineSumAggregate } from "../outputs/RoutineSumAggregate";
   isAbstract: true,
 })
 export class RoutineGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   durationInMinutes!: number | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   notes!: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => RoutineCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineCountAggregate, { nullable: true })
   _count!: RoutineCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RoutineAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineAvgAggregate, { nullable: true })
   _avg!: RoutineAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RoutineSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineSumAggregate, { nullable: true })
   _sum!: RoutineSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RoutineMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineMinAggregate, { nullable: true })
   _min!: RoutineMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RoutineMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineMaxAggregate, { nullable: true })
   _max!: RoutineMaxAggregate | null;
 }

@@ -5,9 +5,9 @@ import { Model } from "./model";
   isAbstract: true,
 })
 export class Redirect extends Model {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   old_path!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   new_path!: string;
 }

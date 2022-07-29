@@ -12,44 +12,44 @@ import { CategorizationWhereUniqueInput } from "../inputs/CategorizationWhereUni
   isAbstract: true,
 })
 export class CategorizationUpdateManyWithoutCategoryInput {
-  @TypeGraphQL.Field((_type) => [CategorizationCreateWithoutCategoryInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationCreateWithoutCategoryInput], { nullable: true })
   create?: CategorizationCreateWithoutCategoryInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationCreateOrConnectWithoutCategoryInput], {
+  @TypeGraphQL.Field(() => [CategorizationCreateOrConnectWithoutCategoryInput], {
     nullable: true,
   })
   connectOrCreate?: CategorizationCreateOrConnectWithoutCategoryInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationUpsertWithWhereUniqueWithoutCategoryInput], {
+  @TypeGraphQL.Field(() => [CategorizationUpsertWithWhereUniqueWithoutCategoryInput], {
     nullable: true,
   })
   upsert?: CategorizationUpsertWithWhereUniqueWithoutCategoryInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationCreateManyCategoryInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationCreateManyCategoryInputEnvelope, { nullable: true })
   createMany?: CategorizationCreateManyCategoryInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationWhereUniqueInput], { nullable: true })
   set?: CategorizationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationWhereUniqueInput], { nullable: true })
   disconnect?: CategorizationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationWhereUniqueInput], { nullable: true })
   delete?: CategorizationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationWhereUniqueInput], { nullable: true })
   connect?: CategorizationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationUpdateWithWhereUniqueWithoutCategoryInput], {
+  @TypeGraphQL.Field(() => [CategorizationUpdateWithWhereUniqueWithoutCategoryInput], {
     nullable: true,
   })
   update?: CategorizationUpdateWithWhereUniqueWithoutCategoryInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationUpdateManyWithWhereWithoutCategoryInput], {
+  @TypeGraphQL.Field(() => [CategorizationUpdateManyWithWhereWithoutCategoryInput], {
     nullable: true,
   })
   updateMany?: CategorizationUpdateManyWithWhereWithoutCategoryInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationScalarWhereInput], { nullable: true })
   deleteMany?: CategorizationScalarWhereInput[] | undefined;
 }

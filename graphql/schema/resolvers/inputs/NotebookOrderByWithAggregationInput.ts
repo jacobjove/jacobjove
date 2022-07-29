@@ -10,42 +10,42 @@ import { NotebookSumOrderByAggregateInput } from "../inputs/NotebookSumOrderByAg
   isAbstract: true,
 })
 export class NotebookOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   ownerId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   title?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isPublic?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   description?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookCountOrderByAggregateInput, { nullable: true })
   _count?: NotebookCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookAvgOrderByAggregateInput, { nullable: true })
   _avg?: NotebookAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookMaxOrderByAggregateInput, { nullable: true })
   _max?: NotebookMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookMinOrderByAggregateInput, { nullable: true })
   _min?: NotebookMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookSumOrderByAggregateInput, { nullable: true })
   _sum?: NotebookSumOrderByAggregateInput | undefined;
 }

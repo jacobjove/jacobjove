@@ -5,9 +5,9 @@ import { AccountProviderRemoteIdCompoundUniqueInput } from "../inputs/AccountPro
   isAbstract: true,
 })
 export class AccountWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountProviderRemoteIdCompoundUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountProviderRemoteIdCompoundUniqueInput, { nullable: true })
   provider_remoteId?: AccountProviderRemoteIdCompoundUniqueInput | undefined;
 }

@@ -3,9 +3,9 @@ import { RoutineHabitCreateManyInput } from "../../../inputs/RoutineHabitCreateM
 
 @TypeGraphQL.ArgsType()
 export class CreateManyRoutineHabitArgs {
-  @TypeGraphQL.Field((_type) => [RoutineHabitCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [RoutineHabitCreateManyInput], { nullable: false })
   data!: RoutineHabitCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

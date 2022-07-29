@@ -5,12 +5,12 @@ import { RoutineHabitWhereUniqueInput } from "../../../inputs/RoutineHabitWhereU
 
 @TypeGraphQL.ArgsType()
 export class UpsertRoutineHabitArgs {
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitWhereUniqueInput, { nullable: false })
   where!: RoutineHabitWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitCreateInput, { nullable: false })
   create!: RoutineHabitCreateInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitUpdateInput, { nullable: false })
   update!: RoutineHabitUpdateInput;
 }

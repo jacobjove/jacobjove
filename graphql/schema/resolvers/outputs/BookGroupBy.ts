@@ -11,60 +11,60 @@ import { BookSumAggregate } from "../outputs/BookSumAggregate";
   isAbstract: true,
 })
 export class BookGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   isbn!: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   isbn13!: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   title!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   slug!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   description!: string | null;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   authorNames!: string[] | null;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   authorNamesLf!: string[] | null;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   publicationYear!: number | null;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   originalPublicationYear!: number | null;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: false })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: false })
   extra!: Record<string, string>;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => BookCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookCountAggregate, { nullable: true })
   _count!: BookCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookAvgAggregate, { nullable: true })
   _avg!: BookAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookSumAggregate, { nullable: true })
   _sum!: BookSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookMinAggregate, { nullable: true })
   _min!: BookMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookMaxAggregate, { nullable: true })
   _max!: BookMaxAggregate | null;
 }

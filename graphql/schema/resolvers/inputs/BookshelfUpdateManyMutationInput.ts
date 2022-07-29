@@ -11,7 +11,7 @@ export class BookshelfUpdateManyMutationInput {
   @TypeGraphQL.Field({ nullable: true })
   slug?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

@@ -7,18 +7,18 @@ import { NestedJsonFilter } from "../inputs/NestedJsonFilter";
   isAbstract: true,
 })
 export class JsonWithAggregatesFilter {
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   equals?: Record<string, string> | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   not?: Record<string, string> | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedIntFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedIntFilter, { nullable: true })
   _count?: NestedIntFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedJsonFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedJsonFilter, { nullable: true })
   _min?: NestedJsonFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedJsonFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedJsonFilter, { nullable: true })
   _max?: NestedJsonFilter | undefined;
 }

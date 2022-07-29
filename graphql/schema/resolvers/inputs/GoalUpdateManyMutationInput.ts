@@ -5,6 +5,6 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
   isAbstract: true,
 })
 export class GoalUpdateManyMutationInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   quantity?: IntFieldUpdateOperationsInput | undefined;
 }

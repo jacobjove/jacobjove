@@ -3,6 +3,6 @@ import { ListCreateInput } from "../../../inputs/ListCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateListArgs {
-  @TypeGraphQL.Field((_type) => ListCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListCreateInput, { nullable: false })
   data!: ListCreateInput;
 }

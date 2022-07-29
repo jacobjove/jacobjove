@@ -5,12 +5,12 @@ import { NoteWhereUniqueInput } from "../../../inputs/NoteWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertNoteArgs {
-  @TypeGraphQL.Field((_type) => NoteWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteWhereUniqueInput, { nullable: false })
   where!: NoteWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NoteCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteCreateInput, { nullable: false })
   create!: NoteCreateInput;
 
-  @TypeGraphQL.Field((_type) => NoteUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteUpdateInput, { nullable: false })
   update!: NoteUpdateInput;
 }

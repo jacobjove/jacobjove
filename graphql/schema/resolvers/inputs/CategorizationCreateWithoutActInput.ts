@@ -6,16 +6,16 @@ import { CategoryCreateNestedOneWithoutCategorizationsInput } from "../inputs/Ca
   isAbstract: true,
 })
 export class CategorizationCreateWithoutActInput {
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryCreateNestedOneWithoutCategorizationsInput, {
+  @TypeGraphQL.Field(() => CategoryCreateNestedOneWithoutCategorizationsInput, {
     nullable: false,
   })
   category!: CategoryCreateNestedOneWithoutCategorizationsInput;

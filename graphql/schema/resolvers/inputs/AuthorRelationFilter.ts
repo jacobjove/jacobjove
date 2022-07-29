@@ -5,9 +5,9 @@ import { AuthorWhereInput } from "../inputs/AuthorWhereInput";
   isAbstract: true,
 })
 export class AuthorRelationFilter {
-  @TypeGraphQL.Field((_type) => AuthorWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorWhereInput, { nullable: true })
   is?: AuthorWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorWhereInput, { nullable: true })
   isNot?: AuthorWhereInput | undefined;
 }

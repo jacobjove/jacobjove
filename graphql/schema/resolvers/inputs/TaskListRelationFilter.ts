@@ -5,12 +5,12 @@ import { TaskWhereInput } from "../inputs/TaskWhereInput";
   isAbstract: true,
 })
 export class TaskListRelationFilter {
-  @TypeGraphQL.Field((_type) => TaskWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskWhereInput, { nullable: true })
   every?: TaskWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskWhereInput, { nullable: true })
   some?: TaskWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskWhereInput, { nullable: true })
   none?: TaskWhereInput | undefined;
 }

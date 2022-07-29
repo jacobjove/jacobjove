@@ -5,6 +5,6 @@ import { DateTimeScalar } from "../../scalars";
   isAbstract: true,
 })
 export class NullableDateTimeFieldUpdateOperationsInput {
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   set?: Date | undefined;
 }

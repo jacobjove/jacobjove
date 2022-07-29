@@ -3,6 +3,6 @@ import { MetricRecordWhereUniqueInput } from "../../../inputs/MetricRecordWhereU
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueMetricRecordArgs {
-  @TypeGraphQL.Field((_type) => MetricRecordWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricRecordWhereUniqueInput, { nullable: false })
   where!: MetricRecordWhereUniqueInput;
 }

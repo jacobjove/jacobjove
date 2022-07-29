@@ -8,30 +8,30 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class ScheduleTemplateScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [ScheduleTemplateScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [ScheduleTemplateScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   AND?: ScheduleTemplateScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ScheduleTemplateScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [ScheduleTemplateScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   OR?: ScheduleTemplateScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ScheduleTemplateScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [ScheduleTemplateScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   NOT?: ScheduleTemplateScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => EnumFREQUENCYWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => EnumFREQUENCYWithAggregatesFilter, { nullable: true })
   frequency?: EnumFREQUENCYWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntWithAggregatesFilter, { nullable: true })
   multiplier?: IntWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   chron?: StringNullableWithAggregatesFilter | undefined;
 }

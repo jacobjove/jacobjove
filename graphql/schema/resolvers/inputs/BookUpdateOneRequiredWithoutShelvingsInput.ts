@@ -9,18 +9,18 @@ import { BookWhereUniqueInput } from "../inputs/BookWhereUniqueInput";
   isAbstract: true,
 })
 export class BookUpdateOneRequiredWithoutShelvingsInput {
-  @TypeGraphQL.Field((_type) => BookCreateWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookCreateWithoutShelvingsInput, { nullable: true })
   create?: BookCreateWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCreateOrConnectWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookCreateOrConnectWithoutShelvingsInput, { nullable: true })
   connectOrCreate?: BookCreateOrConnectWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpsertWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpsertWithoutShelvingsInput, { nullable: true })
   upsert?: BookUpsertWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookWhereUniqueInput, { nullable: true })
   connect?: BookWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateWithoutShelvingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateWithoutShelvingsInput, { nullable: true })
   update?: BookUpdateWithoutShelvingsInput | undefined;
 }

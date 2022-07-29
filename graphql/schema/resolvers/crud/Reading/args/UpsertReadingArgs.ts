@@ -5,12 +5,12 @@ import { ReadingWhereUniqueInput } from "../../../inputs/ReadingWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class UpsertReadingArgs {
-  @TypeGraphQL.Field((_type) => ReadingWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingWhereUniqueInput, { nullable: false })
   where!: ReadingWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ReadingCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingCreateInput, { nullable: false })
   create!: ReadingCreateInput;
 
-  @TypeGraphQL.Field((_type) => ReadingUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingUpdateInput, { nullable: false })
   update!: ReadingUpdateInput;
 }

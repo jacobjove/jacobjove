@@ -7,7 +7,7 @@ import { ListUpdateOneRequiredWithoutItemsInput } from "../inputs/ListUpdateOneR
   isAbstract: true,
 })
 export class ItemUpdateInput {
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   data?: ItemData | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -19,6 +19,6 @@ export class ItemUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ListUpdateOneRequiredWithoutItemsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListUpdateOneRequiredWithoutItemsInput, { nullable: true })
   list?: ListUpdateOneRequiredWithoutItemsInput | undefined;
 }

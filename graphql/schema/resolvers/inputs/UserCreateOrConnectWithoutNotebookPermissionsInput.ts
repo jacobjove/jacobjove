@@ -6,9 +6,9 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserCreateOrConnectWithoutNotebookPermissionsInput {
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserWhereUniqueInput, { nullable: false })
   where!: UserWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebookPermissionsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateWithoutNotebookPermissionsInput, { nullable: false })
   create!: UserCreateWithoutNotebookPermissionsInput;
 }

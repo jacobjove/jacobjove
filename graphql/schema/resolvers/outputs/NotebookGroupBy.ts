@@ -10,42 +10,42 @@ import { NotebookSumAggregate } from "../outputs/NotebookSumAggregate";
   isAbstract: true,
 })
 export class NotebookGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   ownerId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   title!: string;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
+  @TypeGraphQL.Field(() => Boolean, { nullable: false })
   isPublic!: boolean;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   description!: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => NotebookCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookCountAggregate, { nullable: true })
   _count!: NotebookCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookAvgAggregate, { nullable: true })
   _avg!: NotebookAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookSumAggregate, { nullable: true })
   _sum!: NotebookSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookMinAggregate, { nullable: true })
   _min!: NotebookMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookMaxAggregate, { nullable: true })
   _max!: NotebookMaxAggregate | null;
 }

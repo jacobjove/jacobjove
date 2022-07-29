@@ -7,24 +7,24 @@ import { StringNullableFilter } from "../inputs/StringNullableFilter";
   isAbstract: true,
 })
 export class GoalScalarWhereInput {
-  @TypeGraphQL.Field((_type) => [GoalScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalScalarWhereInput], { nullable: true })
   AND?: GoalScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalScalarWhereInput], { nullable: true })
   OR?: GoalScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalScalarWhereInput], { nullable: true })
   NOT?: GoalScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   habitId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableFilter, { nullable: true })
   goalId?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntFilter, { nullable: true })
   quantity?: IntFilter | undefined;
 }

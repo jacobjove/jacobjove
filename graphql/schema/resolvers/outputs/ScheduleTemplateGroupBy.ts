@@ -10,30 +10,30 @@ import { ScheduleTemplateSumAggregate } from "../outputs/ScheduleTemplateSumAggr
   isAbstract: true,
 })
 export class ScheduleTemplateGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: false })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: false })
   frequency!: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR";
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   multiplier!: number;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   chron!: string | null;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateCountAggregate, { nullable: true })
   _count!: ScheduleTemplateCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateAvgAggregate, { nullable: true })
   _avg!: ScheduleTemplateAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateSumAggregate, { nullable: true })
   _sum!: ScheduleTemplateSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateMinAggregate, { nullable: true })
   _min!: ScheduleTemplateMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateMaxAggregate, { nullable: true })
   _max!: ScheduleTemplateMaxAggregate | null;
 }

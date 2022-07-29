@@ -20,6 +20,6 @@ export class AuthorUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipUpdateManyWithoutAuthorInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipUpdateManyWithoutAuthorInput, { nullable: true })
   authorships?: AuthorshipUpdateManyWithoutAuthorInput | undefined;
 }

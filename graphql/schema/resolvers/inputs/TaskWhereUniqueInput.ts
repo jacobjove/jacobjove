@@ -5,9 +5,9 @@ import { TaskUserIdParentIdRankCompoundUniqueInput } from "../inputs/TaskUserIdP
   isAbstract: true,
 })
 export class TaskWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUserIdParentIdRankCompoundUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskUserIdParentIdRankCompoundUniqueInput, { nullable: true })
   userId_parentId_rank?: TaskUserIdParentIdRankCompoundUniqueInput | undefined;
 }

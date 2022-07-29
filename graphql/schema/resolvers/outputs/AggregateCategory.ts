@@ -9,18 +9,18 @@ import { CategorySumAggregate } from "../outputs/CategorySumAggregate";
   isAbstract: true,
 })
 export class AggregateCategory {
-  @TypeGraphQL.Field((_type) => CategoryCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryCountAggregate, { nullable: true })
   _count!: CategoryCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategoryAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryAvgAggregate, { nullable: true })
   _avg!: CategoryAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorySumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorySumAggregate, { nullable: true })
   _sum!: CategorySumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategoryMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryMinAggregate, { nullable: true })
   _min!: CategoryMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategoryMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryMaxAggregate, { nullable: true })
   _max!: CategoryMaxAggregate | null;
 }

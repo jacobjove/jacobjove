@@ -5,6 +5,6 @@ import { FREQUENCY } from "../../enums/FREQUENCY";
   isAbstract: true,
 })
 export class EnumFREQUENCYFieldUpdateOperationsInput {
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: true })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: true })
   set?: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR" | undefined;
 }

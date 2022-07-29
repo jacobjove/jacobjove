@@ -5,12 +5,12 @@ import { NotebookWhereUniqueInput } from "../../../inputs/NotebookWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UpsertNotebookArgs {
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookWhereUniqueInput, { nullable: false })
   where!: NotebookWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookCreateInput, { nullable: false })
   create!: NotebookCreateInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUpdateInput, { nullable: false })
   update!: NotebookUpdateInput;
 }

@@ -3,9 +3,9 @@ import { MantraCreateManyInput } from "../../../inputs/MantraCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyMantraArgs {
-  @TypeGraphQL.Field((_type) => [MantraCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [MantraCreateManyInput], { nullable: false })
   data!: MantraCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

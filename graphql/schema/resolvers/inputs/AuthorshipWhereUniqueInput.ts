@@ -5,9 +5,9 @@ import { AuthorshipAuthorIdBookIdCompoundUniqueInput } from "../inputs/Authorshi
   isAbstract: true,
 })
 export class AuthorshipWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipAuthorIdBookIdCompoundUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipAuthorIdBookIdCompoundUniqueInput, { nullable: true })
   authorId_bookId?: AuthorshipAuthorIdBookIdCompoundUniqueInput | undefined;
 }

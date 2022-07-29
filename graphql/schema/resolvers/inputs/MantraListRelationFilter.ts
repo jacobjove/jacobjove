@@ -5,12 +5,12 @@ import { MantraWhereInput } from "../inputs/MantraWhereInput";
   isAbstract: true,
 })
 export class MantraListRelationFilter {
-  @TypeGraphQL.Field((_type) => MantraWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraWhereInput, { nullable: true })
   every?: MantraWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraWhereInput, { nullable: true })
   some?: MantraWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraWhereInput, { nullable: true })
   none?: MantraWhereInput | undefined;
 }

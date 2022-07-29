@@ -8,48 +8,48 @@ import { NestedStringWithAggregatesFilter } from "../inputs/NestedStringWithAggr
   isAbstract: true,
 })
 export class StringWithAggregatesFilter {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   equals?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   in?: string[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   notIn?: string[] | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   lt?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   lte?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   gt?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   gte?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   contains?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   startsWith?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   endsWith?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => QueryMode, { nullable: true })
+  @TypeGraphQL.Field(() => QueryMode, { nullable: true })
   mode?: "default" | "insensitive" | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedStringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedStringWithAggregatesFilter, { nullable: true })
   not?: NestedStringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedIntFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedIntFilter, { nullable: true })
   _count?: NestedIntFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedStringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedStringFilter, { nullable: true })
   _min?: NestedStringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedStringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedStringFilter, { nullable: true })
   _max?: NestedStringFilter | undefined;
 }

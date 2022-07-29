@@ -6,9 +6,9 @@ import { GoalUpdateWithoutMilestonesInput } from "../inputs/GoalUpdateWithoutMil
   isAbstract: true,
 })
 export class GoalUpsertWithoutMilestonesInput {
-  @TypeGraphQL.Field((_type) => GoalUpdateWithoutMilestonesInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalUpdateWithoutMilestonesInput, { nullable: false })
   update!: GoalUpdateWithoutMilestonesInput;
 
-  @TypeGraphQL.Field((_type) => GoalCreateWithoutMilestonesInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalCreateWithoutMilestonesInput, { nullable: false })
   create!: GoalCreateWithoutMilestonesInput;
 }

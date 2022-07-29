@@ -7,22 +7,22 @@ import { IdentityOrderByRelationAggregateInput } from "../inputs/IdentityOrderBy
   isAbstract: true,
 })
 export class IdentityOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   slug?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   description?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityOrderByRelationAggregateInput, { nullable: true })
   identities?: IdentityOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationOrderByRelationAggregateInput, {
+  @TypeGraphQL.Field(() => IdentityActRelationOrderByRelationAggregateInput, {
     nullable: true,
   })
   actionRelations?: IdentityActRelationOrderByRelationAggregateInput | undefined;

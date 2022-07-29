@@ -6,9 +6,9 @@ import { BeliefWhereUniqueInput } from "../inputs/BeliefWhereUniqueInput";
   isAbstract: true,
 })
 export class BeliefUpdateWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => BeliefWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefWhereUniqueInput, { nullable: false })
   where!: BeliefWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BeliefUpdateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefUpdateWithoutUserInput, { nullable: false })
   data!: BeliefUpdateWithoutUserInput;
 }

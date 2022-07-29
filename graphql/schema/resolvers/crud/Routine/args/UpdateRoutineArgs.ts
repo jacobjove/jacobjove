@@ -4,9 +4,9 @@ import { RoutineWhereUniqueInput } from "../../../inputs/RoutineWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class UpdateRoutineArgs {
-  @TypeGraphQL.Field((_type) => RoutineUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineUpdateInput, { nullable: false })
   data!: RoutineUpdateInput;
 
-  @TypeGraphQL.Field((_type) => RoutineWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineWhereUniqueInput, { nullable: false })
   where!: RoutineWhereUniqueInput;
 }

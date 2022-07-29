@@ -5,18 +5,18 @@ import { NotebookWhereUniqueInput } from "../../../inputs/NotebookWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class AggregateNotebookArgs {
-  @TypeGraphQL.Field((_type) => NotebookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereInput, { nullable: true })
   where?: NotebookWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookOrderByWithRelationInput], { nullable: true })
   orderBy?: NotebookOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereUniqueInput, { nullable: true })
   cursor?: NotebookWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 }

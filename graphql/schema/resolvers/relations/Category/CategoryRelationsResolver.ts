@@ -7,7 +7,7 @@ import { CategoryCategorizationsArgs } from "./args/CategoryCategorizationsArgs"
 
 @TypeGraphQL.Resolver((_of) => Category)
 export class CategoryRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [Categorization], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Categorization], { nullable: false })
   async categorizations(
     @TypeGraphQL.Root() category: Category,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

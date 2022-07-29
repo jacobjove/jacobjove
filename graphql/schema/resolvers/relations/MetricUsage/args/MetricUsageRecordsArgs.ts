@@ -6,22 +6,22 @@ import { MetricRecordWhereUniqueInput } from "../../../inputs/MetricRecordWhereU
 
 @TypeGraphQL.ArgsType()
 export class MetricUsageRecordsArgs {
-  @TypeGraphQL.Field((_type) => MetricRecordWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordWhereInput, { nullable: true })
   where?: MetricRecordWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordOrderByWithRelationInput], { nullable: true })
   orderBy?: MetricRecordOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordWhereUniqueInput, { nullable: true })
   cursor?: MetricRecordWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         "id" | "metricUsageId" | "actionId" | "value" | "createdAt" | "updatedAt" | "archivedAt"

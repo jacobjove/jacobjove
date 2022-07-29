@@ -6,9 +6,9 @@ import { GoalWhereUniqueInput } from "../inputs/GoalWhereUniqueInput";
   isAbstract: true,
 })
 export class GoalUpdateWithWhereUniqueWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => GoalWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalWhereUniqueInput, { nullable: false })
   where!: GoalWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => GoalUpdateWithoutHabitInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalUpdateWithoutHabitInput, { nullable: false })
   data!: GoalUpdateWithoutHabitInput;
 }

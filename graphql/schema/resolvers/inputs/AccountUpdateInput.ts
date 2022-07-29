@@ -30,9 +30,9 @@ export class AccountUpdateInput {
   @TypeGraphQL.Field(() => [String], { nullable: true })
   scopes?: string[] | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutAccountsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateOneRequiredWithoutAccountsInput, { nullable: true })
   user?: UserUpdateOneRequiredWithoutAccountsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarUpdateManyWithoutAccountInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarUpdateManyWithoutAccountInput, { nullable: true })
   calendars?: CalendarUpdateManyWithoutAccountInput | undefined;
 }

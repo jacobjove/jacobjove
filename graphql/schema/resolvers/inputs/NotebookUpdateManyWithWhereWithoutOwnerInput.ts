@@ -6,9 +6,9 @@ import { NotebookUpdateManyMutationInput } from "../inputs/NotebookUpdateManyMut
   isAbstract: true,
 })
 export class NotebookUpdateManyWithWhereWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => NotebookScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookScalarWhereInput, { nullable: false })
   where!: NotebookScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUpdateManyMutationInput, { nullable: false })
   data!: NotebookUpdateManyMutationInput;
 }

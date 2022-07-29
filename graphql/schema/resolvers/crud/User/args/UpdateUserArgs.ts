@@ -4,9 +4,9 @@ import { UserWhereUniqueInput } from "../../../inputs/UserWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateUserArgs {
-  @TypeGraphQL.Field((_type) => UserUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserUpdateInput, { nullable: false })
   data!: UserUpdateInput;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserWhereUniqueInput, { nullable: false })
   where!: UserWhereUniqueInput;
 }

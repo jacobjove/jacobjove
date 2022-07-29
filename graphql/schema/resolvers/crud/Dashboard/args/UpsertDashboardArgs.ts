@@ -5,12 +5,12 @@ import { DashboardWhereUniqueInput } from "../../../inputs/DashboardWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class UpsertDashboardArgs {
-  @TypeGraphQL.Field((_type) => DashboardWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardWhereUniqueInput, { nullable: false })
   where!: DashboardWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => DashboardCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardCreateInput, { nullable: false })
   create!: DashboardCreateInput;
 
-  @TypeGraphQL.Field((_type) => DashboardUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardUpdateInput, { nullable: false })
   update!: DashboardUpdateInput;
 }

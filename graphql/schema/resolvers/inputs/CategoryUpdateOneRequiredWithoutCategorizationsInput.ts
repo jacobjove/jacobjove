@@ -9,20 +9,20 @@ import { CategoryWhereUniqueInput } from "../inputs/CategoryWhereUniqueInput";
   isAbstract: true,
 })
 export class CategoryUpdateOneRequiredWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => CategoryCreateWithoutCategorizationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryCreateWithoutCategorizationsInput, { nullable: true })
   create?: CategoryCreateWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryCreateOrConnectWithoutCategorizationsInput, {
+  @TypeGraphQL.Field(() => CategoryCreateOrConnectWithoutCategorizationsInput, {
     nullable: true,
   })
   connectOrCreate?: CategoryCreateOrConnectWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryUpsertWithoutCategorizationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryUpsertWithoutCategorizationsInput, { nullable: true })
   upsert?: CategoryUpsertWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryWhereUniqueInput, { nullable: true })
   connect?: CategoryWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryUpdateWithoutCategorizationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryUpdateWithoutCategorizationsInput, { nullable: true })
   update?: CategoryUpdateWithoutCategorizationsInput | undefined;
 }

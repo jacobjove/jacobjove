@@ -6,22 +6,22 @@ import { ListWhereUniqueInput } from "../../../inputs/ListWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindManyListArgs {
-  @TypeGraphQL.Field((_type) => ListWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListWhereInput, { nullable: true })
   where?: ListWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListOrderByWithRelationInput], { nullable: true })
   orderBy?: ListOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListWhereUniqueInput, { nullable: true })
   cursor?: ListWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [ListScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

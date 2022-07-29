@@ -6,9 +6,9 @@ import { ValueUpdateManyMutationInput } from "../inputs/ValueUpdateManyMutationI
   isAbstract: true,
 })
 export class ValueUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => ValueScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueScalarWhereInput, { nullable: false })
   where!: ValueScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ValueUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueUpdateManyMutationInput, { nullable: false })
   data!: ValueUpdateManyMutationInput;
 }

@@ -4,9 +4,9 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
   isAbstract: true,
 })
 export class ActAvgAggregate {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id!: string | null;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Float, { nullable: true })
   parentId!: number | null;
 }

@@ -6,9 +6,9 @@ import { AccountWhereUniqueInput } from "../inputs/AccountWhereUniqueInput";
   isAbstract: true,
 })
 export class AccountCreateOrConnectWithoutCalendarsInput {
-  @TypeGraphQL.Field((_type) => AccountWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountWhereUniqueInput, { nullable: false })
   where!: AccountWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => AccountCreateWithoutCalendarsInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountCreateWithoutCalendarsInput, { nullable: false })
   create!: AccountCreateWithoutCalendarsInput;
 }

@@ -6,9 +6,9 @@ import { RoutineHabitUpdateManyMutationInput } from "../inputs/RoutineHabitUpdat
   isAbstract: true,
 })
 export class RoutineHabitUpdateManyWithWhereWithoutRoutineInput {
-  @TypeGraphQL.Field((_type) => RoutineHabitScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitScalarWhereInput, { nullable: false })
   where!: RoutineHabitScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitUpdateManyMutationInput, { nullable: false })
   data!: RoutineHabitUpdateManyMutationInput;
 }

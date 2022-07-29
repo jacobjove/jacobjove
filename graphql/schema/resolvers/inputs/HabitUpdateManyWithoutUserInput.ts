@@ -12,36 +12,36 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [HabitCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitCreateWithoutUserInput], { nullable: true })
   create?: HabitCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: HabitCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
   upsert?: HabitUpsertWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateManyUserInputEnvelope, { nullable: true })
   createMany?: HabitCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitWhereUniqueInput], { nullable: true })
   set?: HabitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitWhereUniqueInput], { nullable: true })
   disconnect?: HabitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitWhereUniqueInput], { nullable: true })
   delete?: HabitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitWhereUniqueInput], { nullable: true })
   connect?: HabitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
   update?: HabitUpdateWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitUpdateManyWithWhereWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitUpdateManyWithWhereWithoutUserInput], { nullable: true })
   updateMany?: HabitUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitScalarWhereInput], { nullable: true })
   deleteMany?: HabitScalarWhereInput[] | undefined;
 }

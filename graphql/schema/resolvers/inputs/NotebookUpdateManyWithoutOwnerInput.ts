@@ -12,40 +12,40 @@ import { NotebookWhereUniqueInput } from "../inputs/NotebookWhereUniqueInput";
   isAbstract: true,
 })
 export class NotebookUpdateManyWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => [NotebookCreateWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookCreateWithoutOwnerInput], { nullable: true })
   create?: NotebookCreateWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookCreateOrConnectWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookCreateOrConnectWithoutOwnerInput], { nullable: true })
   connectOrCreate?: NotebookCreateOrConnectWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUpsertWithWhereUniqueWithoutOwnerInput], {
+  @TypeGraphQL.Field(() => [NotebookUpsertWithWhereUniqueWithoutOwnerInput], {
     nullable: true,
   })
   upsert?: NotebookUpsertWithWhereUniqueWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateManyOwnerInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookCreateManyOwnerInputEnvelope, { nullable: true })
   createMany?: NotebookCreateManyOwnerInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookWhereUniqueInput], { nullable: true })
   set?: NotebookWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookWhereUniqueInput], { nullable: true })
   disconnect?: NotebookWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookWhereUniqueInput], { nullable: true })
   delete?: NotebookWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookWhereUniqueInput], { nullable: true })
   connect?: NotebookWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUpdateWithWhereUniqueWithoutOwnerInput], {
+  @TypeGraphQL.Field(() => [NotebookUpdateWithWhereUniqueWithoutOwnerInput], {
     nullable: true,
   })
   update?: NotebookUpdateWithWhereUniqueWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUpdateManyWithWhereWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUpdateManyWithWhereWithoutOwnerInput], { nullable: true })
   updateMany?: NotebookUpdateManyWithWhereWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookScalarWhereInput], { nullable: true })
   deleteMany?: NotebookScalarWhereInput[] | undefined;
 }

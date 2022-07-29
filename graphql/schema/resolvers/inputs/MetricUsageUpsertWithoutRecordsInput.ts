@@ -6,9 +6,9 @@ import { MetricUsageUpdateWithoutRecordsInput } from "../inputs/MetricUsageUpdat
   isAbstract: true,
 })
 export class MetricUsageUpsertWithoutRecordsInput {
-  @TypeGraphQL.Field((_type) => MetricUsageUpdateWithoutRecordsInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageUpdateWithoutRecordsInput, { nullable: false })
   update!: MetricUsageUpdateWithoutRecordsInput;
 
-  @TypeGraphQL.Field((_type) => MetricUsageCreateWithoutRecordsInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageCreateWithoutRecordsInput, { nullable: false })
   create!: MetricUsageCreateWithoutRecordsInput;
 }

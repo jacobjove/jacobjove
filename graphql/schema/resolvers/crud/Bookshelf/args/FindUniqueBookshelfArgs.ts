@@ -3,6 +3,6 @@ import { BookshelfWhereUniqueInput } from "../../../inputs/BookshelfWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueBookshelfArgs {
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfWhereUniqueInput, { nullable: false })
   where!: BookshelfWhereUniqueInput;
 }

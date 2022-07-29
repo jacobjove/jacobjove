@@ -5,9 +5,9 @@ import { CategoryWhereInput } from "../inputs/CategoryWhereInput";
   isAbstract: true,
 })
 export class CategoryRelationFilter {
-  @TypeGraphQL.Field((_type) => CategoryWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryWhereInput, { nullable: true })
   is?: CategoryWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryWhereInput, { nullable: true })
   isNot?: CategoryWhereInput | undefined;
 }

@@ -8,15 +8,15 @@ import { AccountWhereUniqueInput } from "../inputs/AccountWhereUniqueInput";
   isAbstract: true,
 })
 export class AccountCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [AccountCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountCreateWithoutUserInput], { nullable: true })
   create?: AccountCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: AccountCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => AccountCreateManyUserInputEnvelope, { nullable: true })
   createMany?: AccountCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountWhereUniqueInput], { nullable: true })
   connect?: AccountWhereUniqueInput[] | undefined;
 }

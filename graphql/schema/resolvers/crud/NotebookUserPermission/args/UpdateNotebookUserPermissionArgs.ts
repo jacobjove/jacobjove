@@ -4,9 +4,9 @@ import { NotebookUserPermissionWhereUniqueInput } from "../../../inputs/Notebook
 
 @TypeGraphQL.ArgsType()
 export class UpdateNotebookUserPermissionArgs {
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionUpdateInput, { nullable: false })
   data!: NotebookUserPermissionUpdateInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionWhereUniqueInput, { nullable: false })
   where!: NotebookUserPermissionWhereUniqueInput;
 }

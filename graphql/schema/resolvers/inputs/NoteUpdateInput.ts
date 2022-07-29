@@ -12,7 +12,7 @@ export class NoteUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   body?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -24,6 +24,6 @@ export class NoteUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUpdateOneRequiredWithoutNotesInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUpdateOneRequiredWithoutNotesInput, { nullable: true })
   notebook?: NotebookUpdateOneRequiredWithoutNotesInput | undefined;
 }

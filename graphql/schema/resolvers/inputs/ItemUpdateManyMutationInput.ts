@@ -6,7 +6,7 @@ import { ItemData } from "../../models/Item";
   isAbstract: true,
 })
 export class ItemUpdateManyMutationInput {
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   data?: ItemData | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

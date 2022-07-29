@@ -3,6 +3,6 @@ import { RoutineHabitWhereInput } from "../../../inputs/RoutineHabitWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyRoutineHabitArgs {
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineHabitWhereInput, { nullable: true })
   where?: RoutineHabitWhereInput | undefined;
 }

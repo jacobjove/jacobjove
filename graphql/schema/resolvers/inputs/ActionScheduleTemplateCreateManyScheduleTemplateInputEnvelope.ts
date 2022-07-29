@@ -5,11 +5,11 @@ import { ActionScheduleTemplateCreateManyScheduleTemplateInput } from "../inputs
   isAbstract: true,
 })
 export class ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope {
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateCreateManyScheduleTemplateInput], {
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateCreateManyScheduleTemplateInput], {
     nullable: false,
   })
   data!: ActionScheduleTemplateCreateManyScheduleTemplateInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

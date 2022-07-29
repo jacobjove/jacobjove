@@ -3,9 +3,9 @@ import { TaskCreateManyInput } from "../../../inputs/TaskCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyTaskArgs {
-  @TypeGraphQL.Field((_type) => [TaskCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [TaskCreateManyInput], { nullable: false })
   data!: TaskCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

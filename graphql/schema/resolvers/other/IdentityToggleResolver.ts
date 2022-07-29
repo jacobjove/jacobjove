@@ -10,7 +10,7 @@ export class IdentityToggleResolver {
   async toggleIdentity(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Arg("identityId", (_type) => String) identityId: string,
+    @TypeGraphQL.Arg("identityId", () => String) identityId: string,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<Identity> {
     return toggleSelection("identities", ctx, info, identityId, archivedAt) as Promise<Identity>;

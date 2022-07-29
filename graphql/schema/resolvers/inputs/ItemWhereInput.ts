@@ -9,33 +9,33 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class ItemWhereInput {
-  @TypeGraphQL.Field((_type) => [ItemWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemWhereInput], { nullable: true })
   AND?: ItemWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ItemWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemWhereInput], { nullable: true })
   OR?: ItemWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ItemWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemWhereInput], { nullable: true })
   NOT?: ItemWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ListRelationFilter, { nullable: true })
   list?: ListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   listId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => JsonFilter, { nullable: true })
+  @TypeGraphQL.Field(() => JsonFilter, { nullable: true })
   data?: JsonFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 }

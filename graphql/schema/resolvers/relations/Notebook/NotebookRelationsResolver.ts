@@ -16,7 +16,7 @@ import { NotebookUserPermissionsArgs } from "./args/NotebookUserPermissionsArgs"
 
 @TypeGraphQL.Resolver((_of) => Notebook)
 export class NotebookRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async owner(
     @TypeGraphQL.Root() notebook: Notebook,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -40,7 +40,7 @@ export class NotebookRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Note], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Note], { nullable: false })
   async notes(
     @TypeGraphQL.Root() notebook: Notebook,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -49,7 +49,7 @@ export class NotebookRelationsResolver {
     return getUserSubcollectionData("notes", ctx, undefined, args) as Promise<Note[]>;
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [NotebookUserPermission], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [NotebookUserPermission], { nullable: false })
   async userPermissions(
     @TypeGraphQL.Root() notebook: Notebook,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

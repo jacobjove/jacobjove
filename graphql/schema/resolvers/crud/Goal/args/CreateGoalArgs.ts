@@ -3,6 +3,6 @@ import { GoalCreateInput } from "../../../inputs/GoalCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateGoalArgs {
-  @TypeGraphQL.Field((_type) => GoalCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalCreateInput, { nullable: false })
   data!: GoalCreateInput;
 }

@@ -5,18 +5,18 @@ import { BookReviewWhereUniqueInput } from "../../../inputs/BookReviewWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class AggregateBookReviewArgs {
-  @TypeGraphQL.Field((_type) => BookReviewWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewWhereInput, { nullable: true })
   where?: BookReviewWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookReviewOrderByWithRelationInput], { nullable: true })
   orderBy?: BookReviewOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewWhereUniqueInput, { nullable: true })
   cursor?: BookReviewWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 }

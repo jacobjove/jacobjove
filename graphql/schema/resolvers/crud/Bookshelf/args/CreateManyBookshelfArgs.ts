@@ -3,9 +3,9 @@ import { BookshelfCreateManyInput } from "../../../inputs/BookshelfCreateManyInp
 
 @TypeGraphQL.ArgsType()
 export class CreateManyBookshelfArgs {
-  @TypeGraphQL.Field((_type) => [BookshelfCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [BookshelfCreateManyInput], { nullable: false })
   data!: BookshelfCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -6,10 +6,10 @@ import { IdentityCreateNestedOneWithoutActionRelationsInput } from "../inputs/Id
   isAbstract: true,
 })
 export class IdentityActRelationCreateWithoutActionInput {
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateNestedOneWithoutActionRelationsInput, {
+  @TypeGraphQL.Field(() => IdentityCreateNestedOneWithoutActionRelationsInput, {
     nullable: false,
   })
   identity!: IdentityCreateNestedOneWithoutActionRelationsInput;

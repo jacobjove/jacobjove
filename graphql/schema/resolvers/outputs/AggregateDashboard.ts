@@ -9,18 +9,18 @@ import { DashboardSumAggregate } from "../outputs/DashboardSumAggregate";
   isAbstract: true,
 })
 export class AggregateDashboard {
-  @TypeGraphQL.Field((_type) => DashboardCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardCountAggregate, { nullable: true })
   _count!: DashboardCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => DashboardAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardAvgAggregate, { nullable: true })
   _avg!: DashboardAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => DashboardSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardSumAggregate, { nullable: true })
   _sum!: DashboardSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => DashboardMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardMinAggregate, { nullable: true })
   _min!: DashboardMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => DashboardMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardMaxAggregate, { nullable: true })
   _max!: DashboardMaxAggregate | null;
 }

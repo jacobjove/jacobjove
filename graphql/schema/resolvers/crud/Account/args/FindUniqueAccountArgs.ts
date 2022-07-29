@@ -3,6 +3,6 @@ import { AccountWhereUniqueInput } from "../../../inputs/AccountWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueAccountArgs {
-  @TypeGraphQL.Field((_type) => AccountWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountWhereUniqueInput, { nullable: false })
   where!: AccountWhereUniqueInput;
 }

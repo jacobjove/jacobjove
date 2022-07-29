@@ -6,9 +6,9 @@ import { ActUpdateWithoutHabitsInput } from "../inputs/ActUpdateWithoutHabitsInp
   isAbstract: true,
 })
 export class ActUpsertWithoutHabitsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutHabitsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateWithoutHabitsInput, { nullable: false })
   update!: ActUpdateWithoutHabitsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutHabitsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutHabitsInput, { nullable: false })
   create!: ActCreateWithoutHabitsInput;
 }

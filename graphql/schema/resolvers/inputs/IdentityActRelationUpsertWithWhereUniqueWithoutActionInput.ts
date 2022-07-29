@@ -7,12 +7,12 @@ import { IdentityActRelationWhereUniqueInput } from "../inputs/IdentityActRelati
   isAbstract: true,
 })
 export class IdentityActRelationUpsertWithWhereUniqueWithoutActionInput {
-  @TypeGraphQL.Field((_type) => IdentityActRelationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationWhereUniqueInput, { nullable: false })
   where!: IdentityActRelationWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateWithoutActionInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationUpdateWithoutActionInput, { nullable: false })
   update!: IdentityActRelationUpdateWithoutActionInput;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationCreateWithoutActionInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationCreateWithoutActionInput, { nullable: false })
   create!: IdentityActRelationCreateWithoutActionInput;
 }

@@ -6,42 +6,42 @@ import { NestedIntNullableFilter } from "../inputs/NestedIntNullableFilter";
   isAbstract: true,
 })
 export class NestedIntNullableWithAggregatesFilter {
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   equals?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [TypeGraphQL.Int], { nullable: true })
+  @TypeGraphQL.Field(() => [TypeGraphQL.Int], { nullable: true })
   in?: number[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TypeGraphQL.Int], { nullable: true })
+  @TypeGraphQL.Field(() => [TypeGraphQL.Int], { nullable: true })
   notIn?: number[] | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   lt?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   lte?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   gt?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   gte?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedIntNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedIntNullableWithAggregatesFilter, { nullable: true })
   not?: NestedIntNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedIntNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedIntNullableFilter, { nullable: true })
   _count?: NestedIntNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedFloatNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedFloatNullableFilter, { nullable: true })
   _avg?: NestedFloatNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedIntNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedIntNullableFilter, { nullable: true })
   _sum?: NestedIntNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedIntNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedIntNullableFilter, { nullable: true })
   _min?: NestedIntNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedIntNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => NestedIntNullableFilter, { nullable: true })
   _max?: NestedIntNullableFilter | undefined;
 }

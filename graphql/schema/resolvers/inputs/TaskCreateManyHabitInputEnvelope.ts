@@ -5,9 +5,9 @@ import { TaskCreateManyHabitInput } from "../inputs/TaskCreateManyHabitInput";
   isAbstract: true,
 })
 export class TaskCreateManyHabitInputEnvelope {
-  @TypeGraphQL.Field((_type) => [TaskCreateManyHabitInput], { nullable: false })
+  @TypeGraphQL.Field(() => [TaskCreateManyHabitInput], { nullable: false })
   data!: TaskCreateManyHabitInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

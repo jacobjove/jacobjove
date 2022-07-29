@@ -6,9 +6,9 @@ import { BookUpdateWithoutShelvingsInput } from "../inputs/BookUpdateWithoutShel
   isAbstract: true,
 })
 export class BookUpsertWithoutShelvingsInput {
-  @TypeGraphQL.Field((_type) => BookUpdateWithoutShelvingsInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookUpdateWithoutShelvingsInput, { nullable: false })
   update!: BookUpdateWithoutShelvingsInput;
 
-  @TypeGraphQL.Field((_type) => BookCreateWithoutShelvingsInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookCreateWithoutShelvingsInput, { nullable: false })
   create!: BookCreateWithoutShelvingsInput;
 }

@@ -5,18 +5,18 @@ import { AuthorshipWhereUniqueInput } from "../../../inputs/AuthorshipWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class AggregateAuthorshipArgs {
-  @TypeGraphQL.Field((_type) => AuthorshipWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipWhereInput, { nullable: true })
   where?: AuthorshipWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AuthorshipOrderByWithRelationInput], { nullable: true })
   orderBy?: AuthorshipOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipWhereUniqueInput, { nullable: true })
   cursor?: AuthorshipWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 }

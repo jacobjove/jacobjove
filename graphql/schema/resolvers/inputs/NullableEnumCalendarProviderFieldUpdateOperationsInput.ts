@@ -5,6 +5,6 @@ import { CalendarProvider } from "../../enums/CalendarProvider";
   isAbstract: true,
 })
 export class NullableEnumCalendarProviderFieldUpdateOperationsInput {
-  @TypeGraphQL.Field((_type) => CalendarProvider, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarProvider, { nullable: true })
   set?: "google" | "apple" | undefined;
 }

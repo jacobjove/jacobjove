@@ -5,9 +5,9 @@ import { BookWhereInput } from "../inputs/BookWhereInput";
   isAbstract: true,
 })
 export class BookRelationFilter {
-  @TypeGraphQL.Field((_type) => BookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookWhereInput, { nullable: true })
   is?: BookWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookWhereInput, { nullable: true })
   isNot?: BookWhereInput | undefined;
 }

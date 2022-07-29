@@ -9,18 +9,18 @@ import { MetricSumAggregate } from "../outputs/MetricSumAggregate";
   isAbstract: true,
 })
 export class AggregateMetric {
-  @TypeGraphQL.Field((_type) => MetricCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MetricCountAggregate, { nullable: true })
   _count!: MetricCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => MetricAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MetricAvgAggregate, { nullable: true })
   _avg!: MetricAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => MetricSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MetricSumAggregate, { nullable: true })
   _sum!: MetricSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => MetricMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MetricMinAggregate, { nullable: true })
   _min!: MetricMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => MetricMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MetricMaxAggregate, { nullable: true })
   _max!: MetricMaxAggregate | null;
 }

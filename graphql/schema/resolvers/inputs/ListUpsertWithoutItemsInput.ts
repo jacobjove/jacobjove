@@ -6,9 +6,9 @@ import { ListUpdateWithoutItemsInput } from "../inputs/ListUpdateWithoutItemsInp
   isAbstract: true,
 })
 export class ListUpsertWithoutItemsInput {
-  @TypeGraphQL.Field((_type) => ListUpdateWithoutItemsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListUpdateWithoutItemsInput, { nullable: false })
   update!: ListUpdateWithoutItemsInput;
 
-  @TypeGraphQL.Field((_type) => ListCreateWithoutItemsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListCreateWithoutItemsInput, { nullable: false })
   create!: ListCreateWithoutItemsInput;
 }

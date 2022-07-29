@@ -22,7 +22,7 @@ import { HabitTasksArgs } from "./args/HabitTasksArgs";
 
 @TypeGraphQL.Resolver((_of) => Habit)
 export class HabitRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -45,7 +45,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [ActionSchedule], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [ActionSchedule], { nullable: false })
   async schedules(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -77,7 +77,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Task], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Task], { nullable: false })
   async tasks(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -106,7 +106,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [CalendarEvent], { nullable: false })
   async calendarEvents(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -135,7 +135,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [MetricUsage], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [MetricUsage], { nullable: false })
   async metricUsages(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -154,7 +154,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Goal], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Goal], { nullable: false })
   async goals(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -173,7 +173,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [RoutineHabit], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [RoutineHabit], { nullable: false })
   async routines(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -192,7 +192,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Action], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Action], { nullable: false })
   async actions(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

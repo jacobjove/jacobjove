@@ -5,12 +5,12 @@ import { HabitWhereUniqueInput } from "../../../inputs/HabitWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertHabitArgs {
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: false })
   where!: HabitWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateInput, { nullable: false })
   create!: HabitCreateInput;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateInput, { nullable: false })
   update!: HabitUpdateInput;
 }

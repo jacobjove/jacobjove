@@ -9,42 +9,42 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class AccountScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [AccountScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountScalarWhereWithAggregatesInput], { nullable: true })
   AND?: AccountScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountScalarWhereWithAggregatesInput], { nullable: true })
   OR?: AccountScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [AccountScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: AccountScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   userId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   provider?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   remoteId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableListFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableListFilter, { nullable: true })
   scopes?: StringNullableListFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   accessToken?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   refreshToken?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   accessTokenExpiry?: DateTimeNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   syncToken?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeWithAggregatesFilter, { nullable: true })
   createdAt?: DateTimeWithAggregatesFilter | undefined;
 }

@@ -5,10 +5,10 @@ import { MetricApplicationActIdMetricIdCompoundUniqueInput } from "../inputs/Met
   isAbstract: true,
 })
 export class MetricApplicationWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationActIdMetricIdCompoundUniqueInput, {
+  @TypeGraphQL.Field(() => MetricApplicationActIdMetricIdCompoundUniqueInput, {
     nullable: true,
   })
   actId_metricId?: MetricApplicationActIdMetricIdCompoundUniqueInput | undefined;

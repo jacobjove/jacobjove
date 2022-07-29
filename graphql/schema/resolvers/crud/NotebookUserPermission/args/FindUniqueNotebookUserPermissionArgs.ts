@@ -3,6 +3,6 @@ import { NotebookUserPermissionWhereUniqueInput } from "../../../inputs/Notebook
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueNotebookUserPermissionArgs {
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionWhereUniqueInput, { nullable: false })
   where!: NotebookUserPermissionWhereUniqueInput;
 }

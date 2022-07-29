@@ -4,9 +4,9 @@ import { AuthorshipWhereUniqueInput } from "../../../inputs/AuthorshipWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class UpdateAuthorshipArgs {
-  @TypeGraphQL.Field((_type) => AuthorshipUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipUpdateInput, { nullable: false })
   data!: AuthorshipUpdateInput;
 
-  @TypeGraphQL.Field((_type) => AuthorshipWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipWhereUniqueInput, { nullable: false })
   where!: AuthorshipWhereUniqueInput;
 }

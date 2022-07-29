@@ -3,9 +3,9 @@ import { BeliefCreateManyInput } from "../../../inputs/BeliefCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyBeliefArgs {
-  @TypeGraphQL.Field((_type) => [BeliefCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [BeliefCreateManyInput], { nullable: false })
   data!: BeliefCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

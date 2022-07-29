@@ -9,18 +9,18 @@ import { HabitSumAggregate } from "../outputs/HabitSumAggregate";
   isAbstract: true,
 })
 export class AggregateHabit {
-  @TypeGraphQL.Field((_type) => HabitCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCountAggregate, { nullable: true })
   _count!: HabitCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => HabitAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitAvgAggregate, { nullable: true })
   _avg!: HabitAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => HabitSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitSumAggregate, { nullable: true })
   _sum!: HabitSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => HabitMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitMinAggregate, { nullable: true })
   _min!: HabitMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => HabitMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => HabitMaxAggregate, { nullable: true })
   _max!: HabitMaxAggregate | null;
 }

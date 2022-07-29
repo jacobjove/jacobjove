@@ -9,18 +9,18 @@ import { ShelvingSumAggregate } from "../outputs/ShelvingSumAggregate";
   isAbstract: true,
 })
 export class AggregateShelving {
-  @TypeGraphQL.Field((_type) => ShelvingCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingCountAggregate, { nullable: true })
   _count!: ShelvingCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingAvgAggregate, { nullable: true })
   _avg!: ShelvingAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingSumAggregate, { nullable: true })
   _sum!: ShelvingSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingMinAggregate, { nullable: true })
   _min!: ShelvingMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingMaxAggregate, { nullable: true })
   _max!: ShelvingMaxAggregate | null;
 }

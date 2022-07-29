@@ -6,24 +6,24 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class NotebookUserPermissionScalarWhereInput {
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionScalarWhereInput], { nullable: true })
   AND?: NotebookUserPermissionScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionScalarWhereInput], { nullable: true })
   OR?: NotebookUserPermissionScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionScalarWhereInput], { nullable: true })
   NOT?: NotebookUserPermissionScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   userId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   notebookId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 }

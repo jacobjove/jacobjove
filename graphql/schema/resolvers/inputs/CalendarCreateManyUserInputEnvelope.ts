@@ -5,9 +5,9 @@ import { CalendarCreateManyUserInput } from "../inputs/CalendarCreateManyUserInp
   isAbstract: true,
 })
 export class CalendarCreateManyUserInputEnvelope {
-  @TypeGraphQL.Field((_type) => [CalendarCreateManyUserInput], { nullable: false })
+  @TypeGraphQL.Field(() => [CalendarCreateManyUserInput], { nullable: false })
   data!: CalendarCreateManyUserInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

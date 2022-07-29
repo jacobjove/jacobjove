@@ -3,6 +3,6 @@ import { NotebookUserPermissionCreateInput } from "../../../inputs/NotebookUserP
 
 @TypeGraphQL.ArgsType()
 export class CreateNotebookUserPermissionArgs {
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionCreateInput, { nullable: false })
   data!: NotebookUserPermissionCreateInput;
 }

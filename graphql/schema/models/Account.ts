@@ -11,35 +11,35 @@ import { Model } from "./model";
 export class Account extends Model {
   user?: User;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   provider!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   remoteId!: string;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: false })
+  @TypeGraphQL.Field(() => [String], { nullable: false })
   scopes!: string[];
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   accessToken?: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   refreshToken?: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   accessTokenExpiry?: Date | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   syncToken?: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
   calendars?: Calendar[];
 
-  @TypeGraphQL.Field((_type) => AccountCount, { nullable: true })
+  @TypeGraphQL.Field(() => AccountCount, { nullable: true })
   _count?: AccountCount | null;
 }

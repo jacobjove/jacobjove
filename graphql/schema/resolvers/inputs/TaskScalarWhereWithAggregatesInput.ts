@@ -10,51 +10,51 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class TaskScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [TaskScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskScalarWhereWithAggregatesInput], { nullable: true })
   AND?: TaskScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskScalarWhereWithAggregatesInput], { nullable: true })
   OR?: TaskScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: TaskScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   title?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   description?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   plannedStartDate?: DateTimeNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   dueDate?: DateTimeNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   userId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntNullableWithAggregatesFilter, { nullable: true })
   parentId?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   habitId?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntWithAggregatesFilter, { nullable: true })
   rank?: IntWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   completedAt?: DateTimeNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeWithAggregatesFilter, { nullable: true })
   createdAt?: DateTimeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeWithAggregatesFilter, { nullable: true })
   updatedAt?: DateTimeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   archivedAt?: DateTimeNullableWithAggregatesFilter | undefined;
 }

@@ -14,7 +14,7 @@ export class MetricApplicationUpdateWithoutMetricInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateOneRequiredWithoutMetricApplicationsInput, {
+  @TypeGraphQL.Field(() => ActUpdateOneRequiredWithoutMetricApplicationsInput, {
     nullable: true,
   })
   act?: ActUpdateOneRequiredWithoutMetricApplicationsInput | undefined;

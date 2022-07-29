@@ -7,12 +7,12 @@ import { DashboardWhereUniqueInput } from "../inputs/DashboardWhereUniqueInput";
   isAbstract: true,
 })
 export class DashboardUpsertWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => DashboardWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardWhereUniqueInput, { nullable: false })
   where!: DashboardWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => DashboardUpdateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardUpdateWithoutUserInput, { nullable: false })
   update!: DashboardUpdateWithoutUserInput;
 
-  @TypeGraphQL.Field((_type) => DashboardCreateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardCreateWithoutUserInput, { nullable: false })
   create!: DashboardCreateWithoutUserInput;
 }

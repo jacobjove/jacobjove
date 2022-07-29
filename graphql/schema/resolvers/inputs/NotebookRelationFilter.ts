@@ -5,9 +5,9 @@ import { NotebookWhereInput } from "../inputs/NotebookWhereInput";
   isAbstract: true,
 })
 export class NotebookRelationFilter {
-  @TypeGraphQL.Field((_type) => NotebookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereInput, { nullable: true })
   is?: NotebookWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereInput, { nullable: true })
   isNot?: NotebookWhereInput | undefined;
 }

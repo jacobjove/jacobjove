@@ -21,9 +21,9 @@ export class ReadingUpdateWithoutUserInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateOneRequiredWithoutReadingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateOneRequiredWithoutReadingsInput, { nullable: true })
   book?: BookUpdateOneRequiredWithoutReadingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewUpdateOneWithoutReadingInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewUpdateOneWithoutReadingInput, { nullable: true })
   review?: BookReviewUpdateOneWithoutReadingInput | undefined;
 }

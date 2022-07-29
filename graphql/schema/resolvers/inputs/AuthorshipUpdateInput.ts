@@ -7,7 +7,7 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
   isAbstract: true,
 })
 export class AuthorshipUpdateInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   position?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -19,9 +19,9 @@ export class AuthorshipUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorUpdateOneRequiredWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorUpdateOneRequiredWithoutAuthorshipsInput, { nullable: true })
   author?: AuthorUpdateOneRequiredWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateOneRequiredWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateOneRequiredWithoutAuthorshipsInput, { nullable: true })
   book?: BookUpdateOneRequiredWithoutAuthorshipsInput | undefined;
 }

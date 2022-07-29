@@ -7,12 +7,12 @@ import { ListWhereUniqueInput } from "../inputs/ListWhereUniqueInput";
   isAbstract: true,
 })
 export class ListCreateNestedOneWithoutItemsInput {
-  @TypeGraphQL.Field((_type) => ListCreateWithoutItemsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListCreateWithoutItemsInput, { nullable: true })
   create?: ListCreateWithoutItemsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ListCreateOrConnectWithoutItemsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListCreateOrConnectWithoutItemsInput, { nullable: true })
   connectOrCreate?: ListCreateOrConnectWithoutItemsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListWhereUniqueInput, { nullable: true })
   connect?: ListWhereUniqueInput | undefined;
 }

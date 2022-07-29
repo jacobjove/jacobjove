@@ -4,9 +4,9 @@ import { BookshelfWhereUniqueInput } from "../../../inputs/BookshelfWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class UpdateBookshelfArgs {
-  @TypeGraphQL.Field((_type) => BookshelfUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfUpdateInput, { nullable: false })
   data!: BookshelfUpdateInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfWhereUniqueInput, { nullable: false })
   where!: BookshelfWhereUniqueInput;
 }

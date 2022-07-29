@@ -8,6 +8,6 @@ export class MetricUpdateWithoutApplicationsInput {
   @TypeGraphQL.Field({ nullable: true })
   name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageUpdateManyWithoutMetricInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageUpdateManyWithoutMetricInput, { nullable: true })
   usages?: MetricUsageUpdateManyWithoutMetricInput | undefined;
 }

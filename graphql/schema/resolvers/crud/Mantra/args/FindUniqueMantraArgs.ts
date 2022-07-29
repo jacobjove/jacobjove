@@ -3,6 +3,6 @@ import { MantraWhereUniqueInput } from "../../../inputs/MantraWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueMantraArgs {
-  @TypeGraphQL.Field((_type) => MantraWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraWhereUniqueInput, { nullable: false })
   where!: MantraWhereUniqueInput;
 }

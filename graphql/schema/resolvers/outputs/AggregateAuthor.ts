@@ -9,18 +9,18 @@ import { AuthorSumAggregate } from "../outputs/AuthorSumAggregate";
   isAbstract: true,
 })
 export class AggregateAuthor {
-  @TypeGraphQL.Field((_type) => AuthorCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorCountAggregate, { nullable: true })
   _count!: AuthorCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorAvgAggregate, { nullable: true })
   _avg!: AuthorAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorSumAggregate, { nullable: true })
   _sum!: AuthorSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorMinAggregate, { nullable: true })
   _min!: AuthorMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorMaxAggregate, { nullable: true })
   _max!: AuthorMaxAggregate | null;
 }

@@ -8,18 +8,18 @@ import { ListCreateNestedOneWithoutItemsInput } from "../inputs/ListCreateNested
   isAbstract: true,
 })
 export class ItemCreateInput {
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   data?: ItemData | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ListCreateNestedOneWithoutItemsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ListCreateNestedOneWithoutItemsInput, { nullable: false })
   list!: ListCreateNestedOneWithoutItemsInput;
 }

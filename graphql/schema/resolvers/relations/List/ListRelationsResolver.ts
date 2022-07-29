@@ -10,7 +10,7 @@ import { ListItemsArgs } from "./args/ListItemsArgs";
 
 @TypeGraphQL.Resolver((_of) => List)
 export class ListRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async owner(
     @TypeGraphQL.Root() list: List,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -33,7 +33,7 @@ export class ListRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Item], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Item], { nullable: false })
   async items(
     @TypeGraphQL.Root() list: List,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

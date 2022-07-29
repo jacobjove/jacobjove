@@ -6,22 +6,22 @@ import { ShelvingWhereUniqueInput } from "../../../inputs/ShelvingWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class FindManyShelvingArgs {
-  @TypeGraphQL.Field((_type) => ShelvingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingWhereInput, { nullable: true })
   where?: ShelvingWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingOrderByWithRelationInput], { nullable: true })
   orderBy?: ShelvingOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingWhereUniqueInput, { nullable: true })
   cursor?: ShelvingWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

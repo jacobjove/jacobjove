@@ -4,9 +4,9 @@ import { ReadingWhereUniqueInput } from "../../../inputs/ReadingWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class UpdateReadingArgs {
-  @TypeGraphQL.Field((_type) => ReadingUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingUpdateInput, { nullable: false })
   data!: ReadingUpdateInput;
 
-  @TypeGraphQL.Field((_type) => ReadingWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingWhereUniqueInput, { nullable: false })
   where!: ReadingWhereUniqueInput;
 }

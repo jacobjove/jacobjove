@@ -10,36 +10,36 @@ import { ActionScheduleTemplateSumAggregate } from "../outputs/ActionScheduleTem
   isAbstract: true,
 })
 export class ActionScheduleTemplateGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   actId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   scheduleTemplateId!: string;
 
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: false })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: false })
   frequency!: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR";
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   multiplier!: number;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   quantity!: number;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCountAggregate, { nullable: true })
   _count!: ActionScheduleTemplateCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateAvgAggregate, { nullable: true })
   _avg!: ActionScheduleTemplateAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateSumAggregate, { nullable: true })
   _sum!: ActionScheduleTemplateSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateMinAggregate, { nullable: true })
   _min!: ActionScheduleTemplateMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateMaxAggregate, { nullable: true })
   _max!: ActionScheduleTemplateMaxAggregate | null;
 }

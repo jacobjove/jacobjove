@@ -7,27 +7,27 @@ import { MetricRecordCreateNestedManyWithoutActionInput } from "../inputs/Metric
   isAbstract: true,
 })
 export class ActionCreateInput {
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   start!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   end!: Date;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   notes?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateNestedOneWithoutActionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateNestedOneWithoutActionsInput, { nullable: true })
   habit?: HabitCreateNestedOneWithoutActionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordCreateNestedManyWithoutActionInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordCreateNestedManyWithoutActionInput, { nullable: true })
   metricRecords?: MetricRecordCreateNestedManyWithoutActionInput | undefined;
 }

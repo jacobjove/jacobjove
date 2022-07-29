@@ -5,9 +5,9 @@ import { MetricRecordCreateManyMetricUsageInput } from "../inputs/MetricRecordCr
   isAbstract: true,
 })
 export class MetricRecordCreateManyMetricUsageInputEnvelope {
-  @TypeGraphQL.Field((_type) => [MetricRecordCreateManyMetricUsageInput], { nullable: false })
+  @TypeGraphQL.Field(() => [MetricRecordCreateManyMetricUsageInput], { nullable: false })
   data!: MetricRecordCreateManyMetricUsageInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

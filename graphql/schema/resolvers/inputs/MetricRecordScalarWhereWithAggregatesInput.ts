@@ -8,33 +8,33 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class MetricRecordScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [MetricRecordScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordScalarWhereWithAggregatesInput], { nullable: true })
   AND?: MetricRecordScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordScalarWhereWithAggregatesInput], { nullable: true })
   OR?: MetricRecordScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: MetricRecordScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   metricUsageId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   actionId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntWithAggregatesFilter, { nullable: true })
   value?: IntWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeWithAggregatesFilter, { nullable: true })
   createdAt?: DateTimeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeWithAggregatesFilter, { nullable: true })
   updatedAt?: DateTimeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   archivedAt?: DateTimeNullableWithAggregatesFilter | undefined;
 }

@@ -9,7 +9,7 @@ import { Shelving } from "../../../models/Shelving";
 
 @TypeGraphQL.Resolver((_of) => Shelving)
 export class ShelvingRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Book, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Book, { nullable: false })
   async book(
     @TypeGraphQL.Root() shelving: Shelving,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -32,7 +32,7 @@ export class ShelvingRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Bookshelf, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Bookshelf, { nullable: false })
   async shelf(
     @TypeGraphQL.Root() shelving: Shelving,
     @TypeGraphQL.Ctx() ctx: ApolloContext

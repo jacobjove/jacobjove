@@ -8,30 +8,30 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class ItemScalarWhereInput {
-  @TypeGraphQL.Field((_type) => [ItemScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemScalarWhereInput], { nullable: true })
   AND?: ItemScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ItemScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemScalarWhereInput], { nullable: true })
   OR?: ItemScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ItemScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemScalarWhereInput], { nullable: true })
   NOT?: ItemScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   listId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => JsonFilter, { nullable: true })
+  @TypeGraphQL.Field(() => JsonFilter, { nullable: true })
   data?: JsonFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 }

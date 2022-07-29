@@ -12,18 +12,18 @@ export type ItemData = Record<string, string>;
 export class Item extends Model {
   list?: List;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   listId!: string;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: false })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: false })
   data!: ItemData;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null;
 }

@@ -6,9 +6,9 @@ import { CategorizationWhereUniqueInput } from "../inputs/CategorizationWhereUni
   isAbstract: true,
 })
 export class CategorizationCreateOrConnectWithoutActInput {
-  @TypeGraphQL.Field((_type) => CategorizationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationWhereUniqueInput, { nullable: false })
   where!: CategorizationWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => CategorizationCreateWithoutActInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationCreateWithoutActInput, { nullable: false })
   create!: CategorizationCreateWithoutActInput;
 }

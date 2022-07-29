@@ -3,6 +3,6 @@ import { UserCreateInput } from "../../../inputs/UserCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateUserArgs {
-  @TypeGraphQL.Field((_type) => UserCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateInput, { nullable: false })
   data!: UserCreateInput;
 }

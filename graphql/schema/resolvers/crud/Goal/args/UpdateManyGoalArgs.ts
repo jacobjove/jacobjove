@@ -4,9 +4,9 @@ import { GoalWhereInput } from "../../../inputs/GoalWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyGoalArgs {
-  @TypeGraphQL.Field((_type) => GoalUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalUpdateManyMutationInput, { nullable: false })
   data!: GoalUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => GoalWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereInput, { nullable: true })
   where?: GoalWhereInput | undefined;
 }

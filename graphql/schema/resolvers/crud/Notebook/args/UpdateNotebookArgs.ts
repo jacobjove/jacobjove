@@ -4,9 +4,9 @@ import { NotebookWhereUniqueInput } from "../../../inputs/NotebookWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UpdateNotebookArgs {
-  @TypeGraphQL.Field((_type) => NotebookUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUpdateInput, { nullable: false })
   data!: NotebookUpdateInput;
 
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookWhereUniqueInput, { nullable: false })
   where!: NotebookWhereUniqueInput;
 }

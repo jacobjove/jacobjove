@@ -6,9 +6,9 @@ import { MantraWhereUniqueInput } from "../inputs/MantraWhereUniqueInput";
   isAbstract: true,
 })
 export class MantraCreateOrConnectWithoutMantraInput {
-  @TypeGraphQL.Field((_type) => MantraWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraWhereUniqueInput, { nullable: false })
   where!: MantraWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => MantraCreateWithoutMantraInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraCreateWithoutMantraInput, { nullable: false })
   create!: MantraCreateWithoutMantraInput;
 }

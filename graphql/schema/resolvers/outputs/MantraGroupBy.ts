@@ -10,33 +10,33 @@ import { MantraSumAggregate } from "../outputs/MantraSumAggregate";
   isAbstract: true,
 })
 export class MantraGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   content!: string;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => MantraCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MantraCountAggregate, { nullable: true })
   _count!: MantraCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => MantraAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MantraAvgAggregate, { nullable: true })
   _avg!: MantraAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => MantraSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MantraSumAggregate, { nullable: true })
   _sum!: MantraSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => MantraMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MantraMinAggregate, { nullable: true })
   _min!: MantraMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => MantraMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => MantraMaxAggregate, { nullable: true })
   _max!: MantraMaxAggregate | null;
 }

@@ -9,18 +9,18 @@ import { ActionScheduleSumAggregate } from "../outputs/ActionScheduleSumAggregat
   isAbstract: true,
 })
 export class AggregateActionSchedule {
-  @TypeGraphQL.Field((_type) => ActionScheduleCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleCountAggregate, { nullable: true })
   _count!: ActionScheduleCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleAvgAggregate, { nullable: true })
   _avg!: ActionScheduleAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleSumAggregate, { nullable: true })
   _sum!: ActionScheduleSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleMinAggregate, { nullable: true })
   _min!: ActionScheduleMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleMaxAggregate, { nullable: true })
   _max!: ActionScheduleMaxAggregate | null;
 }

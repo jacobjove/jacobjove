@@ -6,7 +6,7 @@ import { User } from "../../../models/User";
 
 @TypeGraphQL.Resolver((_of) => Mantra)
 export class MantraRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() mantra: Mantra,
     @TypeGraphQL.Ctx() ctx: ApolloContext

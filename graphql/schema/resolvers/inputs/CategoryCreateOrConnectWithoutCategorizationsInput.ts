@@ -6,9 +6,9 @@ import { CategoryWhereUniqueInput } from "../inputs/CategoryWhereUniqueInput";
   isAbstract: true,
 })
 export class CategoryCreateOrConnectWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategoryWhereUniqueInput, { nullable: false })
   where!: CategoryWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => CategoryCreateWithoutCategorizationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategoryCreateWithoutCategorizationsInput, { nullable: false })
   create!: CategoryCreateWithoutCategorizationsInput;
 }

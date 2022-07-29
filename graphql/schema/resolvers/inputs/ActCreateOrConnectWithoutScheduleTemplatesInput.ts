@@ -6,9 +6,9 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActCreateOrConnectWithoutScheduleTemplatesInput {
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: false })
   where!: ActWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutScheduleTemplatesInput, { nullable: false })
   create!: ActCreateWithoutScheduleTemplatesInput;
 }

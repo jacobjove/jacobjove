@@ -11,7 +11,7 @@ import { CalendarEventsArgs } from "./args/CalendarEventsArgs";
 
 @TypeGraphQL.Resolver((_of) => Calendar)
 export class CalendarRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() calendar: Calendar,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -34,7 +34,7 @@ export class CalendarRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Account, { nullable: true })
+  @TypeGraphQL.FieldResolver(() => Account, { nullable: true })
   async account(
     @TypeGraphQL.Root() calendar: Calendar,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -48,7 +48,7 @@ export class CalendarRelationsResolver {
       .account({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [CalendarEvent], { nullable: false })
   async events(
     @TypeGraphQL.Root() calendar: Calendar,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

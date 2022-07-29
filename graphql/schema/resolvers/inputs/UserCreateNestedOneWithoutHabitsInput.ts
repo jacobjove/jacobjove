@@ -7,12 +7,12 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserCreateNestedOneWithoutHabitsInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutHabitsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserCreateWithoutHabitsInput, { nullable: true })
   create?: UserCreateWithoutHabitsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutHabitsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserCreateOrConnectWithoutHabitsInput, { nullable: true })
   connectOrCreate?: UserCreateOrConnectWithoutHabitsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 }

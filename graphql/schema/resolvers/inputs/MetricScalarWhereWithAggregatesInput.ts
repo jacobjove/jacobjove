@@ -5,18 +5,18 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class MetricScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [MetricScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricScalarWhereWithAggregatesInput], { nullable: true })
   AND?: MetricScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricScalarWhereWithAggregatesInput], { nullable: true })
   OR?: MetricScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: MetricScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   name?: StringWithAggregatesFilter | undefined;
 }

@@ -6,9 +6,9 @@ import { AccountUpdateWithoutCalendarsInput } from "../inputs/AccountUpdateWitho
   isAbstract: true,
 })
 export class AccountUpsertWithoutCalendarsInput {
-  @TypeGraphQL.Field((_type) => AccountUpdateWithoutCalendarsInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountUpdateWithoutCalendarsInput, { nullable: false })
   update!: AccountUpdateWithoutCalendarsInput;
 
-  @TypeGraphQL.Field((_type) => AccountCreateWithoutCalendarsInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountCreateWithoutCalendarsInput, { nullable: false })
   create!: AccountCreateWithoutCalendarsInput;
 }

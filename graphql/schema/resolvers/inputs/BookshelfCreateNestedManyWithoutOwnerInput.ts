@@ -8,15 +8,15 @@ import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
   isAbstract: true,
 })
 export class BookshelfCreateNestedManyWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => [BookshelfCreateWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookshelfCreateWithoutOwnerInput], { nullable: true })
   create?: BookshelfCreateWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfCreateOrConnectWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookshelfCreateOrConnectWithoutOwnerInput], { nullable: true })
   connectOrCreate?: BookshelfCreateOrConnectWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateManyOwnerInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfCreateManyOwnerInputEnvelope, { nullable: true })
   createMany?: BookshelfCreateManyOwnerInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookshelfWhereUniqueInput], { nullable: true })
   connect?: BookshelfWhereUniqueInput[] | undefined;
 }

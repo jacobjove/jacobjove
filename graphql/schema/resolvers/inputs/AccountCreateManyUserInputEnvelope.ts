@@ -5,9 +5,9 @@ import { AccountCreateManyUserInput } from "../inputs/AccountCreateManyUserInput
   isAbstract: true,
 })
 export class AccountCreateManyUserInputEnvelope {
-  @TypeGraphQL.Field((_type) => [AccountCreateManyUserInput], { nullable: false })
+  @TypeGraphQL.Field(() => [AccountCreateManyUserInput], { nullable: false })
   data!: AccountCreateManyUserInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

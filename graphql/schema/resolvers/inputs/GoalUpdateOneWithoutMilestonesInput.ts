@@ -9,24 +9,24 @@ import { GoalWhereUniqueInput } from "../inputs/GoalWhereUniqueInput";
   isAbstract: true,
 })
 export class GoalUpdateOneWithoutMilestonesInput {
-  @TypeGraphQL.Field((_type) => GoalCreateWithoutMilestonesInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalCreateWithoutMilestonesInput, { nullable: true })
   create?: GoalCreateWithoutMilestonesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalCreateOrConnectWithoutMilestonesInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalCreateOrConnectWithoutMilestonesInput, { nullable: true })
   connectOrCreate?: GoalCreateOrConnectWithoutMilestonesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalUpsertWithoutMilestonesInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalUpsertWithoutMilestonesInput, { nullable: true })
   upsert?: GoalUpsertWithoutMilestonesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereUniqueInput, { nullable: true })
   connect?: GoalWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalUpdateWithoutMilestonesInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalUpdateWithoutMilestonesInput, { nullable: true })
   update?: GoalUpdateWithoutMilestonesInput | undefined;
 }

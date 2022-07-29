@@ -5,12 +5,12 @@ import { CalendarEventWhereInput } from "../inputs/CalendarEventWhereInput";
   isAbstract: true,
 })
 export class CalendarEventListRelationFilter {
-  @TypeGraphQL.Field((_type) => CalendarEventWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventWhereInput, { nullable: true })
   every?: CalendarEventWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventWhereInput, { nullable: true })
   some?: CalendarEventWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventWhereInput, { nullable: true })
   none?: CalendarEventWhereInput | undefined;
 }

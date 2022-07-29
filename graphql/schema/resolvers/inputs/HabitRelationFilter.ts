@@ -5,9 +5,9 @@ import { HabitWhereInput } from "../inputs/HabitWhereInput";
   isAbstract: true,
 })
 export class HabitRelationFilter {
-  @TypeGraphQL.Field((_type) => HabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereInput, { nullable: true })
   is?: HabitWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereInput, { nullable: true })
   isNot?: HabitWhereInput | undefined;
 }

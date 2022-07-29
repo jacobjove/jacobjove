@@ -9,18 +9,18 @@ import { NotebookSumAggregate } from "../outputs/NotebookSumAggregate";
   isAbstract: true,
 })
 export class AggregateNotebook {
-  @TypeGraphQL.Field((_type) => NotebookCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookCountAggregate, { nullable: true })
   _count!: NotebookCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookAvgAggregate, { nullable: true })
   _avg!: NotebookAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookSumAggregate, { nullable: true })
   _sum!: NotebookSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookMinAggregate, { nullable: true })
   _min!: NotebookMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => NotebookMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookMaxAggregate, { nullable: true })
   _max!: NotebookMaxAggregate | null;
 }

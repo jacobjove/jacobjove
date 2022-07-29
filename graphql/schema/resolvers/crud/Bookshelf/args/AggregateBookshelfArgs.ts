@@ -5,18 +5,18 @@ import { BookshelfWhereUniqueInput } from "../../../inputs/BookshelfWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class AggregateBookshelfArgs {
-  @TypeGraphQL.Field((_type) => BookshelfWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfWhereInput, { nullable: true })
   where?: BookshelfWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookshelfOrderByWithRelationInput], { nullable: true })
   orderBy?: BookshelfOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfWhereUniqueInput, { nullable: true })
   cursor?: BookshelfWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 }

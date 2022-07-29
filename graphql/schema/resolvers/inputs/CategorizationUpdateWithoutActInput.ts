@@ -14,7 +14,7 @@ export class CategorizationUpdateWithoutActInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryUpdateOneRequiredWithoutCategorizationsInput, {
+  @TypeGraphQL.Field(() => CategoryUpdateOneRequiredWithoutCategorizationsInput, {
     nullable: true,
   })
   category?: CategoryUpdateOneRequiredWithoutCategorizationsInput | undefined;

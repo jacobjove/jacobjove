@@ -8,15 +8,15 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [HabitCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitCreateWithoutUserInput], { nullable: true })
   create?: HabitCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: HabitCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateManyUserInputEnvelope, { nullable: true })
   createMany?: HabitCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitWhereUniqueInput], { nullable: true })
   connect?: HabitWhereUniqueInput[] | undefined;
 }

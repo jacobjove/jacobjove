@@ -6,9 +6,9 @@ import { ActUpdateWithoutMetricApplicationsInput } from "../inputs/ActUpdateWith
   isAbstract: true,
 })
 export class ActUpsertWithoutMetricApplicationsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutMetricApplicationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateWithoutMetricApplicationsInput, { nullable: false })
   update!: ActUpdateWithoutMetricApplicationsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutMetricApplicationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutMetricApplicationsInput, { nullable: false })
   create!: ActCreateWithoutMetricApplicationsInput;
 }

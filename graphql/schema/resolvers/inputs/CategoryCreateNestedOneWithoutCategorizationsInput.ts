@@ -7,14 +7,14 @@ import { CategoryWhereUniqueInput } from "../inputs/CategoryWhereUniqueInput";
   isAbstract: true,
 })
 export class CategoryCreateNestedOneWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => CategoryCreateWithoutCategorizationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryCreateWithoutCategorizationsInput, { nullable: true })
   create?: CategoryCreateWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryCreateOrConnectWithoutCategorizationsInput, {
+  @TypeGraphQL.Field(() => CategoryCreateOrConnectWithoutCategorizationsInput, {
     nullable: true,
   })
   connectOrCreate?: CategoryCreateOrConnectWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategoryWhereUniqueInput, { nullable: true })
   connect?: CategoryWhereUniqueInput | undefined;
 }

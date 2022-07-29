@@ -10,39 +10,39 @@ import { ValueSumOrderByAggregateInput } from "../inputs/ValueSumOrderByAggregat
   isAbstract: true,
 })
 export class ValueOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   slug?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   description?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueCountOrderByAggregateInput, { nullable: true })
   _count?: ValueCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueAvgOrderByAggregateInput, { nullable: true })
   _avg?: ValueAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueMaxOrderByAggregateInput, { nullable: true })
   _max?: ValueMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueMinOrderByAggregateInput, { nullable: true })
   _min?: ValueMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueSumOrderByAggregateInput, { nullable: true })
   _sum?: ValueSumOrderByAggregateInput | undefined;
 }

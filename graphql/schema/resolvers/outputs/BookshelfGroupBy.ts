@@ -10,45 +10,45 @@ import { BookshelfSumAggregate } from "../outputs/BookshelfSumAggregate";
   isAbstract: true,
 })
 export class BookshelfGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   ownerId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   slug!: string;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
+  @TypeGraphQL.Field(() => Boolean, { nullable: false })
   isPublic!: boolean;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   description!: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfCountAggregate, { nullable: true })
   _count!: BookshelfCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfAvgAggregate, { nullable: true })
   _avg!: BookshelfAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfSumAggregate, { nullable: true })
   _sum!: BookshelfSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfMinAggregate, { nullable: true })
   _min!: BookshelfMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfMaxAggregate, { nullable: true })
   _max!: BookshelfMaxAggregate | null;
 }

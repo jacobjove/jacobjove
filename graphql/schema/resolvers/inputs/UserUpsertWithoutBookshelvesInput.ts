@@ -6,9 +6,9 @@ import { UserUpdateWithoutBookshelvesInput } from "../inputs/UserUpdateWithoutBo
   isAbstract: true,
 })
 export class UserUpsertWithoutBookshelvesInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutBookshelvesInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserUpdateWithoutBookshelvesInput, { nullable: false })
   update!: UserUpdateWithoutBookshelvesInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutBookshelvesInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateWithoutBookshelvesInput, { nullable: false })
   create!: UserCreateWithoutBookshelvesInput;
 }

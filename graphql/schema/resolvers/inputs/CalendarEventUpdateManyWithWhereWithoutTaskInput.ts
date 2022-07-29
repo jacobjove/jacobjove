@@ -6,9 +6,9 @@ import { CalendarEventUpdateManyMutationInput } from "../inputs/CalendarEventUpd
   isAbstract: true,
 })
 export class CalendarEventUpdateManyWithWhereWithoutTaskInput {
-  @TypeGraphQL.Field((_type) => CalendarEventScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventScalarWhereInput, { nullable: false })
   where!: CalendarEventScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventUpdateManyMutationInput, { nullable: false })
   data!: CalendarEventUpdateManyMutationInput;
 }

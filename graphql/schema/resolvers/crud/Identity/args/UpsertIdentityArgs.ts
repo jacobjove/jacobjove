@@ -5,12 +5,12 @@ import { IdentityWhereUniqueInput } from "../../../inputs/IdentityWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UpsertIdentityArgs {
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityWhereUniqueInput, { nullable: false })
   where!: IdentityWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityCreateInput, { nullable: false })
   create!: IdentityCreateInput;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityUpdateInput, { nullable: false })
   update!: IdentityUpdateInput;
 }

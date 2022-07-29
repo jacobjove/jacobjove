@@ -6,24 +6,24 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class IdentityScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [IdentityScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityScalarWhereWithAggregatesInput], { nullable: true })
   AND?: IdentityScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityScalarWhereWithAggregatesInput], { nullable: true })
   OR?: IdentityScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: IdentityScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   name?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   slug?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   description?: StringNullableWithAggregatesFilter | undefined;
 }

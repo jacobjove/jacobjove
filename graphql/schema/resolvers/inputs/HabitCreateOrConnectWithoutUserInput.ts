@@ -6,9 +6,9 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitCreateOrConnectWithoutUserInput {
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: false })
   where!: HabitWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateWithoutUserInput, { nullable: false })
   create!: HabitCreateWithoutUserInput;
 }

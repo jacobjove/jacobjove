@@ -6,9 +6,9 @@ import { HabitUpdateWithoutMetricUsagesInput } from "../inputs/HabitUpdateWithou
   isAbstract: true,
 })
 export class HabitUpsertWithoutMetricUsagesInput {
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutMetricUsagesInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutMetricUsagesInput, { nullable: false })
   update!: HabitUpdateWithoutMetricUsagesInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutMetricUsagesInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateWithoutMetricUsagesInput, { nullable: false })
   create!: HabitCreateWithoutMetricUsagesInput;
 }

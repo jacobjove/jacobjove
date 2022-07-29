@@ -9,24 +9,24 @@ import { AccountWhereUniqueInput } from "../inputs/AccountWhereUniqueInput";
   isAbstract: true,
 })
 export class AccountUpdateOneWithoutCalendarsInput {
-  @TypeGraphQL.Field((_type) => AccountCreateWithoutCalendarsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountCreateWithoutCalendarsInput, { nullable: true })
   create?: AccountCreateWithoutCalendarsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountCreateOrConnectWithoutCalendarsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountCreateOrConnectWithoutCalendarsInput, { nullable: true })
   connectOrCreate?: AccountCreateOrConnectWithoutCalendarsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountUpsertWithoutCalendarsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountUpsertWithoutCalendarsInput, { nullable: true })
   upsert?: AccountUpsertWithoutCalendarsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountWhereUniqueInput, { nullable: true })
   connect?: AccountWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountUpdateWithoutCalendarsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountUpdateWithoutCalendarsInput, { nullable: true })
   update?: AccountUpdateWithoutCalendarsInput | undefined;
 }

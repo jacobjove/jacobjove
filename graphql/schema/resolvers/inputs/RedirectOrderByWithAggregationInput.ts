@@ -10,27 +10,27 @@ import { RedirectSumOrderByAggregateInput } from "../inputs/RedirectSumOrderByAg
   isAbstract: true,
 })
 export class RedirectOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   old_path?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   new_path?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => RedirectCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectCountOrderByAggregateInput, { nullable: true })
   _count?: RedirectCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RedirectAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectAvgOrderByAggregateInput, { nullable: true })
   _avg?: RedirectAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RedirectMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectMaxOrderByAggregateInput, { nullable: true })
   _max?: RedirectMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RedirectMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectMinOrderByAggregateInput, { nullable: true })
   _min?: RedirectMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RedirectSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectSumOrderByAggregateInput, { nullable: true })
   _sum?: RedirectSumOrderByAggregateInput | undefined;
 }

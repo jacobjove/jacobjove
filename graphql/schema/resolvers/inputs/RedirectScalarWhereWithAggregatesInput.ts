@@ -5,21 +5,21 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class RedirectScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [RedirectScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RedirectScalarWhereWithAggregatesInput], { nullable: true })
   AND?: RedirectScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RedirectScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RedirectScalarWhereWithAggregatesInput], { nullable: true })
   OR?: RedirectScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RedirectScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RedirectScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: RedirectScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   old_path?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   new_path?: StringWithAggregatesFilter | undefined;
 }

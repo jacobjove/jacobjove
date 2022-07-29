@@ -5,9 +5,9 @@ import { AccountWhereInput } from "../inputs/AccountWhereInput";
   isAbstract: true,
 })
 export class AccountRelationFilter {
-  @TypeGraphQL.Field((_type) => AccountWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountWhereInput, { nullable: true })
   is?: AccountWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountWhereInput, { nullable: true })
   isNot?: AccountWhereInput | undefined;
 }

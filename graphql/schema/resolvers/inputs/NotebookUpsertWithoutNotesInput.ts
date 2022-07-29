@@ -6,9 +6,9 @@ import { NotebookUpdateWithoutNotesInput } from "../inputs/NotebookUpdateWithout
   isAbstract: true,
 })
 export class NotebookUpsertWithoutNotesInput {
-  @TypeGraphQL.Field((_type) => NotebookUpdateWithoutNotesInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUpdateWithoutNotesInput, { nullable: false })
   update!: NotebookUpdateWithoutNotesInput;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateWithoutNotesInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookCreateWithoutNotesInput, { nullable: false })
   create!: NotebookCreateWithoutNotesInput;
 }

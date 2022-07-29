@@ -3,6 +3,6 @@ import { DashboardWhereUniqueInput } from "../../../inputs/DashboardWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueDashboardArgs {
-  @TypeGraphQL.Field((_type) => DashboardWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardWhereUniqueInput, { nullable: false })
   where!: DashboardWhereUniqueInput;
 }

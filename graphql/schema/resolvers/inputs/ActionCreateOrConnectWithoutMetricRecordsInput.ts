@@ -6,9 +6,9 @@ import { ActionWhereUniqueInput } from "../inputs/ActionWhereUniqueInput";
   isAbstract: true,
 })
 export class ActionCreateOrConnectWithoutMetricRecordsInput {
-  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionWhereUniqueInput, { nullable: false })
   where!: ActionWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionCreateWithoutMetricRecordsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionCreateWithoutMetricRecordsInput, { nullable: false })
   create!: ActionCreateWithoutMetricRecordsInput;
 }

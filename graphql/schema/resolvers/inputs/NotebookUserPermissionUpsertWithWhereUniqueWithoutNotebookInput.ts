@@ -7,15 +7,15 @@ import { NotebookUserPermissionWhereUniqueInput } from "../inputs/NotebookUserPe
   isAbstract: true,
 })
 export class NotebookUserPermissionUpsertWithWhereUniqueWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionWhereUniqueInput, { nullable: false })
   where!: NotebookUserPermissionWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionUpdateWithoutNotebookInput, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionUpdateWithoutNotebookInput, {
     nullable: false,
   })
   update!: NotebookUserPermissionUpdateWithoutNotebookInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionCreateWithoutNotebookInput, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionCreateWithoutNotebookInput, {
     nullable: false,
   })
   create!: NotebookUserPermissionCreateWithoutNotebookInput;

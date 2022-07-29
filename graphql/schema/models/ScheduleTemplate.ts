@@ -8,17 +8,17 @@ import { Model } from "./model";
   isAbstract: true,
 })
 export class ScheduleTemplate extends Model {
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: false })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: false })
   frequency!: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR";
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   multiplier!: number;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   chron?: string | null;
 
   actionScheduleTemplates?: ActionScheduleTemplate[];
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateCount, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateCount, { nullable: true })
   _count?: ScheduleTemplateCount | null;
 }

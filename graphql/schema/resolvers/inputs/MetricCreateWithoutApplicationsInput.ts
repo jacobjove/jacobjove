@@ -5,9 +5,9 @@ import { MetricUsageCreateNestedManyWithoutMetricInput } from "../inputs/MetricU
   isAbstract: true,
 })
 export class MetricCreateWithoutApplicationsInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => MetricUsageCreateNestedManyWithoutMetricInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageCreateNestedManyWithoutMetricInput, { nullable: true })
   usages?: MetricUsageCreateNestedManyWithoutMetricInput | undefined;
 }

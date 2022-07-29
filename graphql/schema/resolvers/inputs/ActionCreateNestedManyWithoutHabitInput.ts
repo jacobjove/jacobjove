@@ -8,15 +8,15 @@ import { ActionWhereUniqueInput } from "../inputs/ActionWhereUniqueInput";
   isAbstract: true,
 })
 export class ActionCreateNestedManyWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => [ActionCreateWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionCreateWithoutHabitInput], { nullable: true })
   create?: ActionCreateWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionCreateOrConnectWithoutHabitInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionCreateOrConnectWithoutHabitInput], { nullable: true })
   connectOrCreate?: ActionCreateOrConnectWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionCreateManyHabitInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ActionCreateManyHabitInputEnvelope, { nullable: true })
   createMany?: ActionCreateManyHabitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionWhereUniqueInput], { nullable: true })
   connect?: ActionWhereUniqueInput[] | undefined;
 }

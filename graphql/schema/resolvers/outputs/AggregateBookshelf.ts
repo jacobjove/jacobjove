@@ -9,18 +9,18 @@ import { BookshelfSumAggregate } from "../outputs/BookshelfSumAggregate";
   isAbstract: true,
 })
 export class AggregateBookshelf {
-  @TypeGraphQL.Field((_type) => BookshelfCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfCountAggregate, { nullable: true })
   _count!: BookshelfCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfAvgAggregate, { nullable: true })
   _avg!: BookshelfAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfSumAggregate, { nullable: true })
   _sum!: BookshelfSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfMinAggregate, { nullable: true })
   _min!: BookshelfMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfMaxAggregate, { nullable: true })
   _max!: BookshelfMaxAggregate | null;
 }

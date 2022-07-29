@@ -7,12 +7,12 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
   isAbstract: true,
 })
 export class GoalUpdateWithoutMilestonesInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   quantity?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateOneRequiredWithoutGoalsInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateOneRequiredWithoutGoalsInput, { nullable: true })
   habit?: HabitUpdateOneRequiredWithoutGoalsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalUpdateOneWithoutMilestonesInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalUpdateOneWithoutMilestonesInput, { nullable: true })
   goal?: GoalUpdateOneWithoutMilestonesInput | undefined;
 }

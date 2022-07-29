@@ -10,36 +10,36 @@ import { ValueSumAggregate } from "../outputs/ValueSumAggregate";
   isAbstract: true,
 })
 export class ValueGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   valueId!: string;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => ValueCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ValueCountAggregate, { nullable: true })
   _count!: ValueCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ValueAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ValueAvgAggregate, { nullable: true })
   _avg!: ValueAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ValueSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ValueSumAggregate, { nullable: true })
   _sum!: ValueSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ValueMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ValueMinAggregate, { nullable: true })
   _min!: ValueMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ValueMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ValueMaxAggregate, { nullable: true })
   _max!: ValueMaxAggregate | null;
 }

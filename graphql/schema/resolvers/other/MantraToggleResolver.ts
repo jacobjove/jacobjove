@@ -10,7 +10,7 @@ export class MantraToggleResolver {
   async toggleMantra(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Arg("mantraId", (_type) => String) mantraId: string,
+    @TypeGraphQL.Arg("mantraId", () => String) mantraId: string,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<Mantra> {
     return toggleSelection("mantras", ctx, info, mantraId, archivedAt) as Promise<Mantra>;

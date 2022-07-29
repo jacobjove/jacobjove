@@ -6,12 +6,12 @@ import { ScheduleTemplateUpdateWithoutActionScheduleTemplatesInput } from "../in
   isAbstract: true,
 })
 export class ScheduleTemplateUpsertWithoutActionScheduleTemplatesInput {
-  @TypeGraphQL.Field((_type) => ScheduleTemplateUpdateWithoutActionScheduleTemplatesInput, {
+  @TypeGraphQL.Field(() => ScheduleTemplateUpdateWithoutActionScheduleTemplatesInput, {
     nullable: false,
   })
   update!: ScheduleTemplateUpdateWithoutActionScheduleTemplatesInput;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateCreateWithoutActionScheduleTemplatesInput, {
+  @TypeGraphQL.Field(() => ScheduleTemplateCreateWithoutActionScheduleTemplatesInput, {
     nullable: false,
   })
   create!: ScheduleTemplateCreateWithoutActionScheduleTemplatesInput;

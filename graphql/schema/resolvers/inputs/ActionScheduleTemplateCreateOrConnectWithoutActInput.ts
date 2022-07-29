@@ -6,9 +6,9 @@ import { ActionScheduleTemplateWhereUniqueInput } from "../inputs/ActionSchedule
   isAbstract: true,
 })
 export class ActionScheduleTemplateCreateOrConnectWithoutActInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateWhereUniqueInput, { nullable: false })
   where!: ActionScheduleTemplateWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCreateWithoutActInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCreateWithoutActInput, { nullable: false })
   create!: ActionScheduleTemplateCreateWithoutActInput;
 }

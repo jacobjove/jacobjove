@@ -6,9 +6,9 @@ import { CalendarUpdateWithoutEventsInput } from "../inputs/CalendarUpdateWithou
   isAbstract: true,
 })
 export class CalendarUpsertWithoutEventsInput {
-  @TypeGraphQL.Field((_type) => CalendarUpdateWithoutEventsInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarUpdateWithoutEventsInput, { nullable: false })
   update!: CalendarUpdateWithoutEventsInput;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateWithoutEventsInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarCreateWithoutEventsInput, { nullable: false })
   create!: CalendarCreateWithoutEventsInput;
 }

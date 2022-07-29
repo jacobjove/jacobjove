@@ -5,9 +5,9 @@ import { TaskCreateManyParentInput } from "../inputs/TaskCreateManyParentInput";
   isAbstract: true,
 })
 export class TaskCreateManyParentInputEnvelope {
-  @TypeGraphQL.Field((_type) => [TaskCreateManyParentInput], { nullable: false })
+  @TypeGraphQL.Field(() => [TaskCreateManyParentInput], { nullable: false })
   data!: TaskCreateManyParentInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

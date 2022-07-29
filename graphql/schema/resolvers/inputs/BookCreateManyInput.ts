@@ -9,45 +9,45 @@ import { BookCreateManyauthorNamesLfInput } from "../inputs/BookCreateManyauthor
   isAbstract: true,
 })
 export class BookCreateManyInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   isbn?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   isbn13?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   title!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   slug!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   description?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   publicationYear?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   originalPublicationYear?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: false })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: false })
   extra!: ExtraBookData;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCreateManyauthorNamesInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookCreateManyauthorNamesInput, { nullable: true })
   authorNames?: BookCreateManyauthorNamesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCreateManyauthorNamesLfInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookCreateManyauthorNamesLfInput, { nullable: true })
   authorNamesLf?: BookCreateManyauthorNamesLfInput | undefined;
 }

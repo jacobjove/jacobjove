@@ -12,42 +12,42 @@ import { MetricRecordWhereUniqueInput } from "../inputs/MetricRecordWhereUniqueI
   isAbstract: true,
 })
 export class MetricRecordUpdateManyWithoutActionInput {
-  @TypeGraphQL.Field((_type) => [MetricRecordCreateWithoutActionInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordCreateWithoutActionInput], { nullable: true })
   create?: MetricRecordCreateWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordCreateOrConnectWithoutActionInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordCreateOrConnectWithoutActionInput], { nullable: true })
   connectOrCreate?: MetricRecordCreateOrConnectWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordUpsertWithWhereUniqueWithoutActionInput], {
+  @TypeGraphQL.Field(() => [MetricRecordUpsertWithWhereUniqueWithoutActionInput], {
     nullable: true,
   })
   upsert?: MetricRecordUpsertWithWhereUniqueWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordCreateManyActionInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordCreateManyActionInputEnvelope, { nullable: true })
   createMany?: MetricRecordCreateManyActionInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordWhereUniqueInput], { nullable: true })
   set?: MetricRecordWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordWhereUniqueInput], { nullable: true })
   disconnect?: MetricRecordWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordWhereUniqueInput], { nullable: true })
   delete?: MetricRecordWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordWhereUniqueInput], { nullable: true })
   connect?: MetricRecordWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordUpdateWithWhereUniqueWithoutActionInput], {
+  @TypeGraphQL.Field(() => [MetricRecordUpdateWithWhereUniqueWithoutActionInput], {
     nullable: true,
   })
   update?: MetricRecordUpdateWithWhereUniqueWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordUpdateManyWithWhereWithoutActionInput], {
+  @TypeGraphQL.Field(() => [MetricRecordUpdateManyWithWhereWithoutActionInput], {
     nullable: true,
   })
   updateMany?: MetricRecordUpdateManyWithWhereWithoutActionInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MetricRecordScalarWhereInput], { nullable: true })
   deleteMany?: MetricRecordScalarWhereInput[] | undefined;
 }

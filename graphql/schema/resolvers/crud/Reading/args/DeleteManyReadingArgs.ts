@@ -3,6 +3,6 @@ import { ReadingWhereInput } from "../../../inputs/ReadingWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyReadingArgs {
-  @TypeGraphQL.Field((_type) => ReadingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingWhereInput, { nullable: true })
   where?: ReadingWhereInput | undefined;
 }

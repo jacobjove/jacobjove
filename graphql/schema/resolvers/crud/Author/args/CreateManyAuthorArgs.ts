@@ -3,9 +3,9 @@ import { AuthorCreateManyInput } from "../../../inputs/AuthorCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyAuthorArgs {
-  @TypeGraphQL.Field((_type) => [AuthorCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [AuthorCreateManyInput], { nullable: false })
   data!: AuthorCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

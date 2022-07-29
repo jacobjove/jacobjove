@@ -8,7 +8,7 @@ import { User } from "../../../models/User";
 
 @TypeGraphQL.Resolver((_of) => BookReview)
 export class BookReviewRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Book, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Book, { nullable: false })
   async book(
     @TypeGraphQL.Root() bookReview: BookReview,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -22,7 +22,7 @@ export class BookReviewRelationsResolver {
       .book({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() bookReview: BookReview,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -36,7 +36,7 @@ export class BookReviewRelationsResolver {
       .user({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Reading, { nullable: true })
+  @TypeGraphQL.FieldResolver(() => Reading, { nullable: true })
   async reading(
     @TypeGraphQL.Root() bookReview: BookReview,
     @TypeGraphQL.Ctx() ctx: ApolloContext

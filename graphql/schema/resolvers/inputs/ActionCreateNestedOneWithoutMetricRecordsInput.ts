@@ -7,12 +7,12 @@ import { ActionWhereUniqueInput } from "../inputs/ActionWhereUniqueInput";
   isAbstract: true,
 })
 export class ActionCreateNestedOneWithoutMetricRecordsInput {
-  @TypeGraphQL.Field((_type) => ActionCreateWithoutMetricRecordsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionCreateWithoutMetricRecordsInput, { nullable: true })
   create?: ActionCreateWithoutMetricRecordsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionCreateOrConnectWithoutMetricRecordsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionCreateOrConnectWithoutMetricRecordsInput, { nullable: true })
   connectOrCreate?: ActionCreateOrConnectWithoutMetricRecordsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionWhereUniqueInput, { nullable: true })
   connect?: ActionWhereUniqueInput | undefined;
 }

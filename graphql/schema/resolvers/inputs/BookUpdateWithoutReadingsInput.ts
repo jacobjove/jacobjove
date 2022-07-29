@@ -27,13 +27,13 @@ export class BookUpdateWithoutReadingsInput {
   @TypeGraphQL.Field({ nullable: true })
   description?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
   publicationYear?: NullableIntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
   originalPublicationYear?: NullableIntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   extra?: ExtraBookData | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -45,18 +45,18 @@ export class BookUpdateWithoutReadingsInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateauthorNamesInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateauthorNamesInput, { nullable: true })
   authorNames?: BookUpdateauthorNamesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateauthorNamesLfInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateauthorNamesLfInput, { nullable: true })
   authorNamesLf?: BookUpdateauthorNamesLfInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipUpdateManyWithoutBookInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipUpdateManyWithoutBookInput, { nullable: true })
   authorships?: AuthorshipUpdateManyWithoutBookInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingUpdateManyWithoutBookInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingUpdateManyWithoutBookInput, { nullable: true })
   shelvings?: ShelvingUpdateManyWithoutBookInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewUpdateManyWithoutBookInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewUpdateManyWithoutBookInput, { nullable: true })
   BookReview?: BookReviewUpdateManyWithoutBookInput | undefined;
 }

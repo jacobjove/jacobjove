@@ -4,9 +4,9 @@ import { RedirectWhereInput } from "../../../inputs/RedirectWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyRedirectArgs {
-  @TypeGraphQL.Field((_type) => RedirectUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => RedirectUpdateManyMutationInput, { nullable: false })
   data!: RedirectUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => RedirectWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RedirectWhereInput, { nullable: true })
   where?: RedirectWhereInput | undefined;
 }

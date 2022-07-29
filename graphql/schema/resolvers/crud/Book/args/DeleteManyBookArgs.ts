@@ -3,6 +3,6 @@ import { BookWhereInput } from "../../../inputs/BookWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyBookArgs {
-  @TypeGraphQL.Field((_type) => BookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookWhereInput, { nullable: true })
   where?: BookWhereInput | undefined;
 }

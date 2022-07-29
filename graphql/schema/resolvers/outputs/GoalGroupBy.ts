@@ -9,30 +9,30 @@ import { GoalSumAggregate } from "../outputs/GoalSumAggregate";
   isAbstract: true,
 })
 export class GoalGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   habitId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   goalId!: string | null;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   quantity!: number;
 
-  @TypeGraphQL.Field((_type) => GoalCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => GoalCountAggregate, { nullable: true })
   _count!: GoalCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => GoalAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => GoalAvgAggregate, { nullable: true })
   _avg!: GoalAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => GoalSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => GoalSumAggregate, { nullable: true })
   _sum!: GoalSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => GoalMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => GoalMinAggregate, { nullable: true })
   _min!: GoalMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => GoalMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => GoalMaxAggregate, { nullable: true })
   _max!: GoalMaxAggregate | null;
 }

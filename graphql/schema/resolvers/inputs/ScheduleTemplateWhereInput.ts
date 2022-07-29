@@ -9,27 +9,27 @@ import { StringNullableFilter } from "../inputs/StringNullableFilter";
   isAbstract: true,
 })
 export class ScheduleTemplateWhereInput {
-  @TypeGraphQL.Field((_type) => [ScheduleTemplateWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ScheduleTemplateWhereInput], { nullable: true })
   AND?: ScheduleTemplateWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ScheduleTemplateWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ScheduleTemplateWhereInput], { nullable: true })
   OR?: ScheduleTemplateWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ScheduleTemplateWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ScheduleTemplateWhereInput], { nullable: true })
   NOT?: ScheduleTemplateWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => EnumFREQUENCYFilter, { nullable: true })
+  @TypeGraphQL.Field(() => EnumFREQUENCYFilter, { nullable: true })
   frequency?: EnumFREQUENCYFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntFilter, { nullable: true })
   multiplier?: IntFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableFilter, { nullable: true })
   chron?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateListRelationFilter, { nullable: true })
   actionScheduleTemplates?: ActionScheduleTemplateListRelationFilter | undefined;
 }

@@ -11,7 +11,7 @@ import { ActionScheduleCalendarEventsArgs } from "./args/ActionScheduleCalendarE
 
 @TypeGraphQL.Resolver((_of) => ActionSchedule)
 export class ActionScheduleRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Habit, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Habit, { nullable: false })
   async habit(
     @TypeGraphQL.Root() actionSchedule: ActionSchedule,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -25,7 +25,7 @@ export class ActionScheduleRelationsResolver {
       .habit({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [CalendarEvent], { nullable: false })
   async calendarEvents(
     @TypeGraphQL.Root() actionSchedule: ActionSchedule,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -54,7 +54,7 @@ export class ActionScheduleRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => ActionScheduleTemplate, { nullable: true })
+  @TypeGraphQL.FieldResolver(() => ActionScheduleTemplate, { nullable: true })
   async template(
     @TypeGraphQL.Root() actionSchedule: ActionSchedule,
     @TypeGraphQL.Ctx() ctx: ApolloContext

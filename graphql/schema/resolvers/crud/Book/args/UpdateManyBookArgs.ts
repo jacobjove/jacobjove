@@ -4,9 +4,9 @@ import { BookWhereInput } from "../../../inputs/BookWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyBookArgs {
-  @TypeGraphQL.Field((_type) => BookUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookUpdateManyMutationInput, { nullable: false })
   data!: BookUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => BookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookWhereInput, { nullable: true })
   where?: BookWhereInput | undefined;
 }

@@ -3,6 +3,6 @@ import { ShelvingWhereInput } from "../../../inputs/ShelvingWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyShelvingArgs {
-  @TypeGraphQL.Field((_type) => ShelvingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingWhereInput, { nullable: true })
   where?: ShelvingWhereInput | undefined;
 }

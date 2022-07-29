@@ -6,9 +6,9 @@ import { BookshelfUpdateManyMutationInput } from "../inputs/BookshelfUpdateManyM
   isAbstract: true,
 })
 export class BookshelfUpdateManyWithWhereWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => BookshelfScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfScalarWhereInput, { nullable: false })
   where!: BookshelfScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfUpdateManyMutationInput, { nullable: false })
   data!: BookshelfUpdateManyMutationInput;
 }

@@ -8,15 +8,15 @@ import { ListWhereUniqueInput } from "../inputs/ListWhereUniqueInput";
   isAbstract: true,
 })
 export class ListCreateNestedManyWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => [ListCreateWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListCreateWithoutOwnerInput], { nullable: true })
   create?: ListCreateWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListCreateOrConnectWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListCreateOrConnectWithoutOwnerInput], { nullable: true })
   connectOrCreate?: ListCreateOrConnectWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ListCreateManyOwnerInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ListCreateManyOwnerInputEnvelope, { nullable: true })
   createMany?: ListCreateManyOwnerInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListWhereUniqueInput], { nullable: true })
   connect?: ListWhereUniqueInput[] | undefined;
 }

@@ -10,32 +10,32 @@ import { NotebookUserPermissionSumOrderByAggregateInput } from "../inputs/Notebo
   isAbstract: true,
 })
 export class NotebookUserPermissionOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   userId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   notebookId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionCountOrderByAggregateInput, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionCountOrderByAggregateInput, {
     nullable: true,
   })
   _count?: NotebookUserPermissionCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionAvgOrderByAggregateInput, { nullable: true })
   _avg?: NotebookUserPermissionAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionMaxOrderByAggregateInput, { nullable: true })
   _max?: NotebookUserPermissionMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionMinOrderByAggregateInput, { nullable: true })
   _min?: NotebookUserPermissionMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUserPermissionSumOrderByAggregateInput, { nullable: true })
   _sum?: NotebookUserPermissionSumOrderByAggregateInput | undefined;
 }

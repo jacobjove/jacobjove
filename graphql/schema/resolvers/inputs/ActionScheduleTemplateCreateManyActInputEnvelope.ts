@@ -5,9 +5,9 @@ import { ActionScheduleTemplateCreateManyActInput } from "../inputs/ActionSchedu
   isAbstract: true,
 })
 export class ActionScheduleTemplateCreateManyActInputEnvelope {
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateCreateManyActInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateCreateManyActInput], { nullable: false })
   data!: ActionScheduleTemplateCreateManyActInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

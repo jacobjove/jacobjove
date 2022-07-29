@@ -4,9 +4,9 @@ import { ActWhereInput } from "../../../inputs/ActWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyActArgs {
-  @TypeGraphQL.Field((_type) => ActUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateManyMutationInput, { nullable: false })
   data!: ActUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => ActWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActWhereInput, { nullable: true })
   where?: ActWhereInput | undefined;
 }

@@ -6,9 +6,9 @@ import { TaskUpdateWithoutCalendarEventsInput } from "../inputs/TaskUpdateWithou
   isAbstract: true,
 })
 export class TaskUpsertWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => TaskUpdateWithoutCalendarEventsInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskUpdateWithoutCalendarEventsInput, { nullable: false })
   update!: TaskUpdateWithoutCalendarEventsInput;
 
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutCalendarEventsInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskCreateWithoutCalendarEventsInput, { nullable: false })
   create!: TaskCreateWithoutCalendarEventsInput;
 }

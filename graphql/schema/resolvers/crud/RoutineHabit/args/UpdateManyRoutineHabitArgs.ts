@@ -4,9 +4,9 @@ import { RoutineHabitWhereInput } from "../../../inputs/RoutineHabitWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyRoutineHabitArgs {
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitUpdateManyMutationInput, { nullable: false })
   data!: RoutineHabitUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineHabitWhereInput, { nullable: true })
   where?: RoutineHabitWhereInput | undefined;
 }

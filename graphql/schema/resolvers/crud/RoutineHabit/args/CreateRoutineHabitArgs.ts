@@ -3,6 +3,6 @@ import { RoutineHabitCreateInput } from "../../../inputs/RoutineHabitCreateInput
 
 @TypeGraphQL.ArgsType()
 export class CreateRoutineHabitArgs {
-  @TypeGraphQL.Field((_type) => RoutineHabitCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitCreateInput, { nullable: false })
   data!: RoutineHabitCreateInput;
 }

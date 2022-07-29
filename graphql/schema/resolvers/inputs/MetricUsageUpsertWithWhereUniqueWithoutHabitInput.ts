@@ -7,12 +7,12 @@ import { MetricUsageWhereUniqueInput } from "../inputs/MetricUsageWhereUniqueInp
   isAbstract: true,
 })
 export class MetricUsageUpsertWithWhereUniqueWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => MetricUsageWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageWhereUniqueInput, { nullable: false })
   where!: MetricUsageWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => MetricUsageUpdateWithoutHabitInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageUpdateWithoutHabitInput, { nullable: false })
   update!: MetricUsageUpdateWithoutHabitInput;
 
-  @TypeGraphQL.Field((_type) => MetricUsageCreateWithoutHabitInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageCreateWithoutHabitInput, { nullable: false })
   create!: MetricUsageCreateWithoutHabitInput;
 }

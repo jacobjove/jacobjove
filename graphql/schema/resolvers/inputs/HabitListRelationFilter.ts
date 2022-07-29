@@ -5,12 +5,12 @@ import { HabitWhereInput } from "../inputs/HabitWhereInput";
   isAbstract: true,
 })
 export class HabitListRelationFilter {
-  @TypeGraphQL.Field((_type) => HabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereInput, { nullable: true })
   every?: HabitWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereInput, { nullable: true })
   some?: HabitWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereInput, { nullable: true })
   none?: HabitWhereInput | undefined;
 }

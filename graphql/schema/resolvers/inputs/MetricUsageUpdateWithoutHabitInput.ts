@@ -9,9 +9,9 @@ export class MetricUsageUpdateWithoutHabitInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUpdateOneRequiredWithoutUsagesInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUpdateOneRequiredWithoutUsagesInput, { nullable: true })
   metric?: MetricUpdateOneRequiredWithoutUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordUpdateManyWithoutMetricUsageInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricRecordUpdateManyWithoutMetricUsageInput, { nullable: true })
   records?: MetricRecordUpdateManyWithoutMetricUsageInput | undefined;
 }

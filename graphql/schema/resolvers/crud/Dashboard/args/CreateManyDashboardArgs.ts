@@ -3,9 +3,9 @@ import { DashboardCreateManyInput } from "../../../inputs/DashboardCreateManyInp
 
 @TypeGraphQL.ArgsType()
 export class CreateManyDashboardArgs {
-  @TypeGraphQL.Field((_type) => [DashboardCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [DashboardCreateManyInput], { nullable: false })
   data!: DashboardCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

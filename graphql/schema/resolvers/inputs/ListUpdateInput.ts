@@ -16,7 +16,7 @@ export class ListUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   description?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   fields?: Record<string, string> | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -28,9 +28,9 @@ export class ListUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutListsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateOneRequiredWithoutListsInput, { nullable: true })
   owner?: UserUpdateOneRequiredWithoutListsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemUpdateManyWithoutListInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemUpdateManyWithoutListInput, { nullable: true })
   items?: ItemUpdateManyWithoutListInput | undefined;
 }

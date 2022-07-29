@@ -6,9 +6,9 @@ import { HabitUpdateManyMutationInput } from "../inputs/HabitUpdateManyMutationI
   isAbstract: true,
 })
 export class HabitUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => HabitScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitScalarWhereInput, { nullable: false })
   where!: HabitScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateManyMutationInput, { nullable: false })
   data!: HabitUpdateManyMutationInput;
 }

@@ -3,6 +3,6 @@ import { HabitWhereUniqueInput } from "../../../inputs/HabitWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteHabitArgs {
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: false })
   where!: HabitWhereUniqueInput;
 }

@@ -6,9 +6,9 @@ import { DashboardUpdateManyMutationInput } from "../inputs/DashboardUpdateManyM
   isAbstract: true,
 })
 export class DashboardUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => DashboardScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardScalarWhereInput, { nullable: false })
   where!: DashboardScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => DashboardUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardUpdateManyMutationInput, { nullable: false })
   data!: DashboardUpdateManyMutationInput;
 }

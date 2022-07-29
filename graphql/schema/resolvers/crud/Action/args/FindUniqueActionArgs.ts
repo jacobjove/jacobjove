@@ -3,6 +3,6 @@ import { ActionWhereUniqueInput } from "../../../inputs/ActionWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueActionArgs {
-  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionWhereUniqueInput, { nullable: false })
   where!: ActionWhereUniqueInput;
 }

@@ -6,13 +6,13 @@ import { NullableIntFieldUpdateOperationsInput } from "../inputs/NullableIntFiel
   isAbstract: true,
 })
 export class RoutineUpdateWithoutHabitsInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   userId?: string | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
   name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
   durationInMinutes?: NullableIntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

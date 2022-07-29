@@ -24,13 +24,13 @@ export class BookUpdateManyMutationInput {
   @TypeGraphQL.Field({ nullable: true })
   description?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
   publicationYear?: NullableIntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
   originalPublicationYear?: NullableIntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   extra?: ExtraBookData | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -42,9 +42,9 @@ export class BookUpdateManyMutationInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateauthorNamesInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateauthorNamesInput, { nullable: true })
   authorNames?: BookUpdateauthorNamesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateauthorNamesLfInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateauthorNamesLfInput, { nullable: true })
   authorNamesLf?: BookUpdateauthorNamesLfInput | undefined;
 }

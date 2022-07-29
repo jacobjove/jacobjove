@@ -6,9 +6,9 @@ import { ReadingUpdateWithoutReviewInput } from "../inputs/ReadingUpdateWithoutR
   isAbstract: true,
 })
 export class ReadingUpsertWithoutReviewInput {
-  @TypeGraphQL.Field((_type) => ReadingUpdateWithoutReviewInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingUpdateWithoutReviewInput, { nullable: false })
   update!: ReadingUpdateWithoutReviewInput;
 
-  @TypeGraphQL.Field((_type) => ReadingCreateWithoutReviewInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingCreateWithoutReviewInput, { nullable: false })
   create!: ReadingCreateWithoutReviewInput;
 }

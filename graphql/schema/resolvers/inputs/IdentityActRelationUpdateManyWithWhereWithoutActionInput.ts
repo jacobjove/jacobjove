@@ -6,9 +6,9 @@ import { IdentityActRelationUpdateManyMutationInput } from "../inputs/IdentityAc
   isAbstract: true,
 })
 export class IdentityActRelationUpdateManyWithWhereWithoutActionInput {
-  @TypeGraphQL.Field((_type) => IdentityActRelationScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationScalarWhereInput, { nullable: false })
   where!: IdentityActRelationScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationUpdateManyMutationInput, { nullable: false })
   data!: IdentityActRelationUpdateManyMutationInput;
 }

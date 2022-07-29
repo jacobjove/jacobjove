@@ -5,21 +5,21 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class RedirectWhereInput {
-  @TypeGraphQL.Field((_type) => [RedirectWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RedirectWhereInput], { nullable: true })
   AND?: RedirectWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RedirectWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RedirectWhereInput], { nullable: true })
   OR?: RedirectWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RedirectWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [RedirectWhereInput], { nullable: true })
   NOT?: RedirectWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   old_path?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   new_path?: StringFilter | undefined;
 }

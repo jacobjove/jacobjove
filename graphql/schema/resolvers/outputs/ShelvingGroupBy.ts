@@ -10,42 +10,42 @@ import { ShelvingSumAggregate } from "../outputs/ShelvingSumAggregate";
   isAbstract: true,
 })
 export class ShelvingGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   bookId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   shelfId!: string;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   position!: number;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   rationale!: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingCountAggregate, { nullable: true })
   _count!: ShelvingCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingAvgAggregate, { nullable: true })
   _avg!: ShelvingAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingSumAggregate, { nullable: true })
   _sum!: ShelvingSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingMinAggregate, { nullable: true })
   _min!: ShelvingMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ShelvingMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingMaxAggregate, { nullable: true })
   _max!: ShelvingMaxAggregate | null;
 }

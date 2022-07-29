@@ -8,38 +8,38 @@ import { UserOrderByWithRelationInput } from "../inputs/UserOrderByWithRelationI
   isAbstract: true,
 })
 export class NotebookOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => UserOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserOrderByWithRelationInput, { nullable: true })
   owner?: UserOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   ownerId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   title?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isPublic?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   description?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => NoteOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NoteOrderByRelationAggregateInput, { nullable: true })
   notes?: NoteOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionOrderByRelationAggregateInput, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionOrderByRelationAggregateInput, {
     nullable: true,
   })
   userPermissions?: NotebookUserPermissionOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 }

@@ -5,12 +5,12 @@ import { MantraWhereUniqueInput } from "../../../inputs/MantraWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertMantraArgs {
-  @TypeGraphQL.Field((_type) => MantraWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraWhereUniqueInput, { nullable: false })
   where!: MantraWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => MantraCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraCreateInput, { nullable: false })
   create!: MantraCreateInput;
 
-  @TypeGraphQL.Field((_type) => MantraUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraUpdateInput, { nullable: false })
   update!: MantraUpdateInput;
 }

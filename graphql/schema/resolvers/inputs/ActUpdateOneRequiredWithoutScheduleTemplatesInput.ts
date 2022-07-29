@@ -9,18 +9,18 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActUpdateOneRequiredWithoutScheduleTemplatesInput {
-  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateWithoutScheduleTemplatesInput, { nullable: true })
   create?: ActCreateWithoutScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutScheduleTemplatesInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateOrConnectWithoutScheduleTemplatesInput, { nullable: true })
   connectOrCreate?: ActCreateOrConnectWithoutScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpsertWithoutScheduleTemplatesInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpsertWithoutScheduleTemplatesInput, { nullable: true })
   upsert?: ActUpsertWithoutScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: true })
   connect?: ActWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutScheduleTemplatesInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpdateWithoutScheduleTemplatesInput, { nullable: true })
   update?: ActUpdateWithoutScheduleTemplatesInput | undefined;
 }

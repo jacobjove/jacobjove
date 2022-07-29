@@ -8,15 +8,15 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [TaskCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskCreateWithoutUserInput], { nullable: true })
   create?: TaskCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: TaskCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => TaskCreateManyUserInputEnvelope, { nullable: true })
   createMany?: TaskCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [TaskWhereUniqueInput], { nullable: true })
   connect?: TaskWhereUniqueInput[] | undefined;
 }

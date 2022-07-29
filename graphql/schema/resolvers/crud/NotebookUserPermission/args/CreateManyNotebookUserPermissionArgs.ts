@@ -3,9 +3,9 @@ import { NotebookUserPermissionCreateManyInput } from "../../../inputs/NotebookU
 
 @TypeGraphQL.ArgsType()
 export class CreateManyNotebookUserPermissionArgs {
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionCreateManyInput], { nullable: false })
   data!: NotebookUserPermissionCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -9,18 +9,18 @@ import { BookReviewSumAggregate } from "../outputs/BookReviewSumAggregate";
   isAbstract: true,
 })
 export class AggregateBookReview {
-  @TypeGraphQL.Field((_type) => BookReviewCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewCountAggregate, { nullable: true })
   _count!: BookReviewCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookReviewAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewAvgAggregate, { nullable: true })
   _avg!: BookReviewAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookReviewSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewSumAggregate, { nullable: true })
   _sum!: BookReviewSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookReviewMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewMinAggregate, { nullable: true })
   _min!: BookReviewMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookReviewMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewMaxAggregate, { nullable: true })
   _max!: BookReviewMaxAggregate | null;
 }

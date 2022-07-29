@@ -9,18 +9,18 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserUpdateOneRequiredWithoutBeliefsInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutBeliefsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserCreateWithoutBeliefsInput, { nullable: true })
   create?: UserCreateWithoutBeliefsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutBeliefsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserCreateOrConnectWithoutBeliefsInput, { nullable: true })
   connectOrCreate?: UserCreateOrConnectWithoutBeliefsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpsertWithoutBeliefsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpsertWithoutBeliefsInput, { nullable: true })
   upsert?: UserUpsertWithoutBeliefsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutBeliefsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateWithoutBeliefsInput, { nullable: true })
   update?: UserUpdateWithoutBeliefsInput | undefined;
 }

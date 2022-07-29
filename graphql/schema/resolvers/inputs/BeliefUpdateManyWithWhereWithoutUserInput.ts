@@ -6,9 +6,9 @@ import { BeliefUpdateManyMutationInput } from "../inputs/BeliefUpdateManyMutatio
   isAbstract: true,
 })
 export class BeliefUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => BeliefScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefScalarWhereInput, { nullable: false })
   where!: BeliefScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => BeliefUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefUpdateManyMutationInput, { nullable: false })
   data!: BeliefUpdateManyMutationInput;
 }

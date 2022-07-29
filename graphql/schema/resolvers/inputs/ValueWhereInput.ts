@@ -8,33 +8,33 @@ import { StringNullableFilter } from "../inputs/StringNullableFilter";
   isAbstract: true,
 })
 export class ValueWhereInput {
-  @TypeGraphQL.Field((_type) => [ValueWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueWhereInput], { nullable: true })
   AND?: ValueWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueWhereInput], { nullable: true })
   OR?: ValueWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueWhereInput], { nullable: true })
   NOT?: ValueWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   slug?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableFilter, { nullable: true })
   description?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 }

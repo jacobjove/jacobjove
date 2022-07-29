@@ -5,9 +5,9 @@ import { BeliefCreateManyUserInput } from "../inputs/BeliefCreateManyUserInput";
   isAbstract: true,
 })
 export class BeliefCreateManyUserInputEnvelope {
-  @TypeGraphQL.Field((_type) => [BeliefCreateManyUserInput], { nullable: false })
+  @TypeGraphQL.Field(() => [BeliefCreateManyUserInput], { nullable: false })
   data!: BeliefCreateManyUserInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -9,18 +9,18 @@ import { RoutineSumAggregate } from "../outputs/RoutineSumAggregate";
   isAbstract: true,
 })
 export class AggregateRoutine {
-  @TypeGraphQL.Field((_type) => RoutineCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineCountAggregate, { nullable: true })
   _count!: RoutineCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RoutineAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineAvgAggregate, { nullable: true })
   _avg!: RoutineAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RoutineSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineSumAggregate, { nullable: true })
   _sum!: RoutineSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RoutineMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineMinAggregate, { nullable: true })
   _min!: RoutineMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => RoutineMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineMaxAggregate, { nullable: true })
   _max!: RoutineMaxAggregate | null;
 }

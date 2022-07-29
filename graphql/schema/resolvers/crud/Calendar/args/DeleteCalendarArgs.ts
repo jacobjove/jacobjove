@@ -3,6 +3,6 @@ import { CalendarWhereUniqueInput } from "../../../inputs/CalendarWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class DeleteCalendarArgs {
-  @TypeGraphQL.Field((_type) => CalendarWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarWhereUniqueInput, { nullable: false })
   where!: CalendarWhereUniqueInput;
 }

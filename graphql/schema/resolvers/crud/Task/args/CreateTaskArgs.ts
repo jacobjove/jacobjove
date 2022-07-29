@@ -3,6 +3,6 @@ import { TaskCreateInput } from "../../../inputs/TaskCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateTaskArgs {
-  @TypeGraphQL.Field((_type) => TaskCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskCreateInput, { nullable: false })
   data!: TaskCreateInput;
 }

@@ -6,9 +6,9 @@ import { ActionWhereUniqueInput } from "../inputs/ActionWhereUniqueInput";
   isAbstract: true,
 })
 export class ActionCreateOrConnectWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionWhereUniqueInput, { nullable: false })
   where!: ActionWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionCreateWithoutHabitInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionCreateWithoutHabitInput, { nullable: false })
   create!: ActionCreateWithoutHabitInput;
 }

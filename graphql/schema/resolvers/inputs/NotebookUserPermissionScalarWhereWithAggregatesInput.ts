@@ -6,30 +6,30 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class NotebookUserPermissionScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   AND?: NotebookUserPermissionScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   OR?: NotebookUserPermissionScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [NotebookUserPermissionScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   NOT?: NotebookUserPermissionScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   userId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   notebookId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   archivedAt?: DateTimeNullableWithAggregatesFilter | undefined;
 }

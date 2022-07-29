@@ -4,9 +4,9 @@ import { MantraWhereInput } from "../../../inputs/MantraWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyMantraArgs {
-  @TypeGraphQL.Field((_type) => MantraUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraUpdateManyMutationInput, { nullable: false })
   data!: MantraUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => MantraWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraWhereInput, { nullable: true })
   where?: MantraWhereInput | undefined;
 }

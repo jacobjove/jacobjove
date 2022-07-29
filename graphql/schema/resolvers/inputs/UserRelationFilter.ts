@@ -5,9 +5,9 @@ import { UserWhereInput } from "../inputs/UserWhereInput";
   isAbstract: true,
 })
 export class UserRelationFilter {
-  @TypeGraphQL.Field((_type) => UserWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserWhereInput, { nullable: true })
   is?: UserWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserWhereInput, { nullable: true })
   isNot?: UserWhereInput | undefined;
 }

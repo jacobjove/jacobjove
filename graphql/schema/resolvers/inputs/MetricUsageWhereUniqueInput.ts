@@ -5,9 +5,9 @@ import { MetricUsageHabitIdMetricIdCompoundUniqueInput } from "../inputs/MetricU
   isAbstract: true,
 })
 export class MetricUsageWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageHabitIdMetricIdCompoundUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageHabitIdMetricIdCompoundUniqueInput, { nullable: true })
   habitId_metricId?: MetricUsageHabitIdMetricIdCompoundUniqueInput | undefined;
 }

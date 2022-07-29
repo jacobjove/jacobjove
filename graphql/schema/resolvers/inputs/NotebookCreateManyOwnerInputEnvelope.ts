@@ -5,9 +5,9 @@ import { NotebookCreateManyOwnerInput } from "../inputs/NotebookCreateManyOwnerI
   isAbstract: true,
 })
 export class NotebookCreateManyOwnerInputEnvelope {
-  @TypeGraphQL.Field((_type) => [NotebookCreateManyOwnerInput], { nullable: false })
+  @TypeGraphQL.Field(() => [NotebookCreateManyOwnerInput], { nullable: false })
   data!: NotebookCreateManyOwnerInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

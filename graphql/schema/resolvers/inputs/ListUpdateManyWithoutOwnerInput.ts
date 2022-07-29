@@ -12,36 +12,36 @@ import { ListWhereUniqueInput } from "../inputs/ListWhereUniqueInput";
   isAbstract: true,
 })
 export class ListUpdateManyWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => [ListCreateWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListCreateWithoutOwnerInput], { nullable: true })
   create?: ListCreateWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListCreateOrConnectWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListCreateOrConnectWithoutOwnerInput], { nullable: true })
   connectOrCreate?: ListCreateOrConnectWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListUpsertWithWhereUniqueWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListUpsertWithWhereUniqueWithoutOwnerInput], { nullable: true })
   upsert?: ListUpsertWithWhereUniqueWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ListCreateManyOwnerInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ListCreateManyOwnerInputEnvelope, { nullable: true })
   createMany?: ListCreateManyOwnerInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListWhereUniqueInput], { nullable: true })
   set?: ListWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListWhereUniqueInput], { nullable: true })
   disconnect?: ListWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListWhereUniqueInput], { nullable: true })
   delete?: ListWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListWhereUniqueInput], { nullable: true })
   connect?: ListWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListUpdateWithWhereUniqueWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListUpdateWithWhereUniqueWithoutOwnerInput], { nullable: true })
   update?: ListUpdateWithWhereUniqueWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListUpdateManyWithWhereWithoutOwnerInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListUpdateManyWithWhereWithoutOwnerInput], { nullable: true })
   updateMany?: ListUpdateManyWithWhereWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ListScalarWhereInput], { nullable: true })
   deleteMany?: ListScalarWhereInput[] | undefined;
 }

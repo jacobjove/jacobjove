@@ -7,12 +7,12 @@ import { MetricApplicationWhereUniqueInput } from "../inputs/MetricApplicationWh
   isAbstract: true,
 })
 export class MetricApplicationUpsertWithWhereUniqueWithoutActInput {
-  @TypeGraphQL.Field((_type) => MetricApplicationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricApplicationWhereUniqueInput, { nullable: false })
   where!: MetricApplicationWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationUpdateWithoutActInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricApplicationUpdateWithoutActInput, { nullable: false })
   update!: MetricApplicationUpdateWithoutActInput;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationCreateWithoutActInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricApplicationCreateWithoutActInput, { nullable: false })
   create!: MetricApplicationCreateWithoutActInput;
 }

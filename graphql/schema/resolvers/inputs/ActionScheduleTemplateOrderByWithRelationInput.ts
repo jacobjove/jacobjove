@@ -8,30 +8,30 @@ import { ScheduleTemplateOrderByWithRelationInput } from "../inputs/ScheduleTemp
   isAbstract: true,
 })
 export class ActionScheduleTemplateOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActOrderByWithRelationInput, { nullable: true })
   act?: ActOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   actId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateOrderByWithRelationInput, { nullable: true })
   scheduleTemplate?: ScheduleTemplateOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   scheduleTemplateId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   frequency?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   multiplier?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   quantity?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleOrderByRelationAggregateInput, { nullable: true })
   actionSchedules?: ActionScheduleOrderByRelationAggregateInput | undefined;
 }

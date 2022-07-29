@@ -4,9 +4,9 @@ import { MetricApplicationWhereUniqueInput } from "../../../inputs/MetricApplica
 
 @TypeGraphQL.ArgsType()
 export class UpdateMetricApplicationArgs {
-  @TypeGraphQL.Field((_type) => MetricApplicationUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricApplicationUpdateInput, { nullable: false })
   data!: MetricApplicationUpdateInput;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricApplicationWhereUniqueInput, { nullable: false })
   where!: MetricApplicationWhereUniqueInput;
 }

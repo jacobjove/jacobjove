@@ -9,18 +9,18 @@ import { IdentitySumAggregate } from "../outputs/IdentitySumAggregate";
   isAbstract: true,
 })
 export class AggregateIdentity {
-  @TypeGraphQL.Field((_type) => IdentityCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityCountAggregate, { nullable: true })
   _count!: IdentityCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => IdentityAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityAvgAggregate, { nullable: true })
   _avg!: IdentityAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => IdentitySumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentitySumAggregate, { nullable: true })
   _sum!: IdentitySumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => IdentityMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityMinAggregate, { nullable: true })
   _min!: IdentityMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => IdentityMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityMaxAggregate, { nullable: true })
   _max!: IdentityMaxAggregate | null;
 }

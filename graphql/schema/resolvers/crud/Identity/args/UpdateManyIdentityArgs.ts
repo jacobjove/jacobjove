@@ -4,9 +4,9 @@ import { IdentityWhereInput } from "../../../inputs/IdentityWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyIdentityArgs {
-  @TypeGraphQL.Field((_type) => IdentityUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityUpdateManyMutationInput, { nullable: false })
   data!: IdentityUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => IdentityWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityWhereInput, { nullable: true })
   where?: IdentityWhereInput | undefined;
 }

@@ -5,9 +5,9 @@ import { ListCreateManyOwnerInput } from "../inputs/ListCreateManyOwnerInput";
   isAbstract: true,
 })
 export class ListCreateManyOwnerInputEnvelope {
-  @TypeGraphQL.Field((_type) => [ListCreateManyOwnerInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ListCreateManyOwnerInput], { nullable: false })
   data!: ListCreateManyOwnerInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

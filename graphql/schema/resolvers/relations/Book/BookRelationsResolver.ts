@@ -13,7 +13,7 @@ import { BookShelvingsArgs } from "./args/BookShelvingsArgs";
 
 @TypeGraphQL.Resolver((_of) => Book)
 export class BookRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [Authorship], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Authorship], { nullable: false })
   async authorships(
     @TypeGraphQL.Root() book: Book,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -28,7 +28,7 @@ export class BookRelationsResolver {
       .authorships(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Reading], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Reading], { nullable: false })
   async readings(
     @TypeGraphQL.Root() book: Book,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -43,7 +43,7 @@ export class BookRelationsResolver {
       .readings(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Shelving], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Shelving], { nullable: false })
   async shelvings(
     @TypeGraphQL.Root() book: Book,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -58,7 +58,7 @@ export class BookRelationsResolver {
       .shelvings(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [BookReview], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [BookReview], { nullable: false })
   async BookReview(
     @TypeGraphQL.Root() book: Book,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

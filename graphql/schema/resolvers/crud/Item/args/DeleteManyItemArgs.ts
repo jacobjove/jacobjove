@@ -3,6 +3,6 @@ import { ItemWhereInput } from "../../../inputs/ItemWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyItemArgs {
-  @TypeGraphQL.Field((_type) => ItemWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemWhereInput, { nullable: true })
   where?: ItemWhereInput | undefined;
 }

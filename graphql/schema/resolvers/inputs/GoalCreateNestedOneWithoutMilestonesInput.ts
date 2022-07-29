@@ -7,12 +7,12 @@ import { GoalWhereUniqueInput } from "../inputs/GoalWhereUniqueInput";
   isAbstract: true,
 })
 export class GoalCreateNestedOneWithoutMilestonesInput {
-  @TypeGraphQL.Field((_type) => GoalCreateWithoutMilestonesInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalCreateWithoutMilestonesInput, { nullable: true })
   create?: GoalCreateWithoutMilestonesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalCreateOrConnectWithoutMilestonesInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalCreateOrConnectWithoutMilestonesInput, { nullable: true })
   connectOrCreate?: GoalCreateOrConnectWithoutMilestonesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereUniqueInput, { nullable: true })
   connect?: GoalWhereUniqueInput | undefined;
 }

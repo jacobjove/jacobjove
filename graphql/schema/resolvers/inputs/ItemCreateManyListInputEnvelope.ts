@@ -5,9 +5,9 @@ import { ItemCreateManyListInput } from "../inputs/ItemCreateManyListInput";
   isAbstract: true,
 })
 export class ItemCreateManyListInputEnvelope {
-  @TypeGraphQL.Field((_type) => [ItemCreateManyListInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ItemCreateManyListInput], { nullable: false })
   data!: ItemCreateManyListInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

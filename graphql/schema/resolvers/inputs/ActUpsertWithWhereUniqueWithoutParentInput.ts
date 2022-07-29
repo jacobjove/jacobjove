@@ -7,12 +7,12 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActUpsertWithWhereUniqueWithoutParentInput {
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: false })
   where!: ActWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutParentInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateWithoutParentInput, { nullable: false })
   update!: ActUpdateWithoutParentInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutParentInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutParentInput, { nullable: false })
   create!: ActCreateWithoutParentInput;
 }

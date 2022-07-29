@@ -17,7 +17,7 @@ export class CalendarUpdateWithoutAccountInput {
   @TypeGraphQL.Field({ nullable: true })
   color?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableEnumCalendarProviderFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(() => NullableEnumCalendarProviderFieldUpdateOperationsInput, {
     nullable: true,
   })
   provider?: NullableEnumCalendarProviderFieldUpdateOperationsInput | undefined;
@@ -28,13 +28,13 @@ export class CalendarUpdateWithoutAccountInput {
   @TypeGraphQL.Field({ nullable: true })
   syncToken?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableBoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableBoolFieldUpdateOperationsInput, { nullable: true })
   primary?: NullableBoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableBoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableBoolFieldUpdateOperationsInput, { nullable: true })
   public?: NullableBoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableBoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableBoolFieldUpdateOperationsInput, { nullable: true })
   enabled?: NullableBoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -46,9 +46,9 @@ export class CalendarUpdateWithoutAccountInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutCalendarsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateOneRequiredWithoutCalendarsInput, { nullable: true })
   user?: UserUpdateOneRequiredWithoutCalendarsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyWithoutCalendarInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventUpdateManyWithoutCalendarInput, { nullable: true })
   events?: CalendarEventUpdateManyWithoutCalendarInput | undefined;
 }

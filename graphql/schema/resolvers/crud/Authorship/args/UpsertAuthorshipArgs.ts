@@ -5,12 +5,12 @@ import { AuthorshipWhereUniqueInput } from "../../../inputs/AuthorshipWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class UpsertAuthorshipArgs {
-  @TypeGraphQL.Field((_type) => AuthorshipWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipWhereUniqueInput, { nullable: false })
   where!: AuthorshipWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => AuthorshipCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipCreateInput, { nullable: false })
   create!: AuthorshipCreateInput;
 
-  @TypeGraphQL.Field((_type) => AuthorshipUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipUpdateInput, { nullable: false })
   update!: AuthorshipUpdateInput;
 }

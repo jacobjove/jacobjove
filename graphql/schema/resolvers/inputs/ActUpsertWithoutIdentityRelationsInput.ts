@@ -6,9 +6,9 @@ import { ActUpdateWithoutIdentityRelationsInput } from "../inputs/ActUpdateWitho
   isAbstract: true,
 })
 export class ActUpsertWithoutIdentityRelationsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutIdentityRelationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateWithoutIdentityRelationsInput, { nullable: false })
   update!: ActUpdateWithoutIdentityRelationsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutIdentityRelationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutIdentityRelationsInput, { nullable: false })
   create!: ActCreateWithoutIdentityRelationsInput;
 }

@@ -6,9 +6,9 @@ import { ValueCreateInput } from "./ValueCreateInput";
   isAbstract: true,
 })
 export class ValueUpsertWithoutUserInput {
-  @TypeGraphQL.Field((_type) => ValueUpdateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueUpdateWithoutUserInput, { nullable: false })
   update!: ValueUpdateWithoutUserInput;
 
-  @TypeGraphQL.Field((_type) => ValueCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueCreateInput, { nullable: false })
   create!: ValueCreateInput;
 }

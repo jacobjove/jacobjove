@@ -3,6 +3,6 @@ import { MetricUsageWhereUniqueInput } from "../../../inputs/MetricUsageWhereUni
 
 @TypeGraphQL.ArgsType()
 export class DeleteMetricUsageArgs {
-  @TypeGraphQL.Field((_type) => MetricUsageWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageWhereUniqueInput, { nullable: false })
   where!: MetricUsageWhereUniqueInput;
 }

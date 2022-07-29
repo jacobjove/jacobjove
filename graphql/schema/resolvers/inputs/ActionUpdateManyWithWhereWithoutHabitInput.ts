@@ -6,9 +6,9 @@ import { ActionUpdateManyMutationInput } from "../inputs/ActionUpdateManyMutatio
   isAbstract: true,
 })
 export class ActionUpdateManyWithWhereWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => ActionScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScalarWhereInput, { nullable: false })
   where!: ActionScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ActionUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionUpdateManyMutationInput, { nullable: false })
   data!: ActionUpdateManyMutationInput;
 }

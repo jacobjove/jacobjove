@@ -4,9 +4,9 @@ import { NotebookWhereInput } from "../../../inputs/NotebookWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyNotebookArgs {
-  @TypeGraphQL.Field((_type) => NotebookUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUpdateManyMutationInput, { nullable: false })
   data!: NotebookUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => NotebookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereInput, { nullable: true })
   where?: NotebookWhereInput | undefined;
 }

@@ -4,9 +4,9 @@ import { DashboardWhereInput } from "../../../inputs/DashboardWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyDashboardArgs {
-  @TypeGraphQL.Field((_type) => DashboardUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => DashboardUpdateManyMutationInput, { nullable: false })
   data!: DashboardUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => DashboardWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardWhereInput, { nullable: true })
   where?: DashboardWhereInput | undefined;
 }

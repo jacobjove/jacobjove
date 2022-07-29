@@ -6,21 +6,21 @@ import { BookCreateNestedOneWithoutShelvingsInput } from "../inputs/BookCreateNe
   isAbstract: true,
 })
 export class ShelvingCreateWithoutShelfInput {
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   position?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   rationale?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCreateNestedOneWithoutShelvingsInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookCreateNestedOneWithoutShelvingsInput, { nullable: false })
   book!: BookCreateNestedOneWithoutShelvingsInput;
 }

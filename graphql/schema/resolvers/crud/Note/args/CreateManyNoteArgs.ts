@@ -3,9 +3,9 @@ import { NoteCreateManyInput } from "../../../inputs/NoteCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyNoteArgs {
-  @TypeGraphQL.Field((_type) => [NoteCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [NoteCreateManyInput], { nullable: false })
   data!: NoteCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

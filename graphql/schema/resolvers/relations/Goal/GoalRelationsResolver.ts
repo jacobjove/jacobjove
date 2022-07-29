@@ -9,7 +9,7 @@ import { GoalMilestonesArgs } from "./args/GoalMilestonesArgs";
 
 @TypeGraphQL.Resolver((_of) => Goal)
 export class GoalRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Habit, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Habit, { nullable: false })
   async habit(
     @TypeGraphQL.Root() goal: Goal,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -32,7 +32,7 @@ export class GoalRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Goal, { nullable: true })
+  @TypeGraphQL.FieldResolver(() => Goal, { nullable: true })
   async goal(
     @TypeGraphQL.Root() goal: Goal,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -46,7 +46,7 @@ export class GoalRelationsResolver {
       .goal({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Goal], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [Goal], { nullable: false })
   async milestones(
     @TypeGraphQL.Root() goal: Goal,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

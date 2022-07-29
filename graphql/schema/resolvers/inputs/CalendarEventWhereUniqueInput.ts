@@ -5,10 +5,10 @@ import { CalendarEventRemoteIdCalendarIdCompoundUniqueInput } from "../inputs/Ca
   isAbstract: true,
 })
 export class CalendarEventWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventRemoteIdCalendarIdCompoundUniqueInput, {
+  @TypeGraphQL.Field(() => CalendarEventRemoteIdCalendarIdCompoundUniqueInput, {
     nullable: true,
   })
   remoteId_calendarId?: CalendarEventRemoteIdCalendarIdCompoundUniqueInput | undefined;

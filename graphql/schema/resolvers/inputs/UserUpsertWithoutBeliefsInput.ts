@@ -6,9 +6,9 @@ import { UserUpdateWithoutBeliefsInput } from "../inputs/UserUpdateWithoutBelief
   isAbstract: true,
 })
 export class UserUpsertWithoutBeliefsInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutBeliefsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserUpdateWithoutBeliefsInput, { nullable: false })
   update!: UserUpdateWithoutBeliefsInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutBeliefsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateWithoutBeliefsInput, { nullable: false })
   create!: UserCreateWithoutBeliefsInput;
 }

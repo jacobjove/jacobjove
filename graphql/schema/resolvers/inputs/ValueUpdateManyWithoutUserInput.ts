@@ -12,36 +12,36 @@ import { ValueWhereUniqueInput } from "../inputs/ValueWhereUniqueInput";
   isAbstract: true,
 })
 export class ValueUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [ValueCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueCreateWithoutUserInput], { nullable: true })
   create?: ValueCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: ValueCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
   upsert?: ValueUpsertWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ValueCreateManyUserInputEnvelope, { nullable: true })
   createMany?: ValueCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueWhereUniqueInput], { nullable: true })
   set?: ValueWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueWhereUniqueInput], { nullable: true })
   disconnect?: ValueWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueWhereUniqueInput], { nullable: true })
   delete?: ValueWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueWhereUniqueInput], { nullable: true })
   connect?: ValueWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
   update?: ValueUpdateWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueUpdateManyWithWhereWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueUpdateManyWithWhereWithoutUserInput], { nullable: true })
   updateMany?: ValueUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueScalarWhereInput], { nullable: true })
   deleteMany?: ValueScalarWhereInput[] | undefined;
 }

@@ -9,18 +9,18 @@ import { AuthorWhereUniqueInput } from "../inputs/AuthorWhereUniqueInput";
   isAbstract: true,
 })
 export class AuthorUpdateOneRequiredWithoutAuthorshipsInput {
-  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorCreateWithoutAuthorshipsInput, { nullable: true })
   create?: AuthorCreateWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateOrConnectWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorCreateOrConnectWithoutAuthorshipsInput, { nullable: true })
   connectOrCreate?: AuthorCreateOrConnectWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorUpsertWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorUpsertWithoutAuthorshipsInput, { nullable: true })
   upsert?: AuthorUpsertWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorWhereUniqueInput, { nullable: true })
   connect?: AuthorWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorUpdateWithoutAuthorshipsInput, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorUpdateWithoutAuthorshipsInput, { nullable: true })
   update?: AuthorUpdateWithoutAuthorshipsInput | undefined;
 }

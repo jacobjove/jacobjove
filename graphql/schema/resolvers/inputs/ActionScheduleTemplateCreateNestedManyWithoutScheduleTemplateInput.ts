@@ -8,24 +8,21 @@ import { ActionScheduleTemplateWhereUniqueInput } from "../inputs/ActionSchedule
   isAbstract: true,
 })
 export class ActionScheduleTemplateCreateNestedManyWithoutScheduleTemplateInput {
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateCreateWithoutScheduleTemplateInput], {
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateCreateWithoutScheduleTemplateInput], {
     nullable: true,
   })
   create?: ActionScheduleTemplateCreateWithoutScheduleTemplateInput[] | undefined;
 
-  @TypeGraphQL.Field(
-    (_type) => [ActionScheduleTemplateCreateOrConnectWithoutScheduleTemplateInput],
-    {
-      nullable: true,
-    }
-  )
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateCreateOrConnectWithoutScheduleTemplateInput], {
+    nullable: true,
+  })
   connectOrCreate?: ActionScheduleTemplateCreateOrConnectWithoutScheduleTemplateInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope, {
     nullable: true,
   })
   createMany?: ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateWhereUniqueInput], { nullable: true })
   connect?: ActionScheduleTemplateWhereUniqueInput[] | undefined;
 }

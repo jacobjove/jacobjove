@@ -3,6 +3,6 @@ import { ActWhereUniqueInput } from "../../../inputs/ActWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteActArgs {
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: false })
   where!: ActWhereUniqueInput;
 }

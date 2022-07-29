@@ -19,71 +19,71 @@ import { ValueOrderByRelationAggregateInput } from "../inputs/ValueOrderByRelati
   isAbstract: true,
 })
 export class UserOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   email?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   emailVerified?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   image?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isAdmin?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   settings?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   lastLogin?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountOrderByRelationAggregateInput, { nullable: true })
   accounts?: AccountOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarOrderByRelationAggregateInput, { nullable: true })
   calendars?: CalendarOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityOrderByRelationAggregateInput, { nullable: true })
   identities?: IdentityOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueOrderByRelationAggregateInput, { nullable: true })
   values?: ValueOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BeliefOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefOrderByRelationAggregateInput, { nullable: true })
   beliefs?: BeliefOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitOrderByRelationAggregateInput, { nullable: true })
   habits?: HabitOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskOrderByRelationAggregateInput, { nullable: true })
   tasks?: TaskOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => DashboardOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardOrderByRelationAggregateInput, { nullable: true })
   dashboards?: DashboardOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookOrderByRelationAggregateInput, { nullable: true })
   notebooks?: NotebookOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionOrderByRelationAggregateInput, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionOrderByRelationAggregateInput, {
     nullable: true,
   })
   notebookPermissions?: NotebookUserPermissionOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ListOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListOrderByRelationAggregateInput, { nullable: true })
   lists?: ListOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingOrderByRelationAggregateInput, { nullable: true })
   readings?: ReadingOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfOrderByRelationAggregateInput, { nullable: true })
   bookshelves?: BookshelfOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewOrderByRelationAggregateInput, { nullable: true })
   bookReviews?: BookReviewOrderByRelationAggregateInput | undefined;
 }

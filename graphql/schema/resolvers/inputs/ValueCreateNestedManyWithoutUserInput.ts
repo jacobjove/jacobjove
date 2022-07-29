@@ -8,15 +8,15 @@ import { ValueWhereUniqueInput } from "../inputs/ValueWhereUniqueInput";
   isAbstract: true,
 })
 export class ValueCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [ValueCreateWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueCreateWithoutUserInput], { nullable: true })
   create?: ValueCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueCreateOrConnectWithoutUserInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: ValueCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueCreateManyUserInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ValueCreateManyUserInputEnvelope, { nullable: true })
   createMany?: ValueCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueWhereUniqueInput], { nullable: true })
   connect?: ValueWhereUniqueInput[] | undefined;
 }

@@ -12,7 +12,7 @@ export class BookshelfUpdateWithoutShelvingsInput {
   @TypeGraphQL.Field({ nullable: true })
   slug?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -27,6 +27,6 @@ export class BookshelfUpdateWithoutShelvingsInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutBookshelvesInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateOneRequiredWithoutBookshelvesInput, { nullable: true })
   owner?: UserUpdateOneRequiredWithoutBookshelvesInput | undefined;
 }

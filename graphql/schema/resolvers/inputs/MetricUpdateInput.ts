@@ -9,9 +9,9 @@ export class MetricUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationUpdateManyWithoutMetricInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationUpdateManyWithoutMetricInput, { nullable: true })
   applications?: MetricApplicationUpdateManyWithoutMetricInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageUpdateManyWithoutMetricInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageUpdateManyWithoutMetricInput, { nullable: true })
   usages?: MetricUsageUpdateManyWithoutMetricInput | undefined;
 }

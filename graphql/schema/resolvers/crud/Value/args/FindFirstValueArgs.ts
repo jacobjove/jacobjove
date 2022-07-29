@@ -6,22 +6,22 @@ import { ValueWhereUniqueInput } from "../../../inputs/ValueWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindFirstValueArgs {
-  @TypeGraphQL.Field((_type) => ValueWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueWhereInput, { nullable: true })
   where?: ValueWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueOrderByWithRelationInput], { nullable: true })
   orderBy?: ValueOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueWhereUniqueInput, { nullable: true })
   cursor?: ValueWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [ValueScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [ValueScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<"id" | "name" | "slug" | "description" | "createdAt" | "updatedAt" | "archivedAt">
     | undefined;

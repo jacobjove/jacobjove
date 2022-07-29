@@ -17,7 +17,7 @@ export class TaskUpdateManyMutationInput {
   @TypeGraphQL.Field({ nullable: true })
   dueDate?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   rank?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

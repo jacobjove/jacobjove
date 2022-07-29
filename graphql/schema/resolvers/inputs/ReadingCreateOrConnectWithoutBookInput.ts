@@ -6,9 +6,9 @@ import { ReadingWhereUniqueInput } from "../inputs/ReadingWhereUniqueInput";
   isAbstract: true,
 })
 export class ReadingCreateOrConnectWithoutBookInput {
-  @TypeGraphQL.Field((_type) => ReadingWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingWhereUniqueInput, { nullable: false })
   where!: ReadingWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ReadingCreateWithoutBookInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingCreateWithoutBookInput, { nullable: false })
   create!: ReadingCreateWithoutBookInput;
 }

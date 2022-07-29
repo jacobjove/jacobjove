@@ -5,9 +5,9 @@ import { SortOrder } from "../../enums/SortOrder";
   isAbstract: true,
 })
 export class ScheduleTemplateSumOrderByAggregateInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   multiplier?: "asc" | "desc" | undefined;
 }

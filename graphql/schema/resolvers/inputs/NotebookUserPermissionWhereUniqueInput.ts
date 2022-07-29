@@ -5,10 +5,10 @@ import { NotebookUserPermissionUserIdNotebookIdCompoundUniqueInput } from "../in
   isAbstract: true,
 })
 export class NotebookUserPermissionWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionUserIdNotebookIdCompoundUniqueInput, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionUserIdNotebookIdCompoundUniqueInput, {
     nullable: true,
   })
   userId_notebookId?: NotebookUserPermissionUserIdNotebookIdCompoundUniqueInput | undefined;

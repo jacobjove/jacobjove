@@ -5,9 +5,9 @@ import { NotebookUserPermissionCreateManyUserInput } from "../inputs/NotebookUse
   isAbstract: true,
 })
 export class NotebookUserPermissionCreateManyUserInputEnvelope {
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateManyUserInput], { nullable: false })
+  @TypeGraphQL.Field(() => [NotebookUserPermissionCreateManyUserInput], { nullable: false })
   data!: NotebookUserPermissionCreateManyUserInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

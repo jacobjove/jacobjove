@@ -3,9 +3,9 @@ import { BookReviewCreateManyInput } from "../../../inputs/BookReviewCreateManyI
 
 @TypeGraphQL.ArgsType()
 export class CreateManyBookReviewArgs {
-  @TypeGraphQL.Field((_type) => [BookReviewCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [BookReviewCreateManyInput], { nullable: false })
   data!: BookReviewCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

@@ -11,48 +11,48 @@ import { MetricApplicationCreateNestedManyWithoutActInput } from "../inputs/Metr
   isAbstract: true,
 })
 export class ActCreateWithoutParentInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   slug!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   description?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   isPublic?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateNestedManyWithoutParentInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateNestedManyWithoutParentInput, { nullable: true })
   variants?: ActCreateNestedManyWithoutParentInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateNestedManyWithoutActInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateNestedManyWithoutActInput, { nullable: true })
   habits?: HabitCreateNestedManyWithoutActInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationCreateNestedManyWithoutActInput, {
+  @TypeGraphQL.Field(() => MetricApplicationCreateNestedManyWithoutActInput, {
     nullable: true,
   })
   metricApplications?: MetricApplicationCreateNestedManyWithoutActInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationCreateNestedManyWithoutActionInput, {
+  @TypeGraphQL.Field(() => IdentityActRelationCreateNestedManyWithoutActionInput, {
     nullable: true,
   })
   identityRelations?: IdentityActRelationCreateNestedManyWithoutActionInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCreateNestedManyWithoutActInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCreateNestedManyWithoutActInput, {
     nullable: true,
   })
   scheduleTemplates?: ActionScheduleTemplateCreateNestedManyWithoutActInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationCreateNestedManyWithoutActInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationCreateNestedManyWithoutActInput, { nullable: true })
   categorizations?: CategorizationCreateNestedManyWithoutActInput | undefined;
 }

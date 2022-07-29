@@ -6,9 +6,9 @@ import { NoteWhereUniqueInput } from "../inputs/NoteWhereUniqueInput";
   isAbstract: true,
 })
 export class NoteUpdateWithWhereUniqueWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => NoteWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteWhereUniqueInput, { nullable: false })
   where!: NoteWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NoteUpdateWithoutNotebookInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteUpdateWithoutNotebookInput, { nullable: false })
   data!: NoteUpdateWithoutNotebookInput;
 }

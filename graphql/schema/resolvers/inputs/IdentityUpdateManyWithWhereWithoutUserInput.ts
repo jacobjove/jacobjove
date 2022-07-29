@@ -6,9 +6,9 @@ import { IdentityUpdateManyMutationInput } from "../inputs/IdentityUpdateManyMut
   isAbstract: true,
 })
 export class IdentityUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => IdentityScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityScalarWhereInput, { nullable: false })
   where!: IdentityScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityUpdateManyMutationInput, { nullable: false })
   data!: IdentityUpdateManyMutationInput;
 }

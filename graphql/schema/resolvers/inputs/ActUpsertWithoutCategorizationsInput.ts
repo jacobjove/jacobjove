@@ -6,9 +6,9 @@ import { ActUpdateWithoutCategorizationsInput } from "../inputs/ActUpdateWithout
   isAbstract: true,
 })
 export class ActUpsertWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutCategorizationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateWithoutCategorizationsInput, { nullable: false })
   update!: ActUpdateWithoutCategorizationsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutCategorizationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateWithoutCategorizationsInput, { nullable: false })
   create!: ActCreateWithoutCategorizationsInput;
 }

@@ -24,13 +24,13 @@ export class CalendarEventUpdateWithoutCalendarInput {
   @TypeGraphQL.Field({ nullable: true })
   end?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   allDay?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
   notes?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableBoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableBoolFieldUpdateOperationsInput, { nullable: true })
   canceled?: NullableBoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -42,14 +42,14 @@ export class CalendarEventUpdateWithoutCalendarInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleUpdateOneWithoutCalendarEventsInput, {
+  @TypeGraphQL.Field(() => ActionScheduleUpdateOneWithoutCalendarEventsInput, {
     nullable: true,
   })
   schedule?: ActionScheduleUpdateOneWithoutCalendarEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateOneWithoutCalendarEventsInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateOneWithoutCalendarEventsInput, { nullable: true })
   habit?: HabitUpdateOneWithoutCalendarEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateOneWithoutCalendarEventsInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskUpdateOneWithoutCalendarEventsInput, { nullable: true })
   task?: TaskUpdateOneWithoutCalendarEventsInput | undefined;
 }

@@ -5,12 +5,12 @@ import { ActionWhereInput } from "../inputs/ActionWhereInput";
   isAbstract: true,
 })
 export class ActionListRelationFilter {
-  @TypeGraphQL.Field((_type) => ActionWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionWhereInput, { nullable: true })
   every?: ActionWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionWhereInput, { nullable: true })
   some?: ActionWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionWhereInput, { nullable: true })
   none?: ActionWhereInput | undefined;
 }

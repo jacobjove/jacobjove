@@ -6,22 +6,22 @@ import { BookWhereUniqueInput } from "../../../inputs/BookWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindFirstBookArgs {
-  @TypeGraphQL.Field((_type) => BookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookWhereInput, { nullable: true })
   where?: BookWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [BookOrderByWithRelationInput], { nullable: true })
   orderBy?: BookOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BookWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookWhereUniqueInput, { nullable: true })
   cursor?: BookWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [BookScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

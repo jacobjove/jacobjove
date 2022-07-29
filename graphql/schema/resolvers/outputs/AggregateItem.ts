@@ -9,18 +9,18 @@ import { ItemSumAggregate } from "../outputs/ItemSumAggregate";
   isAbstract: true,
 })
 export class AggregateItem {
-  @TypeGraphQL.Field((_type) => ItemCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemCountAggregate, { nullable: true })
   _count!: ItemCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ItemAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemAvgAggregate, { nullable: true })
   _avg!: ItemAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ItemSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemSumAggregate, { nullable: true })
   _sum!: ItemSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ItemMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemMinAggregate, { nullable: true })
   _min!: ItemMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ItemMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemMaxAggregate, { nullable: true })
   _max!: ItemMaxAggregate | null;
 }

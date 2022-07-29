@@ -4,9 +4,9 @@ import { AccountWhereInput } from "../../../inputs/AccountWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyAccountArgs {
-  @TypeGraphQL.Field((_type) => AccountUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountUpdateManyMutationInput, { nullable: false })
   data!: AccountUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => AccountWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountWhereInput, { nullable: true })
   where?: AccountWhereInput | undefined;
 }

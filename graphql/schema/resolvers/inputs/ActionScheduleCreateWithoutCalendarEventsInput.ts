@@ -8,31 +8,31 @@ import { HabitCreateNestedOneWithoutSchedulesInput } from "../inputs/HabitCreate
   isAbstract: true,
 })
 export class ActionScheduleCreateWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: true })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: true })
   frequency?: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR" | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   multiplier?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   quantity?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   active?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateNestedOneWithoutSchedulesInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitCreateNestedOneWithoutSchedulesInput, { nullable: false })
   habit!: HabitCreateNestedOneWithoutSchedulesInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCreateNestedOneWithoutActionSchedulesInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCreateNestedOneWithoutActionSchedulesInput, {
     nullable: true,
   })
   template?: ActionScheduleTemplateCreateNestedOneWithoutActionSchedulesInput | undefined;

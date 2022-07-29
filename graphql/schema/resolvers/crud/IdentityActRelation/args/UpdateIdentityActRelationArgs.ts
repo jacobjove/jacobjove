@@ -4,9 +4,9 @@ import { IdentityActRelationWhereUniqueInput } from "../../../inputs/IdentityAct
 
 @TypeGraphQL.ArgsType()
 export class UpdateIdentityActRelationArgs {
-  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationUpdateInput, { nullable: false })
   data!: IdentityActRelationUpdateInput;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationWhereUniqueInput, { nullable: false })
   where!: IdentityActRelationWhereUniqueInput;
 }

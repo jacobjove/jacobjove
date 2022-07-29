@@ -9,20 +9,20 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserUpdateOneRequiredWithoutNotebookPermissionsInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebookPermissionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserCreateWithoutNotebookPermissionsInput, { nullable: true })
   create?: UserCreateWithoutNotebookPermissionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutNotebookPermissionsInput, {
+  @TypeGraphQL.Field(() => UserCreateOrConnectWithoutNotebookPermissionsInput, {
     nullable: true,
   })
   connectOrCreate?: UserCreateOrConnectWithoutNotebookPermissionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpsertWithoutNotebookPermissionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpsertWithoutNotebookPermissionsInput, { nullable: true })
   upsert?: UserUpsertWithoutNotebookPermissionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutNotebookPermissionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateWithoutNotebookPermissionsInput, { nullable: true })
   update?: UserUpdateWithoutNotebookPermissionsInput | undefined;
 }

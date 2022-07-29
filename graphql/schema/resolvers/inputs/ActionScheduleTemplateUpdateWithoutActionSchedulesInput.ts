@@ -8,26 +8,23 @@ import { ScheduleTemplateUpdateOneRequiredWithoutActionScheduleTemplatesInput } 
   isAbstract: true,
 })
 export class ActionScheduleTemplateUpdateWithoutActionSchedulesInput {
-  @TypeGraphQL.Field((_type) => EnumFREQUENCYFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => EnumFREQUENCYFieldUpdateOperationsInput, { nullable: true })
   frequency?: EnumFREQUENCYFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   multiplier?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   quantity?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateOneRequiredWithoutScheduleTemplatesInput, {
+  @TypeGraphQL.Field(() => ActUpdateOneRequiredWithoutScheduleTemplatesInput, {
     nullable: true,
   })
   act?: ActUpdateOneRequiredWithoutScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field(
-    (_type) => ScheduleTemplateUpdateOneRequiredWithoutActionScheduleTemplatesInput,
-    {
-      nullable: true,
-    }
-  )
+  @TypeGraphQL.Field(() => ScheduleTemplateUpdateOneRequiredWithoutActionScheduleTemplatesInput, {
+    nullable: true,
+  })
   scheduleTemplate?:
     | ScheduleTemplateUpdateOneRequiredWithoutActionScheduleTemplatesInput
     | undefined;

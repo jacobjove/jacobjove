@@ -6,9 +6,9 @@ import { AccountWhereUniqueInput } from "../inputs/AccountWhereUniqueInput";
   isAbstract: true,
 })
 export class AccountUpdateWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => AccountWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountWhereUniqueInput, { nullable: false })
   where!: AccountWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => AccountUpdateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountUpdateWithoutUserInput, { nullable: false })
   data!: AccountUpdateWithoutUserInput;
 }

@@ -6,9 +6,9 @@ import { UserUpdateWithoutNotebooksInput } from "../inputs/UserUpdateWithoutNote
   isAbstract: true,
 })
 export class UserUpsertWithoutNotebooksInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutNotebooksInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserUpdateWithoutNotebooksInput, { nullable: false })
   update!: UserUpdateWithoutNotebooksInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebooksInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateWithoutNotebooksInput, { nullable: false })
   create!: UserCreateWithoutNotebooksInput;
 }

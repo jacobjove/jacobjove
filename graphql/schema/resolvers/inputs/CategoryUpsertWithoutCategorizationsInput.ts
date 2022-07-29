@@ -6,9 +6,9 @@ import { CategoryUpdateWithoutCategorizationsInput } from "../inputs/CategoryUpd
   isAbstract: true,
 })
 export class CategoryUpsertWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => CategoryUpdateWithoutCategorizationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategoryUpdateWithoutCategorizationsInput, { nullable: false })
   update!: CategoryUpdateWithoutCategorizationsInput;
 
-  @TypeGraphQL.Field((_type) => CategoryCreateWithoutCategorizationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategoryCreateWithoutCategorizationsInput, { nullable: false })
   create!: CategoryCreateWithoutCategorizationsInput;
 }

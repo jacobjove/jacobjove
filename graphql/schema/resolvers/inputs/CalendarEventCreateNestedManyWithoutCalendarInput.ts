@@ -8,17 +8,17 @@ import { CalendarEventWhereUniqueInput } from "../inputs/CalendarEventWhereUniqu
   isAbstract: true,
 })
 export class CalendarEventCreateNestedManyWithoutCalendarInput {
-  @TypeGraphQL.Field((_type) => [CalendarEventCreateWithoutCalendarInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventCreateWithoutCalendarInput], { nullable: true })
   create?: CalendarEventCreateWithoutCalendarInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventCreateOrConnectWithoutCalendarInput], {
+  @TypeGraphQL.Field(() => [CalendarEventCreateOrConnectWithoutCalendarInput], {
     nullable: true,
   })
   connectOrCreate?: CalendarEventCreateOrConnectWithoutCalendarInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventCreateManyCalendarInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventCreateManyCalendarInputEnvelope, { nullable: true })
   createMany?: CalendarEventCreateManyCalendarInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarEventWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarEventWhereUniqueInput], { nullable: true })
   connect?: CalendarEventWhereUniqueInput[] | undefined;
 }

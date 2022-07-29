@@ -12,36 +12,36 @@ import { GoalWhereUniqueInput } from "../inputs/GoalWhereUniqueInput";
   isAbstract: true,
 })
 export class GoalUpdateManyWithoutGoalInput {
-  @TypeGraphQL.Field((_type) => [GoalCreateWithoutGoalInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalCreateWithoutGoalInput], { nullable: true })
   create?: GoalCreateWithoutGoalInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalCreateOrConnectWithoutGoalInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalCreateOrConnectWithoutGoalInput], { nullable: true })
   connectOrCreate?: GoalCreateOrConnectWithoutGoalInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalUpsertWithWhereUniqueWithoutGoalInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalUpsertWithWhereUniqueWithoutGoalInput], { nullable: true })
   upsert?: GoalUpsertWithWhereUniqueWithoutGoalInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalCreateManyGoalInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => GoalCreateManyGoalInputEnvelope, { nullable: true })
   createMany?: GoalCreateManyGoalInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalWhereUniqueInput], { nullable: true })
   set?: GoalWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalWhereUniqueInput], { nullable: true })
   disconnect?: GoalWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalWhereUniqueInput], { nullable: true })
   delete?: GoalWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalWhereUniqueInput], { nullable: true })
   connect?: GoalWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalUpdateWithWhereUniqueWithoutGoalInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalUpdateWithWhereUniqueWithoutGoalInput], { nullable: true })
   update?: GoalUpdateWithWhereUniqueWithoutGoalInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalUpdateManyWithWhereWithoutGoalInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalUpdateManyWithWhereWithoutGoalInput], { nullable: true })
   updateMany?: GoalUpdateManyWithWhereWithoutGoalInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalScalarWhereInput], { nullable: true })
   deleteMany?: GoalScalarWhereInput[] | undefined;
 }

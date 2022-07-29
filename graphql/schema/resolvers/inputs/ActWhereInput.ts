@@ -16,60 +16,60 @@ import { StringNullableFilter } from "../inputs/StringNullableFilter";
   isAbstract: true,
 })
 export class ActWhereInput {
-  @TypeGraphQL.Field((_type) => [ActWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActWhereInput], { nullable: true })
   AND?: ActWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActWhereInput], { nullable: true })
   OR?: ActWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActWhereInput], { nullable: true })
   NOT?: ActWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   slug?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableFilter, { nullable: true })
   description?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFilter, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFilter, { nullable: true })
   isPublic?: BoolFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ActRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ActRelationFilter, { nullable: true })
   parent?: ActRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringNullableFilter, { nullable: true })
   parentId?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeFilter, { nullable: true })
   updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ActListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ActListRelationFilter, { nullable: true })
   variants?: ActListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => HabitListRelationFilter, { nullable: true })
   habits?: HabitListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationListRelationFilter, { nullable: true })
   metricApplications?: MetricApplicationListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationListRelationFilter, { nullable: true })
   identityRelations?: IdentityActRelationListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateListRelationFilter, { nullable: true })
   scheduleTemplates?: ActionScheduleTemplateListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationListRelationFilter, { nullable: true })
   categorizations?: CategorizationListRelationFilter | undefined;
 }

@@ -5,9 +5,9 @@ import { IdentityActRelationCreateManyIdentityInput } from "../inputs/IdentityAc
   isAbstract: true,
 })
 export class IdentityActRelationCreateManyIdentityInputEnvelope {
-  @TypeGraphQL.Field((_type) => [IdentityActRelationCreateManyIdentityInput], { nullable: false })
+  @TypeGraphQL.Field(() => [IdentityActRelationCreateManyIdentityInput], { nullable: false })
   data!: IdentityActRelationCreateManyIdentityInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

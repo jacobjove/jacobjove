@@ -3,9 +3,9 @@ import { MetricRecordCreateManyInput } from "../../../inputs/MetricRecordCreateM
 
 @TypeGraphQL.ArgsType()
 export class CreateManyMetricRecordArgs {
-  @TypeGraphQL.Field((_type) => [MetricRecordCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [MetricRecordCreateManyInput], { nullable: false })
   data!: MetricRecordCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

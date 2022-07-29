@@ -7,12 +7,12 @@ import { ReadingWhereUniqueInput } from "../inputs/ReadingWhereUniqueInput";
   isAbstract: true,
 })
 export class ReadingUpsertWithWhereUniqueWithoutBookInput {
-  @TypeGraphQL.Field((_type) => ReadingWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingWhereUniqueInput, { nullable: false })
   where!: ReadingWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ReadingUpdateWithoutBookInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingUpdateWithoutBookInput, { nullable: false })
   update!: ReadingUpdateWithoutBookInput;
 
-  @TypeGraphQL.Field((_type) => ReadingCreateWithoutBookInput, { nullable: false })
+  @TypeGraphQL.Field(() => ReadingCreateWithoutBookInput, { nullable: false })
   create!: ReadingCreateWithoutBookInput;
 }

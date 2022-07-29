@@ -10,45 +10,45 @@ import { HabitSumOrderByAggregateInput } from "../inputs/HabitSumOrderByAggregat
   isAbstract: true,
 })
 export class HabitOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   actId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   userId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   isPublic?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   defaultDurationInMinutes?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCountOrderByAggregateInput, { nullable: true })
   _count?: HabitCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitAvgOrderByAggregateInput, { nullable: true })
   _avg?: HabitAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitMaxOrderByAggregateInput, { nullable: true })
   _max?: HabitMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitMinOrderByAggregateInput, { nullable: true })
   _min?: HabitMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitSumOrderByAggregateInput, { nullable: true })
   _sum?: HabitSumOrderByAggregateInput | undefined;
 }

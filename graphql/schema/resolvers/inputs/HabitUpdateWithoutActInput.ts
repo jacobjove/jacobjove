@@ -17,10 +17,10 @@ export class HabitUpdateWithoutActInput {
   @TypeGraphQL.Field({ nullable: true })
   name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
   defaultDurationInMinutes?: NullableIntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -32,27 +32,27 @@ export class HabitUpdateWithoutActInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutHabitsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateOneRequiredWithoutHabitsInput, { nullable: true })
   user?: UserUpdateOneRequiredWithoutHabitsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleUpdateManyWithoutHabitInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleUpdateManyWithoutHabitInput, { nullable: true })
   schedules?: ActionScheduleUpdateManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateManyWithoutHabitInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskUpdateManyWithoutHabitInput, { nullable: true })
   tasks?: TaskUpdateManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyWithoutHabitInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventUpdateManyWithoutHabitInput, { nullable: true })
   calendarEvents?: CalendarEventUpdateManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageUpdateManyWithoutHabitInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricUsageUpdateManyWithoutHabitInput, { nullable: true })
   metricUsages?: MetricUsageUpdateManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalUpdateManyWithoutHabitInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalUpdateManyWithoutHabitInput, { nullable: true })
   goals?: GoalUpdateManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateManyWithoutHabitInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineHabitUpdateManyWithoutHabitInput, { nullable: true })
   routines?: RoutineHabitUpdateManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionUpdateManyWithoutHabitInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionUpdateManyWithoutHabitInput, { nullable: true })
   actions?: ActionUpdateManyWithoutHabitInput | undefined;
 }

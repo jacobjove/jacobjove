@@ -6,9 +6,9 @@ import { NotebookUserPermissionUpdateManyMutationInput } from "../inputs/Noteboo
   isAbstract: true,
 })
 export class NotebookUserPermissionUpdateManyWithWhereWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionScalarWhereInput, { nullable: false })
   where!: NotebookUserPermissionScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookUserPermissionUpdateManyMutationInput, { nullable: false })
   data!: NotebookUserPermissionUpdateManyMutationInput;
 }

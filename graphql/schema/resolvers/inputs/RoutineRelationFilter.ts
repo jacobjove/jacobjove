@@ -5,9 +5,9 @@ import { RoutineWhereInput } from "../inputs/RoutineWhereInput";
   isAbstract: true,
 })
 export class RoutineRelationFilter {
-  @TypeGraphQL.Field((_type) => RoutineWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineWhereInput, { nullable: true })
   is?: RoutineWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineWhereInput, { nullable: true })
   isNot?: RoutineWhereInput | undefined;
 }

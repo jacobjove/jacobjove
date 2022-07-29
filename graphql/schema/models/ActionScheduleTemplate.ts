@@ -12,25 +12,25 @@ import { Model } from "./model";
 export class ActionScheduleTemplate extends Model {
   act?: Act;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   actId!: string;
 
   scheduleTemplate?: ScheduleTemplate;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   scheduleTemplateId!: string;
 
-  @TypeGraphQL.Field((_type) => FREQUENCY, { nullable: false })
+  @TypeGraphQL.Field(() => FREQUENCY, { nullable: false })
   frequency!: "MINUTE" | "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR";
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   multiplier!: number;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   quantity!: number;
 
   actionSchedules?: ActionSchedule[];
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCount, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCount, { nullable: true })
   _count?: ActionScheduleTemplateCount | null;
 }

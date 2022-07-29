@@ -5,12 +5,12 @@ import { ItemWhereUniqueInput } from "../../../inputs/ItemWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertItemArgs {
-  @TypeGraphQL.Field((_type) => ItemWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ItemWhereUniqueInput, { nullable: false })
   where!: ItemWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ItemCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ItemCreateInput, { nullable: false })
   create!: ItemCreateInput;
 
-  @TypeGraphQL.Field((_type) => ItemUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ItemUpdateInput, { nullable: false })
   update!: ItemUpdateInput;
 }

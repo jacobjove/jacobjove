@@ -5,9 +5,9 @@ import { ListWhereInput } from "../inputs/ListWhereInput";
   isAbstract: true,
 })
 export class ListRelationFilter {
-  @TypeGraphQL.Field((_type) => ListWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListWhereInput, { nullable: true })
   is?: ListWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ListWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListWhereInput, { nullable: true })
   isNot?: ListWhereInput | undefined;
 }

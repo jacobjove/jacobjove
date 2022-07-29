@@ -6,9 +6,9 @@ import { CategorizationUpdateManyMutationInput } from "../inputs/CategorizationU
   isAbstract: true,
 })
 export class CategorizationUpdateManyWithWhereWithoutCategoryInput {
-  @TypeGraphQL.Field((_type) => CategorizationScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationScalarWhereInput, { nullable: false })
   where!: CategorizationScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => CategorizationUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationUpdateManyMutationInput, { nullable: false })
   data!: CategorizationUpdateManyMutationInput;
 }

@@ -11,36 +11,36 @@ import { ItemSumAggregate } from "../outputs/ItemSumAggregate";
   isAbstract: true,
 })
 export class ItemGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   listId!: string;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: false })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: false })
   data!: Record<string, string>;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => ItemCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemCountAggregate, { nullable: true })
   _count!: ItemCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ItemAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemAvgAggregate, { nullable: true })
   _avg!: ItemAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ItemSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemSumAggregate, { nullable: true })
   _sum!: ItemSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ItemMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemMinAggregate, { nullable: true })
   _min!: ItemMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ItemMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => ItemMaxAggregate, { nullable: true })
   _max!: ItemMaxAggregate | null;
 }

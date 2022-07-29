@@ -4,9 +4,9 @@ import { ActionScheduleWhereInput } from "../../../inputs/ActionScheduleWhereInp
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyActionScheduleArgs {
-  @TypeGraphQL.Field((_type) => ActionScheduleUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleUpdateManyMutationInput, { nullable: false })
   data!: ActionScheduleUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleWhereInput, { nullable: true })
   where?: ActionScheduleWhereInput | undefined;
 }

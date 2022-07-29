@@ -4,9 +4,9 @@ import { ShelvingWhereInput } from "../../../inputs/ShelvingWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyShelvingArgs {
-  @TypeGraphQL.Field((_type) => ShelvingUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingUpdateManyMutationInput, { nullable: false })
   data!: ShelvingUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => ShelvingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingWhereInput, { nullable: true })
   where?: ShelvingWhereInput | undefined;
 }

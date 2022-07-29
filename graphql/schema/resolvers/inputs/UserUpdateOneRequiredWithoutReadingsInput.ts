@@ -9,18 +9,18 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserUpdateOneRequiredWithoutReadingsInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutReadingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserCreateWithoutReadingsInput, { nullable: true })
   create?: UserCreateWithoutReadingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutReadingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserCreateOrConnectWithoutReadingsInput, { nullable: true })
   connectOrCreate?: UserCreateOrConnectWithoutReadingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpsertWithoutReadingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpsertWithoutReadingsInput, { nullable: true })
   upsert?: UserUpsertWithoutReadingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutReadingsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateWithoutReadingsInput, { nullable: true })
   update?: UserUpdateWithoutReadingsInput | undefined;
 }

@@ -5,12 +5,12 @@ import { BookshelfWhereUniqueInput } from "../../../inputs/BookshelfWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class UpsertBookshelfArgs {
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfWhereUniqueInput, { nullable: false })
   where!: BookshelfWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfCreateInput, { nullable: false })
   create!: BookshelfCreateInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfUpdateInput, { nullable: false })
   update!: BookshelfUpdateInput;
 }

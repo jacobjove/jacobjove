@@ -5,12 +5,12 @@ import { IdentityActRelationWhereUniqueInput } from "../../../inputs/IdentityAct
 
 @TypeGraphQL.ArgsType()
 export class UpsertIdentityActRelationArgs {
-  @TypeGraphQL.Field((_type) => IdentityActRelationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationWhereUniqueInput, { nullable: false })
   where!: IdentityActRelationWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationCreateInput, { nullable: false })
   create!: IdentityActRelationCreateInput;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityActRelationUpdateInput, { nullable: false })
   update!: IdentityActRelationUpdateInput;
 }

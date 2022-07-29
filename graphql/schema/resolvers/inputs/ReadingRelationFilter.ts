@@ -5,9 +5,9 @@ import { ReadingWhereInput } from "../inputs/ReadingWhereInput";
   isAbstract: true,
 })
 export class ReadingRelationFilter {
-  @TypeGraphQL.Field((_type) => ReadingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingWhereInput, { nullable: true })
   is?: ReadingWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingWhereInput, { nullable: true })
   isNot?: ReadingWhereInput | undefined;
 }

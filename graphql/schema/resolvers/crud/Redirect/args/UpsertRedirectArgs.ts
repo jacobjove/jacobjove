@@ -5,12 +5,12 @@ import { RedirectWhereUniqueInput } from "../../../inputs/RedirectWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UpsertRedirectArgs {
-  @TypeGraphQL.Field((_type) => RedirectWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => RedirectWhereUniqueInput, { nullable: false })
   where!: RedirectWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => RedirectCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => RedirectCreateInput, { nullable: false })
   create!: RedirectCreateInput;
 
-  @TypeGraphQL.Field((_type) => RedirectUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => RedirectUpdateInput, { nullable: false })
   update!: RedirectUpdateInput;
 }

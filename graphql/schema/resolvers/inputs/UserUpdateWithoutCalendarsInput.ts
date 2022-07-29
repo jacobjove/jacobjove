@@ -35,56 +35,56 @@ export class UserUpdateWithoutCalendarsInput {
   @TypeGraphQL.Field({ nullable: true })
   image?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isAdmin?: BoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: true })
   settings?: Record<string, string> | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
   lastLogin?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => AccountUpdateManyWithoutUserInput, { nullable: true })
   accounts?: AccountUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityUpdateManyWithoutUserInput, { nullable: true })
   identities?: IdentityUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => ValueUpdateManyWithoutUserInput, { nullable: true })
   values?: ValueUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BeliefUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefUpdateManyWithoutUserInput, { nullable: true })
   beliefs?: BeliefUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraUpdateManyWithoutUserInput, { nullable: true })
   mantras?: MantraUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateManyWithoutUserInput, { nullable: true })
   habits?: HabitUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskUpdateManyWithoutUserInput, { nullable: true })
   tasks?: TaskUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => DashboardUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardUpdateManyWithoutUserInput, { nullable: true })
   dashboards?: DashboardUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUpdateManyWithoutOwnerInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookUpdateManyWithoutOwnerInput, { nullable: true })
   notebooks?: NotebookUpdateManyWithoutOwnerInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionUpdateManyWithoutUserInput, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionUpdateManyWithoutUserInput, {
     nullable: true,
   })
   notebookPermissions?: NotebookUserPermissionUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ListUpdateManyWithoutOwnerInput, { nullable: true })
+  @TypeGraphQL.Field(() => ListUpdateManyWithoutOwnerInput, { nullable: true })
   lists?: ListUpdateManyWithoutOwnerInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingUpdateManyWithoutUserInput, { nullable: true })
   readings?: ReadingUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateManyWithoutOwnerInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfUpdateManyWithoutOwnerInput, { nullable: true })
   bookshelves?: BookshelfUpdateManyWithoutOwnerInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewUpdateManyWithoutUserInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookReviewUpdateManyWithoutUserInput, { nullable: true })
   bookReviews?: BookReviewUpdateManyWithoutUserInput | undefined;
 }

@@ -3,6 +3,6 @@ import { CalendarEventCreateInput } from "../../../inputs/CalendarEventCreateInp
 
 @TypeGraphQL.ArgsType()
 export class CreateCalendarEventArgs {
-  @TypeGraphQL.Field((_type) => CalendarEventCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => CalendarEventCreateInput, { nullable: false })
   data!: CalendarEventCreateInput;
 }

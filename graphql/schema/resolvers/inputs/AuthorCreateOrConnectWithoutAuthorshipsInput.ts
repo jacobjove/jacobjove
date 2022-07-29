@@ -6,9 +6,9 @@ import { AuthorWhereUniqueInput } from "../inputs/AuthorWhereUniqueInput";
   isAbstract: true,
 })
 export class AuthorCreateOrConnectWithoutAuthorshipsInput {
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorWhereUniqueInput, { nullable: false })
   where!: AuthorWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorCreateWithoutAuthorshipsInput, { nullable: false })
   create!: AuthorCreateWithoutAuthorshipsInput;
 }

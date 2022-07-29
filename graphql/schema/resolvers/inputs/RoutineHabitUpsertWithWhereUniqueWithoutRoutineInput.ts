@@ -7,12 +7,12 @@ import { RoutineHabitWhereUniqueInput } from "../inputs/RoutineHabitWhereUniqueI
   isAbstract: true,
 })
 export class RoutineHabitUpsertWithWhereUniqueWithoutRoutineInput {
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitWhereUniqueInput, { nullable: false })
   where!: RoutineHabitWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateWithoutRoutineInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitUpdateWithoutRoutineInput, { nullable: false })
   update!: RoutineHabitUpdateWithoutRoutineInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitCreateWithoutRoutineInput, { nullable: false })
+  @TypeGraphQL.Field(() => RoutineHabitCreateWithoutRoutineInput, { nullable: false })
   create!: RoutineHabitCreateWithoutRoutineInput;
 }

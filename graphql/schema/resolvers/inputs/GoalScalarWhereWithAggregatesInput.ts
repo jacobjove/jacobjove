@@ -8,24 +8,24 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class GoalScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [GoalScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalScalarWhereWithAggregatesInput], { nullable: true })
   AND?: GoalScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalScalarWhereWithAggregatesInput], { nullable: true })
   OR?: GoalScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [GoalScalarWhereWithAggregatesInput], { nullable: true })
+  @TypeGraphQL.Field(() => [GoalScalarWhereWithAggregatesInput], { nullable: true })
   NOT?: GoalScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   habitId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntNullableWithAggregatesFilter, { nullable: true })
   goalId?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntWithAggregatesFilter, { nullable: true })
   quantity?: IntWithAggregatesFilter | undefined;
 }

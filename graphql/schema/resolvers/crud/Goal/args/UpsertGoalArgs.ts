@@ -5,12 +5,12 @@ import { GoalWhereUniqueInput } from "../../../inputs/GoalWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertGoalArgs {
-  @TypeGraphQL.Field((_type) => GoalWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalWhereUniqueInput, { nullable: false })
   where!: GoalWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => GoalCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalCreateInput, { nullable: false })
   create!: GoalCreateInput;
 
-  @TypeGraphQL.Field((_type) => GoalUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => GoalUpdateInput, { nullable: false })
   update!: GoalUpdateInput;
 }

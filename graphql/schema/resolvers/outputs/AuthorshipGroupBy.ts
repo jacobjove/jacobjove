@@ -10,39 +10,39 @@ import { AuthorshipSumAggregate } from "../outputs/AuthorshipSumAggregate";
   isAbstract: true,
 })
 export class AuthorshipGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   authorId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   bookId!: string;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: false })
   position!: number;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipCountAggregate, { nullable: true })
   _count!: AuthorshipCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipAvgAggregate, { nullable: true })
   _avg!: AuthorshipAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipSumAggregate, { nullable: true })
   _sum!: AuthorshipSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipMinAggregate, { nullable: true })
   _min!: AuthorshipMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AuthorshipMaxAggregate, { nullable: true })
   _max!: AuthorshipMaxAggregate | null;
 }

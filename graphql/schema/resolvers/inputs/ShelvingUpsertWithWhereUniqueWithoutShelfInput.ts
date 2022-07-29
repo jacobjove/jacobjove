@@ -7,12 +7,12 @@ import { ShelvingWhereUniqueInput } from "../inputs/ShelvingWhereUniqueInput";
   isAbstract: true,
 })
 export class ShelvingUpsertWithWhereUniqueWithoutShelfInput {
-  @TypeGraphQL.Field((_type) => ShelvingWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingWhereUniqueInput, { nullable: false })
   where!: ShelvingWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ShelvingUpdateWithoutShelfInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingUpdateWithoutShelfInput, { nullable: false })
   update!: ShelvingUpdateWithoutShelfInput;
 
-  @TypeGraphQL.Field((_type) => ShelvingCreateWithoutShelfInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingCreateWithoutShelfInput, { nullable: false })
   create!: ShelvingCreateWithoutShelfInput;
 }

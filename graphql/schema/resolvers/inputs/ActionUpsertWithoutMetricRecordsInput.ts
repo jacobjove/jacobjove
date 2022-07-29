@@ -6,9 +6,9 @@ import { ActionUpdateWithoutMetricRecordsInput } from "../inputs/ActionUpdateWit
   isAbstract: true,
 })
 export class ActionUpsertWithoutMetricRecordsInput {
-  @TypeGraphQL.Field((_type) => ActionUpdateWithoutMetricRecordsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionUpdateWithoutMetricRecordsInput, { nullable: false })
   update!: ActionUpdateWithoutMetricRecordsInput;
 
-  @TypeGraphQL.Field((_type) => ActionCreateWithoutMetricRecordsInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionCreateWithoutMetricRecordsInput, { nullable: false })
   create!: ActionCreateWithoutMetricRecordsInput;
 }

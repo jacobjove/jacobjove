@@ -8,15 +8,15 @@ import { NoteWhereUniqueInput } from "../inputs/NoteWhereUniqueInput";
   isAbstract: true,
 })
 export class NoteCreateNestedManyWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => [NoteCreateWithoutNotebookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteCreateWithoutNotebookInput], { nullable: true })
   create?: NoteCreateWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteCreateOrConnectWithoutNotebookInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteCreateOrConnectWithoutNotebookInput], { nullable: true })
   connectOrCreate?: NoteCreateOrConnectWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => NoteCreateManyNotebookInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => NoteCreateManyNotebookInputEnvelope, { nullable: true })
   createMany?: NoteCreateManyNotebookInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [NoteWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [NoteWhereUniqueInput], { nullable: true })
   connect?: NoteWhereUniqueInput[] | undefined;
 }

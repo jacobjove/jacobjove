@@ -5,9 +5,9 @@ import { MetricWhereInput } from "../inputs/MetricWhereInput";
   isAbstract: true,
 })
 export class MetricRelationFilter {
-  @TypeGraphQL.Field((_type) => MetricWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricWhereInput, { nullable: true })
   is?: MetricWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricWhereInput, { nullable: true })
   isNot?: MetricWhereInput | undefined;
 }

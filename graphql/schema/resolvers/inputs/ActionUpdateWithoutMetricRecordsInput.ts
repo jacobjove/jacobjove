@@ -23,6 +23,6 @@ export class ActionUpdateWithoutMetricRecordsInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateOneWithoutActionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateOneWithoutActionsInput, { nullable: true })
   habit?: HabitUpdateOneWithoutActionsInput | undefined;
 }

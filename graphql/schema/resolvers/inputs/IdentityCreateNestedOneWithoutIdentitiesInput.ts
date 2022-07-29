@@ -7,12 +7,12 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityCreateNestedOneWithoutIdentitiesInput {
-  @TypeGraphQL.Field((_type) => IdentityCreateInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityCreateInput, { nullable: true })
   create?: IdentityCreateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateOrConnectWithoutIdentitiesInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityCreateOrConnectWithoutIdentitiesInput, { nullable: true })
   connectOrCreate?: IdentityCreateOrConnectWithoutIdentitiesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityWhereUniqueInput, { nullable: true })
   connect?: IdentityWhereUniqueInput | undefined;
 }

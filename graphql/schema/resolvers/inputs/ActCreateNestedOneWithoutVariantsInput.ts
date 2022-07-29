@@ -7,12 +7,12 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActCreateNestedOneWithoutVariantsInput {
-  @TypeGraphQL.Field((_type) => ActCreateWithoutVariantsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateWithoutVariantsInput, { nullable: true })
   create?: ActCreateWithoutVariantsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutVariantsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActCreateOrConnectWithoutVariantsInput, { nullable: true })
   connectOrCreate?: ActCreateOrConnectWithoutVariantsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: true })
   connect?: ActWhereUniqueInput | undefined;
 }

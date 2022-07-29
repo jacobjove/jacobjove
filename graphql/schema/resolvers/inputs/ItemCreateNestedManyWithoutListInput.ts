@@ -8,15 +8,15 @@ import { ItemWhereUniqueInput } from "../inputs/ItemWhereUniqueInput";
   isAbstract: true,
 })
 export class ItemCreateNestedManyWithoutListInput {
-  @TypeGraphQL.Field((_type) => [ItemCreateWithoutListInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemCreateWithoutListInput], { nullable: true })
   create?: ItemCreateWithoutListInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ItemCreateOrConnectWithoutListInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemCreateOrConnectWithoutListInput], { nullable: true })
   connectOrCreate?: ItemCreateOrConnectWithoutListInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemCreateManyListInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ItemCreateManyListInputEnvelope, { nullable: true })
   createMany?: ItemCreateManyListInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ItemWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemWhereUniqueInput], { nullable: true })
   connect?: ItemWhereUniqueInput[] | undefined;
 }

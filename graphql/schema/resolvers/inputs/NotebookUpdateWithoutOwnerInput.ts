@@ -10,7 +10,7 @@ export class NotebookUpdateWithoutOwnerInput {
   @TypeGraphQL.Field({ nullable: true })
   title?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -25,10 +25,10 @@ export class NotebookUpdateWithoutOwnerInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NoteUpdateManyWithoutNotebookInput, { nullable: true })
+  @TypeGraphQL.Field(() => NoteUpdateManyWithoutNotebookInput, { nullable: true })
   notes?: NoteUpdateManyWithoutNotebookInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookUserPermissionUpdateManyWithoutNotebookInput, {
+  @TypeGraphQL.Field(() => NotebookUserPermissionUpdateManyWithoutNotebookInput, {
     nullable: true,
   })
   userPermissions?: NotebookUserPermissionUpdateManyWithoutNotebookInput | undefined;

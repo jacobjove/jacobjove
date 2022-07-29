@@ -12,40 +12,40 @@ import { ShelvingWhereUniqueInput } from "../inputs/ShelvingWhereUniqueInput";
   isAbstract: true,
 })
 export class ShelvingUpdateManyWithoutShelfInput {
-  @TypeGraphQL.Field((_type) => [ShelvingCreateWithoutShelfInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingCreateWithoutShelfInput], { nullable: true })
   create?: ShelvingCreateWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingCreateOrConnectWithoutShelfInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingCreateOrConnectWithoutShelfInput], { nullable: true })
   connectOrCreate?: ShelvingCreateOrConnectWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingUpsertWithWhereUniqueWithoutShelfInput], {
+  @TypeGraphQL.Field(() => [ShelvingUpsertWithWhereUniqueWithoutShelfInput], {
     nullable: true,
   })
   upsert?: ShelvingUpsertWithWhereUniqueWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingCreateManyShelfInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingCreateManyShelfInputEnvelope, { nullable: true })
   createMany?: ShelvingCreateManyShelfInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingWhereUniqueInput], { nullable: true })
   set?: ShelvingWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingWhereUniqueInput], { nullable: true })
   disconnect?: ShelvingWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingWhereUniqueInput], { nullable: true })
   delete?: ShelvingWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingWhereUniqueInput], { nullable: true })
   connect?: ShelvingWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingUpdateWithWhereUniqueWithoutShelfInput], {
+  @TypeGraphQL.Field(() => [ShelvingUpdateWithWhereUniqueWithoutShelfInput], {
     nullable: true,
   })
   update?: ShelvingUpdateWithWhereUniqueWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingUpdateManyWithWhereWithoutShelfInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingUpdateManyWithWhereWithoutShelfInput], { nullable: true })
   updateMany?: ShelvingUpdateManyWithWhereWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingScalarWhereInput], { nullable: true })
   deleteMany?: ShelvingScalarWhereInput[] | undefined;
 }

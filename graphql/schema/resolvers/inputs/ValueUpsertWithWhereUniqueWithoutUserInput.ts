@@ -7,12 +7,12 @@ import { ValueWhereUniqueInput } from "../inputs/ValueWhereUniqueInput";
   isAbstract: true,
 })
 export class ValueUpsertWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => ValueWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueWhereUniqueInput, { nullable: false })
   where!: ValueWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ValueUpdateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueUpdateWithoutUserInput, { nullable: false })
   update!: ValueUpdateWithoutUserInput;
 
-  @TypeGraphQL.Field((_type) => ValueCreateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => ValueCreateWithoutUserInput, { nullable: false })
   create!: ValueCreateWithoutUserInput;
 }

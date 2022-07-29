@@ -7,7 +7,7 @@ import { ScheduleTemplateActionScheduleTemplatesArgs } from "./args/ScheduleTemp
 
 @TypeGraphQL.Resolver((_of) => ScheduleTemplate)
 export class ScheduleTemplateRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [ActionScheduleTemplate], { nullable: false })
+  @TypeGraphQL.FieldResolver(() => [ActionScheduleTemplate], { nullable: false })
   async actionScheduleTemplates(
     @TypeGraphQL.Root() scheduleTemplate: ScheduleTemplate,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

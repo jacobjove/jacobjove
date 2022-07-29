@@ -8,7 +8,7 @@ export class BookReviewUpdateManyMutationInput {
   @TypeGraphQL.Field({ nullable: true })
   review?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   rating?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

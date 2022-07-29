@@ -3,6 +3,6 @@ import { CategorizationWhereUniqueInput } from "../../../inputs/CategorizationWh
 
 @TypeGraphQL.ArgsType()
 export class DeleteCategorizationArgs {
-  @TypeGraphQL.Field((_type) => CategorizationWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => CategorizationWhereUniqueInput, { nullable: false })
   where!: CategorizationWhereUniqueInput;
 }

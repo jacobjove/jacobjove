@@ -6,22 +6,22 @@ import { HabitWhereUniqueInput } from "../../../inputs/HabitWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UserHabitsArgs {
-  @TypeGraphQL.Field((_type) => HabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereInput, { nullable: true })
   where?: HabitWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitOrderByWithRelationInput], { nullable: true })
   orderBy?: HabitOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: true })
   cursor?: HabitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [HabitScalarFieldEnum], { nullable: true })
+  @TypeGraphQL.Field(() => [HabitScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

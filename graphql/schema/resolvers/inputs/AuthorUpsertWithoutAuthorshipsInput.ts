@@ -6,9 +6,9 @@ import { AuthorUpdateWithoutAuthorshipsInput } from "../inputs/AuthorUpdateWitho
   isAbstract: true,
 })
 export class AuthorUpsertWithoutAuthorshipsInput {
-  @TypeGraphQL.Field((_type) => AuthorUpdateWithoutAuthorshipsInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorUpdateWithoutAuthorshipsInput, { nullable: false })
   update!: AuthorUpdateWithoutAuthorshipsInput;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorCreateWithoutAuthorshipsInput, { nullable: false })
   create!: AuthorCreateWithoutAuthorshipsInput;
 }

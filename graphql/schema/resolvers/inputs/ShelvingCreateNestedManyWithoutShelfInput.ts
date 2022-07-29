@@ -8,15 +8,15 @@ import { ShelvingWhereUniqueInput } from "../inputs/ShelvingWhereUniqueInput";
   isAbstract: true,
 })
 export class ShelvingCreateNestedManyWithoutShelfInput {
-  @TypeGraphQL.Field((_type) => [ShelvingCreateWithoutShelfInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingCreateWithoutShelfInput], { nullable: true })
   create?: ShelvingCreateWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingCreateOrConnectWithoutShelfInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingCreateOrConnectWithoutShelfInput], { nullable: true })
   connectOrCreate?: ShelvingCreateOrConnectWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingCreateManyShelfInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingCreateManyShelfInputEnvelope, { nullable: true })
   createMany?: ShelvingCreateManyShelfInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ShelvingWhereUniqueInput], { nullable: true })
   connect?: ShelvingWhereUniqueInput[] | undefined;
 }

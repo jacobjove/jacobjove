@@ -6,9 +6,9 @@ import { MantraUpdateManyMutationInput } from "../inputs/MantraUpdateManyMutatio
   isAbstract: true,
 })
 export class MantraUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => MantraScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraScalarWhereInput, { nullable: false })
   where!: MantraScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => MantraUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => MantraUpdateManyMutationInput, { nullable: false })
   data!: MantraUpdateManyMutationInput;
 }

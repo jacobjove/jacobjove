@@ -5,12 +5,12 @@ import { BookshelfWhereInput } from "../inputs/BookshelfWhereInput";
   isAbstract: true,
 })
 export class BookshelfListRelationFilter {
-  @TypeGraphQL.Field((_type) => BookshelfWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfWhereInput, { nullable: true })
   every?: BookshelfWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfWhereInput, { nullable: true })
   some?: BookshelfWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookshelfWhereInput, { nullable: true })
   none?: BookshelfWhereInput | undefined;
 }

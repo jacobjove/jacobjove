@@ -5,6 +5,6 @@ import { SortOrder } from "../../enums/SortOrder";
   isAbstract: true,
 })
 export class UserAvgOrderByAggregateInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 }

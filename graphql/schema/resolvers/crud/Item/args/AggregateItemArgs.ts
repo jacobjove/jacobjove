@@ -5,18 +5,18 @@ import { ItemWhereUniqueInput } from "../../../inputs/ItemWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class AggregateItemArgs {
-  @TypeGraphQL.Field((_type) => ItemWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemWhereInput, { nullable: true })
   where?: ItemWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [ItemOrderByWithRelationInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ItemOrderByWithRelationInput], { nullable: true })
   orderBy?: ItemOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ItemWhereUniqueInput, { nullable: true })
   cursor?: ItemWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 }

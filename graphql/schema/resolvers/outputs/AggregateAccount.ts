@@ -9,18 +9,18 @@ import { AccountSumAggregate } from "../outputs/AccountSumAggregate";
   isAbstract: true,
 })
 export class AggregateAccount {
-  @TypeGraphQL.Field((_type) => AccountCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountCountAggregate, { nullable: true })
   _count!: AccountCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AccountAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountAvgAggregate, { nullable: true })
   _avg!: AccountAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AccountSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountSumAggregate, { nullable: true })
   _sum!: AccountSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AccountMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountMinAggregate, { nullable: true })
   _min!: AccountMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AccountMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountMaxAggregate, { nullable: true })
   _max!: AccountMaxAggregate | null;
 }

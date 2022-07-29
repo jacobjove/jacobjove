@@ -6,9 +6,9 @@ import { MetricUpdateWithoutApplicationsInput } from "../inputs/MetricUpdateWith
   isAbstract: true,
 })
 export class MetricUpsertWithoutApplicationsInput {
-  @TypeGraphQL.Field((_type) => MetricUpdateWithoutApplicationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUpdateWithoutApplicationsInput, { nullable: false })
   update!: MetricUpdateWithoutApplicationsInput;
 
-  @TypeGraphQL.Field((_type) => MetricCreateWithoutApplicationsInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricCreateWithoutApplicationsInput, { nullable: false })
   create!: MetricCreateWithoutApplicationsInput;
 }

@@ -5,12 +5,12 @@ import { AuthorWhereUniqueInput } from "../../../inputs/AuthorWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertAuthorArgs {
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorWhereUniqueInput, { nullable: false })
   where!: AuthorWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorCreateInput, { nullable: false })
   create!: AuthorCreateInput;
 
-  @TypeGraphQL.Field((_type) => AuthorUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorUpdateInput, { nullable: false })
   update!: AuthorUpdateInput;
 }

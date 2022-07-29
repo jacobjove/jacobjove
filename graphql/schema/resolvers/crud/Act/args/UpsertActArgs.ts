@@ -5,12 +5,12 @@ import { ActWhereUniqueInput } from "../../../inputs/ActWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertActArgs {
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActWhereUniqueInput, { nullable: false })
   where!: ActWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActCreateInput, { nullable: false })
   create!: ActCreateInput;
 
-  @TypeGraphQL.Field((_type) => ActUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActUpdateInput, { nullable: false })
   update!: ActUpdateInput;
 }

@@ -5,12 +5,12 @@ import { MetricUsageWhereUniqueInput } from "../../../inputs/MetricUsageWhereUni
 
 @TypeGraphQL.ArgsType()
 export class UpsertMetricUsageArgs {
-  @TypeGraphQL.Field((_type) => MetricUsageWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageWhereUniqueInput, { nullable: false })
   where!: MetricUsageWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => MetricUsageCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageCreateInput, { nullable: false })
   create!: MetricUsageCreateInput;
 
-  @TypeGraphQL.Field((_type) => MetricUsageUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => MetricUsageUpdateInput, { nullable: false })
   update!: MetricUsageUpdateInput;
 }

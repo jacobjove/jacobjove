@@ -7,7 +7,7 @@ import { Book } from "../../../models/Book";
 
 @TypeGraphQL.Resolver((_of) => Authorship)
 export class AuthorshipRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Author, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Author, { nullable: false })
   async author(
     @TypeGraphQL.Root() authorship: Authorship,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -21,7 +21,7 @@ export class AuthorshipRelationsResolver {
       .author({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Book, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Book, { nullable: false })
   async book(
     @TypeGraphQL.Root() authorship: Authorship,
     @TypeGraphQL.Ctx() ctx: ApolloContext

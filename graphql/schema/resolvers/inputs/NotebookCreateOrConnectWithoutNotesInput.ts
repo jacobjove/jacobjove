@@ -6,9 +6,9 @@ import { NotebookWhereUniqueInput } from "../inputs/NotebookWhereUniqueInput";
   isAbstract: true,
 })
 export class NotebookCreateOrConnectWithoutNotesInput {
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookWhereUniqueInput, { nullable: false })
   where!: NotebookWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateWithoutNotesInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookCreateWithoutNotesInput, { nullable: false })
   create!: NotebookCreateWithoutNotesInput;
 }

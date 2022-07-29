@@ -7,21 +7,21 @@ import { BookCreateNestedOneWithoutAuthorshipsInput } from "../inputs/BookCreate
   isAbstract: true,
 })
 export class AuthorshipCreateInput {
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
+  @TypeGraphQL.Field(() => TypeGraphQL.Int, { nullable: true })
   position?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateNestedOneWithoutAuthorshipsInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorCreateNestedOneWithoutAuthorshipsInput, { nullable: false })
   author!: AuthorCreateNestedOneWithoutAuthorshipsInput;
 
-  @TypeGraphQL.Field((_type) => BookCreateNestedOneWithoutAuthorshipsInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookCreateNestedOneWithoutAuthorshipsInput, { nullable: false })
   book!: BookCreateNestedOneWithoutAuthorshipsInput;
 }

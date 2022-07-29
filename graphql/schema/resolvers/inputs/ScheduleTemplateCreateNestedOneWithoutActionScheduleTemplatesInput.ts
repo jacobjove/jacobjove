@@ -7,19 +7,16 @@ import { ScheduleTemplateWhereUniqueInput } from "../inputs/ScheduleTemplateWher
   isAbstract: true,
 })
 export class ScheduleTemplateCreateNestedOneWithoutActionScheduleTemplatesInput {
-  @TypeGraphQL.Field((_type) => ScheduleTemplateCreateWithoutActionScheduleTemplatesInput, {
+  @TypeGraphQL.Field(() => ScheduleTemplateCreateWithoutActionScheduleTemplatesInput, {
     nullable: true,
   })
   create?: ScheduleTemplateCreateWithoutActionScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field(
-    (_type) => ScheduleTemplateCreateOrConnectWithoutActionScheduleTemplatesInput,
-    {
-      nullable: true,
-    }
-  )
+  @TypeGraphQL.Field(() => ScheduleTemplateCreateOrConnectWithoutActionScheduleTemplatesInput, {
+    nullable: true,
+  })
   connectOrCreate?: ScheduleTemplateCreateOrConnectWithoutActionScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateWhereUniqueInput, { nullable: true })
   connect?: ScheduleTemplateWhereUniqueInput | undefined;
 }

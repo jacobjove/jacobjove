@@ -4,9 +4,9 @@ import { TaskWhereUniqueInput } from "../../../inputs/TaskWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateTaskArgs {
-  @TypeGraphQL.Field((_type) => TaskUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskUpdateInput, { nullable: false })
   data!: TaskUpdateInput;
 
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskWhereUniqueInput, { nullable: false })
   where!: TaskWhereUniqueInput;
 }

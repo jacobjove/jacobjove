@@ -10,36 +10,36 @@ import { BeliefSumAggregate } from "../outputs/BeliefSumAggregate";
   isAbstract: true,
 })
 export class BeliefGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   beliefId!: string;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => BeliefCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefCountAggregate, { nullable: true })
   _count!: BeliefCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BeliefAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefAvgAggregate, { nullable: true })
   _avg!: BeliefAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BeliefSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefSumAggregate, { nullable: true })
   _sum!: BeliefSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BeliefMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefMinAggregate, { nullable: true })
   _min!: BeliefMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BeliefMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefMaxAggregate, { nullable: true })
   _max!: BeliefMaxAggregate | null;
 }

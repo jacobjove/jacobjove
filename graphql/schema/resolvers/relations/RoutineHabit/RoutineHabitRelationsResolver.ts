@@ -7,7 +7,7 @@ import { RoutineHabit } from "../../../models/RoutineHabit";
 
 @TypeGraphQL.Resolver((_of) => RoutineHabit)
 export class RoutineHabitRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Routine, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Routine, { nullable: false })
   async routine(
     @TypeGraphQL.Root() routineHabit: RoutineHabit,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -22,7 +22,7 @@ export class RoutineHabitRelationsResolver {
       .routine({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Habit, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => Habit, { nullable: false })
   async habit(
     @TypeGraphQL.Root() routineHabit: RoutineHabit,
     @TypeGraphQL.Ctx() ctx: ApolloContext

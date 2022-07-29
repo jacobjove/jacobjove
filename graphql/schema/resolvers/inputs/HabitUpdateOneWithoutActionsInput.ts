@@ -9,24 +9,24 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitUpdateOneWithoutActionsInput {
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutActionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateWithoutActionsInput, { nullable: true })
   create?: HabitCreateWithoutActionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateOrConnectWithoutActionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitCreateOrConnectWithoutActionsInput, { nullable: true })
   connectOrCreate?: HabitCreateOrConnectWithoutActionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpsertWithoutActionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpsertWithoutActionsInput, { nullable: true })
   upsert?: HabitUpsertWithoutActionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereUniqueInput, { nullable: true })
   connect?: HabitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutActionsInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateWithoutActionsInput, { nullable: true })
   update?: HabitUpdateWithoutActionsInput | undefined;
 }

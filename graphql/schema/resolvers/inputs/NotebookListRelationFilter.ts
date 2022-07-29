@@ -5,12 +5,12 @@ import { NotebookWhereInput } from "../inputs/NotebookWhereInput";
   isAbstract: true,
 })
 export class NotebookListRelationFilter {
-  @TypeGraphQL.Field((_type) => NotebookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereInput, { nullable: true })
   every?: NotebookWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereInput, { nullable: true })
   some?: NotebookWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookWhereInput, { nullable: true })
   none?: NotebookWhereInput | undefined;
 }

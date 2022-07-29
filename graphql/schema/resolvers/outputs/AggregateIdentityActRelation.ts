@@ -9,18 +9,18 @@ import { IdentityActRelationSumAggregate } from "../outputs/IdentityActRelationS
   isAbstract: true,
 })
 export class AggregateIdentityActRelation {
-  @TypeGraphQL.Field((_type) => IdentityActRelationCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationCountAggregate, { nullable: true })
   _count!: IdentityActRelationCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationAvgAggregate, { nullable: true })
   _avg!: IdentityActRelationAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationSumAggregate, { nullable: true })
   _sum!: IdentityActRelationSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationMinAggregate, { nullable: true })
   _min!: IdentityActRelationMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationMaxAggregate, { nullable: true })
   _max!: IdentityActRelationMaxAggregate | null;
 }

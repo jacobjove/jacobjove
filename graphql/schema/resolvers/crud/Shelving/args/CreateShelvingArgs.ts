@@ -3,6 +3,6 @@ import { ShelvingCreateInput } from "../../../inputs/ShelvingCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateShelvingArgs {
-  @TypeGraphQL.Field((_type) => ShelvingCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingCreateInput, { nullable: false })
   data!: ShelvingCreateInput;
 }

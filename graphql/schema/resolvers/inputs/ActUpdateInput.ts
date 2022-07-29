@@ -21,7 +21,7 @@ export class ActUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   description?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -33,24 +33,24 @@ export class ActUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateOneWithoutVariantsInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpdateOneWithoutVariantsInput, { nullable: true })
   parent?: ActUpdateOneWithoutVariantsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateManyWithoutParentInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActUpdateManyWithoutParentInput, { nullable: true })
   variants?: ActUpdateManyWithoutParentInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateManyWithoutActInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateManyWithoutActInput, { nullable: true })
   habits?: HabitUpdateManyWithoutActInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationUpdateManyWithoutActInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationUpdateManyWithoutActInput, { nullable: true })
   metricApplications?: MetricApplicationUpdateManyWithoutActInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateManyWithoutActionInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationUpdateManyWithoutActionInput, { nullable: true })
   identityRelations?: IdentityActRelationUpdateManyWithoutActionInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateUpdateManyWithoutActInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateUpdateManyWithoutActInput, { nullable: true })
   scheduleTemplates?: ActionScheduleTemplateUpdateManyWithoutActInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationUpdateManyWithoutActInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationUpdateManyWithoutActInput, { nullable: true })
   categorizations?: CategorizationUpdateManyWithoutActInput | undefined;
 }

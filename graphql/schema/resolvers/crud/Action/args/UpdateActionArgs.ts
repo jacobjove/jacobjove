@@ -4,9 +4,9 @@ import { ActionWhereUniqueInput } from "../../../inputs/ActionWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateActionArgs {
-  @TypeGraphQL.Field((_type) => ActionUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionUpdateInput, { nullable: false })
   data!: ActionUpdateInput;
 
-  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionWhereUniqueInput, { nullable: false })
   where!: ActionWhereUniqueInput;
 }

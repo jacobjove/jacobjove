@@ -3,6 +3,6 @@ import { IdentityCreateInput } from "../../../inputs/IdentityCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateIdentityArgs {
-  @TypeGraphQL.Field((_type) => IdentityCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => IdentityCreateInput, { nullable: false })
   data!: IdentityCreateInput;
 }

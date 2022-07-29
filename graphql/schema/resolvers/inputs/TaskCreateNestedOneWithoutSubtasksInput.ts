@@ -7,12 +7,12 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskCreateNestedOneWithoutSubtasksInput {
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskCreateWithoutSubtasksInput, { nullable: true })
   create?: TaskCreateWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateOrConnectWithoutSubtasksInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskCreateOrConnectWithoutSubtasksInput, { nullable: true })
   connectOrCreate?: TaskCreateOrConnectWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => TaskWhereUniqueInput, { nullable: true })
   connect?: TaskWhereUniqueInput | undefined;
 }

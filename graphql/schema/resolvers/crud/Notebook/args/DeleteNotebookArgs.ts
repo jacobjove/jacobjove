@@ -3,6 +3,6 @@ import { NotebookWhereUniqueInput } from "../../../inputs/NotebookWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class DeleteNotebookArgs {
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NotebookWhereUniqueInput, { nullable: false })
   where!: NotebookWhereUniqueInput;
 }

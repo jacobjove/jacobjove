@@ -3,6 +3,6 @@ import { BeliefWhereInput } from "../../../inputs/BeliefWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyBeliefArgs {
-  @TypeGraphQL.Field((_type) => BeliefWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefWhereInput, { nullable: true })
   where?: BeliefWhereInput | undefined;
 }

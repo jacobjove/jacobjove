@@ -15,9 +15,9 @@ export class IdentityUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   description?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateManyMutationInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityUpdateManyMutationInput, { nullable: true })
   identities?: IdentityUpdateManyMutationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateManyMutationInput, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityActRelationUpdateManyMutationInput, { nullable: true })
   actionRelations?: IdentityActRelationUpdateManyMutationInput | undefined;
 }

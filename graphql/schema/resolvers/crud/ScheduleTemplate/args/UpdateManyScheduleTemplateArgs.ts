@@ -4,9 +4,9 @@ import { ScheduleTemplateWhereInput } from "../../../inputs/ScheduleTemplateWher
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyScheduleTemplateArgs {
-  @TypeGraphQL.Field((_type) => ScheduleTemplateUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ScheduleTemplateUpdateManyMutationInput, { nullable: false })
   data!: ScheduleTemplateUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateWhereInput, { nullable: true })
   where?: ScheduleTemplateWhereInput | undefined;
 }

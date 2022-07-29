@@ -9,18 +9,18 @@ import { CalendarEventSumAggregate } from "../outputs/CalendarEventSumAggregate"
   isAbstract: true,
 })
 export class AggregateCalendarEvent {
-  @TypeGraphQL.Field((_type) => CalendarEventCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventCountAggregate, { nullable: true })
   _count!: CalendarEventCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarEventAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventAvgAggregate, { nullable: true })
   _avg!: CalendarEventAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarEventSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventSumAggregate, { nullable: true })
   _sum!: CalendarEventSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarEventMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventMinAggregate, { nullable: true })
   _min!: CalendarEventMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarEventMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventMaxAggregate, { nullable: true })
   _max!: CalendarEventMaxAggregate | null;
 }

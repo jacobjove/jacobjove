@@ -10,48 +10,48 @@ import { AccountSumAggregate } from "../outputs/AccountSumAggregate";
   isAbstract: true,
 })
 export class AccountGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   provider!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   remoteId!: string;
 
-  @TypeGraphQL.Field((_type) => [String], { nullable: true })
+  @TypeGraphQL.Field(() => [String], { nullable: true })
   scopes!: string[] | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   accessToken!: string | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   refreshToken!: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   accessTokenExpiry!: Date | null;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   syncToken!: string | null;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => AccountCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountCountAggregate, { nullable: true })
   _count!: AccountCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AccountAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountAvgAggregate, { nullable: true })
   _avg!: AccountAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AccountSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountSumAggregate, { nullable: true })
   _sum!: AccountSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AccountMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountMinAggregate, { nullable: true })
   _min!: AccountMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AccountMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => AccountMaxAggregate, { nullable: true })
   _max!: AccountMaxAggregate | null;
 }

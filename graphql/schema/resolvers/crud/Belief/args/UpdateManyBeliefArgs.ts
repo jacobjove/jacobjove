@@ -4,9 +4,9 @@ import { BeliefWhereInput } from "../../../inputs/BeliefWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyBeliefArgs {
-  @TypeGraphQL.Field((_type) => BeliefUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => BeliefUpdateManyMutationInput, { nullable: false })
   data!: BeliefUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => BeliefWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefWhereInput, { nullable: true })
   where?: BeliefWhereInput | undefined;
 }

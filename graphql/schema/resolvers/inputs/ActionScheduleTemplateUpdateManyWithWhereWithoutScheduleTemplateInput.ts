@@ -6,9 +6,9 @@ import { ActionScheduleTemplateUpdateManyMutationInput } from "../inputs/ActionS
   isAbstract: true,
 })
 export class ActionScheduleTemplateUpdateManyWithWhereWithoutScheduleTemplateInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateScalarWhereInput, { nullable: false })
   where!: ActionScheduleTemplateScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateUpdateManyMutationInput, { nullable: false })
   data!: ActionScheduleTemplateUpdateManyMutationInput;
 }

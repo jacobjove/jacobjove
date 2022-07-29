@@ -6,9 +6,9 @@ import { AccountUpdateManyMutationInput } from "../inputs/AccountUpdateManyMutat
   isAbstract: true,
 })
 export class AccountUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => AccountScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountScalarWhereInput, { nullable: false })
   where!: AccountScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => AccountUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => AccountUpdateManyMutationInput, { nullable: false })
   data!: AccountUpdateManyMutationInput;
 }

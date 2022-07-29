@@ -12,45 +12,45 @@ import { DashboardSumAggregate } from "../outputs/DashboardSumAggregate";
   isAbstract: true,
 })
 export class DashboardGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   userId!: string;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: false })
+  @TypeGraphQL.Field(() => GraphQLScalars.JSONResolver, { nullable: false })
   layouts!: DashboardLayouts;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
+  @TypeGraphQL.Field(() => Boolean, { nullable: false })
   isDefault!: boolean;
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
+  @TypeGraphQL.Field(() => Boolean, { nullable: false })
   isPublic!: boolean;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => DashboardCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardCountAggregate, { nullable: true })
   _count!: DashboardCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => DashboardAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardAvgAggregate, { nullable: true })
   _avg!: DashboardAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => DashboardSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardSumAggregate, { nullable: true })
   _sum!: DashboardSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => DashboardMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardMinAggregate, { nullable: true })
   _min!: DashboardMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => DashboardMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => DashboardMaxAggregate, { nullable: true })
   _max!: DashboardMaxAggregate | null;
 }

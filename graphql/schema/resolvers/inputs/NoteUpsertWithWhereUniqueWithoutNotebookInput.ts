@@ -7,12 +7,12 @@ import { NoteWhereUniqueInput } from "../inputs/NoteWhereUniqueInput";
   isAbstract: true,
 })
 export class NoteUpsertWithWhereUniqueWithoutNotebookInput {
-  @TypeGraphQL.Field((_type) => NoteWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteWhereUniqueInput, { nullable: false })
   where!: NoteWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NoteUpdateWithoutNotebookInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteUpdateWithoutNotebookInput, { nullable: false })
   update!: NoteUpdateWithoutNotebookInput;
 
-  @TypeGraphQL.Field((_type) => NoteCreateWithoutNotebookInput, { nullable: false })
+  @TypeGraphQL.Field(() => NoteCreateWithoutNotebookInput, { nullable: false })
   create!: NoteCreateWithoutNotebookInput;
 }

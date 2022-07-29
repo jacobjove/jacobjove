@@ -5,12 +5,12 @@ import { GoalWhereInput } from "../inputs/GoalWhereInput";
   isAbstract: true,
 })
 export class GoalListRelationFilter {
-  @TypeGraphQL.Field((_type) => GoalWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereInput, { nullable: true })
   every?: GoalWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereInput, { nullable: true })
   some?: GoalWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalWhereInput, { nullable: true })
   none?: GoalWhereInput | undefined;
 }

@@ -5,9 +5,9 @@ import { ActionScheduleCreateManyHabitInput } from "../inputs/ActionScheduleCrea
   isAbstract: true,
 })
 export class ActionScheduleCreateManyHabitInputEnvelope {
-  @TypeGraphQL.Field((_type) => [ActionScheduleCreateManyHabitInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ActionScheduleCreateManyHabitInput], { nullable: false })
   data!: ActionScheduleCreateManyHabitInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

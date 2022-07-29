@@ -21,13 +21,13 @@ export class CalendarEventUpdateManyMutationInput {
   @TypeGraphQL.Field({ nullable: true })
   end?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   allDay?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
   notes?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableBoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => NullableBoolFieldUpdateOperationsInput, { nullable: true })
   canceled?: NullableBoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })

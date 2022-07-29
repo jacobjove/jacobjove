@@ -6,9 +6,9 @@ import { AuthorshipUpdateManyMutationInput } from "../inputs/AuthorshipUpdateMan
   isAbstract: true,
 })
 export class AuthorshipUpdateManyWithWhereWithoutAuthorInput {
-  @TypeGraphQL.Field((_type) => AuthorshipScalarWhereInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipScalarWhereInput, { nullable: false })
   where!: AuthorshipScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => AuthorshipUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => AuthorshipUpdateManyMutationInput, { nullable: false })
   data!: AuthorshipUpdateManyMutationInput;
 }

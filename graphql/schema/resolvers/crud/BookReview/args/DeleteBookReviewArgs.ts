@@ -3,6 +3,6 @@ import { BookReviewWhereUniqueInput } from "../../../inputs/BookReviewWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class DeleteBookReviewArgs {
-  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookReviewWhereUniqueInput, { nullable: false })
   where!: BookReviewWhereUniqueInput;
 }

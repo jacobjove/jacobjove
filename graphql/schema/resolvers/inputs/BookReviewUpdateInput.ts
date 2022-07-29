@@ -11,7 +11,7 @@ export class BookReviewUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   review?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   rating?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -23,12 +23,12 @@ export class BookReviewUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateOneRequiredWithoutBookReviewInput, { nullable: true })
+  @TypeGraphQL.Field(() => BookUpdateOneRequiredWithoutBookReviewInput, { nullable: true })
   book?: BookUpdateOneRequiredWithoutBookReviewInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutBookReviewsInput, { nullable: true })
+  @TypeGraphQL.Field(() => UserUpdateOneRequiredWithoutBookReviewsInput, { nullable: true })
   user?: UserUpdateOneRequiredWithoutBookReviewsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingUpdateOneWithoutReviewInput, { nullable: true })
+  @TypeGraphQL.Field(() => ReadingUpdateOneWithoutReviewInput, { nullable: true })
   reading?: ReadingUpdateOneWithoutReviewInput | undefined;
 }

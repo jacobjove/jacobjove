@@ -5,12 +5,12 @@ import { ShelvingWhereInput } from "../inputs/ShelvingWhereInput";
   isAbstract: true,
 })
 export class ShelvingListRelationFilter {
-  @TypeGraphQL.Field((_type) => ShelvingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingWhereInput, { nullable: true })
   every?: ShelvingWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingWhereInput, { nullable: true })
   some?: ShelvingWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => ShelvingWhereInput, { nullable: true })
   none?: ShelvingWhereInput | undefined;
 }

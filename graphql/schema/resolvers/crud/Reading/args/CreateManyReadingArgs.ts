@@ -3,9 +3,9 @@ import { ReadingCreateManyInput } from "../../../inputs/ReadingCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyReadingArgs {
-  @TypeGraphQL.Field((_type) => [ReadingCreateManyInput], { nullable: false })
+  @TypeGraphQL.Field(() => [ReadingCreateManyInput], { nullable: false })
   data!: ReadingCreateManyInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

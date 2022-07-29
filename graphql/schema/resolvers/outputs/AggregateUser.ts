@@ -9,18 +9,18 @@ import { UserSumAggregate } from "../outputs/UserSumAggregate";
   isAbstract: true,
 })
 export class AggregateUser {
-  @TypeGraphQL.Field((_type) => UserCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => UserCountAggregate, { nullable: true })
   _count!: UserCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => UserAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => UserAvgAggregate, { nullable: true })
   _avg!: UserAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => UserSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => UserSumAggregate, { nullable: true })
   _sum!: UserSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => UserMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => UserMinAggregate, { nullable: true })
   _min!: UserMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => UserMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => UserMaxAggregate, { nullable: true })
   _max!: UserMaxAggregate | null;
 }

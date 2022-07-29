@@ -9,16 +9,16 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
   isAbstract: true,
 })
 export class ActionScheduleUpdateWithoutTemplateInput {
-  @TypeGraphQL.Field((_type) => EnumFREQUENCYFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => EnumFREQUENCYFieldUpdateOperationsInput, { nullable: true })
   frequency?: EnumFREQUENCYFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   multiplier?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   quantity?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => BoolFieldUpdateOperationsInput, { nullable: true })
   active?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -30,9 +30,9 @@ export class ActionScheduleUpdateWithoutTemplateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateOneRequiredWithoutSchedulesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateOneRequiredWithoutSchedulesInput, { nullable: true })
   habit?: HabitUpdateOneRequiredWithoutSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyWithoutScheduleInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarEventUpdateManyWithoutScheduleInput, { nullable: true })
   calendarEvents?: CalendarEventUpdateManyWithoutScheduleInput | undefined;
 }

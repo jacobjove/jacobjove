@@ -5,7 +5,7 @@ import { Value } from "../../../models/Value";
 
 @TypeGraphQL.Resolver((_of) => Value)
 export class ValueRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
+  @TypeGraphQL.FieldResolver(() => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() value: Value,
     @TypeGraphQL.Ctx() ctx: ApolloContext

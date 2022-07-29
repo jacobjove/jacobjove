@@ -5,12 +5,12 @@ import { ActionScheduleWhereUniqueInput } from "../../../inputs/ActionScheduleWh
 
 @TypeGraphQL.ArgsType()
 export class UpsertActionScheduleArgs {
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleWhereUniqueInput, { nullable: false })
   where!: ActionScheduleWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleCreateInput, { nullable: false })
   create!: ActionScheduleCreateInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleUpdateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ActionScheduleUpdateInput, { nullable: false })
   update!: ActionScheduleUpdateInput;
 }

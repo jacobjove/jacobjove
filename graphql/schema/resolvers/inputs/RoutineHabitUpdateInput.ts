@@ -7,10 +7,10 @@ import { RoutineUpdateOneRequiredWithoutHabitsInput } from "../inputs/RoutineUpd
   isAbstract: true,
 })
 export class RoutineHabitUpdateInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   position?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  @TypeGraphQL.Field(() => IntFieldUpdateOperationsInput, { nullable: true })
   durationInMinutes?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field({ nullable: true })
@@ -22,9 +22,9 @@ export class RoutineHabitUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineUpdateOneRequiredWithoutHabitsInput, { nullable: true })
+  @TypeGraphQL.Field(() => RoutineUpdateOneRequiredWithoutHabitsInput, { nullable: true })
   routine?: RoutineUpdateOneRequiredWithoutHabitsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateOneRequiredWithoutRoutinesInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitUpdateOneRequiredWithoutRoutinesInput, { nullable: true })
   habit?: HabitUpdateOneRequiredWithoutRoutinesInput | undefined;
 }

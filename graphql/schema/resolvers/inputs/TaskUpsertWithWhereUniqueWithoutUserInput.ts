@@ -7,12 +7,12 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskUpsertWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskWhereUniqueInput, { nullable: false })
   where!: TaskWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskUpdateWithoutUserInput, { nullable: false })
   update!: TaskUpdateWithoutUserInput;
 
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => TaskCreateWithoutUserInput, { nullable: false })
   create!: TaskCreateWithoutUserInput;
 }

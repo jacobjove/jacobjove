@@ -6,9 +6,9 @@ import { UserUpdateWithoutDashboardsInput } from "../inputs/UserUpdateWithoutDas
   isAbstract: true,
 })
 export class UserUpsertWithoutDashboardsInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutDashboardsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserUpdateWithoutDashboardsInput, { nullable: false })
   update!: UserUpdateWithoutDashboardsInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutDashboardsInput, { nullable: false })
+  @TypeGraphQL.Field(() => UserCreateWithoutDashboardsInput, { nullable: false })
   create!: UserCreateWithoutDashboardsInput;
 }

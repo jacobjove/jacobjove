@@ -10,39 +10,39 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class ActionScheduleTemplateWhereInput {
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateWhereInput], { nullable: true })
   AND?: ActionScheduleTemplateWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateWhereInput], { nullable: true })
   OR?: ActionScheduleTemplateWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [ActionScheduleTemplateWhereInput], { nullable: true })
   NOT?: ActionScheduleTemplateWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ActRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ActRelationFilter, { nullable: true })
   act?: ActRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   actId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateRelationFilter, { nullable: true })
   scheduleTemplate?: ScheduleTemplateRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   scheduleTemplateId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => EnumFREQUENCYFilter, { nullable: true })
+  @TypeGraphQL.Field(() => EnumFREQUENCYFilter, { nullable: true })
   frequency?: EnumFREQUENCYFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntFilter, { nullable: true })
   multiplier?: IntFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IntFilter, { nullable: true })
   quantity?: IntFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleListRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleListRelationFilter, { nullable: true })
   actionSchedules?: ActionScheduleListRelationFilter | undefined;
 }

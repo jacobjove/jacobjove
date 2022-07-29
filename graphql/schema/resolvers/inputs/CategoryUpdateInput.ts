@@ -17,6 +17,6 @@ export class CategoryUpdateInput {
   @TypeGraphQL.Field({ nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationUpdateManyWithoutCategoryInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationUpdateManyWithoutCategoryInput, { nullable: true })
   categorizations?: CategorizationUpdateManyWithoutCategoryInput | undefined;
 }

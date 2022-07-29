@@ -5,9 +5,9 @@ import { NotebookOwnerIdTitleCompoundUniqueInput } from "../inputs/NotebookOwner
   isAbstract: true,
 })
 export class NotebookWhereUniqueInput {
-  @TypeGraphQL.Field((_type) => String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookOwnerIdTitleCompoundUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => NotebookOwnerIdTitleCompoundUniqueInput, { nullable: true })
   ownerId_title?: NotebookOwnerIdTitleCompoundUniqueInput | undefined;
 }

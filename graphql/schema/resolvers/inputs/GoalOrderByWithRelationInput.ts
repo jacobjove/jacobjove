@@ -7,24 +7,24 @@ import { HabitOrderByWithRelationInput } from "../inputs/HabitOrderByWithRelatio
   isAbstract: true,
 })
 export class GoalOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitOrderByWithRelationInput, { nullable: true })
   habit?: HabitOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   habitId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   goalId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalOrderByWithRelationInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalOrderByWithRelationInput, { nullable: true })
   goal?: GoalOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalOrderByRelationAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => GoalOrderByRelationAggregateInput, { nullable: true })
   milestones?: GoalOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   quantity?: "asc" | "desc" | undefined;
 }

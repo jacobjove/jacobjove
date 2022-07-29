@@ -12,36 +12,36 @@ import { MantraWhereUniqueInput } from "../inputs/MantraWhereUniqueInput";
   isAbstract: true,
 })
 export class MantraUpdateManyWithoutMantraInput {
-  @TypeGraphQL.Field((_type) => [MantraCreateWithoutMantraInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraCreateWithoutMantraInput], { nullable: true })
   create?: MantraCreateWithoutMantraInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraCreateOrConnectWithoutMantraInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraCreateOrConnectWithoutMantraInput], { nullable: true })
   connectOrCreate?: MantraCreateOrConnectWithoutMantraInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraUpsertWithWhereUniqueWithoutMantraInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraUpsertWithWhereUniqueWithoutMantraInput], { nullable: true })
   upsert?: MantraUpsertWithWhereUniqueWithoutMantraInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraCreateManyMantraInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => MantraCreateManyMantraInputEnvelope, { nullable: true })
   createMany?: MantraCreateManyMantraInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraWhereUniqueInput], { nullable: true })
   set?: MantraWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraWhereUniqueInput], { nullable: true })
   disconnect?: MantraWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraWhereUniqueInput], { nullable: true })
   delete?: MantraWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraWhereUniqueInput], { nullable: true })
   connect?: MantraWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraUpdateWithWhereUniqueWithoutMantraInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraUpdateWithWhereUniqueWithoutMantraInput], { nullable: true })
   update?: MantraUpdateWithWhereUniqueWithoutMantraInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraUpdateManyWithWhereWithoutMantraInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraUpdateManyWithWhereWithoutMantraInput], { nullable: true })
   updateMany?: MantraUpdateManyWithWhereWithoutMantraInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraScalarWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [MantraScalarWhereInput], { nullable: true })
   deleteMany?: MantraScalarWhereInput[] | undefined;
 }

@@ -8,30 +8,30 @@ import { StringFilter } from "../inputs/StringFilter";
   isAbstract: true,
 })
 export class IdentityActRelationWhereInput {
-  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityActRelationWhereInput], { nullable: true })
   AND?: IdentityActRelationWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityActRelationWhereInput], { nullable: true })
   OR?: IdentityActRelationWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereInput], { nullable: true })
+  @TypeGraphQL.Field(() => [IdentityActRelationWhereInput], { nullable: true })
   NOT?: IdentityActRelationWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => IdentityRelationFilter, { nullable: true })
   identity?: IdentityRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   identityId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ActRelationFilter, { nullable: true })
+  @TypeGraphQL.Field(() => ActRelationFilter, { nullable: true })
   action?: ActRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringFilter, { nullable: true })
   actionId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 }

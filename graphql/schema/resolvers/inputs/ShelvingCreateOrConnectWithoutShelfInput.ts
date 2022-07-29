@@ -6,9 +6,9 @@ import { ShelvingWhereUniqueInput } from "../inputs/ShelvingWhereUniqueInput";
   isAbstract: true,
 })
 export class ShelvingCreateOrConnectWithoutShelfInput {
-  @TypeGraphQL.Field((_type) => ShelvingWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingWhereUniqueInput, { nullable: false })
   where!: ShelvingWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ShelvingCreateWithoutShelfInput, { nullable: false })
+  @TypeGraphQL.Field(() => ShelvingCreateWithoutShelfInput, { nullable: false })
   create!: ShelvingCreateWithoutShelfInput;
 }

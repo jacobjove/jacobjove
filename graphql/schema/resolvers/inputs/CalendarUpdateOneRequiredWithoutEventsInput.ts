@@ -9,18 +9,18 @@ import { CalendarWhereUniqueInput } from "../inputs/CalendarWhereUniqueInput";
   isAbstract: true,
 })
 export class CalendarUpdateOneRequiredWithoutEventsInput {
-  @TypeGraphQL.Field((_type) => CalendarCreateWithoutEventsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarCreateWithoutEventsInput, { nullable: true })
   create?: CalendarCreateWithoutEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateOrConnectWithoutEventsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarCreateOrConnectWithoutEventsInput, { nullable: true })
   connectOrCreate?: CalendarCreateOrConnectWithoutEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarUpsertWithoutEventsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarUpsertWithoutEventsInput, { nullable: true })
   upsert?: CalendarUpsertWithoutEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarWhereUniqueInput, { nullable: true })
   connect?: CalendarWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarUpdateWithoutEventsInput, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarUpdateWithoutEventsInput, { nullable: true })
   update?: CalendarUpdateWithoutEventsInput | undefined;
 }

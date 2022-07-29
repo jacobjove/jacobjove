@@ -5,9 +5,9 @@ import { MantraWhereInput } from "../inputs/MantraWhereInput";
   isAbstract: true,
 })
 export class MantraRelationFilter {
-  @TypeGraphQL.Field((_type) => MantraWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraWhereInput, { nullable: true })
   is?: MantraWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => MantraWhereInput, { nullable: true })
   isNot?: MantraWhereInput | undefined;
 }

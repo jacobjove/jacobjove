@@ -6,30 +6,30 @@ import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter
   isAbstract: true,
 })
 export class IdentityActRelationScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field((_type) => [IdentityActRelationScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [IdentityActRelationScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   AND?: IdentityActRelationScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [IdentityActRelationScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   OR?: IdentityActRelationScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationScalarWhereWithAggregatesInput], {
+  @TypeGraphQL.Field(() => [IdentityActRelationScalarWhereWithAggregatesInput], {
     nullable: true,
   })
   NOT?: IdentityActRelationScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   identityId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => StringWithAggregatesFilter, { nullable: true })
   actionId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
   archivedAt?: DateTimeNullableWithAggregatesFilter | undefined;
 }

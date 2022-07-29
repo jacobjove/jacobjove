@@ -10,7 +10,7 @@ export class ValueToggleResolver {
   async toggleValue(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Arg("valueId", (_type) => String) valueId: string,
+    @TypeGraphQL.Arg("valueId", () => String) valueId: string,
     @TypeGraphQL.Arg("archivedAt", { nullable: true }) archivedAt: null | Date
   ): Promise<Value> {
     return toggleSelection("values", ctx, info, valueId, archivedAt) as Promise<Value>;

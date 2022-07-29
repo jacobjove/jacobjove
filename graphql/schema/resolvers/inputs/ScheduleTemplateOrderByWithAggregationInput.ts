@@ -10,30 +10,30 @@ import { ScheduleTemplateSumOrderByAggregateInput } from "../inputs/ScheduleTemp
   isAbstract: true,
 })
 export class ScheduleTemplateOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   frequency?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   multiplier?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   chron?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateCountOrderByAggregateInput, { nullable: true })
   _count?: ScheduleTemplateCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateAvgOrderByAggregateInput, { nullable: true })
   _avg?: ScheduleTemplateAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateMaxOrderByAggregateInput, { nullable: true })
   _max?: ScheduleTemplateMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateMinOrderByAggregateInput, { nullable: true })
   _min?: ScheduleTemplateMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ScheduleTemplateSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => ScheduleTemplateSumOrderByAggregateInput, { nullable: true })
   _sum?: ScheduleTemplateSumOrderByAggregateInput | undefined;
 }

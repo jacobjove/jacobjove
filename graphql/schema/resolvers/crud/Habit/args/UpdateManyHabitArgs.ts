@@ -4,9 +4,9 @@ import { HabitWhereInput } from "../../../inputs/HabitWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyHabitArgs {
-  @TypeGraphQL.Field((_type) => HabitUpdateManyMutationInput, { nullable: false })
+  @TypeGraphQL.Field(() => HabitUpdateManyMutationInput, { nullable: false })
   data!: HabitUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => HabitWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => HabitWhereInput, { nullable: true })
   where?: HabitWhereInput | undefined;
 }

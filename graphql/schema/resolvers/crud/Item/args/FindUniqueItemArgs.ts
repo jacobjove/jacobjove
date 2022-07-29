@@ -3,6 +3,6 @@ import { ItemWhereUniqueInput } from "../../../inputs/ItemWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueItemArgs {
-  @TypeGraphQL.Field((_type) => ItemWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => ItemWhereUniqueInput, { nullable: false })
   where!: ItemWhereUniqueInput;
 }

@@ -3,6 +3,6 @@ import { ScheduleTemplateCreateInput } from "../../../inputs/ScheduleTemplateCre
 
 @TypeGraphQL.ArgsType()
 export class CreateScheduleTemplateArgs {
-  @TypeGraphQL.Field((_type) => ScheduleTemplateCreateInput, { nullable: false })
+  @TypeGraphQL.Field(() => ScheduleTemplateCreateInput, { nullable: false })
   data!: ScheduleTemplateCreateInput;
 }

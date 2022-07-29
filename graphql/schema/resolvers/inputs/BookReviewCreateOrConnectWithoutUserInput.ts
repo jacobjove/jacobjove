@@ -6,9 +6,9 @@ import { BookReviewWhereUniqueInput } from "../inputs/BookReviewWhereUniqueInput
   isAbstract: true,
 })
 export class BookReviewCreateOrConnectWithoutUserInput {
-  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookReviewWhereUniqueInput, { nullable: false })
   where!: BookReviewWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BookReviewCreateWithoutUserInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookReviewCreateWithoutUserInput, { nullable: false })
   create!: BookReviewCreateWithoutUserInput;
 }

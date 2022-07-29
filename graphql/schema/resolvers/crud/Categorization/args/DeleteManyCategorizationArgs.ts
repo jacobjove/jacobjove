@@ -3,6 +3,6 @@ import { CategorizationWhereInput } from "../../../inputs/CategorizationWhereInp
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyCategorizationArgs {
-  @TypeGraphQL.Field((_type) => CategorizationWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationWhereInput, { nullable: true })
   where?: CategorizationWhereInput | undefined;
 }

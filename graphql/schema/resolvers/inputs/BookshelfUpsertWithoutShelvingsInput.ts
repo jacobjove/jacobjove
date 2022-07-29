@@ -6,9 +6,9 @@ import { BookshelfUpdateWithoutShelvingsInput } from "../inputs/BookshelfUpdateW
   isAbstract: true,
 })
 export class BookshelfUpsertWithoutShelvingsInput {
-  @TypeGraphQL.Field((_type) => BookshelfUpdateWithoutShelvingsInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfUpdateWithoutShelvingsInput, { nullable: false })
   update!: BookshelfUpdateWithoutShelvingsInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateWithoutShelvingsInput, { nullable: false })
+  @TypeGraphQL.Field(() => BookshelfCreateWithoutShelvingsInput, { nullable: false })
   create!: BookshelfCreateWithoutShelvingsInput;
 }

@@ -8,15 +8,15 @@ import { CategorizationWhereUniqueInput } from "../inputs/CategorizationWhereUni
   isAbstract: true,
 })
 export class CategorizationCreateNestedManyWithoutActInput {
-  @TypeGraphQL.Field((_type) => [CategorizationCreateWithoutActInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationCreateWithoutActInput], { nullable: true })
   create?: CategorizationCreateWithoutActInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationCreateOrConnectWithoutActInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationCreateOrConnectWithoutActInput], { nullable: true })
   connectOrCreate?: CategorizationCreateOrConnectWithoutActInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationCreateManyActInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationCreateManyActInputEnvelope, { nullable: true })
   createMany?: CategorizationCreateManyActInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [CategorizationWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CategorizationWhereUniqueInput], { nullable: true })
   connect?: CategorizationWhereUniqueInput[] | undefined;
 }

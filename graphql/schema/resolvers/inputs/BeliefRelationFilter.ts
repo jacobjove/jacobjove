@@ -5,9 +5,9 @@ import { BeliefWhereInput } from "../inputs/BeliefWhereInput";
   isAbstract: true,
 })
 export class BeliefRelationFilter {
-  @TypeGraphQL.Field((_type) => BeliefWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefWhereInput, { nullable: true })
   is?: BeliefWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BeliefWhereInput, { nullable: true })
+  @TypeGraphQL.Field(() => BeliefWhereInput, { nullable: true })
   isNot?: BeliefWhereInput | undefined;
 }

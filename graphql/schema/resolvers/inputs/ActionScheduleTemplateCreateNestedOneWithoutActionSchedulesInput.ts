@@ -7,16 +7,16 @@ import { ActionScheduleTemplateWhereUniqueInput } from "../inputs/ActionSchedule
   isAbstract: true,
 })
 export class ActionScheduleTemplateCreateNestedOneWithoutActionSchedulesInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCreateWithoutActionSchedulesInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCreateWithoutActionSchedulesInput, {
     nullable: true,
   })
   create?: ActionScheduleTemplateCreateWithoutActionSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput, {
+  @TypeGraphQL.Field(() => ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput, {
     nullable: true,
   })
   connectOrCreate?: ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateWhereUniqueInput, { nullable: true })
+  @TypeGraphQL.Field(() => ActionScheduleTemplateWhereUniqueInput, { nullable: true })
   connect?: ActionScheduleTemplateWhereUniqueInput | undefined;
 }

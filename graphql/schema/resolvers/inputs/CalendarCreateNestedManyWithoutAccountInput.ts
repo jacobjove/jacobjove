@@ -8,15 +8,15 @@ import { CalendarWhereUniqueInput } from "../inputs/CalendarWhereUniqueInput";
   isAbstract: true,
 })
 export class CalendarCreateNestedManyWithoutAccountInput {
-  @TypeGraphQL.Field((_type) => [CalendarCreateWithoutAccountInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarCreateWithoutAccountInput], { nullable: true })
   create?: CalendarCreateWithoutAccountInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarCreateOrConnectWithoutAccountInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarCreateOrConnectWithoutAccountInput], { nullable: true })
   connectOrCreate?: CalendarCreateOrConnectWithoutAccountInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateManyAccountInputEnvelope, { nullable: true })
+  @TypeGraphQL.Field(() => CalendarCreateManyAccountInputEnvelope, { nullable: true })
   createMany?: CalendarCreateManyAccountInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], { nullable: true })
+  @TypeGraphQL.Field(() => [CalendarWhereUniqueInput], { nullable: true })
   connect?: CalendarWhereUniqueInput[] | undefined;
 }

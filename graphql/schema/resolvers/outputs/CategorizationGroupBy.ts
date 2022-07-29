@@ -10,36 +10,36 @@ import { CategorizationSumAggregate } from "../outputs/CategorizationSumAggregat
   isAbstract: true,
 })
 export class CategorizationGroupBy {
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   id!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   categoryId!: string;
 
-  @TypeGraphQL.Field((_type) => String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   actId!: string;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   updatedAt!: Date;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   archivedAt!: Date | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationCountAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationCountAggregate, { nullable: true })
   _count!: CategorizationCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationAvgAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationAvgAggregate, { nullable: true })
   _avg!: CategorizationAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationSumAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationSumAggregate, { nullable: true })
   _sum!: CategorizationSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationMinAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationMinAggregate, { nullable: true })
   _min!: CategorizationMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CategorizationMaxAggregate, { nullable: true })
+  @TypeGraphQL.Field(() => CategorizationMaxAggregate, { nullable: true })
   _max!: CategorizationMaxAggregate | null;
 }

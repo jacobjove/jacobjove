@@ -10,36 +10,36 @@ import { MetricApplicationSumOrderByAggregateInput } from "../inputs/MetricAppli
   isAbstract: true,
 })
 export class MetricApplicationOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   actId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   metricId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
+  @TypeGraphQL.Field(() => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationCountOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationCountOrderByAggregateInput, { nullable: true })
   _count?: MetricApplicationCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationAvgOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationAvgOrderByAggregateInput, { nullable: true })
   _avg?: MetricApplicationAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationMaxOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationMaxOrderByAggregateInput, { nullable: true })
   _max?: MetricApplicationMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationMinOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationMinOrderByAggregateInput, { nullable: true })
   _min?: MetricApplicationMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationSumOrderByAggregateInput, { nullable: true })
+  @TypeGraphQL.Field(() => MetricApplicationSumOrderByAggregateInput, { nullable: true })
   _sum?: MetricApplicationSumOrderByAggregateInput | undefined;
 }
