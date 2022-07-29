@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { TaskScalarWhereInput } from "../inputs/TaskScalarWhereInput";
 import { TaskUpdateManyMutationInput } from "../inputs/TaskUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { TaskUpdateManyMutationInput } from "../inputs/TaskUpdateManyMutationInp
   isAbstract: true,
 })
 export class TaskUpdateManyWithWhereWithoutParentInput {
-  @TypeGraphQL.Field((_type) => TaskScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskScalarWhereInput, { nullable: false })
   where!: TaskScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskUpdateManyMutationInput, { nullable: false })
   data!: TaskUpdateManyMutationInput;
 }

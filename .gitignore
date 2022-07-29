@@ -7,5 +7,6 @@ generated/
 node_modules/
 service-account.json
 
-# Sentry
-.sentryclirc
+**/public/workbox-*.js
+**/public/sw.js
+**/public/worker-*.js

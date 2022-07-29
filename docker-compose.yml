@@ -1,7 +1,8 @@
 services:
   nextjs:
-    image: nextjs:latest
-    # depends_on:
+    image: ghcr.io/iacobfred/selfbuilder:latest
+    depends_on:
+      - mongo
     #   - postgres
     #   - graphql
     ports:
@@ -11,7 +12,10 @@ services:
       - ./.env
     environment:
       NEXTAUTH_URL_INTERNAL: "http://nextjs:3000"
-    profiles: [ "prod" ]
+      NEXTAUTH_URL: "https://www.orega.org"
+      NODE_ENV: production
+    volumes:
+      - ./.env:/root/.env
 
   # graphql:
   #   image: nextjs:latest
@@ -22,10 +26,28 @@ services:
   #   env_file:
   #     - ./.env
 
+  mongo:
+    image: mongo:latest
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    env_file: .env
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    expose:
+      - "27017"
+    volumes:
+      - data:/data
+
   postgres:
     image: postgres:14
-    ports:
-      - 5432:5432
+    expose:
+      - "5432"
     env_file:
       - ./.env
     healthcheck:
@@ -36,7 +58,6 @@ services:
       start_period: 30s
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    profiles: [ "dev", "prod" ]
 
   cypress:
     # https://github.com/cypress-io/cypress-docker-images
@@ -50,8 +71,9 @@ services:
     volumes:
       - ./cypress:/e2e/cypress
       - ./cypress.json:/e2e/cypress.json
-    profiles: [ "tools" ]
 
 # For more information on how volumes work, please see https://docs.docker.com/storage/volumes/
 volumes:
+  # Note: `data` is used by both redis and mongodb
+  data: null
   postgres_data: null

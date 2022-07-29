@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AuthorCreateOrConnectWithoutAuthorshipsInput } from "../inputs/AuthorCreateOrConnectWithoutAuthorshipsInput";
 import { AuthorCreateWithoutAuthorshipsInput } from "../inputs/AuthorCreateWithoutAuthorshipsInput";
 import { AuthorUpdateWithoutAuthorshipsInput } from "../inputs/AuthorUpdateWithoutAuthorshipsInput";
@@ -9,28 +9,18 @@ import { AuthorWhereUniqueInput } from "../inputs/AuthorWhereUniqueInput";
   isAbstract: true,
 })
 export class AuthorUpdateOneRequiredWithoutAuthorshipsInput {
-  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, { nullable: true })
   create?: AuthorCreateWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateOrConnectWithoutAuthorshipsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorCreateOrConnectWithoutAuthorshipsInput, { nullable: true })
   connectOrCreate?: AuthorCreateOrConnectWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorUpsertWithoutAuthorshipsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorUpsertWithoutAuthorshipsInput, { nullable: true })
   upsert?: AuthorUpsertWithoutAuthorshipsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: true })
   connect?: AuthorWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorUpdateWithoutAuthorshipsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorUpdateWithoutAuthorshipsInput, { nullable: true })
   update?: AuthorUpdateWithoutAuthorshipsInput | undefined;
 }

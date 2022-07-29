@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { NotebookCreateOrConnectWithoutNotesInput } from "../inputs/NotebookCreateOrConnectWithoutNotesInput";
 import { NotebookCreateWithoutNotesInput } from "../inputs/NotebookCreateWithoutNotesInput";
 import { NotebookWhereUniqueInput } from "../inputs/NotebookWhereUniqueInput";
@@ -7,18 +7,12 @@ import { NotebookWhereUniqueInput } from "../inputs/NotebookWhereUniqueInput";
   isAbstract: true,
 })
 export class NotebookCreateNestedOneWithoutNotesInput {
-  @TypeGraphQL.Field((_type) => NotebookCreateWithoutNotesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => NotebookCreateWithoutNotesInput, { nullable: true })
   create?: NotebookCreateWithoutNotesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateOrConnectWithoutNotesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => NotebookCreateOrConnectWithoutNotesInput, { nullable: true })
   connectOrCreate?: NotebookCreateOrConnectWithoutNotesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: true })
   connect?: NotebookWhereUniqueInput | undefined;
 }

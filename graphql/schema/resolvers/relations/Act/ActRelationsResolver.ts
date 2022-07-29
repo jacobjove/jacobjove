@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { Act } from "../../../models/Act";
 import { ActionScheduleTemplate } from "../../../models/ActionScheduleTemplate";
@@ -16,9 +16,7 @@ import { ActVariantsArgs } from "./args/ActVariantsArgs";
 
 @TypeGraphQL.Resolver((_of) => Act)
 export class ActRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Act, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Act, { nullable: true })
   async parent(
     @TypeGraphQL.Root() act: Act,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -32,9 +30,7 @@ export class ActRelationsResolver {
       .parent({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Act], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Act], { nullable: false })
   async variants(
     @TypeGraphQL.Root() act: Act,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -49,9 +45,7 @@ export class ActRelationsResolver {
       .variants(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Habit], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Habit], { nullable: false })
   async habits(
     @TypeGraphQL.Root() act: Act,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -66,9 +60,7 @@ export class ActRelationsResolver {
       .habits(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [MetricApplication], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [MetricApplication], { nullable: false })
   async metricApplications(
     @TypeGraphQL.Root() act: Act,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -83,9 +75,7 @@ export class ActRelationsResolver {
       .metricApplications(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [IdentityActRelation], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [IdentityActRelation], { nullable: false })
   async identityRelations(
     @TypeGraphQL.Root() act: Act,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -100,9 +90,7 @@ export class ActRelationsResolver {
       .identityRelations(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [ActionScheduleTemplate], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [ActionScheduleTemplate], { nullable: false })
   async scheduleTemplates(
     @TypeGraphQL.Root() act: Act,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -117,9 +105,7 @@ export class ActRelationsResolver {
       .scheduleTemplates(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Categorization], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Categorization], { nullable: false })
   async categorizations(
     @TypeGraphQL.Root() act: Act,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

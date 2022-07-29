@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ValueCreateInput } from "../inputs/ValueCreateInput";
 import { ValueWhereUniqueInput } from "../inputs/ValueWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { ValueWhereUniqueInput } from "../inputs/ValueWhereUniqueInput";
   isAbstract: true,
 })
 export class ValueCreateOrConnectInput {
-  @TypeGraphQL.Field((_type) => ValueWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ValueWhereUniqueInput, { nullable: false })
   where!: ValueWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ValueCreateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ValueCreateInput, { nullable: false })
   create!: ValueCreateInput;
 }

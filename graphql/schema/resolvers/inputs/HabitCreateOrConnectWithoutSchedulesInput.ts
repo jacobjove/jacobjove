@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { HabitCreateWithoutSchedulesInput } from "../inputs/HabitCreateWithoutSchedulesInput";
 import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitCreateOrConnectWithoutSchedulesInput {
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: false })
   where!: HabitWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutSchedulesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => HabitCreateWithoutSchedulesInput, { nullable: false })
   create!: HabitCreateWithoutSchedulesInput;
 }

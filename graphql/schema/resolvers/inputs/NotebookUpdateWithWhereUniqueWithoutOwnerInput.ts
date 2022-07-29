@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { NotebookUpdateWithoutOwnerInput } from "../inputs/NotebookUpdateWithoutOwnerInput";
 import { NotebookWhereUniqueInput } from "../inputs/NotebookWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { NotebookWhereUniqueInput } from "../inputs/NotebookWhereUniqueInput";
   isAbstract: true,
 })
 export class NotebookUpdateWithWhereUniqueWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => NotebookWhereUniqueInput, { nullable: false })
   where!: NotebookWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUpdateWithoutOwnerInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => NotebookUpdateWithoutOwnerInput, { nullable: false })
   data!: NotebookUpdateWithoutOwnerInput;
 }

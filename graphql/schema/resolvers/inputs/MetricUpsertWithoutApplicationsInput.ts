@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricCreateWithoutApplicationsInput } from "../inputs/MetricCreateWithoutApplicationsInput";
 import { MetricUpdateWithoutApplicationsInput } from "../inputs/MetricUpdateWithoutApplicationsInput";
 
@@ -6,13 +6,9 @@ import { MetricUpdateWithoutApplicationsInput } from "../inputs/MetricUpdateWith
   isAbstract: true,
 })
 export class MetricUpsertWithoutApplicationsInput {
-  @TypeGraphQL.Field((_type) => MetricUpdateWithoutApplicationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MetricUpdateWithoutApplicationsInput, { nullable: false })
   update!: MetricUpdateWithoutApplicationsInput;
 
-  @TypeGraphQL.Field((_type) => MetricCreateWithoutApplicationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MetricCreateWithoutApplicationsInput, { nullable: false })
   create!: MetricCreateWithoutApplicationsInput;
 }

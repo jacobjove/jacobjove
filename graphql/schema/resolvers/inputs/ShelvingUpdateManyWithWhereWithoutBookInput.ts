@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ShelvingScalarWhereInput } from "../inputs/ShelvingScalarWhereInput";
 import { ShelvingUpdateManyMutationInput } from "../inputs/ShelvingUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { ShelvingUpdateManyMutationInput } from "../inputs/ShelvingUpdateManyMut
   isAbstract: true,
 })
 export class ShelvingUpdateManyWithWhereWithoutBookInput {
-  @TypeGraphQL.Field((_type) => ShelvingScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ShelvingScalarWhereInput, { nullable: false })
   where!: ShelvingScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ShelvingUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ShelvingUpdateManyMutationInput, { nullable: false })
   data!: ShelvingUpdateManyMutationInput;
 }

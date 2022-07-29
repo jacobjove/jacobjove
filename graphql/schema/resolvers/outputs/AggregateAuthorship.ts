@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AuthorshipAvgAggregate } from "../outputs/AuthorshipAvgAggregate";
 import { AuthorshipCountAggregate } from "../outputs/AuthorshipCountAggregate";
 import { AuthorshipMaxAggregate } from "../outputs/AuthorshipMaxAggregate";
@@ -9,28 +9,18 @@ import { AuthorshipSumAggregate } from "../outputs/AuthorshipSumAggregate";
   isAbstract: true,
 })
 export class AggregateAuthorship {
-  @TypeGraphQL.Field((_type) => AuthorshipCountAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipCountAggregate, { nullable: true })
   _count!: AuthorshipCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipAvgAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipAvgAggregate, { nullable: true })
   _avg!: AuthorshipAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipSumAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipSumAggregate, { nullable: true })
   _sum!: AuthorshipSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipMinAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipMinAggregate, { nullable: true })
   _min!: AuthorshipMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => AuthorshipMaxAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipMaxAggregate, { nullable: true })
   _max!: AuthorshipMaxAggregate | null;
 }

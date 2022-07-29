@@ -6,7 +6,6 @@ export { DeleteManyMantraArgs } from "./DeleteManyMantraArgs";
 export { FindFirstMantraArgs } from "./FindFirstMantraArgs";
 export { FindManyMantraArgs } from "./FindManyMantraArgs";
 export { FindUniqueMantraArgs } from "./FindUniqueMantraArgs";
-export { GroupByMantraArgs } from "./GroupByMantraArgs";
 export { UpdateMantraArgs } from "./UpdateMantraArgs";
 export { UpdateManyMantraArgs } from "./UpdateManyMantraArgs";
 export { UpsertMantraArgs } from "./UpsertMantraArgs";

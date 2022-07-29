@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { TaskUpdateWithoutHabitInput } from "../inputs/TaskUpdateWithoutHabitInput";
 import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskUpdateWithWhereUniqueWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: false })
   where!: TaskWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateWithoutHabitInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskUpdateWithoutHabitInput, { nullable: false })
   data!: TaskUpdateWithoutHabitInput;
 }

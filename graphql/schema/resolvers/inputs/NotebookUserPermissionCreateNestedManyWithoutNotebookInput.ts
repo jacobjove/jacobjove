@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { NotebookUserPermissionCreateManyNotebookInputEnvelope } from "../inputs/NotebookUserPermissionCreateManyNotebookInputEnvelope";
 import { NotebookUserPermissionCreateOrConnectWithoutNotebookInput } from "../inputs/NotebookUserPermissionCreateOrConnectWithoutNotebookInput";
 import { NotebookUserPermissionCreateWithoutNotebookInput } from "../inputs/NotebookUserPermissionCreateWithoutNotebookInput";
@@ -23,8 +23,6 @@ export class NotebookUserPermissionCreateNestedManyWithoutNotebookInput {
   })
   createMany?: NotebookUserPermissionCreateManyNotebookInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   connect?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 }

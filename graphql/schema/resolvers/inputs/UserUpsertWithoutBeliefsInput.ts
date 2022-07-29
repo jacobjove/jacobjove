@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateWithoutBeliefsInput } from "../inputs/UserCreateWithoutBeliefsInput";
 import { UserUpdateWithoutBeliefsInput } from "../inputs/UserUpdateWithoutBeliefsInput";
 
@@ -6,13 +6,9 @@ import { UserUpdateWithoutBeliefsInput } from "../inputs/UserUpdateWithoutBelief
   isAbstract: true,
 })
 export class UserUpsertWithoutBeliefsInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutBeliefsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserUpdateWithoutBeliefsInput, { nullable: false })
   update!: UserUpdateWithoutBeliefsInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutBeliefsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutBeliefsInput, { nullable: false })
   create!: UserCreateWithoutBeliefsInput;
 }

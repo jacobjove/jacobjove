@@ -1,22 +1,16 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AccountCreateInput } from "../../../inputs/AccountCreateInput";
 import { AccountUpdateInput } from "../../../inputs/AccountUpdateInput";
 import { AccountWhereUniqueInput } from "../../../inputs/AccountWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertAccountArgs {
-  @TypeGraphQL.Field((_type) => AccountWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AccountWhereUniqueInput, { nullable: false })
   where!: AccountWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => AccountCreateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AccountCreateInput, { nullable: false })
   create!: AccountCreateInput;
 
-  @TypeGraphQL.Field((_type) => AccountUpdateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AccountUpdateInput, { nullable: false })
   update!: AccountUpdateInput;
 }

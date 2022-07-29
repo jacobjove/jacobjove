@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DashboardUpdateWithoutUserInput } from "../inputs/DashboardUpdateWithoutUserInput";
 import { DashboardWhereUniqueInput } from "../inputs/DashboardWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { DashboardWhereUniqueInput } from "../inputs/DashboardWhereUniqueInput";
   isAbstract: true,
 })
 export class DashboardUpdateWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => DashboardWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => DashboardWhereUniqueInput, { nullable: false })
   where!: DashboardWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => DashboardUpdateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => DashboardUpdateWithoutUserInput, { nullable: false })
   data!: DashboardUpdateWithoutUserInput;
 }

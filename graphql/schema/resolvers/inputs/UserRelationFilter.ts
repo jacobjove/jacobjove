@@ -1,17 +1,13 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserWhereInput } from "../inputs/UserWhereInput";
 
 @TypeGraphQL.InputType("UserRelationFilter", {
   isAbstract: true,
 })
 export class UserRelationFilter {
-  @TypeGraphQL.Field((_type) => UserWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserWhereInput, { nullable: true })
   is?: UserWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserWhereInput, { nullable: true })
   isNot?: UserWhereInput | undefined;
 }

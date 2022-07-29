@@ -1,7 +1,7 @@
 import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
 import { firestore } from "@/utils/firebase/admin";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getFirestoreDocDataFromSnapshot, getPrismaFromContext } from "../../../helpers";
 import { Book } from "../../../models/Book";
 import { BookReview } from "../../../models/BookReview";
@@ -10,9 +10,7 @@ import { User } from "../../../models/User";
 
 @TypeGraphQL.Resolver((_of) => Reading)
 export class ReadingRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() reading: Reading,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -35,9 +33,7 @@ export class ReadingRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Book, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Book, { nullable: false })
   async book(
     @TypeGraphQL.Root() reading: Reading,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -60,9 +56,7 @@ export class ReadingRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => BookReview, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => BookReview, { nullable: true })
   async review(
     @TypeGraphQL.Root() reading: Reading,
     @TypeGraphQL.Ctx() ctx: ApolloContext

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { TaskCreateWithoutUserInput } from "../inputs/TaskCreateWithoutUserInput";
 import { TaskUpdateWithoutUserInput } from "../inputs/TaskUpdateWithoutUserInput";
 import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
@@ -7,18 +7,12 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskUpsertWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: false })
   where!: TaskWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskUpdateWithoutUserInput, { nullable: false })
   update!: TaskUpdateWithoutUserInput;
 
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateWithoutUserInput, { nullable: false })
   create!: TaskCreateWithoutUserInput;
 }

@@ -1,5 +1,4 @@
 import AppLayout from "@/components/AppLayout";
-import { AuthToken, useAuth } from "@/components/contexts/AuthContext";
 import NoteViewer from "@/components/notes/NoteViewer";
 import { noteFragment } from "@/graphql/fragments";
 import { Note } from "@/graphql/schema";
@@ -7,12 +6,13 @@ import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth } from "next-auth";
+import { PageWithAuth, Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 
 interface NotePageProps {
   noteId: string;
-  token: AuthToken | null;
+  session: Session | null;
 }
 
 const QUERY = gql`
@@ -30,18 +30,16 @@ interface NotePageData {
 
 const NotePage: NextPage<NotePageProps> = (props: NotePageProps) => {
   const { noteId } = props;
-  const { token } = useAuth();
+  const { data: session } = useSession({ required: true });
   const {
     data,
-    loading: loadingNote,
-    error,
+    loading: _loadingNote,
+    error: _error,
   } = useQuery<NotePageData>(QUERY, {
     variables: { noteId },
   });
   const note = data?.note;
-
-  if (!token || !note) return null;
-
+  if (!session || !note) return null;
   return (
     <AppLayout>
       <NextSeo

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateOrConnectWithoutTasksInput } from "../inputs/UserCreateOrConnectWithoutTasksInput";
 import { UserCreateWithoutTasksInput } from "../inputs/UserCreateWithoutTasksInput";
 import { UserUpdateWithoutTasksInput } from "../inputs/UserUpdateWithoutTasksInput";
@@ -9,28 +9,18 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserUpdateOneRequiredWithoutTasksInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutTasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutTasksInput, { nullable: true })
   create?: UserCreateWithoutTasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutTasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutTasksInput, { nullable: true })
   connectOrCreate?: UserCreateOrConnectWithoutTasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpsertWithoutTasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserUpsertWithoutTasksInput, { nullable: true })
   upsert?: UserUpsertWithoutTasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutTasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserUpdateWithoutTasksInput, { nullable: true })
   update?: UserUpdateWithoutTasksInput | undefined;
 }

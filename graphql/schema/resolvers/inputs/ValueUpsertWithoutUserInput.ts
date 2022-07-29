@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ValueUpdateWithoutUserInput } from "../inputs/ValueUpdateWithoutUserInput";
 import { ValueCreateInput } from "./ValueCreateInput";
 
@@ -6,13 +6,9 @@ import { ValueCreateInput } from "./ValueCreateInput";
   isAbstract: true,
 })
 export class ValueUpsertWithoutUserInput {
-  @TypeGraphQL.Field((_type) => ValueUpdateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ValueUpdateWithoutUserInput, { nullable: false })
   update!: ValueUpdateWithoutUserInput;
 
-  @TypeGraphQL.Field((_type) => ValueCreateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ValueCreateInput, { nullable: false })
   create!: ValueCreateInput;
 }

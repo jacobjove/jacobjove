@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AuthorshipScalarFieldEnum } from "../../../../enums/AuthorshipScalarFieldEnum";
 import { AuthorshipOrderByWithRelationInput } from "../../../inputs/AuthorshipOrderByWithRelationInput";
 import { AuthorshipWhereInput } from "../../../inputs/AuthorshipWhereInput";
@@ -6,34 +6,22 @@ import { AuthorshipWhereUniqueInput } from "../../../inputs/AuthorshipWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class FindFirstAuthorshipArgs {
-  @TypeGraphQL.Field((_type) => AuthorshipWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipWhereInput, { nullable: true })
   where?: AuthorshipWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipOrderByWithRelationInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipOrderByWithRelationInput], { nullable: true })
   orderBy?: AuthorshipOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipWhereUniqueInput, { nullable: true })
   cursor?: AuthorshipWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipScalarFieldEnum], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<"id" | "authorId" | "bookId" | "position" | "createdAt" | "updatedAt" | "archivedAt">
     | undefined;

@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { Act } from "../../../models/Act";
 import { Metric } from "../../../models/Metric";
@@ -7,9 +7,7 @@ import { MetricApplication } from "../../../models/MetricApplication";
 
 @TypeGraphQL.Resolver((_of) => MetricApplication)
 export class MetricApplicationRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Act, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Act, { nullable: false })
   async act(
     @TypeGraphQL.Root() metricApplication: MetricApplication,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -24,9 +22,7 @@ export class MetricApplicationRelationsResolver {
       .act({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Metric, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Metric, { nullable: false })
   async metric(
     @TypeGraphQL.Root() metricApplication: MetricApplication,
     @TypeGraphQL.Ctx() ctx: ApolloContext

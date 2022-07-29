@@ -2,13 +2,11 @@ import { ApolloContext } from "@/graphql/context";
 import { toggleSelection } from "@/graphql/schema/helpers";
 import { Habit } from "@/graphql/schema/models/Habit";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Habit)
 export class HabitAdoptionToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => Habit, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => Habit, { nullable: false })
   async toggleHabitAdoption(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

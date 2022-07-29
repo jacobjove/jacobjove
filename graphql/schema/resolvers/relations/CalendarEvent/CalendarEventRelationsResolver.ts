@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { ActionSchedule } from "../../../models/ActionSchedule";
 import { Calendar } from "../../../models/Calendar";
@@ -9,9 +9,7 @@ import { Task } from "../../../models/Task";
 
 @TypeGraphQL.Resolver((_of) => CalendarEvent)
 export class CalendarEventRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Calendar, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Calendar, { nullable: false })
   async calendar(
     @TypeGraphQL.Root() calendarEvent: CalendarEvent,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -25,9 +23,7 @@ export class CalendarEventRelationsResolver {
       .calendar({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => ActionSchedule, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => ActionSchedule, { nullable: true })
   async schedule(
     @TypeGraphQL.Root() calendarEvent: CalendarEvent,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -41,9 +37,7 @@ export class CalendarEventRelationsResolver {
       .schedule({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Habit, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Habit, { nullable: true })
   async habit(
     @TypeGraphQL.Root() calendarEvent: CalendarEvent,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -57,9 +51,7 @@ export class CalendarEventRelationsResolver {
       .habit({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Task, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Task, { nullable: true })
   async task(
     @TypeGraphQL.Root() calendarEvent: CalendarEvent,
     @TypeGraphQL.Ctx() ctx: ApolloContext

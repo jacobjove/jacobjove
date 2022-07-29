@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar } from "../../scalars";
 import { ActCreateNestedOneWithoutCategorizationsInput } from "../inputs/ActCreateNestedOneWithoutCategorizationsInput";
 
@@ -6,23 +6,15 @@ import { ActCreateNestedOneWithoutCategorizationsInput } from "../inputs/ActCrea
   isAbstract: true,
 })
 export class CategorizationCreateWithoutCategoryInput {
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateNestedOneWithoutCategorizationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateNestedOneWithoutCategorizationsInput, { nullable: false })
   act!: ActCreateNestedOneWithoutCategorizationsInput;
 }

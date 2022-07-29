@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ValueScalarWhereInput } from "../inputs/ValueScalarWhereInput";
 import { ValueUpdateManyMutationInput } from "../inputs/ValueUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { ValueUpdateManyMutationInput } from "../inputs/ValueUpdateManyMutationI
   isAbstract: true,
 })
 export class ValueUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => ValueScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ValueScalarWhereInput, { nullable: false })
   where!: ValueScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ValueUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ValueUpdateManyMutationInput, { nullable: false })
   data!: ValueUpdateManyMutationInput;
 }

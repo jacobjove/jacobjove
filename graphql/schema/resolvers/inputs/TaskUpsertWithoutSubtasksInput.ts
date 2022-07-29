@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { TaskCreateWithoutSubtasksInput } from "../inputs/TaskCreateWithoutSubtasksInput";
 import { TaskUpdateWithoutSubtasksInput } from "../inputs/TaskUpdateWithoutSubtasksInput";
 
@@ -6,13 +6,9 @@ import { TaskUpdateWithoutSubtasksInput } from "../inputs/TaskUpdateWithoutSubta
   isAbstract: true,
 })
 export class TaskUpsertWithoutSubtasksInput {
-  @TypeGraphQL.Field((_type) => TaskUpdateWithoutSubtasksInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskUpdateWithoutSubtasksInput, { nullable: false })
   update!: TaskUpdateWithoutSubtasksInput;
 
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, { nullable: false })
   create!: TaskCreateWithoutSubtasksInput;
 }

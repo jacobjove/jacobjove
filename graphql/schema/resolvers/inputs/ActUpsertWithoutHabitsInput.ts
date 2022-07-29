@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateWithoutHabitsInput } from "../inputs/ActCreateWithoutHabitsInput";
 import { ActUpdateWithoutHabitsInput } from "../inputs/ActUpdateWithoutHabitsInput";
 
@@ -6,13 +6,9 @@ import { ActUpdateWithoutHabitsInput } from "../inputs/ActUpdateWithoutHabitsInp
   isAbstract: true,
 })
 export class ActUpsertWithoutHabitsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutHabitsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActUpdateWithoutHabitsInput, { nullable: false })
   update!: ActUpdateWithoutHabitsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutHabitsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutHabitsInput, { nullable: false })
   create!: ActCreateWithoutHabitsInput;
 }

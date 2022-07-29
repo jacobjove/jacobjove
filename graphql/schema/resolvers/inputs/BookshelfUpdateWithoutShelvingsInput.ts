@@ -1,52 +1,32 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
-import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
-import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
-import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 import { UserUpdateOneRequiredWithoutBookshelvesInput } from "../inputs/UserUpdateOneRequiredWithoutBookshelvesInput";
 
 @TypeGraphQL.InputType("BookshelfUpdateWithoutShelvingsInput", {
   isAbstract: true,
 })
 export class BookshelfUpdateWithoutShelvingsInput {
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  name?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  slug?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  slug?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, { nullable: true })
   isPublic?: BoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  description?: NullableStringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  description?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  archivedAt?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutBookshelvesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutBookshelvesInput, { nullable: true })
   owner?: UserUpdateOneRequiredWithoutBookshelvesInput | undefined;
 }

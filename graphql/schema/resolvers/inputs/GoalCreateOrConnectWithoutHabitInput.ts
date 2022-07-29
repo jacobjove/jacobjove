@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { GoalCreateWithoutHabitInput } from "../inputs/GoalCreateWithoutHabitInput";
 import { GoalWhereUniqueInput } from "../inputs/GoalWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { GoalWhereUniqueInput } from "../inputs/GoalWhereUniqueInput";
   isAbstract: true,
 })
 export class GoalCreateOrConnectWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => GoalWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => GoalWhereUniqueInput, { nullable: false })
   where!: GoalWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => GoalCreateWithoutHabitInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => GoalCreateWithoutHabitInput, { nullable: false })
   create!: GoalCreateWithoutHabitInput;
 }

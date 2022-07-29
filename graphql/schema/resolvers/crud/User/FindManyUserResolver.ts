@@ -1,15 +1,13 @@
 import { ApolloContext } from "@/graphql/context";
 import { UserCrudResolver } from "@/graphql/schema/resolvers/crud/User/UserCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { User } from "../../../models/User";
 import { FindManyUserArgs } from "./args/FindManyUserArgs";
 
 @TypeGraphQL.Resolver((_of) => User)
 export class FindManyUserResolver {
-  @TypeGraphQL.Query((_returns) => [User], {
-    nullable: false,
-  })
+  @TypeGraphQL.Query((_returns) => [User], { nullable: false })
   async users(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

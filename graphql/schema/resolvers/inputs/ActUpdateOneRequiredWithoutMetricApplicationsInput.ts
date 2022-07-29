@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateOrConnectWithoutMetricApplicationsInput } from "../inputs/ActCreateOrConnectWithoutMetricApplicationsInput";
 import { ActCreateWithoutMetricApplicationsInput } from "../inputs/ActCreateWithoutMetricApplicationsInput";
 import { ActUpdateWithoutMetricApplicationsInput } from "../inputs/ActUpdateWithoutMetricApplicationsInput";
@@ -9,9 +9,7 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActUpdateOneRequiredWithoutMetricApplicationsInput {
-  @TypeGraphQL.Field((_type) => ActCreateWithoutMetricApplicationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutMetricApplicationsInput, { nullable: true })
   create?: ActCreateWithoutMetricApplicationsInput | undefined;
 
   @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutMetricApplicationsInput, {
@@ -19,18 +17,12 @@ export class ActUpdateOneRequiredWithoutMetricApplicationsInput {
   })
   connectOrCreate?: ActCreateOrConnectWithoutMetricApplicationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpsertWithoutMetricApplicationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActUpsertWithoutMetricApplicationsInput, { nullable: true })
   upsert?: ActUpsertWithoutMetricApplicationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: true })
   connect?: ActWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutMetricApplicationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActUpdateWithoutMetricApplicationsInput, { nullable: true })
   update?: ActUpdateWithoutMetricApplicationsInput | undefined;
 }

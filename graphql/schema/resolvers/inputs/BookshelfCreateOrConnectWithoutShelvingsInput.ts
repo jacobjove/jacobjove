@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookshelfCreateWithoutShelvingsInput } from "../inputs/BookshelfCreateWithoutShelvingsInput";
 import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
   isAbstract: true,
 })
 export class BookshelfCreateOrConnectWithoutShelvingsInput {
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: false })
   where!: BookshelfWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateWithoutShelvingsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfCreateWithoutShelvingsInput, { nullable: false })
   create!: BookshelfCreateWithoutShelvingsInput;
 }

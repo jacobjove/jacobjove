@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleTemplateCreateManyScheduleTemplateInput } from "../inputs/ActionScheduleTemplateCreateManyScheduleTemplateInput";
 
 @TypeGraphQL.InputType("ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope", {
@@ -10,8 +10,6 @@ export class ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope {
   })
   data!: ActionScheduleTemplateCreateManyScheduleTemplateInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

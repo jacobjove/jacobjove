@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookshelfCreateWithoutOwnerInput } from "../inputs/BookshelfCreateWithoutOwnerInput";
 import { BookshelfUpdateWithoutOwnerInput } from "../inputs/BookshelfUpdateWithoutOwnerInput";
 import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
@@ -7,18 +7,12 @@ import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
   isAbstract: true,
 })
 export class BookshelfUpsertWithWhereUniqueWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfWhereUniqueInput, { nullable: false })
   where!: BookshelfWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateWithoutOwnerInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfUpdateWithoutOwnerInput, { nullable: false })
   update!: BookshelfUpdateWithoutOwnerInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateWithoutOwnerInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfCreateWithoutOwnerInput, { nullable: false })
   create!: BookshelfCreateWithoutOwnerInput;
 }

@@ -1,52 +1,24 @@
-import SocialLogin, { Provider } from "@/components/account/SocialLogin";
-import { useAuth } from "@/components/contexts/AuthContext";
+import SocialLogin from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
-import { USE_FIREBASE } from "@/config";
-import { auth } from "@/utils/firebase";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { GoogleAuthProvider } from "firebase/auth";
 import { GetServerSideProps } from "next";
-// import { getProviders, signIn, signOut } from "next-auth/react";
-import { signIn, signOut } from "next-auth/react";
-import { withAuthUser } from "next-firebase-auth";
+import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import React, { FunctionComponent, useEffect, useState } from "react";
-// TODO: https://github.com/firebase/firebaseui-web-react#firebaseauth-vs-styledfirebaseauth
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-
-const uiConfig = {
-  // Redirect to / after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: "/",
-  // GitHub as the only included Auth Provider.
-  // You could add and configure more here!
-  signInOptions: [GoogleAuthProvider.PROVIDER_ID],
-  callbacks: {
-    // Avoid redirects after sign-in.
-    signInSuccessWithAuthResult: () => {
-      // Return type determines whether the redirect is handled automatically.
-      console.log("make sure user exists in db");
-      return true;
-    },
-  },
-  // Terms of service url.
-  tosUrl: "/tos",
-  // Privacy policy url.
-  privacyPolicyUrl: "/privacy",
-};
 
 interface SignInPageProps {
-  providers?: Provider[];
+  providers: Awaited<ReturnType<typeof getProviders>>;
 }
 
 const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
   const router = useRouter();
-  const { token } = useAuth();
+  const { data: session } = useSession();
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const callbackUrl = Array.isArray(router.query?.callbackUrl)
     ? router.query.callbackUrl[0]
@@ -67,10 +39,10 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
     }
   }, [router.query, callbackUrl]);
   useEffect(() => {
-    if (token && callbackUrl) {
+    if (session && callbackUrl) {
       router.push(callbackUrl);
     }
-  }, [token, router, callbackUrl]);
+  }, [session, router, callbackUrl]);
   if (router.query.provider) return <div>{"Redirecting..."}</div>;
   return (
     <Layout>
@@ -96,12 +68,18 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
               <br />
             </>
           )}
-          {(token && (
-            <Box height="100%" display="flex" justifyContent={"center"} alignItems={"center"}>
-              <Typography variant="h5" component="p" textAlign={"center"}>
-                You are logged in as <strong>{token.email}</strong>.
+          {(session && (
+            <Box
+              height="100%"
+              display="flex"
+              flexDirection={"column"}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Typography variant="h5" component="p" sx={{ width: "100%" }} textAlign={"center"}>
+                You are logged in as <strong>{session.user.email}</strong>.
               </Typography>
-              <Box>
+              <Box textAlign={"center"} my={2}>
                 <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>
                   {"Sign out"}
                 </Button>
@@ -112,15 +90,11 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
               <Typography variant="h1" textAlign={"center"} my={2}>
                 {"Sign in"}
               </Typography>
-              {USE_FIREBASE ? (
-                <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
-              ) : (
-                <SocialLogin
-                  providers={providers as Provider[]}
-                  callbackUrl={callbackUrl ?? "/"}
-                  onError={setErrors}
-                />
-              )}
+              <SocialLogin
+                providers={providers}
+                callbackUrl={callbackUrl ?? "/"}
+                onError={setErrors}
+              />
             </div>
           )}
         </Box>
@@ -129,7 +103,11 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
   );
 };
 
-export default withAuthUser()(SignInPage);
+export default SignInPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc();
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  props: async () => {
+    return { providers: await getProviders() };
+  },
+});

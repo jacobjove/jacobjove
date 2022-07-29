@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BeliefCreateManyUserInputEnvelope } from "../inputs/BeliefCreateManyUserInputEnvelope";
 import { BeliefCreateOrConnectWithoutUserInput } from "../inputs/BeliefCreateOrConnectWithoutUserInput";
 import { BeliefCreateWithoutUserInput } from "../inputs/BeliefCreateWithoutUserInput";
@@ -12,58 +12,36 @@ import { BeliefWhereUniqueInput } from "../inputs/BeliefWhereUniqueInput";
   isAbstract: true,
 })
 export class BeliefUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [BeliefCreateWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefCreateWithoutUserInput], { nullable: true })
   create?: BeliefCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefCreateOrConnectWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: BeliefCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefUpsertWithWhereUniqueWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
   upsert?: BeliefUpsertWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BeliefCreateManyUserInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BeliefCreateManyUserInputEnvelope, { nullable: true })
   createMany?: BeliefCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefWhereUniqueInput], { nullable: true })
   set?: BeliefWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefWhereUniqueInput], { nullable: true })
   disconnect?: BeliefWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefWhereUniqueInput], { nullable: true })
   delete?: BeliefWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefWhereUniqueInput], { nullable: true })
   connect?: BeliefWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefUpdateWithWhereUniqueWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
   update?: BeliefUpdateWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefUpdateManyWithWhereWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefUpdateManyWithWhereWithoutUserInput], { nullable: true })
   updateMany?: BeliefUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BeliefScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BeliefScalarWhereInput], { nullable: true })
   deleteMany?: BeliefScalarWhereInput[] | undefined;
 }

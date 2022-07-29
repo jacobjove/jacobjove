@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { GoalCreateNestedManyWithoutGoalInput } from "../inputs/GoalCreateNestedManyWithoutGoalInput";
 import { GoalCreateNestedOneWithoutMilestonesInput } from "../inputs/GoalCreateNestedOneWithoutMilestonesInput";
 
@@ -6,18 +6,12 @@ import { GoalCreateNestedOneWithoutMilestonesInput } from "../inputs/GoalCreateN
   isAbstract: true,
 })
 export class GoalCreateWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
   quantity!: number;
 
-  @TypeGraphQL.Field((_type) => GoalCreateNestedOneWithoutMilestonesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => GoalCreateNestedOneWithoutMilestonesInput, { nullable: true })
   goal?: GoalCreateNestedOneWithoutMilestonesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalCreateNestedManyWithoutGoalInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => GoalCreateNestedManyWithoutGoalInput, { nullable: true })
   milestones?: GoalCreateNestedManyWithoutGoalInput | undefined;
 }

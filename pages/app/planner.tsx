@@ -4,6 +4,8 @@ import TasksBox from "@/components/actions/TasksBox";
 import AppLayout from "@/components/AppLayout";
 import CalendarViewer from "@/components/calendar";
 import { useUser } from "@/components/contexts/UserContext";
+import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
+import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
 import MantrasBox from "@/components/mantras/MantrasBox";
 import {
   calendarEventFragment,
@@ -23,6 +25,7 @@ import Tab from "@mui/material/Tab";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";
+import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
 import { Dispatch, FC, useState } from "react";
 
@@ -59,7 +62,6 @@ interface PlannerPageProps {
 }
 
 interface PlannerCompanionStuffProps {
-  useTabs?: boolean;
   selectedDateState: [Date, Dispatch<Date>];
   tasks: Task[];
   habits: Habit[];
@@ -68,117 +70,78 @@ interface PlannerCompanionStuffProps {
 }
 
 const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
-  useTabs,
   selectedDateState,
   tasks,
   habits,
   goals,
   mantras,
 }: PlannerCompanionStuffProps) => {
-  const [selectedDate, setSelectedDate] = selectedDateState;
+  const [fullScreen, setFullScreen] = useState(false);
   const [value, setValue] = useState("1");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  return useTabs ? (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100%",
-        flexGrow: 1,
-        display: "flex",
-        flexDirection: "column",
-        typography: "body1",
-        "& .MuiTabPanel-root": { p: 0, flexGrow: 1 },
-        "& .MuiTabs-flexContainer": {
-          justifyContent: "space-between",
-        },
-      }}
-    >
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Tasks" value="1" />
-            <Tab label="Habits" value="2" />
-            <Tab label="Goals" value="3" />
-            <Tab label="Mantras" value="4" />
-          </TabList>
-        </Box>
-        <TabPanel value="1">
-          <TasksBox
-            data={{ tasks: tasks ?? [] }}
-            selectedDateState={[selectedDate, setSelectedDate]}
-            displayTitle={false}
-          />
-        </TabPanel>
-        <TabPanel value="2">
-          <HabitsBox habits={habits} displayTitle={false} />
-        </TabPanel>
-        <TabPanel value="3">
-          <GoalsBox goals={goals} displayTitle={false} />
-        </TabPanel>
-        <TabPanel value="4">
-          <MantrasBox mantras={mantras} displayTitle={false} />
-        </TabPanel>
-      </TabContext>
-    </Box>
-  ) : (
-    <>
-      <Card
+  return (
+    <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
+      <Box
         sx={{
+          borderRadius: "4px",
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
           width: "100%",
+          height: "100%",
           flexGrow: 1,
-          maxHeight: "100%",
+          display: "flex",
+          flexDirection: "column",
+          typography: "body1",
+          "& .MuiTabPanel-root": { p: 0, flexGrow: 1 },
+          "& .MuiTabs-flexContainer": {
+            justifyContent: "space-between",
+          },
         }}
       >
-        <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
-          <TasksBox
-            data={{ tasks: tasks ?? [] }}
-            selectedDateState={[selectedDate, setSelectedDate]}
-          />
-        </Box>
-      </Card>
-      <Card
-        sx={{
-          mt: "0.5rem",
-          flexGrow: 1,
-        }}
-      >
-        <HabitsBox habits={habits} />
-      </Card>
-      <Card
-        sx={{
-          mt: "0.5rem",
-          flexGrow: 1,
-        }}
-      >
-        <GoalsBox goals={goals} />
-      </Card>
-      <Card
-        sx={{
-          mt: "0.5rem",
-          flexGrow: 1,
-        }}
-      >
-        <MantrasBox mantras={mantras} />
-      </Card>
-    </>
+        <FullScreenToggleToolbar fullScreenState={[fullScreen, setFullScreen]} />
+        <TabContext value={value}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList onChange={handleChange} aria-label="lab API tabs example">
+              <Tab label="Tasks" value="1" />
+              <Tab label="Habits" value="2" />
+              <Tab label="Goals" value="3" />
+              <Tab label="Mantras" value="4" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">
+            <TasksBox
+              data={{ tasks: tasks ?? [] }}
+              selectedDateState={selectedDateState}
+              displayTitle={false}
+            />
+          </TabPanel>
+          <TabPanel value="2">
+            <HabitsBox habits={habits} displayTitle={false} />
+          </TabPanel>
+          <TabPanel value="3">
+            <GoalsBox goals={goals} displayTitle={false} />
+          </TabPanel>
+          <TabPanel value="4">
+            <MantrasBox mantras={mantras} displayTitle={false} />
+          </TabPanel>
+        </TabContext>
+      </Box>
+    </FullScreenExpandableComponent>
   );
 };
 
 const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
-  const user = useUser();
-  // if (!user) console.error("No user!!!!!!!");
+  console.log(">>> Rendering planner page...");
+  // const { data: session } = useSession({ required: true });
+  const user = useUser({ required: true });
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const { loading, error, data } = useQuery<PlannerPageData>(QUERY, {
-    skip: !user?.id,
-  });
-  // const { isMobile } = useContext(DeviceContext);
+  const { loading, error, data } = useQuery<PlannerPageData>(QUERY);
   const displaySideBySide = useMediaQuery(json2mq({ minWidth: "1000px" }));
 
-  if (!user) return null;
   // const { calendarEvents, calendars, tasks } = data;
-  const { calendars } = user;
+  const { calendars } = user ?? {};
   const { tasks, calendarEvents, habits, goals } = data ?? {};
   // const calendarEvents =
   //   calendars?.reduce((previousValue, currentValue) => {
@@ -244,7 +207,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
           }}
         >
           <PlannerCompanionStuff
-            useTabs={!displaySideBySide || true}
             tasks={tasks ?? []}
             habits={habits ?? []}
             goals={goals ?? []}
@@ -258,6 +220,8 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
 };
 
 export default PlannerPage;
+
+(PlannerPage as PageWithAuth).auth = true;
 
 export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
   unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/planner`,

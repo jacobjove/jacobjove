@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BeliefCreateWithoutUserInput } from "../inputs/BeliefCreateWithoutUserInput";
 import { BeliefWhereUniqueInput } from "../inputs/BeliefWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { BeliefWhereUniqueInput } from "../inputs/BeliefWhereUniqueInput";
   isAbstract: true,
 })
 export class BeliefCreateOrConnectWithoutUserInput {
-  @TypeGraphQL.Field((_type) => BeliefWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BeliefWhereUniqueInput, { nullable: false })
   where!: BeliefWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BeliefCreateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BeliefCreateWithoutUserInput, { nullable: false })
   create!: BeliefCreateWithoutUserInput;
 }

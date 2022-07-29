@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { HabitCreateWithoutGoalsInput } from "../inputs/HabitCreateWithoutGoalsInput";
 import { HabitUpdateWithoutGoalsInput } from "../inputs/HabitUpdateWithoutGoalsInput";
 
@@ -6,13 +6,9 @@ import { HabitUpdateWithoutGoalsInput } from "../inputs/HabitUpdateWithoutGoalsI
   isAbstract: true,
 })
 export class HabitUpsertWithoutGoalsInput {
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutGoalsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => HabitUpdateWithoutGoalsInput, { nullable: false })
   update!: HabitUpdateWithoutGoalsInput;
 
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutGoalsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => HabitCreateWithoutGoalsInput, { nullable: false })
   create!: HabitCreateWithoutGoalsInput;
 }

@@ -1,53 +1,33 @@
-import * as TypeGraphQL from "type-graphql";
-import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
-import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
 import { NullableIntFieldUpdateOperationsInput } from "../inputs/NullableIntFieldUpdateOperationsInput";
-import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { RoutineHabitUpdateManyWithoutRoutineInput } from "../inputs/RoutineHabitUpdateManyWithoutRoutineInput";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("RoutineUpdateInput", {
   isAbstract: true,
 })
 export class RoutineUpdateInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  userId?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
+  userId?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  name?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => NullableIntFieldUpdateOperationsInput, { nullable: true })
   durationInMinutes?: NullableIntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  notes?: NullableStringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  notes?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  archivedAt?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateManyWithoutRoutineInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => RoutineHabitUpdateManyWithoutRoutineInput, { nullable: true })
   habits?: RoutineHabitUpdateManyWithoutRoutineInput | undefined;
 }

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar } from "../../scalars";
 import { ActCreateNestedOneWithoutVariantsInput } from "../inputs/ActCreateNestedOneWithoutVariantsInput";
 import { ActionScheduleTemplateCreateNestedManyWithoutActInput } from "../inputs/ActionScheduleTemplateCreateNestedManyWithoutActInput";
@@ -11,49 +11,31 @@ import { MetricApplicationCreateNestedManyWithoutActInput } from "../inputs/Metr
   isAbstract: true,
 })
 export class ActCreateWithoutVariantsInput {
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   slug!: string;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   description?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   isPublic?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateNestedOneWithoutVariantsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateNestedOneWithoutVariantsInput, { nullable: true })
   parent?: ActCreateNestedOneWithoutVariantsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateNestedManyWithoutActInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitCreateNestedManyWithoutActInput, { nullable: true })
   habits?: HabitCreateNestedManyWithoutActInput | undefined;
 
   @TypeGraphQL.Field((_type) => MetricApplicationCreateNestedManyWithoutActInput, {
@@ -71,8 +53,6 @@ export class ActCreateWithoutVariantsInput {
   })
   scheduleTemplates?: ActionScheduleTemplateCreateNestedManyWithoutActInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategorizationCreateNestedManyWithoutActInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CategorizationCreateNestedManyWithoutActInput, { nullable: true })
   categorizations?: CategorizationCreateNestedManyWithoutActInput | undefined;
 }

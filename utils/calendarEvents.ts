@@ -1,11 +1,10 @@
 import { CalendarEvent } from "@/graphql/schema";
+import { InputData } from "@/utils/data";
 import { addMinutes } from "date-fns";
 
 export const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
 
-export type CalendarEventData = Omit<CalendarEvent, "id" | "userId" | "createdAt" | "updatedAt"> & {
-  id?: string;
-};
+export type CalendarEventData = InputData<CalendarEvent>;
 
 export type InitialCalendarEventData = Pick<CalendarEventData, "start" | "calendarId"> &
   Partial<CalendarEventData>;

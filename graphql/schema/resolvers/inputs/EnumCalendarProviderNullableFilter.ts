@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarProvider } from "../../enums/CalendarProvider";
 import { NestedEnumCalendarProviderNullableFilter } from "../inputs/NestedEnumCalendarProviderNullableFilter";
 
@@ -6,23 +6,15 @@ import { NestedEnumCalendarProviderNullableFilter } from "../inputs/NestedEnumCa
   isAbstract: true,
 })
 export class EnumCalendarProviderNullableFilter {
-  @TypeGraphQL.Field((_type) => CalendarProvider, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarProvider, { nullable: true })
   equals?: "google" | "apple" | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarProvider], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarProvider], { nullable: true })
   in?: Array<"google" | "apple"> | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarProvider], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarProvider], { nullable: true })
   notIn?: Array<"google" | "apple"> | undefined;
 
-  @TypeGraphQL.Field((_type) => NestedEnumCalendarProviderNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => NestedEnumCalendarProviderNullableFilter, { nullable: true })
   not?: NestedEnumCalendarProviderNullableFilter | undefined;
 }

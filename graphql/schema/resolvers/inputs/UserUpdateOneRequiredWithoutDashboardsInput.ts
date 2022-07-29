@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateOrConnectWithoutDashboardsInput } from "../inputs/UserCreateOrConnectWithoutDashboardsInput";
 import { UserCreateWithoutDashboardsInput } from "../inputs/UserCreateWithoutDashboardsInput";
 import { UserUpdateWithoutDashboardsInput } from "../inputs/UserUpdateWithoutDashboardsInput";
@@ -9,28 +9,18 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserUpdateOneRequiredWithoutDashboardsInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutDashboardsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutDashboardsInput, { nullable: true })
   create?: UserCreateWithoutDashboardsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutDashboardsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutDashboardsInput, { nullable: true })
   connectOrCreate?: UserCreateOrConnectWithoutDashboardsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpsertWithoutDashboardsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserUpsertWithoutDashboardsInput, { nullable: true })
   upsert?: UserUpsertWithoutDashboardsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutDashboardsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserUpdateWithoutDashboardsInput, { nullable: true })
   update?: UserUpdateWithoutDashboardsInput | undefined;
 }

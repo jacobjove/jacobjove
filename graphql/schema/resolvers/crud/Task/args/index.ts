@@ -6,7 +6,6 @@ export { DeleteTaskArgs } from "./DeleteTaskArgs";
 export { FindFirstTaskArgs } from "./FindFirstTaskArgs";
 export { FindManyTaskArgs } from "./FindManyTaskArgs";
 export { FindUniqueTaskArgs } from "./FindUniqueTaskArgs";
-export { GroupByTaskArgs } from "./GroupByTaskArgs";
 export { UpdateManyTaskArgs } from "./UpdateManyTaskArgs";
 export { UpdateTaskArgs } from "./UpdateTaskArgs";
 export { UpsertTaskArgs } from "./UpsertTaskArgs";

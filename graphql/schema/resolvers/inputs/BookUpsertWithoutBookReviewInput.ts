@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookCreateWithoutBookReviewInput } from "../inputs/BookCreateWithoutBookReviewInput";
 import { BookUpdateWithoutBookReviewInput } from "../inputs/BookUpdateWithoutBookReviewInput";
 
@@ -6,13 +6,9 @@ import { BookUpdateWithoutBookReviewInput } from "../inputs/BookUpdateWithoutBoo
   isAbstract: true,
 })
 export class BookUpsertWithoutBookReviewInput {
-  @TypeGraphQL.Field((_type) => BookUpdateWithoutBookReviewInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookUpdateWithoutBookReviewInput, { nullable: false })
   update!: BookUpdateWithoutBookReviewInput;
 
-  @TypeGraphQL.Field((_type) => BookCreateWithoutBookReviewInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookCreateWithoutBookReviewInput, { nullable: false })
   create!: BookCreateWithoutBookReviewInput;
 }

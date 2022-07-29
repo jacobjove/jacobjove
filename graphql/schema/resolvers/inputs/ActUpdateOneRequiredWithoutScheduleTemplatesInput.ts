@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateOrConnectWithoutScheduleTemplatesInput } from "../inputs/ActCreateOrConnectWithoutScheduleTemplatesInput";
 import { ActCreateWithoutScheduleTemplatesInput } from "../inputs/ActCreateWithoutScheduleTemplatesInput";
 import { ActUpdateWithoutScheduleTemplatesInput } from "../inputs/ActUpdateWithoutScheduleTemplatesInput";
@@ -9,28 +9,18 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActUpdateOneRequiredWithoutScheduleTemplatesInput {
-  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, { nullable: true })
   create?: ActCreateWithoutScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutScheduleTemplatesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutScheduleTemplatesInput, { nullable: true })
   connectOrCreate?: ActCreateOrConnectWithoutScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpsertWithoutScheduleTemplatesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActUpsertWithoutScheduleTemplatesInput, { nullable: true })
   upsert?: ActUpsertWithoutScheduleTemplatesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: true })
   connect?: ActWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutScheduleTemplatesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActUpdateWithoutScheduleTemplatesInput, { nullable: true })
   update?: ActUpdateWithoutScheduleTemplatesInput | undefined;
 }

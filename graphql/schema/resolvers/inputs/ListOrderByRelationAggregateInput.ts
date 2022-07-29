@@ -1,12 +1,10 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("ListOrderByRelationAggregateInput", {
   isAbstract: true,
 })
 export class ListOrderByRelationAggregateInput {
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   _count?: "asc" | "desc" | undefined;
 }

@@ -1,22 +1,16 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionCreateInput } from "../../../inputs/ActionCreateInput";
 import { ActionUpdateInput } from "../../../inputs/ActionUpdateInput";
 import { ActionWhereUniqueInput } from "../../../inputs/ActionWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertActionArgs {
-  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, { nullable: false })
   where!: ActionWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionCreateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionCreateInput, { nullable: false })
   create!: ActionCreateInput;
 
-  @TypeGraphQL.Field((_type) => ActionUpdateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionUpdateInput, { nullable: false })
   update!: ActionUpdateInput;
 }

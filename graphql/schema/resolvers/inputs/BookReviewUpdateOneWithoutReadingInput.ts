@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookReviewCreateOrConnectWithoutReadingInput } from "../inputs/BookReviewCreateOrConnectWithoutReadingInput";
 import { BookReviewCreateWithoutReadingInput } from "../inputs/BookReviewCreateWithoutReadingInput";
 import { BookReviewUpdateWithoutReadingInput } from "../inputs/BookReviewUpdateWithoutReadingInput";
@@ -9,38 +9,24 @@ import { BookReviewWhereUniqueInput } from "../inputs/BookReviewWhereUniqueInput
   isAbstract: true,
 })
 export class BookReviewUpdateOneWithoutReadingInput {
-  @TypeGraphQL.Field((_type) => BookReviewCreateWithoutReadingInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewCreateWithoutReadingInput, { nullable: true })
   create?: BookReviewCreateWithoutReadingInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewCreateOrConnectWithoutReadingInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewCreateOrConnectWithoutReadingInput, { nullable: true })
   connectOrCreate?: BookReviewCreateOrConnectWithoutReadingInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewUpsertWithoutReadingInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewUpsertWithoutReadingInput, { nullable: true })
   upsert?: BookReviewUpsertWithoutReadingInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, { nullable: true })
   connect?: BookReviewWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewUpdateWithoutReadingInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewUpdateWithoutReadingInput, { nullable: true })
   update?: BookReviewUpdateWithoutReadingInput | undefined;
 }

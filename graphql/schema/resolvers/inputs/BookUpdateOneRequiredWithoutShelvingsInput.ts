@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookCreateOrConnectWithoutShelvingsInput } from "../inputs/BookCreateOrConnectWithoutShelvingsInput";
 import { BookCreateWithoutShelvingsInput } from "../inputs/BookCreateWithoutShelvingsInput";
 import { BookUpdateWithoutShelvingsInput } from "../inputs/BookUpdateWithoutShelvingsInput";
@@ -9,28 +9,18 @@ import { BookWhereUniqueInput } from "../inputs/BookWhereUniqueInput";
   isAbstract: true,
 })
 export class BookUpdateOneRequiredWithoutShelvingsInput {
-  @TypeGraphQL.Field((_type) => BookCreateWithoutShelvingsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookCreateWithoutShelvingsInput, { nullable: true })
   create?: BookCreateWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCreateOrConnectWithoutShelvingsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookCreateOrConnectWithoutShelvingsInput, { nullable: true })
   connectOrCreate?: BookCreateOrConnectWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpsertWithoutShelvingsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookUpsertWithoutShelvingsInput, { nullable: true })
   upsert?: BookUpsertWithoutShelvingsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookWhereUniqueInput, { nullable: true })
   connect?: BookWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookUpdateWithoutShelvingsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookUpdateWithoutShelvingsInput, { nullable: true })
   update?: BookUpdateWithoutShelvingsInput | undefined;
 }

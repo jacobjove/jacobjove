@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarEventCreateWithoutHabitInput } from "../inputs/CalendarEventCreateWithoutHabitInput";
 import { CalendarEventWhereUniqueInput } from "../inputs/CalendarEventWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { CalendarEventWhereUniqueInput } from "../inputs/CalendarEventWhereUniqu
   isAbstract: true,
 })
 export class CalendarEventCreateOrConnectWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => CalendarEventWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CalendarEventWhereUniqueInput, { nullable: false })
   where!: CalendarEventWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => CalendarEventCreateWithoutHabitInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CalendarEventCreateWithoutHabitInput, { nullable: false })
   create!: CalendarEventCreateWithoutHabitInput;
 }

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookReviewCreateOrConnectWithoutReadingInput } from "../inputs/BookReviewCreateOrConnectWithoutReadingInput";
 import { BookReviewCreateWithoutReadingInput } from "../inputs/BookReviewCreateWithoutReadingInput";
 import { BookReviewWhereUniqueInput } from "../inputs/BookReviewWhereUniqueInput";
@@ -7,18 +7,12 @@ import { BookReviewWhereUniqueInput } from "../inputs/BookReviewWhereUniqueInput
   isAbstract: true,
 })
 export class BookReviewCreateNestedOneWithoutReadingInput {
-  @TypeGraphQL.Field((_type) => BookReviewCreateWithoutReadingInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewCreateWithoutReadingInput, { nullable: true })
   create?: BookReviewCreateWithoutReadingInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewCreateOrConnectWithoutReadingInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewCreateOrConnectWithoutReadingInput, { nullable: true })
   connectOrCreate?: BookReviewCreateOrConnectWithoutReadingInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, { nullable: true })
   connect?: BookReviewWhereUniqueInput | undefined;
 }

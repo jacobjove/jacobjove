@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarCreateManyAccountInputEnvelope } from "../inputs/CalendarCreateManyAccountInputEnvelope";
 import { CalendarCreateOrConnectWithoutAccountInput } from "../inputs/CalendarCreateOrConnectWithoutAccountInput";
 import { CalendarCreateWithoutAccountInput } from "../inputs/CalendarCreateWithoutAccountInput";
@@ -8,23 +8,15 @@ import { CalendarWhereUniqueInput } from "../inputs/CalendarWhereUniqueInput";
   isAbstract: true,
 })
 export class CalendarCreateNestedManyWithoutAccountInput {
-  @TypeGraphQL.Field((_type) => [CalendarCreateWithoutAccountInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarCreateWithoutAccountInput], { nullable: true })
   create?: CalendarCreateWithoutAccountInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarCreateOrConnectWithoutAccountInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarCreateOrConnectWithoutAccountInput], { nullable: true })
   connectOrCreate?: CalendarCreateOrConnectWithoutAccountInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateManyAccountInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarCreateManyAccountInputEnvelope, { nullable: true })
   createMany?: CalendarCreateManyAccountInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], { nullable: true })
   connect?: CalendarWhereUniqueInput[] | undefined;
 }

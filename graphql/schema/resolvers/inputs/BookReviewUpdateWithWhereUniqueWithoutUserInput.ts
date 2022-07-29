@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookReviewUpdateWithoutUserInput } from "../inputs/BookReviewUpdateWithoutUserInput";
 import { BookReviewWhereUniqueInput } from "../inputs/BookReviewWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { BookReviewWhereUniqueInput } from "../inputs/BookReviewWhereUniqueInput
   isAbstract: true,
 })
 export class BookReviewUpdateWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, { nullable: false })
   where!: BookReviewWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BookReviewUpdateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewUpdateWithoutUserInput, { nullable: false })
   data!: BookReviewUpdateWithoutUserInput;
 }

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { RoutineHabitCreateManyRoutineInputEnvelope } from "../inputs/RoutineHabitCreateManyRoutineInputEnvelope";
 import { RoutineHabitCreateOrConnectWithoutRoutineInput } from "../inputs/RoutineHabitCreateOrConnectWithoutRoutineInput";
 import { RoutineHabitCreateWithoutRoutineInput } from "../inputs/RoutineHabitCreateWithoutRoutineInput";
@@ -12,9 +12,7 @@ import { RoutineHabitWhereUniqueInput } from "../inputs/RoutineHabitWhereUniqueI
   isAbstract: true,
 })
 export class RoutineHabitUpdateManyWithoutRoutineInput {
-  @TypeGraphQL.Field((_type) => [RoutineHabitCreateWithoutRoutineInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [RoutineHabitCreateWithoutRoutineInput], { nullable: true })
   create?: RoutineHabitCreateWithoutRoutineInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [RoutineHabitCreateOrConnectWithoutRoutineInput], {
@@ -27,29 +25,19 @@ export class RoutineHabitUpdateManyWithoutRoutineInput {
   })
   upsert?: RoutineHabitUpsertWithWhereUniqueWithoutRoutineInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitCreateManyRoutineInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => RoutineHabitCreateManyRoutineInputEnvelope, { nullable: true })
   createMany?: RoutineHabitCreateManyRoutineInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], { nullable: true })
   set?: RoutineHabitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], { nullable: true })
   disconnect?: RoutineHabitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], { nullable: true })
   delete?: RoutineHabitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], { nullable: true })
   connect?: RoutineHabitWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [RoutineHabitUpdateWithWhereUniqueWithoutRoutineInput], {
@@ -62,8 +50,6 @@ export class RoutineHabitUpdateManyWithoutRoutineInput {
   })
   updateMany?: RoutineHabitUpdateManyWithWhereWithoutRoutineInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineHabitScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [RoutineHabitScalarWhereInput], { nullable: true })
   deleteMany?: RoutineHabitScalarWhereInput[] | undefined;
 }

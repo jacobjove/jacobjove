@@ -66,8 +66,8 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
     const completedAt = complete ? new Date() : null;
     updateTask({
       variables: {
-        taskId: task.id,
-        data: { completedAt: { set: completedAt } },
+        where: { id: task.id },
+        data: { completedAt: completedAt },
       },
       optimisticResponse: {
         __typename: "Mutation",
@@ -218,7 +218,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
         </TableCell>
         <TableCell>
           <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
-            {scheduledDate ? (
+            {scheduledDate && (
               <Typography
                 component="span"
                 fontSize="0.8rem"
@@ -230,9 +230,10 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               >
                 {scheduledDateTextElement}
               </Typography>
-            ) : task.habit?.schedules?.length ? (
+            )}
+            {task.habit?.chronString && (
               <IconButton
-                title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
+                // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
                 onClick={(event) => {
                   event.preventDefault();
                   console.info("You clicked the schedule icon.");
@@ -240,7 +241,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               >
                 <RepeatIcon sx={{ color: "gray" }} />
               </IconButton>
-            ) : null}
+            )}
           </Box>
         </TableCell>
         <TableCell>
@@ -257,9 +258,9 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               >
                 {dueDateTextElement}
               </Typography>
-            ) : task.habit?.schedules?.length ? (
+            ) : task.habit?.chronString ? (
               <IconButton
-                title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
+                // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
                 onClick={(event) => {
                   event.preventDefault();
                   console.info("You clicked the schedule icon.");
@@ -308,7 +309,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   );
 };
 
-const TaskRow = (props: TaskRowProps) => {
+const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const { task, index, onDrop, move } = props;
   const dndRef = useRef<HTMLTableRowElement>(null);
   const loadingRef = useRef(false);

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CategoryCreateOrConnectWithoutCategorizationsInput } from "../inputs/CategoryCreateOrConnectWithoutCategorizationsInput";
 import { CategoryCreateWithoutCategorizationsInput } from "../inputs/CategoryCreateWithoutCategorizationsInput";
 import { CategoryWhereUniqueInput } from "../inputs/CategoryWhereUniqueInput";
@@ -7,9 +7,7 @@ import { CategoryWhereUniqueInput } from "../inputs/CategoryWhereUniqueInput";
   isAbstract: true,
 })
 export class CategoryCreateNestedOneWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => CategoryCreateWithoutCategorizationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CategoryCreateWithoutCategorizationsInput, { nullable: true })
   create?: CategoryCreateWithoutCategorizationsInput | undefined;
 
   @TypeGraphQL.Field((_type) => CategoryCreateOrConnectWithoutCategorizationsInput, {
@@ -17,8 +15,6 @@ export class CategoryCreateNestedOneWithoutCategorizationsInput {
   })
   connectOrCreate?: CategoryCreateOrConnectWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, { nullable: true })
   connect?: CategoryWhereUniqueInput | undefined;
 }

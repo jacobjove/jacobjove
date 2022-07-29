@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateWithoutScheduleTemplatesInput } from "../inputs/ActCreateWithoutScheduleTemplatesInput";
 import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActCreateOrConnectWithoutScheduleTemplatesInput {
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: false })
   where!: ActWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, { nullable: false })
   create!: ActCreateWithoutScheduleTemplatesInput;
 }

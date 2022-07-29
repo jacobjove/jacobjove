@@ -1,10 +1,8 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CategorizationCreateInput } from "../../../inputs/CategorizationCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateCategorizationArgs {
-  @TypeGraphQL.Field((_type) => CategorizationCreateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CategorizationCreateInput, { nullable: false })
   data!: CategorizationCreateInput;
 }

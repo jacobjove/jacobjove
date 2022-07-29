@@ -1,10 +1,10 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DatePicker from "@mui/lab/DatePicker";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { addDays, subDays } from "date-fns";
 import json2mq from "json2mq";
 import { Dispatch, FC, useState } from "react";
@@ -36,13 +36,15 @@ const DateSelector: FC<DateSelectorProps> = ({
   date: currentDate,
   setDate,
   dateFormat: _dateFormat,
-  clearable,
+  // clearable,
   minDate,
   maxDate,
   steppable: _steppable,
   onKeyUp,
 }: DateSelectorProps) => {
   const [open, setOpen] = useState(false);
+
+  console.log(">>> DateSelector.currentDate", currentDate);
 
   // TODO: determine if there's a more efficient way to do this...
   // Also, it would be way better to use container queries instead of media queries...
@@ -78,8 +80,8 @@ const DateSelector: FC<DateSelectorProps> = ({
         open={open}
         onClose={() => setOpen(false)}
         inputFormat={dateFormat}
-        clearable={clearable ?? false}
-        mask={undefined} // uncontrolled
+        // mask={undefined} // uncontrolled
+        disableMaskedInput
         value={currentDate}
         onChange={(newValue) => {
           newValue && setDate(newValue);

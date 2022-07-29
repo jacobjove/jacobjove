@@ -1,22 +1,16 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { RoutineCreateInput } from "../../../inputs/RoutineCreateInput";
 import { RoutineUpdateInput } from "../../../inputs/RoutineUpdateInput";
 import { RoutineWhereUniqueInput } from "../../../inputs/RoutineWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertRoutineArgs {
-  @TypeGraphQL.Field((_type) => RoutineWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineWhereUniqueInput, { nullable: false })
   where!: RoutineWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => RoutineCreateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineCreateInput, { nullable: false })
   create!: RoutineCreateInput;
 
-  @TypeGraphQL.Field((_type) => RoutineUpdateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineUpdateInput, { nullable: false })
   update!: RoutineUpdateInput;
 }

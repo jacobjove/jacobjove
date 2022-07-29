@@ -1,5 +1,8 @@
+import { MongoClient } from "mongodb";
+
 declare global {
   let prisma: PrismaClient;
+  let _mongoClientPromise: Promise<MongoClient>;
 }
 
 declare type NoUndefinedField<T> = {

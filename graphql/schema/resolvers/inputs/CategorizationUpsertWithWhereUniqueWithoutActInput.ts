@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CategorizationCreateWithoutActInput } from "../inputs/CategorizationCreateWithoutActInput";
 import { CategorizationUpdateWithoutActInput } from "../inputs/CategorizationUpdateWithoutActInput";
 import { CategorizationWhereUniqueInput } from "../inputs/CategorizationWhereUniqueInput";
@@ -7,18 +7,12 @@ import { CategorizationWhereUniqueInput } from "../inputs/CategorizationWhereUni
   isAbstract: true,
 })
 export class CategorizationUpsertWithWhereUniqueWithoutActInput {
-  @TypeGraphQL.Field((_type) => CategorizationWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CategorizationWhereUniqueInput, { nullable: false })
   where!: CategorizationWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => CategorizationUpdateWithoutActInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CategorizationUpdateWithoutActInput, { nullable: false })
   update!: CategorizationUpdateWithoutActInput;
 
-  @TypeGraphQL.Field((_type) => CategorizationCreateWithoutActInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CategorizationCreateWithoutActInput, { nullable: false })
   create!: CategorizationCreateWithoutActInput;
 }

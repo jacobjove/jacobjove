@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { Authorship } from "../../../models/Authorship";
 import { Book } from "../../../models/Book";
@@ -13,9 +13,7 @@ import { BookShelvingsArgs } from "./args/BookShelvingsArgs";
 
 @TypeGraphQL.Resolver((_of) => Book)
 export class BookRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => [Authorship], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Authorship], { nullable: false })
   async authorships(
     @TypeGraphQL.Root() book: Book,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -30,9 +28,7 @@ export class BookRelationsResolver {
       .authorships(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Reading], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Reading], { nullable: false })
   async readings(
     @TypeGraphQL.Root() book: Book,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -47,9 +43,7 @@ export class BookRelationsResolver {
       .readings(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Shelving], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Shelving], { nullable: false })
   async shelvings(
     @TypeGraphQL.Root() book: Book,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -64,9 +58,7 @@ export class BookRelationsResolver {
       .shelvings(args);
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [BookReview], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [BookReview], { nullable: false })
   async BookReview(
     @TypeGraphQL.Root() book: Book,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricRecordScalarWhereInput } from "../inputs/MetricRecordScalarWhereInput";
 import { MetricRecordUpdateManyMutationInput } from "../inputs/MetricRecordUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { MetricRecordUpdateManyMutationInput } from "../inputs/MetricRecordUpdat
   isAbstract: true,
 })
 export class MetricRecordUpdateManyWithWhereWithoutMetricUsageInput {
-  @TypeGraphQL.Field((_type) => MetricRecordScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MetricRecordScalarWhereInput, { nullable: false })
   where!: MetricRecordScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => MetricRecordUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MetricRecordUpdateManyMutationInput, { nullable: false })
   data!: MetricRecordUpdateManyMutationInput;
 }

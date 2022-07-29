@@ -1,17 +1,12 @@
-import * as TypeGraphQL from "type-graphql";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.InputType("RedirectUpdateManyMutationInput", {
   isAbstract: true,
 })
 export class RedirectUpdateManyMutationInput {
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  old_path?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  old_path?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  new_path?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  new_path?: string | null | undefined;
 }

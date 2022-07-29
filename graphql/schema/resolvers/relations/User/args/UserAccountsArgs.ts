@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AccountScalarFieldEnum } from "../../../../enums/AccountScalarFieldEnum";
 import { AccountOrderByWithRelationInput } from "../../../inputs/AccountOrderByWithRelationInput";
 import { AccountWhereInput } from "../../../inputs/AccountWhereInput";
@@ -6,34 +6,22 @@ import { AccountWhereUniqueInput } from "../../../inputs/AccountWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class UserAccountsArgs {
-  @TypeGraphQL.Field((_type) => AccountWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AccountWhereInput, { nullable: true })
   where?: AccountWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountOrderByWithRelationInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AccountOrderByWithRelationInput], { nullable: true })
   orderBy?: AccountOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AccountWhereUniqueInput, { nullable: true })
   cursor?: AccountWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [AccountScalarFieldEnum], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AccountScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

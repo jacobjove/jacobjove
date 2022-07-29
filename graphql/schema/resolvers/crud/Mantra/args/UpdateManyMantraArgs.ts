@@ -1,16 +1,12 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MantraUpdateManyMutationInput } from "../../../inputs/MantraUpdateManyMutationInput";
 import { MantraWhereInput } from "../../../inputs/MantraWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyMantraArgs {
-  @TypeGraphQL.Field((_type) => MantraUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MantraUpdateManyMutationInput, { nullable: false })
   data!: MantraUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => MantraWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MantraWhereInput, { nullable: true })
   where?: MantraWhereInput | undefined;
 }

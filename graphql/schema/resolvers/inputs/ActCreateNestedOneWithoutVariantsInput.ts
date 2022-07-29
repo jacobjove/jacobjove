@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateOrConnectWithoutVariantsInput } from "../inputs/ActCreateOrConnectWithoutVariantsInput";
 import { ActCreateWithoutVariantsInput } from "../inputs/ActCreateWithoutVariantsInput";
 import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
@@ -7,18 +7,12 @@ import { ActWhereUniqueInput } from "../inputs/ActWhereUniqueInput";
   isAbstract: true,
 })
 export class ActCreateNestedOneWithoutVariantsInput {
-  @TypeGraphQL.Field((_type) => ActCreateWithoutVariantsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutVariantsInput, { nullable: true })
   create?: ActCreateWithoutVariantsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutVariantsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateOrConnectWithoutVariantsInput, { nullable: true })
   connectOrCreate?: ActCreateOrConnectWithoutVariantsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActWhereUniqueInput, { nullable: true })
   connect?: ActWhereUniqueInput | undefined;
 }

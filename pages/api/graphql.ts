@@ -6,12 +6,8 @@ import "reflect-metadata";
 import { createApolloContext } from "@/graphql/context";
 import { resolvers } from "@/graphql/schema";
 import { NextApiRequest, NextApiResponse, PageConfig } from "next";
-import { buildSchema, NonEmptyArray } from "type-graphql";
+import { buildSchema, NonEmptyArray } from "type-graphql-v2-fork";
 import { ApolloServer } from "apollo-server-micro";
-import initAuth from "@/utils/auth/init";
-import { USE_FIREBASE } from "@/config";
-
-USE_FIREBASE && initAuth();
 
 declare const global: NodeJS.Global & {
   apolloServerHandler?: ReturnType<ApolloServer["createHandler"]>;
@@ -26,7 +22,6 @@ const getApolloServerHandler = async () => {
         resolvers: resolvers as unknown as NonEmptyArray<CallableFunction>,
         emitSchemaFile: {
           path: `${process.env.BASE_DIR}/graphql/schema.gql`,
-          commentDescriptions: true,
         },
         validate: false,
       }),

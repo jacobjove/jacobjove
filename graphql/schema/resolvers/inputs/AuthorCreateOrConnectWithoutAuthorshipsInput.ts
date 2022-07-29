@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AuthorCreateWithoutAuthorshipsInput } from "../inputs/AuthorCreateWithoutAuthorshipsInput";
 import { AuthorWhereUniqueInput } from "../inputs/AuthorWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { AuthorWhereUniqueInput } from "../inputs/AuthorWhereUniqueInput";
   isAbstract: true,
 })
 export class AuthorCreateOrConnectWithoutAuthorshipsInput {
-  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AuthorWhereUniqueInput, { nullable: false })
   where!: AuthorWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, { nullable: false })
   create!: AuthorCreateWithoutAuthorshipsInput;
 }

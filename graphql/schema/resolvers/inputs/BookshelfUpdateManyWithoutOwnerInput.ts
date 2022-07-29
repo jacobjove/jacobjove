@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookshelfCreateManyOwnerInputEnvelope } from "../inputs/BookshelfCreateManyOwnerInputEnvelope";
 import { BookshelfCreateOrConnectWithoutOwnerInput } from "../inputs/BookshelfCreateOrConnectWithoutOwnerInput";
 import { BookshelfCreateWithoutOwnerInput } from "../inputs/BookshelfCreateWithoutOwnerInput";
@@ -12,14 +12,10 @@ import { BookshelfWhereUniqueInput } from "../inputs/BookshelfWhereUniqueInput";
   isAbstract: true,
 })
 export class BookshelfUpdateManyWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => [BookshelfCreateWithoutOwnerInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookshelfCreateWithoutOwnerInput], { nullable: true })
   create?: BookshelfCreateWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfCreateOrConnectWithoutOwnerInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookshelfCreateOrConnectWithoutOwnerInput], { nullable: true })
   connectOrCreate?: BookshelfCreateOrConnectWithoutOwnerInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [BookshelfUpsertWithWhereUniqueWithoutOwnerInput], {
@@ -27,29 +23,19 @@ export class BookshelfUpdateManyWithoutOwnerInput {
   })
   upsert?: BookshelfUpsertWithWhereUniqueWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateManyOwnerInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfCreateManyOwnerInputEnvelope, { nullable: true })
   createMany?: BookshelfCreateManyOwnerInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], { nullable: true })
   set?: BookshelfWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], { nullable: true })
   disconnect?: BookshelfWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], { nullable: true })
   delete?: BookshelfWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookshelfWhereUniqueInput], { nullable: true })
   connect?: BookshelfWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [BookshelfUpdateWithWhereUniqueWithoutOwnerInput], {
@@ -57,13 +43,9 @@ export class BookshelfUpdateManyWithoutOwnerInput {
   })
   update?: BookshelfUpdateWithWhereUniqueWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfUpdateManyWithWhereWithoutOwnerInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookshelfUpdateManyWithWhereWithoutOwnerInput], { nullable: true })
   updateMany?: BookshelfUpdateManyWithWhereWithoutOwnerInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookshelfScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookshelfScalarWhereInput], { nullable: true })
   deleteMany?: BookshelfScalarWhereInput[] | undefined;
 }

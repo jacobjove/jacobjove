@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScalarWhereInput } from "../inputs/ActionScalarWhereInput";
 import { ActionUpdateManyMutationInput } from "../inputs/ActionUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { ActionUpdateManyMutationInput } from "../inputs/ActionUpdateManyMutatio
   isAbstract: true,
 })
 export class ActionUpdateManyWithWhereWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => ActionScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionScalarWhereInput, { nullable: false })
   where!: ActionScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ActionUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionUpdateManyMutationInput, { nullable: false })
   data!: ActionUpdateManyMutationInput;
 }

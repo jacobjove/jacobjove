@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { TaskCreateOrConnectWithoutSubtasksInput } from "../inputs/TaskCreateOrConnectWithoutSubtasksInput";
 import { TaskCreateWithoutSubtasksInput } from "../inputs/TaskCreateWithoutSubtasksInput";
 import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
@@ -7,18 +7,12 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskCreateNestedOneWithoutSubtasksInput {
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, { nullable: true })
   create?: TaskCreateWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateOrConnectWithoutSubtasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateOrConnectWithoutSubtasksInput, { nullable: true })
   connectOrCreate?: TaskCreateOrConnectWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: true })
   connect?: TaskWhereUniqueInput | undefined;
 }

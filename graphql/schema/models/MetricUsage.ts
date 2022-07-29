@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Habit } from "../models/Habit";
 import { Metric } from "../models/Metric";
 import { MetricRecord } from "../models/MetricRecord";
@@ -10,34 +10,21 @@ import { Model } from "./model";
   isAbstract: true,
 })
 export class MetricUsage extends Model {
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
-  id!: string;
-
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   metricId!: string;
 
   metric?: Metric;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   habitId!: string;
 
   habit?: Habit;
 
   records?: MetricRecord[];
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null;
 
-  @TypeGraphQL.Field((_type) => MetricUsageCount, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricUsageCount, { nullable: true })
   _count?: MetricUsageCount | null;
 }

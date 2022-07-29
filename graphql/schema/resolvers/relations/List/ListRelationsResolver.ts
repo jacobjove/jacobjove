@@ -1,7 +1,7 @@
 import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
 import { firestore } from "@/utils/firebase/admin";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getFirestoreDocDataFromSnapshot, getPrismaFromContext } from "../../../helpers";
 import { Item } from "../../../models/Item";
 import { List } from "../../../models/List";
@@ -10,9 +10,7 @@ import { ListItemsArgs } from "./args/ListItemsArgs";
 
 @TypeGraphQL.Resolver((_of) => List)
 export class ListRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
   async owner(
     @TypeGraphQL.Root() list: List,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -35,9 +33,7 @@ export class ListRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Item], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Item], { nullable: false })
   async items(
     @TypeGraphQL.Root() list: List,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

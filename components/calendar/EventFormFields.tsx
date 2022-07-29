@@ -1,18 +1,18 @@
-import { EventData } from "@/components/calendar/CalendarEventDialog";
+import { CalendarEventData } from "@/utils/calendarEvents";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import TextField from "@mui/material/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { Dispatch, FC } from "react";
 
 interface EventFormFieldsProps {
-  state: EventData;
+  data: CalendarEventData;
   dispatch: Dispatch<{ field: string; value: unknown }>;
 }
 
 const EventFormFields: FC<EventFormFieldsProps> = ({
-  state: formData,
+  data: formData,
   dispatch,
 }: EventFormFieldsProps) => {
   return (
@@ -31,8 +31,11 @@ const EventFormFields: FC<EventFormFieldsProps> = ({
           label="Start"
           openTo="minutes"
           value={formData.start}
-          onChange={(value) => dispatch({ field: "start", value: value })}
-          renderInput={(params) => <TextField {...params} sx={{ marginY: "1rem" }} required />}
+          // TODO: remove these type annotations after mui lab types are updated
+          onChange={(value: Date) => dispatch({ field: "start", value })}
+          renderInput={(params: TextFieldProps) => (
+            <TextField {...params} sx={{ marginY: "1rem" }} required />
+          )}
         />
         <DateTimePicker
           label="End"
@@ -40,8 +43,10 @@ const EventFormFields: FC<EventFormFieldsProps> = ({
           minDateTime={formData.start}
           value={formData.end}
           // inputFormat="yyyy/MM/dd hh:mm a"
-          onChange={(value) => dispatch({ field: "end", value: value })}
-          renderInput={(params) => <TextField {...params} sx={{ marginY: "1rem" }} />}
+          onChange={(value: Date) => dispatch({ field: "end", value: value })}
+          renderInput={(params: TextFieldProps) => (
+            <TextField {...params} sx={{ marginY: "1rem" }} />
+          )}
         />
       </FormGroup>
       <FormGroup>

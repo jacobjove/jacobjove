@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricRecordCreateWithoutActionInput } from "../inputs/MetricRecordCreateWithoutActionInput";
 import { MetricRecordUpdateWithoutActionInput } from "../inputs/MetricRecordUpdateWithoutActionInput";
 import { MetricRecordWhereUniqueInput } from "../inputs/MetricRecordWhereUniqueInput";
@@ -7,18 +7,12 @@ import { MetricRecordWhereUniqueInput } from "../inputs/MetricRecordWhereUniqueI
   isAbstract: true,
 })
 export class MetricRecordUpsertWithWhereUniqueWithoutActionInput {
-  @TypeGraphQL.Field((_type) => MetricRecordWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MetricRecordWhereUniqueInput, { nullable: false })
   where!: MetricRecordWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => MetricRecordUpdateWithoutActionInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MetricRecordUpdateWithoutActionInput, { nullable: false })
   update!: MetricRecordUpdateWithoutActionInput;
 
-  @TypeGraphQL.Field((_type) => MetricRecordCreateWithoutActionInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MetricRecordCreateWithoutActionInput, { nullable: false })
   create!: MetricRecordCreateWithoutActionInput;
 }

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MantraCreateInput } from "../inputs/MantraCreateInput";
 import { MantraWhereUniqueInput } from "../inputs/MantraWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { MantraWhereUniqueInput } from "../inputs/MantraWhereUniqueInput";
   isAbstract: true,
 })
 export class MantraCreateOrConnectInput {
-  @TypeGraphQL.Field((_type) => MantraWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MantraWhereUniqueInput, { nullable: false })
   where!: MantraWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => MantraCreateInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MantraCreateInput, { nullable: false })
   create!: MantraCreateInput;
 }

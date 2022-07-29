@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { SortOrder } from "../../enums/SortOrder";
 import { ActionOrderByWithRelationInput } from "../inputs/ActionOrderByWithRelationInput";
 import { MetricUsageOrderByWithRelationInput } from "../inputs/MetricUsageOrderByWithRelationInput";
@@ -7,48 +7,30 @@ import { MetricUsageOrderByWithRelationInput } from "../inputs/MetricUsageOrderB
   isAbstract: true,
 })
 export class MetricRecordOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   metricUsageId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageOrderByWithRelationInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricUsageOrderByWithRelationInput, { nullable: true })
   metricUsage?: MetricUsageOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   actionId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionOrderByWithRelationInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionOrderByWithRelationInput, { nullable: true })
   action?: ActionOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   value?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 }

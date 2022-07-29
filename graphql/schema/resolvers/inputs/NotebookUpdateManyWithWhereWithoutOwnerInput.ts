@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { NotebookScalarWhereInput } from "../inputs/NotebookScalarWhereInput";
 import { NotebookUpdateManyMutationInput } from "../inputs/NotebookUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { NotebookUpdateManyMutationInput } from "../inputs/NotebookUpdateManyMut
   isAbstract: true,
 })
 export class NotebookUpdateManyWithWhereWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => NotebookScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => NotebookScalarWhereInput, { nullable: false })
   where!: NotebookScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => NotebookUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => NotebookUpdateManyMutationInput, { nullable: false })
   data!: NotebookUpdateManyMutationInput;
 }

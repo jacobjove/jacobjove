@@ -1,75 +1,62 @@
-import { USE_FIREBASE } from "@/config";
 import { addApolloState, initializeApollo } from "@/lib/apollo";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { printError } from "@/utils/apollo/error-handling";
 import { QueryOptions } from "@apollo/client";
-import { AuthAction, withAuthUser, withAuthUserTokenSSR } from "next-firebase-auth";
+import { GetServerSidePropsContext } from "next";
+import { Session } from "next-auth";
+import { unstable_getServerSession } from "next-auth/next";
 import nookies from "nookies";
-import { FC } from "react";
 
 interface BuildServerSidePropsOptions {
   unauthedRedirectDestination?: string;
   readCookies?: boolean;
   query?: QueryOptions;
+  props?: (
+    context: GetServerSidePropsContext,
+    session: Session | null
+  ) => Promise<{ [key: string]: unknown }>;
 }
-
-export const withAuth = () => (component: FC) => {
-  return USE_FIREBASE ? withAuthUser()(component) : component;
-};
 
 const EXECUTE_SERVER_SIDE_QUERIES = false;
 
 export const buildGetServerSidePropsFunc = ({
   unauthedRedirectDestination,
   query,
+  props: getProps,
 }: BuildServerSidePropsOptions | undefined = {}) => {
-  if (USE_FIREBASE) {
-    return withAuthUserTokenSSR(
-      unauthedRedirectDestination
-        ? {
-            whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-            authPageURL: unauthedRedirectDestination,
-          }
-        : {}
-    )(async (ctx) => {
-      const { req, AuthUser: authUser } = ctx;
-      const props = {} as { [key: string]: unknown };
-      console.log(">>> Building server-side props for", req.url);
-      const cookies = nookies.get(ctx);
-      props["cookies"] = cookies;
-      const apolloClient = query ? initializeApollo() : null;
-      if (EXECUTE_SERVER_SIDE_QUERIES && query && apolloClient) {
-        if (unauthedRedirectDestination && !authUser.id) {
-          throw new Error(">>> Should have been redirected!!!!!");
-        }
-        console.log(">>> Attempting server-side query...");
-        const queryOptions = {
-          ...query,
-          context: {
-            token: {
-              uid: authUser.id,
-            },
-          },
-        };
-        await apolloClient
-          .query(queryOptions)
-          .then((result) => {
-            console.log(">>> SSR query result:", result);
-          })
-          .catch(printError);
+  return async (context: GetServerSidePropsContext) => {
+    const { req } = context;
+    console.log(">>> SSRing for", req.url);
+    const session = await unstable_getServerSession(context.req, context.res, authOptions);
+    if (!session && unauthedRedirectDestination) {
+      return {
+        redirect: {
+          destination: unauthedRedirectDestination,
+          permanent: false,
+        },
+      };
+    }
+    const props = getProps ? await getProps(context, session) : ({} as { [key: string]: unknown });
+    props.session = session;
+    const cookies = nookies.get(context);
+    props.cookies = cookies;
+    const apolloClient = query ? initializeApollo() : null;
+    if (EXECUTE_SERVER_SIDE_QUERIES && query && apolloClient) {
+      if (unauthedRedirectDestination && !session) {
+        throw new Error(">>> Should have been redirected!!!!!");
       }
-      return apolloClient ? addApolloState(apolloClient, { props }) : { props };
-    });
-  } else {
-    throw new Error("Not implemented");
-    // const { token } = await getAuth(context);
-    // if (!token) {
-    //   return {
-    //     redirect: {
-    //       destination: unauthedRedirectDestination,
-    //       permanent: false,
-    //     },
-    //   };
-    // }
-    // return _buildServerSideProps({ context, query });
-  }
+      console.log(">>> Attempting server-side query...");
+      const queryOptions = {
+        ...query,
+        context: { session },
+      };
+      await apolloClient
+        .query(queryOptions)
+        .then((result) => {
+          console.log(">>> SSR query result:", result);
+        })
+        .catch(printError);
+    }
+    return apolloClient ? addApolloState(apolloClient, { props }) : { props };
+  };
 };

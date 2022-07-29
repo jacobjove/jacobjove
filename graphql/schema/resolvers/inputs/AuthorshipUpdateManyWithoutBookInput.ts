@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AuthorshipCreateManyBookInputEnvelope } from "../inputs/AuthorshipCreateManyBookInputEnvelope";
 import { AuthorshipCreateOrConnectWithoutBookInput } from "../inputs/AuthorshipCreateOrConnectWithoutBookInput";
 import { AuthorshipCreateWithoutBookInput } from "../inputs/AuthorshipCreateWithoutBookInput";
@@ -12,14 +12,10 @@ import { AuthorshipWhereUniqueInput } from "../inputs/AuthorshipWhereUniqueInput
   isAbstract: true,
 })
 export class AuthorshipUpdateManyWithoutBookInput {
-  @TypeGraphQL.Field((_type) => [AuthorshipCreateWithoutBookInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipCreateWithoutBookInput], { nullable: true })
   create?: AuthorshipCreateWithoutBookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipCreateOrConnectWithoutBookInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipCreateOrConnectWithoutBookInput], { nullable: true })
   connectOrCreate?: AuthorshipCreateOrConnectWithoutBookInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [AuthorshipUpsertWithWhereUniqueWithoutBookInput], {
@@ -27,29 +23,19 @@ export class AuthorshipUpdateManyWithoutBookInput {
   })
   upsert?: AuthorshipUpsertWithWhereUniqueWithoutBookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipCreateManyBookInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipCreateManyBookInputEnvelope, { nullable: true })
   createMany?: AuthorshipCreateManyBookInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], { nullable: true })
   set?: AuthorshipWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], { nullable: true })
   disconnect?: AuthorshipWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], { nullable: true })
   delete?: AuthorshipWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipWhereUniqueInput], { nullable: true })
   connect?: AuthorshipWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [AuthorshipUpdateWithWhereUniqueWithoutBookInput], {
@@ -57,13 +43,9 @@ export class AuthorshipUpdateManyWithoutBookInput {
   })
   update?: AuthorshipUpdateWithWhereUniqueWithoutBookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipUpdateManyWithWhereWithoutBookInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipUpdateManyWithWhereWithoutBookInput], { nullable: true })
   updateMany?: AuthorshipUpdateManyWithWhereWithoutBookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [AuthorshipScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [AuthorshipScalarWhereInput], { nullable: true })
   deleteMany?: AuthorshipScalarWhereInput[] | undefined;
 }

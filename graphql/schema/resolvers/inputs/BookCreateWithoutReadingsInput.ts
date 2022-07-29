@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
 import * as GraphQLScalars from "graphql-scalars";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
+import { ExtraBookData } from "../../models/Book";
 import { DateTimeScalar } from "../../scalars";
 import { AuthorshipCreateNestedManyWithoutBookInput } from "../inputs/AuthorshipCreateNestedManyWithoutBookInput";
 import { BookCreateauthorNamesInput } from "../inputs/BookCreateauthorNamesInput";
@@ -12,88 +12,51 @@ import { ShelvingCreateNestedManyWithoutBookInput } from "../inputs/ShelvingCrea
   isAbstract: true,
 })
 export class BookCreateWithoutReadingsInput {
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
-    nullable: false,
-  })
-  ids!: Prisma.InputJsonValue;
-
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   isbn?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   isbn13?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   title!: string;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   slug!: string;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   description?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   publicationYear?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   originalPublicationYear?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
-    nullable: false,
-  })
-  extra!: Prisma.InputJsonValue;
+  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: false })
+  extra!: ExtraBookData;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCreateauthorNamesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookCreateauthorNamesInput, { nullable: true })
   authorNames?: BookCreateauthorNamesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookCreateauthorNamesLfInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookCreateauthorNamesLfInput, { nullable: true })
   authorNamesLf?: BookCreateauthorNamesLfInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipCreateNestedManyWithoutBookInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipCreateNestedManyWithoutBookInput, { nullable: true })
   authorships?: AuthorshipCreateNestedManyWithoutBookInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingCreateNestedManyWithoutBookInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ShelvingCreateNestedManyWithoutBookInput, { nullable: true })
   shelvings?: ShelvingCreateNestedManyWithoutBookInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewCreateNestedManyWithoutBookInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewCreateNestedManyWithoutBookInput, { nullable: true })
   BookReview?: BookReviewCreateNestedManyWithoutBookInput | undefined;
 }

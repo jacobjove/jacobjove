@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope } from "../inputs/ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope";
 import { ActionScheduleTemplateCreateOrConnectWithoutScheduleTemplateInput } from "../inputs/ActionScheduleTemplateCreateOrConnectWithoutScheduleTemplateInput";
 import { ActionScheduleTemplateCreateWithoutScheduleTemplateInput } from "../inputs/ActionScheduleTemplateCreateWithoutScheduleTemplateInput";
@@ -26,8 +26,6 @@ export class ActionScheduleTemplateCreateNestedManyWithoutScheduleTemplateInput 
   })
   createMany?: ActionScheduleTemplateCreateManyScheduleTemplateInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], { nullable: true })
   connect?: ActionScheduleTemplateWhereUniqueInput[] | undefined;
 }

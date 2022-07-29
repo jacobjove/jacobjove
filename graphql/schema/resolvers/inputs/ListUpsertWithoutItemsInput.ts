@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ListCreateWithoutItemsInput } from "../inputs/ListCreateWithoutItemsInput";
 import { ListUpdateWithoutItemsInput } from "../inputs/ListUpdateWithoutItemsInput";
 
@@ -6,13 +6,9 @@ import { ListUpdateWithoutItemsInput } from "../inputs/ListUpdateWithoutItemsInp
   isAbstract: true,
 })
 export class ListUpsertWithoutItemsInput {
-  @TypeGraphQL.Field((_type) => ListUpdateWithoutItemsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ListUpdateWithoutItemsInput, { nullable: false })
   update!: ListUpdateWithoutItemsInput;
 
-  @TypeGraphQL.Field((_type) => ListCreateWithoutItemsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ListCreateWithoutItemsInput, { nullable: false })
   create!: ListCreateWithoutItemsInput;
 }

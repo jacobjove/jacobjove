@@ -2,13 +2,11 @@ import { ApolloContext } from "@/graphql/context";
 import { toggleSelection } from "@/graphql/schema/helpers";
 import { Value } from "@/graphql/schema/models/Value";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Value)
 export class ValueToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => Value, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => Value, { nullable: false })
   async toggleValue(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

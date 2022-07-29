@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleTemplateCreateManyActInputEnvelope } from "../inputs/ActionScheduleTemplateCreateManyActInputEnvelope";
 import { ActionScheduleTemplateCreateOrConnectWithoutActInput } from "../inputs/ActionScheduleTemplateCreateOrConnectWithoutActInput";
 import { ActionScheduleTemplateCreateWithoutActInput } from "../inputs/ActionScheduleTemplateCreateWithoutActInput";
@@ -12,9 +12,7 @@ import { ActionScheduleTemplateWhereUniqueInput } from "../inputs/ActionSchedule
   isAbstract: true,
 })
 export class ActionScheduleTemplateUpdateManyWithoutActInput {
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateCreateWithoutActInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateCreateWithoutActInput], { nullable: true })
   create?: ActionScheduleTemplateCreateWithoutActInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [ActionScheduleTemplateCreateOrConnectWithoutActInput], {
@@ -32,24 +30,16 @@ export class ActionScheduleTemplateUpdateManyWithoutActInput {
   })
   createMany?: ActionScheduleTemplateCreateManyActInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], { nullable: true })
   set?: ActionScheduleTemplateWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], { nullable: true })
   disconnect?: ActionScheduleTemplateWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], { nullable: true })
   delete?: ActionScheduleTemplateWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateWhereUniqueInput], { nullable: true })
   connect?: ActionScheduleTemplateWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [ActionScheduleTemplateUpdateWithWhereUniqueWithoutActInput], {
@@ -62,8 +52,6 @@ export class ActionScheduleTemplateUpdateManyWithoutActInput {
   })
   updateMany?: ActionScheduleTemplateUpdateManyWithWhereWithoutActInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleTemplateScalarWhereInput], { nullable: true })
   deleteMany?: ActionScheduleTemplateScalarWhereInput[] | undefined;
 }

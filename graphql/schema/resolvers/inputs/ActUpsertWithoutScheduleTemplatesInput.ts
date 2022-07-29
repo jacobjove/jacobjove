@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateWithoutScheduleTemplatesInput } from "../inputs/ActCreateWithoutScheduleTemplatesInput";
 import { ActUpdateWithoutScheduleTemplatesInput } from "../inputs/ActUpdateWithoutScheduleTemplatesInput";
 
@@ -6,13 +6,9 @@ import { ActUpdateWithoutScheduleTemplatesInput } from "../inputs/ActUpdateWitho
   isAbstract: true,
 })
 export class ActUpsertWithoutScheduleTemplatesInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutScheduleTemplatesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActUpdateWithoutScheduleTemplatesInput, { nullable: false })
   update!: ActUpdateWithoutScheduleTemplatesInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutScheduleTemplatesInput, { nullable: false })
   create!: ActCreateWithoutScheduleTemplatesInput;
 }

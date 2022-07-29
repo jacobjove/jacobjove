@@ -1,9 +1,9 @@
-import { useAuth } from "@/components/contexts/AuthContext";
 import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
 import { Value } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { FC, MouseEvent } from "react";
 
@@ -25,13 +25,13 @@ const SelectableValue: FC<SelectableValueProps> = ({
   value,
   selected: initiallySelected,
 }: SelectableValueProps) => {
-  const { token } = useAuth();
+  const { data: session } = useSession();
   const [mutate] = useMutation(TOGGLE_IDENTIFICATION);
   const [selected, setSelected] = React.useState(initiallySelected);
   const toggleValue = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (token) {
+    if (session) {
       let archivedAt = null;
       if (selected) {
         archivedAt = new Date();

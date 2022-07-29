@@ -1,16 +1,12 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { GoalUpdateManyMutationInput } from "../../../inputs/GoalUpdateManyMutationInput";
 import { GoalWhereInput } from "../../../inputs/GoalWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyGoalArgs {
-  @TypeGraphQL.Field((_type) => GoalUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => GoalUpdateManyMutationInput, { nullable: false })
   data!: GoalUpdateManyMutationInput;
 
-  @TypeGraphQL.Field((_type) => GoalWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => GoalWhereInput, { nullable: true })
   where?: GoalWhereInput | undefined;
 }

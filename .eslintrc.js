@@ -65,5 +65,19 @@ module.exports = {
       files: ["*.test.tsx", "**/*.test.tsx"],
       rules: { "@typescript-eslint/no-non-null-assertion": "off" },
     },
+    {
+      files: ["*.graphql", "*.gql"],
+      parser: "@graphql-eslint/eslint-plugin",
+      plugins: ["@graphql-eslint"],
+      // https://github.com/B2o5T/graphql-eslint/blob/master/docs/README.md
+      rules: { "@graphql-eslint/known-type-names": "error" },
+      parserOptions: {
+        schema: "graphql/schema.gql",
+      },
+    },
+    {
+      files: ["*.ts"],
+      processor: "@graphql-eslint/graphql",
+    },
   ],
 };

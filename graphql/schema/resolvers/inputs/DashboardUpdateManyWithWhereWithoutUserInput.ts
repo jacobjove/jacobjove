@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DashboardScalarWhereInput } from "../inputs/DashboardScalarWhereInput";
 import { DashboardUpdateManyMutationInput } from "../inputs/DashboardUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { DashboardUpdateManyMutationInput } from "../inputs/DashboardUpdateManyM
   isAbstract: true,
 })
 export class DashboardUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => DashboardScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => DashboardScalarWhereInput, { nullable: false })
   where!: DashboardScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => DashboardUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => DashboardUpdateManyMutationInput, { nullable: false })
   data!: DashboardUpdateManyMutationInput;
 }

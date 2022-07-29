@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { SortOrder } from "../../enums/SortOrder";
 import { AuthorAvgOrderByAggregateInput } from "../inputs/AuthorAvgOrderByAggregateInput";
 import { AuthorCountOrderByAggregateInput } from "../inputs/AuthorCountOrderByAggregateInput";
@@ -10,58 +10,36 @@ import { AuthorSumOrderByAggregateInput } from "../inputs/AuthorSumOrderByAggreg
   isAbstract: true,
 })
 export class AuthorOrderByWithAggregationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   slug?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   createdAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   updatedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   archivedAt?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorCountOrderByAggregateInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorCountOrderByAggregateInput, { nullable: true })
   _count?: AuthorCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorAvgOrderByAggregateInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorAvgOrderByAggregateInput, { nullable: true })
   _avg?: AuthorAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorMaxOrderByAggregateInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorMaxOrderByAggregateInput, { nullable: true })
   _max?: AuthorMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorMinOrderByAggregateInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorMinOrderByAggregateInput, { nullable: true })
   _min?: AuthorMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorSumOrderByAggregateInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorSumOrderByAggregateInput, { nullable: true })
   _sum?: AuthorSumOrderByAggregateInput | undefined;
 }

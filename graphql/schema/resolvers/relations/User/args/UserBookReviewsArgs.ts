@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookReviewScalarFieldEnum } from "../../../../enums/BookReviewScalarFieldEnum";
 import { BookReviewOrderByWithRelationInput } from "../../../inputs/BookReviewOrderByWithRelationInput";
 import { BookReviewWhereInput } from "../../../inputs/BookReviewWhereInput";
@@ -6,34 +6,22 @@ import { BookReviewWhereUniqueInput } from "../../../inputs/BookReviewWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class UserBookReviewsArgs {
-  @TypeGraphQL.Field((_type) => BookReviewWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewWhereInput, { nullable: true })
   where?: BookReviewWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewOrderByWithRelationInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookReviewOrderByWithRelationInput], { nullable: true })
   orderBy?: BookReviewOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewWhereUniqueInput, { nullable: true })
   cursor?: BookReviewWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookReviewScalarFieldEnum], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookReviewScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
         | "id"

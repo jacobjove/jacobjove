@@ -1,4 +1,3 @@
-import { useAuth } from "@/components/contexts/AuthContext";
 import ColorModeContext from "@/components/contexts/ColorModeContext";
 import { useUser } from "@/components/contexts/UserContext";
 import { signOut } from "@/utils/auth/client";
@@ -18,6 +17,7 @@ import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,7 +56,7 @@ interface HeaderProps {
 const Header: FC<HeaderProps> = (props: HeaderProps) => {
   const heightInPx = props.heightInPx ?? 60;
   const router = useRouter();
-  const { token } = useAuth();
+  const { data: session } = useSession();
   const user = useUser();
   const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
   const navMenuState = usePopupState({ variant: "popover", popupId: "nav-menu" });
@@ -158,10 +158,10 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            {(token && (
+            {(session && (
               <>
                 <IconButton {...bindTrigger(accountMenuState)} sx={{ p: 0 }}>
-                  <Avatar alt={`${token.displayName}`} src={`${token.photoURL}`} />
+                  <Avatar alt={`${session.user.name}`} src={`${session.user.image}`} />
                 </IconButton>
                 <Menu
                   sx={{

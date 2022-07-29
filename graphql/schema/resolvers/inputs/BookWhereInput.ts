@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AuthorshipListRelationFilter } from "../inputs/AuthorshipListRelationFilter";
 import { BookReviewListRelationFilter } from "../inputs/BookReviewListRelationFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
@@ -15,113 +15,69 @@ import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
   isAbstract: true,
 })
 export class BookWhereInput {
-  @TypeGraphQL.Field((_type) => [BookWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookWhereInput], { nullable: true })
   AND?: BookWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookWhereInput], { nullable: true })
   OR?: BookWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [BookWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [BookWhereInput], { nullable: true })
   NOT?: BookWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => JsonFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => JsonFilter, { nullable: true })
   ids?: JsonFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
   isbn?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
   isbn13?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
   title?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
   slug?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
   description?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableListFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringNullableListFilter, { nullable: true })
   authorNames?: StringNullableListFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableListFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringNullableListFilter, { nullable: true })
   authorNamesLf?: StringNullableListFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IntNullableFilter, { nullable: true })
   publicationYear?: IntNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => IntNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IntNullableFilter, { nullable: true })
   originalPublicationYear?: IntNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => JsonFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => JsonFilter, { nullable: true })
   extra?: JsonFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
   updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => AuthorshipListRelationFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipListRelationFilter, { nullable: true })
   authorships?: AuthorshipListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingListRelationFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ReadingListRelationFilter, { nullable: true })
   readings?: ReadingListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingListRelationFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ShelvingListRelationFilter, { nullable: true })
   shelvings?: ShelvingListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewListRelationFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewListRelationFilter, { nullable: true })
   BookReview?: BookReviewListRelationFilter | undefined;
 }

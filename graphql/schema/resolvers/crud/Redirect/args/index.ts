@@ -6,7 +6,6 @@ export { DeleteRedirectArgs } from "./DeleteRedirectArgs";
 export { FindFirstRedirectArgs } from "./FindFirstRedirectArgs";
 export { FindManyRedirectArgs } from "./FindManyRedirectArgs";
 export { FindUniqueRedirectArgs } from "./FindUniqueRedirectArgs";
-export { GroupByRedirectArgs } from "./GroupByRedirectArgs";
 export { UpdateManyRedirectArgs } from "./UpdateManyRedirectArgs";
 export { UpdateRedirectArgs } from "./UpdateRedirectArgs";
 export { UpsertRedirectArgs } from "./UpsertRedirectArgs";

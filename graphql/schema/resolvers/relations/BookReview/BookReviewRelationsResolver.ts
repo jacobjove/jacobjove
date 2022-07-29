@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { Book } from "../../../models/Book";
 import { BookReview } from "../../../models/BookReview";
@@ -8,9 +8,7 @@ import { User } from "../../../models/User";
 
 @TypeGraphQL.Resolver((_of) => BookReview)
 export class BookReviewRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Book, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Book, { nullable: false })
   async book(
     @TypeGraphQL.Root() bookReview: BookReview,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -24,9 +22,7 @@ export class BookReviewRelationsResolver {
       .book({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => User, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() bookReview: BookReview,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -40,9 +36,7 @@ export class BookReviewRelationsResolver {
       .user({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Reading, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Reading, { nullable: true })
   async reading(
     @TypeGraphQL.Root() bookReview: BookReview,
     @TypeGraphQL.Ctx() ctx: ApolloContext

@@ -6,7 +6,6 @@ export { DeleteManyActionArgs } from "./DeleteManyActionArgs";
 export { FindFirstActionArgs } from "./FindFirstActionArgs";
 export { FindManyActionArgs } from "./FindManyActionArgs";
 export { FindUniqueActionArgs } from "./FindUniqueActionArgs";
-export { GroupByActionArgs } from "./GroupByActionArgs";
 export { UpdateActionArgs } from "./UpdateActionArgs";
 export { UpdateManyActionArgs } from "./UpdateManyActionArgs";
 export { UpsertActionArgs } from "./UpsertActionArgs";

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateOrConnectWithoutNotebookPermissionsInput } from "../inputs/UserCreateOrConnectWithoutNotebookPermissionsInput";
 import { UserCreateWithoutNotebookPermissionsInput } from "../inputs/UserCreateWithoutNotebookPermissionsInput";
 import { UserUpdateWithoutNotebookPermissionsInput } from "../inputs/UserUpdateWithoutNotebookPermissionsInput";
@@ -9,9 +9,7 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserUpdateOneRequiredWithoutNotebookPermissionsInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebookPermissionsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebookPermissionsInput, { nullable: true })
   create?: UserCreateWithoutNotebookPermissionsInput | undefined;
 
   @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutNotebookPermissionsInput, {
@@ -19,18 +17,12 @@ export class UserUpdateOneRequiredWithoutNotebookPermissionsInput {
   })
   connectOrCreate?: UserCreateOrConnectWithoutNotebookPermissionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpsertWithoutNotebookPermissionsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserUpsertWithoutNotebookPermissionsInput, { nullable: true })
   upsert?: UserUpsertWithoutNotebookPermissionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutNotebookPermissionsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserUpdateWithoutNotebookPermissionsInput, { nullable: true })
   update?: UserUpdateWithoutNotebookPermissionsInput | undefined;
 }

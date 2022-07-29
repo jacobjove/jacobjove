@@ -1,7 +1,7 @@
 import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
 import { firestore } from "@/utils/firebase/admin";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getFirestoreDocDataFromSnapshot, getPrismaFromContext } from "../../../helpers";
 import { Goal } from "../../../models/Goal";
 import { Habit } from "../../../models/Habit";
@@ -9,9 +9,7 @@ import { GoalMilestonesArgs } from "./args/GoalMilestonesArgs";
 
 @TypeGraphQL.Resolver((_of) => Goal)
 export class GoalRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Habit, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Habit, { nullable: false })
   async habit(
     @TypeGraphQL.Root() goal: Goal,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -34,9 +32,7 @@ export class GoalRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Goal, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Goal, { nullable: true })
   async goal(
     @TypeGraphQL.Root() goal: Goal,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -50,9 +46,7 @@ export class GoalRelationsResolver {
       .goal({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Goal], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Goal], { nullable: false })
   async milestones(
     @TypeGraphQL.Root() goal: Goal,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

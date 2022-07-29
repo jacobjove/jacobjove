@@ -9,7 +9,6 @@ export { AccountCreateNestedManyWithoutUserInput } from "./AccountCreateNestedMa
 export { AccountCreateNestedOneWithoutCalendarsInput } from "./AccountCreateNestedOneWithoutCalendarsInput";
 export { AccountCreateOrConnectWithoutCalendarsInput } from "./AccountCreateOrConnectWithoutCalendarsInput";
 export { AccountCreateOrConnectWithoutUserInput } from "./AccountCreateOrConnectWithoutUserInput";
-export { AccountCreatescopesInput } from "./AccountCreatescopesInput";
 export { AccountCreateWithoutCalendarsInput } from "./AccountCreateWithoutCalendarsInput";
 export { AccountCreateWithoutUserInput } from "./AccountCreateWithoutUserInput";
 export { AccountListRelationFilter } from "./AccountListRelationFilter";
@@ -28,7 +27,6 @@ export { AccountUpdateManyMutationInput } from "./AccountUpdateManyMutationInput
 export { AccountUpdateManyWithoutUserInput } from "./AccountUpdateManyWithoutUserInput";
 export { AccountUpdateManyWithWhereWithoutUserInput } from "./AccountUpdateManyWithWhereWithoutUserInput";
 export { AccountUpdateOneWithoutCalendarsInput } from "./AccountUpdateOneWithoutCalendarsInput";
-export { AccountUpdatescopesInput } from "./AccountUpdatescopesInput";
 export { AccountUpdateWithoutCalendarsInput } from "./AccountUpdateWithoutCalendarsInput";
 export { AccountUpdateWithoutUserInput } from "./AccountUpdateWithoutUserInput";
 export { AccountUpdateWithWhereUniqueWithoutUserInput } from "./AccountUpdateWithWhereUniqueWithoutUserInput";
@@ -1419,6 +1417,7 @@ export { TaskUpsertWithWhereUniqueWithoutUserInput } from "./TaskUpsertWithWhere
 export { TaskUserIdParentIdRankCompoundUniqueInput } from "./TaskUserIdParentIdRankCompoundUniqueInput";
 export { TaskWhereInput } from "./TaskWhereInput";
 export { TaskWhereUniqueInput } from "./TaskWhereUniqueInput";
+export { UpdateManyTaskRankInput } from "./UpdateManyTaskRankInput";
 export { UserAvgOrderByAggregateInput } from "./UserAvgOrderByAggregateInput";
 export { UserCountOrderByAggregateInput } from "./UserCountOrderByAggregateInput";
 export { UserCreateInput } from "./UserCreateInput";

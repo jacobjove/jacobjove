@@ -1,7 +1,7 @@
 import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
 import { firestore } from "@/utils/firebase/admin";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getFirestoreDocDataFromSnapshot, getPrismaFromContext } from "../../../helpers";
 import { Account } from "../../../models/Account";
 import { Calendar } from "../../../models/Calendar";
@@ -11,9 +11,7 @@ import { CalendarEventsArgs } from "./args/CalendarEventsArgs";
 
 @TypeGraphQL.Resolver((_of) => Calendar)
 export class CalendarRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() calendar: Calendar,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -36,9 +34,7 @@ export class CalendarRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Account, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Account, { nullable: true })
   async account(
     @TypeGraphQL.Root() calendar: Calendar,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -52,9 +48,7 @@ export class CalendarRelationsResolver {
       .account({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], { nullable: false })
   async events(
     @TypeGraphQL.Root() calendar: Calendar,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -62,7 +56,7 @@ export class CalendarRelationsResolver {
   ): Promise<CalendarEvent[]> {
     if (USE_FIREBASE) {
       return await firestore
-        .collection(`users/${ctx.token?.uid}/calendarEvents`)
+        .collection(`users/${ctx.session?.user.id}/calendarEvents`)
         .where("calendarId", "==", calendar.id)
         .get()
         .then(async (snapshot) => {

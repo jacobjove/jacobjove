@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateWithoutBookshelvesInput } from "../inputs/UserCreateWithoutBookshelvesInput";
 import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserCreateOrConnectWithoutBookshelvesInput {
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: false })
   where!: UserWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutBookshelvesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutBookshelvesInput, { nullable: false })
   create!: UserCreateWithoutBookshelvesInput;
 }

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityCreateManyUserInputEnvelope } from "../inputs/IdentityCreateManyUserInputEnvelope";
 import { IdentityCreateOrConnectWithoutUserInput } from "../inputs/IdentityCreateOrConnectWithoutUserInput";
 import { IdentityCreateWithoutUserInput } from "../inputs/IdentityCreateWithoutUserInput";
@@ -8,23 +8,15 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityCreateNestedManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [IdentityCreateWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityCreateWithoutUserInput], { nullable: true })
   create?: IdentityCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityCreateOrConnectWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: IdentityCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateManyUserInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IdentityCreateManyUserInputEnvelope, { nullable: true })
   createMany?: IdentityCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityWhereUniqueInput], { nullable: true })
   connect?: IdentityWhereUniqueInput[] | undefined;
 }

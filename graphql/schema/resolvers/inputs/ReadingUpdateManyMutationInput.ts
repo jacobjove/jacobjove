@@ -1,33 +1,21 @@
-import * as TypeGraphQL from "type-graphql";
-import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
-import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.InputType("ReadingUpdateManyMutationInput", {
   isAbstract: true,
 })
 export class ReadingUpdateManyMutationInput {
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  dateStarted?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  dateStarted?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  dateFinished?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  dateFinished?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  archivedAt?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  archivedAt?: Date | null | undefined;
 }

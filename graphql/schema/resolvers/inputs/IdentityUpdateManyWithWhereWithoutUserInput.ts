@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityScalarWhereInput } from "../inputs/IdentityScalarWhereInput";
 import { IdentityUpdateManyMutationInput } from "../inputs/IdentityUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { IdentityUpdateManyMutationInput } from "../inputs/IdentityUpdateManyMut
   isAbstract: true,
 })
 export class IdentityUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => IdentityScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => IdentityScalarWhereInput, { nullable: false })
   where!: IdentityScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => IdentityUpdateManyMutationInput, { nullable: false })
   data!: IdentityUpdateManyMutationInput;
 }

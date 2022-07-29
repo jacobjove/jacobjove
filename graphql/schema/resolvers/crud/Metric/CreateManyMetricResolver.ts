@@ -1,16 +1,14 @@
 import { ApolloContext } from "@/graphql/context";
 import { MetricCrudResolver } from "@/graphql/schema/resolvers/crud/Metric/MetricCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Metric } from "../../../models/Metric";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { CreateManyMetricArgs } from "./args/CreateManyMetricArgs";
 
 @TypeGraphQL.Resolver((_of) => Metric)
 export class CreateManyMetricResolver {
-  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, { nullable: false })
   async createManyMetric(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

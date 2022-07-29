@@ -1,12 +1,9 @@
-import * as TypeGraphQL from "type-graphql";
-import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.InputType("IdentityActRelationUpdateManyMutationInput", {
   isAbstract: true,
 })
 export class IdentityActRelationUpdateManyMutationInput {
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  archivedAt?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  archivedAt?: Date | null | undefined;
 }

@@ -14,7 +14,7 @@ export interface InstantSearchProps {
   idKey?: string;
   labelKey: string;
   searchableFieldKeys: string[];
-  getOptionKey?: (option: Option) => string;
+  getOptionKey?: (option: Option | string) => string;
   minimumSearchLength?: number; // minimum length of text input required to call `getSearchResultsForInput`
   throttleDelay?: number; // delay in ms between calls to `getSearchResultsForInput`
   // TODO: include onChange in autocompleteProps after fixing signature
@@ -40,7 +40,8 @@ const InstantSearch: FC<InstantSearchProps> = ({
   labelKey,
   searchableFieldKeys,
   idKey = "id",
-  getOptionKey = (option: Option) => option[labelKey],
+  getOptionKey = (option: Option | string) =>
+    typeof option === "string" ? option : option[labelKey],
   minimumSearchLength = 1,
   throttleDelay = 250,
   onChange, // TODO: include in autocompleteProps after fixing signature

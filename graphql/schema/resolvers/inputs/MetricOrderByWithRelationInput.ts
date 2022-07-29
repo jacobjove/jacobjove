@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { SortOrder } from "../../enums/SortOrder";
 import { MetricApplicationOrderByRelationAggregateInput } from "../inputs/MetricApplicationOrderByRelationAggregateInput";
 import { MetricUsageOrderByRelationAggregateInput } from "../inputs/MetricUsageOrderByRelationAggregateInput";
@@ -7,23 +7,15 @@ import { MetricUsageOrderByRelationAggregateInput } from "../inputs/MetricUsageO
   isAbstract: true,
 })
 export class MetricOrderByWithRelationInput {
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => SortOrder, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => SortOrder, { nullable: true })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationOrderByRelationAggregateInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricApplicationOrderByRelationAggregateInput, { nullable: true })
   applications?: MetricApplicationOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageOrderByRelationAggregateInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricUsageOrderByRelationAggregateInput, { nullable: true })
   usages?: MetricUsageOrderByRelationAggregateInput | undefined;
 }

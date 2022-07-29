@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { RoutineHabitScalarWhereInput } from "../inputs/RoutineHabitScalarWhereInput";
 import { RoutineHabitUpdateManyMutationInput } from "../inputs/RoutineHabitUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { RoutineHabitUpdateManyMutationInput } from "../inputs/RoutineHabitUpdat
   isAbstract: true,
 })
 export class RoutineHabitUpdateManyWithWhereWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => RoutineHabitScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineHabitScalarWhereInput, { nullable: false })
   where!: RoutineHabitScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineHabitUpdateManyMutationInput, { nullable: false })
   data!: RoutineHabitUpdateManyMutationInput;
 }

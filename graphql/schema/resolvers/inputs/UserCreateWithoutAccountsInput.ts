@@ -1,6 +1,5 @@
-import { Prisma } from "@prisma/client";
 import * as GraphQLScalars from "graphql-scalars";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar } from "../../scalars";
 import { BeliefCreateNestedManyWithoutUserInput } from "../inputs/BeliefCreateNestedManyWithoutUserInput";
 import { BookReviewCreateNestedManyWithoutUserInput } from "../inputs/BookReviewCreateNestedManyWithoutUserInput";
@@ -21,64 +20,40 @@ import { ValueCreateNestedManyWithoutUserInput } from "../inputs/ValueCreateNest
   isAbstract: true,
 })
 export class UserCreateWithoutAccountsInput {
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   id?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   name?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   email!: string;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   emailVerified?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   image?: string | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   isAdmin?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
-    nullable: true,
-  })
-  settings?: Prisma.InputJsonValue | undefined;
+  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: true })
+  settings?: Record<string, string> | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   lastLogin?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarCreateNestedManyWithoutUserInput, { nullable: true })
   calendars?: CalendarCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IdentityCreateNestedManyWithoutUserInput, { nullable: true })
   identities?: IdentityCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ValueCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ValueCreateNestedManyWithoutUserInput, { nullable: true })
   values?: ValueCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BeliefCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BeliefCreateNestedManyWithoutUserInput, { nullable: true })
   beliefs?: BeliefCreateNestedManyWithoutUserInput | undefined;
 
   // @TypeGraphQL.Field((_type) => MantraCreateNestedManyWithoutUserInput, {
@@ -86,24 +61,16 @@ export class UserCreateWithoutAccountsInput {
   // })
   // mantras?: MantraCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitCreateNestedManyWithoutUserInput, { nullable: true })
   habits?: HabitCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateNestedManyWithoutUserInput, { nullable: true })
   tasks?: TaskCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => DashboardCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DashboardCreateNestedManyWithoutUserInput, { nullable: true })
   dashboards?: DashboardCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateNestedManyWithoutOwnerInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => NotebookCreateNestedManyWithoutOwnerInput, { nullable: true })
   notebooks?: NotebookCreateNestedManyWithoutOwnerInput | undefined;
 
   @TypeGraphQL.Field((_type) => NotebookUserPermissionCreateNestedManyWithoutUserInput, {
@@ -111,23 +78,15 @@ export class UserCreateWithoutAccountsInput {
   })
   notebookPermissions?: NotebookUserPermissionCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ListCreateNestedManyWithoutOwnerInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ListCreateNestedManyWithoutOwnerInput, { nullable: true })
   lists?: ListCreateNestedManyWithoutOwnerInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ReadingCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ReadingCreateNestedManyWithoutUserInput, { nullable: true })
   readings?: ReadingCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookshelfCreateNestedManyWithoutOwnerInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfCreateNestedManyWithoutOwnerInput, { nullable: true })
   bookshelves?: BookshelfCreateNestedManyWithoutOwnerInput | undefined;
 
-  @TypeGraphQL.Field((_type) => BookReviewCreateNestedManyWithoutUserInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookReviewCreateNestedManyWithoutUserInput, { nullable: true })
   bookReviews?: BookReviewCreateNestedManyWithoutUserInput | undefined;
 }

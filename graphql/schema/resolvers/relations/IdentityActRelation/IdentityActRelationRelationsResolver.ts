@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { Act } from "../../../models/Act";
 import { Identity } from "../../../models/Identity";
@@ -7,9 +7,7 @@ import { IdentityActRelation } from "../../../models/IdentityActRelation";
 
 @TypeGraphQL.Resolver((_of) => IdentityActRelation)
 export class IdentityActRelationRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Identity, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Identity, { nullable: false })
   async identity(
     @TypeGraphQL.Root() identityActRelation: IdentityActRelation,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -24,9 +22,7 @@ export class IdentityActRelationRelationsResolver {
       .identity({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Act, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Act, { nullable: false })
   async action(
     @TypeGraphQL.Root() identityActRelation: IdentityActRelation,
     @TypeGraphQL.Ctx() ctx: ApolloContext

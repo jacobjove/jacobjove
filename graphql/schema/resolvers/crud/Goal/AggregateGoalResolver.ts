@@ -1,16 +1,14 @@
 import { ApolloContext } from "@/graphql/context";
 import { GoalCrudResolver } from "@/graphql/schema/resolvers/crud/Goal/GoalCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Goal } from "../../../models/Goal";
 import { AggregateGoal } from "../../outputs/AggregateGoal";
 import { AggregateGoalArgs } from "./args/AggregateGoalArgs";
 
 @TypeGraphQL.Resolver((_of) => Goal)
 export class AggregateGoalResolver {
-  @TypeGraphQL.Query((_returns) => AggregateGoal, {
-    nullable: false,
-  })
+  @TypeGraphQL.Query((_returns) => AggregateGoal, { nullable: false })
   async aggregateGoal(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

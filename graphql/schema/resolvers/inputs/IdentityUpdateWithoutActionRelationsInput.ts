@@ -1,29 +1,19 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityUpdateManyMutationInput } from "../inputs/IdentityUpdateManyMutationInput";
-import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("IdentityUpdateWithoutActionRelationsInput", {
   isAbstract: true,
 })
 export class IdentityUpdateWithoutActionRelationsInput {
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  name?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  name?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  slug?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  slug?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  description?: NullableStringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  description?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityUpdateManyMutationInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IdentityUpdateManyMutationInput, { nullable: true })
   identities?: IdentityUpdateManyMutationInput | undefined;
 }

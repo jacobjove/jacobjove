@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AccountCreateWithoutCalendarsInput } from "../inputs/AccountCreateWithoutCalendarsInput";
 import { AccountUpdateWithoutCalendarsInput } from "../inputs/AccountUpdateWithoutCalendarsInput";
 
@@ -6,13 +6,9 @@ import { AccountUpdateWithoutCalendarsInput } from "../inputs/AccountUpdateWitho
   isAbstract: true,
 })
 export class AccountUpsertWithoutCalendarsInput {
-  @TypeGraphQL.Field((_type) => AccountUpdateWithoutCalendarsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AccountUpdateWithoutCalendarsInput, { nullable: false })
   update!: AccountUpdateWithoutCalendarsInput;
 
-  @TypeGraphQL.Field((_type) => AccountCreateWithoutCalendarsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AccountCreateWithoutCalendarsInput, { nullable: false })
   create!: AccountCreateWithoutCalendarsInput;
 }

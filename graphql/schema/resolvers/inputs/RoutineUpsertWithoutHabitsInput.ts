@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { RoutineCreateWithoutHabitsInput } from "../inputs/RoutineCreateWithoutHabitsInput";
 import { RoutineUpdateWithoutHabitsInput } from "../inputs/RoutineUpdateWithoutHabitsInput";
 
@@ -6,13 +6,9 @@ import { RoutineUpdateWithoutHabitsInput } from "../inputs/RoutineUpdateWithoutH
   isAbstract: true,
 })
 export class RoutineUpsertWithoutHabitsInput {
-  @TypeGraphQL.Field((_type) => RoutineUpdateWithoutHabitsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineUpdateWithoutHabitsInput, { nullable: false })
   update!: RoutineUpdateWithoutHabitsInput;
 
-  @TypeGraphQL.Field((_type) => RoutineCreateWithoutHabitsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineCreateWithoutHabitsInput, { nullable: false })
   create!: RoutineCreateWithoutHabitsInput;
 }

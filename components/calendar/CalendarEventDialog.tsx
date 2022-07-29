@@ -37,7 +37,6 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
       alert("Start date is required.");
       return;
     }
-    const { calendarId, scheduleId, habitId, taskId, ...commonEventData } = calendarEventData;
     const now = new Date();
     // prettier-ignore
     const mutationVars: {
@@ -45,27 +44,13 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
       where: CalendarEventWhereUniqueInput;
     } | {
       data: CalendarEventCreateInput;
-    } = calendarEventData.id ? {
-      where: { id: calendarEventData.id },
+    } = {
+      ...(!!calendarEventData.id && { where: { id: calendarEventData.id } }),
       data: {
-        ...Object.fromEntries(
-          Object.entries(commonEventData).map(([key, value]) => [key, { set: value }])
-        ),
-        calendar: { connect: { id: calendarId } },
-        ...(!!scheduleId && { schedule: { connect: { id: scheduleId } } }),
-        ...(!!habitId && { habit: { connect: { id: habitId } } }),
-        ...(!!taskId && { task: { connect: { id: taskId } } }),
-        updatedAt: { set: now },
-      },
-    } : {
-      data: {
-        ...commonEventData,
-        createdAt: now,
-        calendar: { connect: { id: calendarId } },
-        schedule: scheduleId ? { connect: { id: scheduleId } } : undefined,
-        habit: habitId ? { connect: { id: habitId } } : undefined,
-        task: taskId ? { connect: { id: taskId } } : undefined,
-      },
+        ...calendarEventData,
+        ...(!calendarEventData.id && { createdAt: now }),
+        updatedAt: now,
+      }
     };
     await mutate({
       variables: mutationVars,
@@ -94,7 +79,7 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
       <DialogTitle>{calendarEventData.id ? "Modify" : "Create"} calendar event</DialogTitle>
       <DialogContent>
-        <EventFormFields state={calendarEventData} dispatch={dispatchCalendarEventData} />
+        <EventFormFields data={calendarEventData} dispatch={dispatchCalendarEventData} />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

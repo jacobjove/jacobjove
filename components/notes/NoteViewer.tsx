@@ -1,11 +1,13 @@
+import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
+import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
 import { noteFragment } from "@/graphql/fragments";
 import { Note } from "@/graphql/schema";
-import { gql, useMutation } from "@apollo/client";
+import { useDataReducer, useHandleMutation } from "@/utils/data";
+import { gql } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import Toolbar from "@mui/material/Toolbar";
-import debounce from "lodash/debounce";
+// import Toolbar from "@mui/material/Toolbar";
 import { FC, useEffect, useRef, useState } from "react";
 
 const UPDATE_NOTE = gql`
@@ -21,97 +23,104 @@ interface NoteViewerProps {
   note: Note;
 }
 
-const MUTATION_DEBOUNCE_DELAY = 1200; // 1.2 seconds
-
 const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
-  const [noteTitle, setNoteTitle] = useState(note?.title);
-  const [noteBody, setNoteBody] = useState(note?.body);
-  const [updateNote, { loading: loadingUpdateNote }] = useMutation<{
-    updateNote: Note;
-  }>(UPDATE_NOTE);
-  useEffect(() => {
-    if (note) {
-      setNoteTitle(note.title);
-      setNoteBody(note.body);
-    }
-  }, [note]);
+  const [fullScreen, setFullScreen] = useState(false);
+
   const abortController = useRef<AbortController>();
-  // TODO: refactor to use `useCallback`
-  const handleUpdateNote = useRef(
-    debounce((...args: Parameters<typeof updateNote>) => {
-      const controller = new window.AbortController();
-      abortController.current = controller;
-      const [mutationOptions, ...rest] = args;
-      if (mutationOptions) {
-        mutationOptions.context = { fetchOptions: { signal: controller.signal } };
-      }
-      return updateNote(mutationOptions, ...rest).catch((error) => console.error(error));
-    }, MUTATION_DEBOUNCE_DELAY)
-  );
+
+  const [noteData, dispatchNoteData] = useDataReducer(note);
+
+  const [handleUpdateNote] = useHandleMutation<{
+    updateNote: Note;
+  }>(UPDATE_NOTE, abortController);
+
+  useEffect(() => {
+    note && dispatchNoteData({ field: "init", value: note });
+  }, [note, dispatchNoteData]);
+
   console.log("Rendering note viewer...");
+
   return (
-    <Paper
+    <FullScreenExpandableComponent
+      fullScreenState={[fullScreen, setFullScreen]}
       sx={{
-        width: "100%",
-        maxWidth: "21cm", // A4 sheet of paper
         height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        borderLeft: (theme) => `1px solid ${theme.palette.background.default}`,
-        borderRight: (theme) => `1px solid ${theme.palette.background.default}`,
       }}
     >
-      <Toolbar>
-        <TextField
-          variant="standard"
-          value={noteTitle || "Untitled note"}
-          onChange={(event) => {
-            setNoteTitle(event.target.value);
-            abortController.current?.abort();
-            handleUpdateNote.current({
-              variables: {
-                noteId: note.id,
-                data: {
-                  title: { set: event.target.value },
-                },
+      <Paper
+        sx={{
+          width: "100%",
+          maxWidth: "21cm", // A4 sheet of paper
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          borderLeft: (theme) => `1px solid ${theme.palette.background.default}`,
+          borderRight: (theme) => `1px solid ${theme.palette.background.default}`,
+        }}
+      >
+        <FullScreenToggleToolbar fullScreenState={[fullScreen, setFullScreen]}>
+          {/* {"more"} */}
+        </FullScreenToggleToolbar>
+        <Box flexGrow={1} flexShrink={0}>
+          <TextField
+            fullWidth
+            variant="filled"
+            sx={{
+              "& input": {
+                fontSize: "1.5rem",
               },
-            });
-          }}
-        />
-      </Toolbar>
-      <Box flexGrow={1} flexShrink={0}>
-        <TextField
-          fullWidth
-          multiline
-          variant="filled"
-          placeholder="Type here..."
-          sx={{
-            height: "100%",
-            borderBottom: "none",
-            alignItems: "start",
-            "& .MuiFilledInput-root": {
-              alignItems: "start",
+              "& .MuiFilledInput-root": {
+                borderTopLeftRadius: "0",
+                borderTopRightRadius: "0",
+              },
+            }}
+            value={noteData.title}
+            onChange={(event) => {
+              dispatchNoteData({ field: "title", value: event.target.value });
+              abortController.current?.abort();
+              handleUpdateNote.current({
+                variables: {
+                  noteId: note.id,
+                  data: {
+                    title: event.target.value,
+                  },
+                },
+              });
+            }}
+          />
+          <TextField
+            fullWidth
+            multiline
+            variant="filled"
+            placeholder="Type here..."
+            sx={{
               height: "100%",
               borderBottom: "none",
-              borderRadius: "1px",
-            },
-          }}
-          value={noteBody || ""}
-          onChange={(event) => {
-            setNoteBody(event.target.value);
-            abortController.current?.abort();
-            handleUpdateNote.current({
-              variables: {
-                noteId: note.id,
-                data: {
-                  body: { set: event.target.value },
-                },
+              alignItems: "start",
+              "& .MuiFilledInput-root": {
+                alignItems: "start",
+                height: "100%",
+                borderBottom: "none",
+                borderRadius: "1px",
               },
-            });
-          }}
-        />
-      </Box>
-    </Paper>
+            }}
+            value={noteData.body}
+            onChange={(event) => {
+              dispatchNoteData({ field: "body", value: event.target.value });
+              abortController.current?.abort();
+              handleUpdateNote.current({
+                variables: {
+                  noteId: note.id,
+                  data: {
+                    body: event.target.value,
+                  },
+                },
+              });
+            }}
+          />
+        </Box>
+      </Paper>
+    </FullScreenExpandableComponent>
   );
 };
 

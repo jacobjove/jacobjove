@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput } from "../inputs/ActionScheduleTemplateCreateOrConnectWithoutActionSchedulesInput";
 import { ActionScheduleTemplateCreateWithoutActionSchedulesInput } from "../inputs/ActionScheduleTemplateCreateWithoutActionSchedulesInput";
 import { ActionScheduleTemplateUpdateWithoutActionSchedulesInput } from "../inputs/ActionScheduleTemplateUpdateWithoutActionSchedulesInput";
@@ -24,19 +24,13 @@ export class ActionScheduleTemplateUpdateOneWithoutActionSchedulesInput {
   })
   upsert?: ActionScheduleTemplateUpsertWithoutActionSchedulesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleTemplateWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleTemplateWhereUniqueInput, { nullable: true })
   connect?: ActionScheduleTemplateWhereUniqueInput | undefined;
 
   @TypeGraphQL.Field((_type) => ActionScheduleTemplateUpdateWithoutActionSchedulesInput, {

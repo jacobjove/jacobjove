@@ -6,7 +6,6 @@ export { DeleteManyIdentityActRelationArgs } from "./DeleteManyIdentityActRelati
 export { FindFirstIdentityActRelationArgs } from "./FindFirstIdentityActRelationArgs";
 export { FindManyIdentityActRelationArgs } from "./FindManyIdentityActRelationArgs";
 export { FindUniqueIdentityActRelationArgs } from "./FindUniqueIdentityActRelationArgs";
-export { GroupByIdentityActRelationArgs } from "./GroupByIdentityActRelationArgs";
 export { UpdateIdentityActRelationArgs } from "./UpdateIdentityActRelationArgs";
 export { UpdateManyIdentityActRelationArgs } from "./UpdateManyIdentityActRelationArgs";
 export { UpsertIdentityActRelationArgs } from "./UpsertIdentityActRelationArgs";

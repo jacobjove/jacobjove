@@ -1,15 +1,13 @@
 import { ApolloContext } from "@/graphql/context";
 import { AuthorshipCrudResolver } from "@/graphql/schema/resolvers/crud/Authorship/AuthorshipCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Authorship } from "../../../models/Authorship";
 import { FindManyAuthorshipArgs } from "./args/FindManyAuthorshipArgs";
 
 @TypeGraphQL.Resolver((_of) => Authorship)
 export class FindManyAuthorshipResolver {
-  @TypeGraphQL.Query((_returns) => [Authorship], {
-    nullable: false,
-  })
+  @TypeGraphQL.Query((_returns) => [Authorship], { nullable: false })
   async authorships(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

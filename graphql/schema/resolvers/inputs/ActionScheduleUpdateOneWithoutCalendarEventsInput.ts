@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleCreateOrConnectWithoutCalendarEventsInput } from "../inputs/ActionScheduleCreateOrConnectWithoutCalendarEventsInput";
 import { ActionScheduleCreateWithoutCalendarEventsInput } from "../inputs/ActionScheduleCreateWithoutCalendarEventsInput";
 import { ActionScheduleUpdateWithoutCalendarEventsInput } from "../inputs/ActionScheduleUpdateWithoutCalendarEventsInput";
@@ -9,9 +9,7 @@ import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUni
   isAbstract: true,
 })
 export class ActionScheduleUpdateOneWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutCalendarEventsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutCalendarEventsInput, { nullable: true })
   create?: ActionScheduleCreateWithoutCalendarEventsInput | undefined;
 
   @TypeGraphQL.Field((_type) => ActionScheduleCreateOrConnectWithoutCalendarEventsInput, {
@@ -19,28 +17,18 @@ export class ActionScheduleUpdateOneWithoutCalendarEventsInput {
   })
   connectOrCreate?: ActionScheduleCreateOrConnectWithoutCalendarEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleUpsertWithoutCalendarEventsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleUpsertWithoutCalendarEventsInput, { nullable: true })
   upsert?: ActionScheduleUpsertWithoutCalendarEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: true })
   connect?: ActionScheduleWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleUpdateWithoutCalendarEventsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleUpdateWithoutCalendarEventsInput, { nullable: true })
   update?: ActionScheduleUpdateWithoutCalendarEventsInput | undefined;
 }

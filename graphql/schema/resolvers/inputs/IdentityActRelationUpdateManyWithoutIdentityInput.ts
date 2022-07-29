@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityActRelationCreateInput } from "../inputs/IdentityActRelationCreateInput";
 import { IdentityActRelationCreateManyIdentityInputEnvelope } from "../inputs/IdentityActRelationCreateManyIdentityInputEnvelope";
 import { IdentityActRelationCreateOrConnectWithoutIdentityInput } from "../inputs/IdentityActRelationCreateOrConnectWithoutIdentityInput";
@@ -12,9 +12,7 @@ import { IdentityActRelationWhereUniqueInput } from "../inputs/IdentityActRelati
   isAbstract: true,
 })
 export class IdentityActRelationUpdateManyMutationInput {
-  @TypeGraphQL.Field((_type) => [IdentityActRelationCreateInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityActRelationCreateInput], { nullable: true })
   create?: IdentityActRelationCreateInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [IdentityActRelationCreateOrConnectWithoutIdentityInput], {
@@ -32,24 +30,16 @@ export class IdentityActRelationUpdateManyMutationInput {
   })
   createMany?: IdentityActRelationCreateManyIdentityInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], { nullable: true })
   set?: IdentityActRelationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], { nullable: true })
   disconnect?: IdentityActRelationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], { nullable: true })
   delete?: IdentityActRelationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityActRelationWhereUniqueInput], { nullable: true })
   connect?: IdentityActRelationWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [IdentityActRelationUpdateWithWhereUniqueWithoutIdentityInput], {
@@ -62,8 +52,6 @@ export class IdentityActRelationUpdateManyMutationInput {
   })
   updateMany?: IdentityActRelationUpdateManyWithWhereWithoutIdentityInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [IdentityActRelationScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityActRelationScalarWhereInput], { nullable: true })
   deleteMany?: IdentityActRelationScalarWhereInput[] | undefined;
 }

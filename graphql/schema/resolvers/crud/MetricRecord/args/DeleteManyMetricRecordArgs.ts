@@ -1,10 +1,8 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricRecordWhereInput } from "../../../inputs/MetricRecordWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyMetricRecordArgs {
-  @TypeGraphQL.Field((_type) => MetricRecordWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricRecordWhereInput, { nullable: true })
   where?: MetricRecordWhereInput | undefined;
 }

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { HabitCreateOrConnectWithoutMetricUsagesInput } from "../inputs/HabitCreateOrConnectWithoutMetricUsagesInput";
 import { HabitCreateWithoutMetricUsagesInput } from "../inputs/HabitCreateWithoutMetricUsagesInput";
 import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
@@ -7,18 +7,12 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitCreateNestedOneWithoutMetricUsagesInput {
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutMetricUsagesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitCreateWithoutMetricUsagesInput, { nullable: true })
   create?: HabitCreateWithoutMetricUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateOrConnectWithoutMetricUsagesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitCreateOrConnectWithoutMetricUsagesInput, { nullable: true })
   connectOrCreate?: HabitCreateOrConnectWithoutMetricUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: true })
   connect?: HabitWhereUniqueInput | undefined;
 }

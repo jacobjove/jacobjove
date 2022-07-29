@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateWithoutMetricApplicationsInput } from "../inputs/ActCreateWithoutMetricApplicationsInput";
 import { ActUpdateWithoutMetricApplicationsInput } from "../inputs/ActUpdateWithoutMetricApplicationsInput";
 
@@ -6,13 +6,9 @@ import { ActUpdateWithoutMetricApplicationsInput } from "../inputs/ActUpdateWith
   isAbstract: true,
 })
 export class ActUpsertWithoutMetricApplicationsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutMetricApplicationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActUpdateWithoutMetricApplicationsInput, { nullable: false })
   update!: ActUpdateWithoutMetricApplicationsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutMetricApplicationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutMetricApplicationsInput, { nullable: false })
   create!: ActCreateWithoutMetricApplicationsInput;
 }

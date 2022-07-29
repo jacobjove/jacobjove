@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricCreateOrConnectWithoutUsagesInput } from "../inputs/MetricCreateOrConnectWithoutUsagesInput";
 import { MetricCreateWithoutUsagesInput } from "../inputs/MetricCreateWithoutUsagesInput";
 import { MetricWhereUniqueInput } from "../inputs/MetricWhereUniqueInput";
@@ -7,18 +7,12 @@ import { MetricWhereUniqueInput } from "../inputs/MetricWhereUniqueInput";
   isAbstract: true,
 })
 export class MetricCreateNestedOneWithoutUsagesInput {
-  @TypeGraphQL.Field((_type) => MetricCreateWithoutUsagesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricCreateWithoutUsagesInput, { nullable: true })
   create?: MetricCreateWithoutUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricCreateOrConnectWithoutUsagesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricCreateOrConnectWithoutUsagesInput, { nullable: true })
   connectOrCreate?: MetricCreateOrConnectWithoutUsagesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricWhereUniqueInput, { nullable: true })
   connect?: MetricWhereUniqueInput | undefined;
 }

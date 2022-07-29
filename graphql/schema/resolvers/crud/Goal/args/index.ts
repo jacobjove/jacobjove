@@ -6,7 +6,6 @@ export { DeleteManyGoalArgs } from "./DeleteManyGoalArgs";
 export { FindFirstGoalArgs } from "./FindFirstGoalArgs";
 export { FindManyGoalArgs } from "./FindManyGoalArgs";
 export { FindUniqueGoalArgs } from "./FindUniqueGoalArgs";
-export { GroupByGoalArgs } from "./GroupByGoalArgs";
 export { UpdateGoalArgs } from "./UpdateGoalArgs";
 export { UpdateManyGoalArgs } from "./UpdateManyGoalArgs";
 export { UpsertGoalArgs } from "./UpsertGoalArgs";

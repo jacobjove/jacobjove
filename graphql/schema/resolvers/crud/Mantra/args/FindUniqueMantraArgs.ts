@@ -1,10 +1,8 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MantraWhereUniqueInput } from "../../../inputs/MantraWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueMantraArgs {
-  @TypeGraphQL.Field((_type) => MantraWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MantraWhereUniqueInput, { nullable: false })
   where!: MantraWhereUniqueInput;
 }

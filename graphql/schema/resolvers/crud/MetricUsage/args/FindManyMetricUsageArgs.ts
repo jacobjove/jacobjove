@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricUsageScalarFieldEnum } from "../../../../enums/MetricUsageScalarFieldEnum";
 import { MetricUsageOrderByWithRelationInput } from "../../../inputs/MetricUsageOrderByWithRelationInput";
 import { MetricUsageWhereInput } from "../../../inputs/MetricUsageWhereInput";
@@ -6,33 +6,21 @@ import { MetricUsageWhereUniqueInput } from "../../../inputs/MetricUsageWhereUni
 
 @TypeGraphQL.ArgsType()
 export class FindManyMetricUsageArgs {
-  @TypeGraphQL.Field((_type) => MetricUsageWhereInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricUsageWhereInput, { nullable: true })
   where?: MetricUsageWhereInput | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricUsageOrderByWithRelationInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricUsageOrderByWithRelationInput], { nullable: true })
   orderBy?: MetricUsageOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricUsageWhereUniqueInput, { nullable: true })
   cursor?: MetricUsageWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   take?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricUsageScalarFieldEnum], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricUsageScalarFieldEnum], { nullable: true })
   distinct?: Array<"id" | "metricId" | "habitId" | "archivedAt"> | undefined;
 }

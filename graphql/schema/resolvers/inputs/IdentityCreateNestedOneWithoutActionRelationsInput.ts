@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityCreateOrConnectWithoutActionRelationsInput } from "../inputs/IdentityCreateOrConnectWithoutActionRelationsInput";
 import { IdentityCreateWithoutActionRelationsInput } from "../inputs/IdentityCreateWithoutActionRelationsInput";
 import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
@@ -7,9 +7,7 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityCreateNestedOneWithoutActionRelationsInput {
-  @TypeGraphQL.Field((_type) => IdentityCreateWithoutActionRelationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IdentityCreateWithoutActionRelationsInput, { nullable: true })
   create?: IdentityCreateWithoutActionRelationsInput | undefined;
 
   @TypeGraphQL.Field((_type) => IdentityCreateOrConnectWithoutActionRelationsInput, {
@@ -17,8 +15,6 @@ export class IdentityCreateNestedOneWithoutActionRelationsInput {
   })
   connectOrCreate?: IdentityCreateOrConnectWithoutActionRelationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: true })
   connect?: IdentityWhereUniqueInput | undefined;
 }

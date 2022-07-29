@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ReadingScalarWhereInput } from "../inputs/ReadingScalarWhereInput";
 import { ReadingUpdateManyMutationInput } from "../inputs/ReadingUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { ReadingUpdateManyMutationInput } from "../inputs/ReadingUpdateManyMutat
   isAbstract: true,
 })
 export class ReadingUpdateManyWithWhereWithoutBookInput {
-  @TypeGraphQL.Field((_type) => ReadingScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ReadingScalarWhereInput, { nullable: false })
   where!: ReadingScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => ReadingUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ReadingUpdateManyMutationInput, { nullable: false })
   data!: ReadingUpdateManyMutationInput;
 }

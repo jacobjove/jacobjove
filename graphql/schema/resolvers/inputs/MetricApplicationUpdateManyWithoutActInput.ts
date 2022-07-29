@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricApplicationCreateManyActInputEnvelope } from "../inputs/MetricApplicationCreateManyActInputEnvelope";
 import { MetricApplicationCreateOrConnectWithoutActInput } from "../inputs/MetricApplicationCreateOrConnectWithoutActInput";
 import { MetricApplicationCreateWithoutActInput } from "../inputs/MetricApplicationCreateWithoutActInput";
@@ -12,9 +12,7 @@ import { MetricApplicationWhereUniqueInput } from "../inputs/MetricApplicationWh
   isAbstract: true,
 })
 export class MetricApplicationUpdateManyWithoutActInput {
-  @TypeGraphQL.Field((_type) => [MetricApplicationCreateWithoutActInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricApplicationCreateWithoutActInput], { nullable: true })
   create?: MetricApplicationCreateWithoutActInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [MetricApplicationCreateOrConnectWithoutActInput], {
@@ -27,29 +25,19 @@ export class MetricApplicationUpdateManyWithoutActInput {
   })
   upsert?: MetricApplicationUpsertWithWhereUniqueWithoutActInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricApplicationCreateManyActInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricApplicationCreateManyActInputEnvelope, { nullable: true })
   createMany?: MetricApplicationCreateManyActInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricApplicationWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricApplicationWhereUniqueInput], { nullable: true })
   set?: MetricApplicationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricApplicationWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricApplicationWhereUniqueInput], { nullable: true })
   disconnect?: MetricApplicationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricApplicationWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricApplicationWhereUniqueInput], { nullable: true })
   delete?: MetricApplicationWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricApplicationWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricApplicationWhereUniqueInput], { nullable: true })
   connect?: MetricApplicationWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [MetricApplicationUpdateWithWhereUniqueWithoutActInput], {
@@ -62,8 +50,6 @@ export class MetricApplicationUpdateManyWithoutActInput {
   })
   updateMany?: MetricApplicationUpdateManyWithWhereWithoutActInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricApplicationScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricApplicationScalarWhereInput], { nullable: true })
   deleteMany?: MetricApplicationScalarWhereInput[] | undefined;
 }

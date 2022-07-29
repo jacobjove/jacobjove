@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarEventScalarWhereInput } from "../inputs/CalendarEventScalarWhereInput";
 import { CalendarEventUpdateManyMutationInput } from "../inputs/CalendarEventUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { CalendarEventUpdateManyMutationInput } from "../inputs/CalendarEventUpd
   isAbstract: true,
 })
 export class CalendarEventUpdateManyWithWhereWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => CalendarEventScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CalendarEventScalarWhereInput, { nullable: false })
   where!: CalendarEventScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyMutationInput, { nullable: false })
   data!: CalendarEventUpdateManyMutationInput;
 }

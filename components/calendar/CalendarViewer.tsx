@@ -7,6 +7,8 @@ import WeekViewer from "@/components/calendar/views/WeekViewer";
 import DateContext from "@/components/contexts/DateContext";
 import { useUser } from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
+import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
+import FullScreenToggleButton from "@/components/fullscreen/FullScreenToggleButton";
 import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
 import { providerIsEnabledForUser } from "@/utils/calendar/providers";
 import { gql } from "@apollo/client";
@@ -15,11 +17,9 @@ import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
 import CalendarViewMonthIcon from "@mui/icons-material/CalendarViewMonth";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 import Check from "@mui/icons-material/Check";
-import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import GoogleIcon from "@mui/icons-material/Google";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import WarningIcon from "@mui/icons-material/Warning";
-import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { Box } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -33,7 +33,6 @@ import Typography from "@mui/material/Typography";
 import { getHours } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 const ICON_MAP = {
   google: GoogleIcon,
@@ -121,6 +120,8 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const [selectedDate, setSelectedDate] = props.selectedDateState;
   const viewedHourState = useState<number>(getHours(date));
 
+  console.log(">>> CalendarViewer.selectedDate:", selectedDate);
+
   const eventEditingDialogState = usePopupState({
     variant: "popover",
     popupId: `event-editing-dialog`,
@@ -139,7 +140,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   }, [user, _data]);
 
   const defaultCalendar = enabledCalendars[0]; // TODO
-  if (!defaultCalendar) throw new Error("No default calendar");
+  if (!defaultCalendar) console.error("No default calendar!");
 
   const [selectedCalendarIds, dispatchCalendarIds] = useReducer(
     selectedCalendarIdsReducer,
@@ -182,144 +183,127 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     // dispatchInitialEventFormData,
     defaultCalendar,
   };
-  const renderedComponent = (
-    <Box
-      display="flex"
-      flexDirection={"column"}
-      height={"100%"}
-      sx={{
-        ...(fullScreen
-          ? {
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: (theme) => theme.palette.background.default,
-              padding: "0.5rem",
-              zIndex: 1e13,
-            }
-          : {}),
-      }}
-    >
-      {!props.collapseMenu && (
-        <Box
-          flex={"0 0 auto"}
-          display="flex"
-          width={"100%"}
-          alignItems={"center"}
-          justifyContent={"space-between"}
-          pb="0.12rem"
-          sx={{
-            borderBottom: (theme) => `1px solid
-            ${theme.palette.divider}`,
-            display: props.collapseMenu ? "none" : "flex",
-          }}
-        >
-          <Box display="flex" justifyContent={"center"} alignItems={"end"}>
-            <ToggleButtonGroup
-              exclusive
-              value={view}
-              onChange={(_, value: ViewMode) => setView(value)}
-              size="small"
-              color="primary"
-              aria-label="text alignment"
-              sx={{ "& button": { px: "5px", py: "3px" } }}
-            >
-              <ToggleButton value="day" aria-label="day view">
-                <CalendarViewDayIcon />
-              </ToggleButton>
-              <ToggleButton value="week" aria-label="week view">
-                <CalendarViewWeekIcon />
-              </ToggleButton>
-              <ToggleButton value="month" aria-label="month view">
-                <CalendarViewMonthIcon />
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Box>
-          {view === "day" && (
-            <Box display="flex" justifyContent={"center"} alignItems={"center"}>
-              <DateSelector date={selectedDate} setDate={setSelectedDate} />
-            </Box>
-          )}
+  return (
+    <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
+      <Box display="flex" flexDirection={"column"} height={"100%"} flexGrow={1}>
+        {!props.collapseMenu && (
           <Box
-            display={"flex"}
-            alignItems={"start"}
-            justifyContent={"center"}
-            position="relative"
+            flex={"0 0 auto"}
+            display="flex"
+            width={"100%"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            pb="0.12rem"
             sx={{
-              "& button svg": {
-                fontSize: "1.25rem",
-              },
+              borderBottom: (theme) => `1px solid
+            ${theme.palette.divider}`,
+              display: props.collapseMenu ? "none" : "flex",
             }}
           >
-            <IconButton title={`Display calendar menu`} {...bindTrigger(menuState)}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              {...bindMenu(menuState)}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              transformOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <Typography variant="h4" sx={{ ml: 1, color: "gray" }}>
-                {"Integrations"}
-              </Typography>
-              <MenuList dense>
-                <CalendarApiMenuItem provider={"google"}>
-                  <Typography ml={"1rem"}>{"Google Calendar"}</Typography>
-                </CalendarApiMenuItem>
-                <CalendarApiMenuItem provider={"apple"}>
-                  <Typography ml={"1rem"}>{"Apple Calendar"}</Typography>
-                </CalendarApiMenuItem>
-              </MenuList>
-              <Divider />
-              {(enabledCalendars?.length ?? 0) >= 1 && (
-                <div>
-                  <Typography variant="h4" sx={{ ml: 1, mt: "0.5rem", color: "gray" }}>
-                    {"Calendars"}
-                  </Typography>
-                  <CalendarLegendItems
-                    calendars={enabledCalendars}
-                    selectedCalendarIds={selectedCalendarIds}
-                    dispatchCalendarIds={dispatchCalendarIds}
-                  />
-                  <Divider />
-                </div>
-              )}
-              <MenuItem
-                onClick={() => alert("Not yet implemeneted")}
-                sx={{ textAlign: "center", justifyContent: "center" }}
+            <Box display="flex" justifyContent={"center"} alignItems={"end"}>
+              <ToggleButtonGroup
+                exclusive
+                value={view}
+                onChange={(_, value: ViewMode) => setView(value)}
+                size="small"
+                color="primary"
+                aria-label="text alignment"
+                sx={{ "& button": { px: "5px", py: "3px" } }}
               >
-                {"Manage calendars"}
-              </MenuItem>
-            </Menu>
-            <IconButton
-              title={!fullScreen ? `Expand to full screen` : `Exit full screen`}
-              onClick={() => setFullScreen(!fullScreen)}
+                <ToggleButton value="day" aria-label="day view">
+                  <CalendarViewDayIcon />
+                </ToggleButton>
+                <ToggleButton value="week" aria-label="week view">
+                  <CalendarViewWeekIcon />
+                </ToggleButton>
+                <ToggleButton value="month" aria-label="month view">
+                  <CalendarViewMonthIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+            {view === "day" && (
+              <Box display="flex" justifyContent={"center"} alignItems={"center"}>
+                <DateSelector date={selectedDate} setDate={setSelectedDate} />
+              </Box>
+            )}
+            <Box
+              display={"flex"}
+              alignItems={"start"}
+              justifyContent={"center"}
+              position="relative"
+              sx={{
+                "& button svg": {
+                  fontSize: "1.25rem",
+                },
+              }}
             >
-              {!fullScreen ? <ZoomOutMapIcon /> : <CloseFullscreenIcon />}
-            </IconButton>
+              <IconButton title={`Display calendar menu`} {...bindTrigger(menuState)}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                {...bindMenu(menuState)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
+              >
+                <Typography variant="h4" sx={{ ml: 1, color: "gray" }}>
+                  {"Integrations"}
+                </Typography>
+                <MenuList dense>
+                  <CalendarApiMenuItem provider={"google"}>
+                    <Typography ml={"1rem"}>{"Google Calendar"}</Typography>
+                  </CalendarApiMenuItem>
+                  <CalendarApiMenuItem provider={"apple"}>
+                    <Typography ml={"1rem"}>{"Apple Calendar"}</Typography>
+                  </CalendarApiMenuItem>
+                </MenuList>
+                <Divider />
+                {(enabledCalendars?.length ?? 0) >= 1 && (
+                  <div>
+                    <Typography variant="h4" sx={{ ml: 1, mt: "0.5rem", color: "gray" }}>
+                      {"Calendars"}
+                    </Typography>
+                    <CalendarLegendItems
+                      calendars={enabledCalendars}
+                      selectedCalendarIds={selectedCalendarIds}
+                      dispatchCalendarIds={dispatchCalendarIds}
+                    />
+                    <Divider />
+                  </div>
+                )}
+                <MenuItem
+                  onClick={() => alert("Not yet implemeneted")}
+                  sx={{ textAlign: "center", justifyContent: "center" }}
+                >
+                  {"Manage calendars"}
+                </MenuItem>
+              </Menu>
+              <FullScreenToggleButton fullScreenState={[fullScreen, setFullScreen]} />
+            </Box>
           </Box>
-        </Box>
-      )}
-      <Box flex={"1 1 auto"} minHeight={0} position="relative">
-        <DayViewer
-          loading={loading}
-          data={data}
-          viewedHourState={viewedHourState}
-          {...commonViewProps}
-          hidden={view != "day"}
-        />
-        <WeekViewer
-          loading={loading}
-          data={data}
-          viewedHourState={viewedHourState}
-          {...commonViewProps}
-          hidden={view != "week"}
-        />
-        <MonthViewer loading={loading} data={data} {...commonViewProps} hidden={view != "month"} />
-        {/* TODO: After prettifying the legend, change `>= 1` to `> 1` so that the legend is only displayed if there are multiple calendars */}
-        {/* {(enabledCalendars?.length ?? 0) >= 1 && (
+        )}
+        <Box flex={"1 1 auto"} minHeight={0} position="relative">
+          <DayViewer
+            loading={loading}
+            data={data}
+            viewedHourState={viewedHourState}
+            {...commonViewProps}
+            hidden={view != "day"}
+          />
+          <WeekViewer
+            loading={loading}
+            data={data}
+            viewedHourState={viewedHourState}
+            {...commonViewProps}
+            hidden={view != "week"}
+          />
+          <MonthViewer
+            loading={loading}
+            data={data}
+            {...commonViewProps}
+            hidden={view != "month"}
+          />
+          {/* TODO: After prettifying the legend, change `>= 1` to `> 1` so that the legend is only displayed if there are multiple calendars */}
+          {/* {(enabledCalendars?.length ?? 0) >= 1 && (
           <Box position="absolute" bottom={1} right={1} zIndex={1e14}>
             <CalendarLegend
               calendars={enabledCalendars}
@@ -328,11 +312,10 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
             />
           </Box>
         )} */}
+        </Box>
       </Box>
-    </Box>
+    </FullScreenExpandableComponent>
   );
-  if (fullScreen) return createPortal(renderedComponent, document.body);
-  return renderedComponent;
 };
 
 export default CalendarViewer;

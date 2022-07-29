@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar } from "../../scalars";
 import { ActionCreateNestedManyWithoutHabitInput } from "../inputs/ActionCreateNestedManyWithoutHabitInput";
 import { ActionScheduleCreateNestedManyWithoutHabitInput } from "../inputs/ActionScheduleCreateNestedManyWithoutHabitInput";
@@ -13,73 +13,45 @@ import { UserCreateNestedOneWithoutHabitsInput } from "../inputs/UserCreateNeste
   isAbstract: true,
 })
 export class HabitCreateWithoutActInput {
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   name!: string;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   isPublic?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: true })
   defaultDurationInMinutes?: number | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateNestedOneWithoutHabitsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateNestedOneWithoutHabitsInput, { nullable: false })
   user!: UserCreateNestedOneWithoutHabitsInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateNestedManyWithoutHabitInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleCreateNestedManyWithoutHabitInput, { nullable: true })
   schedules?: ActionScheduleCreateNestedManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateNestedManyWithoutHabitInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateNestedManyWithoutHabitInput, { nullable: true })
   tasks?: TaskCreateNestedManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventCreateNestedManyWithoutHabitInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarEventCreateNestedManyWithoutHabitInput, { nullable: true })
   calendarEvents?: CalendarEventCreateNestedManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageCreateNestedManyWithoutHabitInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricUsageCreateNestedManyWithoutHabitInput, { nullable: true })
   metricUsages?: MetricUsageCreateNestedManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalCreateNestedManyWithoutHabitInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => GoalCreateNestedManyWithoutHabitInput, { nullable: true })
   goals?: GoalCreateNestedManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitCreateNestedManyWithoutHabitInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => RoutineHabitCreateNestedManyWithoutHabitInput, { nullable: true })
   routines?: RoutineHabitCreateNestedManyWithoutHabitInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionCreateNestedManyWithoutHabitInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionCreateNestedManyWithoutHabitInput, { nullable: true })
   actions?: ActionCreateNestedManyWithoutHabitInput | undefined;
 }

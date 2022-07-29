@@ -6,7 +6,6 @@ export { DeleteReadingArgs } from "./DeleteReadingArgs";
 export { FindFirstReadingArgs } from "./FindFirstReadingArgs";
 export { FindManyReadingArgs } from "./FindManyReadingArgs";
 export { FindUniqueReadingArgs } from "./FindUniqueReadingArgs";
-export { GroupByReadingArgs } from "./GroupByReadingArgs";
 export { UpdateManyReadingArgs } from "./UpdateManyReadingArgs";
 export { UpdateReadingArgs } from "./UpdateReadingArgs";
 export { UpsertReadingArgs } from "./UpsertReadingArgs";

@@ -1,57 +1,34 @@
-import * as TypeGraphQL from "type-graphql";
-import { AccountUpdatescopesInput } from "../inputs/AccountUpdatescopesInput";
-import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
-import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
-import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserUpdateOneRequiredWithoutAccountsInput } from "../inputs/UserUpdateOneRequiredWithoutAccountsInput";
 
 @TypeGraphQL.InputType("AccountUpdateWithoutCalendarsInput", {
   isAbstract: true,
 })
 export class AccountUpdateWithoutCalendarsInput {
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  provider?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  provider?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  remoteId?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  remoteId?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  accessToken?: NullableStringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  accessToken?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  refreshToken?: NullableStringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  refreshToken?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  accessTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  accessTokenExpiry?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  syncToken?: NullableStringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  syncToken?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => AccountUpdatescopesInput, {
-    nullable: true,
-  })
-  scopes?: AccountUpdatescopesInput | undefined;
+  @TypeGraphQL.Field(() => [String], { nullable: true })
+  scopes?: string[] | undefined;
 
-  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutAccountsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserUpdateOneRequiredWithoutAccountsInput, { nullable: true })
   user?: UserUpdateOneRequiredWithoutAccountsInput | undefined;
 }

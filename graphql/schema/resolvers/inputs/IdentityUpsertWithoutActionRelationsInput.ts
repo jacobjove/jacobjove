@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityCreateWithoutActionRelationsInput } from "../inputs/IdentityCreateWithoutActionRelationsInput";
 import { IdentityUpdateWithoutActionRelationsInput } from "../inputs/IdentityUpdateWithoutActionRelationsInput";
 
@@ -6,13 +6,9 @@ import { IdentityUpdateWithoutActionRelationsInput } from "../inputs/IdentityUpd
   isAbstract: true,
 })
 export class IdentityUpsertWithoutActionRelationsInput {
-  @TypeGraphQL.Field((_type) => IdentityUpdateWithoutActionRelationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => IdentityUpdateWithoutActionRelationsInput, { nullable: false })
   update!: IdentityUpdateWithoutActionRelationsInput;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateWithoutActionRelationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => IdentityCreateWithoutActionRelationsInput, { nullable: false })
   create!: IdentityCreateWithoutActionRelationsInput;
 }

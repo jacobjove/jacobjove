@@ -16,9 +16,9 @@ import { Calendar, CalendarEvent, Habit, Identity, Task, Value } from "@/graphql
 import { DashboardComponentKey, DashboardLayouts } from "@/graphql/schema/models/Dashboard";
 import { gql } from "@apollo/client";
 import { Box, Breakpoint } from "@mui/material";
+import { useSession } from "next-auth/react";
 import { FC, memo, useEffect, useMemo, useState } from "react";
 import { ItemCallback, Responsive, WidthProvider } from "react-grid-layout";
-import { useAuth } from "../contexts/AuthContext";
 
 export const fragment = gql`
   fragment DashboardData on Query {
@@ -83,11 +83,11 @@ interface DashboardProps {
 
 const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
   const { data, loading, error, layouts, setLayouts, editing } = props;
-  const { token } = useAuth();
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const { data: session } = useSession();
+  const selectedDateState = useState<Date>(new Date());
   const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xs");
   const children = useMemo(() => {
-    if (!data || !token) return [];
+    if (!data || !session) return [];
     const { calendarEvents, calendars, tasks, identities, values } = data;
     const getDashboardComponent = (key: DashboardComponentKey) => {
       switch (key) {
@@ -96,7 +96,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
             <DashboardCard title={"Calendar"} editing={editing} loading={loading}>
               <CalendarViewerMemoized
                 data={{ calendarEvents, calendars }}
-                selectedDateState={[selectedDate, setSelectedDate]}
+                selectedDateState={selectedDateState}
                 loading={loading}
                 defaultView="day"
                 includeDateSelector
@@ -106,10 +106,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "tasks":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <TasksBoxMemoized
-                data={{ tasks }}
-                selectedDateState={[selectedDate, setSelectedDate]}
-              />
+              <TasksBoxMemoized data={{ tasks }} selectedDateState={selectedDateState} />
             </DashboardCard>
           );
         case "identities":
@@ -142,7 +139,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         </div>
       );
     });
-  }, [layouts, editing, data, loading, token]);
+  }, [layouts, editing, data, loading, selectedDateState, session]);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
@@ -157,7 +154,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
       setCurrentBreakpoint(breakpoint);
     }
   }, [setCurrentBreakpoint]);
-  if (!token || !data) {
+  if (!session || !data) {
     console.error(error);
     return null;
   }

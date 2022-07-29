@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { DateTimeNullableFilter } from "../inputs/DateTimeNullableFilter";
 import { ItemListRelationFilter } from "../inputs/ItemListRelationFilter";
@@ -11,73 +11,45 @@ import { UserRelationFilter } from "../inputs/UserRelationFilter";
   isAbstract: true,
 })
 export class ListWhereInput {
-  @TypeGraphQL.Field((_type) => [ListWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ListWhereInput], { nullable: true })
   AND?: ListWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ListWhereInput], { nullable: true })
   OR?: ListWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ListWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ListWhereInput], { nullable: true })
   NOT?: ListWhereInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => UserRelationFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserRelationFilter, { nullable: true })
   owner?: UserRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
   ownerId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringFilter, { nullable: true })
   slug?: StringFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => StringNullableFilter, { nullable: true })
   description?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => JsonFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => JsonFilter, { nullable: true })
   fields?: JsonFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => ItemListRelationFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ItemListRelationFilter, { nullable: true })
   items?: ItemListRelationFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeFilter, { nullable: true })
   updatedAt?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, { nullable: true })
   archivedAt?: DateTimeNullableFilter | undefined;
 }

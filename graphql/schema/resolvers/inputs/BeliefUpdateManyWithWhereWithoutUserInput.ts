@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BeliefScalarWhereInput } from "../inputs/BeliefScalarWhereInput";
 import { BeliefUpdateManyMutationInput } from "../inputs/BeliefUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { BeliefUpdateManyMutationInput } from "../inputs/BeliefUpdateManyMutatio
   isAbstract: true,
 })
 export class BeliefUpdateManyWithWhereWithoutUserInput {
-  @TypeGraphQL.Field((_type) => BeliefScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BeliefScalarWhereInput, { nullable: false })
   where!: BeliefScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => BeliefUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BeliefUpdateManyMutationInput, { nullable: false })
   data!: BeliefUpdateManyMutationInput;
 }

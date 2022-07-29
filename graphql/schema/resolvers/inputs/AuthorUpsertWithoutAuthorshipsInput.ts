@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AuthorCreateWithoutAuthorshipsInput } from "../inputs/AuthorCreateWithoutAuthorshipsInput";
 import { AuthorUpdateWithoutAuthorshipsInput } from "../inputs/AuthorUpdateWithoutAuthorshipsInput";
 
@@ -6,13 +6,9 @@ import { AuthorUpdateWithoutAuthorshipsInput } from "../inputs/AuthorUpdateWitho
   isAbstract: true,
 })
 export class AuthorUpsertWithoutAuthorshipsInput {
-  @TypeGraphQL.Field((_type) => AuthorUpdateWithoutAuthorshipsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AuthorUpdateWithoutAuthorshipsInput, { nullable: false })
   update!: AuthorUpdateWithoutAuthorshipsInput;
 
-  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AuthorCreateWithoutAuthorshipsInput, { nullable: false })
   create!: AuthorCreateWithoutAuthorshipsInput;
 }

@@ -6,7 +6,6 @@ export { DeleteManyListArgs } from "./DeleteManyListArgs";
 export { FindFirstListArgs } from "./FindFirstListArgs";
 export { FindManyListArgs } from "./FindManyListArgs";
 export { FindUniqueListArgs } from "./FindUniqueListArgs";
-export { GroupByListArgs } from "./GroupByListArgs";
 export { UpdateListArgs } from "./UpdateListArgs";
 export { UpdateManyListArgs } from "./UpdateManyListArgs";
 export { UpsertListArgs } from "./UpsertListArgs";

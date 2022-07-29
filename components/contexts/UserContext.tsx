@@ -1,8 +1,8 @@
-import { useAuth } from "@/components/contexts/AuthContext";
-import { GET_USER } from "@/graphql/queries";
+import { GET_USER_BY_ID } from "@/graphql/queries";
 import { User } from "@/graphql/schema";
 import { printError } from "@/utils/apollo/error-handling";
 import { useLazyQuery } from "@apollo/client";
+import { useSession } from "next-auth/react";
 import { createContext, FC, useContext, useEffect } from "react";
 
 const UserContext = createContext<User | null>(null);
@@ -10,21 +10,27 @@ const UserContext = createContext<User | null>(null);
 export default UserContext;
 
 export const UserContextProvider: FC = ({ children }) => {
-  const { token, loading: loadingAuth } = useAuth();
-  const [getUser, { loading: loadingUser, error, data }] = useLazyQuery<{ user: User }>(GET_USER);
+  const { data: session, status } = useSession();
+  const loadingAuth = status === "loading";
+  const [getUser, { loading: loadingUser, error, data }] = useLazyQuery<{ user: User }>(
+    GET_USER_BY_ID
+  );
   const loading = loadingAuth || loadingUser;
 
   useEffect(() => {
-    if (token?.uid) {
+    if (session?.user.id) {
+      console.log(">>> Getting user...");
       getUser({
-        variables: { id: token.uid },
+        variables: { id: session.user.id },
       }).catch(printError);
     } else if (!loading && error) printError(error);
-  }, [token, loading, error, getUser]);
+  }, [session, loading, error, getUser]);
 
   return <UserContext.Provider value={data?.user ?? null}>{children}</UserContext.Provider>;
 };
 
-export const useUser = (): User | null => {
-  return useContext(UserContext);
+export const useUser = ({ required } = { required: false }): User | null => {
+  const user = useContext(UserContext);
+  if (required && !user) console.error("User is required but is not set!");
+  return user;
 };

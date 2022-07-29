@@ -1,9 +1,8 @@
 import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
 import { firestore } from "@/utils/firebase/admin";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getFirestoreDocDataFromSnapshot, getPrismaFromContext } from "../../../helpers";
-import { Act } from "../../../models/Act";
 import { Action } from "../../../models/Action";
 import { ActionSchedule } from "../../../models/ActionSchedule";
 import { CalendarEvent } from "../../../models/CalendarEvent";
@@ -23,31 +22,7 @@ import { HabitTasksArgs } from "./args/HabitTasksArgs";
 
 @TypeGraphQL.Resolver((_of) => Habit)
 export class HabitRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Act, {
-    nullable: false,
-  })
-  async act(@TypeGraphQL.Root() habit: Habit, @TypeGraphQL.Ctx() ctx: ApolloContext): Promise<Act> {
-    if (USE_FIREBASE) {
-      return await firestore
-        .doc(`acts/${habit.actId}`)
-        .get()
-        .then(async (doc) => {
-          return getFirestoreDocDataFromSnapshot(doc) as Promise<Act>;
-        });
-    } else {
-      return getPrismaFromContext(ctx)
-        .habit.findUnique({
-          where: {
-            id: habit.id,
-          },
-        })
-        .act({});
-    }
-  }
-
-  @TypeGraphQL.FieldResolver((_type) => User, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -70,9 +45,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [ActionSchedule], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [ActionSchedule], { nullable: false })
   async schedules(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -104,9 +77,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Task], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Task], { nullable: false })
   async tasks(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -135,9 +106,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], { nullable: false })
   async calendarEvents(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -166,9 +135,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [MetricUsage], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [MetricUsage], { nullable: false })
   async metricUsages(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -187,9 +154,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Goal], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Goal], { nullable: false })
   async goals(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -208,9 +173,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [RoutineHabit], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [RoutineHabit], { nullable: false })
   async routines(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -229,9 +192,7 @@ export class HabitRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Action], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Action], { nullable: false })
   async actions(
     @TypeGraphQL.Root() habit: Habit,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

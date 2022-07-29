@@ -1,6 +1,6 @@
 import { useUser } from "@/components/contexts/UserContext";
 import { accountFragment, calendarFragment } from "@/graphql/fragments";
-import { GET_USER } from "@/graphql/queries";
+import { GET_USER_BY_ID } from "@/graphql/queries";
 import { Account, Calendar, User } from "@/graphql/schema";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -121,7 +121,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     addCalendars: Calendar[];
   }>(CREATE_CALENDARS, {
     // TODO
-    refetchQueries: [GET_USER, "GetUser"],
+    refetchQueries: [GET_USER_BY_ID, "GetUserById"],
   });
   const [refreshing, setRefreshing] = useState(false);
   const calendarListHasBeenRefreshed = useRef(false);
@@ -172,7 +172,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
       updateCalendar({
         variables: {
           calendarId,
-          data: { enabled: { set: true } },
+          data: { enabled: true },
         },
       })
         .then(() => axios.get(`/api/calendars/${calendarId}/sync`))
@@ -184,7 +184,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
       updateCalendar({
         variables: {
           calendarId,
-          data: { enabled: { set: false } },
+          data: { enabled: false },
         },
       });
     });
@@ -267,7 +267,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     updateAccount({
       variables: {
         accountId: account.id,
-        data: { scopes: { set: newScopes } },
+        data: { scopes: newScopes },
       },
     })
       .then(() => {

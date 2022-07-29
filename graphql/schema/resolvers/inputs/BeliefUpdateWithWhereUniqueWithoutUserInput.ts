@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BeliefUpdateWithoutUserInput } from "../inputs/BeliefUpdateWithoutUserInput";
 import { BeliefWhereUniqueInput } from "../inputs/BeliefWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { BeliefWhereUniqueInput } from "../inputs/BeliefWhereUniqueInput";
   isAbstract: true,
 })
 export class BeliefUpdateWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => BeliefWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BeliefWhereUniqueInput, { nullable: false })
   where!: BeliefWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => BeliefUpdateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BeliefUpdateWithoutUserInput, { nullable: false })
   data!: BeliefUpdateWithoutUserInput;
 }

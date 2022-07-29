@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateOrConnectWithoutBookshelvesInput } from "../inputs/UserCreateOrConnectWithoutBookshelvesInput";
 import { UserCreateWithoutBookshelvesInput } from "../inputs/UserCreateWithoutBookshelvesInput";
 import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
@@ -7,18 +7,12 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserCreateNestedOneWithoutBookshelvesInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutBookshelvesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutBookshelvesInput, { nullable: true })
   create?: UserCreateWithoutBookshelvesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutBookshelvesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutBookshelvesInput, { nullable: true })
   connectOrCreate?: UserCreateOrConnectWithoutBookshelvesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 }

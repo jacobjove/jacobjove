@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CategoryCreateOrConnectWithoutCategorizationsInput } from "../inputs/CategoryCreateOrConnectWithoutCategorizationsInput";
 import { CategoryCreateWithoutCategorizationsInput } from "../inputs/CategoryCreateWithoutCategorizationsInput";
 import { CategoryUpdateWithoutCategorizationsInput } from "../inputs/CategoryUpdateWithoutCategorizationsInput";
@@ -9,9 +9,7 @@ import { CategoryWhereUniqueInput } from "../inputs/CategoryWhereUniqueInput";
   isAbstract: true,
 })
 export class CategoryUpdateOneRequiredWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => CategoryCreateWithoutCategorizationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CategoryCreateWithoutCategorizationsInput, { nullable: true })
   create?: CategoryCreateWithoutCategorizationsInput | undefined;
 
   @TypeGraphQL.Field((_type) => CategoryCreateOrConnectWithoutCategorizationsInput, {
@@ -19,18 +17,12 @@ export class CategoryUpdateOneRequiredWithoutCategorizationsInput {
   })
   connectOrCreate?: CategoryCreateOrConnectWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryUpsertWithoutCategorizationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CategoryUpsertWithoutCategorizationsInput, { nullable: true })
   upsert?: CategoryUpsertWithoutCategorizationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CategoryWhereUniqueInput, { nullable: true })
   connect?: CategoryWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CategoryUpdateWithoutCategorizationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CategoryUpdateWithoutCategorizationsInput, { nullable: true })
   update?: CategoryUpdateWithoutCategorizationsInput | undefined;
 }

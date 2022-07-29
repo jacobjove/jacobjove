@@ -21,20 +21,16 @@ type TasksBoxProps = TasksAccordionProps &
 
 const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
   const { defaultView, data, selectedDateState, displayTitle, ...tasksTableProps } = props;
-  const { newTaskDialogTriggerProps } = useNewTaskDialog();
   const [selectedDate, _setSelectedDate] = selectedDateState;
-  // TODO: which of the following is more performant?
-  // const selectedTasks = useMemo(() => {
-  //   if (!selectedDate) return data.tasks;
-  //   return data.tasks.filter((task) =>
-  //     !task.plannedStartDate ? true : parseISO(task.plannedStartDate) <= selectedDate
-  //   );
-  // }, [selectedDate, data.tasks]);
-  //prettier-ignore
-  const selectedTasks = !selectedDate ? data.tasks : data.tasks.filter((task) => {
-    return !task.plannedStartDate ? true : task.plannedStartDate <= selectedDate;
-  });
-  const [view, setView] = useState<ViewMode>(defaultView ?? "list");
+  const { newTaskDialogTriggerProps } = useNewTaskDialog();
+
+  // TODO: useMemo?
+  // prettier-ignore
+  // const selectedTasks = !selectedDate ? data.tasks : data.tasks.filter((task) => {
+  //   return !task.plannedStartDate ? true : task.plannedStartDate <= selectedDate;
+  // });
+
+  const [view, _setView] = useState<ViewMode>(defaultView ?? "list");
   return (
     <DataBox
       title={"Tasks"}
@@ -44,7 +40,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
       <Box minHeight={0} flexGrow={1}>
         {
           view === "list" ? (
-            <TasksAccordion data={{ tasks: selectedTasks }} {...tasksTableProps} />
+            <TasksAccordion data={{ tasks: data.tasks }} {...tasksTableProps} />
           ) : null
           // <TasksBoard data={{ tasks: selectedTasks }} {...tasksTableProps} />
         }

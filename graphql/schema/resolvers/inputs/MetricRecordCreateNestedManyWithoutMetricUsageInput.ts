@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricRecordCreateManyMetricUsageInputEnvelope } from "../inputs/MetricRecordCreateManyMetricUsageInputEnvelope";
 import { MetricRecordCreateOrConnectWithoutMetricUsageInput } from "../inputs/MetricRecordCreateOrConnectWithoutMetricUsageInput";
 import { MetricRecordCreateWithoutMetricUsageInput } from "../inputs/MetricRecordCreateWithoutMetricUsageInput";
@@ -8,9 +8,7 @@ import { MetricRecordWhereUniqueInput } from "../inputs/MetricRecordWhereUniqueI
   isAbstract: true,
 })
 export class MetricRecordCreateNestedManyWithoutMetricUsageInput {
-  @TypeGraphQL.Field((_type) => [MetricRecordCreateWithoutMetricUsageInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricRecordCreateWithoutMetricUsageInput], { nullable: true })
   create?: MetricRecordCreateWithoutMetricUsageInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [MetricRecordCreateOrConnectWithoutMetricUsageInput], {
@@ -18,13 +16,9 @@ export class MetricRecordCreateNestedManyWithoutMetricUsageInput {
   })
   connectOrCreate?: MetricRecordCreateOrConnectWithoutMetricUsageInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricRecordCreateManyMetricUsageInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricRecordCreateManyMetricUsageInputEnvelope, { nullable: true })
   createMany?: MetricRecordCreateManyMetricUsageInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [MetricRecordWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MetricRecordWhereUniqueInput], { nullable: true })
   connect?: MetricRecordWhereUniqueInput[] | undefined;
 }

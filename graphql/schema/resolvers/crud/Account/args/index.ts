@@ -6,7 +6,6 @@ export { DeleteManyAccountArgs } from "./DeleteManyAccountArgs";
 export { FindFirstAccountArgs } from "./FindFirstAccountArgs";
 export { FindManyAccountArgs } from "./FindManyAccountArgs";
 export { FindUniqueAccountArgs } from "./FindUniqueAccountArgs";
-export { GroupByAccountArgs } from "./GroupByAccountArgs";
 export { UpdateAccountArgs } from "./UpdateAccountArgs";
 export { UpdateManyAccountArgs } from "./UpdateManyAccountArgs";
 export { UpsertAccountArgs } from "./UpsertAccountArgs";

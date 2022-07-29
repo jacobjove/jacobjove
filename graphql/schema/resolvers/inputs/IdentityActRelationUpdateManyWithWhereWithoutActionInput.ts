@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityActRelationScalarWhereInput } from "../inputs/IdentityActRelationScalarWhereInput";
 import { IdentityActRelationUpdateManyMutationInput } from "../inputs/IdentityActRelationUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { IdentityActRelationUpdateManyMutationInput } from "../inputs/IdentityAc
   isAbstract: true,
 })
 export class IdentityActRelationUpdateManyWithWhereWithoutActionInput {
-  @TypeGraphQL.Field((_type) => IdentityActRelationScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => IdentityActRelationScalarWhereInput, { nullable: false })
   where!: IdentityActRelationScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => IdentityActRelationUpdateManyMutationInput, { nullable: false })
   data!: IdentityActRelationUpdateManyMutationInput;
 }

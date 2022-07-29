@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookshelfAvgAggregate } from "../outputs/BookshelfAvgAggregate";
 import { BookshelfCountAggregate } from "../outputs/BookshelfCountAggregate";
 import { BookshelfMaxAggregate } from "../outputs/BookshelfMaxAggregate";
@@ -9,28 +9,18 @@ import { BookshelfSumAggregate } from "../outputs/BookshelfSumAggregate";
   isAbstract: true,
 })
 export class AggregateBookshelf {
-  @TypeGraphQL.Field((_type) => BookshelfCountAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfCountAggregate, { nullable: true })
   _count!: BookshelfCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfAvgAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfAvgAggregate, { nullable: true })
   _avg!: BookshelfAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfSumAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfSumAggregate, { nullable: true })
   _sum!: BookshelfSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfMinAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfMinAggregate, { nullable: true })
   _min!: BookshelfMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => BookshelfMaxAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfMaxAggregate, { nullable: true })
   _max!: BookshelfMaxAggregate | null;
 }

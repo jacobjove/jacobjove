@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { NotebookUserPermissionCreateManyNotebookInputEnvelope } from "../inputs/NotebookUserPermissionCreateManyNotebookInputEnvelope";
 import { NotebookUserPermissionCreateOrConnectWithoutNotebookInput } from "../inputs/NotebookUserPermissionCreateOrConnectWithoutNotebookInput";
 import { NotebookUserPermissionCreateWithoutNotebookInput } from "../inputs/NotebookUserPermissionCreateWithoutNotebookInput";
@@ -32,24 +32,16 @@ export class NotebookUserPermissionUpdateManyWithoutNotebookInput {
   })
   createMany?: NotebookUserPermissionCreateManyNotebookInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   set?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   disconnect?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   delete?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   connect?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [NotebookUserPermissionUpdateWithWhereUniqueWithoutNotebookInput], {
@@ -62,8 +54,6 @@ export class NotebookUserPermissionUpdateManyWithoutNotebookInput {
   })
   updateMany?: NotebookUserPermissionUpdateManyWithWhereWithoutNotebookInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereInput], { nullable: true })
   deleteMany?: NotebookUserPermissionScalarWhereInput[] | undefined;
 }

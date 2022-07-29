@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateWithoutVariantsInput } from "../inputs/ActCreateWithoutVariantsInput";
 import { ActUpdateWithoutVariantsInput } from "../inputs/ActUpdateWithoutVariantsInput";
 
@@ -6,13 +6,9 @@ import { ActUpdateWithoutVariantsInput } from "../inputs/ActUpdateWithoutVariant
   isAbstract: true,
 })
 export class ActUpsertWithoutVariantsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutVariantsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActUpdateWithoutVariantsInput, { nullable: false })
   update!: ActUpdateWithoutVariantsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutVariantsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutVariantsInput, { nullable: false })
   create!: ActCreateWithoutVariantsInput;
 }

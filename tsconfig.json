@@ -28,8 +28,9 @@
     "target": "esnext"
   },
   "include": [
+    "./*.d.ts",
+    "./*.ts",
     "types/*.ts",
-    "next-env.d.ts",
     "next.config.js",
     "components/*",
     "components/**/*",
@@ -39,7 +40,7 @@
     "lib/*.ts",
     "pages/*",
     "pages/**/*",
-    "prisma/seed.ts",
+    "scripts/*.ts",
     "utils/*.ts",
     "utils/**/*.ts"
   ],

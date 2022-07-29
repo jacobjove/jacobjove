@@ -3,9 +3,11 @@ import Stopwatch from "@/components/actions/Stopwatch";
 import { taskFragment } from "@/graphql/fragments";
 import { CREATE_TASK, UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema/models/Task";
+import { buildNewItemFragment } from "@/graphql/utils/fragments";
+import { addItemToCache } from "@/utils/apollo";
 import { printError } from "@/utils/apollo/error-handling";
 import { TaskData } from "@/utils/tasks";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 // import EditIcon from "@mui/icons-material/Edit";
@@ -31,8 +33,8 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { useSession } from "next-auth/react";
 import { Dispatch, FC, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
 import TasksTable from "./TasksTable";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
@@ -48,7 +50,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     anchorEl: _anchorEl,
     ...dialogProps
   } = props;
-  const { token } = useAuth();
+  const { data: session } = useSession();
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
   const [editing, setEditing] = useState(!taskData.id);
@@ -71,25 +73,12 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   }>(CREATE_TASK, {
     update(cache, { data }) {
       const { createTask } = data || {};
-      if (createTask) {
-        cache.modify({
-          fields: {
-            tasks(existingTasks = []) {
-              const newTaskRef = cache.writeFragment({
-                data: createTask,
-                fragment: gql`
-                  fragment NewTask on Task {
-                    ...TaskFragment
-                  }
-                  ${taskFragment}
-                `,
-                fragmentName: "NewTask",
-              });
-              return [...existingTasks, newTaskRef];
-            },
-          },
-        });
-      }
+      addItemToCache(
+        cache,
+        createTask,
+        "tasks",
+        ...buildNewItemFragment(taskFragment, "TaskFragment", "Task")
+      );
     },
   });
 
@@ -107,8 +96,8 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     canUpdate &&
       updateTask({
         variables: {
-          taskId: taskData.id,
-          data: { [field]: { set: value } },
+          where: { id: taskData.id },
+          data: { [field]: value },
         },
         optimisticResponse: {
           __typename: "Mutation",
@@ -150,7 +139,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             id: "tmp-id",
             subtasks: [],
             habitId: null,
-            userId: token?.uid as string,
+            userId: session?.user.id as string,
             ...completeTaskData,
           },
         },
@@ -216,8 +205,8 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   const archivedAt = new Date();
                   updateTask({
                     variables: {
-                      taskId: taskData.id,
-                      data: { archivedAt: { set: archivedAt } },
+                      where: { id: taskData.id },
+                      data: { archivedAt: archivedAt },
                     },
                     optimisticResponse: {
                       updateTask: {

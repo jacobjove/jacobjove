@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { TaskCreateManyHabitInputEnvelope } from "../inputs/TaskCreateManyHabitInputEnvelope";
 import { TaskCreateOrConnectWithoutHabitInput } from "../inputs/TaskCreateOrConnectWithoutHabitInput";
 import { TaskCreateWithoutHabitInput } from "../inputs/TaskCreateWithoutHabitInput";
@@ -8,23 +8,15 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskCreateNestedManyWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => [TaskCreateWithoutHabitInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [TaskCreateWithoutHabitInput], { nullable: true })
   create?: TaskCreateWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskCreateOrConnectWithoutHabitInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [TaskCreateOrConnectWithoutHabitInput], { nullable: true })
   connectOrCreate?: TaskCreateOrConnectWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateManyHabitInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateManyHabitInputEnvelope, { nullable: true })
   createMany?: TaskCreateManyHabitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [TaskWhereUniqueInput], { nullable: true })
   connect?: TaskWhereUniqueInput[] | undefined;
 }

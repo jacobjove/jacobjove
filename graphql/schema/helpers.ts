@@ -2,10 +2,10 @@ import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
 import { User, UserInlineCollectionKey } from "@/graphql/schema/models/User";
 import { printError } from "@/utils/apollo/error-handling";
-import { firestore } from "@/utils/firebase/admin";
+import admin, { firestore } from "@/utils/firebase/admin";
 import { DocumentSnapshot, QueryDocumentSnapshot } from "@firebase/firestore";
+import cuid from "cuid";
 import { GraphQLResolveInfo } from "graphql";
-import graphqlFields from "graphql-fields";
 import pluralize from "pluralize";
 import { Model } from "./models/model";
 
@@ -47,33 +47,53 @@ export function transformCountFieldIntoSelectRelationsCount(_count: object) {
 
 export type DocSnapshot = Pick<DocumentSnapshot | QueryDocumentSnapshot, "id" | "data">;
 
-export async function createItem(
-  collectionName: string,
-  ctx: ApolloContext,
-  info: GraphQLResolveInfo,
-  args: DocCreationArgs
-) {
+interface CreateItemArgs {
+  collectionName: string;
+  ctx: ApolloContext;
+  info: GraphQLResolveInfo;
+  args: DocCreationArgs;
+  inlineWithUser?: boolean;
+}
+export async function createItem({
+  collectionName,
+  ctx,
+  info,
+  args,
+  inlineWithUser,
+}: CreateItemArgs) {
   if (USE_FIREBASE) {
+    const userDocPath = `users/${ctx.session?.user.id}`;
     const now = new Date();
     const data = {
       createdAt: now,
       updatedAt: now,
-      ...transformDataForFirestore(args.data),
+      ...args.data,
     };
+    if (inlineWithUser) {
+      console.log(">> Attempting to create item inline with user...");
+      const userDocRef = firestore.doc(userDocPath);
+      const itemId = cuid();
+      userDocRef.update({
+        [collectionName]: admin.firestore.FieldValue.arrayUnion({
+          id: itemId,
+          ...data,
+        }),
+      });
+      const userDoc = await userDocRef.get();
+      const userData = (await getFirestoreDocDataFromSnapshot(userDoc)) as User;
+      const collectionData = userData[collectionName as UserInlineCollectionKey] ?? [];
+      return (collectionData as { id: string }[]).find((item) => item.id === itemId);
+    }
     // TODO: create collection if does not exist
     const res = await firestore
-      .collection(`users/${ctx.token?.uid}/${collectionName}`)
+      .collection(`users/${ctx.session?.user.id}/${collectionName}`)
       .add({ ...data });
     const doc = await res.get();
     return getFirestoreDocDataFromSnapshot(doc) as Promise<unknown>;
   } else {
     const prismaKey = pluralize.singular(collectionName);
-    const { _count } = transformFields(graphqlFields(info));
     const prismaTypeHandler = getPrismaFromContext(ctx)[prismaKey];
-    return prismaTypeHandler.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return prismaTypeHandler.create({ ...args });
   }
 }
 
@@ -86,17 +106,13 @@ export async function getItem(
   if (USE_FIREBASE) {
     const id = args.where.id;
     return await firestore
-      .doc(`users/${ctx.token?.uid}/${collectionName}/${id}`)
+      .doc(`users/${ctx.session?.user.id}/${collectionName}/${id}`)
       .get()
       .then((doc) => getFirestoreDocDataFromSnapshot(doc) as Promise<unknown>);
   } else {
-    const { _count } = transformFields(graphqlFields(info));
     const prismaKey = pluralize.singular(collectionName);
     const prismaHandler = getPrismaFromContext(ctx)[prismaKey];
-    return prismaHandler.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return prismaHandler.findUnique({ ...args });
   }
 }
 
@@ -109,11 +125,6 @@ export async function getFirestoreDocDataFromSnapshot(
         ...doc.data(),
       } as unknown)
     : null;
-}
-
-interface Input {
-  set?: unknown;
-  connect?: { id: string };
 }
 
 interface QueryArgs {
@@ -187,11 +198,7 @@ export async function getCollectionData(
       snapshot.docs.map((doc) => getFirestoreDocDataFromSnapshot(doc) as Promise<unknown>)
     );
   } else {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx)[pluralize.singular(collectionName)].findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx)[pluralize.singular(collectionName)].findMany({ ...args });
   }
 }
 
@@ -199,16 +206,19 @@ export async function getUserSubcollectionData(
   collectionName: string,
   ctx: ApolloContext,
   info: GraphQLResolveInfo | undefined,
-  args: QueryArgs
+  args: QueryArgs,
+  inline?: boolean
 ): Promise<unknown[]> {
   if (USE_FIREBASE) {
-    const userId = ctx.token?.uid;
-    if (!userId) {
-      console.error(">>>>>> Context token:", ctx.token);
-      console.error(">>>>>> No user ID! Returning empty array...");
-      return [];
+    const userId = ctx.session?.user.id;
+    if (!userId) throw new Error("No userId");
+    const userDocPath = `users/${userId}`;
+    if (inline) {
+      const userDoc = await firestore.doc(userDocPath).get();
+      const data = userDoc.data() as User;
+      return data[collectionName as UserInlineCollectionKey] as unknown[];
     }
-    const collectionPath = `users/${userId}/${collectionName}`;
+    const collectionPath = `${userDocPath}/${collectionName}`;
     const collectionRef = firestore.collection(collectionPath);
     // TODO: filter based on args
     const snapshot = await collectionRef.get();
@@ -218,11 +228,7 @@ export async function getUserSubcollectionData(
       })
     );
   } else {
-    const { _count } = transformFields(graphqlFields(info as GraphQLResolveInfo));
-    return getPrismaFromContext(ctx)[pluralize.singular(collectionName)].findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx)[pluralize.singular(collectionName)].findMany({ ...args });
   }
 }
 
@@ -245,12 +251,11 @@ export async function updateItem(
   if (USE_FIREBASE) {
     const itemId = args.where.id;
     if (!itemId) throw new Error("Item ID not provided");
-    const userId = ctx.token?.uid;
+    const userId = ctx.session?.user.id;
     const data = {
       updatedAt: new Date(),
-      ...transformDataForFirestore(args.data),
+      ...args.data,
     };
-    console.log("data:", data);
     const userDocPath = `users/${userId}`;
     const collectionPath = inUserSubcollection
       ? `${userDocPath}/${collectionName}`
@@ -271,14 +276,14 @@ export async function updateItem(
       const collectionItemIndex = (collectionData as { id: string }[]).findIndex(
         (item) => item.id === itemId
       );
-      if (!collectionItemIndex) throw new Error(`Could not find collection item with id ${itemId}`);
-      let collectionItem = collectionData[collectionItemIndex];
-      collectionItem = {
-        ...collectionItem,
+      if (typeof collectionItemIndex !== "number")
+        throw new Error(`Could not find collection item with id ${itemId}`);
+      collectionData[collectionItemIndex] = {
+        ...collectionData[collectionItemIndex],
         ...data,
       };
-      collectionData[collectionItemIndex] = collectionItem;
-      await userDocRef.update({ collectionName: collectionData });
+      await userDocRef.update({ [collectionName]: collectionData });
+      // console.log(">>> Set collectionData:)
       userDoc = await userDocRef.get();
       userData = (await getFirestoreDocDataFromSnapshot(userDoc)) as User;
       collectionData = userData[collectionName as UserInlineCollectionKey];
@@ -286,11 +291,7 @@ export async function updateItem(
       return collectionData[collectionItemIndex] as unknown;
     }
   } else {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx)[pluralize.singular(collectionName)].update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx)[pluralize.singular(collectionName)].update({ ...args });
   }
 }
 
@@ -301,7 +302,7 @@ export async function toggleSelection(
   id: string,
   archivedAt: Date | null
 ): Promise<unknown> {
-  const userId = ctx.token?.uid;
+  const userId = ctx.session?.user.id;
   if (USE_FIREBASE) {
     // TODO: refactor
     const docRef = await firestore.doc(`users/${userId}/${collectionName}/${id}`);
@@ -312,8 +313,11 @@ export async function toggleSelection(
           data: { archivedAt },
         });
       } else {
-        return createItem(collectionName, ctx, info, {
-          data: { archivedAt },
+        return createItem({
+          collectionName,
+          ctx,
+          info,
+          args: { data: { archivedAt } },
         });
       }
     });
@@ -340,26 +344,52 @@ export async function toggleSelection(
   }
 }
 
-export function transformDataForFirestore(
-  data: Record<string | symbol, unknown>
-): Record<string, unknown> {
-  const transformedData = {} as Record<string, unknown>;
-  Object.entries(data).forEach(([key, value]: [string, unknown]) => {
-    // Note: typeof null === "object"
-    if (typeof value === "object" && value !== null) {
-      const input = value as Input;
-      if (input["connect"]) {
-        transformedData[`${key}Id`] = input["connect"].id ?? null;
-      } else if ("set" in input) {
-        transformedData[key] = typeof input["set"] !== "undefined" ? input["set"] : value;
-      } else {
-        console.error(JSON.stringify(data[key]));
-        transformedData[key] = value;
-      }
-    } else if (typeof value !== "undefined") {
-      transformedData[key] = value;
-    }
-  });
-  console.error("Transformed data", transformedData);
-  return transformedData;
+export async function upsertItem(
+  collectionName: string,
+  ctx: ApolloContext,
+  info: GraphQLResolveInfo,
+  args: DocUpdateArgs,
+  inUserSubcollection = false
+): Promise<unknown> {
+  if (USE_FIREBASE) {
+    const id = args.where.id;
+    if (!id) throw new Error(`ID is not included in ${JSON.stringify(args.where)}`);
+    const userDocPath = `users/${ctx.session?.user.id}`;
+    const docPath = inUserSubcollection
+      ? `${userDocPath}/${collectionName}/${id}`
+      : `${collectionName}/${id}`;
+    const docRef = firestore.doc(docPath);
+    // TODO
+    const data = {
+      updatedAt: new Date(),
+      ...args.data,
+    };
+    return await docRef.set(data, { merge: true });
+  } else {
+    return getPrismaFromContext(ctx)[pluralize.singular(collectionName)].upsert({ ...args });
+  }
 }
+
+// export function transformDataForFirestore(
+//   data: Record<string | symbol, unknown>
+// ): Record<string, unknown> {
+//   const transformedData = {} as Record<string, unknown>;
+//   Object.entries(data).forEach(([key, value]: [string, unknown]) => {
+//     // Note: typeof null === "object"
+//     if (typeof value === "object" && value !== null) {
+//       const input = value as any;
+//       if (input["connect"]) {
+//         console.error("Old input:", JSON.stringify(data[key]));
+//         transformedData[`${key}Id`] = input["connect"].id ?? null;
+//       } else if ("set" in input) {
+//         console.error("Old input:", JSON.stringify(data[key]));
+//         transformedData[key] = typeof input["set"] !== "undefined" ? input["set"] : value;
+//       } else {
+//         transformedData[key] = value;
+//       }
+//     } else if (typeof value !== "undefined") {
+//       transformedData[key] = value;
+//     }
+//   });
+//   return transformedData;
+// }

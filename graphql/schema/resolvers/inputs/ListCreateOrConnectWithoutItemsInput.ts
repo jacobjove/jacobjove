@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ListCreateWithoutItemsInput } from "../inputs/ListCreateWithoutItemsInput";
 import { ListWhereUniqueInput } from "../inputs/ListWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { ListWhereUniqueInput } from "../inputs/ListWhereUniqueInput";
   isAbstract: true,
 })
 export class ListCreateOrConnectWithoutItemsInput {
-  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, { nullable: false })
   where!: ListWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ListCreateWithoutItemsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ListCreateWithoutItemsInput, { nullable: false })
   create!: ListCreateWithoutItemsInput;
 }

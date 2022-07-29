@@ -3,8 +3,8 @@ import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import NotesMenu from "@/components/notes/NotesMenu";
 import NoteViewer from "@/components/notes/NoteViewer";
-import { noteFragment } from "@/graphql/fragments";
-import { Note } from "@/graphql/schema";
+import { notebookFragment, noteFragment } from "@/graphql/fragments";
+import { Note, Notebook } from "@/graphql/schema";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -42,24 +42,32 @@ const QUERY = gql`
     notes {
       ...NoteFragment
     }
+    notebooks {
+      ...NotebookFragment
+    }
   }
   ${noteFragment}
+  ${notebookFragment}
 `;
 
 interface NotesPageData {
   notes: Note[];
+  notebooks: Notebook[];
 }
 
 const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const user = useUser();
   const { isMobile } = useContext(DeviceContext);
-  const notebooks = user?.notebooks;
-  console.log("Querying for notes by", user?.name);
+  // const notebooks = user?.notebooks;
   const { data, loading: loadingNotes, error } = useQuery<NotesPageData>(QUERY);
+  const { notebooks: _notebooks, notes: _notes } = data ?? {};
+  const notebooks = _notebooks?.filter((notebook) => !notebook.archivedAt);
   const [selectedNotebookId, setSelectedNotebookId] = useState<string | null>(null);
   const selectedNotebook = notebooks?.find((nb) => nb.id === selectedNotebookId);
   const notes = data?.notes?.filter((note) => note.notebookId === selectedNotebookId);
-  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
+  const [_selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
+  const [selectedNoteIds, setSelectedNoteIds] = useState<string[]>([]);
+  const selectedNoteId = selectedNoteIds[0];
   const selectedNote = notes?.find((note) => note.id === selectedNoteId);
   const [createNote, { loading: loadingCreateNote }] = useMutation<{
     createNote: Note;
@@ -90,17 +98,17 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
 
   const loading = loadingNotes || loadingCreateNote;
 
-  if (!user) return null;
+  // console.log(">>>", data);
 
   const handleCreateNote = async () => {
     const title = "Untitled note";
     const body = "";
     const now = new Date();
-    if (!user?.notebooks?.[0]?.id) {
+    if (!notebooks?.[0]?.id) {
       console.error("No notebooks found.");
       return;
     }
-    const notebookId = selectedNotebook?.id || user?.notebooks[0].id; // TODO
+    const notebookId = selectedNotebook?.id || notebooks[0].id; // TODO
     const tmpId = "tmp-id";
     const fetchResult = createNote({
       variables: {
@@ -115,7 +123,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
           title,
           body,
           isPublic: false,
-          notebookId: notebookId,
+          notebookId,
           createdAt: now,
           updatedAt: now,
           archivedAt: null,
@@ -126,7 +134,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
     }).catch((error) => {
       console.error(error);
     });
-    setSelectedNoteId(tmpId);
+    setSelectedNoteIds([tmpId]);
     const newNoteId = (await fetchResult)?.data?.createNote?.id;
     newNoteId && setSelectedNoteId(newNoteId);
   };
@@ -142,13 +150,16 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
       />
       <Box position="relative" display="flex" height="100%">
         <NotesMenu
-          notes={data?.notes}
+          data={{
+            notes: notes ?? [],
+            notebooks: notebooks ?? [],
+          }}
           loading={loading}
           error={error}
           selectedNotebook={selectedNotebook}
           setSelectedNotebookId={setSelectedNotebookId}
           selectedNote={selectedNote}
-          setSelectedNoteId={setSelectedNoteId}
+          selectedNoteIdsState={[selectedNoteIds, setSelectedNoteIds]}
           handleCreateNote={handleCreateNote}
         />
         {!isMobile && (
@@ -172,9 +183,6 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
                   height: "100%",
                   maxHeight: "100%",
                   flexGrow: 1,
-                  display: "flex",
-                  alignItems: "start",
-                  justifyContent: "center",
                 }}
               >
                 {selectedNote ? (
@@ -184,6 +192,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
                     sx={{
                       display: "flex",
                       alignItems: "center",
+                      justifyContent: "center",
                       height: "100%",
                     }}
                   >

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarScalarWhereInput } from "../inputs/CalendarScalarWhereInput";
 import { CalendarUpdateManyMutationInput } from "../inputs/CalendarUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { CalendarUpdateManyMutationInput } from "../inputs/CalendarUpdateManyMut
   isAbstract: true,
 })
 export class CalendarUpdateManyWithWhereWithoutAccountInput {
-  @TypeGraphQL.Field((_type) => CalendarScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CalendarScalarWhereInput, { nullable: false })
   where!: CalendarScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => CalendarUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CalendarUpdateManyMutationInput, { nullable: false })
   data!: CalendarUpdateManyMutationInput;
 }

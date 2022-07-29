@@ -6,7 +6,6 @@ export { DeleteScheduleTemplateArgs } from "./DeleteScheduleTemplateArgs";
 export { FindFirstScheduleTemplateArgs } from "./FindFirstScheduleTemplateArgs";
 export { FindManyScheduleTemplateArgs } from "./FindManyScheduleTemplateArgs";
 export { FindUniqueScheduleTemplateArgs } from "./FindUniqueScheduleTemplateArgs";
-export { GroupByScheduleTemplateArgs } from "./GroupByScheduleTemplateArgs";
 export { UpdateManyScheduleTemplateArgs } from "./UpdateManyScheduleTemplateArgs";
 export { UpdateScheduleTemplateArgs } from "./UpdateScheduleTemplateArgs";
 export { UpsertScheduleTemplateArgs } from "./UpsertScheduleTemplateArgs";

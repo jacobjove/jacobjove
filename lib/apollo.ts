@@ -1,8 +1,8 @@
 import introspectionResult from "@/graphql/schema.gql.json";
 import { ApolloClient, from, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
+import DebounceLink from "apollo-link-debounce";
 import { withScalars } from "apollo-link-scalars";
-// import { createUploadLink } from 'apollo-upload-client'
 import merge from "deepmerge";
 import { buildClientSchema, IntrospectionQuery } from "graphql";
 import { DateTimeResolver } from "graphql-scalars";
@@ -32,7 +32,9 @@ const scalarsLink = withScalars({
   },
 });
 
-// https://github.com/jaydenseric/apollo-upload-client
+const debounceLink = new DebounceLink(500);
+
+// TODO: https://github.com/jaydenseric/apollo-upload-client
 const terminalLink = new HttpLink({
   uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`, // Server URL (must be absolute)
   credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
@@ -57,7 +59,7 @@ function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     // https://www.apollographql.com/docs/react/api/link/introduction/#additive-composition
-    link: from([scalarsLink, errorLink, terminalLink]),
+    link: from([scalarsLink, errorLink, debounceLink, terminalLink]),
     cache: new InMemoryCache({
       //   typePolicies: {
       //     Query: {

@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateOrConnectWithoutNotebookPermissionsInput } from "../inputs/UserCreateOrConnectWithoutNotebookPermissionsInput";
 import { UserCreateWithoutNotebookPermissionsInput } from "../inputs/UserCreateWithoutNotebookPermissionsInput";
 import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
@@ -7,9 +7,7 @@ import { UserWhereUniqueInput } from "../inputs/UserWhereUniqueInput";
   isAbstract: true,
 })
 export class UserCreateNestedOneWithoutNotebookPermissionsInput {
-  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebookPermissionsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebookPermissionsInput, { nullable: true })
   create?: UserCreateWithoutNotebookPermissionsInput | undefined;
 
   @TypeGraphQL.Field((_type) => UserCreateOrConnectWithoutNotebookPermissionsInput, {
@@ -17,8 +15,6 @@ export class UserCreateNestedOneWithoutNotebookPermissionsInput {
   })
   connectOrCreate?: UserCreateOrConnectWithoutNotebookPermissionsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, { nullable: true })
   connect?: UserWhereUniqueInput | undefined;
 }

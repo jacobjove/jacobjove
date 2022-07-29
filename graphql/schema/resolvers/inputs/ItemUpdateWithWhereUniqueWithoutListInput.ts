@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ItemUpdateWithoutListInput } from "../inputs/ItemUpdateWithoutListInput";
 import { ItemWhereUniqueInput } from "../inputs/ItemWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { ItemWhereUniqueInput } from "../inputs/ItemWhereUniqueInput";
   isAbstract: true,
 })
 export class ItemUpdateWithWhereUniqueWithoutListInput {
-  @TypeGraphQL.Field((_type) => ItemWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ItemWhereUniqueInput, { nullable: false })
   where!: ItemWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ItemUpdateWithoutListInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ItemUpdateWithoutListInput, { nullable: false })
   data!: ItemUpdateWithoutListInput;
 }

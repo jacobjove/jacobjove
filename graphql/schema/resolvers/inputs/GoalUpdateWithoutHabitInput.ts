@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { GoalUpdateManyWithoutGoalInput } from "../inputs/GoalUpdateManyWithoutGoalInput";
 import { GoalUpdateOneWithoutMilestonesInput } from "../inputs/GoalUpdateOneWithoutMilestonesInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
@@ -7,18 +7,12 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
   isAbstract: true,
 })
 export class GoalUpdateWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
   quantity?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalUpdateOneWithoutMilestonesInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => GoalUpdateOneWithoutMilestonesInput, { nullable: true })
   goal?: GoalUpdateOneWithoutMilestonesInput | undefined;
 
-  @TypeGraphQL.Field((_type) => GoalUpdateManyWithoutGoalInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => GoalUpdateManyWithoutGoalInput, { nullable: true })
   milestones?: GoalUpdateManyWithoutGoalInput | undefined;
 }

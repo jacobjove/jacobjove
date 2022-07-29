@@ -1,15 +1,13 @@
 import { ApolloContext } from "@/graphql/context";
 import { ActionCrudResolver } from "@/graphql/schema/resolvers/crud/Action/ActionCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Action } from "../../../models/Action";
 import { FindUniqueActionArgs } from "./args/FindUniqueActionArgs";
 
 @TypeGraphQL.Resolver((_of) => Action)
 export class FindUniqueActionResolver {
-  @TypeGraphQL.Query((_returns) => Action, {
-    nullable: true,
-  })
+  @TypeGraphQL.Query((_returns) => Action, { nullable: true })
   async action(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

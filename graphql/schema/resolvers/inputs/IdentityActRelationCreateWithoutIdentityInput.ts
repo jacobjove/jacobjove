@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar } from "../../scalars";
 import { ActCreateNestedOneWithoutIdentityRelationsInput } from "../inputs/ActCreateNestedOneWithoutIdentityRelationsInput";
 
@@ -6,9 +6,7 @@ import { ActCreateNestedOneWithoutIdentityRelationsInput } from "../inputs/ActCr
   isAbstract: true,
 })
 export class IdentityActRelationCreateInput {
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   archivedAt?: Date | undefined;
 
   @TypeGraphQL.Field((_type) => ActCreateNestedOneWithoutIdentityRelationsInput, {

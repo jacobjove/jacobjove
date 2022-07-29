@@ -1,14 +1,8 @@
 import { ApolloContext } from "@/graphql/context";
 import { GraphQLResolveInfo } from "graphql";
-import graphqlFields from "graphql-fields";
-import * as TypeGraphQL from "type-graphql";
-import {
-  getPrismaFromContext,
-  transformCountFieldIntoSelectRelationsCount,
-  transformFields,
-} from "../../../helpers";
+import * as TypeGraphQL from "type-graphql-v2-fork";
+import { getPrismaFromContext } from "../../../helpers";
 import { Account } from "../../../models/Account";
-import { AccountGroupBy } from "../../outputs/AccountGroupBy";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregateAccount } from "../../outputs/AggregateAccount";
 import { AggregateAccountArgs } from "./args/AggregateAccountArgs";
@@ -19,166 +13,103 @@ import { DeleteManyAccountArgs } from "./args/DeleteManyAccountArgs";
 import { FindFirstAccountArgs } from "./args/FindFirstAccountArgs";
 import { FindManyAccountArgs } from "./args/FindManyAccountArgs";
 import { FindUniqueAccountArgs } from "./args/FindUniqueAccountArgs";
-import { GroupByAccountArgs } from "./args/GroupByAccountArgs";
 import { UpdateAccountArgs } from "./args/UpdateAccountArgs";
 import { UpdateManyAccountArgs } from "./args/UpdateManyAccountArgs";
 import { UpsertAccountArgs } from "./args/UpsertAccountArgs";
 
 @TypeGraphQL.Resolver((_of) => Account)
 export class AccountCrudResolver {
-  @TypeGraphQL.Query((_returns) => Account, {
-    nullable: true,
-  })
+  @TypeGraphQL.Query((_returns) => Account, { nullable: true })
   async account(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: FindUniqueAccountArgs
   ): Promise<Account | null> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.findUnique({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.findUnique({ ...args });
   }
 
-  @TypeGraphQL.Query((_returns) => Account, {
-    nullable: true,
-  })
+  @TypeGraphQL.Query((_returns) => Account, { nullable: true })
   async findFirstAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: FindFirstAccountArgs
   ): Promise<Account | null> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.findFirst({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.findFirst({ ...args });
   }
 
-  @TypeGraphQL.Query((_returns) => [Account], {
-    nullable: false,
-  })
+  @TypeGraphQL.Query((_returns) => [Account], { nullable: false })
   async accounts(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: FindManyAccountArgs
   ): Promise<Account[]> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.findMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.findMany({ ...args });
   }
 
-  @TypeGraphQL.Mutation((_returns) => Account, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => Account, { nullable: false })
   async createAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: CreateAccountArgs
   ): Promise<Account> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.create({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.create({ ...args });
   }
 
-  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, { nullable: false })
   async createManyAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: CreateManyAccountArgs
   ): Promise<AffectedRowsOutput> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.createMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.createMany({ ...args });
   }
 
-  @TypeGraphQL.Mutation((_returns) => Account, {
-    nullable: true,
-  })
+  @TypeGraphQL.Mutation((_returns) => Account, { nullable: true })
   async deleteAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: DeleteAccountArgs
   ): Promise<Account | null> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.delete({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.delete({ ...args });
   }
 
-  @TypeGraphQL.Mutation((_returns) => Account, {
-    nullable: true,
-  })
+  @TypeGraphQL.Mutation((_returns) => Account, { nullable: true })
   async updateAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: UpdateAccountArgs
   ): Promise<Account | null> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.update({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.update({ ...args });
   }
 
-  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, { nullable: false })
   async deleteManyAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: DeleteManyAccountArgs
   ): Promise<AffectedRowsOutput> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.deleteMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.deleteMany({ ...args });
   }
 
-  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, { nullable: false })
   async updateManyAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: UpdateManyAccountArgs
   ): Promise<AffectedRowsOutput> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.updateMany({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.updateMany({ ...args });
   }
 
-  @TypeGraphQL.Mutation((_returns) => Account, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => Account, { nullable: false })
   async upsertAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: UpsertAccountArgs
   ): Promise<Account> {
-    const { _count } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.upsert({
-      ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-    });
+    return getPrismaFromContext(ctx).account.upsert({ ...args });
   }
 
-  @TypeGraphQL.Query((_returns) => AggregateAccount, {
-    nullable: false,
-  })
+  @TypeGraphQL.Query((_returns) => AggregateAccount, { nullable: false })
   async aggregateAccount(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
@@ -186,24 +117,6 @@ export class AccountCrudResolver {
   ): Promise<AggregateAccount> {
     return getPrismaFromContext(ctx).account.aggregate({
       ...args,
-      ...transformFields(graphqlFields(info)),
-    });
-  }
-
-  @TypeGraphQL.Query((_returns) => [AccountGroupBy], {
-    nullable: false,
-  })
-  async groupByAccount(
-    @TypeGraphQL.Ctx() ctx: ApolloContext,
-    @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: GroupByAccountArgs
-  ): Promise<AccountGroupBy[]> {
-    const { _count, _avg, _sum, _min, _max } = transformFields(graphqlFields(info));
-    return getPrismaFromContext(ctx).account.groupBy({
-      ...args,
-      ...Object.fromEntries(
-        Object.entries({ _count, _avg, _sum, _min, _max }).filter(([_, v]) => v != null)
-      ),
     });
   }
 }

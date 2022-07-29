@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { Author } from "../../../models/Author";
 import { Authorship } from "../../../models/Authorship";
@@ -7,9 +7,7 @@ import { Book } from "../../../models/Book";
 
 @TypeGraphQL.Resolver((_of) => Authorship)
 export class AuthorshipRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Author, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Author, { nullable: false })
   async author(
     @TypeGraphQL.Root() authorship: Authorship,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -23,9 +21,7 @@ export class AuthorshipRelationsResolver {
       .author({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Book, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Book, { nullable: false })
   async book(
     @TypeGraphQL.Root() authorship: Authorship,
     @TypeGraphQL.Ctx() ctx: ApolloContext

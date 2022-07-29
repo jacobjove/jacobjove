@@ -6,7 +6,6 @@ export { DeleteManyDashboardArgs } from "./DeleteManyDashboardArgs";
 export { FindFirstDashboardArgs } from "./FindFirstDashboardArgs";
 export { FindManyDashboardArgs } from "./FindManyDashboardArgs";
 export { FindUniqueDashboardArgs } from "./FindUniqueDashboardArgs";
-export { GroupByDashboardArgs } from "./GroupByDashboardArgs";
 export { UpdateDashboardArgs } from "./UpdateDashboardArgs";
 export { UpdateManyDashboardArgs } from "./UpdateManyDashboardArgs";
 export { UpsertDashboardArgs } from "./UpsertDashboardArgs";

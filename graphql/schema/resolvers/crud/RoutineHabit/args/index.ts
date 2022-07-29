@@ -6,7 +6,6 @@ export { DeleteRoutineHabitArgs } from "./DeleteRoutineHabitArgs";
 export { FindFirstRoutineHabitArgs } from "./FindFirstRoutineHabitArgs";
 export { FindManyRoutineHabitArgs } from "./FindManyRoutineHabitArgs";
 export { FindUniqueRoutineHabitArgs } from "./FindUniqueRoutineHabitArgs";
-export { GroupByRoutineHabitArgs } from "./GroupByRoutineHabitArgs";
 export { UpdateManyRoutineHabitArgs } from "./UpdateManyRoutineHabitArgs";
 export { UpdateRoutineHabitArgs } from "./UpdateRoutineHabitArgs";
 export { UpsertRoutineHabitArgs } from "./UpsertRoutineHabitArgs";

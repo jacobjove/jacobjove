@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { HabitCreateOrConnectWithoutCalendarEventsInput } from "../inputs/HabitCreateOrConnectWithoutCalendarEventsInput";
 import { HabitCreateWithoutCalendarEventsInput } from "../inputs/HabitCreateWithoutCalendarEventsInput";
 import { HabitUpdateWithoutCalendarEventsInput } from "../inputs/HabitUpdateWithoutCalendarEventsInput";
@@ -9,38 +9,24 @@ import { HabitWhereUniqueInput } from "../inputs/HabitWhereUniqueInput";
   isAbstract: true,
 })
 export class HabitUpdateOneWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => HabitCreateWithoutCalendarEventsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitCreateWithoutCalendarEventsInput, { nullable: true })
   create?: HabitCreateWithoutCalendarEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitCreateOrConnectWithoutCalendarEventsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitCreateOrConnectWithoutCalendarEventsInput, { nullable: true })
   connectOrCreate?: HabitCreateOrConnectWithoutCalendarEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpsertWithoutCalendarEventsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitUpsertWithoutCalendarEventsInput, { nullable: true })
   upsert?: HabitUpsertWithoutCalendarEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitWhereUniqueInput, { nullable: true })
   connect?: HabitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateWithoutCalendarEventsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitUpdateWithoutCalendarEventsInput, { nullable: true })
   update?: HabitUpdateWithoutCalendarEventsInput | undefined;
 }

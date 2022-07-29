@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ShelvingCreateManyShelfInputEnvelope } from "../inputs/ShelvingCreateManyShelfInputEnvelope";
 import { ShelvingCreateOrConnectWithoutShelfInput } from "../inputs/ShelvingCreateOrConnectWithoutShelfInput";
 import { ShelvingCreateWithoutShelfInput } from "../inputs/ShelvingCreateWithoutShelfInput";
@@ -12,14 +12,10 @@ import { ShelvingWhereUniqueInput } from "../inputs/ShelvingWhereUniqueInput";
   isAbstract: true,
 })
 export class ShelvingUpdateManyWithoutShelfInput {
-  @TypeGraphQL.Field((_type) => [ShelvingCreateWithoutShelfInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ShelvingCreateWithoutShelfInput], { nullable: true })
   create?: ShelvingCreateWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingCreateOrConnectWithoutShelfInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ShelvingCreateOrConnectWithoutShelfInput], { nullable: true })
   connectOrCreate?: ShelvingCreateOrConnectWithoutShelfInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [ShelvingUpsertWithWhereUniqueWithoutShelfInput], {
@@ -27,29 +23,19 @@ export class ShelvingUpdateManyWithoutShelfInput {
   })
   upsert?: ShelvingUpsertWithWhereUniqueWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ShelvingCreateManyShelfInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ShelvingCreateManyShelfInputEnvelope, { nullable: true })
   createMany?: ShelvingCreateManyShelfInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
   set?: ShelvingWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
   disconnect?: ShelvingWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
   delete?: ShelvingWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ShelvingWhereUniqueInput], { nullable: true })
   connect?: ShelvingWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [ShelvingUpdateWithWhereUniqueWithoutShelfInput], {
@@ -57,13 +43,9 @@ export class ShelvingUpdateManyWithoutShelfInput {
   })
   update?: ShelvingUpdateWithWhereUniqueWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingUpdateManyWithWhereWithoutShelfInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ShelvingUpdateManyWithWhereWithoutShelfInput], { nullable: true })
   updateMany?: ShelvingUpdateManyWithWhereWithoutShelfInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [ShelvingScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ShelvingScalarWhereInput], { nullable: true })
   deleteMany?: ShelvingScalarWhereInput[] | undefined;
 }

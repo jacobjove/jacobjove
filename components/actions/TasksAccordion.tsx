@@ -3,7 +3,6 @@ import TasksTable from "@/components/actions/TasksTable";
 import { taskFragment } from "@/graphql/fragments";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema/models/Task";
-import { initializeTaskData, taskDataReducer } from "@/utils/tasks";
 import { gql, useMutation } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
@@ -13,7 +12,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Typography from "@mui/material/Typography";
 import { addDays, endOfDay, isSameDay } from "date-fns";
 import partition from "lodash/partition";
-import { FC, useCallback, useMemo, useReducer, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 
 const MAX_TASK_RANK = 2 ** 31 - 1;
 const MIN_TASK_RANK = -MAX_TASK_RANK - 1;
@@ -80,14 +79,13 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
     return completeTasks.filter((task) => task.completedAt && isSameDay(task.completedAt, now));
   }, [completeTasks]);
 
-  const greatestRank = incompleteTasks[incompleteTasks.length - 1]?.rank ?? MIN_TASK_RANK;
-  const defaultRank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
-
-  const [newTaskData, dispatchNewTaskData] = useReducer(
-    taskDataReducer,
-    initializeTaskData({ rank: defaultRank }),
-    initializeTaskData
-  );
+  // const greatestRank = incompleteTasks[incompleteTasks.length - 1]?.rank ?? MIN_TASK_RANK;
+  // const defaultRank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
+  // const [newTaskData, dispatchNewTaskData] = useReducer(
+  //   taskDataReducer,
+  //   initializeTaskData({ rank: defaultRank }),
+  //   initializeTaskData
+  // );
 
   const [recentlyCompletedTasksExpanded, setRecentlyCompletedTasksExpanded] = useState(false);
 
@@ -167,8 +165,8 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
       } else {
         updateTask({
           variables: {
-            taskId: task.id,
-            data: { rank: { set: newRank } },
+            where: { id: task.id },
+            data: { rank: newRank },
           },
           optimisticResponse: {
             updateTask: {
@@ -182,13 +180,6 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
     },
     [incompleteTasks, updateTask, updateManyTaskRank]
   );
-
-  // const handleNewTaskFieldChange = (field: keyof Task, value: unknown) => {
-  //   dispatchNewTaskData({ field, value });
-  // };
-
-  // const handleNewTaskSubmit = async () => {
-  //   setAddingNewTask(false);
 
   const views: [TasksView, string][] = [
     ["today", "To do"],
@@ -208,7 +199,7 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
         flexDirection: "column",
       }}
     >
-      {views.map(([key, label]) => (
+      {views.map(([key]) => (
         <Accordion
           key={key}
           expanded={key === selectedView}

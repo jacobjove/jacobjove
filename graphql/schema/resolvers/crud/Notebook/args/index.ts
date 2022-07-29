@@ -6,7 +6,6 @@ export { DeleteNotebookArgs } from "./DeleteNotebookArgs";
 export { FindFirstNotebookArgs } from "./FindFirstNotebookArgs";
 export { FindManyNotebookArgs } from "./FindManyNotebookArgs";
 export { FindUniqueNotebookArgs } from "./FindUniqueNotebookArgs";
-export { GroupByNotebookArgs } from "./GroupByNotebookArgs";
 export { UpdateManyNotebookArgs } from "./UpdateManyNotebookArgs";
 export { UpdateNotebookArgs } from "./UpdateNotebookArgs";
 export { UpsertNotebookArgs } from "./UpsertNotebookArgs";

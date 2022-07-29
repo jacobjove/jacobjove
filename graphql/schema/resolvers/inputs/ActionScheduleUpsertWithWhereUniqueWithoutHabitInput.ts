@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleCreateWithoutHabitInput } from "../inputs/ActionScheduleCreateWithoutHabitInput";
 import { ActionScheduleUpdateWithoutHabitInput } from "../inputs/ActionScheduleUpdateWithoutHabitInput";
 import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUniqueInput";
@@ -7,18 +7,12 @@ import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUni
   isAbstract: true,
 })
 export class ActionScheduleUpsertWithWhereUniqueWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: false })
   where!: ActionScheduleWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleUpdateWithoutHabitInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleUpdateWithoutHabitInput, { nullable: false })
   update!: ActionScheduleUpdateWithoutHabitInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutHabitInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutHabitInput, { nullable: false })
   create!: ActionScheduleCreateWithoutHabitInput;
 }

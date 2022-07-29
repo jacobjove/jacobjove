@@ -1,7 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { Mantra } from "@/graphql/schema";
-import prisma from "@/utils/prisma";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
@@ -32,24 +31,25 @@ const MantraDetailPage: FC<MantraProps> = ({ mantra }: MantraProps) => {
 export default MantraDetailPage;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let mantra: Mantra | null = null;
-  let notFound = false;
-  const { id } = params || {};
-  await prisma.mantra
-    .findUnique({ where: { id: `${id}` } })
-    .then((result) => {
-      mantra = result;
-    })
-    .catch(() => {
-      notFound = true;
-    });
-  return {
-    props: {
-      mantra,
-    },
-    notFound,
-    revalidate: 10,
-  };
+  throw new Error("Not implemented");
+  // let mantra: Mantra | null = null;
+  // let notFound = false;
+  // const { id } = params || {};
+  // await prisma.mantra
+  //   .findUnique({ where: { id: `${id}` } })
+  //   .then((result) => {
+  //     mantra = result;
+  //   })
+  //   .catch(() => {
+  //     notFound = true;
+  //   });
+  // return {
+  //   props: {
+  //     mantra,
+  //   },
+  //   notFound,
+  //   revalidate: 10,
+  // };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

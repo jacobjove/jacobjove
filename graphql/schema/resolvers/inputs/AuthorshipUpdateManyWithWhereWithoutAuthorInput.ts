@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { AuthorshipScalarWhereInput } from "../inputs/AuthorshipScalarWhereInput";
 import { AuthorshipUpdateManyMutationInput } from "../inputs/AuthorshipUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { AuthorshipUpdateManyMutationInput } from "../inputs/AuthorshipUpdateMan
   isAbstract: true,
 })
 export class AuthorshipUpdateManyWithWhereWithoutAuthorInput {
-  @TypeGraphQL.Field((_type) => AuthorshipScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipScalarWhereInput, { nullable: false })
   where!: AuthorshipScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => AuthorshipUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => AuthorshipUpdateManyMutationInput, { nullable: false })
   data!: AuthorshipUpdateManyMutationInput;
 }

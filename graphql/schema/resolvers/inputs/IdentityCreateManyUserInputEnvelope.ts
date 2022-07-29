@@ -1,17 +1,13 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityCreateManyUserInput } from "../inputs/IdentityCreateManyUserInput";
 
 @TypeGraphQL.InputType("IdentityCreateManyUserInputEnvelope", {
   isAbstract: true,
 })
 export class IdentityCreateManyUserInputEnvelope {
-  @TypeGraphQL.Field((_type) => [IdentityCreateManyUserInput], {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => [IdentityCreateManyUserInput], { nullable: false })
   data!: IdentityCreateManyUserInput[];
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   skipDuplicates?: boolean | undefined;
 }

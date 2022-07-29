@@ -1,15 +1,13 @@
 import { ApolloContext } from "@/graphql/context";
 import { ListCrudResolver } from "@/graphql/schema/resolvers/crud/List/ListCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { List } from "../../../models/List";
 import { FindFirstListArgs } from "./args/FindFirstListArgs";
 
 @TypeGraphQL.Resolver((_of) => List)
 export class FindFirstListResolver {
-  @TypeGraphQL.Query((_returns) => List, {
-    nullable: true,
-  })
+  @TypeGraphQL.Query((_returns) => List, { nullable: true })
   async findFirstList(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

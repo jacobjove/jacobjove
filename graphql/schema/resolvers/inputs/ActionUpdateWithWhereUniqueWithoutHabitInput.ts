@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionUpdateWithoutHabitInput } from "../inputs/ActionUpdateWithoutHabitInput";
 import { ActionWhereUniqueInput } from "../inputs/ActionWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { ActionWhereUniqueInput } from "../inputs/ActionWhereUniqueInput";
   isAbstract: true,
 })
 export class ActionUpdateWithWhereUniqueWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionWhereUniqueInput, { nullable: false })
   where!: ActionWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionUpdateWithoutHabitInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionUpdateWithoutHabitInput, { nullable: false })
   data!: ActionUpdateWithoutHabitInput;
 }

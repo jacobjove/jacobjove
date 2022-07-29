@@ -6,7 +6,6 @@ export { DeleteNotebookUserPermissionArgs } from "./DeleteNotebookUserPermission
 export { FindFirstNotebookUserPermissionArgs } from "./FindFirstNotebookUserPermissionArgs";
 export { FindManyNotebookUserPermissionArgs } from "./FindManyNotebookUserPermissionArgs";
 export { FindUniqueNotebookUserPermissionArgs } from "./FindUniqueNotebookUserPermissionArgs";
-export { GroupByNotebookUserPermissionArgs } from "./GroupByNotebookUserPermissionArgs";
 export { UpdateManyNotebookUserPermissionArgs } from "./UpdateManyNotebookUserPermissionArgs";
 export { UpdateNotebookUserPermissionArgs } from "./UpdateNotebookUserPermissionArgs";
 export { UpsertNotebookUserPermissionArgs } from "./UpsertNotebookUserPermissionArgs";

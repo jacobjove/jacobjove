@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { RoutineHabitUpdateWithoutHabitInput } from "../inputs/RoutineHabitUpdateWithoutHabitInput";
 import { RoutineHabitWhereUniqueInput } from "../inputs/RoutineHabitWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { RoutineHabitWhereUniqueInput } from "../inputs/RoutineHabitWhereUniqueI
   isAbstract: true,
 })
 export class RoutineHabitUpdateWithWhereUniqueWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => RoutineHabitWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineHabitWhereUniqueInput, { nullable: false })
   where!: RoutineHabitWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitUpdateWithoutHabitInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => RoutineHabitUpdateWithoutHabitInput, { nullable: false })
   data!: RoutineHabitUpdateWithoutHabitInput;
 }

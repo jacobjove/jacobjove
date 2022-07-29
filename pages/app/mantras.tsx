@@ -1,5 +1,4 @@
 import AppLayout from "@/components/AppLayout";
-import { useAuth } from "@/components/contexts/AuthContext";
 import { useUser } from "@/components/contexts/UserContext";
 import { userFragment } from "@/graphql/fragments";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
@@ -18,6 +17,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 
 interface MantrasPageProps {
@@ -34,10 +34,10 @@ const UPDATE_MANTRAS = gql`
 `;
 
 const MantrasPage: NextPage<MantrasPageProps> = (_props: MantrasPageProps) => {
-  const { token } = useAuth();
+  const { data: session } = useSession();
   const user = useUser();
   const [updateMantras, { loading: loadingUpdateMantra }] = useMutation(UPDATE_MANTRAS);
-  if (!token || !user) return null;
+  if (!session || !user) return null;
   const mantras = user.mantras ?? [];
   return (
     <AppLayout>

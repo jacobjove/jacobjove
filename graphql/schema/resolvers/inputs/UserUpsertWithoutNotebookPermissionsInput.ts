@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateWithoutNotebookPermissionsInput } from "../inputs/UserCreateWithoutNotebookPermissionsInput";
 import { UserUpdateWithoutNotebookPermissionsInput } from "../inputs/UserUpdateWithoutNotebookPermissionsInput";
 
@@ -6,13 +6,9 @@ import { UserUpdateWithoutNotebookPermissionsInput } from "../inputs/UserUpdateW
   isAbstract: true,
 })
 export class UserUpsertWithoutNotebookPermissionsInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutNotebookPermissionsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserUpdateWithoutNotebookPermissionsInput, { nullable: false })
   update!: UserUpdateWithoutNotebookPermissionsInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebookPermissionsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutNotebookPermissionsInput, { nullable: false })
   create!: UserCreateWithoutNotebookPermissionsInput;
 }

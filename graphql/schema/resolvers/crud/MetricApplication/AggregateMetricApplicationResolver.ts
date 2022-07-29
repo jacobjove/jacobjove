@@ -1,16 +1,14 @@
 import { ApolloContext } from "@/graphql/context";
 import { MetricApplicationCrudResolver } from "@/graphql/schema/resolvers/crud/MetricApplication/MetricApplicationCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricApplication } from "../../../models/MetricApplication";
 import { AggregateMetricApplication } from "../../outputs/AggregateMetricApplication";
 import { AggregateMetricApplicationArgs } from "./args/AggregateMetricApplicationArgs";
 
 @TypeGraphQL.Resolver((_of) => MetricApplication)
 export class AggregateMetricApplicationResolver {
-  @TypeGraphQL.Query((_returns) => AggregateMetricApplication, {
-    nullable: false,
-  })
+  @TypeGraphQL.Query((_returns) => AggregateMetricApplication, { nullable: false })
   async aggregateMetricApplication(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

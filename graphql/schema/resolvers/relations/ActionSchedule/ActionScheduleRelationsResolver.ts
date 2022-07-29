@@ -1,7 +1,7 @@
 import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
 import { firestore } from "@/utils/firebase/admin";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getFirestoreDocDataFromSnapshot, getPrismaFromContext } from "../../../helpers";
 import { ActionSchedule } from "../../../models/ActionSchedule";
 import { ActionScheduleTemplate } from "../../../models/ActionScheduleTemplate";
@@ -11,9 +11,7 @@ import { ActionScheduleCalendarEventsArgs } from "./args/ActionScheduleCalendarE
 
 @TypeGraphQL.Resolver((_of) => ActionSchedule)
 export class ActionScheduleRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Habit, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Habit, { nullable: false })
   async habit(
     @TypeGraphQL.Root() actionSchedule: ActionSchedule,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -27,9 +25,7 @@ export class ActionScheduleRelationsResolver {
       .habit({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [CalendarEvent], { nullable: false })
   async calendarEvents(
     @TypeGraphQL.Root() actionSchedule: ActionSchedule,
     @TypeGraphQL.Ctx() ctx: ApolloContext,
@@ -58,9 +54,7 @@ export class ActionScheduleRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => ActionScheduleTemplate, {
-    nullable: true,
-  })
+  @TypeGraphQL.FieldResolver((_type) => ActionScheduleTemplate, { nullable: true })
   async template(
     @TypeGraphQL.Root() actionSchedule: ActionSchedule,
     @TypeGraphQL.Ctx() ctx: ApolloContext

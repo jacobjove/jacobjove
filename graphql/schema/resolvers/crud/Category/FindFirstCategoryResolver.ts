@@ -1,15 +1,13 @@
 import { ApolloContext } from "@/graphql/context";
 import { CategoryCrudResolver } from "@/graphql/schema/resolvers/crud/Category/CategoryCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Category } from "../../../models/Category";
 import { FindFirstCategoryArgs } from "./args/FindFirstCategoryArgs";
 
 @TypeGraphQL.Resolver((_of) => Category)
 export class FindFirstCategoryResolver {
-  @TypeGraphQL.Query((_returns) => Category, {
-    nullable: true,
-  })
+  @TypeGraphQL.Query((_returns) => Category, { nullable: true })
   async findFirstCategory(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

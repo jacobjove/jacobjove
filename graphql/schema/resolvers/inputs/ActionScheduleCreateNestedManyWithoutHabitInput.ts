@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleCreateManyHabitInputEnvelope } from "../inputs/ActionScheduleCreateManyHabitInputEnvelope";
 import { ActionScheduleCreateOrConnectWithoutHabitInput } from "../inputs/ActionScheduleCreateOrConnectWithoutHabitInput";
 import { ActionScheduleCreateWithoutHabitInput } from "../inputs/ActionScheduleCreateWithoutHabitInput";
@@ -8,9 +8,7 @@ import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUni
   isAbstract: true,
 })
 export class ActionScheduleCreateNestedManyWithoutHabitInput {
-  @TypeGraphQL.Field((_type) => [ActionScheduleCreateWithoutHabitInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleCreateWithoutHabitInput], { nullable: true })
   create?: ActionScheduleCreateWithoutHabitInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [ActionScheduleCreateOrConnectWithoutHabitInput], {
@@ -18,13 +16,9 @@ export class ActionScheduleCreateNestedManyWithoutHabitInput {
   })
   connectOrCreate?: ActionScheduleCreateOrConnectWithoutHabitInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateManyHabitInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleCreateManyHabitInputEnvelope, { nullable: true })
   createMany?: ActionScheduleCreateManyHabitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [ActionScheduleWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [ActionScheduleWhereUniqueInput], { nullable: true })
   connect?: ActionScheduleWhereUniqueInput[] | undefined;
 }

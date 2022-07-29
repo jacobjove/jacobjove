@@ -1,16 +1,14 @@
 import { ApolloContext } from "@/graphql/context";
 import { ItemCrudResolver } from "@/graphql/schema/resolvers/crud/Item/ItemCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Item } from "../../../models/Item";
 import { AggregateItem } from "../../outputs/AggregateItem";
 import { AggregateItemArgs } from "./args/AggregateItemArgs";
 
 @TypeGraphQL.Resolver((_of) => Item)
 export class AggregateItemResolver {
-  @TypeGraphQL.Query((_returns) => AggregateItem, {
-    nullable: false,
-  })
+  @TypeGraphQL.Query((_returns) => AggregateItem, { nullable: false })
   async aggregateItem(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

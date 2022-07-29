@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ReadingCreateWithoutUserInput } from "../inputs/ReadingCreateWithoutUserInput";
 import { ReadingUpdateWithoutUserInput } from "../inputs/ReadingUpdateWithoutUserInput";
 import { ReadingWhereUniqueInput } from "../inputs/ReadingWhereUniqueInput";
@@ -7,18 +7,12 @@ import { ReadingWhereUniqueInput } from "../inputs/ReadingWhereUniqueInput";
   isAbstract: true,
 })
 export class ReadingUpsertWithWhereUniqueWithoutUserInput {
-  @TypeGraphQL.Field((_type) => ReadingWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ReadingWhereUniqueInput, { nullable: false })
   where!: ReadingWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ReadingUpdateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ReadingUpdateWithoutUserInput, { nullable: false })
   update!: ReadingUpdateWithoutUserInput;
 
-  @TypeGraphQL.Field((_type) => ReadingCreateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ReadingCreateWithoutUserInput, { nullable: false })
   create!: ReadingCreateWithoutUserInput;
 }

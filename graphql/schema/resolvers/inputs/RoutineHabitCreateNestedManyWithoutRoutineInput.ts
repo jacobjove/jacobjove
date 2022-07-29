@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { RoutineHabitCreateManyRoutineInputEnvelope } from "../inputs/RoutineHabitCreateManyRoutineInputEnvelope";
 import { RoutineHabitCreateOrConnectWithoutRoutineInput } from "../inputs/RoutineHabitCreateOrConnectWithoutRoutineInput";
 import { RoutineHabitCreateWithoutRoutineInput } from "../inputs/RoutineHabitCreateWithoutRoutineInput";
@@ -8,9 +8,7 @@ import { RoutineHabitWhereUniqueInput } from "../inputs/RoutineHabitWhereUniqueI
   isAbstract: true,
 })
 export class RoutineHabitCreateNestedManyWithoutRoutineInput {
-  @TypeGraphQL.Field((_type) => [RoutineHabitCreateWithoutRoutineInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [RoutineHabitCreateWithoutRoutineInput], { nullable: true })
   create?: RoutineHabitCreateWithoutRoutineInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [RoutineHabitCreateOrConnectWithoutRoutineInput], {
@@ -18,13 +16,9 @@ export class RoutineHabitCreateNestedManyWithoutRoutineInput {
   })
   connectOrCreate?: RoutineHabitCreateOrConnectWithoutRoutineInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => RoutineHabitCreateManyRoutineInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => RoutineHabitCreateManyRoutineInputEnvelope, { nullable: true })
   createMany?: RoutineHabitCreateManyRoutineInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [RoutineHabitWhereUniqueInput], { nullable: true })
   connect?: RoutineHabitWhereUniqueInput[] | undefined;
 }

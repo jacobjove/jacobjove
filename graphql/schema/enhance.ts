@@ -1,5 +1,5 @@
 import * as tslib from "tslib";
-import { ClassType } from "type-graphql";
+import { ClassType } from "type-graphql-v2-fork";
 import * as models from "./models";
 import * as argsTypes from "./resolvers/crud/args.index";
 import * as actionResolvers from "./resolvers/crud/resolvers-actions.index";
@@ -62,7 +62,6 @@ const actionResolversMap = {
     updateManyRedirect: actionResolvers.UpdateManyRedirectResolver,
     upsertRedirect: actionResolvers.UpsertRedirectResolver,
     aggregateRedirect: actionResolvers.AggregateRedirectResolver,
-    groupByRedirect: actionResolvers.GroupByRedirectResolver,
   },
   Account: {
     account: actionResolvers.FindUniqueAccountResolver,
@@ -76,7 +75,6 @@ const actionResolversMap = {
     updateManyAccount: actionResolvers.UpdateManyAccountResolver,
     upsertAccount: actionResolvers.UpsertAccountResolver,
     aggregateAccount: actionResolvers.AggregateAccountResolver,
-    groupByAccount: actionResolvers.GroupByAccountResolver,
   },
   User: {
     user: actionResolvers.FindUniqueUserResolver,
@@ -90,7 +88,6 @@ const actionResolversMap = {
     updateManyUser: actionResolvers.UpdateManyUserResolver,
     upsertUser: actionResolvers.UpsertUserResolver,
     aggregateUser: actionResolvers.AggregateUserResolver,
-    groupByUser: actionResolvers.GroupByUserResolver,
   },
   Dashboard: {
     dashboard: actionResolvers.FindUniqueDashboardResolver,
@@ -104,7 +101,6 @@ const actionResolversMap = {
     updateManyDashboard: actionResolvers.UpdateManyDashboardResolver,
     upsertDashboard: actionResolvers.UpsertDashboardResolver,
     aggregateDashboard: actionResolvers.AggregateDashboardResolver,
-    groupByDashboard: actionResolvers.GroupByDashboardResolver,
   },
   Calendar: {
     calendar: actionResolvers.FindUniqueCalendarResolver,
@@ -118,7 +114,6 @@ const actionResolversMap = {
     updateManyCalendar: actionResolvers.UpdateManyCalendarResolver,
     upsertCalendar: actionResolvers.UpsertCalendarResolver,
     aggregateCalendar: actionResolvers.AggregateCalendarResolver,
-    groupByCalendar: actionResolvers.GroupByCalendarResolver,
   },
   CalendarEvent: {
     calendarEvent: actionResolvers.FindUniqueCalendarEventResolver,
@@ -132,7 +127,6 @@ const actionResolversMap = {
     updateManyCalendarEvent: actionResolvers.UpdateManyCalendarEventResolver,
     upsertCalendarEvent: actionResolvers.UpsertCalendarEventResolver,
     aggregateCalendarEvent: actionResolvers.AggregateCalendarEventResolver,
-    groupByCalendarEvent: actionResolvers.GroupByCalendarEventResolver,
   },
   ScheduleTemplate: {
     scheduleTemplate: actionResolvers.FindUniqueScheduleTemplateResolver,
@@ -146,7 +140,6 @@ const actionResolversMap = {
     updateManyScheduleTemplate: actionResolvers.UpdateManyScheduleTemplateResolver,
     upsertScheduleTemplate: actionResolvers.UpsertScheduleTemplateResolver,
     aggregateScheduleTemplate: actionResolvers.AggregateScheduleTemplateResolver,
-    groupByScheduleTemplate: actionResolvers.GroupByScheduleTemplateResolver,
   },
   Category: {
     category: actionResolvers.FindUniqueCategoryResolver,
@@ -160,7 +153,6 @@ const actionResolversMap = {
     updateManyCategory: actionResolvers.UpdateManyCategoryResolver,
     upsertCategory: actionResolvers.UpsertCategoryResolver,
     aggregateCategory: actionResolvers.AggregateCategoryResolver,
-    groupByCategory: actionResolvers.GroupByCategoryResolver,
   },
   Categorization: {
     categorization: actionResolvers.FindUniqueCategorizationResolver,
@@ -174,7 +166,6 @@ const actionResolversMap = {
     updateManyCategorization: actionResolvers.UpdateManyCategorizationResolver,
     upsertCategorization: actionResolvers.UpsertCategorizationResolver,
     aggregateCategorization: actionResolvers.AggregateCategorizationResolver,
-    groupByCategorization: actionResolvers.GroupByCategorizationResolver,
   },
   Act: {
     act: actionResolvers.FindUniqueActResolver,
@@ -188,7 +179,6 @@ const actionResolversMap = {
     updateManyAct: actionResolvers.UpdateManyActResolver,
     upsertAct: actionResolvers.UpsertActResolver,
     aggregateAct: actionResolvers.AggregateActResolver,
-    groupByAct: actionResolvers.GroupByActResolver,
   },
   MetricApplication: {
     metricApplication: actionResolvers.FindUniqueMetricApplicationResolver,
@@ -202,7 +192,6 @@ const actionResolversMap = {
     updateManyMetricApplication: actionResolvers.UpdateManyMetricApplicationResolver,
     upsertMetricApplication: actionResolvers.UpsertMetricApplicationResolver,
     aggregateMetricApplication: actionResolvers.AggregateMetricApplicationResolver,
-    groupByMetricApplication: actionResolvers.GroupByMetricApplicationResolver,
   },
   MetricUsage: {
     metricUsage: actionResolvers.FindUniqueMetricUsageResolver,
@@ -216,7 +205,6 @@ const actionResolversMap = {
     updateManyMetricUsage: actionResolvers.UpdateManyMetricUsageResolver,
     upsertMetricUsage: actionResolvers.UpsertMetricUsageResolver,
     aggregateMetricUsage: actionResolvers.AggregateMetricUsageResolver,
-    groupByMetricUsage: actionResolvers.GroupByMetricUsageResolver,
   },
   Metric: {
     metric: actionResolvers.FindUniqueMetricResolver,
@@ -230,7 +218,6 @@ const actionResolversMap = {
     updateManyMetric: actionResolvers.UpdateManyMetricResolver,
     upsertMetric: actionResolvers.UpsertMetricResolver,
     aggregateMetric: actionResolvers.AggregateMetricResolver,
-    groupByMetric: actionResolvers.GroupByMetricResolver,
   },
   Habit: {
     habit: actionResolvers.FindUniqueHabitResolver,
@@ -244,7 +231,6 @@ const actionResolversMap = {
     updateManyHabit: actionResolvers.UpdateManyHabitResolver,
     upsertHabit: actionResolvers.UpsertHabitResolver,
     aggregateHabit: actionResolvers.AggregateHabitResolver,
-    groupByHabit: actionResolvers.GroupByHabitResolver,
   },
   RoutineHabit: {
     routineHabit: actionResolvers.FindUniqueRoutineHabitResolver,
@@ -258,7 +244,6 @@ const actionResolversMap = {
     updateManyRoutineHabit: actionResolvers.UpdateManyRoutineHabitResolver,
     upsertRoutineHabit: actionResolvers.UpsertRoutineHabitResolver,
     aggregateRoutineHabit: actionResolvers.AggregateRoutineHabitResolver,
-    groupByRoutineHabit: actionResolvers.GroupByRoutineHabitResolver,
   },
   Routine: {
     routine: actionResolvers.FindUniqueRoutineResolver,
@@ -272,7 +257,6 @@ const actionResolversMap = {
     updateManyRoutine: actionResolvers.UpdateManyRoutineResolver,
     upsertRoutine: actionResolvers.UpsertRoutineResolver,
     aggregateRoutine: actionResolvers.AggregateRoutineResolver,
-    groupByRoutine: actionResolvers.GroupByRoutineResolver,
   },
   MetricRecord: {
     metricRecord: actionResolvers.FindUniqueMetricRecordResolver,
@@ -286,7 +270,6 @@ const actionResolversMap = {
     updateManyMetricRecord: actionResolvers.UpdateManyMetricRecordResolver,
     upsertMetricRecord: actionResolvers.UpsertMetricRecordResolver,
     aggregateMetricRecord: actionResolvers.AggregateMetricRecordResolver,
-    groupByMetricRecord: actionResolvers.GroupByMetricRecordResolver,
   },
   Task: {
     task: actionResolvers.FindUniqueTaskResolver,
@@ -300,7 +283,6 @@ const actionResolversMap = {
     updateManyTask: actionResolvers.UpdateManyTaskResolver,
     upsertTask: actionResolvers.UpsertTaskResolver,
     aggregateTask: actionResolvers.AggregateTaskResolver,
-    groupByTask: actionResolvers.GroupByTaskResolver,
   },
   Action: {
     action: actionResolvers.FindUniqueActionResolver,
@@ -314,7 +296,6 @@ const actionResolversMap = {
     updateManyAction: actionResolvers.UpdateManyActionResolver,
     upsertAction: actionResolvers.UpsertActionResolver,
     aggregateAction: actionResolvers.AggregateActionResolver,
-    groupByAction: actionResolvers.GroupByActionResolver,
   },
   ActionSchedule: {
     actionSchedule: actionResolvers.FindUniqueActionScheduleResolver,
@@ -328,7 +309,6 @@ const actionResolversMap = {
     updateManyActionSchedule: actionResolvers.UpdateManyActionScheduleResolver,
     upsertActionSchedule: actionResolvers.UpsertActionScheduleResolver,
     aggregateActionSchedule: actionResolvers.AggregateActionScheduleResolver,
-    groupByActionSchedule: actionResolvers.GroupByActionScheduleResolver,
   },
   ActionScheduleTemplate: {
     actionScheduleTemplate: actionResolvers.FindUniqueActionScheduleTemplateResolver,
@@ -342,7 +322,6 @@ const actionResolversMap = {
     updateManyActionScheduleTemplate: actionResolvers.UpdateManyActionScheduleTemplateResolver,
     upsertActionScheduleTemplate: actionResolvers.UpsertActionScheduleTemplateResolver,
     aggregateActionScheduleTemplate: actionResolvers.AggregateActionScheduleTemplateResolver,
-    groupByActionScheduleTemplate: actionResolvers.GroupByActionScheduleTemplateResolver,
   },
   Identity: {
     identity: actionResolvers.FindUniqueIdentityResolver,
@@ -356,7 +335,6 @@ const actionResolversMap = {
     updateManyIdentity: actionResolvers.UpdateManyIdentityResolver,
     upsertIdentity: actionResolvers.UpsertIdentityResolver,
     aggregateIdentity: actionResolvers.AggregateIdentityResolver,
-    groupByIdentity: actionResolvers.GroupByIdentityResolver,
   },
   Goal: {
     goal: actionResolvers.FindUniqueGoalResolver,
@@ -370,7 +348,6 @@ const actionResolversMap = {
     updateManyGoal: actionResolvers.UpdateManyGoalResolver,
     upsertGoal: actionResolvers.UpsertGoalResolver,
     aggregateGoal: actionResolvers.AggregateGoalResolver,
-    groupByGoal: actionResolvers.GroupByGoalResolver,
   },
   IdentityActRelation: {
     identityActRelation: actionResolvers.FindUniqueIdentityActRelationResolver,
@@ -384,7 +361,6 @@ const actionResolversMap = {
     updateManyIdentityActRelation: actionResolvers.UpdateManyIdentityActRelationResolver,
     upsertIdentityActRelation: actionResolvers.UpsertIdentityActRelationResolver,
     aggregateIdentityActRelation: actionResolvers.AggregateIdentityActRelationResolver,
-    groupByIdentityActRelation: actionResolvers.GroupByIdentityActRelationResolver,
   },
   Belief: {
     belief: actionResolvers.FindUniqueBeliefResolver,
@@ -398,7 +374,6 @@ const actionResolversMap = {
     updateManyBelief: actionResolvers.UpdateManyBeliefResolver,
     upsertBelief: actionResolvers.UpsertBeliefResolver,
     aggregateBelief: actionResolvers.AggregateBeliefResolver,
-    groupByBelief: actionResolvers.GroupByBeliefResolver,
   },
   Value: {
     value: actionResolvers.FindUniqueValueResolver,
@@ -412,7 +387,6 @@ const actionResolversMap = {
     updateManyValue: actionResolvers.UpdateManyValueResolver,
     upsertValue: actionResolvers.UpsertValueResolver,
     aggregateValue: actionResolvers.AggregateValueResolver,
-    groupByValue: actionResolvers.GroupByValueResolver,
   },
   Mantra: {
     mantra: actionResolvers.FindUniqueMantraResolver,
@@ -426,7 +400,6 @@ const actionResolversMap = {
     updateManyMantra: actionResolvers.UpdateManyMantraResolver,
     upsertMantra: actionResolvers.UpsertMantraResolver,
     aggregateMantra: actionResolvers.AggregateMantraResolver,
-    groupByMantra: actionResolvers.GroupByMantraResolver,
   },
   NotebookUserPermission: {
     notebookUserPermission: actionResolvers.FindUniqueNotebookUserPermissionResolver,
@@ -440,7 +413,6 @@ const actionResolversMap = {
     updateManyNotebookUserPermission: actionResolvers.UpdateManyNotebookUserPermissionResolver,
     upsertNotebookUserPermission: actionResolvers.UpsertNotebookUserPermissionResolver,
     aggregateNotebookUserPermission: actionResolvers.AggregateNotebookUserPermissionResolver,
-    groupByNotebookUserPermission: actionResolvers.GroupByNotebookUserPermissionResolver,
   },
   Notebook: {
     notebook: actionResolvers.FindUniqueNotebookResolver,
@@ -454,7 +426,6 @@ const actionResolversMap = {
     updateManyNotebook: actionResolvers.UpdateManyNotebookResolver,
     upsertNotebook: actionResolvers.UpsertNotebookResolver,
     aggregateNotebook: actionResolvers.AggregateNotebookResolver,
-    groupByNotebook: actionResolvers.GroupByNotebookResolver,
   },
   Note: {
     note: actionResolvers.FindUniqueNoteResolver,
@@ -468,7 +439,6 @@ const actionResolversMap = {
     updateManyNote: actionResolvers.UpdateManyNoteResolver,
     upsertNote: actionResolvers.UpsertNoteResolver,
     aggregateNote: actionResolvers.AggregateNoteResolver,
-    groupByNote: actionResolvers.GroupByNoteResolver,
   },
   List: {
     list: actionResolvers.FindUniqueListResolver,
@@ -482,7 +452,6 @@ const actionResolversMap = {
     updateManyList: actionResolvers.UpdateManyListResolver,
     upsertList: actionResolvers.UpsertListResolver,
     aggregateList: actionResolvers.AggregateListResolver,
-    groupByList: actionResolvers.GroupByListResolver,
   },
   Item: {
     item: actionResolvers.FindUniqueItemResolver,
@@ -496,7 +465,6 @@ const actionResolversMap = {
     updateManyItem: actionResolvers.UpdateManyItemResolver,
     upsertItem: actionResolvers.UpsertItemResolver,
     aggregateItem: actionResolvers.AggregateItemResolver,
-    groupByItem: actionResolvers.GroupByItemResolver,
   },
   Author: {
     author: actionResolvers.FindUniqueAuthorResolver,
@@ -510,7 +478,6 @@ const actionResolversMap = {
     updateManyAuthor: actionResolvers.UpdateManyAuthorResolver,
     upsertAuthor: actionResolvers.UpsertAuthorResolver,
     aggregateAuthor: actionResolvers.AggregateAuthorResolver,
-    groupByAuthor: actionResolvers.GroupByAuthorResolver,
   },
   Authorship: {
     authorship: actionResolvers.FindUniqueAuthorshipResolver,
@@ -524,7 +491,6 @@ const actionResolversMap = {
     updateManyAuthorship: actionResolvers.UpdateManyAuthorshipResolver,
     upsertAuthorship: actionResolvers.UpsertAuthorshipResolver,
     aggregateAuthorship: actionResolvers.AggregateAuthorshipResolver,
-    groupByAuthorship: actionResolvers.GroupByAuthorshipResolver,
   },
   Book: {
     book: actionResolvers.FindUniqueBookResolver,
@@ -538,7 +504,6 @@ const actionResolversMap = {
     updateManyBook: actionResolvers.UpdateManyBookResolver,
     upsertBook: actionResolvers.UpsertBookResolver,
     aggregateBook: actionResolvers.AggregateBookResolver,
-    groupByBook: actionResolvers.GroupByBookResolver,
   },
   Reading: {
     reading: actionResolvers.FindUniqueReadingResolver,
@@ -552,7 +517,6 @@ const actionResolversMap = {
     updateManyReading: actionResolvers.UpdateManyReadingResolver,
     upsertReading: actionResolvers.UpsertReadingResolver,
     aggregateReading: actionResolvers.AggregateReadingResolver,
-    groupByReading: actionResolvers.GroupByReadingResolver,
   },
   Bookshelf: {
     bookshelf: actionResolvers.FindUniqueBookshelfResolver,
@@ -566,7 +530,6 @@ const actionResolversMap = {
     updateManyBookshelf: actionResolvers.UpdateManyBookshelfResolver,
     upsertBookshelf: actionResolvers.UpsertBookshelfResolver,
     aggregateBookshelf: actionResolvers.AggregateBookshelfResolver,
-    groupByBookshelf: actionResolvers.GroupByBookshelfResolver,
   },
   Shelving: {
     shelving: actionResolvers.FindUniqueShelvingResolver,
@@ -580,7 +543,6 @@ const actionResolversMap = {
     updateManyShelving: actionResolvers.UpdateManyShelvingResolver,
     upsertShelving: actionResolvers.UpsertShelvingResolver,
     aggregateShelving: actionResolvers.AggregateShelvingResolver,
-    groupByShelving: actionResolvers.GroupByShelvingResolver,
   },
   BookReview: {
     bookReview: actionResolvers.FindUniqueBookReviewResolver,
@@ -594,7 +556,6 @@ const actionResolversMap = {
     updateManyBookReview: actionResolvers.UpdateManyBookReviewResolver,
     upsertBookReview: actionResolvers.UpsertBookReviewResolver,
     aggregateBookReview: actionResolvers.AggregateBookReviewResolver,
-    groupByBookReview: actionResolvers.GroupByBookReviewResolver,
   },
 };
 const crudResolversInfo = {
@@ -610,7 +571,6 @@ const crudResolversInfo = {
     "updateManyRedirect",
     "upsertRedirect",
     "aggregateRedirect",
-    "groupByRedirect",
   ],
   Account: [
     "account",
@@ -624,7 +584,6 @@ const crudResolversInfo = {
     "updateManyAccount",
     "upsertAccount",
     "aggregateAccount",
-    "groupByAccount",
   ],
   User: [
     "user",
@@ -638,7 +597,6 @@ const crudResolversInfo = {
     "updateManyUser",
     "upsertUser",
     "aggregateUser",
-    "groupByUser",
   ],
   Dashboard: [
     "dashboard",
@@ -652,7 +610,6 @@ const crudResolversInfo = {
     "updateManyDashboard",
     "upsertDashboard",
     "aggregateDashboard",
-    "groupByDashboard",
   ],
   Calendar: [
     "calendar",
@@ -666,7 +623,6 @@ const crudResolversInfo = {
     "updateManyCalendar",
     "upsertCalendar",
     "aggregateCalendar",
-    "groupByCalendar",
   ],
   CalendarEvent: [
     "calendarEvent",
@@ -680,7 +636,6 @@ const crudResolversInfo = {
     "updateManyCalendarEvent",
     "upsertCalendarEvent",
     "aggregateCalendarEvent",
-    "groupByCalendarEvent",
   ],
   ScheduleTemplate: [
     "scheduleTemplate",
@@ -694,7 +649,6 @@ const crudResolversInfo = {
     "updateManyScheduleTemplate",
     "upsertScheduleTemplate",
     "aggregateScheduleTemplate",
-    "groupByScheduleTemplate",
   ],
   Category: [
     "category",
@@ -708,7 +662,6 @@ const crudResolversInfo = {
     "updateManyCategory",
     "upsertCategory",
     "aggregateCategory",
-    "groupByCategory",
   ],
   Categorization: [
     "categorization",
@@ -722,7 +675,6 @@ const crudResolversInfo = {
     "updateManyCategorization",
     "upsertCategorization",
     "aggregateCategorization",
-    "groupByCategorization",
   ],
   Act: [
     "act",
@@ -736,7 +688,6 @@ const crudResolversInfo = {
     "updateManyAct",
     "upsertAct",
     "aggregateAct",
-    "groupByAct",
   ],
   MetricApplication: [
     "metricApplication",
@@ -750,7 +701,6 @@ const crudResolversInfo = {
     "updateManyMetricApplication",
     "upsertMetricApplication",
     "aggregateMetricApplication",
-    "groupByMetricApplication",
   ],
   MetricUsage: [
     "metricUsage",
@@ -764,7 +714,6 @@ const crudResolversInfo = {
     "updateManyMetricUsage",
     "upsertMetricUsage",
     "aggregateMetricUsage",
-    "groupByMetricUsage",
   ],
   Metric: [
     "metric",
@@ -778,7 +727,6 @@ const crudResolversInfo = {
     "updateManyMetric",
     "upsertMetric",
     "aggregateMetric",
-    "groupByMetric",
   ],
   Habit: [
     "habit",
@@ -792,7 +740,6 @@ const crudResolversInfo = {
     "updateManyHabit",
     "upsertHabit",
     "aggregateHabit",
-    "groupByHabit",
   ],
   RoutineHabit: [
     "routineHabit",
@@ -806,7 +753,6 @@ const crudResolversInfo = {
     "updateManyRoutineHabit",
     "upsertRoutineHabit",
     "aggregateRoutineHabit",
-    "groupByRoutineHabit",
   ],
   Routine: [
     "routine",
@@ -820,7 +766,6 @@ const crudResolversInfo = {
     "updateManyRoutine",
     "upsertRoutine",
     "aggregateRoutine",
-    "groupByRoutine",
   ],
   MetricRecord: [
     "metricRecord",
@@ -834,7 +779,6 @@ const crudResolversInfo = {
     "updateManyMetricRecord",
     "upsertMetricRecord",
     "aggregateMetricRecord",
-    "groupByMetricRecord",
   ],
   Task: [
     "task",
@@ -848,7 +792,6 @@ const crudResolversInfo = {
     "updateManyTask",
     "upsertTask",
     "aggregateTask",
-    "groupByTask",
   ],
   Action: [
     "action",
@@ -862,7 +805,6 @@ const crudResolversInfo = {
     "updateManyAction",
     "upsertAction",
     "aggregateAction",
-    "groupByAction",
   ],
   ActionSchedule: [
     "actionSchedule",
@@ -876,7 +818,6 @@ const crudResolversInfo = {
     "updateManyActionSchedule",
     "upsertActionSchedule",
     "aggregateActionSchedule",
-    "groupByActionSchedule",
   ],
   ActionScheduleTemplate: [
     "actionScheduleTemplate",
@@ -890,7 +831,6 @@ const crudResolversInfo = {
     "updateManyActionScheduleTemplate",
     "upsertActionScheduleTemplate",
     "aggregateActionScheduleTemplate",
-    "groupByActionScheduleTemplate",
   ],
   Identity: [
     "identity",
@@ -904,7 +844,6 @@ const crudResolversInfo = {
     "updateManyIdentity",
     "upsertIdentity",
     "aggregateIdentity",
-    "groupByIdentity",
   ],
   Goal: [
     "goal",
@@ -918,7 +857,6 @@ const crudResolversInfo = {
     "updateManyGoal",
     "upsertGoal",
     "aggregateGoal",
-    "groupByGoal",
   ],
   IdentityActRelation: [
     "identityActRelation",
@@ -932,7 +870,6 @@ const crudResolversInfo = {
     "updateManyIdentityActRelation",
     "upsertIdentityActRelation",
     "aggregateIdentityActRelation",
-    "groupByIdentityActRelation",
   ],
   Belief: [
     "belief",
@@ -946,7 +883,6 @@ const crudResolversInfo = {
     "updateManyBelief",
     "upsertBelief",
     "aggregateBelief",
-    "groupByBelief",
   ],
   Value: [
     "value",
@@ -960,7 +896,6 @@ const crudResolversInfo = {
     "updateManyValue",
     "upsertValue",
     "aggregateValue",
-    "groupByValue",
   ],
   Mantra: [
     "mantra",
@@ -974,7 +909,6 @@ const crudResolversInfo = {
     "updateManyMantra",
     "upsertMantra",
     "aggregateMantra",
-    "groupByMantra",
   ],
   NotebookUserPermission: [
     "notebookUserPermission",
@@ -988,7 +922,6 @@ const crudResolversInfo = {
     "updateManyNotebookUserPermission",
     "upsertNotebookUserPermission",
     "aggregateNotebookUserPermission",
-    "groupByNotebookUserPermission",
   ],
   Notebook: [
     "notebook",
@@ -1002,7 +935,6 @@ const crudResolversInfo = {
     "updateManyNotebook",
     "upsertNotebook",
     "aggregateNotebook",
-    "groupByNotebook",
   ],
   Note: [
     "note",
@@ -1016,7 +948,6 @@ const crudResolversInfo = {
     "updateManyNote",
     "upsertNote",
     "aggregateNote",
-    "groupByNote",
   ],
   List: [
     "list",
@@ -1030,7 +961,6 @@ const crudResolversInfo = {
     "updateManyList",
     "upsertList",
     "aggregateList",
-    "groupByList",
   ],
   Item: [
     "item",
@@ -1044,7 +974,6 @@ const crudResolversInfo = {
     "updateManyItem",
     "upsertItem",
     "aggregateItem",
-    "groupByItem",
   ],
   Author: [
     "author",
@@ -1058,7 +987,6 @@ const crudResolversInfo = {
     "updateManyAuthor",
     "upsertAuthor",
     "aggregateAuthor",
-    "groupByAuthor",
   ],
   Authorship: [
     "authorship",
@@ -1072,7 +1000,6 @@ const crudResolversInfo = {
     "updateManyAuthorship",
     "upsertAuthorship",
     "aggregateAuthorship",
-    "groupByAuthorship",
   ],
   Book: [
     "book",
@@ -1086,7 +1013,6 @@ const crudResolversInfo = {
     "updateManyBook",
     "upsertBook",
     "aggregateBook",
-    "groupByBook",
   ],
   Reading: [
     "reading",
@@ -1100,7 +1026,6 @@ const crudResolversInfo = {
     "updateManyReading",
     "upsertReading",
     "aggregateReading",
-    "groupByReading",
   ],
   Bookshelf: [
     "bookshelf",
@@ -1114,7 +1039,6 @@ const crudResolversInfo = {
     "updateManyBookshelf",
     "upsertBookshelf",
     "aggregateBookshelf",
-    "groupByBookshelf",
   ],
   Shelving: [
     "shelving",
@@ -1128,7 +1052,6 @@ const crudResolversInfo = {
     "updateManyShelving",
     "upsertShelving",
     "aggregateShelving",
-    "groupByShelving",
   ],
   BookReview: [
     "bookReview",
@@ -1142,7 +1065,6 @@ const crudResolversInfo = {
     "updateManyBookReview",
     "upsertBookReview",
     "aggregateBookReview",
-    "groupByBookReview",
   ],
 };
 const argsInfo = {
@@ -1157,7 +1079,6 @@ const argsInfo = {
   UpdateManyRedirectArgs: ["data", "where"],
   UpsertRedirectArgs: ["where", "create", "update"],
   AggregateRedirectArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByRedirectArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueAccountArgs: ["where"],
   FindFirstAccountArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyAccountArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1169,7 +1090,6 @@ const argsInfo = {
   UpdateManyAccountArgs: ["data", "where"],
   UpsertAccountArgs: ["where", "create", "update"],
   AggregateAccountArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByAccountArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueUserArgs: ["where"],
   FindFirstUserArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyUserArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1181,7 +1101,6 @@ const argsInfo = {
   UpdateManyUserArgs: ["data", "where"],
   UpsertUserArgs: ["where", "create", "update"],
   AggregateUserArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByUserArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueDashboardArgs: ["where"],
   FindFirstDashboardArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyDashboardArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1193,7 +1112,6 @@ const argsInfo = {
   UpdateManyDashboardArgs: ["data", "where"],
   UpsertDashboardArgs: ["where", "create", "update"],
   AggregateDashboardArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByDashboardArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueCalendarArgs: ["where"],
   FindFirstCalendarArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyCalendarArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1205,7 +1123,6 @@ const argsInfo = {
   UpdateManyCalendarArgs: ["data", "where"],
   UpsertCalendarArgs: ["where", "create", "update"],
   AggregateCalendarArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByCalendarArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueCalendarEventArgs: ["where"],
   FindFirstCalendarEventArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyCalendarEventArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1217,7 +1134,6 @@ const argsInfo = {
   UpdateManyCalendarEventArgs: ["data", "where"],
   UpsertCalendarEventArgs: ["where", "create", "update"],
   AggregateCalendarEventArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByCalendarEventArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueScheduleTemplateArgs: ["where"],
   FindFirstScheduleTemplateArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyScheduleTemplateArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1229,7 +1145,6 @@ const argsInfo = {
   UpdateManyScheduleTemplateArgs: ["data", "where"],
   UpsertScheduleTemplateArgs: ["where", "create", "update"],
   AggregateScheduleTemplateArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByScheduleTemplateArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueCategoryArgs: ["where"],
   FindFirstCategoryArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyCategoryArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1241,7 +1156,6 @@ const argsInfo = {
   UpdateManyCategoryArgs: ["data", "where"],
   UpsertCategoryArgs: ["where", "create", "update"],
   AggregateCategoryArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByCategoryArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueCategorizationArgs: ["where"],
   FindFirstCategorizationArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyCategorizationArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1253,7 +1167,6 @@ const argsInfo = {
   UpdateManyCategorizationArgs: ["data", "where"],
   UpsertCategorizationArgs: ["where", "create", "update"],
   AggregateCategorizationArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByCategorizationArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueActArgs: ["where"],
   FindFirstActArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyActArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1265,7 +1178,6 @@ const argsInfo = {
   UpdateManyActArgs: ["data", "where"],
   UpsertActArgs: ["where", "create", "update"],
   AggregateActArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByActArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueMetricApplicationArgs: ["where"],
   FindFirstMetricApplicationArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyMetricApplicationArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1277,7 +1189,6 @@ const argsInfo = {
   UpdateManyMetricApplicationArgs: ["data", "where"],
   UpsertMetricApplicationArgs: ["where", "create", "update"],
   AggregateMetricApplicationArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByMetricApplicationArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueMetricUsageArgs: ["where"],
   FindFirstMetricUsageArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyMetricUsageArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1289,7 +1200,6 @@ const argsInfo = {
   UpdateManyMetricUsageArgs: ["data", "where"],
   UpsertMetricUsageArgs: ["where", "create", "update"],
   AggregateMetricUsageArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByMetricUsageArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueMetricArgs: ["where"],
   FindFirstMetricArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyMetricArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1301,7 +1211,6 @@ const argsInfo = {
   UpdateManyMetricArgs: ["data", "where"],
   UpsertMetricArgs: ["where", "create", "update"],
   AggregateMetricArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByMetricArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueHabitArgs: ["where"],
   FindFirstHabitArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyHabitArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1313,7 +1222,6 @@ const argsInfo = {
   UpdateManyHabitArgs: ["data", "where"],
   UpsertHabitArgs: ["where", "create", "update"],
   AggregateHabitArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByHabitArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueRoutineHabitArgs: ["where"],
   FindFirstRoutineHabitArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyRoutineHabitArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1325,7 +1233,6 @@ const argsInfo = {
   UpdateManyRoutineHabitArgs: ["data", "where"],
   UpsertRoutineHabitArgs: ["where", "create", "update"],
   AggregateRoutineHabitArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByRoutineHabitArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueRoutineArgs: ["where"],
   FindFirstRoutineArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyRoutineArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1337,7 +1244,6 @@ const argsInfo = {
   UpdateManyRoutineArgs: ["data", "where"],
   UpsertRoutineArgs: ["where", "create", "update"],
   AggregateRoutineArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByRoutineArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueMetricRecordArgs: ["where"],
   FindFirstMetricRecordArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyMetricRecordArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1349,7 +1255,6 @@ const argsInfo = {
   UpdateManyMetricRecordArgs: ["data", "where"],
   UpsertMetricRecordArgs: ["where", "create", "update"],
   AggregateMetricRecordArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByMetricRecordArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueTaskArgs: ["where"],
   FindFirstTaskArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyTaskArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1361,7 +1266,6 @@ const argsInfo = {
   UpdateManyTaskArgs: ["data", "where"],
   UpsertTaskArgs: ["where", "create", "update"],
   AggregateTaskArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByTaskArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueActionArgs: ["where"],
   FindFirstActionArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyActionArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1373,7 +1277,6 @@ const argsInfo = {
   UpdateManyActionArgs: ["data", "where"],
   UpsertActionArgs: ["where", "create", "update"],
   AggregateActionArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByActionArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueActionScheduleArgs: ["where"],
   FindFirstActionScheduleArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyActionScheduleArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1385,7 +1288,6 @@ const argsInfo = {
   UpdateManyActionScheduleArgs: ["data", "where"],
   UpsertActionScheduleArgs: ["where", "create", "update"],
   AggregateActionScheduleArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByActionScheduleArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueActionScheduleTemplateArgs: ["where"],
   FindFirstActionScheduleTemplateArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyActionScheduleTemplateArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1397,7 +1299,6 @@ const argsInfo = {
   UpdateManyActionScheduleTemplateArgs: ["data", "where"],
   UpsertActionScheduleTemplateArgs: ["where", "create", "update"],
   AggregateActionScheduleTemplateArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByActionScheduleTemplateArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueIdentityArgs: ["where"],
   FindFirstIdentityArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyIdentityArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1409,7 +1310,6 @@ const argsInfo = {
   UpdateManyIdentityArgs: ["data", "where"],
   UpsertIdentityArgs: ["where", "create", "update"],
   AggregateIdentityArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByIdentityArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueGoalArgs: ["where"],
   FindFirstGoalArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyGoalArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1421,7 +1321,6 @@ const argsInfo = {
   UpdateManyGoalArgs: ["data", "where"],
   UpsertGoalArgs: ["where", "create", "update"],
   AggregateGoalArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByGoalArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueIdentityActRelationArgs: ["where"],
   FindFirstIdentityActRelationArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyIdentityActRelationArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1433,7 +1332,6 @@ const argsInfo = {
   UpdateManyIdentityActRelationArgs: ["data", "where"],
   UpsertIdentityActRelationArgs: ["where", "create", "update"],
   AggregateIdentityActRelationArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByIdentityActRelationArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueBeliefArgs: ["where"],
   FindFirstBeliefArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyBeliefArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1445,7 +1343,6 @@ const argsInfo = {
   UpdateManyBeliefArgs: ["data", "where"],
   UpsertBeliefArgs: ["where", "create", "update"],
   AggregateBeliefArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByBeliefArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueValueArgs: ["where"],
   FindFirstValueArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyValueArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1457,7 +1354,6 @@ const argsInfo = {
   UpdateManyValueArgs: ["data", "where"],
   UpsertValueArgs: ["where", "create", "update"],
   AggregateValueArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByValueArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueMantraArgs: ["where"],
   FindFirstMantraArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyMantraArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1469,7 +1365,6 @@ const argsInfo = {
   UpdateManyMantraArgs: ["data", "where"],
   UpsertMantraArgs: ["where", "create", "update"],
   AggregateMantraArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByMantraArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueNotebookUserPermissionArgs: ["where"],
   FindFirstNotebookUserPermissionArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyNotebookUserPermissionArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1481,7 +1376,6 @@ const argsInfo = {
   UpdateManyNotebookUserPermissionArgs: ["data", "where"],
   UpsertNotebookUserPermissionArgs: ["where", "create", "update"],
   AggregateNotebookUserPermissionArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByNotebookUserPermissionArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueNotebookArgs: ["where"],
   FindFirstNotebookArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyNotebookArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1493,7 +1387,6 @@ const argsInfo = {
   UpdateManyNotebookArgs: ["data", "where"],
   UpsertNotebookArgs: ["where", "create", "update"],
   AggregateNotebookArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByNotebookArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueNoteArgs: ["where"],
   FindFirstNoteArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyNoteArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1505,7 +1398,6 @@ const argsInfo = {
   UpdateManyNoteArgs: ["data", "where"],
   UpsertNoteArgs: ["where", "create", "update"],
   AggregateNoteArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByNoteArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueListArgs: ["where"],
   FindFirstListArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyListArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1517,7 +1409,6 @@ const argsInfo = {
   UpdateManyListArgs: ["data", "where"],
   UpsertListArgs: ["where", "create", "update"],
   AggregateListArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByListArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueItemArgs: ["where"],
   FindFirstItemArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyItemArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1529,7 +1420,6 @@ const argsInfo = {
   UpdateManyItemArgs: ["data", "where"],
   UpsertItemArgs: ["where", "create", "update"],
   AggregateItemArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByItemArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueAuthorArgs: ["where"],
   FindFirstAuthorArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyAuthorArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1541,7 +1431,6 @@ const argsInfo = {
   UpdateManyAuthorArgs: ["data", "where"],
   UpsertAuthorArgs: ["where", "create", "update"],
   AggregateAuthorArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByAuthorArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueAuthorshipArgs: ["where"],
   FindFirstAuthorshipArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyAuthorshipArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1553,7 +1442,6 @@ const argsInfo = {
   UpdateManyAuthorshipArgs: ["data", "where"],
   UpsertAuthorshipArgs: ["where", "create", "update"],
   AggregateAuthorshipArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByAuthorshipArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueBookArgs: ["where"],
   FindFirstBookArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyBookArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1565,7 +1453,6 @@ const argsInfo = {
   UpdateManyBookArgs: ["data", "where"],
   UpsertBookArgs: ["where", "create", "update"],
   AggregateBookArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByBookArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueReadingArgs: ["where"],
   FindFirstReadingArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyReadingArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1577,7 +1464,6 @@ const argsInfo = {
   UpdateManyReadingArgs: ["data", "where"],
   UpsertReadingArgs: ["where", "create", "update"],
   AggregateReadingArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByReadingArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueBookshelfArgs: ["where"],
   FindFirstBookshelfArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyBookshelfArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1589,7 +1475,6 @@ const argsInfo = {
   UpdateManyBookshelfArgs: ["data", "where"],
   UpsertBookshelfArgs: ["where", "create", "update"],
   AggregateBookshelfArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByBookshelfArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueShelvingArgs: ["where"],
   FindFirstShelvingArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyShelvingArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1601,7 +1486,6 @@ const argsInfo = {
   UpdateManyShelvingArgs: ["data", "where"],
   UpsertShelvingArgs: ["where", "create", "update"],
   AggregateShelvingArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByShelvingArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   FindUniqueBookReviewArgs: ["where"],
   FindFirstBookReviewArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
   FindManyBookReviewArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
@@ -1613,7 +1497,6 @@ const argsInfo = {
   UpdateManyBookReviewArgs: ["data", "where"],
   UpsertBookReviewArgs: ["where", "create", "update"],
   AggregateBookReviewArgs: ["where", "orderBy", "cursor", "take", "skip"],
-  GroupByBookReviewArgs: ["where", "orderBy", "by", "having", "take", "skip"],
 };
 
 type ResolverModelNames = keyof typeof crudResolversMap;
@@ -8242,7 +8125,6 @@ const inputsInfo = {
   BookReviewSumOrderByAggregateInput: ["id", "rating", "bookId", "userId", "readingId"],
   StringFieldUpdateOperationsInput: ["set"],
   IntFieldUpdateOperationsInput: ["set", "increment", "decrement", "multiply", "divide"],
-  AccountCreatescopesInput: ["set"],
   UserCreateNestedOneWithoutAccountsInput: ["create", "connectOrCreate", "connect"],
   CalendarCreateNestedManyWithoutAccountInput: [
     "create",
@@ -8253,7 +8135,6 @@ const inputsInfo = {
   NullableStringFieldUpdateOperationsInput: ["set"],
   NullableDateTimeFieldUpdateOperationsInput: ["set"],
   DateTimeFieldUpdateOperationsInput: ["set"],
-  AccountUpdatescopesInput: ["set", "push"],
   UserUpdateOneRequiredWithoutAccountsInput: [
     "create",
     "connectOrCreate",

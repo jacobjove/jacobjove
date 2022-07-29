@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionAvgAggregate } from "../outputs/ActionAvgAggregate";
 import { ActionCountAggregate } from "../outputs/ActionCountAggregate";
 import { ActionMaxAggregate } from "../outputs/ActionMaxAggregate";
@@ -9,28 +9,18 @@ import { ActionSumAggregate } from "../outputs/ActionSumAggregate";
   isAbstract: true,
 })
 export class AggregateAction {
-  @TypeGraphQL.Field((_type) => ActionCountAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionCountAggregate, { nullable: true })
   _count!: ActionCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionAvgAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionAvgAggregate, { nullable: true })
   _avg!: ActionAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionSumAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionSumAggregate, { nullable: true })
   _sum!: ActionSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionMinAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionMinAggregate, { nullable: true })
   _min!: ActionMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => ActionMaxAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionMaxAggregate, { nullable: true })
   _max!: ActionMaxAggregate | null;
 }

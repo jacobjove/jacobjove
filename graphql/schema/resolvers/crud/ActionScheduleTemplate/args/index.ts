@@ -6,7 +6,6 @@ export { DeleteManyActionScheduleTemplateArgs } from "./DeleteManyActionSchedule
 export { FindFirstActionScheduleTemplateArgs } from "./FindFirstActionScheduleTemplateArgs";
 export { FindManyActionScheduleTemplateArgs } from "./FindManyActionScheduleTemplateArgs";
 export { FindUniqueActionScheduleTemplateArgs } from "./FindUniqueActionScheduleTemplateArgs";
-export { GroupByActionScheduleTemplateArgs } from "./GroupByActionScheduleTemplateArgs";
 export { UpdateActionScheduleTemplateArgs } from "./UpdateActionScheduleTemplateArgs";
 export { UpdateManyActionScheduleTemplateArgs } from "./UpdateManyActionScheduleTemplateArgs";
 export { UpsertActionScheduleTemplateArgs } from "./UpsertActionScheduleTemplateArgs";

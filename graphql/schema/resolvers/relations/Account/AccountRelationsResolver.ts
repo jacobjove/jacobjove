@@ -1,7 +1,7 @@
 import { USE_FIREBASE } from "@/config";
 import { ApolloContext } from "@/graphql/context";
 import { firestore } from "@/utils/firebase/admin";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getFirestoreDocDataFromSnapshot, getPrismaFromContext } from "../../../helpers";
 import { Account } from "../../../models/Account";
 import { Calendar } from "../../../models/Calendar";
@@ -10,9 +10,7 @@ import { AccountCalendarsArgs } from "./args/AccountCalendarsArgs";
 
 @TypeGraphQL.Resolver((_of) => Account)
 export class AccountRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() account: Account,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -35,9 +33,7 @@ export class AccountRelationsResolver {
     }
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [Calendar], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [Calendar], { nullable: false })
   async calendars(
     @TypeGraphQL.Root() account: Account,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

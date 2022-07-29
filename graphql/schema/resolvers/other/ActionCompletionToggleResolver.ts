@@ -2,13 +2,11 @@ import { ApolloContext } from "@/graphql/context";
 import { toggleSelection } from "@/graphql/schema/helpers";
 import { Action } from "@/graphql/schema/models/Action";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Action)
 export class ActionCompletionToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => Action, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => Action, { nullable: false })
   async toggleAction(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

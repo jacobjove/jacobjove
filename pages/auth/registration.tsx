@@ -1,6 +1,6 @@
-import SocialLogin, { Provider } from "@/components/account/SocialLogin";
-import { useAuth } from "@/components/contexts/AuthContext";
+import SocialLogin from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,20 +8,20 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps } from "next";
-import { getProviders, signOut } from "next-auth/react";
+import { getProviders, signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { FunctionComponent, useEffect, useState } from "react";
 
 interface RegistrationPageProps {
-  providers: Provider[];
+  providers: Awaited<ReturnType<typeof getProviders>>;
 }
 
 const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
   providers,
 }: RegistrationPageProps) => {
   const router = useRouter();
-  const { token } = useAuth();
+  const { data: session } = useSession();
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const callbackUrl = Array.isArray(router.query?.callbackUrl)
     ? router.query.callbackUrl[0]
@@ -55,10 +55,10 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
               <br />
             </>
           )}
-          {(token && (
+          {(session && (
             <Paper className="p-4 text-center">
               <Typography variant="h5" component="p">
-                You are logged in as <strong>{token.email}</strong>.
+                You are logged in as <strong>{session.user.email}</strong>.
               </Typography>
               <br />
               <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>
@@ -86,7 +86,8 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
 export default RegistrationPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-export const getServerSideProps: GetServerSideProps = async () => {
-  const providers = (await getProviders().catch(console.error)) || [];
-  return { props: { providers } };
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  props: async () => {
+    return { providers: await getProviders() };
+  },
+});

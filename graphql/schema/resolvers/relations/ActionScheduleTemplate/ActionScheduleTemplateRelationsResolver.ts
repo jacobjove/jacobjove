@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { Act } from "../../../models/Act";
 import { ActionSchedule } from "../../../models/ActionSchedule";
@@ -9,9 +9,7 @@ import { ActionScheduleTemplateActionSchedulesArgs } from "./args/ActionSchedule
 
 @TypeGraphQL.Resolver((_of) => ActionScheduleTemplate)
 export class ActionScheduleTemplateRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => Act, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Act, { nullable: false })
   async act(
     @TypeGraphQL.Root() actionScheduleTemplate: ActionScheduleTemplate,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -25,9 +23,7 @@ export class ActionScheduleTemplateRelationsResolver {
       .act({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => ScheduleTemplate, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => ScheduleTemplate, { nullable: false })
   async scheduleTemplate(
     @TypeGraphQL.Root() actionScheduleTemplate: ActionScheduleTemplate,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -41,9 +37,7 @@ export class ActionScheduleTemplateRelationsResolver {
       .scheduleTemplate({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => [ActionSchedule], {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => [ActionSchedule], { nullable: false })
   async actionSchedules(
     @TypeGraphQL.Root() actionScheduleTemplate: ActionScheduleTemplate,
     @TypeGraphQL.Ctx() ctx: ApolloContext,

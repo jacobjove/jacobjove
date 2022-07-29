@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCreateWithoutCategorizationsInput } from "../inputs/ActCreateWithoutCategorizationsInput";
 import { ActUpdateWithoutCategorizationsInput } from "../inputs/ActUpdateWithoutCategorizationsInput";
 
@@ -6,13 +6,9 @@ import { ActUpdateWithoutCategorizationsInput } from "../inputs/ActUpdateWithout
   isAbstract: true,
 })
 export class ActUpsertWithoutCategorizationsInput {
-  @TypeGraphQL.Field((_type) => ActUpdateWithoutCategorizationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActUpdateWithoutCategorizationsInput, { nullable: false })
   update!: ActUpdateWithoutCategorizationsInput;
 
-  @TypeGraphQL.Field((_type) => ActCreateWithoutCategorizationsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActCreateWithoutCategorizationsInput, { nullable: false })
   create!: ActCreateWithoutCategorizationsInput;
 }

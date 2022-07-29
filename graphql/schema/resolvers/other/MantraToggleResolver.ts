@@ -2,13 +2,11 @@ import { ApolloContext } from "@/graphql/context";
 import { toggleSelection } from "@/graphql/schema/helpers";
 import { Mantra } from "@/graphql/schema/models/Mantra";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Mantra)
 export class MantraToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => Mantra, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => Mantra, { nullable: false })
   async toggleMantra(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

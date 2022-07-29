@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 export enum JsonNullValueFilter {
   DbNull = "DbNull",

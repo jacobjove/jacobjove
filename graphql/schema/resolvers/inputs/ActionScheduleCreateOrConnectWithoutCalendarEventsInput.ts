@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleCreateWithoutCalendarEventsInput } from "../inputs/ActionScheduleCreateWithoutCalendarEventsInput";
 import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUni
   isAbstract: true,
 })
 export class ActionScheduleCreateOrConnectWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: false })
   where!: ActionScheduleWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutCalendarEventsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutCalendarEventsInput, { nullable: false })
   create!: ActionScheduleCreateWithoutCalendarEventsInput;
 }

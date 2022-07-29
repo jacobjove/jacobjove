@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarCreateWithoutEventsInput } from "../inputs/CalendarCreateWithoutEventsInput";
 import { CalendarUpdateWithoutEventsInput } from "../inputs/CalendarUpdateWithoutEventsInput";
 
@@ -6,13 +6,9 @@ import { CalendarUpdateWithoutEventsInput } from "../inputs/CalendarUpdateWithou
   isAbstract: true,
 })
 export class CalendarUpsertWithoutEventsInput {
-  @TypeGraphQL.Field((_type) => CalendarUpdateWithoutEventsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CalendarUpdateWithoutEventsInput, { nullable: false })
   update!: CalendarUpdateWithoutEventsInput;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateWithoutEventsInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => CalendarCreateWithoutEventsInput, { nullable: false })
   create!: CalendarCreateWithoutEventsInput;
 }

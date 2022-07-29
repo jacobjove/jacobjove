@@ -1,6 +1,6 @@
 import { PaletteMode } from "@mui/material";
 import * as GraphQLScalars from "graphql-scalars";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Account } from "../models/Account";
 import { Belief } from "../models/Belief";
 import { BookReview } from "../models/BookReview";
@@ -30,44 +30,25 @@ export type UserInlineCollectionKey = "calendars" | "notebooks" | "mantras";
   isAbstract: true,
 })
 export class User extends Model {
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
-  id!: string;
-
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   name?: string | null;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   email!: string;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   emailVerified?: Date | null;
 
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: true })
   image?: string | null;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: false })
   isAdmin!: boolean;
 
-  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => GraphQLScalars.JSONResolver, { nullable: false })
   settings!: UserSettings;
 
-  @TypeGraphQL.Field((_type) => DateTimeScalar, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => DateTimeScalar, { nullable: true })
   lastLogin?: Date | null;
 
   accounts?: Account[];

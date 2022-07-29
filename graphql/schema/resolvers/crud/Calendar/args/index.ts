@@ -6,7 +6,6 @@ export { DeleteManyCalendarArgs } from "./DeleteManyCalendarArgs";
 export { FindFirstCalendarArgs } from "./FindFirstCalendarArgs";
 export { FindManyCalendarArgs } from "./FindManyCalendarArgs";
 export { FindUniqueCalendarArgs } from "./FindUniqueCalendarArgs";
-export { GroupByCalendarArgs } from "./GroupByCalendarArgs";
 export { UpdateCalendarArgs } from "./UpdateCalendarArgs";
 export { UpdateManyCalendarArgs } from "./UpdateManyCalendarArgs";
 export { UpsertCalendarArgs } from "./UpsertCalendarArgs";

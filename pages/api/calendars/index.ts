@@ -1,11 +1,12 @@
-import { USE_FIREBASE } from "@/config";
-import { getAuth } from "@/utils/auth/ssr";
+import { GET_ACCOUNTS } from "@/graphql/queries";
+import { Account } from "@/graphql/schema";
+import { initializeApollo } from "@/lib/apollo";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { CalendarClient } from "@/utils/calendar/client";
 import { isValidProvider } from "@/utils/calendar/providers";
-import prisma from "@/utils/prisma";
-// import { firestore } from "@/utils/firebase/admin";
 import rateLimit from "@/utils/rate-limit";
 import { NextApiHandler } from "next";
+import { unstable_getServerSession } from "next-auth/next";
 
 const limiter = rateLimit({
   ttl: 60 * 1000, // 60 seconds
@@ -18,28 +19,27 @@ const GetCalendars: NextApiHandler = async (req, res) => {
     return res.status(400).json({ error: "Invalid provider" });
   }
   const provider = req.query.provider as CalendarProvider; // "google"
-  const { token } = await getAuth({ req, res });
-  if (!token?.uid) return res.status(401).json({ error: "Not authenticated" });
-  if (await limiter.check(`GetCalendars_${token.uid}`).catch(() => false)) {
+  const session = await unstable_getServerSession(req, res, authOptions);
+  if (!session?.user.id) return res.status(401).json({ error: "Not authenticated" });
+  if (await limiter.check(`GetCalendars_${session.user.id}`).catch(() => false)) {
     return res.status(429).json({ error: "Rate limit exceeded" });
   }
+
+  const apolloClient = initializeApollo(); // TODO
   // TODO
-  const accounts = USE_FIREBASE
-    ? []
-    : await prisma.account.findMany({
-        where: {
-          user: { id: token.uid },
-          provider,
-        },
-        select: {
-          id: true,
-          provider: true,
-          remoteId: true,
-          accessToken: true,
-          refreshToken: true,
-          syncToken: true,
-        },
-      });
+  let accounts: Account[] = await apolloClient
+    .query({
+      query: GET_ACCOUNTS,
+      context: { session },
+    })
+    .then((result) => result.data.accounts);
+  accounts = accounts.filter((account) => account.provider === provider);
+  // id: true,
+  // provider: true,
+  // remoteId: true,
+  // accessToken: true,
+  // refreshToken: true,
+  // syncToken: true,
   const promises = accounts.map(async (account) => {
     const calendarClient = new CalendarClient(account);
     return await calendarClient.listCalendars();

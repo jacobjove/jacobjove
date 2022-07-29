@@ -1,15 +1,13 @@
 import { ApolloContext } from "@/graphql/context";
 import { ItemCrudResolver } from "@/graphql/schema/resolvers/crud/Item/ItemCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Item } from "../../../models/Item";
 import { UpdateItemArgs } from "./args/UpdateItemArgs";
 
 @TypeGraphQL.Resolver((_of) => Item)
 export class UpdateItemResolver {
-  @TypeGraphQL.Mutation((_returns) => Item, {
-    nullable: true,
-  })
+  @TypeGraphQL.Mutation((_returns) => Item, { nullable: true })
   async updateItem(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

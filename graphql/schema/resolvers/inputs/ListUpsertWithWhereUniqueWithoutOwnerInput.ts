@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ListCreateWithoutOwnerInput } from "../inputs/ListCreateWithoutOwnerInput";
 import { ListUpdateWithoutOwnerInput } from "../inputs/ListUpdateWithoutOwnerInput";
 import { ListWhereUniqueInput } from "../inputs/ListWhereUniqueInput";
@@ -7,18 +7,12 @@ import { ListWhereUniqueInput } from "../inputs/ListWhereUniqueInput";
   isAbstract: true,
 })
 export class ListUpsertWithWhereUniqueWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ListWhereUniqueInput, { nullable: false })
   where!: ListWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => ListUpdateWithoutOwnerInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ListUpdateWithoutOwnerInput, { nullable: false })
   update!: ListUpdateWithoutOwnerInput;
 
-  @TypeGraphQL.Field((_type) => ListCreateWithoutOwnerInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => ListCreateWithoutOwnerInput, { nullable: false })
   create!: ListCreateWithoutOwnerInput;
 }

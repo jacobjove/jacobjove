@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { IdentityCreateWithoutUserInput } from "../inputs/IdentityCreateWithoutUserInput";
 import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
 
@@ -6,13 +6,9 @@ import { IdentityWhereUniqueInput } from "../inputs/IdentityWhereUniqueInput";
   isAbstract: true,
 })
 export class IdentityCreateOrConnectWithoutUserInput {
-  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => IdentityWhereUniqueInput, { nullable: false })
   where!: IdentityWhereUniqueInput;
 
-  @TypeGraphQL.Field((_type) => IdentityCreateWithoutUserInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => IdentityCreateWithoutUserInput, { nullable: false })
   create!: IdentityCreateWithoutUserInput;
 }

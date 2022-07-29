@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarAvgAggregate } from "../outputs/CalendarAvgAggregate";
 import { CalendarCountAggregate } from "../outputs/CalendarCountAggregate";
 import { CalendarMaxAggregate } from "../outputs/CalendarMaxAggregate";
@@ -9,28 +9,18 @@ import { CalendarSumAggregate } from "../outputs/CalendarSumAggregate";
   isAbstract: true,
 })
 export class AggregateCalendar {
-  @TypeGraphQL.Field((_type) => CalendarCountAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarCountAggregate, { nullable: true })
   _count!: CalendarCountAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarAvgAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarAvgAggregate, { nullable: true })
   _avg!: CalendarAvgAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarSumAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarSumAggregate, { nullable: true })
   _sum!: CalendarSumAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarMinAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarMinAggregate, { nullable: true })
   _min!: CalendarMinAggregate | null;
 
-  @TypeGraphQL.Field((_type) => CalendarMaxAggregate, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarMaxAggregate, { nullable: true })
   _max!: CalendarMaxAggregate | null;
 }

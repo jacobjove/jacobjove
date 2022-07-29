@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricApplicationCreateNestedManyWithoutMetricInput } from "../inputs/MetricApplicationCreateNestedManyWithoutMetricInput";
 import { MetricUsageCreateNestedManyWithoutMetricInput } from "../inputs/MetricUsageCreateNestedManyWithoutMetricInput";
 
@@ -6,9 +6,7 @@ import { MetricUsageCreateNestedManyWithoutMetricInput } from "../inputs/MetricU
   isAbstract: true,
 })
 export class MetricCreateInput {
-  @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => String, { nullable: false })
   name!: string;
 
   @TypeGraphQL.Field((_type) => MetricApplicationCreateNestedManyWithoutMetricInput, {
@@ -16,8 +14,6 @@ export class MetricCreateInput {
   })
   applications?: MetricApplicationCreateNestedManyWithoutMetricInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MetricUsageCreateNestedManyWithoutMetricInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MetricUsageCreateNestedManyWithoutMetricInput, { nullable: true })
   usages?: MetricUsageCreateNestedManyWithoutMetricInput | undefined;
 }

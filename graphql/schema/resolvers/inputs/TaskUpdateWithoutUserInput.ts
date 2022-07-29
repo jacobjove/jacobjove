@@ -1,11 +1,7 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarEventUpdateManyWithoutTaskInput } from "../inputs/CalendarEventUpdateManyWithoutTaskInput";
-import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { HabitUpdateOneWithoutTasksInput } from "../inputs/HabitUpdateOneWithoutTasksInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
-import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
-import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 import { TaskUpdateManyWithoutParentInput } from "../inputs/TaskUpdateManyWithoutParentInput";
 import { TaskUpdateOneWithoutSubtasksInput } from "../inputs/TaskUpdateOneWithoutSubtasksInput";
 
@@ -13,68 +9,42 @@ import { TaskUpdateOneWithoutSubtasksInput } from "../inputs/TaskUpdateOneWithou
   isAbstract: true,
 })
 export class TaskUpdateWithoutUserInput {
-  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  title?: StringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  title?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  description?: NullableStringFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  description?: string | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  plannedStartDate?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  plannedStartDate?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  dueDate?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  dueDate?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, { nullable: true })
   rank?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  completedAt?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  completedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  createdAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  updatedAt?: Date | undefined;
 
-  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
-    nullable: true,
-  })
-  archivedAt?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field({ nullable: true })
+  archivedAt?: Date | null | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateOneWithoutSubtasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskUpdateOneWithoutSubtasksInput, { nullable: true })
   parent?: TaskUpdateOneWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => HabitUpdateOneWithoutTasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => HabitUpdateOneWithoutTasksInput, { nullable: true })
   habit?: HabitUpdateOneWithoutTasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateManyWithoutParentInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskUpdateManyWithoutParentInput, { nullable: true })
   subtasks?: TaskUpdateManyWithoutParentInput | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyWithoutTaskInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarEventUpdateManyWithoutTaskInput, { nullable: true })
   calendarEvents?: CalendarEventUpdateManyWithoutTaskInput | undefined;
 }

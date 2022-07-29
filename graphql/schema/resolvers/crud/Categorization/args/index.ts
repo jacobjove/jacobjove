@@ -6,7 +6,6 @@ export { DeleteManyCategorizationArgs } from "./DeleteManyCategorizationArgs";
 export { FindFirstCategorizationArgs } from "./FindFirstCategorizationArgs";
 export { FindManyCategorizationArgs } from "./FindManyCategorizationArgs";
 export { FindUniqueCategorizationArgs } from "./FindUniqueCategorizationArgs";
-export { GroupByCategorizationArgs } from "./GroupByCategorizationArgs";
 export { UpdateCategorizationArgs } from "./UpdateCategorizationArgs";
 export { UpdateManyCategorizationArgs } from "./UpdateManyCategorizationArgs";
 export { UpsertCategorizationArgs } from "./UpsertCategorizationArgs";

@@ -1,11 +1,9 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.ObjectType("GoalCount", {
   isAbstract: true,
 })
 export class GoalCount {
-  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, { nullable: false })
   milestones!: number;
 }

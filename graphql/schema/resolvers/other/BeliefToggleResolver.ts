@@ -2,13 +2,11 @@ import { ApolloContext } from "@/graphql/context";
 import { toggleSelection } from "@/graphql/schema/helpers";
 import { Belief } from "@/graphql/schema/models/Belief";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Belief)
 export class BeliefToggleResolver {
-  @TypeGraphQL.Mutation((_returns) => Belief, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => Belief, { nullable: false })
   async toggleBelief(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

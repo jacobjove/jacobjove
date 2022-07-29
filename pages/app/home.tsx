@@ -1,19 +1,19 @@
 import AppLayout from "@/components/AppLayout";
-import { AuthToken, useAuth } from "@/components/contexts/AuthContext";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth } from "next-auth";
+import { PageWithAuth, Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 
 interface HomePageProps {
-  token: AuthToken;
+  session: Session;
 }
 
 const HomePage: NextPage<HomePageProps> = () => {
-  const { token } = useAuth();
+  const { data: session } = useSession();
   return (
     <AppLayout>
       <NextSeo
@@ -34,7 +34,7 @@ const HomePage: NextPage<HomePageProps> = () => {
         }}
       >
         <Box textAlign={"center"}>
-          <Typography flexBasis={"100%"} my={2}>{`Welcome, ${token?.displayName}!`}</Typography>
+          <Typography flexBasis={"100%"} my={2}>{`Welcome, ${session?.user.name}!`}</Typography>
           {/* <Link href="/app/dashboard" passHref>
             <Button variant="contained" component="a">
               Go to dashboard

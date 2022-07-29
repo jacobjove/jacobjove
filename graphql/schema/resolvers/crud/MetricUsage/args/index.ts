@@ -6,7 +6,6 @@ export { DeleteMetricUsageArgs } from "./DeleteMetricUsageArgs";
 export { FindFirstMetricUsageArgs } from "./FindFirstMetricUsageArgs";
 export { FindManyMetricUsageArgs } from "./FindManyMetricUsageArgs";
 export { FindUniqueMetricUsageArgs } from "./FindUniqueMetricUsageArgs";
-export { GroupByMetricUsageArgs } from "./GroupByMetricUsageArgs";
 export { UpdateManyMetricUsageArgs } from "./UpdateManyMetricUsageArgs";
 export { UpdateMetricUsageArgs } from "./UpdateMetricUsageArgs";
 export { UpsertMetricUsageArgs } from "./UpsertMetricUsageArgs";

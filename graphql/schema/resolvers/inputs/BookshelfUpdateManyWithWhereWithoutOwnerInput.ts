@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookshelfScalarWhereInput } from "../inputs/BookshelfScalarWhereInput";
 import { BookshelfUpdateManyMutationInput } from "../inputs/BookshelfUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { BookshelfUpdateManyMutationInput } from "../inputs/BookshelfUpdateManyM
   isAbstract: true,
 })
 export class BookshelfUpdateManyWithWhereWithoutOwnerInput {
-  @TypeGraphQL.Field((_type) => BookshelfScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfScalarWhereInput, { nullable: false })
   where!: BookshelfScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => BookshelfUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => BookshelfUpdateManyMutationInput, { nullable: false })
   data!: BookshelfUpdateManyMutationInput;
 }

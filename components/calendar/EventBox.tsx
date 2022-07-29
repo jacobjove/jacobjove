@@ -212,7 +212,7 @@ const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> 
     updateCalendarEvent({
       variables: {
         where: { id: event.id },
-        data: { archivedAt: { set: archivedAt } },
+        data: { archivedAt: archivedAt },
       },
       optimisticResponse: {
         updateCalendarEvent: {

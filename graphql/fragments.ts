@@ -1,13 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const actFragment = gql`
-  fragment ActFragment on Act {
-    id
-    name
-    slug
-  }
-`;
-
 // export const actionThemeFragment = gql`
 //   fragment ActionThemeFragment on ActionTheme {
 //     id
@@ -43,16 +35,14 @@ export const habitFragment = gql`
   fragment HabitFragment on Habit {
     id
     name
+    chronString
   }
 `;
 
 export const _habitFragment = gql`
-  fragment HabitFragment on Habit {
+  fragment _HabitFragment on Habit {
     id
     name
-    act {
-      ...ActFragment
-    }
     schedules {
       id
       frequency
@@ -69,7 +59,6 @@ export const _habitFragment = gql`
       ...ActionFragment
     }
   }
-  ${actFragment}
   ${actionFragment}
 `;
 
@@ -138,22 +127,16 @@ export const calendarEventFragment = gql`
 export const valueFragment = gql`
   fragment ValueFragment on Value {
     id
-    value {
-      id
-      name
-      slug
-    }
+    name
+    slug
   }
 `;
 
 export const identityFragment = gql`
   fragment IdentityFragment on Identity {
     id
-    identity {
-      id
-      name
-      slug
-    }
+    name
+    slug
   }
 `;
 
@@ -203,6 +186,9 @@ export const notebookFragment = gql`
   fragment NotebookFragment on Notebook {
     id
     title
+    createdAt
+    updatedAt
+    archivedAt
   }
 `;
 
@@ -230,3 +216,18 @@ export const userFragment = gql`
   ${mantraFragment}
   ${notebookFragment}
 `;
+
+export const modelFragmentMap = {
+  Action: actionFragment,
+  Calendar: calendarFragment,
+  CalendarEvent: calendarEventFragment,
+  User: userFragment,
+  Task: taskFragment,
+};
+
+export const getFragmentForModel = (modelName: string) => {
+  const fragment = modelFragmentMap[modelName as keyof typeof modelFragmentMap];
+  if (!fragment)
+    throw new Error(`Could not retrieve fragment for the specified model name of "${modelName}"`);
+  return fragment;
+};

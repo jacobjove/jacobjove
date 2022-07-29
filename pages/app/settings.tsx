@@ -45,9 +45,8 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
   const isMobile = useMediaQuery("(max-width: 600px)");
   const user = useUser();
   const [updateSettings, { loading: loadingUpdateSetting }] = useMutation(UPDATE_SETTINGS);
-  if (!user) return null;
   const loading = loadingUpdateSetting;
-  const { settings: userSettings } = user;
+  const userSettings: UserSettings = user?.settings ?? {};
   const settings: Record<keyof UserSettings, SettingOptions> = {
     colorMode: {
       label: "Color mode",
@@ -57,10 +56,11 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
     defaultCalendarId: {
       label: "Default calendar",
       defaultValue: "",
-      choices: user.calendars?.map((calendar) => calendar.id) ?? [],
+      choices: user?.calendars?.map((calendar) => calendar.id) ?? [],
     },
   };
   const handleSettingChange = (settingName: string, newValue: string) => {
+    if (!user) return;
     const newUserSettings = {
       ...userSettings,
       [settingName]: newValue,

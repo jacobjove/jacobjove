@@ -1,16 +1,14 @@
 import { ApolloContext } from "@/graphql/context";
 import { ActCrudResolver } from "@/graphql/schema/resolvers/crud/Act/ActCrudResolver";
 import { GraphQLResolveInfo } from "graphql";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Act } from "../../../models/Act";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { DeleteManyActArgs } from "./args/DeleteManyActArgs";
 
 @TypeGraphQL.Resolver((_of) => Act)
 export class DeleteManyActResolver {
-  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Mutation((_returns) => AffectedRowsOutput, { nullable: false })
   async deleteManyAct(
     @TypeGraphQL.Ctx() ctx: ApolloContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,

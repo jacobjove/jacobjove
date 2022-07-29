@@ -1,20 +1,20 @@
-import { AuthToken } from "@/components/contexts/AuthContext";
 import { USE_FIREBASE } from "@/config";
-import { getAuth } from "@/utils/auth/ssr";
+import mongoClientPromise from "@/lib/mongodb";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { firestore } from "@/utils/firebase/admin";
-import prisma from "@/utils/prisma";
-import { PrismaClient } from "@prisma/client";
-import { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
+import { MongoClient } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Session } from "next-auth";
+import { unstable_getServerSession } from "next-auth/next";
 
 export type ApolloContext = {
-  token: AuthToken | DecodedIdToken | null | undefined;
+  session: Session | null | undefined;
 } & (
   | {
-      prisma: PrismaClient;
+      firestore: typeof firestore;
     }
   | {
-      firestore: typeof firestore;
+      db: MongoClient;
     }
 );
 
@@ -23,14 +23,10 @@ interface FromContext {
   res: NextApiResponse;
 }
 
-export async function createApolloContext(context: FromContext): Promise<ApolloContext> {
-  // console.log(">>> createApolloContext");
-  // console.log(">>> Calling getAuth...");
-  const { token } = await getAuth(context);
-  // console.log(">>> Returned to createApolloContext from getAuth");
-  // console.error(">>> createApolloContext token:", token);
+export async function createApolloContext({ req, res }: FromContext): Promise<ApolloContext> {
+  const session = await unstable_getServerSession(req, res, authOptions);
   return {
-    token,
-    ...(USE_FIREBASE ? { firestore } : { prisma }),
+    session,
+    ...(USE_FIREBASE ? { firestore } : { db: await mongoClientPromise }),
   };
 }

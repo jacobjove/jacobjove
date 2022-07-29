@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { GoalCreateWithoutMilestonesInput } from "../inputs/GoalCreateWithoutMilestonesInput";
 import { GoalUpdateWithoutMilestonesInput } from "../inputs/GoalUpdateWithoutMilestonesInput";
 
@@ -6,13 +6,9 @@ import { GoalUpdateWithoutMilestonesInput } from "../inputs/GoalUpdateWithoutMil
   isAbstract: true,
 })
 export class GoalUpsertWithoutMilestonesInput {
-  @TypeGraphQL.Field((_type) => GoalUpdateWithoutMilestonesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => GoalUpdateWithoutMilestonesInput, { nullable: false })
   update!: GoalUpdateWithoutMilestonesInput;
 
-  @TypeGraphQL.Field((_type) => GoalCreateWithoutMilestonesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => GoalCreateWithoutMilestonesInput, { nullable: false })
   create!: GoalCreateWithoutMilestonesInput;
 }

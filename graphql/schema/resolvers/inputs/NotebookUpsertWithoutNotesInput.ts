@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { NotebookCreateWithoutNotesInput } from "../inputs/NotebookCreateWithoutNotesInput";
 import { NotebookUpdateWithoutNotesInput } from "../inputs/NotebookUpdateWithoutNotesInput";
 
@@ -6,13 +6,9 @@ import { NotebookUpdateWithoutNotesInput } from "../inputs/NotebookUpdateWithout
   isAbstract: true,
 })
 export class NotebookUpsertWithoutNotesInput {
-  @TypeGraphQL.Field((_type) => NotebookUpdateWithoutNotesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => NotebookUpdateWithoutNotesInput, { nullable: false })
   update!: NotebookUpdateWithoutNotesInput;
 
-  @TypeGraphQL.Field((_type) => NotebookCreateWithoutNotesInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => NotebookCreateWithoutNotesInput, { nullable: false })
   create!: NotebookCreateWithoutNotesInput;
 }

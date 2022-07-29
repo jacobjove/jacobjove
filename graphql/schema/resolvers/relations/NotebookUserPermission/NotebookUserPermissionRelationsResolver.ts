@@ -1,5 +1,5 @@
 import { ApolloContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { getPrismaFromContext } from "../../../helpers";
 import { Notebook } from "../../../models/Notebook";
 import { NotebookUserPermission } from "../../../models/NotebookUserPermission";
@@ -7,9 +7,7 @@ import { User } from "../../../models/User";
 
 @TypeGraphQL.Resolver((_of) => NotebookUserPermission)
 export class NotebookUserPermissionRelationsResolver {
-  @TypeGraphQL.FieldResolver((_type) => User, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => User, { nullable: false })
   async user(
     @TypeGraphQL.Root() notebookUserPermission: NotebookUserPermission,
     @TypeGraphQL.Ctx() ctx: ApolloContext
@@ -24,9 +22,7 @@ export class NotebookUserPermissionRelationsResolver {
       .user({});
   }
 
-  @TypeGraphQL.FieldResolver((_type) => Notebook, {
-    nullable: false,
-  })
+  @TypeGraphQL.FieldResolver((_type) => Notebook, { nullable: false })
   async notebook(
     @TypeGraphQL.Root() notebookUserPermission: NotebookUserPermission,
     @TypeGraphQL.Ctx() ctx: ApolloContext

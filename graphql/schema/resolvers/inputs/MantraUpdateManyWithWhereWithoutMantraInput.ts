@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MantraScalarWhereInput } from "../inputs/MantraScalarWhereInput";
 import { MantraUpdateManyMutationInput } from "../inputs/MantraUpdateManyMutationInput";
 
@@ -6,13 +6,9 @@ import { MantraUpdateManyMutationInput } from "../inputs/MantraUpdateManyMutatio
   isAbstract: true,
 })
 export class MantraUpdateManyWithWhereWithoutMantraInput {
-  @TypeGraphQL.Field((_type) => MantraScalarWhereInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MantraScalarWhereInput, { nullable: false })
   where!: MantraScalarWhereInput;
 
-  @TypeGraphQL.Field((_type) => MantraUpdateManyMutationInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => MantraUpdateManyMutationInput, { nullable: false })
   data!: MantraUpdateManyMutationInput;
 }

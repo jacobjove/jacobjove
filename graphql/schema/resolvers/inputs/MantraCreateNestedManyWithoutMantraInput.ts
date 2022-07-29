@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MantraCreateManyMantraInputEnvelope } from "../inputs/MantraCreateManyMantraInputEnvelope";
 import { MantraCreateOrConnectWithoutMantraInput } from "../inputs/MantraCreateOrConnectWithoutMantraInput";
 import { MantraCreateWithoutMantraInput } from "../inputs/MantraCreateWithoutMantraInput";
@@ -8,23 +8,15 @@ import { MantraWhereUniqueInput } from "../inputs/MantraWhereUniqueInput";
   isAbstract: true,
 })
 export class MantraCreateNestedManyWithoutMantraInput {
-  @TypeGraphQL.Field((_type) => [MantraCreateWithoutMantraInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MantraCreateWithoutMantraInput], { nullable: true })
   create?: MantraCreateWithoutMantraInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraCreateOrConnectWithoutMantraInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MantraCreateOrConnectWithoutMantraInput], { nullable: true })
   connectOrCreate?: MantraCreateOrConnectWithoutMantraInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => MantraCreateManyMantraInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => MantraCreateManyMantraInputEnvelope, { nullable: true })
   createMany?: MantraCreateManyMantraInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [MantraWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [MantraWhereUniqueInput], { nullable: true })
   connect?: MantraWhereUniqueInput[] | undefined;
 }

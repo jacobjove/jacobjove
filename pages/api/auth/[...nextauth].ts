@@ -1,6 +1,9 @@
-import { USE_FIREBASE } from "@/config";
-import prisma from "@/utils/prisma";
-import NextAuth, { CallbacksOptions } from "next-auth";
+import { CREATE_USER, UPDATE_USER } from "@/graphql/mutations";
+import { GET_USER } from "@/graphql/queries";
+import { User } from "@/graphql/schema";
+import { initializeApollo } from "@/lib/apollo";
+import { NoUndefinedField } from "@/types/global";
+import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { AppProviders } from "next-auth/providers";
 // import AppleProvider from "next-auth/providers/apple";
@@ -81,49 +84,50 @@ if (useMockProviders) {
 
 // https://next-auth.js.org/configuration/callbacks
 const callbacks: CallbacksOptions = {
-  async signIn({ user, account, profile, email: _email, credentials: _credentials }) {
+  async signIn({ user: _user, account, profile, email: _email, credentials: _credentials }) {
     // console.log("🔑 signIn", { user, account, profile, email, credentials });
     if (account.provider === "google") {
       // TODO: Allow, but set emailVerified to false
       if (!profile.email_verified) return false;
-      const userFromDb = await prisma.user
-        .findUnique({
-          where: {
-            email: user.email,
-          },
-          select: {
-            accounts: {
-              where: {
-                provider: account.provider,
-                remoteId: account.providerAccountId,
-              },
-              select: { scopes: true },
-            },
-          },
-        })
-        .catch(console.error);
-      if (userFromDb && userFromDb.accounts.length) {
-        // Unfortunately, if we have requested an additional scope (e.g., for calendar
-        // integration), that scope is lost the next time the user authenticates with
-        // their third-party (...Google) account. This will require a proper solution
-        // of some kind, but for now, we check to see if scopes have been reset, and if
-        // so, we require the user to re-authenticate while explicitly requesting the
-        // previously granted scopes. This would be totally unnecessary if we just
-        // configured NextAuth to always request all the scopes that we might want
-        // (including calendar, etc.), but if we want to allow the user to use OAuth
-        // without providing access to their calendar or other data, we'll need to
-        // figure out a way to keep track of what scopes should be requested during
-        // the sign-in process, so that scopes are not reset.
-        const oldScopes = userFromDb.accounts[0].scopes;
-        const newScopes = account.scope?.split(" ") ?? [];
-        if (!oldScopes.every((scope) => newScopes.includes(scope))) {
-          const scopesToRequest = [...new Set([...oldScopes, ...newScopes])];
-          // TODO: figure out how to preserve callback URL instead of redirecting to app home
-          return `${process.env.NEXTAUTH_URL}/auth/signin?provider=${
-            account.provider
-          }&scope=${scopesToRequest.join(",")}&callbackUrl=${process.env.NEXTAUTH_URL}/app`;
-        }
-      }
+      // TODO
+      // const userFromDb = await prisma.user
+      //   .findUnique({
+      //     where: {
+      //       email: user.email,
+      //     },
+      //     select: {
+      //       accounts: {
+      //         where: {
+      //           provider: account.provider,
+      //           remoteId: account.providerAccountId,
+      //         },
+      //         select: { scopes: true },
+      //       },
+      //     },
+      //   })
+      //   .catch(console.error);
+      // if (userFromDb && userFromDb.accounts.length) {
+      //   // Unfortunately, if we have requested an additional scope (e.g., for calendar
+      //   // integration), that scope is lost the next time the user authenticates with
+      //   // their third-party (...Google) account. This will require a proper solution
+      //   // of some kind, but for now, we check to see if scopes have been reset, and if
+      //   // so, we require the user to re-authenticate while explicitly requesting the
+      //   // previously granted scopes. This would be totally unnecessary if we just
+      //   // configured NextAuth to always request all the scopes that we might want
+      //   // (including calendar, etc.), but if we want to allow the user to use OAuth
+      //   // without providing access to their calendar or other data, we'll need to
+      //   // figure out a way to keep track of what scopes should be requested during
+      //   // the sign-in process, so that scopes are not reset.
+      //   const oldScopes = userFromDb.accounts[0].scopes;
+      //   const newScopes = account.scope?.split(" ") ?? [];
+      //   if (!oldScopes.every((scope) => newScopes.includes(scope))) {
+      //     const scopesToRequest = [...new Set([...oldScopes, ...newScopes])];
+      //     // TODO: figure out how to preserve callback URL instead of redirecting to app home
+      //     return `${process.env.NEXTAUTH_URL}/auth/signin?provider=${
+      //       account.provider
+      //     }&scope=${scopesToRequest.join(",")}&callbackUrl=${process.env.NEXTAUTH_URL}/app`;
+      //   }
+      // }
     }
     return true;
   },
@@ -186,27 +190,23 @@ const callbacks: CallbacksOptions = {
       }
     */
     // console.log("🔑 session", { session, token });
-    session.error = token.error;
+    if (token.error) session.error = token.error;
     if (!session?.user) return session;
     if (token.accessToken) session.accessToken = token.accessToken;
     if (!session.user.id) {
       // Get the user's ID.
-      let user = await prisma.user
-        .findUnique({
-          where: {
-            email: session.user.email,
-          },
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            isAdmin: true,
+      const apolloClient = initializeApollo();
+      let user = await apolloClient
+        .query({
+          query: GET_USER,
+          variables: {
+            where: { email: session.user.email },
           },
         })
-        .catch(console.error);
+        .then((result) => result.data.user as User);
       if (Object.values(token).every((v) => typeof v !== "undefined")) {
         const freshToken = token as NoUndefinedField<typeof token>;
-        const accountIdData = {
+        const provider_remoteId = {
           provider: freshToken.provider,
           remoteId: freshToken.providerAccountId,
         };
@@ -216,47 +216,52 @@ const callbacks: CallbacksOptions = {
           accessTokenExpiry: new Date(freshToken.accessTokenExpiry),
           refreshToken: freshToken.refreshToken,
         };
-        if (user && Object.values(token).every((v) => typeof v !== "undefined")) {
-          await prisma.user
-            .update({
-              where: { id: user.id },
-              data: {
-                name: user.name || session.user.name,
-                lastLogin: new Date(),
-                accounts: {
-                  upsert: {
-                    where: { provider_remoteId: accountIdData },
-                    create: { ...accountIdData, ...commonAccountData },
-                    update: commonAccountData,
+        if (user) {
+          await Promise.all([
+            apolloClient
+              .mutate({
+                mutation: UPDATE_USER,
+                variables: {
+                  where: { id: user.id },
+                  data: {
+                    name: user.name || session.user.name,
+                    lastLogin: new Date(),
+                    // accounts: {
+                    //   upsert: {
+                    //     where: { provider_remoteId },
+                    //     create: { ...provider_remoteId, ...commonAccountData },
+                    //     update: commonAccountData,
+                    //   },
+                    // },
+                  },
+                },
+              })
+              .then((result) => {
+                user = result.data.updateUser as User; // TODO
+              }),
+          ]);
+        } else {
+          console.log(">>> Creating user in db...");
+          user = await apolloClient
+            .mutate({
+              mutation: CREATE_USER,
+              variables: {
+                data: {
+                  email: session.user.email,
+                  name: session.user.name,
+                  lastLogin: new Date(),
+                  accounts: {
+                    create: { ...provider_remoteId, ...commonAccountData },
                   },
                 },
               },
             })
-            .catch(console.error);
-        } else {
+            .then((result) => result.data.user as User);
           // Create a new user.
-          if (USE_FIREBASE) {
-            console.error("Not implemented");
-            throw new Error("Not implemented");
-          } else {
-            user = await prisma.user.create({
-              data: {
-                email: session.user.email,
-                name: session.user.name,
-                lastLogin: new Date(),
-                accounts: {
-                  create: { ...accountIdData, ...commonAccountData },
-                },
-              },
-            });
-          }
         }
-        session.user.id = user.id;
       }
-      session.user = {
-        ...session.user,
-        ...user,
-      };
+      session.user.id = user.id;
+      if (!session.user.id) session.error = "Failed to retrieve user from db";
     }
     return session;
   },
@@ -308,7 +313,7 @@ async function refreshAccessToken(token: JWT) {
     });
 }
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/options#callbacks
   callbacks,
   debug: process.env.NODE_ENV === "development",
@@ -329,4 +334,6 @@ export default NextAuth({
   secret: process.env.SECRET_KEY,
   // https://next-auth.js.org/configuration/options#session
   session: { strategy: "jwt" },
-});
+};
+
+export default NextAuth(authOptions);

@@ -6,7 +6,6 @@ export { DeleteManyBeliefArgs } from "./DeleteManyBeliefArgs";
 export { FindFirstBeliefArgs } from "./FindFirstBeliefArgs";
 export { FindManyBeliefArgs } from "./FindManyBeliefArgs";
 export { FindUniqueBeliefArgs } from "./FindUniqueBeliefArgs";
-export { GroupByBeliefArgs } from "./GroupByBeliefArgs";
 export { UpdateBeliefArgs } from "./UpdateBeliefArgs";
 export { UpdateManyBeliefArgs } from "./UpdateManyBeliefArgs";
 export { UpsertBeliefArgs } from "./UpsertBeliefArgs";

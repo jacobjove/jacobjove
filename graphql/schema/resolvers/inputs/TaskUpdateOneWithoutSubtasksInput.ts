@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { TaskCreateOrConnectWithoutSubtasksInput } from "../inputs/TaskCreateOrConnectWithoutSubtasksInput";
 import { TaskCreateWithoutSubtasksInput } from "../inputs/TaskCreateWithoutSubtasksInput";
 import { TaskUpdateWithoutSubtasksInput } from "../inputs/TaskUpdateWithoutSubtasksInput";
@@ -9,38 +9,24 @@ import { TaskWhereUniqueInput } from "../inputs/TaskWhereUniqueInput";
   isAbstract: true,
 })
 export class TaskUpdateOneWithoutSubtasksInput {
-  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateWithoutSubtasksInput, { nullable: true })
   create?: TaskCreateWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskCreateOrConnectWithoutSubtasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskCreateOrConnectWithoutSubtasksInput, { nullable: true })
   connectOrCreate?: TaskCreateOrConnectWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpsertWithoutSubtasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskUpsertWithoutSubtasksInput, { nullable: true })
   upsert?: TaskUpsertWithoutSubtasksInput | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => Boolean, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => Boolean, { nullable: true })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskWhereUniqueInput, { nullable: true })
   connect?: TaskWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field((_type) => TaskUpdateWithoutSubtasksInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => TaskUpdateWithoutSubtasksInput, { nullable: true })
   update?: TaskUpdateWithoutSubtasksInput | undefined;
 }

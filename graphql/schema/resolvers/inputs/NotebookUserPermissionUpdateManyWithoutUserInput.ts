@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { NotebookUserPermissionCreateManyUserInputEnvelope } from "../inputs/NotebookUserPermissionCreateManyUserInputEnvelope";
 import { NotebookUserPermissionCreateOrConnectWithoutUserInput } from "../inputs/NotebookUserPermissionCreateOrConnectWithoutUserInput";
 import { NotebookUserPermissionCreateWithoutUserInput } from "../inputs/NotebookUserPermissionCreateWithoutUserInput";
@@ -12,9 +12,7 @@ import { NotebookUserPermissionWhereUniqueInput } from "../inputs/NotebookUserPe
   isAbstract: true,
 })
 export class NotebookUserPermissionUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateWithoutUserInput], { nullable: true })
   create?: NotebookUserPermissionCreateWithoutUserInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [NotebookUserPermissionCreateOrConnectWithoutUserInput], {
@@ -32,24 +30,16 @@ export class NotebookUserPermissionUpdateManyWithoutUserInput {
   })
   createMany?: NotebookUserPermissionCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   set?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   disconnect?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   delete?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionWhereUniqueInput], { nullable: true })
   connect?: NotebookUserPermissionWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field((_type) => [NotebookUserPermissionUpdateWithWhereUniqueWithoutUserInput], {
@@ -62,8 +52,6 @@ export class NotebookUserPermissionUpdateManyWithoutUserInput {
   })
   updateMany?: NotebookUserPermissionUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [NotebookUserPermissionScalarWhereInput], { nullable: true })
   deleteMany?: NotebookUserPermissionScalarWhereInput[] | undefined;
 }

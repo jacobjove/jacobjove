@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserCreateWithoutTasksInput } from "../inputs/UserCreateWithoutTasksInput";
 import { UserUpdateWithoutTasksInput } from "../inputs/UserUpdateWithoutTasksInput";
 
@@ -6,13 +6,9 @@ import { UserUpdateWithoutTasksInput } from "../inputs/UserUpdateWithoutTasksInp
   isAbstract: true,
 })
 export class UserUpsertWithoutTasksInput {
-  @TypeGraphQL.Field((_type) => UserUpdateWithoutTasksInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserUpdateWithoutTasksInput, { nullable: false })
   update!: UserUpdateWithoutTasksInput;
 
-  @TypeGraphQL.Field((_type) => UserCreateWithoutTasksInput, {
-    nullable: false,
-  })
+  @TypeGraphQL.Field((_type) => UserCreateWithoutTasksInput, { nullable: false })
   create!: UserCreateWithoutTasksInput;
 }

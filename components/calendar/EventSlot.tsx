@@ -4,8 +4,10 @@ import { useUser } from "@/components/contexts/UserContext";
 import { calendarEventFragment } from "@/graphql/fragments";
 import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
 import { CalendarEvent } from "@/graphql/schema";
+import { buildNewItemFragment } from "@/graphql/utils/fragments";
+import { addItemToCache } from "@/utils/apollo";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
@@ -29,7 +31,7 @@ const Root = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.grey[500], // "lightgray",
   },
   "&.hovered": {
-    backgroundColor: theme.palette.action, // TODO
+    backgroundColor: theme.palette.grey[600], // TODO
     cursor: "pointer",
   },
 }));
@@ -48,25 +50,12 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   }>(CREATE_CALENDAR_EVENT, {
     update(cache, { data }) {
       const { createCalendarEvent } = data || {};
-      if (createCalendarEvent) {
-        cache.modify({
-          fields: {
-            calendarEvents(existingEvents = []) {
-              const newCalendarEventRef = cache.writeFragment({
-                data: createCalendarEvent,
-                fragment: gql`
-                  fragment NewCalendarEvent on CalendarEvent {
-                    ...CalendarEventFragment
-                  }
-                  ${calendarEventFragment}
-                `,
-                fragmentName: "NewCalendarEvent",
-              });
-              return [...existingEvents, newCalendarEventRef];
-            },
-          },
-        });
-      }
+      addItemToCache(
+        cache,
+        createCalendarEvent,
+        "calendarEvents",
+        ...buildNewItemFragment(calendarEventFragment, "CalendarEventFragment", "CalendarEvent")
+      );
     },
   });
   const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
@@ -90,8 +79,8 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
                   id: draggedEvent.id,
                 },
                 data: {
-                  start: { set: newStart },
-                  end: { set: newEnd || undefined },
+                  start: newStart,
+                  end: newEnd || undefined,
                 },
               },
               optimisticResponse: {

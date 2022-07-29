@@ -1,5 +1,4 @@
 import AppLayout from "@/components/AppLayout";
-import { useAuth } from "@/components/contexts/AuthContext";
 import DashboardViewer, {
   DashboardData,
   fragment as dashboardDataFragment,
@@ -7,7 +6,7 @@ import DashboardViewer, {
 import Select from "@/components/Select";
 import { dashboardFragment } from "@/graphql/fragments";
 import { Dashboard } from "@/graphql/schema";
-import { buildServerSideProps } from "@/utils/ssr";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
@@ -21,6 +20,7 @@ import MenuItem from "@mui/material/MenuItem";
 import isEmpty from "lodash/isEmpty";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth } from "next-auth";
+import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 
@@ -90,7 +90,7 @@ interface DashboardPageData extends DashboardData {
 }
 
 const DashboardPage: NextPage = () => {
-  const { token } = useAuth();
+  const { data: session } = useSession();
   const { loading: loadingData, error, data } = useQuery<DashboardPageData>(QUERY);
   const [createDashboard, { loading: loadingCreateDashboard }] = useMutation(CREATE_DASHBOARD, {
     update(cache, { data }) {
@@ -132,19 +132,19 @@ const DashboardPage: NextPage = () => {
   const layouts = selectedDashboard?.layouts ?? DEFAULT_LAYOUTS;
 
   useEffect(() => {
-    if (token && !loading && data && !dashboards?.length) {
+    if (session && !loading && data && !dashboards?.length) {
       createDashboard({
         variables: {
           data: {
             name: "Daily Planner",
             isDefault: true,
             layouts: JSON.stringify(DEFAULT_LAYOUTS),
-            user: { connect: { id: token.uid } },
+            user: { connect: { id: session.user.id } },
           },
         },
       }).catch(console.error);
     }
-  }, [loading, data, dashboards, createDashboard, token]);
+  }, [loading, data, dashboards, createDashboard, session]);
 
   useEffect(() => {
     if (dashboards?.length && !selectedDashboardId) setSelectedDashboardId(dashboards[0].id);
@@ -255,19 +255,17 @@ const DashboardPage: NextPage = () => {
     </AppLayout>
   );
 };
+
 export default DashboardPage;
 
 (DashboardPage as PageWithAuth).auth = true;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return buildServerSideProps({
-    context,
-    unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/dashboard`,
-    query: {
-      query: QUERY,
-      variables: {
-        date: new Date().toISOString(),
-      },
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/dashboard`,
+  query: {
+    query: QUERY,
+    variables: {
+      date: new Date().toISOString(),
     },
-  });
-};
+  },
+});

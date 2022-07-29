@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarCreateManyUserInputEnvelope } from "../inputs/CalendarCreateManyUserInputEnvelope";
 import { CalendarCreateOrConnectWithoutUserInput } from "../inputs/CalendarCreateOrConnectWithoutUserInput";
 import { CalendarCreateWithoutUserInput } from "../inputs/CalendarCreateWithoutUserInput";
@@ -12,58 +12,36 @@ import { CalendarWhereUniqueInput } from "../inputs/CalendarWhereUniqueInput";
   isAbstract: true,
 })
 export class CalendarUpdateManyWithoutUserInput {
-  @TypeGraphQL.Field((_type) => [CalendarCreateWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarCreateWithoutUserInput], { nullable: true })
   create?: CalendarCreateWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarCreateOrConnectWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarCreateOrConnectWithoutUserInput], { nullable: true })
   connectOrCreate?: CalendarCreateOrConnectWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarUpsertWithWhereUniqueWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarUpsertWithWhereUniqueWithoutUserInput], { nullable: true })
   upsert?: CalendarUpsertWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => CalendarCreateManyUserInputEnvelope, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => CalendarCreateManyUserInputEnvelope, { nullable: true })
   createMany?: CalendarCreateManyUserInputEnvelope | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], { nullable: true })
   set?: CalendarWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], { nullable: true })
   disconnect?: CalendarWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], { nullable: true })
   delete?: CalendarWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarWhereUniqueInput], { nullable: true })
   connect?: CalendarWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarUpdateWithWhereUniqueWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarUpdateWithWhereUniqueWithoutUserInput], { nullable: true })
   update?: CalendarUpdateWithWhereUniqueWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarUpdateManyWithWhereWithoutUserInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarUpdateManyWithWhereWithoutUserInput], { nullable: true })
   updateMany?: CalendarUpdateManyWithWhereWithoutUserInput[] | undefined;
 
-  @TypeGraphQL.Field((_type) => [CalendarScalarWhereInput], {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => [CalendarScalarWhereInput], { nullable: true })
   deleteMany?: CalendarScalarWhereInput[] | undefined;
 }

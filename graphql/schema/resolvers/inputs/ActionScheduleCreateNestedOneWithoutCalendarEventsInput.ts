@@ -1,4 +1,4 @@
-import * as TypeGraphQL from "type-graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleCreateOrConnectWithoutCalendarEventsInput } from "../inputs/ActionScheduleCreateOrConnectWithoutCalendarEventsInput";
 import { ActionScheduleCreateWithoutCalendarEventsInput } from "../inputs/ActionScheduleCreateWithoutCalendarEventsInput";
 import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUniqueInput";
@@ -7,9 +7,7 @@ import { ActionScheduleWhereUniqueInput } from "../inputs/ActionScheduleWhereUni
   isAbstract: true,
 })
 export class ActionScheduleCreateNestedOneWithoutCalendarEventsInput {
-  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutCalendarEventsInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleCreateWithoutCalendarEventsInput, { nullable: true })
   create?: ActionScheduleCreateWithoutCalendarEventsInput | undefined;
 
   @TypeGraphQL.Field((_type) => ActionScheduleCreateOrConnectWithoutCalendarEventsInput, {
@@ -17,8 +15,6 @@ export class ActionScheduleCreateNestedOneWithoutCalendarEventsInput {
   })
   connectOrCreate?: ActionScheduleCreateOrConnectWithoutCalendarEventsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, {
-    nullable: true,
-  })
+  @TypeGraphQL.Field((_type) => ActionScheduleWhereUniqueInput, { nullable: true })
   connect?: ActionScheduleWhereUniqueInput | undefined;
 }
