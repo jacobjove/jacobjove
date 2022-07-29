@@ -133,7 +133,7 @@
     "@types/jest": "^26.0.10",
     "@types/json2mq": "^0.2.0",
     "@types/lodash": "^4.14.177",
-    "@types/lru-cache": "^5.1.1",
+    "@types/lru-cache": "^7.10.10",
     "@types/micro-cors": "^0.1.2",
     "@types/node": "^14.17.34",
     "@types/pluralize": "^0.0.29",
