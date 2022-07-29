@@ -8,11 +8,10 @@ import Link from "next/link";
 import React, { FC, MouseEvent } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleUserBelief($beliefId: Int!, $userId: Int!, $deleted: DateTime) {
-    toggleUserBelief(beliefId: $beliefId, userId: $userId, deleted: $deleted) {
+  mutation ToggleBelief($beliefId: String!, $archivedAt: DateTime) {
+    toggleBelief(beliefId: $beliefId, archivedAt: $archivedAt) {
       beliefId
-      userId
-      deleted
+      archivedAt
     }
   }
 `;
@@ -29,23 +28,22 @@ const SelectableBelief: FC<SelectableBeliefProps> = ({
   const { data: session } = useSession();
   const [mutate] = useMutation(TOGGLE_IDENTIFICATION);
   const [selected, setSelected] = React.useState(initiallySelected);
-  const toggleUserBelief = (e: MouseEvent) => {
+  const toggleBelief = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (session?.user) {
-      let deleted = null;
+    if (session) {
+      let archivedAt = null;
       if (selected) {
-        deleted = new Date().toISOString();
+        archivedAt = new Date();
       }
       mutate({
-        variables: { beliefId: belief.id, userId: session.user.id, deleted },
+        variables: { beliefId: belief.id, archivedAt },
         optimisticResponse: {
           __typename: "Mutation",
-          toggleUserBelief: {
-            __typename: "ToggleUserBeliefPayload",
+          toggleBelief: {
+            __typename: "ToggleBeliefPayload",
             beliefId: belief.id,
-            userId: session.user.id,
-            deleted,
+            archivedAt,
           },
         },
       });
@@ -60,7 +58,6 @@ const SelectableBelief: FC<SelectableBeliefProps> = ({
           variant="outlined"
           size="small"
           sx={{
-            color: "black",
             margin: "0.6rem 1.2rem",
             display: "inline-block",
             fontSize: "1rem",
@@ -72,7 +69,7 @@ const SelectableBelief: FC<SelectableBeliefProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/beliefs/${belief.slug}`} onClick={toggleUserBelief}>
+        <a href={`/beliefs/${belief.slug}`} onClick={toggleBelief}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

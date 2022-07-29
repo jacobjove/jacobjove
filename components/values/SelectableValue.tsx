@@ -8,10 +8,9 @@ import Link from "next/link";
 import React, { FC, MouseEvent } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleUserValue($valueId: Int!, $userId: Int!, $archivedAt: DateTime) {
-    toggleUserValue(valueId: $valueId, userId: $userId, archivedAt: $archivedAt) {
+  mutation ToggleValue($valueId: String!, $archivedAt: DateTime) {
+    toggleValue(valueId: $valueId, archivedAt: $archivedAt) {
       valueId
-      userId
       archivedAt
     }
   }
@@ -29,22 +28,21 @@ const SelectableValue: FC<SelectableValueProps> = ({
   const { data: session } = useSession();
   const [mutate] = useMutation(TOGGLE_IDENTIFICATION);
   const [selected, setSelected] = React.useState(initiallySelected);
-  const toggleUserValue = (e: MouseEvent) => {
+  const toggleValue = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (session?.user) {
+    if (session) {
       let archivedAt = null;
       if (selected) {
-        archivedAt = new Date().toISOString();
+        archivedAt = new Date();
       }
       mutate({
-        variables: { valueId: value.id, userId: session.user.id, archivedAt },
+        variables: { valueId: value.id, archivedAt },
         optimisticResponse: {
           __typename: "Mutation",
-          toggleUserValue: {
-            __typename: "ToggleUserValuePayload",
+          toggleValue: {
+            __typename: "ToggleValuePayload",
             valueId: value.id,
-            userId: session.user.id,
             archivedAt,
           },
         },
@@ -60,7 +58,6 @@ const SelectableValue: FC<SelectableValueProps> = ({
           variant="outlined"
           size="small"
           sx={{
-            color: "black",
             margin: "0.6rem 1.2rem",
             display: "inline-block",
             fontSize: "1rem",
@@ -72,7 +69,7 @@ const SelectableValue: FC<SelectableValueProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/values/${value.slug}`} onClick={toggleUserValue}>
+        <a href={`/values/${value.slug}`} onClick={toggleValue}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

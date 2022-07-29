@@ -1,9 +1,18 @@
-import { calendarEventFragment, calendarFragment, userFragment } from "@/graphql/fragments";
+import { accountFragment, calendarFragment, userFragment } from "@/graphql/fragments";
 import { gql } from "@apollo/client";
 
+export const GET_USER_BY_ID = gql`
+  query GetUserById($id: String!) {
+    user(where: { id: $id }) {
+      ...UserFragment
+    }
+  }
+  ${userFragment}
+`;
+
 export const GET_USER = gql`
-  query GetUser($userId: Int!) {
-    user(where: { id: $userId }) {
+  query GetUser($where: UserWhereUniqueInput!) {
+    user(where: $where) {
       ...UserFragment
     }
   }
@@ -11,19 +20,28 @@ export const GET_USER = gql`
 `;
 
 export const GET_CALENDARS = gql`
-  query GetCalendars($userId: Int!) {
-    calendars(where: { userId: { equals: $userId } }) {
-      ...CalendarEventFragment
+  query GetCalendars {
+    calendars {
+      ...CalendarFragment
     }
   }
   ${calendarFragment}
 `;
 
-export const GET_CALENDAR_EVENTS = gql`
-  query GetCalendarEvents($userId: Int!) {
-    calendarEvents(where: { calendar: { is: { userId: { equals: $userId } } } }) {
-      ...CalendarEventFragment
+export const GET_ACCOUNTS = gql`
+  query GetAccounts {
+    accounts {
+      ...AccountFragment
     }
   }
-  ${calendarEventFragment}
+  ${accountFragment}
 `;
+
+// export const GET_CALENDAR_EVENTS = gql`
+//   query GetCalendarEvents {
+//     calendarEvents {
+//       ...CalendarEventFragment
+//     }
+//   }
+//   ${calendarEventFragment}
+// `;

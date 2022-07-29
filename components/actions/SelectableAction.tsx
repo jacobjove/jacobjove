@@ -8,8 +8,8 @@ import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
-  mutation ToggleActionAdoption($actionId: Int!, $userId: Int!, $archivedAt: DateTime) {
-    toggleHabitAdoption(actionId: $actionId, userId: $userId, archivedAt: $archivedAt) {
+  mutation ToggleActionAdoption($actionId: String!, $archivedAt: DateTime) {
+    toggleHabitAdoption(actionId: $actionId, archivedAt: $archivedAt) {
       actId
       archivedAt
     }
@@ -31,13 +31,13 @@ const SelectableAction: FC<SelectableActionProps> = ({
   const toggleSelection = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (session?.user) {
+    if (session) {
       let archivedAt = null;
       if (selected) {
-        archivedAt = new Date().toISOString();
+        archivedAt = new Date();
       }
       mutate({
-        variables: { actId: act.id, userId: session.user.id, archivedAt },
+        variables: { actId: act.id, archivedAt },
         optimisticResponse: {
           __typename: "Mutation",
           toggleHabitAdoption: {
@@ -58,7 +58,6 @@ const SelectableAction: FC<SelectableActionProps> = ({
           variant="outlined"
           size="small"
           sx={{
-            color: "black",
             margin: "0.6rem 1.2rem",
             display: "inline-block",
             fontSize: "1rem",

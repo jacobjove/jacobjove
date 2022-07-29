@@ -1,5 +1,5 @@
 import Onboarder from "@/components/Onboarder";
-import { Identification as _Identification, Identity } from "@/graphql/schema";
+import { Identity } from "@/graphql/schema";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -13,13 +13,9 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { FC } from "react";
 
-type Identification = _Identification & {
-  identity: Identity;
-};
-
 interface IdentityTableProps {
   data: {
-    identifications: Identification[];
+    identities: Identity[];
   };
 }
 
@@ -38,10 +34,10 @@ const ONBOARDING_STEPS = [
 const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
   // console.log("IdentityTable", props);
   const {
-    data: { identifications },
+    data: { identities },
   } = props;
   let content;
-  if (!identifications.length) {
+  if (!identities.length) {
     content = <Onboarder steps={ONBOARDING_STEPS} />;
   } else {
     content = (
@@ -62,23 +58,26 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {identifications.map((identification: Identification) => (
-              <TableRow
-                key={identification.identity.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  <Link href={`/identities/${identification.identity.slug}`}>
-                    <a>{identification.identity.name}</a>
-                  </Link>
-                </TableCell>
-                <TableCell component="td">
-                  <Box display="flex" alignItems="center">
-                    <progress value="100" max="100" style={{ flexGrow: 1 }}></progress>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
+            {identities.map(
+              (identity) =>
+                !!identity && (
+                  <TableRow
+                    key={identity.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <Link href={`/identities/${identity.slug}`}>
+                        <a>{identity.name}</a>
+                      </Link>
+                    </TableCell>
+                    <TableCell component="td">
+                      <Box display="flex" alignItems="center">
+                        <progress value="100" max="100" style={{ flexGrow: 1 }}></progress>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                )
+            )}
           </TableBody>
         </Table>
       </TableContainer>

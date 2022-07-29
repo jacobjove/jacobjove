@@ -1,6 +1,8 @@
+import { Calendar } from "@/graphql/schema";
+import { initializeApollo } from "@/lib/apollo";
 import { CalendarClient } from "@/utils/calendar/client";
-import prisma from "@/utils/prisma";
 import rateLimiter from "@/utils/rate-limit";
+import { gql } from "@apollo/client";
 import { addYears } from "date-fns";
 import { Session } from "next-auth";
 
@@ -8,30 +10,66 @@ const limiter = rateLimiter({
   ttl: 60 * 1000, // 60 seconds
 });
 
-export const syncCalendar = async (calendarId: number, session: Session) => {
-  const token = `SyncCalendars_${session.user.id}`;
-  if (await limiter.check(token).catch(() => false)) {
+const GET_CALENDAR = gql`
+  query GetCalendar($id: String!) {
+    calendar(where: { id: $id }) {
+      id
+      provider
+      remoteId
+      syncToken
+      account {
+        id
+        provider
+        remoteId
+        accessToken
+        refreshToken
+      }
+    }
+  }
+`;
+
+const UPDATE_CALENDAR = gql`
+  mutation UpdateCalendar($where: CalendarWhereUniqueInput!, $data: CalendarUpdateInput!) {
+    updateCalendar(where: $where, data: $data) {
+      id
+    }
+  }
+`;
+
+const UPSERT_CALENDAR_EVENT = gql`
+  mutation UpsertCalendarEvent(
+    $where: CalendarEventWhereUniqueInput!
+    $create: CalendarEventCreateInput!
+    $update: CalendarEventUpdateInput!
+  ) {
+    upsertCalendarEvent(where: $where, create: $create, update: $update) {
+      remoteId
+      calendarSourceId
+      calendarId
+      title
+      start
+      allDay
+      end
+      createdAt
+      updatedAt
+      canceled
+    }
+  }
+`;
+
+export const syncCalendar = async (calendarId: string, session: Session) => {
+  const apolloClient = initializeApollo(); // TODO
+  const key = `SyncCalendars_${session.user.id}`;
+  if (await limiter.check(key).catch(() => false)) {
     throw new Error("Rate limit exceeded");
   }
   const calendarResponses: Record<string, Record<string, string>> = {};
-  const calendar = await prisma.calendar.findUnique({
-    where: { id: calendarId },
-    select: {
-      id: true,
-      provider: true,
-      remoteId: true,
-      syncToken: true,
-      account: {
-        select: {
-          id: true,
-          provider: true,
-          remoteId: true,
-          accessToken: true,
-          refreshToken: true,
-        },
-      },
-    },
-  });
+  const calendar: Calendar = await apolloClient
+    .query({
+      query: GET_CALENDAR,
+      context: { session },
+    })
+    .then((result) => result.data.calendar);
   if (!calendar || !(calendar.provider && calendar.remoteId)) {
     throw new Error("Calendar not found");
   }
@@ -50,10 +88,13 @@ export const syncCalendar = async (calendarId: number, session: Session) => {
     })
     .then(async (data) => {
       if (data.data.nextSyncToken) {
-        prisma.calendar
-          .update({
-            where: { id: calendar.id },
-            data: { syncToken: data.data.nextSyncToken },
+        apolloClient
+          .mutate({
+            mutation: UPDATE_CALENDAR,
+            variables: {
+              where: { id: calendar.id },
+              data: { syncToken: data.data.nextSyncToken },
+            },
           })
           .catch(console.error);
       } else if (data.data.nextPageToken) {
@@ -113,16 +154,19 @@ export const syncCalendar = async (calendarId: number, session: Session) => {
             canceled,
           };
           if (eventData.remoteId && eventData.calendarSourceId) {
-            prisma.calendarEvent
-              .upsert({
-                where: {
-                  remoteId_calendarId: {
-                    remoteId: eventData.remoteId,
-                    calendarId,
+            apolloClient
+              .mutate({
+                mutation: UPSERT_CALENDAR_EVENT,
+                variables: {
+                  where: {
+                    remoteId_calendarId: {
+                      remoteId: eventData.remoteId,
+                      calendarId,
+                    },
                   },
+                  create: eventData,
+                  update: eventData,
                 },
-                update: eventData,
-                create: eventData,
               })
               .catch(console.error);
           }

@@ -1,0 +1,11 @@
+export { AggregateReadingArgs } from "./AggregateReadingArgs";
+export { CreateManyReadingArgs } from "./CreateManyReadingArgs";
+export { CreateReadingArgs } from "./CreateReadingArgs";
+export { DeleteManyReadingArgs } from "./DeleteManyReadingArgs";
+export { DeleteReadingArgs } from "./DeleteReadingArgs";
+export { FindFirstReadingArgs } from "./FindFirstReadingArgs";
+export { FindManyReadingArgs } from "./FindManyReadingArgs";
+export { FindUniqueReadingArgs } from "./FindUniqueReadingArgs";
+export { UpdateManyReadingArgs } from "./UpdateManyReadingArgs";
+export { UpdateReadingArgs } from "./UpdateReadingArgs";
+export { UpsertReadingArgs } from "./UpsertReadingArgs";

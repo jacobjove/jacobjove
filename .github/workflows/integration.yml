@@ -1,0 +1,427 @@
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+# !! WARNING !!
+# Do not modify this file directly!
+# !! WARNING !!
+#
+# It is generated from: ../workflows-src/integration.yml
+# using the script from https://github.com/mithro/actions-includes@main
+
+name: integration
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - .gitignore
+      - .github/**
+      - "!.github/integration.yml"
+      - .idea/**
+      - .vscode/**
+      - "**.md"
+      - "**.rst"
+      - config/hooks/**
+  schedule:
+    - cron: 0 9 * * *
+  workflow_dispatch:
+    inputs:
+      jobs:
+        description: Comma-separated list of names of jobs to trigger
+        required: false
+        default: setup-script,build,pytest,e2e,test-deploy
+env:
+  ADMINS: ${{ secrets.ADMINS }}
+  DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
+  ALPHA_VANTAGE_ACCESS_KEY: ${{ secrets.ALPHA_VANTAGE_ACCESS_KEY }}
+  BRAINTREE_MERCHANT_ID: ${{ secrets.BRAINTREE_MERCHANT_ID }}
+  BRAINTREE_PUBLIC_KEY: ${{ secrets.BRAINTREE_PUBLIC_KEY }}
+  BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
+  CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+  CLOUDFLARE_PASSWORD: ${{ secrets.CLOUDFLARE_PASSWORD }}
+  CONTENT_MANAGER_EMAIL: ${{ secrets.CONTENT_MANAGER_EMAIL }}
+  CONTENT_MANAGER_PAT: ${{ secrets.CONTENT_MANAGER_PAT }}
+  ELASTIC_PASSWORD: ${{ secrets.ELASTIC_PASSWORD }}
+  EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+  EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+  EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+  EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+  FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
+  IMGUR_CLIENT_SECRET: ${IMGUR_CLIENT_SECRET}
+  POSTGRES_HOST: postgres
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  RCLONE_GDRIVE_SA_CREDENTIALS: ${{ secrets.RCLONE_GDRIVE_SA_CREDENTIALS }}
+  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_FRONTEND_DSN: ${{ secrets.SENTRY_FRONTEND_DSN }}
+  SHA: ${{ github.sha }}
+  SOCIAL_AUTH_DISCORD_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_DISCORD_CLIENT_ID }}
+  SOCIAL_AUTH_DISCORD_KEY: ${{ secrets.SOCIAL_AUTH_DISCORD_KEY }}
+  SOCIAL_AUTH_DISCORD_SECRET: ${{ secrets.SOCIAL_AUTH_DISCORD_SECRET }}
+  SOCIAL_AUTH_FACEBOOK_KEY: ${{ secrets.SOCIAL_AUTH_FACEBOOK_KEY }}
+  SOCIAL_AUTH_FACEBOOK_SECRET: ${{ secrets.SOCIAL_AUTH_FACEBOOK_SECRET }}
+  SOCIAL_AUTH_GITHUB_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_GITHUB_CLIENT_ID }}
+  SOCIAL_AUTH_GITHUB_SECRET: ${{ secrets.SOCIAL_AUTH_GITHUB_SECRET }}
+  SOCIAL_AUTH_GOOGLE_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_GOOGLE_CLIENT_ID }}
+  SOCIAL_AUTH_GOOGLE_SECRET: ${{ secrets.SOCIAL_AUTH_GOOGLE_SECRET }}
+  SOCIAL_AUTH_TWITTER_KEY: ${{ secrets.SOCIAL_AUTH_TWITTER_KEY }}
+  SOCIAL_AUTH_TWITTER_SECRET: ${{ secrets.SOCIAL_AUTH_TWITTER_SECRET }}
+  X_RAPIDAPI_KEY: ${{ secrets.X_RAPIDAPI_KEY }}
+jobs:
+  changed-files:
+    name: Get changed files
+    runs-on: ubuntu-latest
+    outputs:
+      added-files: ${{ steps.changed-files.outputs.added_files }}
+      deleted-files: ${{ steps.changed-files.outputs.deleted_files }}
+      modified-files: ${{ steps.changed-files.outputs.modified_files }}
+      all-changed-files: ${{ steps.changed-files.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v24
+  build:
+    name: Build image
+    needs: changed-files
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Specify Docker Compose version
+        run: |
+          echo ""
+          echo "Installed version: $(docker compose version)"
+          version=2.2.1
+          docker compose version | grep --quiet "$version" || {
+            echo "Installing Docker Compose version $version ..."
+            mkdir -p ~/.docker/cli-plugins/
+            curl -SL "https://github.com/docker/compose/releases/download/v${version}/docker-compose-linux-x86_64" -o ~/.docker/cli-plugins/docker-compose
+            chmod +x ~/.docker/cli-plugins/docker-compose
+            echo "Installed version: $(docker compose version)"
+          }
+      - name: Configure Docker Compose
+        shell: bash
+        run: |
+          echo "Configuring Docker Compose..."
+          if [[ -f docker-compose.test.yml ]]; then
+            echo "Using docker-compose.test.yml for default overrides..."
+            cp docker-compose.test.yml docker-compose.override.yml
+          fi
+          echo "Done."
+      - name: Add hosts to /etc/hosts
+        shell: bash
+        run: |
+          hosts=("mongo")
+          echo "Updating hosts file..."
+          for host in "${hosts[@]}"; do
+            sudo echo "127.0.0.1 $host" | sudo tee -a /etc/hosts
+          done
+          echo "Done."
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build image without cache
+        uses: docker/build-push-action@v3
+        with:
+          build-args: |
+            NODE_ENV=prod
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          load: false
+          push: true
+          no-cache: true
+          secret-files: ENV_FILE=./.env
+          tags: ghcr.io/iacobfred/SelfBuilder:${{ github.sha }}
+      - name: Run Snyk to check image for vulnerabilities
+        continue-on-error: true
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ghcr.io/iacobfred/SelfBuilder:${{ github.sha }}
+          args: --file=Dockerfile
+  pytest:
+    name: Run backend integration tests
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 3
+      matrix:
+        python-version: [3.9]
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started.
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        # Set health checks to wait until redis has started.
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+    environment: test
+    env:
+      TESTING: true
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4.1.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Get full Python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")
+      - name: Specify Docker Compose version
+        run: |
+          echo ""
+          echo "Installed version: $(docker compose version)"
+          version=2.2.1
+          docker compose version | grep --quiet "$version" || {
+            echo "Installing Docker Compose version $version ..."
+            mkdir -p ~/.docker/cli-plugins/
+            curl -SL "https://github.com/docker/compose/releases/download/v${version}/docker-compose-linux-x86_64" -o ~/.docker/cli-plugins/docker-compose
+            chmod +x ~/.docker/cli-plugins/docker-compose
+            echo "Installed version: $(docker compose version)"
+          }
+      - name: Configure Docker Compose
+        shell: bash
+        run: |
+          echo "Configuring Docker Compose..."
+          if [[ -f docker-compose.test.yml ]]; then
+            echo "Using docker-compose.test.yml for default overrides..."
+            cp docker-compose.test.yml docker-compose.override.yml
+          fi
+          echo "Done."
+      - name: Add hosts to /etc/hosts
+        shell: bash
+        run: |
+          hosts=("postgres" "redis" "elasticsearch" "SelfBuilder.dev.net")
+          echo "Updating hosts file..."
+          for host in "${hosts[@]}"; do
+            sudo echo "127.0.0.1 $host" | sudo tee -a /etc/hosts
+          done
+          echo "Done."
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1.3
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      - name: Cache Python virtual environment
+        uses: actions/cache@v3
+        id: venv-cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install Python dependencies
+        if: ${{ steps.venv-cache.outputs.cache-hit != 'true' || steps.venv-test.outcome == 'failure' }}
+        run: bash scripts/setup.sh
+      - name: Make sure pytest is working
+        run: |
+          echo "def test_pytest(): pass" > nothing.py
+          poetry run pytest nothing.py
+      - name: Run tests
+        run: poetry run pytest
+  test-deploy:
+    name: Test deploy
+    needs: [changed-files, build]
+    if: ${{ contains(needs.changed-files.outputs.modified-files, 'deploy.sh') || github.event_name == 'workflow_dispatch' && contains(github.event.inputs.jobs, 'deploy') }}
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4.1.0
+        with:
+          python-version: 3.9
+      - name: Get full Python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")
+      - name: Specify Docker Compose version
+        run: |
+          echo ""
+          echo "Installed version: $(docker compose version)"
+          version=2.2.1
+          docker compose version | grep --quiet "$version" || {
+            echo "Installing Docker Compose version $version ..."
+            mkdir -p ~/.docker/cli-plugins/
+            curl -SL "https://github.com/docker/compose/releases/download/v${version}/docker-compose-linux-x86_64" -o ~/.docker/cli-plugins/docker-compose
+            chmod +x ~/.docker/cli-plugins/docker-compose
+            echo "Installed version: $(docker compose version)"
+          }
+      - name: Configure Docker Compose
+        shell: bash
+        run: |
+          echo "Configuring Docker Compose..."
+          if [[ -f docker-compose.test.yml ]]; then
+            echo "Using docker-compose.test.yml for default overrides..."
+            cp docker-compose.test.yml docker-compose.override.yml
+          fi
+          echo "Done."
+      - name: Add hosts to /etc/hosts
+        shell: bash
+        run: |
+          hosts=("postgres" "redis" "elasticsearch" "SelfBuilder.dev.net")
+          echo "Updating hosts file..."
+          for host in "${hosts[@]}"; do
+            sudo echo "127.0.0.1 $host" | sudo tee -a /etc/hosts
+          done
+          echo "Done."
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1.3
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      - name: Cache Python virtual environment
+        uses: actions/cache@v3
+        id: venv-cache
+        with:
+          path: .venv
+          key: venv-ubuntu-latest-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install Python dependencies
+        if: ${{ steps.venv-cache.outputs.cache-hit != 'true' || steps.venv-test.outcome == 'failure' }}
+        run: bash scripts/setup.sh
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN}}
+      - name: Create writable volume directories
+        run: |
+          dir_names=( "db/backups" "db/init" "static" "media" "redirects" )
+          for dir_name in "${dir_names[@]}"; do
+            dir_path="_volumes/${dir_name}"
+            mkdir -p "$dir_path"; {
+              sudo chown -R www-data:www-data "$dir_path" && 
+              sudo chmod a+w -R "$dir_path"
+            } || exit 1
+          done
+      - uses: actions/cache@v3
+        id: data-cache
+        with:
+          path: _volumes/db/init
+          key: data
+      - name: Start up containers
+        run: bash config/scripts/deploy.sh
+      - name: Run deploy script
+        run: bash config/scripts/deploy.sh
+      - name: Run deploy script x2
+        run: bash config/scripts/deploy.sh
+  check-types:
+    name: Check types
+    needs: changed-files
+    if: ${{ contains(needs.changed-files.outputs.modified-files, 'py') }}
+    runs-on: ubuntu-latest
+    environment: test
+    strategy:
+      max-parallel: 3
+      matrix:
+        executable: [mypy, pytype]
+        python-version: [3.9]
+    continue-on-error: ${{ matrix.executable == 'mypy' }}
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4.1.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Get full Python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")
+      - name: Specify Docker Compose version
+        run: |
+          echo ""
+          echo "Installed version: $(docker compose version)"
+          version=2.2.1
+          docker compose version | grep --quiet "$version" || {
+            echo "Installing Docker Compose version $version ..."
+            mkdir -p ~/.docker/cli-plugins/
+            curl -SL "https://github.com/docker/compose/releases/download/v${version}/docker-compose-linux-x86_64" -o ~/.docker/cli-plugins/docker-compose
+            chmod +x ~/.docker/cli-plugins/docker-compose
+            echo "Installed version: $(docker compose version)"
+          }
+      - name: Configure Docker Compose
+        shell: bash
+        run: |
+          echo "Configuring Docker Compose..."
+          if [[ -f docker-compose.test.yml ]]; then
+            echo "Using docker-compose.test.yml for default overrides..."
+            cp docker-compose.test.yml docker-compose.override.yml
+          fi
+          echo "Done."
+      - name: Add hosts to /etc/hosts
+        shell: bash
+        run: |
+          hosts=("postgres" "redis" "elasticsearch" "SelfBuilder.dev.net")
+          echo "Updating hosts file..."
+          for host in "${hosts[@]}"; do
+            sudo echo "127.0.0.1 $host" | sudo tee -a /etc/hosts
+          done
+          echo "Done."
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1.3
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      - name: Cache Python virtual environment
+        uses: actions/cache@v3
+        id: venv-cache
+        with:
+          path: .venv
+          key: venv-ubuntu-latest-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install Python dependencies
+        if: ${{ steps.venv-cache.outputs.cache-hit != 'true' || steps.venv-test.outcome == 'failure' }}
+        run: bash scripts/setup.sh
+      - name: Cache type stubs
+        id: cache-stubs
+        uses: actions/cache@v3
+        with:
+          path: .cache/${{ matrix.executable }}
+          key: ${{ matrix.python-version }}-${{ matrix.executable }}-types
+      - name: Determine args
+        id: args
+        run: |
+          if [ ${{ matrix.executable }} = mypy ]; then args="--config-file=./setup.cfg .";
+          elif [ ${{ matrix.executable }} = pytype ]; then args="--config=./setup.cfg"; fi;
+          echo "::set-output name=args::$args"
+      - name: Run static type checker
+        run: poetry run ${{ matrix.executable }} ${{ steps.args.outputs.args }}

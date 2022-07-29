@@ -6,10 +6,11 @@ import {
   START_HOUR,
 } from "@/components/calendar/constants";
 import EventBox from "@/components/calendar/EventBox";
-import EventEditingDialog, { EventData } from "@/components/calendar/EventEditingDialog";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import DateContext from "@/components/contexts/DateContext";
+import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
+import { useUser } from "@/components/contexts/UserContext";
 import { Calendar, CalendarEvent } from "@/graphql/schema";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -18,12 +19,11 @@ import {
   differenceInMinutes,
   isBefore,
   isSameDay,
-  parseISO,
   setHours,
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindTrigger, PopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, useContext, useEffect, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
@@ -78,7 +78,7 @@ const Root = styled("div")(({ theme }) => {
 });
 
 type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
-  end: string;
+  end: Date;
 };
 
 export type CalendarData = {
@@ -89,61 +89,50 @@ export type CalendarData = {
 export interface CalendarProps {
   collapseMenu?: boolean;
   data: CalendarData;
-  loading: boolean;
+  loading?: boolean;
   error?: Error;
-  includeDateSelector: boolean;
+  includeDateSelector?: boolean;
+  eventEditingDialogState: PopupState;
 }
 
 export interface DayViewerProps extends CalendarProps {
   selectedDate: Date;
-  setSelectedDate: (date: Date | null) => void;
+  setSelectedDate: Dispatch<Date>;
   viewedHourState: [number, Dispatch<number>];
-  initialEventFormData: EventData;
-  dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
-  defaultCalendar: Calendar;
   hidden: boolean;
 }
 
 const DayViewer: FC<DayViewerProps> = ({
   selectedDate,
   viewedHourState,
-  initialEventFormData,
-  dispatchInitialEventFormData,
-  defaultCalendar,
   hidden,
   data,
   loading,
 }: DayViewerProps) => {
   const { calendarEvents } = data;
   const date = useContext(DateContext);
+  const user = useUser();
   const [viewedHour, setViewedHour] = viewedHourState;
-  const eventEditingDialogState = usePopupState({
-    variant: "popover",
-    popupId: `event-editing-dialog`,
-  });
-  const eventEditingDialogTriggerProps = bindTrigger(eventEditingDialogState);
+
+  const { newCalendarEventDialogState, dispatchNewCalendarEventData } = useNewCalendarEventDialog();
+  const eventEditingDialogTriggerProps = bindTrigger(newCalendarEventDialogState);
+
   const scrollableDivRef = useRef<HTMLDivElement>(null);
 
   const dayStart = zeroToHour(selectedDate, START_HOUR);
   const currentTimeOffsetPx = getTimeOffsetPx(setHours(selectedDate, viewedHour));
   const scrollOffsetPx = currentTimeOffsetPx - HOUR_HEIGHT * 1.5;
 
-  // TODO: create default calendar when user is created; ensure a user has 1+ calendars.
-  const primaryCalendarId = defaultCalendar?.id ?? calendarEvents?.[0]?.calendarId; // calendars.find((c) => c.primary);
-
   const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
   const filteredEvents = calendarEvents
     ?.filter((event) => {
       // TODO: partition events to separate all-day events based on event.end presence
       return (
-        isSameDay(parseISO(event.start), selectedDate) &&
-        !event.archivedAt &&
-        !event.canceled &&
-        event.end
+        isSameDay(event.start, selectedDate) && !event.archivedAt && !event.canceled && event.end
       );
     })
     ?.sort((a, b) => {
-      return parseISO(a.start) > parseISO(b.start) ? 1 : -1;
+      return a.start > b.start ? 1 : -1;
     }) as BoundCalendarEvent[];
 
   // Group events to account for possible overlap.
@@ -151,8 +140,8 @@ const DayViewer: FC<DayViewerProps> = ({
   let currentGroup: BoundCalendarEvent[];
   let lastEnd = new Date(-8640000000000000);
   filteredEvents.forEach((event) => {
-    const start = parseISO(event.start);
-    const end = parseISO(event.end);
+    const start = event.start;
+    const end = event.end;
     if (!currentGroup || lastEnd < start) {
       currentGroup = [];
       eventGroups.push(currentGroup);
@@ -231,15 +220,17 @@ const DayViewer: FC<DayViewerProps> = ({
                       date={eventSlotDate}
                       past={isPast}
                       view="day"
-                      defaultCalendarId={primaryCalendarId}
                       onClick={(e) => {
                         // Only trigger if the click was actually on the slot. This check
                         // allows us to avoid stopping propagation on click events for
                         // other elements in the slot.
                         if (e.target === e.currentTarget) {
-                          dispatchInitialEventFormData({
+                          dispatchNewCalendarEventData({
                             field: "init",
-                            value: { start: eventSlotDate },
+                            value: {
+                              calendarId: user?.settings.defaultCalendarId,
+                              start: eventSlotDate,
+                            },
                           });
                           eventEditingDialogTriggerProps.onClick(e);
                         }
@@ -253,8 +244,8 @@ const DayViewer: FC<DayViewerProps> = ({
                   const nOverlappingEvents = eventGroup.length;
                   const widthPercent = 100 / nOverlappingEvents - 1;
                   return eventGroup.map((event, indexInGroup) => {
-                    const eventStart = parseISO(event.start);
-                    const eventEnd = parseISO(event.end);
+                    const eventStart = event.start;
+                    const eventEnd = event.end;
                     const eventDurationInMinutes = differenceInMinutes(eventEnd, eventStart);
                     const dayStartDiffInMinutes = differenceInMinutes(eventStart, dayStart);
                     const topOffset = `${dayStartDiffInMinutes * MINUTE_HEIGHT + 2}px`; // TODO: fix magic number
@@ -286,10 +277,6 @@ const DayViewer: FC<DayViewerProps> = ({
                   zIndex={10}
                 />
               )}
-              <EventEditingDialog
-                {...bindPopover(eventEditingDialogState)}
-                eventData={initialEventFormData}
-              />
             </div>
           </Box>
         </>

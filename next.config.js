@@ -5,8 +5,22 @@
 process.env.BASE_DIR = __dirname;
 
 const withPlugins = require("next-compose-plugins");
+const withPWA = require("next-pwa");
 
 const plugins = [];
+
+// TODO: remove this condition after pwa config bug is fixed:
+// https://github.com/shadowwalker/next-pwa/issues/371
+if (process.env.NODE_ENV !== "development") {
+  plugins.push(
+    withPWA({
+      pwa: {
+        disable: process.env.NODE_ENV === "development",
+        dest: "public",
+      },
+    })
+  );
+}
 
 const modulesToTranspile = [
   // 'react-datasheet-grid'
@@ -33,9 +47,6 @@ const nextConfig = {
   compress: process.env.NODE_ENV != "production",
   reactStrictMode: true,
   swcMinify: true,
-  webpack: (config) => {
-    return config;
-  },
   async redirects() {
     const redirects = [
       {

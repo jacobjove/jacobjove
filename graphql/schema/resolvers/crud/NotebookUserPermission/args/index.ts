@@ -1,0 +1,11 @@
+export { AggregateNotebookUserPermissionArgs } from "./AggregateNotebookUserPermissionArgs";
+export { CreateManyNotebookUserPermissionArgs } from "./CreateManyNotebookUserPermissionArgs";
+export { CreateNotebookUserPermissionArgs } from "./CreateNotebookUserPermissionArgs";
+export { DeleteManyNotebookUserPermissionArgs } from "./DeleteManyNotebookUserPermissionArgs";
+export { DeleteNotebookUserPermissionArgs } from "./DeleteNotebookUserPermissionArgs";
+export { FindFirstNotebookUserPermissionArgs } from "./FindFirstNotebookUserPermissionArgs";
+export { FindManyNotebookUserPermissionArgs } from "./FindManyNotebookUserPermissionArgs";
+export { FindUniqueNotebookUserPermissionArgs } from "./FindUniqueNotebookUserPermissionArgs";
+export { UpdateManyNotebookUserPermissionArgs } from "./UpdateManyNotebookUserPermissionArgs";
+export { UpdateNotebookUserPermissionArgs } from "./UpdateNotebookUserPermissionArgs";
+export { UpsertNotebookUserPermissionArgs } from "./UpsertNotebookUserPermissionArgs";

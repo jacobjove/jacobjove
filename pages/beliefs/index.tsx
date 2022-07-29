@@ -1,21 +1,29 @@
-import { UserBelief } from ".prisma/client";
 import SelectableBelief from "@/components/beliefs/SelectableBelief";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { Belief } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/utils/apollo/client";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
 import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React from "react";
 
 interface BeliefsPageProps {
   beliefs: Belief[];
-  selectedBeliefIds: number[];
+  selectedBeliefIds: string[];
 }
+
+const QUERY = gql`
+  query Beliefs {
+    beliefs {
+      id
+      name
+      slug
+    }
+  }
+`;
 
 const BeliefsPage: NextPage<BeliefsPageProps> = ({
   beliefs,
@@ -54,44 +62,9 @@ const BeliefsPage: NextPage<BeliefsPageProps> = ({
 export default BeliefsPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
-  const apolloClient = initializeApollo();
-  const props: BeliefsPageProps = {
-    beliefs: [],
-    selectedBeliefIds: [],
-  };
-  if (session?.user?.id) {
-    await apolloClient
-      .query({
-        query: gql`
-        query Beliefs {
-          beliefs {
-            id
-            name
-            slug
-          }
-          userBeliefs (
-            where: {
-              userId: {equals: "${session.user.id}"}
-              deleted: {equals: null}
-            }
-          ) {
-            belief {
-              id
-            }
-          }
-        }
-      `,
-      })
-      .then((res) => {
-        props.beliefs = res.data.beliefs;
-        if (res.data.userBeliefs.length) {
-          props.selectedBeliefIds = res.data.userBeliefs.map(
-            (userBelief: UserBelief & { belief: Belief }) => parseInt(`${userBelief.belief.id}`)
-          );
-        }
-      });
-  }
-  return addApolloState(apolloClient, { props });
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  unauthedRedirectDestination: "/auth/signin?callbackUrl=/beliefs",
+  query: {
+    query: QUERY,
+  },
+});

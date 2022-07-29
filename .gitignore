@@ -5,9 +5,8 @@
 coverage/
 generated/
 node_modules/
+service-account.json
 
-# TODO: remove this after configuring GitHub Actions
-.github
-
-# Sentry
-.sentryclirc
+**/public/workbox-*.js
+**/public/sw.js
+**/public/worker-*.js

@@ -1,19 +1,22 @@
 import { ColorModeContextProvider } from "@/components/contexts/ColorModeContext";
 import { DateContextProvider } from "@/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@/components/contexts/DeviceContext";
+import { NewCalendarEventDialogContextProvider } from "@/components/contexts/NewCalendarEventDialogContext";
+import { NewTaskDialogContextProvider } from "@/components/contexts/NewTaskDialogContext";
 import { PageTransitionContextProvider } from "@/components/contexts/PageTransitionContext";
 import { UserContextProvider } from "@/components/contexts/UserContext";
+import { useApollo } from "@/lib/apollo";
+import SEO from "@/next-seo.config";
 import "@/node_modules/react-grid-layout/css/styles.css";
 import "@/node_modules/react-resizable/css/styles.css";
 import "@/public/styles/global.css";
-import { useApollo } from "@/utils/apollo/client";
 import { ApolloProvider } from "@apollo/client";
-import DateAdapter from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import CssBaseline from "@mui/material/CssBaseline";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { NextPage } from "next";
-import { SessionProvider, signIn, useSession } from "next-auth/react";
+import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import { FC, ReactElement, useEffect, useState } from "react";
@@ -33,7 +36,7 @@ export type PageWithAuth = NextPage & {
   auth?: boolean;
 };
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const apolloClient = useApollo(pageProps);
 
   const isMobileWidth = useMediaQuery("(max-width: 600px)");
@@ -67,80 +70,43 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   }, []);
 
   return (
-    <SessionProvider session={session}>
+    <SessionProvider>
       <ApolloProvider client={apolloClient}>
         <UserContextProvider>
-          <DeviceContext.Provider value={deviceContextData}>
-            <ColorModeContextProvider>
-              <PageTransitionContextProvider>
-                <CssBaseline />
-                <LocalizationProvider dateAdapter={DateAdapter}>
-                  <DndProvider backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}>
-                    <DateContextProvider>
-                      <DefaultSeo
-                        description={"Build good habits, break bad habits, and be your best self."}
-                        openGraph={{
-                          type: "website",
-                          url: "https://www.habitbuilder.com/",
-                          site_name: "SelfBuilder",
-                          // images: [
-                          //   {
-                          //     url: 'https://www.example.ie/og-image.jpg',
-                          //     width: 800,
-                          //     height: 600,
-                          //     alt: 'Og Image Alt',
-                          //   },
-                          //   {
-                          //     url: 'https://www.example.ie/og-image-2.jpg',
-                          //     width: 800,
-                          //     height: 600,
-                          //     alt: 'Og Image Alt 2',
-                          //   },
-                          // ],
-                        }}
-                        twitter={{ handle: "@habitbuilder" }}
-                        facebook={{
-                          appId: `${process.env.FACEBOOK_APP_ID}`,
-                        }}
-                        titleTemplate="%s | SelfBuilder" // https://github.com/garmeeh/next-seo#title-template
-                        defaultTitle="SelfBuilder" // https://github.com/garmeeh/next-seo#default-title
-                        additionalMetaTags={[
-                          {
-                            httpEquiv: "content-type",
-                            content: "text/html; charset=utf-8",
-                          },
-                          {
-                            name: "application-name",
-                            content: "SelfBuilder",
-                          },
-                        ]}
-                        additionalLinkTags={
-                          [
-                            // {
-                            //   rel: 'icon',
-                            //   href: '/static/favicon.ico',
-                            // }
-                          ]
-                        }
-                      />
-                      {(Component as PageWithAuth).auth ? (
-                        <Auth>
-                          <Component {...pageProps} />
-                        </Auth>
-                      ) : (
-                        <Component {...pageProps} />
-                      )}
-                    </DateContextProvider>
-                  </DndProvider>
-                </LocalizationProvider>
-              </PageTransitionContextProvider>
-            </ColorModeContextProvider>
-          </DeviceContext.Provider>
+          <NewTaskDialogContextProvider>
+            <NewCalendarEventDialogContextProvider>
+              <DeviceContext.Provider value={deviceContextData}>
+                <ColorModeContextProvider>
+                  <PageTransitionContextProvider>
+                    <CssBaseline />
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DndProvider
+                        backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}
+                      >
+                        <DateContextProvider>
+                          <DefaultSeo {...SEO} />
+                          {(Component as PageWithAuth).auth ? (
+                            <Auth>
+                              <Component {...pageProps} />
+                            </Auth>
+                          ) : (
+                            <Component {...pageProps} />
+                          )}
+                        </DateContextProvider>
+                      </DndProvider>
+                    </LocalizationProvider>
+                  </PageTransitionContextProvider>
+                </ColorModeContextProvider>
+              </DeviceContext.Provider>
+            </NewCalendarEventDialogContextProvider>
+          </NewTaskDialogContextProvider>
         </UserContextProvider>
       </ApolloProvider>
     </SessionProvider>
   );
 }
+
+export default App;
 
 interface AuthProps {
   children: ReactElement;
@@ -148,18 +114,22 @@ interface AuthProps {
 
 const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
   const { data: session, status } = useSession({ required: true });
-  const loadingAuth = status === "loading";
-  const isAuthenticated = !!session?.user;
+  const authenticated = status === "authenticated";
+  const loading = status === "loading";
+  const hasError = !!session?.error;
 
   // Require authentication.
   useEffect(() => {
     // Do nothing while loading.
-    if (loadingAuth) return;
-    // If not authenticated, force log in.
-    if (!isAuthenticated) signIn();
-  }, [isAuthenticated, loadingAuth]);
+    if (!loading) {
+      // Sign out if there's an auth error (probably an expired refresh token).
+      if (hasError) signOut();
+      // If not authenticated, force log in.
+      if (!authenticated || hasError) signIn();
+    }
+  }, [authenticated, loading, hasError]);
 
-  if (isAuthenticated) return children;
+  if (authenticated) return children;
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.

@@ -1,0 +1,11 @@
+export { AggregateMantraArgs } from "./AggregateMantraArgs";
+export { CreateMantraArgs } from "./CreateMantraArgs";
+export { CreateManyMantraArgs } from "./CreateManyMantraArgs";
+export { DeleteMantraArgs } from "./DeleteMantraArgs";
+export { DeleteManyMantraArgs } from "./DeleteManyMantraArgs";
+export { FindFirstMantraArgs } from "./FindFirstMantraArgs";
+export { FindManyMantraArgs } from "./FindManyMantraArgs";
+export { FindUniqueMantraArgs } from "./FindUniqueMantraArgs";
+export { UpdateMantraArgs } from "./UpdateMantraArgs";
+export { UpdateManyMantraArgs } from "./UpdateManyMantraArgs";
+export { UpsertMantraArgs } from "./UpsertMantraArgs";

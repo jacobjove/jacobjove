@@ -1,4 +1,4 @@
-import { User } from "@/components/contexts/UserContext";
+import { User } from "@/graphql/schema";
 
 const ENABLED_PROVIDERS: CalendarProvider[] = ["google"];
 

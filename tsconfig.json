@@ -28,19 +28,21 @@
     "target": "esnext"
   },
   "include": [
+    "./*.d.ts",
+    "./*.ts",
     "types/*.ts",
-    "next-env.d.ts",
     "next.config.js",
-    "prisma/seed.ts",
-    "prisma/generated/*.ts",
-    "graphql/*.ts",
-    "graphql/**/*.ts",
-    "utils/*.ts",
-    "utils/**/*.ts",
     "components/*",
     "components/**/*",
+    "graphql/*.ts",
+    "graphql/**/*.ts",
+    "hooks/*.ts",
+    "lib/*.ts",
     "pages/*",
-    "pages/**/*"
+    "pages/**/*",
+    "scripts/*.ts",
+    "utils/*.ts",
+    "utils/**/*.ts"
   ],
   "exclude": ["node_modules", "cypress"]
 }

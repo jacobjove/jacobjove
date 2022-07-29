@@ -49,7 +49,12 @@ class Document extends BaseDocument {
     return (
       <Html lang="en">
         <Head>
+          {/* Note: See next-seo.config.ts for additional head tags. */}
           <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=optional"
+          />
         </Head>
         <body className="no-scrollbar" style={{ width: "100%", margin: "0", padding: "0" }}>
           <Main />

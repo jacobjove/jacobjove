@@ -1,5 +1,6 @@
-import SocialLogin, { Provider } from "@/components/account/SocialLogin";
+import SocialLogin from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,7 +14,7 @@ import { useRouter } from "next/router";
 import { FunctionComponent, useEffect, useState } from "react";
 
 interface RegistrationPageProps {
-  providers: Provider[];
+  providers: Awaited<ReturnType<typeof getProviders>>;
 }
 
 const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
@@ -54,7 +55,7 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
               <br />
             </>
           )}
-          {(session?.user && (
+          {(session && (
             <Paper className="p-4 text-center">
               <Typography variant="h5" component="p">
                 You are logged in as <strong>{session.user.email}</strong>.
@@ -85,7 +86,8 @@ const RegistrationPage: FunctionComponent<RegistrationPageProps> = ({
 export default RegistrationPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-export const getServerSideProps: GetServerSideProps = async () => {
-  const providers = (await getProviders().catch(console.error)) || [];
-  return { props: { providers } };
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  props: async () => {
+    return { providers: await getProviders() };
+  },
+});

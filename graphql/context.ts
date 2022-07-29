@@ -1,27 +1,32 @@
-import prisma from "@/utils/prisma";
-import { PrismaClient } from "@prisma/client";
+import { USE_FIREBASE } from "@/config";
+import mongoClientPromise from "@/lib/mongodb";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { firestore } from "@/utils/firebase/admin";
+import { MongoClient } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { User } from "next-auth";
-import { getSession } from "next-auth/react";
+import { Session } from "next-auth";
+import { unstable_getServerSession } from "next-auth/next";
 
-export type Context = {
-  user: User | null;
-  accessToken: string;
-  prisma: PrismaClient;
-};
+export type ApolloContext = {
+  session: Session | null | undefined;
+} & (
+  | {
+      firestore: typeof firestore;
+    }
+  | {
+      db: MongoClient;
+    }
+);
 
 interface FromContext {
   req: NextApiRequest;
   res: NextApiResponse;
 }
 
-export async function createContext(context: FromContext): Promise<Context> {
-  const session = await getSession({ req: context.req });
-  const user = session?.user || null;
-  const accessToken = session?.accessToken || "";
+export async function createApolloContext({ req, res }: FromContext): Promise<ApolloContext> {
+  const session = await unstable_getServerSession(req, res, authOptions);
   return {
-    user,
-    accessToken,
-    prisma,
+    session,
+    ...(USE_FIREBASE ? { firestore } : { db: await mongoClientPromise }),
   };
 }

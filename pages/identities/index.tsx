@@ -1,21 +1,29 @@
-import { Identification } from ".prisma/client";
 import SelectableIdentity from "@/components/identities/SelectableIdentity";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { Identity } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/utils/apollo/client";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
 import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import React from "react";
 
 interface IdentitiesPageProps {
   identities: Identity[];
-  selectedIdentityIds: number[];
+  selectedIdentityIds: string[];
 }
+
+const QUERY = gql`
+  query Identities {
+    identities {
+      id
+      name
+      slug
+    }
+  }
+`;
 
 const IdentitiesPage: NextPage<IdentitiesPageProps> = ({
   identities,
@@ -54,45 +62,9 @@ const IdentitiesPage: NextPage<IdentitiesPageProps> = ({
 export default IdentitiesPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
-  const apolloClient = initializeApollo();
-  const props: IdentitiesPageProps = {
-    identities: [],
-    selectedIdentityIds: [],
-  };
-  if (session?.user?.id) {
-    await apolloClient
-      .query({
-        query: gql`
-        query Identities {
-          identities {
-            id
-            name
-            slug
-          }
-          identifications (
-            where: {
-              userId: {equals: "${session.user.id}"}
-              deleted: {equals: null}
-            }
-          ) {
-            identity {
-              id
-            }
-          }
-        }
-      `,
-      })
-      .then((res) => {
-        props.identities = res.data.identities;
-        if (res.data.identities.length) {
-          props.selectedIdentityIds = res.data.identifications.map(
-            (identification: Identification & { identity: Identity }) =>
-              parseInt(`${identification.identity.id}`)
-          );
-        }
-      });
-  }
-  return addApolloState(apolloClient, { props });
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  unauthedRedirectDestination: "/auth/signin?callbackUrl=/identities",
+  query: {
+    query: QUERY,
+  },
+});

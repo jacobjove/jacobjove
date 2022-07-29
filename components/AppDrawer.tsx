@@ -1,17 +1,17 @@
 import DeviceContext from "@/components/contexts/DeviceContext";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import BentoIcon from "@mui/icons-material/Bento";
-import BookIcon from "@mui/icons-material/Book";
+// import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+// import BentoIcon from "@mui/icons-material/Bento";
+// import BookIcon from "@mui/icons-material/Book";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+// import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import HomeIcon from "@mui/icons-material/Home";
-import MusicNoteIcon from "@mui/icons-material/MusicNote";
+// import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import NotesIcon from "@mui/icons-material/Notes";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import PsychologyIcon from "@mui/icons-material/Psychology";
-import ScienceIcon from "@mui/icons-material/Science";
+// import PsychologyIcon from "@mui/icons-material/Psychology";
+// import ScienceIcon from "@mui/icons-material/Science";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";
@@ -32,28 +32,26 @@ type MenuItem = [string, string, typeof DashboardIcon, boolean];
 const MENU_ITEMS: MenuItem[][] = [
   [["Home", "/app/home", HomeIcon, true]],
   [
-    ["Calendar", "/app/calendar", TodayIcon, true],
-    ["Dashboard", "/app/dashboard", DashboardIcon, false],
+    ["Planner", "/app/planner", TodayIcon, true],
+    ["Notes", "/app/notes", NotesIcon, true],
   ],
-  [
-    ["Psychology", "/app/psychology", PsychologyIcon, false],
-    ["Nutrition", "/app/nutrition", BentoIcon, false],
-    ["Fitness", "/app/fitness", FitnessCenterIcon, false],
-    ["Finances", "/app/finances", AccountBalanceIcon, false],
-  ],
-  [["Notes", "/app/notes", NotesIcon, true]],
-  [
-    ["Book list", "/app/booklist", BookIcon, false],
-    ["Music", "/app/music", MusicNoteIcon, false],
-    ["Experiments", "/app/experiments", ScienceIcon, false],
-  ],
+  // [
+  //   ["Dashboard", "/app/dashboard", DashboardIcon, false],
+  //   ["Psychology", "/app/psychology", PsychologyIcon, false],
+  //   ["Nutrition", "/app/nutrition", BentoIcon, false],
+  //   ["Fitness", "/app/fitness", FitnessCenterIcon, false],
+  //   ["Finances", "/app/finances", AccountBalanceIcon, false],
+  //   ["Book list", "/app/booklist", BookIcon, false],
+  //   ["Music", "/app/music", MusicNoteIcon, false],
+  //   ["Experiments", "/app/experiments", ScienceIcon, false],
+  // ],
   [
     ["Settings", "/app/settings", SettingsIcon, true],
     ["Notifications", "/app/notifications", NotificationsIcon, false],
   ],
 ];
 
-export const DRAWER_WIDTH = 240;
+export const DRAWER_WIDTH = 200;
 
 const drawerWidth = DRAWER_WIDTH;
 
@@ -183,6 +181,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
           </List>
         </Fragment>
       ))}
+      <div id="drawer-bottom"></div>
     </Drawer>
   );
 };

@@ -1,0 +1,660 @@
+// Prisma schema file: https://pris.ly/d/prisma-schema
+
+// TODO: Split into multiple files?
+// https://github.com/prisma/prisma/issues/2377#issuecomment-974662122
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "./generated"
+}
+
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+model Redirect {
+  id       String @id @default(cuid())
+  old_path String
+  new_path String
+}
+
+model Account {
+  id                String     @id @default(cuid())
+  user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String
+  provider          String
+  remoteId          String
+  scopes            String[]
+  accessToken       String?
+  refreshToken      String?
+  accessTokenExpiry DateTime?
+  syncToken         String?
+  createdAt         DateTime   @default(now())
+  calendars         Calendar[]
+
+  @@unique([provider, remoteId])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id                  String                   @id @default(cuid())
+  name                String?
+  email               String                   @unique
+  emailVerified       DateTime?
+  image               String?
+  isAdmin             Boolean                  @default(false)
+  settings            Json                     @default("{}")
+  lastLogin           DateTime?
+  accounts            Account[]
+  calendars           Calendar[]               @relation("calendars")
+  calendarEvents      CalendarEvent[]          @relation("calendarEvents")
+  identities          Identity[]
+  values              Value[]
+  beliefs             Belief[]
+  mantras             Mantra[]
+  habits              Habit[]
+  tasks               Task[]
+  dashboards          Dashboard[]
+  notebooks           Notebook[]
+  notebookPermissions NotebookUserPermission[]
+  lists               List[]
+  readings            Reading[]
+  bookshelves         Bookshelf[]
+  bookReviews         BookReview[]
+}
+
+model Dashboard {
+  id        String  @id @default(cuid())
+  name      String
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  layouts   Json    @default("[]")
+  isDefault Boolean @default(false)
+  isPublic  Boolean @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@unique([name, userId])
+}
+
+enum CalendarProvider {
+  google
+  apple
+}
+
+model Calendar {
+  id        String            @id @default(cuid())
+  user      User              @relation("calendars", fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  name      String?
+  color     String?
+  provider  CalendarProvider?
+  remoteId  String?
+  syncToken String?
+  account   Account?          @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId String?
+  primary   Boolean?          @default(false)
+  public    Boolean?          @default(false)
+  enabled   Boolean?          @default(true)
+
+  events CalendarEvent[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@unique([remoteId, accountId])
+}
+
+model CalendarEvent {
+  id         String          @id @default(cuid())
+  remoteId   String?
+  user       User            @relation("calendarEvents", fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  calendar   Calendar        @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  calendarId String
+  schedule   ActionSchedule? @relation(fields: [scheduleId], references: [id])
+  scheduleId String?
+  // TODO: remove habit and habitId
+  habit      Habit?          @relation(fields: [habitId], references: [id])
+  habitId    String?
+  task       Task?           @relation(fields: [taskId], references: [id])
+  taskId     String?
+  title      String
+  start      DateTime
+  end        DateTime?
+  allDay     Boolean         @default(false)
+  notes      String?
+  canceled   Boolean?        @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@unique([remoteId, calendarId])
+  @@map(name: "calendarEvents")
+}
+
+model ScheduleTemplate {
+  id                      String                   @id @default(cuid())
+  frequency               FREQUENCY                @default(DAY)
+  multiplier              Int                      @default(1)
+  chron                   String?
+  actionScheduleTemplates ActionScheduleTemplate[]
+}
+
+model Category {
+  id              String           @id @default(cuid())
+  name            String
+  categorizations Categorization[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+model Categorization {
+  id         String   @id @default(cuid())
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  actId      String
+  act        Act      @relation(fields: [actId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+// e.g., running
+model Act {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  description String?
+  isPublic    Boolean @default(false)
+
+  parent   Act?    @relation("variants", fields: [parentId], references: [id])
+  parentId String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  variants           Act[]                    @relation("variants")
+  habits             Habit[]
+  metricApplications MetricApplication[]
+  identityRelations  IdentityActRelation[]
+  scheduleTemplates  ActionScheduleTemplate[]
+  categorizations    Categorization[]
+}
+
+// e.g., running:miles
+model MetricApplication {
+  id       Int    @unique @default(autoincrement())
+  actId    String
+  act      Act    @relation(fields: [actId], references: [id], onDelete: Cascade)
+  metricId String
+  metric   Metric @relation(fields: [metricId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@id([actId, metricId])
+}
+
+model MetricUsage {
+  id         String         @unique @default(cuid())
+  metricId   String
+  metric     Metric         @relation(fields: [metricId], references: [id], onDelete: Cascade)
+  habitId    String
+  habit      Habit          @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  records    MetricRecord[]
+  archivedAt DateTime?
+
+  @@id([habitId, metricId])
+}
+
+// e.g., miles
+model Metric {
+  id           String              @id @default(cuid())
+  name         String              @unique
+  applications MetricApplication[]
+  usages       MetricUsage[]
+}
+
+model Habit {
+  id                       String           @id @default(cuid())
+  actId                    String
+  act                      Act              @relation(fields: [actId], references: [id], onDelete: Cascade)
+  userId                   String
+  user                     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                     String
+  isPublic                 Boolean          @default(false)
+  schedules                ActionSchedule[]
+  tasks                    Task[]
+  calendarEvents           CalendarEvent[]
+  // themes                   ActionTheme[]
+  metricUsages             MetricUsage[]
+  goals                    Goal[]
+  routines                 RoutineHabit[]
+  defaultDurationInMinutes Int?
+  actions                  Action[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+model RoutineHabit {
+  id                Int     @unique @default(autoincrement())
+  routine           Routine @relation(fields: [routineId], references: [id])
+  routineId         String
+  habit             Habit   @relation(fields: [habitId], references: [id])
+  habitId           String
+  position          Int
+  durationInMinutes Int
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@id([routineId, position])
+}
+
+model Routine {
+  id                String         @id @default(cuid())
+  userId            String
+  name              String
+  habits            RoutineHabit[]
+  durationInMinutes Int?
+  notes             String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+model MetricRecord {
+  id            String      @id @default(cuid())
+  metricUsageId String
+  metricUsage   MetricUsage @relation(fields: [metricUsageId], references: [id])
+  actionId      String
+  action        Action      @relation(fields: [actionId], references: [id])
+  value         Int
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+// One-off tasks
+model Task {
+  id               String          @id @default(cuid())
+  title            String
+  description      String?
+  plannedStartDate DateTime?       @default(now())
+  dueDate          DateTime?
+  userId           String
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId         String?
+  parent           Task?           @relation("children", fields: [parentId], references: [id])
+  habitId          String?
+  habit            Habit?          @relation(fields: [habitId], references: [id])
+  subtasks         Task[]          @relation("children")
+  rank             Int             @default(dbgenerated("floor(random() * power(10, 9))"))
+  completedAt      DateTime?
+  calendarEvents   CalendarEvent[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@unique([userId, parentId, rank])
+}
+
+model Action {
+  id            String         @id @default(cuid())
+  habit         Habit?         @relation(fields: [habitId], references: [id])
+  habitId       String?
+  start         DateTime
+  end           DateTime
+  notes         String?
+  metricRecords MetricRecord[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+model ActionSchedule {
+  id             String                  @id @default(cuid())
+  habit          Habit                   @relation(fields: [habitId], references: [id])
+  habitId        String
+  frequency      FREQUENCY               @default(DAY)
+  multiplier     Int                     @default(1)
+  quantity       Int                     @default(1)
+  calendarEvents CalendarEvent[]
+  active         Boolean                 @default(false)
+  template       ActionScheduleTemplate? @relation(fields: [templateId], references: [id])
+  templateId     String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+// // theme or focus
+// model ActionTheme {
+//   id       String       @id @default(cuid())
+//   actionId String?
+//   action   Action?   @relation(fields: [actionId], references: [id])
+//   key      String
+//   body     String
+//   start    DateTime
+//   end      DateTime?
+//   habit    Habit    @relation(fields: [habitId], references: [id])
+//   habitId  String
+// }
+
+model ActionScheduleTemplate {
+  id                 String           @id @default(cuid())
+  act                Act              @relation(fields: [actId], references: [id])
+  actId              String
+  scheduleTemplate   ScheduleTemplate @relation(fields: [scheduleTemplateId], references: [id])
+  scheduleTemplateId String
+  frequency          FREQUENCY        @default(DAY)
+  multiplier         Int              @default(1)
+  quantity           Int              @default(1)
+  // unit                 FREQUENCY                     @default(DAY)
+  actionSchedules    ActionSchedule[]
+
+  @@unique([actId, frequency, multiplier])
+}
+
+enum TYPE {
+  CHRON
+  INTERVAL
+}
+
+enum FREQUENCY {
+  MINUTE
+  HOUR
+  DAY
+  WEEK
+  MONTH
+  YEAR
+}
+
+model Identity {
+  id              String                @id @default(cuid())
+  userId          String
+  user            User                  @relation(fields: [userId], references: [id])
+  name            String
+  slug            String                @unique
+  description     String?
+  actionRelations IdentityActRelation[]
+
+  @@map(name: "identities")
+}
+
+model Goal {
+  id         String  @id @default(cuid())
+  habit      Habit   @relation(fields: [habitId], references: [id])
+  habitId    String
+  goalId     String?
+  goal       Goal?   @relation("GoalMilestones", fields: [goalId], references: [id])
+  milestones Goal[]  @relation("GoalMilestones")
+  quantity   Int
+}
+
+model IdentityActRelation {
+  id         String    @id @default(cuid())
+  identity   Identity  @relation(fields: [identityId], references: [id])
+  identityId String
+  action     Act       @relation(fields: [actionId], references: [id])
+  actionId   String
+  archivedAt DateTime?
+
+  @@unique([identityId, actionId])
+}
+
+model Belief {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  archivedAt  DateTime?
+  User        User?     @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model Value {
+  id          String    @id @default(cuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  archivedAt  DateTime?
+}
+
+model Mantra {
+  id         String    @id @default(cuid())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  content    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+enum LIST_FIELD_TYPE {
+  STRING
+  INT
+  FLOAT
+  DATE
+  DATETIME
+  BOOLEAN
+}
+
+model NotebookUserPermission {
+  id         String    @id @default(cuid())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  notebook   Notebook  @relation(fields: [notebookId], references: [id])
+  notebookId String
+  archivedAt DateTime?
+
+  @@unique([userId, notebookId])
+}
+
+model Notebook {
+  id              String                   @id @default(cuid())
+  owner           User                     @relation(fields: [ownerId], references: [id])
+  ownerId         String
+  title           String
+  isPublic        Boolean                  @default(false)
+  description     String?
+  notes           Note[]
+  userPermissions NotebookUserPermission[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@unique([ownerId, title])
+}
+
+model Note {
+  id         String   @id @default(cuid())
+  notebook   Notebook @relation(fields: [notebookId], references: [id])
+  notebookId String
+  title      String?
+  body       String?
+  isPublic   Boolean  @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+model List {
+  id          String  @id @default(cuid())
+  owner       User    @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  name        String
+  slug        String  @unique
+  description String?
+  fields      Json    @default("[]")
+
+  items Item[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+model Item {
+  id     String @id @default(cuid())
+  list   List   @relation(fields: [listId], references: [id])
+  listId String
+  data   Json   @default("{}")
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+model Author {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  authorships Authorship[]
+}
+
+model Authorship {
+  id       String @id @default(cuid())
+  author   Author @relation(fields: [authorId], references: [id])
+  authorId String
+  book     Book   @relation(fields: [bookId], references: [id])
+  bookId   String
+  position Int    @default(0)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@unique([authorId, bookId])
+}
+
+model Book {
+  id                      String   @id @default(cuid())
+  // Goodreads ID, etc.
+  ids                     Json
+  isbn                    String?
+  isbn13                  String?
+  title                   String
+  slug                    String   @unique
+  description             String?
+  authorNames             String[]
+  authorNamesLf           String[]
+  publicationYear         Int?
+  originalPublicationYear Int?
+
+  extra Json
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  authorships Authorship[]
+  readings    Reading[]
+  shelvings   Shelving[]
+  BookReview  BookReview[]
+}
+
+model Reading {
+  id           String      @id @default(cuid())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  book         Book        @relation(fields: [bookId], references: [id])
+  bookId       String
+  dateStarted  DateTime?
+  dateFinished DateTime?
+  review       BookReview?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}
+
+model Bookshelf {
+  id          String     @id @default(cuid())
+  owner       User       @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  name        String
+  slug        String     @unique
+  isPublic    Boolean    @default(false)
+  description String?
+  shelvings   Shelving[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@map(name: "bookshelves")
+}
+
+model Shelving {
+  id        String    @id @default(cuid())
+  book      Book      @relation(fields: [bookId], references: [id])
+  bookId    String
+  shelf     Bookshelf @relation(fields: [shelfId], references: [id])
+  shelfId   String
+  position  Int       @default(0)
+  rationale String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+
+  @@unique([shelfId, position])
+}
+
+model BookReview {
+  id        String   @id @default(cuid())
+  review    String
+  rating    Int
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  reading   Reading? @relation(fields: [readingId], references: [id])
+  readingId String?  @unique
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  archivedAt DateTime?
+}

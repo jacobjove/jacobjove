@@ -9,10 +9,10 @@ declare module "next-auth" {
    * or the second parameter of the `session` callback, when using a database.
    */
   interface User {
-    id: number;
+    id: string;
     name?: string | null;
     email: string;
-    image: string;
+    image: string | null;
     isAdmin: boolean;
   }
   /**

@@ -6,6 +6,7 @@
 cypress/
 
 # Docker
+Dockerfile
 Dockerfile.*
 docker-compose.*
 
@@ -15,7 +16,8 @@ README.md
 LICENSE.txt
 SECURITY.md
 
-# Next.js
+# Secrets
+# .env
 .env.local
 .env.*.local
 

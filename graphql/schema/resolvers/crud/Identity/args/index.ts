@@ -1,0 +1,11 @@
+export { AggregateIdentityArgs } from "./AggregateIdentityArgs";
+export { CreateIdentityArgs } from "./CreateIdentityArgs";
+export { CreateManyIdentityArgs } from "./CreateManyIdentityArgs";
+export { DeleteIdentityArgs } from "./DeleteIdentityArgs";
+export { DeleteManyIdentityArgs } from "./DeleteManyIdentityArgs";
+export { FindFirstIdentityArgs } from "./FindFirstIdentityArgs";
+export { FindManyIdentityArgs } from "./FindManyIdentityArgs";
+export { FindUniqueIdentityArgs } from "./FindUniqueIdentityArgs";
+export { UpdateIdentityArgs } from "./UpdateIdentityArgs";
+export { UpdateManyIdentityArgs } from "./UpdateManyIdentityArgs";
+export { UpsertIdentityArgs } from "./UpsertIdentityArgs";

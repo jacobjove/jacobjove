@@ -1,14 +1,19 @@
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
-import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import { useEffect, useState } from "react";
+import Typography from "@mui/material/Typography";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
-const Stopwatch = () => {
-  const [time, setTime] = useState(0);
-  const [running, setRunning] = useState(false);
+interface StopwatchProps {
+  time: number;
+  setTime: Dispatch<number | SetStateAction<number>>;
+  running: boolean;
+  setRunning: (running: boolean) => void;
+}
+
+const Stopwatch = ({ time, setTime, running, setRunning }: StopwatchProps) => {
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
     if (running) {
@@ -22,7 +27,7 @@ const Stopwatch = () => {
     return function cleanup() {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [running]);
+  }, [running, setTime]);
   const hour = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
   const minute = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
   const second = ("0" + ((time / 10) % 100)).slice(-2);
@@ -32,30 +37,42 @@ const Stopwatch = () => {
       flexDirection={"column"}
       alignItems="center"
       justifyContent="center"
+      textAlign={"center"}
       m={"1.5rem 0 0"}
       py={1}
     >
-      <Typography>
-        {hour}:{minute}:{second}
-      </Typography>
-      <Box>
-        {!running ? (
-          <IconButton onClick={() => setRunning(true)}>
-            <PlayArrowIcon />
-          </IconButton>
-        ) : (
-          <IconButton onClick={() => setRunning(false)}>
-            <StopIcon />
-          </IconButton>
-        )}
-      </Box>
-      {!!time && (
+      <Box
+        border={"2px solid gray"}
+        borderRadius={"50%"}
+        p={"10%"}
+        width={"250px"}
+        height={"250px"}
+      >
         <Box>
-          <Button variant="text" onClick={() => setTime(0)}>
+          <Typography bgcolor={"black"} color="whitesmoke" py={"3px"}>
+            {hour}:{minute}:{second}
+          </Typography>
+          <Box my={2}>
+            {!running ? (
+              <IconButton onClick={() => setRunning(true)}>
+                <PlayArrowIcon />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => setRunning(false)}>
+                <StopIcon />
+              </IconButton>
+            )}
+          </Box>
+          <Button
+            variant="text"
+            color="warning"
+            disabled={!time || running}
+            onClick={() => setTime(0)}
+          >
             Reset
           </Button>
         </Box>
-      )}
+      </Box>
     </Box>
   );
 };

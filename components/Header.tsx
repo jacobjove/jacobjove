@@ -1,4 +1,6 @@
 import ColorModeContext from "@/components/contexts/ColorModeContext";
+import { useUser } from "@/components/contexts/UserContext";
+import { signOut } from "@/utils/auth/client";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -15,7 +17,7 @@ import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,6 +57,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
   const heightInPx = props.heightInPx ?? 60;
   const router = useRouter();
   const { data: session } = useSession();
+  const user = useUser();
   const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
   const navMenuState = usePopupState({ variant: "popover", popupId: "nav-menu" });
   const [colorMode, setColorMode] = useContext(ColorModeContext);
@@ -155,7 +158,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            {(session?.user && (
+            {(session && (
               <>
                 <IconButton {...bindTrigger(accountMenuState)} sx={{ p: 0 }}>
                   <Avatar alt={`${session.user.name}`} src={`${session.user.image}`} />
@@ -184,7 +187,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                     </Link>
                   ))}
 
-                  {!!session.user.isAdmin && (
+                  {!!user?.isAdmin && (
                     <MenuItem>
                       <Link href="/_admin">
                         <a>Administration</a>

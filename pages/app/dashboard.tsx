@@ -1,14 +1,12 @@
+import AppLayout from "@/components/AppLayout";
 import DashboardViewer, {
   DashboardData,
   fragment as dashboardDataFragment,
 } from "@/components/dashboard/Dashboard";
-import { DashboardLayouts } from "@/components/dashboard/types";
-import Layout from "@/components/Layout";
 import Select from "@/components/Select";
 import { dashboardFragment } from "@/graphql/fragments";
 import { Dashboard } from "@/graphql/schema";
-import { addApolloState, initializeApollo } from "@/utils/apollo/client";
-import { printError } from "@/utils/apollo/error-handling";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
@@ -21,13 +19,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import isEmpty from "lodash/isEmpty";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth, Session } from "next-auth";
-import { getSession, useSession } from "next-auth/react";
+import { PageWithAuth } from "next-auth";
+import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 
 // cols={{ xl: 24, lg: 18, md: 12, sm: 6, xs: 4, xxs: 2 }}
-const DEFAULT_LAYOUTS: DashboardLayouts = {
+const DEFAULT_LAYOUTS = {
   xs: [
     { i: "calendar", x: 0, y: 0, w: 4, h: 6, minW: 3, minH: 4, resizeHandles: ["se", "sw"] },
     { i: "tasks", x: 0, y: 1, w: 4, h: 6, minW: 3, minH: 4, resizeHandles: ["se", "sw"] },
@@ -65,11 +63,6 @@ const DEFAULT_LAYOUTS: DashboardLayouts = {
   ],
 };
 
-interface DashboardPageProps {
-  session: Session;
-  layouts: DashboardLayouts;
-}
-
 const CREATE_DASHBOARD = gql`
   mutation CreateDashboard($data: DashboardCreateInput!) {
     createDashboard(data: $data) {
@@ -80,9 +73,9 @@ const CREATE_DASHBOARD = gql`
 `;
 
 const QUERY = gql`
-  query DashboardPage($userId: Int!) {
+  query DashboardPage {
     ...DashboardData
-    dashboards(where: { userId: { equals: $userId } }) {
+    dashboards {
       ...DashboardFragment
     }
   }
@@ -96,17 +89,9 @@ interface DashboardPageData extends DashboardData {
   dashboards: Dashboard[];
 }
 
-const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) => {
+const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
-  const {
-    loading: loadingData,
-    error,
-    data,
-  } = useQuery<DashboardPageData>(QUERY, {
-    variables: {
-      userId: session?.user?.id,
-    },
-  });
+  const { loading: loadingData, error, data } = useQuery<DashboardPageData>(QUERY);
   const [createDashboard, { loading: loadingCreateDashboard }] = useMutation(CREATE_DASHBOARD, {
     update(cache, { data }) {
       const { createDashboard } = data || {};
@@ -138,13 +123,13 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const [selectedDashboardId, setSelectedDashboardId] = useState<number | null>(
+  const [selectedDashboardId, setSelectedDashboardId] = useState<string | null>(
     (defaultDashboard || dashboards?.[0])?.id || null
   );
   const selectedDashboard =
     dashboards?.find((dashboard) => dashboard.id === selectedDashboardId) || dashboards?.[0];
 
-  const layouts = selectedDashboard?.layouts ? JSON.parse(selectedDashboard.layouts) : undefined;
+  const layouts = selectedDashboard?.layouts ?? DEFAULT_LAYOUTS;
 
   useEffect(() => {
     if (session && !loading && data && !dashboards?.length) {
@@ -167,7 +152,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
 
   if (!data || isEmpty(dashboardData)) return null;
   return (
-    <Layout>
+    <AppLayout>
       <NextSeo
         title={"Dashboard"}
         canonical={"/app/dashboard"}
@@ -213,7 +198,7 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
                   },
                 ]}
                 onChange={(value) => {
-                  if (dashboards?.length) setSelectedDashboardId(parseInt(value));
+                  if (dashboards?.length) setSelectedDashboardId(value);
                 }}
               />
             )}
@@ -264,40 +249,23 @@ const DashboardPage: NextPage<DashboardPageProps> = (props: DashboardPageProps) 
             console.log("Modify dashboard layouts", layouts);
           }}
           editing={editing}
-          session={session}
           height={`calc(100% - ${TOP_BAR_HEIGHT})`}
         />
       )}
-    </Layout>
+    </AppLayout>
   );
 };
+
 export default DashboardPage;
 
 (DashboardPage as PageWithAuth).auth = true;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const apolloClient = initializeApollo();
-  const session = await getSession({ req: context.req });
-  if (!session?.user?.id) {
-    return {
-      redirect: {
-        destination: `/auth/signin?callbackUrl=/app/dashboard`,
-        permanent: false,
-      },
-    };
-  }
-  await apolloClient
-    .query({
-      query: QUERY,
-      variables: {
-        userId: session?.user?.id,
-        date: new Date().toISOString(),
-      },
-    })
-    .catch(printError);
-  const props: DashboardPageProps = {
-    layouts: DEFAULT_LAYOUTS,
-    session,
-  };
-  return addApolloState(apolloClient, { props });
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/dashboard`,
+  query: {
+    query: QUERY,
+    variables: {
+      date: new Date().toISOString(),
+    },
+  },
+});

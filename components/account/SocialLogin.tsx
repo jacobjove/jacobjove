@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { signIn } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
 import { FC, ReactElement } from "react";
 import {
   DiscordLoginButton,
@@ -19,14 +19,10 @@ export const SOCIAL_LOGIN_BUTTONS = {
 };
 
 const CREDENTIALS_KEY = "credentials";
-
-export interface Provider {
-  id: typeof CREDENTIALS_KEY | keyof typeof SOCIAL_LOGIN_BUTTONS;
-  name: string;
-}
+const EMAIL_KEY = "email";
 
 interface SocialLoginProps {
-  providers: Provider[];
+  providers: Awaited<ReturnType<typeof getProviders>>;
   callbackUrl: string;
   onError: CallableFunction;
 }
@@ -36,6 +32,7 @@ const SocialLogin: FC<SocialLoginProps> = ({
   callbackUrl,
   onError,
 }: SocialLoginProps) => {
+  if (!providers) throw new Error("No providers are configured!");
   const socialAuthLoginComponents: ReactElement[] = [];
   const handleSocialLogin = async (provider_id: string) => {
     try {
@@ -46,10 +43,12 @@ const SocialLogin: FC<SocialLoginProps> = ({
   };
   let SocialLoginButton;
   Object.entries(providers).forEach(([, provider]) => {
-    if (provider.id === CREDENTIALS_KEY) {
+    if (provider.id in [CREDENTIALS_KEY, EMAIL_KEY]) {
       return;
     }
-    SocialLoginButton = SOCIAL_LOGIN_BUTTONS[provider.id];
+    SocialLoginButton = SOCIAL_LOGIN_BUTTONS[provider.id as keyof typeof SOCIAL_LOGIN_BUTTONS];
+    if (!SocialLoginButton)
+      throw new Error(`No social login button is configured for ${provider.id}.`);
     socialAuthLoginComponents.push(
       <SocialLoginButton
         key={provider.name}

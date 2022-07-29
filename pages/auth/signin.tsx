@@ -1,10 +1,10 @@
-import SocialLogin, { Provider } from "@/components/account/SocialLogin";
+import SocialLogin from "@/components/account/SocialLogin";
 import Layout from "@/components/Layout";
+import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { GetServerSideProps } from "next";
 import { getProviders, signIn, signOut, useSession } from "next-auth/react";
@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import React, { FunctionComponent, useEffect, useState } from "react";
 
 interface SignInPageProps {
-  providers: Provider[];
+  providers: Awaited<ReturnType<typeof getProviders>>;
 }
 
 const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
@@ -39,7 +39,9 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
     }
   }, [router.query, callbackUrl]);
   useEffect(() => {
-    if (session?.user && callbackUrl) router.push(callbackUrl);
+    if (session && callbackUrl) {
+      router.push(callbackUrl);
+    }
   }, [session, router, callbackUrl]);
   if (router.query.provider) return <div>{"Redirecting..."}</div>;
   return (
@@ -66,25 +68,23 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
               <br />
             </>
           )}
-          {(session?.user && (
-            <Grid
-              container
-              spacing={4}
-              alignItems={"center"}
-              justifyContent={"center"}
+          {(session && (
+            <Box
               height="100%"
+              display="flex"
+              flexDirection={"column"}
+              justifyContent={"center"}
+              alignItems={"center"}
             >
-              <Grid item xs={12}>
-                <Typography variant="h5" component="p">
-                  You are logged in as <strong>{session.user.email}</strong>.
-                </Typography>
-              </Grid>
-              <Grid item container xs={12} justifyContent={"center"}>
+              <Typography variant="h5" component="p" sx={{ width: "100%" }} textAlign={"center"}>
+                You are logged in as <strong>{session.user.email}</strong>.
+              </Typography>
+              <Box textAlign={"center"} my={2}>
                 <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>
                   {"Sign out"}
                 </Button>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           )) || (
             <div id="sign-in">
               <Typography variant="h1" textAlign={"center"} my={2}>
@@ -106,10 +106,8 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
 export default SignInPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {
-      providers: await getProviders(),
-    }, // passed to the page component as props
-  };
-};
+export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
+  props: async () => {
+    return { providers: await getProviders() };
+  },
+});

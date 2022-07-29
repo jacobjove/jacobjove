@@ -1,35 +1,26 @@
-import ActionDialog from "@/components/actions/ActionDialog";
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
-import EditingModeTaskCells from "@/components/actions/EditingModeTaskCells";
-import DateContext from "@/components/contexts/DateContext";
+import TaskDialog from "@/components/actions/TaskDialog";
 import { UPDATE_TASK } from "@/graphql/mutations";
 import { Task } from "@/graphql/schema";
-import { printError } from "@/utils/apollo/error-handling";
+import { initializeTaskData, taskDataReducer } from "@/utils/tasks";
 import { useMutation } from "@apollo/client";
-import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import EditIcon from "@mui/icons-material/Edit";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RepeatIcon from "@mui/icons-material/Repeat";
-import StopIcon from "@mui/icons-material/Stop";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { format, isPast, isSameDay, isSameYear, isToday, parseISO } from "date-fns";
+import { format, isPast, isSameDay, isSameYear, isToday } from "date-fns";
 import { XYCoord } from "dnd-core";
-import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { useSession } from "next-auth/react";
-import { FC, RefObject, useContext, useMemo, useRef, useState } from "react";
+import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { FC, RefObject, useMemo, useReducer, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
-interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
+export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
   asSubtask?: boolean;
   index: number;
   move?: (draggedTask: DraggedTask, hoveredTask: Task) => Partial<DraggedTask> | null;
@@ -46,48 +37,37 @@ interface TaskRowContentProps {
   onEditing: (isEditing: boolean) => void;
 }
 
-export type DraggedTask = { type: "task" } & Pick<
-  Task,
-  "id" | "rank" | "title" | "completedAt" | "__typename"
-> & {
+export type DraggedTask = { type: "task" } & Pick<Task, "id" | "rank" | "title" | "completedAt"> & {
     index: number;
-    calendarId?: number;
-    scheduleId?: number | null;
+    calendarId?: string;
+    scheduleId?: string | null;
   };
 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
-  const {
-    task,
-    asSubtask,
-    collapsed: _collapsed,
-    dndRef,
-    isDragging,
-    onLoading,
-    onEditing,
-  } = props;
+  const { task, asSubtask, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
   const completed = !!task.completedAt;
   const collapsed = _collapsed ?? false;
-  const { data: session } = useSession();
-  const today = useContext(DateContext);
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const [editing, setEditing] = useState(false);
-  const [actionInProgress, setActionInProgress] = useState(false);
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
-  const menuState = usePopupState({ variant: "popper", popupId: `task-${task.id}-menu` });
+
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
+
+  const [taskData, dispatchTaskData] = useReducer(
+    taskDataReducer,
+    initializeTaskData(task),
+    initializeTaskData
+  );
 
   const [updateTask, { loading }] = useMutation(UPDATE_TASK);
 
   onLoading(loading);
-  onEditing(editing);
 
   const toggleCompletion = (complete: boolean) => {
-    if (!session?.user.id) return;
-    const completedAt = complete ? new Date().toISOString() : null;
+    const completedAt = complete ? new Date() : null;
     updateTask({
       variables: {
-        taskId: task.id,
-        data: { completedAt: { set: completedAt } },
+        where: { id: task.id },
+        data: { completedAt: completedAt },
       },
       optimisticResponse: {
         __typename: "Mutation",
@@ -106,28 +86,21 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
 
   const isHabit = Boolean(task.habit);
 
-  const dueDate = task.dueDate ? parseISO(task.dueDate) : null;
-  // prettier-ignore
-  const dueDateString = dueDate ? ((
-    isSameDay(dueDate, today) ? "Today" : (
-      isSameYear(dueDate, today) ? format(dueDate, "M/d") : dueDate.toLocaleDateString()
-    )
-  ) + ", " + format(dueDate, "h:mm a")) : "";
+  const dueDate = task.dueDate ?? null;
+  const scheduledDate = task.plannedStartDate ?? null;
+
+  const dueDateTextElement = getDateTextElement(dueDate);
+  const scheduledDateTextElement = getDateTextElement(scheduledDate);
 
   const dialogTriggerProps = bindTrigger(dialogState);
-  const menuTriggerProps = bindTrigger(menuState);
-  const originalOnClick = menuTriggerProps.onClick;
-  menuTriggerProps.onClick = (event) => {
-    event.stopPropagation();
-    originalOnClick(event);
-  };
 
   return (
     <>
       <TableRow
+        hover={!isDragging}
         ref={dndRef}
         onClick={(e) => {
-          if (!editing) dialogTriggerProps.onClick(e);
+          dialogTriggerProps.onClick(e);
         }}
         sx={{
           opacity: isDragging ? 0 : 1,
@@ -165,241 +138,157 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
           "&:last-child td, &:last-child th": { border: 0 },
         }}
       >
-        {editing ? (
-          <EditingModeTaskCells
-            task={task}
-            handleFieldChange={(fieldName, value) => {
-              updateTask({
-                variables: {
-                  taskId: task.id,
-                  data: { [fieldName]: { set: value } },
-                },
-                optimisticResponse: {
-                  updateTask: {
-                    __typename: "Task",
-                    subtasks: [],
-                    habit: null,
-                    ...task,
-                    [fieldName]: value,
-                  },
-                },
-              }).catch((error) => {
-                console.error(error);
-              });
+        <TableCell>
+          <CompletionCheckbox
+            checked={completed}
+            disabled={loading}
+            onClick={(event) => {
+              event.preventDefault();
+              toggleCompletion(!completed);
             }}
-            handleSubmit={() => null}
-            handleCancel={() => setEditing(false)}
           />
-        ) : (
-          <>
-            <TableCell>
-              <CompletionCheckbox
-                checked={completed}
-                disabled={loading}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleCompletion(!completed);
-                }}
-              />
-            </TableCell>
-            <TableCell>
-              <Box
-                sx={{
-                  position: "relative",
-                  margin: "0.25rem",
-                  paddingX: 0,
-                  height: "auto",
-                  maxHeight: "auto",
-                  borderRadius: "3px",
-                  border: isHabit ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
-                  backgroundColor: (theme) =>
-                    isHabit
-                      ? `${
-                          theme.palette.mode === "light"
-                            ? "rgba(0, 0, 0, 0.08)"
-                            : "rgba(255, 255, 255, 0.08)"
-                        }`
-                      : "transparent",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Box display="flex" justifyContent={"space-between"} alignItems="center">
-                  <Box display="flex" alignItems="center">
-                    <Box
+        </TableCell>
+        <TableCell
+          sx={{
+            ...(completed && {
+              textDecoration: "line-through",
+            }),
+          }}
+        >
+          <Box
+            sx={{
+              position: "relative",
+              margin: "0.25rem",
+              paddingX: 0,
+              height: "auto",
+              maxHeight: "auto",
+              borderRadius: "3px",
+              border: isHabit ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
+              backgroundColor: (theme) =>
+                isHabit
+                  ? `${
+                      theme.palette.mode === "light"
+                        ? "rgba(0, 0, 0, 0.08)"
+                        : "rgba(255, 255, 255, 0.08)"
+                    }`
+                  : "transparent",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Box display="flex" justifyContent={"space-between"} alignItems="center">
+              <Box display="flex" alignItems="center">
+                <Box
+                  sx={{
+                    color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
+                    padding: "0 0.25rem",
+                    margin: 0,
+                    minWidth: 0,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: asSubtask ? "0.7rem" : "0.8rem",
+                      textTransform: "none",
+                    }}
+                  >
+                    {task.title}
+                  </Typography>
+                  {task.subtasks?.length ? (
+                    <IconButton
+                      title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
                       sx={{
-                        color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
-                        padding: "0 0.25rem",
-                        margin: 0,
-                        minWidth: 0,
-                        display: "flex",
-                        alignItems: "center",
+                        backgroundColor: "transparent",
+                        backgroundOrigin: "content-box",
+                      }}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setSubtasksExpanded(!subtasksExpanded);
                       }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: asSubtask ? "0.7rem" : "0.8rem",
-                          textTransform: "none",
-                        }}
-                      >
-                        {task.title}
-                      </Typography>
-                      {task.subtasks?.length ? (
-                        <IconButton
-                          title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
-                          sx={{
-                            backgroundColor: "transparent",
-                            backgroundOrigin: "content-box",
-                          }}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            setSubtasksExpanded(!subtasksExpanded);
-                          }}
-                        >
-                          {subtasksExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                        </IconButton>
-                      ) : null}
-                    </Box>
-                  </Box>
+                      {subtasksExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                    </IconButton>
+                  ) : null}
                 </Box>
               </Box>
-            </TableCell>
-            <TableCell>
-              <Box px="0.25rem" display="flex" justifyContent={"center"}>
-                {dueDate ? (
-                  <Typography
-                    component="span"
-                    fontSize="0.8rem"
-                    sx={{
-                      ...(isToday(dueDate) && { color: (theme) => theme.palette.warning.main }),
-                      ...(isPast(dueDate) && { color: (theme) => theme.palette.error.main }),
-                    }}
-                  >
-                    {dueDateString}
-                  </Typography>
-                ) : task.habit?.schedules?.length ? (
-                  <IconButton
-                    title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      console.info("You clicked the schedule icon.");
-                    }}
-                  >
-                    <RepeatIcon sx={{ color: "gray" }} />
-                  </IconButton>
-                ) : null}
-              </Box>
-            </TableCell>
-            <TableCell>
-              <Box display="flex" alignItems={"center"} justifyContent={"center"} mx="auto">
-                {(!actionInProgress && (
-                  <IconButton
-                    title={`Begin ${task.title}`}
-                    color="success"
-                    disabled={loading || editing}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setActionInProgress(true);
-                    }}
-                  >
-                    <PlayArrowIcon style={{ fontSize: "1.5rem" }} />
-                  </IconButton>
-                )) || (
-                  <IconButton
-                    title="Stop action"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setActionInProgress(false);
-                    }}
-                  >
-                    <StopIcon />
-                  </IconButton>
-                )}
-              </Box>
-            </TableCell>
-            <TableCell className={`${isMobile ? "hidden" : ""}`}>
-              <IconButton
-                title={`Display actions for ${task.title}`}
-                className="actions-menu-icon"
-                {...menuTriggerProps}
-                disableTouchRipple
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                {...bindMenu(menuState)}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "center",
-                }}
-                MenuListProps={{
-                  "aria-labelledby": "calendar-menu-button-x",
-                }}
-              >
-                <Box px="0.5rem">
-                  <IconButton
-                    title={`Edit ${task.title}`}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setEditing(true);
-                    }}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    title={`Delete task`}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      const archivedAt = new Date().toISOString();
-                      updateTask({
-                        variables: {
-                          taskId: task.id,
-                          data: { archivedAt: { set: archivedAt } },
-                        },
-                        optimisticResponse: {
-                          updateTask: {
-                            __typename: "Task",
-                            subtasks: [],
-                            habit: null,
-                            ...task,
-                            archivedAt,
-                          },
-                        },
-                      }).catch(printError);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </Menu>
-            </TableCell>
-            <TableCell
-              sx={{ "&:hover": { cursor: "grab" } }}
-              className={`${isMobile ? "hidden" : ""}`}
-            >
-              <Box
+            </Box>
+          </Box>
+        </TableCell>
+        <TableCell>
+          <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
+            {scheduledDate && (
+              <Typography
+                component="span"
+                fontSize="0.8rem"
+                textAlign={"center"}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  height: "100%",
-                  "&:hover": { cursor: "grab" },
+                  ...(isToday(scheduledDate) && { color: (theme) => theme.palette.warning.main }),
+                  ...(isPast(scheduledDate) && { color: (theme) => theme.palette.error.main }),
                 }}
               >
-                <DragIndicatorIcon
-                  className="drag-handle"
-                  sx={{
-                    color: "gray",
-                    "&:hover": { cursor: "grab" },
-                  }}
-                />
-              </Box>
-            </TableCell>
-          </>
-        )}
+                {scheduledDateTextElement}
+              </Typography>
+            )}
+            {task.habit?.chronString && (
+              <IconButton
+                // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  console.info("You clicked the schedule icon.");
+                }}
+              >
+                <RepeatIcon sx={{ color: "gray" }} />
+              </IconButton>
+            )}
+          </Box>
+        </TableCell>
+        <TableCell>
+          <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
+            {dueDate ? (
+              <Typography
+                component="span"
+                fontSize="0.8rem"
+                textAlign={"center"}
+                sx={{
+                  ...(isToday(dueDate) && { color: (theme) => theme.palette.warning.main }),
+                  ...(isPast(dueDate) && { color: (theme) => theme.palette.error.main }),
+                }}
+              >
+                {dueDateTextElement}
+              </Typography>
+            ) : task.habit?.chronString ? (
+              <IconButton
+                // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  console.info("You clicked the schedule icon.");
+                }}
+              >
+                <RepeatIcon sx={{ color: "gray" }} />
+              </IconButton>
+            ) : null}
+          </Box>
+        </TableCell>
+        <TableCell sx={{ "&:hover": { cursor: "grab" } }} className={`${isMobile ? "hidden" : ""}`}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              height: "100%",
+              "&:hover": { cursor: "grab" },
+            }}
+          >
+            <DragIndicatorIcon
+              className="drag-handle"
+              sx={{
+                color: "gray",
+                "&:hover": { cursor: "grab" },
+              }}
+            />
+          </Box>
+        </TableCell>
       </TableRow>
       {!collapsed &&
         task.subtasks?.map((subtask, index) => (
@@ -411,15 +300,17 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
             index={index}
           />
         ))}
-      <ActionDialog {...bindPopover(dialogState)} task={task} />
+      <TaskDialog
+        task={taskData}
+        dispatchTaskData={dispatchTaskData}
+        {...bindPopover(dialogState)}
+      />
     </>
   );
 };
 
-const TaskRow = (props: TaskRowProps) => {
+const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
   const { task, index, onDrop, move } = props;
-
-  const { data: session } = useSession();
   const dndRef = useRef<HTMLTableRowElement>(null);
   const loadingRef = useRef(false);
   const editingRef = useRef(false);
@@ -451,7 +342,6 @@ const TaskRow = (props: TaskRowProps) => {
         // prevent moving between complete/incomplete
         !loadingRef.current && !(draggedTask.completedAt ? !task.completedAt : task.completedAt),
       drop: (draggedTask: DraggedTask) => {
-        if (!session) return;
         onDrop?.(draggedTask.index);
       },
       hover(draggedTask: DraggedTask, monitor: DropTargetMonitor) {
@@ -524,7 +414,32 @@ const TaskRow = (props: TaskRowProps) => {
         }}
       />
     );
-  }, [props.task, props.collapsed, isDragging, dndRef, editingRef, loadingRef]);
+  }, [props, isDragging, dndRef, editingRef, loadingRef]);
 };
 
 export default TaskRow;
+
+function getDateTextElement(date: Date | null) {
+  const today = new Date();
+  const dateString = date
+    ? isSameDay(date, today)
+      ? "Today"
+      : isSameYear(date, today)
+      ? format(date, "M/d")
+      : date.toLocaleDateString()
+    : "";
+  const timeString = date?.getTime() ? format(date, "h:mm a") : "";
+  return dateString ? (
+    <span>
+      {dateString}
+      {!!timeString && (
+        <>
+          {", "}
+          <Typography component="small" variant="inherit" sx={{ display: "inline-block" }}>
+            {timeString}
+          </Typography>
+        </>
+      )}
+    </span>
+  ) : null;
+}

@@ -1,9 +1,12 @@
+import { GET_ACCOUNTS } from "@/graphql/queries";
+import { Account } from "@/graphql/schema";
+import { initializeApollo } from "@/lib/apollo";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { CalendarClient } from "@/utils/calendar/client";
 import { isValidProvider } from "@/utils/calendar/providers";
-import prisma from "@/utils/prisma";
 import rateLimit from "@/utils/rate-limit";
 import { NextApiHandler } from "next";
-import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
 
 const limiter = rateLimit({
   ttl: 60 * 1000, // 60 seconds
@@ -16,25 +19,27 @@ const GetCalendars: NextApiHandler = async (req, res) => {
     return res.status(400).json({ error: "Invalid provider" });
   }
   const provider = req.query.provider as CalendarProvider; // "google"
-  const session = await getSession({ req });
-  if (!session?.user) return res.status(401).json({ error: "Not authenticated" });
+  const session = await unstable_getServerSession(req, res, authOptions);
+  if (!session?.user.id) return res.status(401).json({ error: "Not authenticated" });
   if (await limiter.check(`GetCalendars_${session.user.id}`).catch(() => false)) {
     return res.status(429).json({ error: "Rate limit exceeded" });
   }
-  const accounts = await prisma.account.findMany({
-    where: {
-      user: { id: session.user.id },
-      provider,
-    },
-    select: {
-      id: true,
-      provider: true,
-      remoteId: true,
-      accessToken: true,
-      refreshToken: true,
-      syncToken: true,
-    },
-  });
+
+  const apolloClient = initializeApollo(); // TODO
+  // TODO
+  let accounts: Account[] = await apolloClient
+    .query({
+      query: GET_ACCOUNTS,
+      context: { session },
+    })
+    .then((result) => result.data.accounts);
+  accounts = accounts.filter((account) => account.provider === provider);
+  // id: true,
+  // provider: true,
+  // remoteId: true,
+  // accessToken: true,
+  // refreshToken: true,
+  // syncToken: true,
   const promises = accounts.map(async (account) => {
     const calendarClient = new CalendarClient(account);
     return await calendarClient.listCalendars();

@@ -1,0 +1,18 @@
+import { ApolloContext } from "@/graphql/context";
+import { RoutineHabitCrudResolver } from "@/graphql/schema/resolvers/crud/RoutineHabit/RoutineHabitCrudResolver";
+import { GraphQLResolveInfo } from "graphql";
+import * as TypeGraphQL from "type-graphql-v2-fork";
+import { RoutineHabit } from "../../../models/RoutineHabit";
+import { FindUniqueRoutineHabitArgs } from "./args/FindUniqueRoutineHabitArgs";
+
+@TypeGraphQL.Resolver((_of) => RoutineHabit)
+export class FindUniqueRoutineHabitResolver {
+  @TypeGraphQL.Query((_returns) => RoutineHabit, { nullable: true })
+  async routineHabit(
+    @TypeGraphQL.Ctx() ctx: ApolloContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: FindUniqueRoutineHabitArgs
+  ): Promise<RoutineHabit | null> {
+    return RoutineHabitCrudResolver.prototype.routineHabit(ctx, info, args);
+  }
+}

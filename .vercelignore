@@ -6,6 +6,7 @@
 cypress/
 
 # Docker
+Dockerfile
 Dockerfile.*
 docker-compose.*
 

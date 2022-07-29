@@ -3,11 +3,11 @@
 // NOTE: reflect-metadata must be imported at the top!
 import "reflect-metadata";
 
-import { createContext } from "@/graphql/context";
+import { createApolloContext } from "@/graphql/context";
 import { resolvers } from "@/graphql/schema";
-import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse, PageConfig } from "next";
-import { buildSchema } from "type-graphql";
+import { buildSchema, NonEmptyArray } from "type-graphql-v2-fork";
+import { ApolloServer } from "apollo-server-micro";
 
 declare const global: NodeJS.Global & {
   apolloServerHandler?: ReturnType<ApolloServer["createHandler"]>;
@@ -15,22 +15,19 @@ declare const global: NodeJS.Global & {
 
 const getApolloServerHandler = async () => {
   if (!global.apolloServerHandler) {
-    // TODO: https://prisma.typegraphql.com/docs/advanced/exposing-models
+    if (!resolvers?.length) throw new Error("No resolvers");
     const apolloServer = new ApolloServer({
-      context: createContext,
+      context: createApolloContext,
       schema: await buildSchema({
-        resolvers,
-        dateScalarMode: "isoDate",
+        resolvers: resolvers as unknown as NonEmptyArray<CallableFunction>,
         emitSchemaFile: {
           path: `${process.env.BASE_DIR}/graphql/schema.gql`,
-          commentDescriptions: true,
         },
         validate: false,
       }),
       debug: process.env.NODE_ENV !== "production",
     });
     await apolloServer.start();
-    // console.log(">>> Started apollo server")
     global.apolloServerHandler = apolloServer.createHandler({ path: "/api/graphql" });
   }
   return global.apolloServerHandler;

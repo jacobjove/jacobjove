@@ -1,11 +1,10 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { Value } from "@/graphql/schema";
-import prisma from "@/utils/prisma";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
-import React, { FC } from "react";
+import { FC } from "react";
 
 interface ValueProps {
   value: Value;
@@ -32,24 +31,25 @@ const ValueDetailPage: FC<ValueProps> = ({ value }: ValueProps) => {
 export default ValueDetailPage;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  let value: Value | null = null;
-  let notFound = false;
-  const { slug } = params || {};
-  await prisma.value
-    .findUnique({ where: { slug: `${slug}` } })
-    .then((result) => {
-      value = result;
-    })
-    .catch(() => {
-      notFound = true;
-    });
-  return {
-    props: {
-      value,
-    },
-    notFound,
-    revalidate: 10,
-  };
+  throw new Error("Not implemented");
+  // let value: Value | null = null;
+  // let notFound = false;
+  // const { slug } = params || {};
+  // await prisma.value
+  //   .findUnique({ where: { slug: `${slug}` } })
+  //   .then((result) => {
+  //     value = result;
+  //   })
+  //   .catch(() => {
+  //     notFound = true;
+  //   });
+  // return {
+  //   props: {
+  //     value,
+  //   },
+  //   notFound,
+  //   revalidate: 10,
+  // };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

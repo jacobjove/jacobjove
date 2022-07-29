@@ -1,18 +1,9 @@
-import UserContext from "@/components/contexts/UserContext";
+import { useUser } from "@/components/contexts/UserContext";
 import { createTheme, PaletteMode } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {
-  createContext,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from "react";
 
 // NOTE: It's probably best to stick with "light" as the default color mode,
 // to match the prefers-color-scheme default:
@@ -102,7 +93,7 @@ const getDesignTokens = (mode: PaletteMode) => {
 
 export const ColorModeContextProvider: FC = ({ children }) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const user = useContext(UserContext);
+  const user = useUser();
   const colorModeState = useState<PaletteMode>(user?.settings?.colorMode ?? DEFAULT_COLOR_MODE);
   const [mode, setMode] = colorModeState;
 

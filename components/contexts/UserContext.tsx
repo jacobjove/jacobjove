@@ -1,38 +1,36 @@
-import { GET_USER } from "@/graphql/queries";
-import { User as RawUser } from "@/graphql/schema";
-import { useQuery } from "@apollo/client";
-import { PaletteMode } from "@mui/material";
-import isObject from "lodash/isObject";
+import { GET_USER_BY_ID } from "@/graphql/queries";
+import { User } from "@/graphql/schema";
+import { printError } from "@/utils/apollo/error-handling";
+import { useLazyQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
-import { createContext, FC, useMemo } from "react";
-
-export interface UserSettings {
-  colorMode?: PaletteMode;
-}
-
-export type User = Omit<RawUser, "settings"> & {
-  settings: UserSettings;
-};
+import { createContext, FC, useContext, useEffect } from "react";
 
 const UserContext = createContext<User | null>(null);
 
 export default UserContext;
 
 export const UserContextProvider: FC = ({ children }) => {
-  const { data: session } = useSession();
-  // TODO: useLazyQuery after session is loaded?
-  const { data, loading: _loading } = useQuery<{ user: User }>(GET_USER, {
-    skip: !session?.user?.id,
-    variables: { userId: session?.user?.id },
-  });
-  const user = useMemo(() => {
-    let user = data?.user ?? null;
-    if (user?.settings) {
-      if (!isObject(user.settings)) {
-        user = { ...user, settings: JSON.parse(user.settings) } as User;
-      } else console.log("あら?");
-    }
-    return user;
-  }, [data]);
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  const { data: session, status } = useSession();
+  const loadingAuth = status === "loading";
+  const [getUser, { loading: loadingUser, error, data }] = useLazyQuery<{ user: User }>(
+    GET_USER_BY_ID
+  );
+  const loading = loadingAuth || loadingUser;
+
+  useEffect(() => {
+    if (session?.user.id) {
+      console.log(">>> Getting user...");
+      getUser({
+        variables: { id: session.user.id },
+      }).catch(printError);
+    } else if (!loading && error) printError(error);
+  }, [session, loading, error, getUser]);
+
+  return <UserContext.Provider value={data?.user ?? null}>{children}</UserContext.Provider>;
+};
+
+export const useUser = ({ required } = { required: false }): User | null => {
+  const user = useContext(UserContext);
+  if (required && !user) console.error("User is required but is not set!");
+  return user;
 };
