@@ -70,7 +70,7 @@
     "firebase": "^9.8.3",
     "firebase-admin": "^10.2.0",
     "firebaseui": "^6.0.1",
-    "googleapis": "^92.0.0",
+    "googleapis": "^105.0.0",
     "graphql": "^16.0.0",
     "graphql-config": "^4.3.2",
     "graphql-fields": "^2.0.3",
