@@ -5,7 +5,7 @@ export enum ActScalarFieldEnum {
   name = "name",
   slug = "slug",
   description = "description",
-  isPublic = "isPublic",
+  public = "public",
   parentId = "parentId",
   createdAt = "createdAt",
   updatedAt = "updatedAt",

@@ -44,8 +44,6 @@ const DateSelector: FC<DateSelectorProps> = ({
 }: DateSelectorProps) => {
   const [open, setOpen] = useState(false);
 
-  console.log(">>> DateSelector.currentDate", currentDate);
-
   // TODO: determine if there's a more efficient way to do this...
   // Also, it would be way better to use container queries instead of media queries...
   // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries

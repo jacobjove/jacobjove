@@ -1,8 +1,7 @@
-import { Task } from "@/graphql/schema";
+import { Task } from "@/graphql/schema/generated/models/task.model";
+import { InputData } from "@/utils/data";
 
-export type TaskData = Omit<Task, "id" | "userId" | "createdAt" | "updatedAt"> & {
-  id?: string;
-};
+export type TaskData = InputData<Task>;
 
 export type InitialTaskData = Pick<TaskData, "rank"> & Partial<TaskData>;
 

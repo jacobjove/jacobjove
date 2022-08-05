@@ -1,10 +1,10 @@
-import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
-import { Act } from "@/graphql/schema";
+// import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
+import { Habit } from "@/graphql/schema/generated/models/habit.model";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+// import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
@@ -17,7 +17,7 @@ const TOGGLE_IDENTIFICATION = gql`
 `;
 
 interface SelectableActionProps {
-  act: Act;
+  act: Habit;
   selected: boolean;
 }
 
@@ -52,7 +52,7 @@ const SelectableAction: FC<SelectableActionProps> = ({
   };
   return (
     <Box key={act.name} position="relative" display="inline-block">
-      <Link href={`/habits/${act.slug}`} key={act.name} passHref prefetch={false}>
+      {/* <Link href={`/habits/${act.slug}`} key={act.name} passHref prefetch={false}>
         <Button
           component="a"
           variant="outlined"
@@ -72,7 +72,7 @@ const SelectableAction: FC<SelectableActionProps> = ({
         <a href={`/habits/${act.slug}`} onClick={toggleSelection}>
           <SelectionToggleIcon positive={selected} />
         </a>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

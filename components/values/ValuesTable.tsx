@@ -1,5 +1,5 @@
 import Onboarder from "@/components/Onboarder";
-import { Value } from "@/graphql/schema";
+import { Value } from "@/graphql/schema/generated/models/value.model";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -55,7 +55,7 @@ const ValueTable: FC<ValueTableProps> = (props: ValueTableProps) => {
             {values.map((value) => (
               <TableRow key={value.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell component="th" scope="row">
-                  <Link href={`/identities/${value.slug}`}>
+                  <Link href={`/identities/`}>
                     <a>{value.name}</a>
                   </Link>
                 </TableCell>

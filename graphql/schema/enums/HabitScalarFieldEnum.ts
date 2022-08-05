@@ -5,7 +5,7 @@ export enum HabitScalarFieldEnum {
   actId = "actId",
   userId = "userId",
   name = "name",
-  isPublic = "isPublic",
+  public = "public",
   defaultDurationInMinutes = "defaultDurationInMinutes",
   createdAt = "createdAt",
   updatedAt = "updatedAt",

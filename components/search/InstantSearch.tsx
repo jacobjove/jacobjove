@@ -39,7 +39,7 @@ const InstantSearch: FC<InstantSearchProps> = ({
   dataKey,
   labelKey,
   searchableFieldKeys,
-  idKey = "id",
+  idKey = "_id",
   getOptionKey = (option: Option | string) =>
     typeof option === "string" ? option : option[labelKey],
   minimumSearchLength = 1,

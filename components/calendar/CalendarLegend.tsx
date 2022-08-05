@@ -1,4 +1,5 @@
-import { Calendar } from "@/graphql/schema";
+import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
+import { ID } from "@/graphql/schema/types";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox, { CheckboxProps } from "@mui/material/Checkbox";
@@ -13,8 +14,8 @@ const CalendarInclusionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 
 interface CalendarLegendProps {
   calendars: Calendar[];
-  selectedCalendarIds: string[];
-  dispatchCalendarIds: Dispatch<{ type: "add" | "remove"; value: string[] }>;
+  selectedCalendarIds: ID[];
+  dispatchCalendarIds: Dispatch<{ type: "add" | "remove"; value: ID[] }>;
 }
 
 export const CalendarLegendItems: FC<CalendarLegendProps> = ({

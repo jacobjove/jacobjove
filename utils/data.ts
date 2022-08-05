@@ -1,15 +1,14 @@
-import { CalendarEvent } from "@/graphql/schema";
-import { Model } from "@/graphql/schema/models/model";
+import { ID, Model } from "@/graphql/schema/types";
 import { DocumentNode, FetchResult, MutationFunctionOptions, useMutation } from "@apollo/client";
 import { DebouncedFunc } from "lodash";
 import debounce from "lodash/debounce";
+import { ObjectId } from "mongodb";
 import { Dispatch, MutableRefObject, useReducer, useRef } from "react";
 
-export type InputData<T extends Model> = Omit<T, "id" | "userId" | "createdAt" | "updatedAt"> & {
-  id?: string;
+export type InputData<T extends Model> = Omit<T, "_id" | "id" | "userId" | "createdAt" | "updatedAt"> & {
+  _id?: ObjectId;
+  id?: ID;
 };
-
-export type CalendarEventData = InputData<CalendarEvent>;
 
 const DEFAULT_MUTATION_DEBOUNCE_DELAY = 600; // 0.6 seconds
 

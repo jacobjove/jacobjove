@@ -2,8 +2,10 @@ import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import SearchDialog from "@/components/search/SearchDialog";
 // import Select from "@/components/Select";
-import { notebookFragment, noteFragment } from "@/graphql/fragments";
-import { Note, Notebook } from "@/graphql/schema";
+import { notebookFragment, NotebookFragment } from "@/graphql/schema/generated/fragments/notebook.fragment";
+import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
+import { Note } from "@/graphql/schema/generated/models/note.model";
+import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
 import { buildNewItemFragment } from "@/graphql/utils/fragments";
 import { addItemToCache } from "@/utils/apollo";
 import { printError } from "@/utils/apollo/error-handling";
@@ -34,13 +36,14 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import debounce from "lodash/debounce";
 import partition from "lodash/partition";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Dispatch, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { ID } from "@/graphql/schema/types";
 
 const CREATE_NOTEBOOK = gql`
   mutation CreateNotebook($data: NotebookCreateInput!) {
@@ -118,7 +121,7 @@ export default function NotesMenu({
   });
 
   const [createNotebook, { loading: loadingCreateNotebook }] = useMutation<{
-    createNotebook: Notebook;
+    createNotebook: NotebookFragment;
   }>(CREATE_NOTEBOOK, {
     update(cache, { data }) {
       const { createNotebook } = data || {};
@@ -216,13 +219,12 @@ export default function NotesMenu({
       optimisticResponse: {
         createNotebook: {
           __typename: "Notebook",
-          ownerId,
+          userId: user?.id as ID,
           title: newNotebookName,
           archivedAt: null,
           createdAt: now,
           updatedAt: now,
-          isPublic: false,
-          notes: [],
+          public: false,
           id: "tmp-id",
         },
       },
@@ -500,7 +502,7 @@ export default function NotesMenu({
           label: "Search",
           query: SEARCH_QUERY,
           dataKey: "notes",
-          idKey: "id",
+          idKey: "_id",
           labelKey: "title",
           searchableFieldKeys: ["title", "body"],
           getOptionKey: (option) => (typeof option === "string" ? option : option.id),
@@ -516,7 +518,7 @@ export default function NotesMenu({
                 >
                   <Typography>{option.title}</Typography>&nbsp;&nbsp;
                   <Typography component={"small"} fontSize={"0.75rem"} color={"textSecondary"}>
-                    {"last updated"} {format(parseISO(option.updatedAt), "M/d, h:mm a")}
+                    {"last updated"} {format(option.updatedAt, "M/d, h:mm a")}
                   </Typography>
                 </li>
               );

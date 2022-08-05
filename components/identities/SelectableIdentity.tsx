@@ -1,5 +1,5 @@
 import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
-import { Identity } from "@/graphql/schema";
+import { Identity } from "@/graphql/schema/generated/models";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -52,7 +52,7 @@ const SelectableIdentity: FC<SelectableIdentityProps> = ({
   };
   return (
     <Box key={identity.name} position="relative" display="inline-block">
-      <Link href={`/identities/${identity.slug}`} key={identity.name} passHref prefetch={false}>
+      <Link href={`/identities/`} key={identity.name} passHref prefetch={false}>
         <Button
           component="a"
           variant="outlined"
@@ -69,7 +69,7 @@ const SelectableIdentity: FC<SelectableIdentityProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/identities/${identity.slug}`} onClick={toggleIdentity}>
+        <a href={`/identities/`} onClick={toggleIdentity}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

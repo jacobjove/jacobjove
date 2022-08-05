@@ -7,13 +7,15 @@ import { useUser } from "@/components/contexts/UserContext";
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
 import MantrasBox from "@/components/mantras/MantrasBox";
-import {
-  calendarEventFragment,
-  goalFragment,
-  habitFragment,
-  taskFragment,
-} from "@/graphql/fragments";
-import { CalendarEvent, Goal, Habit, Mantra, Task } from "@/graphql/schema";
+import { calendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
+import { goalFragment } from "@/graphql/schema/generated/fragments/goal.fragment";
+import { habitFragment } from "@/graphql/schema/generated/fragments/habit.fragment";
+import { taskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
+import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
+import { Goal } from "@/graphql/schema/generated/models/goal.model";
+import { Habit } from "@/graphql/schema/generated/models/habit.model";
+import { Mantra } from "@/graphql/schema/generated/models/mantra.model";
+import { Task } from "@/graphql/schema/generated/models/task.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useQuery } from "@apollo/client";
 import TabContext from "@mui/lab/TabContext";
@@ -134,10 +136,9 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
 
 const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
   console.log(">>> Rendering planner page...");
-  // const { data: session } = useSession({ required: true });
   const user = useUser({ required: true });
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const { loading, error, data } = useQuery<PlannerPageData>(QUERY);
+  const { loading: _loading, error: _error, data } = useQuery<PlannerPageData>(QUERY);
   const displaySideBySide = useMediaQuery(json2mq({ minWidth: "1000px" }));
 
   // const { calendarEvents, calendars, tasks } = data;

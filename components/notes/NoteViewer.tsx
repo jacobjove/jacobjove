@@ -1,7 +1,7 @@
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
-import { noteFragment } from "@/graphql/fragments";
-import { Note } from "@/graphql/schema";
+import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
+import { Note } from "@/graphql/schema/generated/models/note.model";
 import { useDataReducer, useHandleMutation } from "@/utils/data";
 import { gql } from "@apollo/client";
 import Box from "@mui/material/Box";

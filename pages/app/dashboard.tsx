@@ -4,8 +4,9 @@ import DashboardViewer, {
   fragment as dashboardDataFragment,
 } from "@/components/dashboard/Dashboard";
 import Select from "@/components/Select";
-import { dashboardFragment } from "@/graphql/fragments";
-import { Dashboard } from "@/graphql/schema";
+import { DashboardLayouts } from "@/graphql/schema/definitions/Dashboard";
+import { dashboardFragment } from "@/graphql/schema/generated/fragments/dashboard.fragment";
+import { Dashboard } from "@/graphql/schema/generated/models/dashboard.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
@@ -244,7 +245,7 @@ const DashboardPage: NextPage = () => {
           data={dashboardData as DashboardData}
           loading={loading}
           error={error}
-          layouts={layouts}
+          layouts={layouts as unknown as DashboardLayouts} // TODO
           setLayouts={(layouts) => {
             console.log("Modify dashboard layouts", layouts);
           }}

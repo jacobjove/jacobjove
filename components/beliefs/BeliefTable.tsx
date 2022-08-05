@@ -1,4 +1,4 @@
-import { Belief } from "@/graphql/schema";
+import { Belief } from "@/graphql/schema/generated/models/belief.model";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Link from "next/link";
 import { FC } from "react";
 
 interface BeliefTableProps {
@@ -33,9 +32,7 @@ const BeliefTable: FC<BeliefTableProps> = (props: BeliefTableProps) => {
           {beliefs.map((belief: Belief) => (
             <TableRow key={belief.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               <TableCell component="th" scope="row">
-                <Link href={`/beliefs/${belief.slug}`}>
-                  <a>{belief.name}</a>
-                </Link>
+                {belief.name}
               </TableCell>
               <TableCell component="td">
                 <Box display="flex" alignItems="center">

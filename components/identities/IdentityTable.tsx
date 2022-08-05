@@ -1,5 +1,5 @@
 import Onboarder from "@/components/Onboarder";
-import { Identity } from "@/graphql/schema";
+import { Identity } from "@/graphql/schema/generated/models";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -66,7 +66,7 @@ const IdentityTable: FC<IdentityTableProps> = (props: IdentityTableProps) => {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      <Link href={`/identities/${identity.slug}`}>
+                      <Link href={`/identities/`}>
                         <a>{identity.name}</a>
                       </Link>
                     </TableCell>

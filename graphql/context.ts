@@ -1,32 +1,30 @@
-import { USE_FIREBASE } from "@/config";
-import mongoClientPromise from "@/lib/mongodb";
+import mongoosePromise from "@/lib/mongodb";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { firestore } from "@/utils/firebase/admin";
-import { MongoClient } from "mongodb";
+// import { MongoClient } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth";
 import { unstable_getServerSession } from "next-auth/next";
 
-export type ApolloContext = {
+export type GqlContext = {
   session: Session | null | undefined;
-} & (
-  | {
-      firestore: typeof firestore;
-    }
-  | {
-      db: MongoClient;
-    }
-);
+  db: unknown;
+};
 
 interface FromContext {
   req: NextApiRequest;
   res: NextApiResponse;
 }
 
-export async function createApolloContext({ req, res }: FromContext): Promise<ApolloContext> {
+export async function createGqlContext({ req, res }: FromContext): Promise<GqlContext> {
   const session = await unstable_getServerSession(req, res, authOptions);
+  const mongoClient = await mongoosePromise.catch((err) => {
+    console.error();
+    console.error(">>> ERROR:");
+    console.error(err);
+    console.error("^^^^^");
+  });
   return {
     session,
-    ...(USE_FIREBASE ? { firestore } : { db: await mongoClientPromise }),
+    db: mongoClient,
   };
 }

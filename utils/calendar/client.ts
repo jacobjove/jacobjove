@@ -3,8 +3,7 @@ THIS IS A SERVER-SIDE-ONLY MODULE.
 Importing from this module in client-side code will result in an error.
 */
 
-import { Account, Calendar } from "@/graphql/schema";
-import prisma from "@/utils/prisma";
+import { Account, Calendar } from "@/graphql/schema/generated/models";
 import { calendar_v3, google } from "googleapis";
 
 type RequiredAccountData = Pick<
@@ -59,10 +58,10 @@ export class CalendarClient {
         if (data.data.nextSyncToken) {
           const nextCalendarListSyncToken = data.data.nextSyncToken;
           this.calendarListSyncToken = nextCalendarListSyncToken;
-          prisma.account.update({
-            where: { id: this.accountId },
-            data: { syncToken: nextCalendarListSyncToken },
-          });
+          // prisma.account.update({
+          //   where: { _id: this.accountId },
+          //   data: { syncToken: nextCalendarListSyncToken },
+          // });
         } else if (data.data.nextPageToken) {
           throw new Error("nextPageToken token not implemented");
         }
@@ -85,7 +84,7 @@ export class CalendarClient {
             timeZone: "America/Chicago"
           } */
           return {
-            name: item.summary,
+            name: item.summary ?? "Unnamed calendar",
             color: item.backgroundColor,
             remoteId: item.id,
             accountId: this.accountId,

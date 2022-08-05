@@ -1,7 +1,8 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
-import { UPDATE_TASK } from "@/graphql/mutations";
-import { Task } from "@/graphql/schema";
+import { UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
+import { Task } from "@/graphql/schema/generated/models/task.model";
+import { printError } from "@/utils/apollo/error-handling";
 import { initializeTaskData, taskDataReducer } from "@/utils/tasks";
 import { useMutation } from "@apollo/client";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -19,8 +20,11 @@ import { XYCoord } from "dnd-core";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC, RefObject, useMemo, useReducer, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
+import { ID } from "@/graphql/schema/types";
+import { useUser } from "../contexts/UserContext";
 
 export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
+  subtasks: Task[];
   asSubtask?: boolean;
   index: number;
   move?: (draggedTask: DraggedTask, hoveredTask: Task) => Partial<DraggedTask> | null;
@@ -30,6 +34,7 @@ export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collap
 interface TaskRowContentProps {
   task: Task;
   asSubtask?: boolean;
+  subtasks: Task[];
   collapsed?: boolean;
   dndRef: RefObject<HTMLTableRowElement>;
   isDragging: boolean;
@@ -39,18 +44,22 @@ interface TaskRowContentProps {
 
 export type DraggedTask = { type: "task" } & Pick<Task, "id" | "rank" | "title" | "completedAt"> & {
     index: number;
-    calendarId?: string;
-    scheduleId?: string | null;
+    calendarId?: ID;
+    scheduleId?: ID | null;
   };
 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
-  const { task, asSubtask, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
+  const user = useUser();
+  const { task, asSubtask, subtasks, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
   const completed = !!task.completedAt;
   const collapsed = _collapsed ?? false;
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
 
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
+
+  // const habit = task.habit; // TODO
+  const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
 
   const [taskData, dispatchTaskData] = useReducer(
     taskDataReducer,
@@ -67,24 +76,21 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
     updateTask({
       variables: {
         where: { id: task.id },
-        data: { completedAt: completedAt },
+        data: { completedAt },
       },
       optimisticResponse: {
         __typename: "Mutation",
         updateTask: {
           __typename: "Task",
-          subtasks: [],
           habit: null,
           ...task,
           completedAt,
         },
       },
-    }).catch((error) => {
-      console.error(error);
-    });
+    }).catch(printError);
   };
 
-  const isHabit = Boolean(task.habit);
+  const isHabit = Boolean(task.habitId);
 
   const dueDate = task.dueDate ?? null;
   const scheduledDate = task.plannedStartDate ?? null;
@@ -160,60 +166,62 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               position: "relative",
               margin: "0.25rem",
               paddingX: 0,
+              minHeight: "2.2rem",
+              minWidth: 0,
               height: "auto",
               maxHeight: "auto",
               borderRadius: "3px",
               border: isHabit ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
-              backgroundColor: (theme) =>
-                isHabit
-                  ? `${
-                      theme.palette.mode === "light"
-                        ? "rgba(0, 0, 0, 0.08)"
-                        : "rgba(255, 255, 255, 0.08)"
-                    }`
-                  : "transparent",
+              // backgroundColor: (theme) =>
+              //   isHabit
+              //     ? `${
+              //         theme.palette.mode === "light"
+              //           ? "rgba(0, 0, 0, 0.08)"
+              //           : "rgba(255, 255, 255, 0.08)"
+              //       }`
+              //     : "transparent",
+              color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
               display: "flex",
               alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            <Box display="flex" justifyContent={"space-between"} alignItems="center">
-              <Box display="flex" alignItems="center">
-                <Box
+            <Box p={1}>
+              <Typography
+                sx={{
+                  fontSize: asSubtask ? "0.7rem" : "0.8rem",
+                  textTransform: "none",
+                }}
+              >
+                {task.title}
+              </Typography>
+              {subtasks?.length ? (
+                <IconButton
+                  title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
                   sx={{
-                    color: (theme) => (theme.palette.mode === "light" ? "black" : "white"),
-                    padding: "0 0.25rem",
-                    margin: 0,
-                    minWidth: 0,
-                    display: "flex",
-                    alignItems: "center",
+                    backgroundColor: "transparent",
+                    backgroundOrigin: "content-box",
+                  }}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setSubtasksExpanded(!subtasksExpanded);
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: asSubtask ? "0.7rem" : "0.8rem",
-                      textTransform: "none",
-                    }}
-                  >
-                    {task.title}
-                  </Typography>
-                  {task.subtasks?.length ? (
-                    <IconButton
-                      title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
-                      sx={{
-                        backgroundColor: "transparent",
-                        backgroundOrigin: "content-box",
-                      }}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setSubtasksExpanded(!subtasksExpanded);
-                      }}
-                    >
-                      {subtasksExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                    </IconButton>
-                  ) : null}
-                </Box>
-              </Box>
+                  {subtasksExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                </IconButton>
+              ) : null}
             </Box>
+            {task.habitId && (
+              <IconButton
+                // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  console.info("You clicked the schedule icon.");
+                }}
+              >
+                <RepeatIcon sx={{ color: "gray" }} />
+              </IconButton>
+            )}
           </Box>
         </TableCell>
         <TableCell>
@@ -231,17 +239,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                 {scheduledDateTextElement}
               </Typography>
             )}
-            {task.habit?.chronString && (
-              <IconButton
-                // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
-                onClick={(event) => {
-                  event.preventDefault();
-                  console.info("You clicked the schedule icon.");
-                }}
-              >
-                <RepeatIcon sx={{ color: "gray" }} />
-              </IconButton>
-            )}
           </Box>
         </TableCell>
         <TableCell>
@@ -258,7 +255,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               >
                 {dueDateTextElement}
               </Typography>
-            ) : task.habit?.chronString ? (
+            ) : habit?.chronString ? (
               <IconButton
                 // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
                 onClick={(event) => {
@@ -291,11 +288,12 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
         </TableCell>
       </TableRow>
       {!collapsed &&
-        task.subtasks?.map((subtask, index) => (
+        subtasks?.map((subtask, index) => (
           <TaskRow
             key={subtask.id}
             task={subtask}
             asSubtask={true}
+            subtasks={[]}
             collapsed={!subtasksExpanded || isDragging}
             index={index}
           />
@@ -344,7 +342,9 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       drop: (draggedTask: DraggedTask) => {
         onDrop?.(draggedTask.index);
       },
-      hover(draggedTask: DraggedTask, monitor: DropTargetMonitor) {
+      hover(draggedItem, monitor: DropTargetMonitor) {
+        if (draggedItem.type !== "task") return;
+        const draggedTask = draggedItem as DraggedTask;
         if (!dndRef.current || !move || !monitor.canDrop()) {
           return;
         }
@@ -352,9 +352,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         const hoverIndex = index;
 
         // Don't replace items with themselves.
-        if (dragIndex === hoverIndex) {
-          return;
-        }
+        if (dragIndex === hoverIndex) return;
 
         // Determine rectangle on screen
         const hoverBoundingRect = dndRef.current?.getBoundingClientRect();
@@ -373,14 +371,10 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         // When dragging upwards, only move when the cursor is above 50%.
 
         // Dragging downwards
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-          return;
-        }
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
 
         // Dragging upwards
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-          return;
-        }
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
         // Time to actually perform the action.
         const updatedTaskFields = move(draggedTask, task);

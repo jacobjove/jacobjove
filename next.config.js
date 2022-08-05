@@ -25,6 +25,7 @@ if (process.env.NODE_ENV !== "development") {
 const modulesToTranspile = [
   // 'react-datasheet-grid'
   "date-fns",
+
 ];
 
 if (modulesToTranspile.length) {
@@ -47,6 +48,7 @@ const nextConfig = {
   compress: process.env.NODE_ENV != "production",
   reactStrictMode: true,
   swcMinify: true,
+  experimental: { esmExternals: "loose" },
   async redirects() {
     const redirects = [
       {

@@ -1,4 +1,4 @@
-import { CalendarEvent } from "@/graphql/schema";
+import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import { InputData } from "@/utils/data";
 import { addMinutes } from "date-fns";
 
@@ -21,8 +21,6 @@ export const calendarEventDataReducer = (
 export const initializeCalendarEventData = (
   eventData: InitialCalendarEventData
 ): CalendarEventData => {
-  // prettier-ignore
-  if (!eventData.calendarId) throw new Error("Calendar ID not specified.");
   return {
     taskId: null,
     scheduleId: null,

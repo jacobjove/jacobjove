@@ -1,6 +1,6 @@
 import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
-import { userFragment } from "@/graphql/fragments";
+import { userFragment } from "@/graphql/schema/generated/fragments/user.fragment";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
@@ -25,7 +25,7 @@ interface MantrasPageProps {
 }
 
 const UPDATE_MANTRAS = gql`
-  mutation UpdateMantras($userId: String!, $settings: JSON!) {
+  mutation UpdateMantras($userId: ObjectId!, $settings: JSON!) {
     updateUser(where: { id: $userId }, data: { settings: $settings }) {
       ...UserFragment
     }

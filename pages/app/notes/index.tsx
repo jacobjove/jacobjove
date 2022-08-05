@@ -1,10 +1,11 @@
 import AppLayout from "@/components/AppLayout";
 import DeviceContext from "@/components/contexts/DeviceContext";
-import { useUser } from "@/components/contexts/UserContext";
 import NotesMenu from "@/components/notes/NotesMenu";
 import NoteViewer from "@/components/notes/NoteViewer";
-import { notebookFragment, noteFragment } from "@/graphql/fragments";
-import { Note, Notebook } from "@/graphql/schema";
+import { notebookFragment } from "@/graphql/schema/generated/fragments/notebook.fragment";
+import { noteFragment, NoteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
+import { Note } from "@/graphql/schema/generated/models/note.model";
+import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -14,6 +15,8 @@ import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { NextSeo } from "next-seo";
 import { useContext, useState } from "react";
+import { ID } from "@/graphql/schema/types";
+import { useUser } from "@/components/contexts/UserContext";
 
 interface NotesPageProps {
   session: Session | null;
@@ -22,15 +25,6 @@ interface NotesPageProps {
 const CREATE_NOTE = gql`
   mutation CreateNote($data: NoteCreateInput!) {
     createNote(data: $data) {
-      ...NoteFragment
-    }
-  }
-  ${noteFragment}
-`;
-
-const UPDATE_NOTE = gql`
-  mutation UpdateNote($noteId: String!, $data: NoteUpdateInput!) {
-    updateNote(where: { id: $noteId }, data: $data) {
       ...NoteFragment
     }
   }
@@ -70,7 +64,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const selectedNoteId = selectedNoteIds[0];
   const selectedNote = notes?.find((note) => note.id === selectedNoteId);
   const [createNote, { loading: loadingCreateNote }] = useMutation<{
-    createNote: Note;
+    createNote: NoteFragment;
   }>(CREATE_NOTE, {
     update(cache, { data }) {
       const { createNote } = data || {};
@@ -122,7 +116,8 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
         createNote: {
           title,
           body,
-          isPublic: false,
+          public: false,
+          userId: user?.id as ID,
           notebookId,
           createdAt: now,
           updatedAt: now,

@@ -5,7 +5,7 @@ export enum BookshelfScalarFieldEnum {
   ownerId = "ownerId",
   name = "name",
   slug = "slug",
-  isPublic = "isPublic",
+  public = "public",
   description = "description",
   createdAt = "createdAt",
   updatedAt = "updatedAt",

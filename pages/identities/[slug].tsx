@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Identity } from "@/graphql/schema";
+import { Identity } from "@/graphql/schema/generated/models";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
@@ -18,7 +18,7 @@ const IdentityDetailPage: FC<IdentityProps> = ({ identity }: IdentityProps) => {
     <Layout>
       <NextSeo
         title={identity.name}
-        canonical={`/${identity.slug}`}
+        canonical={`/`}
         description={`${identity.description}`}
       />
       <Container>

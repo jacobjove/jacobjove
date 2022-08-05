@@ -1,9 +1,9 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import { DraggedCalendarEvent } from "@/components/calendar/EventBox";
 import { useUser } from "@/components/contexts/UserContext";
-import { calendarEventFragment } from "@/graphql/fragments";
-import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
-import { CalendarEvent } from "@/graphql/schema";
+import { CalendarEventFragment, calendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
+import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
+import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import { buildNewItemFragment } from "@/graphql/utils/fragments";
 import { addItemToCache } from "@/utils/apollo";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
 import { useDrop } from "react-dnd";
+import { ID } from "@/graphql/schema/types";
 
 interface EventSlotProps {
   date: Date;
@@ -43,10 +44,10 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const user = useUser();
   const [hovered, setHovered] = useState(false);
   const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
-    updateCalendarEvent: CalendarEvent;
+    updateCalendarEvent: CalendarEventFragment;
   }>(UPDATE_CALENDAR_EVENT);
   const [addEvent, { loading: loadingCreateCalendarEvent }] = useMutation<{
-    createCalendarEvent: CalendarEvent;
+    createCalendarEvent: CalendarEventFragment;
   }>(CREATE_CALENDAR_EVENT, {
     update(cache, { data }) {
       const { createCalendarEvent } = data || {};
@@ -120,6 +121,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
                 id: "tmp-id",
                 scheduleId,
                 calendarId,
+                userId: user.id as ID,
                 taskId: draggedTask.id,
                 remoteId: null,
                 createdAt: now,

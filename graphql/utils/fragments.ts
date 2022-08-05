@@ -6,14 +6,19 @@ export const buildNewItemFragment = (
   modelName: string
 ): [DocumentNode, string] => {
   const newFragmentName = `New${fragmentName}`;
-  return [
-    gql`
-      # eslint-disable-next-line
-      fragment ${newFragmentName} on ${modelName} { 
-        ...${fragmentName} 
-      }
-      ${fragment}
-    `,
-    newFragmentName,
-  ];
+  const fragmentString = `
+    fragment ${newFragmentName} on ${modelName} { 
+      ...${fragmentName} 
+    }
+  `;
+  return [gql(fragmentString, fragment), newFragmentName];
 };
+
+// export function generateFragment<T>(model: typeof T, fields: string[]) {
+//   console.log(">>>", model);
+//   return gql([`
+//     fragment ActionFragment on Action {
+//       ${fields.join("\n")}
+//     }
+//   `]);
+// }

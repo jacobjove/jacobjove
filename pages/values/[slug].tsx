@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Value } from "@/graphql/schema";
+import { Value } from "@/graphql/schema/generated/models/value.model";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
@@ -18,7 +18,7 @@ const ValueDetailPage: FC<ValueProps> = ({ value }: ValueProps) => {
     <Layout>
       <NextSeo
         title={value.name}
-        canonical={`/${value.slug}`}
+        canonical={`/`}
         description={`${value.description}`}
       />
       <Container>

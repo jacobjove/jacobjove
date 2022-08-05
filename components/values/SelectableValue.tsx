@@ -1,5 +1,5 @@
 import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
-import { Value } from "@/graphql/schema";
+import { Value } from "@/graphql/schema/generated/models/value.model";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -52,7 +52,7 @@ const SelectableValue: FC<SelectableValueProps> = ({
   };
   return (
     <Box key={value.name} position="relative" display="inline-block">
-      <Link href={`/values/${value.slug}`} key={value.name} passHref prefetch={false}>
+      <Link href={`/values/`} key={value.name} passHref prefetch={false}>
         <Button
           component="a"
           variant="outlined"
@@ -69,7 +69,7 @@ const SelectableValue: FC<SelectableValueProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/values/${value.slug}`} onClick={toggleValue}>
+        <a href={`/values/`} onClick={toggleValue}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

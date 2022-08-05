@@ -1,8 +1,7 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
-import { taskFragment } from "@/graphql/fragments";
-import { CREATE_TASK, UPDATE_TASK } from "@/graphql/mutations";
-import { Task } from "@/graphql/schema/models/Task";
+import { CREATE_TASK, UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
+import { taskFragment, TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
 import { buildNewItemFragment } from "@/graphql/utils/fragments";
 import { addItemToCache } from "@/utils/apollo";
 import { printError } from "@/utils/apollo/error-handling";
@@ -24,18 +23,22 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+// import Table from "@mui/material/Table";
+// import TableBody from "@mui/material/TableBody";
+// import TableCell from "@mui/material/TableCell";
+// import TableContainer from "@mui/material/TableContainer";
+// import TableHead from "@mui/material/TableHead";
+// import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { useSession } from "next-auth/react";
 import { Dispatch, FC, useState } from "react";
 import TasksTable from "./TasksTable";
+import { Task } from "@/graphql/schema/generated/models/task.model";
+import { Habit } from "@/graphql/schema/generated/models/habit.model";
+import { useUser } from "../contexts/UserContext";
+import { ID } from "@/graphql/schema/types";
+import { format } from "date-fns";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   task: TaskData;
@@ -50,7 +53,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     anchorEl: _anchorEl,
     ...dialogProps
   } = props;
-  const { data: session } = useSession();
+  const user = useUser();
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
   const [editing, setEditing] = useState(!taskData.id);
@@ -69,7 +72,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
 
   const [updateTask, { loading: _loadingUpdateTask }] = useMutation(UPDATE_TASK);
   const [createTask, { loading: _loadingCreateTask }] = useMutation<{
-    createTask: Task;
+    createTask: TaskFragment;
   }>(CREATE_TASK, {
     update(cache, { data }) {
       const { createTask } = data || {};
@@ -114,33 +117,35 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const menuProps = bindMenu(menuState);
 
   const completed = taskData.completedAt ? true : false;
-  const habit = taskData.habit;
-  const subtasks = taskData.subtasks;
-  const metricUsages = habit?.metricUsages;
+  
+  // const habit = taskData.habit;
+  const habit: Habit | null = null; // TODO
+
+  // const subtasks = taskData.subtasks;
+  const subtasks: Task[] = []; // TODO
+
+  // const metricUsages = habit?.metricUsages;
+  // const metricUsages = null; // TODO
 
   const saveAndExit = () => {
     if (!canUpdate && taskData.title) {
       console.log("Creating task...", taskData);
       const now = new Date();
-      const completeTaskData = {
-        createdAt: now,
-        updatedAt: now,
-        ...taskData,
-      };
       createTask({
         variables: {
           data: {
-            ...completeTaskData,
+            ...taskData,
           },
         },
         optimisticResponse: {
           createTask: {
             __typename: "Task",
             id: "tmp-id",
-            subtasks: [],
             habitId: null,
-            userId: session?.user.id as string,
-            ...completeTaskData,
+            createdAt: now,
+            updatedAt: now,
+            userId: user?.id as ID,
+            ...taskData,
           },
         },
       }).catch(printError);
@@ -236,9 +241,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             sx={{ alignSelf: "start", alignItems: "start" }}
             checked={completed}
             disabled={!canUpdate}
-            onClick={() => {
-              handleUpdateField("completedAt", new Date());
-            }}
+            onClick={() => handleUpdateField("completedAt", new Date())}
           />
           <Box
             mb={2}
@@ -263,9 +266,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   variant="standard"
                   value={taskData.title}
                   placeholder={"Task title"}
-                  onChange={(event) => {
-                    handleUpdateField("title", event.target.value);
-                  }}
+                  onChange={(event) => handleUpdateField("title", event.target.value)}
                 />
               ) : (
                 <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
@@ -282,9 +283,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 // variant="standard"
                 value={taskData.description}
                 placeholder="Task description"
-                onChange={(event) => {
-                  handleUpdateField("description", event.target.value);
-                }}
+                onChange={(event) => handleUpdateField("description", event.target.value)}
               />
             ) : (
               <DialogContentText
@@ -339,7 +338,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <Typography>{"Due date"}</Typography>
               <Box display="flex" alignItems="center">
                 <TodayIcon />
-                <Typography component="span">{taskData.dueDate ?? "No due date"}</Typography>
+                <Typography component="span">{taskData.dueDate ? format(taskData.dueDate, "h:m") : "No due date"}</Typography>
               </Box>
             </Box>
             <Box my={2}>
@@ -347,7 +346,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <Box display="flex" alignItems="center">
                 <TodayIcon />
                 <Typography component="span">
-                  {taskData.plannedStartDate ?? "Unscheduled"}
+                  {taskData.plannedStartDate ? format(taskData.plannedStartDate, "h:m") : "Unscheduled"}
                 </Typography>
               </Box>
             </Box>
@@ -361,7 +360,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             setRunning={setStopwatchIsRunning}
           />
         )}
-        {!metricUsages?.length ? null : (
+        {/* {!metricUsages?.length ? null : (
           <Box display={"flex"} justifyContent={"center"} width={"50%"} mx={"auto"}>
             <TableContainer sx={{ my: 3 }}>
               <Table>
@@ -397,7 +396,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               </Table>
             </TableContainer>
           </Box>
-        )}
+        )} */}
       </DialogContent>
       <DialogActions>
         {/* {editing && <Button onClick={saveAndExit}>{"Done"}</Button>} */}

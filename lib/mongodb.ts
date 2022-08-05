@@ -1,31 +1,34 @@
-import { MongoClient } from "mongodb";
+// import { MongoClient, MongoClientOptions } from "mongodb";
+import mongoose from "mongoose";
 
-if (!process.env.MONGODB_URI) {
-  throw new Error("Please add your Mongo URI to .env.local");
-}
+const MONGODB_HOST = process.env.MONGODB_HOST ?? "localhost";
+const [MONGODB_USERNAME, MONGODB_PASSWORD] = [process.env.MONGO_INITDB_ROOT_USERNAME, process.env.MONGO_INITDB_ROOT_PASSWORD];
+const MONGODB_CREDENTIALS = (MONGODB_USERNAME && MONGODB_PASSWORD) ? `${MONGODB_USERNAME}:${MONGODB_PASSWORD}` : MONGODB_USERNAME ? MONGODB_USERNAME : "";
+const MONGODB_URI = `mongodb://${MONGODB_CREDENTIALS}${MONGODB_CREDENTIALS ? "@" : ""}${MONGODB_HOST}:27017/db`;
 
-declare const global: NodeJS.Global & { _mongoClientPromise?: Promise<MongoClient> };
+declare const global: NodeJS.Global & { _mongoosePromise?: Promise<typeof mongoose> };
 
-const uri = process.env.MONGODB_URI;
-const options = {};
+// const options: MongoClientOptions = {};
 
-let mongoClient;
-let mongoClientPromise: Promise<MongoClient>;
+let mongoosePromise: Promise<typeof mongoose>;
 
 if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
-  if (!global._mongoClientPromise) {
-    mongoClient = new MongoClient(uri, options);
-    global._mongoClientPromise = mongoClient.connect();
+  if (!global._mongoosePromise) {
+
+    // mongoClient = new MongoClient(MONGODB_URI, options);
+    // global._mongoosePromise = mongoClient.connect();
+    global._mongoosePromise = mongoose.connect(MONGODB_URI);
+    
+    console.error(">>> Connected mongo client");
   }
-  mongoClientPromise = global._mongoClientPromise;
+  mongoosePromise = global._mongoosePromise;
 } else {
   // In production mode, it's best to not use a global variable.
-  mongoClient = new MongoClient(uri, options);
-  mongoClientPromise = mongoClient.connect();
+  mongoosePromise = mongoose.connect(MONGODB_URI);
 }
 
 // Export a module-scoped MongoClient promise. By doing this in a
 // separate module, the client can be shared across functions.
-export default mongoClientPromise;
+export default mongoosePromise;

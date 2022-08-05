@@ -5,7 +5,7 @@ export enum NoteScalarFieldEnum {
   notebookId = "notebookId",
   title = "title",
   body = "body",
-  isPublic = "isPublic",
+  public = "public",
   createdAt = "createdAt",
   updatedAt = "updatedAt",
   archivedAt = "archivedAt",

@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Belief } from "@/graphql/schema";
+import { Belief } from "@/graphql/schema/generated/models/belief.model";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
@@ -18,7 +18,7 @@ const BeliefDetailPage: FC<BeliefProps> = ({ belief }: BeliefProps) => {
     <Layout>
       <NextSeo
         title={belief.name}
-        canonical={`/${belief.slug}`}
+        canonical={`/`}
         description={`${belief.description}`}
       />
       <Container>

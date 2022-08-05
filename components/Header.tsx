@@ -1,6 +1,5 @@
 import ColorModeContext from "@/components/contexts/ColorModeContext";
 import { useUser } from "@/components/contexts/UserContext";
-import { signOut } from "@/utils/auth/client";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -23,6 +22,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useContext } from "react";
+import { signOut } from "next-auth/react";
+
 
 const DynamicPageTransitionProgressBar = dynamic(
   () => import("@/components/PageTransitionProgressBar")

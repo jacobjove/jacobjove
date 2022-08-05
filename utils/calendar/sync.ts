@@ -1,4 +1,5 @@
-import { Calendar } from "@/graphql/schema";
+import AccountModel from "@/graphql/schema/generated/models/account.model";
+import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
 import { initializeApollo } from "@/lib/apollo";
 import { CalendarClient } from "@/utils/calendar/client";
 import rateLimiter from "@/utils/rate-limit";
@@ -73,10 +74,11 @@ export const syncCalendar = async (calendarId: string, session: Session) => {
   if (!calendar || !(calendar.provider && calendar.remoteId)) {
     throw new Error("Calendar not found");
   }
-  if (!calendar.account || !(calendar.provider && calendar.remoteId)) {
+  const account = await AccountModel.findById(calendar.accountId); // TODO: use GraphQL
+  if (!account || !(calendar.provider && calendar.remoteId)) {
     throw new Error("Calendar provider account not found");
   }
-  const calendarClient = new CalendarClient(calendar.account);
+  const calendarClient = new CalendarClient(account);
   const timeMin = new Date();
   const timeMax = addYears(timeMin, 1);
   return await calendarClient
@@ -144,7 +146,7 @@ export const syncCalendar = async (calendarId: string, session: Session) => {
           const eventData = {
             remoteId: item.id,
             calendarSourceId: calendar.remoteId,
-            calendarId: calendar.id,
+            calendarId: calendar._id,
             title: item.summary || "Untitled event",
             start: (start.dateTime ?? start.date) as string,
             allDay: !!start.date,

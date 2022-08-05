@@ -4,16 +4,19 @@ import DashboardCard from "@/components/dashboard/components/DashboardCard";
 // import { DashboardComponentKey, DashboardLayouts } from "@/components/dashboard/types";
 import IdentityTable from "@/components/identities/IdentityTable";
 import ValuesTable from "@/components/values/ValuesTable";
-import {
-  calendarEventFragment,
-  calendarFragment,
-  habitFragment,
-  identityFragment,
-  taskFragment,
-  valueFragment,
-} from "@/graphql/fragments";
-import { Calendar, CalendarEvent, Habit, Identity, Task, Value } from "@/graphql/schema";
-import { DashboardComponentKey, DashboardLayouts } from "@/graphql/schema/models/Dashboard";
+import { calendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
+import { calendarFragment } from "@/graphql/schema/generated/fragments/calendar.fragment";
+import { habitFragment } from "@/graphql/schema/generated/fragments/habit.fragment";
+import { identityFragment } from "@/graphql/schema/generated/fragments/identity.fragment";
+import { taskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
+import { valueFragment } from "@/graphql/schema/generated/fragments/value.fragment";
+import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
+import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
+import { Habit } from "@/graphql/schema/generated/models/habit.model";
+import { Identity } from "@/graphql/schema/generated/models/identity.model";
+import { Task } from "@/graphql/schema/generated/models/task.model";
+import { Value } from "@/graphql/schema/generated/models/value.model";
+import { DashboardComponentKey, DashboardLayouts } from "@/graphql/schema/definitions/Dashboard";
 import { gql } from "@apollo/client";
 import { Box, Breakpoint } from "@mui/material";
 import { useSession } from "next-auth/react";

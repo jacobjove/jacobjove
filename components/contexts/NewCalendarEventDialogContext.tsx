@@ -1,3 +1,4 @@
+import { ID } from "@/graphql/schema/types";
 import {
   CalendarEventData,
   calendarEventDataReducer,
@@ -24,7 +25,7 @@ export default NewCalendarEventDialogContext;
 export const NewCalendarEventDialogContextProvider: FC = ({ children }) => {
   const user = useUser();
   const start = new Date();
-  const defaultCalendarId = `${user?.settings.defaultCalendarId}`;
+  const defaultCalendarId = user?.settings.defaultCalendarId as ID;
   const [newCalendarEventData, dispatchNewCalendarEventData] = useReducer(
     calendarEventDataReducer,
     initializeCalendarEventData({ start, calendarId: defaultCalendarId }),

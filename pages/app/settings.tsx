@@ -1,7 +1,7 @@
 import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
-import { userFragment } from "@/graphql/fragments";
-import { UserSettings } from "@/graphql/schema/models/User";
+import { userFragment } from "@/graphql/schema/generated/fragments/user.fragment";
+import { UserSettings } from "@/graphql/schema/types";
 import { printError } from "@/utils/apollo/error-handling";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation } from "@apollo/client";
@@ -27,7 +27,7 @@ interface SettingsPageProps {
 }
 
 const UPDATE_SETTINGS = gql`
-  mutation UpdateSettings($userId: String!, $settings: JSON!) {
+  mutation UpdateSettings($userId: ObjectId!, $settings: JSON!) {
     updateUser(where: { id: $userId }, data: { settings: $settings }) {
       ...UserFragment
     }

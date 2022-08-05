@@ -1,5 +1,5 @@
 import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
-import { Belief } from "@/graphql/schema";
+import { Belief } from "@/graphql/schema/generated/models/belief.model";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -52,7 +52,7 @@ const SelectableBelief: FC<SelectableBeliefProps> = ({
   };
   return (
     <Box key={belief.name} position="relative" display="inline-block">
-      <Link href={`/beliefs/${belief.slug}`} key={belief.name} passHref prefetch={false}>
+      <Link href={`/beliefs/`} key={belief.name} passHref prefetch={false}>
         <Button
           component="a"
           variant="outlined"
@@ -69,7 +69,7 @@ const SelectableBelief: FC<SelectableBeliefProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/beliefs/${belief.slug}`} onClick={toggleBelief}>
+        <a href={`/beliefs/`} onClick={toggleBelief}>
           <SelectionToggleIcon positive={selected} />
         </a>
       </Box>

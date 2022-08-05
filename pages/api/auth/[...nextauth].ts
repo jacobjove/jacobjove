@@ -1,6 +1,5 @@
-import { CREATE_USER, UPDATE_USER } from "@/graphql/mutations";
-import { GET_USER } from "@/graphql/queries";
-import { User } from "@/graphql/schema";
+import { UPSERT_USER } from "@/graphql/schema/generated/mutations/user.mutations";
+import { User } from "@/graphql/schema/generated/models/user.model";
 import { initializeApollo } from "@/lib/apollo";
 import { NoUndefinedField } from "@/types/global";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
@@ -150,6 +149,40 @@ const callbacks: CallbacksOptions = {
       token.accessToken = account.access_token;
       token.accessTokenExpiry = account.expires_at ? account.expires_at * 1000 : undefined;
       token.refreshToken = account.refresh_token;
+      if (Object.values(token).every((v) => typeof v !== "undefined")) {
+        const freshToken = token as NoUndefinedField<typeof token>;
+        const provider_remoteId = {
+          provider: freshToken.provider,
+          remoteId: freshToken.providerAccountId,
+        };
+        const commonAccountData = {
+          scopes: freshToken.scopes,
+          accessToken: freshToken.accessToken,
+          accessTokenExpiry: new Date(freshToken.accessTokenExpiry),
+          refreshToken: freshToken.refreshToken,
+        };
+        const apolloClient = initializeApollo();
+        apolloClient
+          .mutate<{ upsertUser: Partial<User> }>({
+            mutation: UPSERT_USER,
+            variables: {
+              where: { email: token.email },
+              data: {
+                name: token.name,
+                email: token.email,
+                lastLogin: new Date(),
+                image: token.picture,
+                // accounts: {
+                //   upsert: {
+                //     where: { provider_remoteId },
+                //     create: { ...provider_remoteId, ...commonAccountData },
+                //     update: commonAccountData,
+                //   },
+                // },
+              },
+            },
+          });
+      }
     }
     // Return the previous token if the access token has not expired yet.
     if (token.accessTokenExpiry && Date.now() < token.accessTokenExpiry) {
@@ -193,76 +226,6 @@ const callbacks: CallbacksOptions = {
     if (token.error) session.error = token.error;
     if (!session?.user) return session;
     if (token.accessToken) session.accessToken = token.accessToken;
-    if (!session.user.id) {
-      // Get the user's ID.
-      const apolloClient = initializeApollo();
-      let user = await apolloClient
-        .query({
-          query: GET_USER,
-          variables: {
-            where: { email: session.user.email },
-          },
-        })
-        .then((result) => result.data.user as User);
-      if (Object.values(token).every((v) => typeof v !== "undefined")) {
-        const freshToken = token as NoUndefinedField<typeof token>;
-        const provider_remoteId = {
-          provider: freshToken.provider,
-          remoteId: freshToken.providerAccountId,
-        };
-        const commonAccountData = {
-          scopes: freshToken.scopes,
-          accessToken: freshToken.accessToken,
-          accessTokenExpiry: new Date(freshToken.accessTokenExpiry),
-          refreshToken: freshToken.refreshToken,
-        };
-        if (user) {
-          await Promise.all([
-            apolloClient
-              .mutate({
-                mutation: UPDATE_USER,
-                variables: {
-                  where: { id: user.id },
-                  data: {
-                    name: user.name || session.user.name,
-                    lastLogin: new Date(),
-                    // accounts: {
-                    //   upsert: {
-                    //     where: { provider_remoteId },
-                    //     create: { ...provider_remoteId, ...commonAccountData },
-                    //     update: commonAccountData,
-                    //   },
-                    // },
-                  },
-                },
-              })
-              .then((result) => {
-                user = result.data.updateUser as User; // TODO
-              }),
-          ]);
-        } else {
-          console.log(">>> Creating user in db...");
-          user = await apolloClient
-            .mutate({
-              mutation: CREATE_USER,
-              variables: {
-                data: {
-                  email: session.user.email,
-                  name: session.user.name,
-                  lastLogin: new Date(),
-                  accounts: {
-                    create: { ...provider_remoteId, ...commonAccountData },
-                  },
-                },
-              },
-            })
-            .then((result) => result.data.user as User);
-          // Create a new user.
-        }
-      }
-      session.user.id = user.id;
-      if (!session.user.id) session.error = "Failed to retrieve user from db";
-    }
     return session;
   },
 };

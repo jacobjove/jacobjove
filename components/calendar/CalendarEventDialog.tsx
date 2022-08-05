@@ -1,10 +1,10 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
-import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/mutations";
+import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
 import {
   CalendarEventCreateInput,
   CalendarEventUpdateInput,
   CalendarEventWhereUniqueInput,
-} from "@/graphql/schema";
+} from "@/graphql/schema/generated/inputs/calendarEvent.inputs";
 import { CalendarEventData } from "@/utils/calendarEvents";
 import { useMutation } from "@apollo/client";
 import Button from "@mui/material/Button";
@@ -14,6 +14,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { Dispatch, FC } from "react";
+import { ID } from "@/graphql/schema/types";
+import { useUser } from "../contexts/UserContext";
 
 interface CalendarEventDialogProps extends ReturnType<typeof bindPopover> {
   calendarEvent: CalendarEventData;
@@ -29,6 +31,7 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
     anchorEl: _anchorEl,
     ...dialogProps
   } = props;
+  const user = useUser();
   const [mutate, { loading }] = useMutation(
     calendarEventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
   );
@@ -48,8 +51,7 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
       ...(!!calendarEventData.id && { where: { id: calendarEventData.id } }),
       data: {
         ...calendarEventData,
-        ...(!calendarEventData.id && { createdAt: now }),
-        updatedAt: now,
+        userId: user?.id as ID,
       }
     };
     await mutate({

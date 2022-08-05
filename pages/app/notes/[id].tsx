@@ -1,7 +1,7 @@
 import AppLayout from "@/components/AppLayout";
 import NoteViewer from "@/components/notes/NoteViewer";
-import { noteFragment } from "@/graphql/fragments";
-import { Note } from "@/graphql/schema";
+import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
+import { Note } from "@/graphql/schema/generated/models/note.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -31,11 +31,7 @@ interface NotePageData {
 const NotePage: NextPage<NotePageProps> = (props: NotePageProps) => {
   const { noteId } = props;
   const { data: session } = useSession({ required: true });
-  const {
-    data,
-    loading: _loadingNote,
-    error: _error,
-  } = useQuery<NotePageData>(QUERY, {
+  const { data, loading: _loadingNote, error: _error } = useQuery<NotePageData>(QUERY, {
     variables: { noteId },
   });
   const note = data?.note;

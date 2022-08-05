@@ -11,6 +11,7 @@ services:
     env_file:
       - ./.env
     environment:
+      MONGODB_HOST: "mongo"
       NEXTAUTH_URL_INTERNAL: "http://nextjs:3000"
       NEXTAUTH_URL: "https://www.orega.org"
       NODE_ENV: production
@@ -32,7 +33,8 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 3
-    env_file: .env
+    env_file:
+      - ./.env
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
       interval: 10s
@@ -44,35 +46,51 @@ services:
     volumes:
       - data:/data
 
-  postgres:
-    image: postgres:14
+  redis:
+    image: redis
+    deploy:
+      restart_policy:
+        condition: unless-stopped
     expose:
-      - "5432"
-    env_file:
-      - ./.env
+      - "6379"
+    # TODO: https://stackoverflow.com/questions/47088261/restarting-an-unhealthy-docker-container-based-on-healthcheck
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - "data:/data"
+  # postgres:
+  #   image: postgres:14
+  #   expose:
+  #     - "5432"
+  #   env_file:
+  #     - ./.env
+  #   healthcheck:
+  #     test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 30s
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
 
-  cypress:
-    # https://github.com/cypress-io/cypress-docker-images
-    image: "cypress/included:8.4.1"
-    # depends_on:
-    #   nextjs:
-    #     condition: service_healthy
-    environment:
-      - CYPRESS_baseUrl=http://localhost:3000/
-    working_dir: /e2e
-    volumes:
-      - ./cypress:/e2e/cypress
-      - ./cypress.json:/e2e/cypress.json
+  # cypress:
+  #   # https://github.com/cypress-io/cypress-docker-images
+  #   image: "cypress/included:8.4.1"
+  #   # depends_on:
+  #   #   nextjs:
+  #   #     condition: service_healthy
+  #   environment:
+  #     - CYPRESS_baseUrl=http://localhost:3000/
+  #   working_dir: /e2e
+  #   volumes:
+  #     - ./cypress:/e2e/cypress
+  #     - ./cypress.json:/e2e/cypress.json
 
-# For more information on how volumes work, please see https://docs.docker.com/storage/volumes/
+  # For more information on how volumes work, please see https://docs.docker.com/storage/volumes/
 volumes:
   # Note: `data` is used by both redis and mongodb
   data: null

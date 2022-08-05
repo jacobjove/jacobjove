@@ -1,0 +1,20 @@
+import * as TypeGraphQL from "type-graphql-v2-fork";
+import { CalendarCreateManyAccountInputEnvelope } from "../inputs/CalendarCreateManyAccountInputEnvelope";
+import { CalendarCreateOrConnectWithoutAccountInput } from "../inputs/CalendarCreateOrConnectWithoutAccountInput";
+import { CalendarCreateWithoutAccountInput } from "../inputs/CalendarCreateWithoutAccountInput";
+import { CalendarWhereUniqueInput } from "../inputs/CalendarWhereUniqueInput";
+
+@TypeGraphQL.InputType("CalendarCreateNestedManyWithoutAccountInput", { isAbstract: true })
+export class CalendarCreateNestedManyWithoutAccountInput {
+  @TypeGraphQL.Field(() => [CalendarCreateWithoutAccountInput], { nullable: true })
+  create?: CalendarCreateWithoutAccountInput[] | undefined;
+
+  @TypeGraphQL.Field(() => [CalendarCreateOrConnectWithoutAccountInput], { nullable: true })
+  connectOrCreate?: CalendarCreateOrConnectWithoutAccountInput[] | undefined;
+
+  @TypeGraphQL.Field(() => CalendarCreateManyAccountInputEnvelope, { nullable: true })
+  createMany?: CalendarCreateManyAccountInputEnvelope | undefined;
+
+  @TypeGraphQL.Field(() => [CalendarWhereUniqueInput], { nullable: true })
+  connect?: CalendarWhereUniqueInput[] | undefined;
+}

@@ -9,7 +9,9 @@ import { useUser } from "@/components/contexts/UserContext";
 import DateSelector from "@/components/dates/DateSelector";
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleButton from "@/components/fullscreen/FullScreenToggleButton";
-import { calendarEventFragment, calendarFragment } from "@/graphql/fragments";
+import { calendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
+import { calendarFragment } from "@/graphql/schema/generated/fragments/calendar.fragment";
+import { ID } from "@/graphql/schema/types";
 import { providerIsEnabledForUser } from "@/utils/calendar/providers";
 import { gql } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -95,11 +97,11 @@ type CalendarViewerProps = Omit<CalendarProps, "data"> & {
   defaultView?: ViewMode;
 };
 
-const initializeSelectedCalendarIds = (calendarIds: string[]) => calendarIds;
+const initializeSelectedCalendarIds = (calendarIds: ID[]) => calendarIds;
 
 const selectedCalendarIdsReducer = (
-  state: string[],
-  action: { type: "add" | "remove" | "init"; value: string[] }
+  state: ID[],
+  action: { type: "add" | "remove" | "init"; value: ID[] }
 ) => {
   switch (action.type) {
     case "add":
@@ -119,13 +121,15 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const date = useContext(DateContext);
   const [selectedDate, setSelectedDate] = props.selectedDateState;
   const viewedHourState = useState<number>(getHours(date));
-
-  console.log(">>> CalendarViewer.selectedDate:", selectedDate);
+  const [fullScreen, setFullScreen] = useState(false);
+  const [view, setView] = useState<ViewMode>(defaultView ?? "day");
 
   const eventEditingDialogState = usePopupState({
     variant: "popover",
     popupId: `event-editing-dialog`,
   });
+
+  const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
 
   // Exclude calendars that are not enabled or have been archived.
   const enabledCalendars = useMemo(() => {
@@ -134,13 +138,10 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
       _data.calendars?.filter((calendar) => (
         calendar.enabled &&
         !calendar.archivedAt &&
-        (!calendar.provider || providerIsEnabledForUser(calendar.provider, user))
+        (!calendar.provider || providerIsEnabledForUser(calendar.provider as CalendarProvider, user))
       ))
     ) : [];
   }, [user, _data]);
-
-  const defaultCalendar = enabledCalendars[0]; // TODO
-  if (!defaultCalendar) console.error("No default calendar!");
 
   const [selectedCalendarIds, dispatchCalendarIds] = useReducer(
     selectedCalendarIdsReducer,
@@ -162,6 +163,11 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     }
   }, [loading, enabledCalendars]);
 
+  if (!user) return null;
+
+  const defaultCalendar = enabledCalendars[0]; // TODO
+  if (!defaultCalendar) console.error("No default calendar!");
+
   // TODO: refactor how data is passed between calendar components?
   const data = {
     ..._data,
@@ -169,11 +175,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
       selectedCalendarIds?.includes(event.calendarId)
     ),
   };
-
-  const [fullScreen, setFullScreen] = useState(false);
-  const [view, setView] = useState<ViewMode>(defaultView ?? "day");
-
-  const menuState = usePopupState({ variant: "popper", popupId: `calendar-menu` });
 
   const commonViewProps = {
     ...rest,

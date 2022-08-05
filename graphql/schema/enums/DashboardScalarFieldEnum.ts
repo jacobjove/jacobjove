@@ -6,7 +6,7 @@ export enum DashboardScalarFieldEnum {
   userId = "userId",
   layouts = "layouts",
   isDefault = "isDefault",
-  isPublic = "isPublic",
+  public = "public",
   createdAt = "createdAt",
   updatedAt = "updatedAt",
   archivedAt = "archivedAt",

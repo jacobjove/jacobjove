@@ -5,4 +5,4 @@ dist
 node_modules
 
 # Necessary to avoid graphql-eslint parsing error : (
-graphql/utils/fragments.ts
+graphql/utils/*.ts

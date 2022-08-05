@@ -1,5 +1,5 @@
 import TaskRow, { TaskRowProps } from "@/components/actions/TaskRow";
-import { Task } from "@/graphql/schema";
+import { Task } from "@/graphql/schema/generated/models/task.model";
 import { Button } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -48,15 +48,19 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {tasks.map((task, index) => (
-          <TaskRow
-            key={task.id}
-            task={task}
-            index={index}
-            move={moveTaskRow}
-            onDrop={updateTaskRank}
-          />
-        ))}
+        {tasks.map((task, index) => {
+          const subtasks = tasks.filter((_) => _.parentId === task.id);
+          return (
+            <TaskRow
+              key={task.id}
+              task={task}
+              subtasks={subtasks}
+              index={index}
+              move={moveTaskRow}
+              onDrop={updateTaskRank}
+            />
+          )
+        })}
         {appendable && (
           <TableRow>
             {

@@ -9,7 +9,6 @@ declare module "next-auth" {
    * or the second parameter of the `session` callback, when using a database.
    */
   interface User {
-    id: string;
     name?: string | null;
     email: string;
     image: string | null;
@@ -36,5 +35,6 @@ declare module "next-auth/jwt" {
     accessToken?: string;
     accessTokenExpiry?: number;
     refreshToken?: string;
+    uid?: string;
   }
 }

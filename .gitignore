@@ -5,6 +5,7 @@
 coverage/
 generated/
 node_modules/
+_/
 service-account.json
 
 **/public/workbox-*.js
