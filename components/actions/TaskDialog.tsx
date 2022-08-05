@@ -1,5 +1,7 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
+import { useUser } from "@/components/contexts/UserContext";
+import { CreateTaskArgs, UpdateTaskArgs } from "@/graphql/schema/generated/args/task.args";
 import { taskFragment, TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
 import { Task } from "@/graphql/schema/generated/models/task.model";
@@ -37,7 +39,6 @@ import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, useState } from "react";
-import { useUser } from "../contexts/UserContext";
 import TasksTable from "./TasksTable";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
@@ -70,10 +71,14 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     popupId: taskData.id ? `task-${taskData.id}-menu` : "new-task-menu",
   });
 
-  const [updateTask, { loading: _loadingUpdateTask }] = useMutation(UPDATE_TASK);
-  const [createTask, { loading: _loadingCreateTask }] = useMutation<{
-    createTask: TaskFragment;
-  }>(CREATE_TASK, {
+  const [updateTask, { loading: _loadingUpdateTask }] = useMutation<
+    { updateTask: TaskFragment },
+    UpdateTaskArgs
+  >(UPDATE_TASK);
+  const [createTask, { loading: _loadingCreateTask }] = useMutation<
+    { createTask: TaskFragment },
+    CreateTaskArgs
+  >(CREATE_TASK, {
     update(cache, { data }) {
       const { createTask } = data || {};
       addItemToCache(
@@ -96,21 +101,23 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
 
   const handleUpdateField = (field: string, value: unknown) => {
     dispatchTaskData({ field, value });
-    canUpdate &&
+    if (canUpdate) {
+      const now = new Date();
       updateTask({
         variables: {
           where: { id: taskData.id },
           data: { [field]: value },
         },
         optimisticResponse: {
-          __typename: "Mutation",
           updateTask: {
             __typename: "Task",
-            ...taskData,
+            ...(taskData as TaskData & { id: ID; createdAt: Date }),
+            updatedAt: now,
             [field]: value,
           },
         },
       }).catch(console.error);
+    }
   };
 
   const menuTriggerProps = bindTrigger(menuState);
@@ -144,7 +151,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             habitId: null,
             createdAt: now,
             updatedAt: now,
-            userId: user?.id as ID,
             ...taskData,
           },
         },
@@ -216,7 +222,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     optimisticResponse: {
                       updateTask: {
                         __typename: "Task",
-                        subtasks: [],
                         habit: null,
                         ...taskData,
                         archivedAt,

@@ -1,3 +1,5 @@
+import { useUser } from "@/components/contexts/UserContext";
+import { ID } from "@/graphql/schema/types";
 import { initializeTaskData, TaskData, taskDataReducer } from "@/utils/tasks";
 import { bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
 import { createContext, Dispatch, FC, useContext, useReducer } from "react";
@@ -18,10 +20,11 @@ const NewTaskDialogContext = createContext<NewTaskDialogContextData>(
 export default NewTaskDialogContext;
 
 export const NewTaskDialogContextProvider: FC = ({ children }) => {
+  const user = useUser();
   const defaultRank = 1;
   const [newTaskData, dispatchNewTaskData] = useReducer(
     taskDataReducer,
-    initializeTaskData({ rank: defaultRank }),
+    initializeTaskData({ rank: defaultRank, userId: user?.id as ID }),
     initializeTaskData
   );
   const newTaskDialogState = usePopupState({ variant: "popover", popupId: `new-task-dialog` });

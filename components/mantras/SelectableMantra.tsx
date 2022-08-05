@@ -39,7 +39,6 @@ const SelectableMantra: FC<SelectableMantraProps> = ({
       mutate({
         variables: { mantraId: mantra.id, archivedAt },
         optimisticResponse: {
-          __typename: "Mutation",
           toggleMantra: {
             __typename: "ToggleMantraPayload",
             mantraId: mantra.id,

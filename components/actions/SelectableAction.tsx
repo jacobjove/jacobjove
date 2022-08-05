@@ -39,7 +39,6 @@ const SelectableAction: FC<SelectableActionProps> = ({
       mutate({
         variables: { actId: act.id, archivedAt },
         optimisticResponse: {
-          __typename: "Mutation",
           toggleHabitAdoption: {
             __typename: "ToggleActionAdoptionPayload",
             actId: act.id,

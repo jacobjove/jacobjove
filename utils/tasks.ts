@@ -3,7 +3,7 @@ import { InputData } from "@/utils/data";
 
 export type TaskData = InputData<Task>;
 
-export type InitialTaskData = Pick<TaskData, "rank"> & Partial<TaskData>;
+export type InitialTaskData = Pick<TaskData, "rank" | "userId"> & Partial<TaskData>;
 
 export const initializeTaskData = (taskData: InitialTaskData): TaskData => {
   return {

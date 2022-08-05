@@ -1,4 +1,5 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
+import { useUser } from "@/components/contexts/UserContext";
 import {
   CalendarEventCreateInput,
   CalendarEventUpdateInput,
@@ -18,7 +19,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { Dispatch, FC } from "react";
-import { useUser } from "../contexts/UserContext";
 
 interface CalendarEventDialogProps extends ReturnType<typeof bindPopover> {
   calendarEvent: CalendarEventData;

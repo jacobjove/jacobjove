@@ -39,7 +39,6 @@ const SelectableBelief: FC<SelectableBeliefProps> = ({
       mutate({
         variables: { beliefId: belief.id, archivedAt },
         optimisticResponse: {
-          __typename: "Mutation",
           toggleBelief: {
             __typename: "ToggleBeliefPayload",
             beliefId: belief.id,

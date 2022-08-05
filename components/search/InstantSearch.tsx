@@ -1,3 +1,4 @@
+import { Note } from "@/graphql/schema/generated/models/note.model";
 import { useLazyQuery } from "@apollo/client";
 import Autocomplete, { AutocompleteRenderOptionState } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
@@ -5,7 +6,7 @@ import { DocumentNode } from "graphql";
 import debounce from "lodash/debounce";
 import { FC, HTMLAttributes, ReactNode, SyntheticEvent, useRef } from "react";
 
-type Option = Record<string, string>; // TODO: use generic type!
+type Option = Note; // TODO: use generic type?
 
 export interface InstantSearchProps {
   label: string; // label for the search input

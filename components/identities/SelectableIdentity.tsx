@@ -39,7 +39,6 @@ const SelectableIdentity: FC<SelectableIdentityProps> = ({
       mutate({
         variables: { identityId: identity.id, archivedAt },
         optimisticResponse: {
-          __typename: "Mutation",
           toggleIdentity: {
             __typename: "ToggleIdentityPayload",
             identityId: identity.id,

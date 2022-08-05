@@ -1,5 +1,6 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
+import { useUser } from "@/components/contexts/UserContext";
 import { Task } from "@/graphql/schema/generated/models/task.model";
 import { UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
 import { ID } from "@/graphql/schema/types";
@@ -21,7 +22,6 @@ import { XYCoord } from "dnd-core";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC, RefObject, useMemo, useReducer, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
-import { useUser } from "../contexts/UserContext";
 
 export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
   subtasks: Task[];

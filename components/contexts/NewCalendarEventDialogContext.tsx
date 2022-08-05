@@ -1,3 +1,4 @@
+import { useUser } from "@/components/contexts/UserContext";
 import { ID } from "@/graphql/schema/types";
 import {
   CalendarEventData,
@@ -6,7 +7,6 @@ import {
 } from "@/utils/calendarEvents";
 import { PopupState, usePopupState } from "material-ui-popup-state/hooks";
 import { createContext, Dispatch, FC, useContext, useReducer } from "react";
-import { useUser } from "./UserContext";
 
 type NewCalendarEventDialogContextData = {
   newCalendarEventData: CalendarEventData;
