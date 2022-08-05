@@ -1,7 +1,8 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
-import { UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
 import { Task } from "@/graphql/schema/generated/models/task.model";
+import { UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
+import { ID } from "@/graphql/schema/types";
 import { printError } from "@/utils/apollo/error-handling";
 import { initializeTaskData, taskDataReducer } from "@/utils/tasks";
 import { useMutation } from "@apollo/client";
@@ -20,7 +21,6 @@ import { XYCoord } from "dnd-core";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC, RefObject, useMemo, useReducer, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
-import { ID } from "@/graphql/schema/types";
 import { useUser } from "../contexts/UserContext";
 
 export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {

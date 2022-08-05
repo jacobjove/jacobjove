@@ -3,12 +3,14 @@ import { GraphQLScalarType, Kind } from "graphql";
 import { ObjectId } from "mongodb";
 export { JSONResolver as JSON } from "graphql-scalars";
 export { Int } from "type-graphql-v2-fork";
+export { StringResolver as String };
+export { BooleanResolver as Boolean };
+export { ObjectIdScalar as ObjectId };
+export { DateTimeScalar as DateTime };
 
 const StringResolver = String;
-export { StringResolver as String };
 
 const BooleanResolver = Boolean;
-export { BooleanResolver as Boolean };
 
 export const StringArray = [String];
 
@@ -32,8 +34,6 @@ export const ObjectIdScalar = new GraphQLScalarType({
     return null;
   },
 });
-
-export { ObjectIdScalar as ObjectId };
 
 interface TimestampConstructor {
   seconds: number;
@@ -75,5 +75,3 @@ export const DateTimeScalar = new GraphQLScalarType({
     throw new Error("Invalid date value");
   },
 });
-
-export { DateTimeScalar as DateTime };

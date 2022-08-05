@@ -1,10 +1,9 @@
-import { Layout as LayoutItem } from "react-grid-layout";
 import Definition, {
   OPTIONAL_BOOLEAN,
   OPTIONAL_STRING,
   REQUIRED_STRING,
-  // OPTIONAL_STRING,
 } from "@/graphql/schema/definition";
+import { Layout as LayoutItem } from "react-grid-layout";
 
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
 

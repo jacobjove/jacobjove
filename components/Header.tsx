@@ -16,14 +16,12 @@ import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useContext } from "react";
-import { signOut } from "next-auth/react";
-
 
 const DynamicPageTransitionProgressBar = dynamic(
   () => import("@/components/PageTransitionProgressBar")

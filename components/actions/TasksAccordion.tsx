@@ -1,8 +1,8 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import TasksTable from "@/components/actions/TasksTable";
 import { taskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
-import { UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
 import { Task } from "@/graphql/schema/generated/models/task.model";
+import { UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
 import { gql, useMutation } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
@@ -89,9 +89,8 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
 
   const [recentlyCompletedTasksExpanded, setRecentlyCompletedTasksExpanded] = useState(false);
 
-  const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] = useMutation(
-    UPDATE_TASK
-  );
+  const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] =
+    useMutation(UPDATE_TASK);
   const [updateManyTaskRank] = useMutation(UPDATE_MANY_TASK_RANK);
 
   // TODO: is this efficient enough?

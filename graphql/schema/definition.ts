@@ -1,4 +1,4 @@
-import { pre, DocumentType } from "@typegoose/typegoose";
+import { DocumentType, pre } from "@typegoose/typegoose";
 
 export default interface Definition {
   name: string;

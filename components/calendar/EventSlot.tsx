@@ -1,9 +1,16 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import { DraggedCalendarEvent } from "@/components/calendar/EventBox";
 import { useUser } from "@/components/contexts/UserContext";
-import { CalendarEventFragment, calendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
-import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
+import {
+  CalendarEventFragment,
+  calendarEventFragment,
+} from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
+import {
+  CREATE_CALENDAR_EVENT,
+  UPDATE_CALENDAR_EVENT,
+} from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
+import { ID } from "@/graphql/schema/types";
 import { buildNewItemFragment } from "@/graphql/utils/fragments";
 import { addItemToCache } from "@/utils/apollo";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
@@ -12,7 +19,6 @@ import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
 import { useDrop } from "react-dnd";
-import { ID } from "@/graphql/schema/types";
 
 interface EventSlotProps {
   date: Date;

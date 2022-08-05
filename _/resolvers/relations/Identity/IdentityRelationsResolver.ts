@@ -1,7 +1,6 @@
 import { GqlContext } from "@/graphql/context";
+import { Identity, IdentityActRelation } from "@/graphql/schema/generated/models";
 import * as TypeGraphQL from "type-graphql-v2-fork";
-import { Identity } from "@/graphql/schema/generated/models";
-import { IdentityActRelation } from "@/graphql/schema/generated/models";
 import { IdentityActionRelationsArgs } from "./args/IdentityActionRelationsArgs";
 
 @TypeGraphQL.Resolver((_of) => Identity)

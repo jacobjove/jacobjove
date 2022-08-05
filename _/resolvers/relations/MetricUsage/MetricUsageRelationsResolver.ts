@@ -1,9 +1,7 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { Metric, MetricRecord, MetricUsage } from "@/graphql/schema/generated/models";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
-import { Metric } from "@/graphql/schema/generated/models";
-import { MetricRecord } from "@/graphql/schema/generated/models";
-import { MetricUsage } from "@/graphql/schema/generated/models";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { MetricUsageRecordsArgs } from "./args/MetricUsageRecordsArgs";
 
 @TypeGraphQL.Resolver((_of) => MetricUsage)

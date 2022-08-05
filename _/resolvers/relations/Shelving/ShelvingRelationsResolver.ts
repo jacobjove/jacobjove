@@ -1,8 +1,7 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { Bookshelf, Shelving } from "@/graphql/schema/generated/models";
 import { Book } from "@/graphql/schema/generated/models/book.model";
-import { Bookshelf } from "@/graphql/schema/generated/models";
-import { Shelving } from "@/graphql/schema/generated/models";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Shelving)
 export class ShelvingRelationsResolver {

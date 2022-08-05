@@ -1,4 +1,4 @@
-import Definition, { REQUIRED_STRING, OPTIONAL_STRING } from "@/graphql/schema/definition";
+import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 
 const definition: Definition = {
   name: "identity",

@@ -16,11 +16,7 @@ interface IdentityProps {
 const IdentityDetailPage: FC<IdentityProps> = ({ identity }: IdentityProps) => {
   return (
     <Layout>
-      <NextSeo
-        title={identity.name}
-        canonical={`/`}
-        description={`${identity.description}`}
-      />
+      <NextSeo title={identity.name} canonical={`/`} description={`${identity.description}`} />
       <Container>
         <PageHeader>{identity.name}</PageHeader>
         {identity.description && <p dangerouslySetInnerHTML={{ __html: identity.description }} />}

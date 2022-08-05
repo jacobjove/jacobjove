@@ -1,8 +1,7 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { Categorization, Category } from "@/graphql/schema/generated/models";
 import { Act } from "@/graphql/schema/generated/models/act.model";
-import { Categorization } from "@/graphql/schema/generated/models";
-import { Category } from "@/graphql/schema/generated/models";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Categorization)
 export class CategorizationRelationsResolver {

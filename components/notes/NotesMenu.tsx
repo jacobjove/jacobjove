@@ -1,11 +1,15 @@
 import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import SearchDialog from "@/components/search/SearchDialog";
-// import Select from "@/components/Select";
-import { notebookFragment, NotebookFragment } from "@/graphql/schema/generated/fragments/notebook.fragment";
 import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
+// import Select from "@/components/Select";
+import {
+  notebookFragment,
+  NotebookFragment,
+} from "@/graphql/schema/generated/fragments/notebook.fragment";
 import { Note } from "@/graphql/schema/generated/models/note.model";
 import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
+import { ID } from "@/graphql/schema/types";
 import { buildNewItemFragment } from "@/graphql/utils/fragments";
 import { addItemToCache } from "@/utils/apollo";
 import { printError } from "@/utils/apollo/error-handling";
@@ -43,7 +47,6 @@ import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-p
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Dispatch, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { ID } from "@/graphql/schema/types";
 
 const CREATE_NOTEBOOK = gql`
   mutation CreateNotebook($data: NotebookCreateInput!) {

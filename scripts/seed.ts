@@ -29,23 +29,29 @@ async function main() {
   let user = await UserModel.create(adminData);
   if (!user) throw new Error("Failed to create admin user");
 
-  const tasks = await Promise.all(tasksData.map(async (_) => {
-    const { subtasks, ...taskData } = _;
-    const task = await TaskModel.create({
-      ...taskData,
-      userId: user._id,
-    });
-    subtasks?.forEach(async (_) => {
-      await TaskModel.create({
-        ..._,
-        parentId: task._id,
+  const tasks = await Promise.all(
+    tasksData.map(async (_) => {
+      const { subtasks, ...taskData } = _;
+      const task = await TaskModel.create({
+        ...taskData,
         userId: user._id,
-      })
-    });
-    return task;
-  })) 
-  
-  user = await UserModel.findOneAndUpdate({ email: adminEmail }, { tasks }, { returnDocument: "after" }) as typeof user;
+      });
+      subtasks?.forEach(async (_) => {
+        await TaskModel.create({
+          ..._,
+          parentId: task._id,
+          userId: user._id,
+        });
+      });
+      return task;
+    })
+  );
+
+  user = (await UserModel.findOneAndUpdate(
+    { email: adminEmail },
+    { tasks },
+    { returnDocument: "after" }
+  )) as typeof user;
 
   console.error(user);
 

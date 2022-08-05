@@ -1,9 +1,9 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionSchedule } from "@/graphql/schema/generated/models/actionSchedule.model";
 import { ActionScheduleTemplate } from "@/graphql/schema/generated/models/actionScheduleTemplate.model";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionScheduleCalendarEventsArgs } from "./args/ActionScheduleCalendarEventsArgs";
 
 @TypeGraphQL.Resolver((_of) => ActionSchedule)

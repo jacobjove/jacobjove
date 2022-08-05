@@ -1,7 +1,7 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Mantra } from "@/graphql/schema/generated/models/mantra.model";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Mantra)
 export class MantraRelationsResolver {

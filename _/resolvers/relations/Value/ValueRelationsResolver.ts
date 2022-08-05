@@ -1,7 +1,7 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
 import { User } from "@/graphql/schema/generated/models/user.model";
 import { Value } from "@/graphql/schema/generated/models/value.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Value)
 export class ValueRelationsResolver {

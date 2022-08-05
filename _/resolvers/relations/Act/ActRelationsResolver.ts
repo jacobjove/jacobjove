@@ -1,11 +1,13 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import {
+  Categorization,
+  IdentityActRelation,
+  MetricApplication,
+} from "@/graphql/schema/generated/models";
 import { Act } from "@/graphql/schema/generated/models/act.model";
 import { ActionScheduleTemplate } from "@/graphql/schema/generated/models/actionScheduleTemplate.model";
-import { Categorization } from "@/graphql/schema/generated/models";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
-import { IdentityActRelation } from "@/graphql/schema/generated/models";
-import { MetricApplication } from "@/graphql/schema/generated/models";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActCategorizationsArgs } from "./args/ActCategorizationsArgs";
 import { ActHabitsArgs } from "./args/ActHabitsArgs";
 import { ActIdentityRelationsArgs } from "./args/ActIdentityRelationsArgs";

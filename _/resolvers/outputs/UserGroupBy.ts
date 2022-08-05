@@ -1,6 +1,6 @@
+import { UserSettings } from "@/graphql/schema/generated/models";
 import * as GraphQLScalars from "graphql-scalars";
 import * as TypeGraphQL from "type-graphql-v2-fork";
-import { UserSettings } from "@/graphql/schema/generated/models";
 import { DateTimeScalar } from "../../scalars";
 import { UserAvgAggregate } from "../outputs/UserAvgAggregate";
 import { UserCountAggregate } from "../outputs/UserCountAggregate";

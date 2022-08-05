@@ -1,5 +1,5 @@
-import { GET_USER } from "@/graphql/schema/generated/queries/user.queries";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import { GET_USER } from "@/graphql/schema/generated/queries/user.queries";
 import { printError } from "@/utils/apollo/error-handling";
 import { useLazyQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
@@ -12,9 +12,7 @@ export default UserContext;
 export const UserContextProvider: FC = ({ children }) => {
   const { data: session, status } = useSession();
   const loadingAuth = status === "loading";
-  const [getUser, { loading: loadingUser, error, data }] = useLazyQuery<{ user: User }>(
-    GET_USER
-  );
+  const [getUser, { loading: loadingUser, error, data }] = useLazyQuery<{ user: User }>(GET_USER);
   const loading = loadingAuth || loadingUser;
 
   useEffect(() => {

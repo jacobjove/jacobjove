@@ -1,14 +1,12 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { MetricUsage, RoutineHabit } from "@/graphql/schema/generated/models";
 import { Action } from "@/graphql/schema/generated/models/action.model";
 import { ActionSchedule } from "@/graphql/schema/generated/models/actionSchedule.model";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import { Goal } from "@/graphql/schema/generated/models/goal.model";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
-import { MetricUsage } from "@/graphql/schema/generated/models";
-import { RoutineHabit } from "@/graphql/schema/generated/models";
-import { Task } from "@/graphql/schema/generated/models/task.model";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { HabitActionsArgs } from "./args/HabitActionsArgs";
 import { HabitCalendarEventsArgs } from "./args/HabitCalendarEventsArgs";
 import { HabitGoalsArgs } from "./args/HabitGoalsArgs";

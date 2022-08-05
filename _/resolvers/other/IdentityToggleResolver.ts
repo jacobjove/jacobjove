@@ -1,6 +1,6 @@
 import { GqlContext } from "@/graphql/context";
-import { toggleSelection } from "@/graphql/schema/helpers";
 import { Identity } from "@/graphql/schema/generated/models/identity.model";
+import { toggleSelection } from "@/graphql/schema/helpers";
 import { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 

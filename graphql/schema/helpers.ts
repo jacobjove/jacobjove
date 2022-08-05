@@ -1,7 +1,7 @@
 import { GqlContext } from "@/graphql/context";
 import { User } from "@/graphql/schema/generated/models/user.model";
-import { GraphQLResolveInfo } from "graphql";
 import { Model } from "@/graphql/schema/types";
+import { GraphQLResolveInfo } from "graphql";
 
 export function convertFilterForMongo<T>(filter: T) {
   if (!filter) return undefined;

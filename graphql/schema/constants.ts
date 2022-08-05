@@ -1,5 +1,5 @@
-import { IModelOptions } from "@typegoose/typegoose/lib/types";
 import { Severity } from "@typegoose/typegoose";
+import { IModelOptions } from "@typegoose/typegoose/lib/types";
 
 export const DEFAULT_MODEL_OPTIONS: IModelOptions = {
   schemaOptions: {

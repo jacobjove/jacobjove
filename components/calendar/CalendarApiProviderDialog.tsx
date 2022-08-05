@@ -1,10 +1,10 @@
 import { useUser } from "@/components/contexts/UserContext";
 import { accountFragment } from "@/graphql/schema/generated/fragments/account.fragment";
 import { calendarFragment } from "@/graphql/schema/generated/fragments/calendar.fragment";
-import { GET_USER } from "@/graphql/schema/generated/queries/user.queries";
 import { Account } from "@/graphql/schema/generated/models/account.model";
 import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import { GET_USER } from "@/graphql/schema/generated/queries/user.queries";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CloseIcon from "@mui/icons-material/Close";
@@ -47,7 +47,7 @@ const CREATE_CALENDARS = gql`
 
 const UPDATE_ACCOUNT = gql`
   mutation UpdateAccount($accountId: String!, $data: AccountUpdateInput!) {
-    updateAccount(where: { id:$accountId }, data: $data) {
+    updateAccount(where: { id: $accountId }, data: $data) {
       ...AccountFragment
     }
   }

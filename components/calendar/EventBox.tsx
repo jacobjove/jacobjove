@@ -1,6 +1,6 @@
 import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
-import { UPDATE_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
+import { UPDATE_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
 import { calendarEventDataReducer, initializeCalendarEventData } from "@/utils/calendarEvents";
 import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";

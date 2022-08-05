@@ -59,7 +59,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
               move={moveTaskRow}
               onDrop={updateTaskRank}
             />
-          )
+          );
         })}
         {appendable && (
           <TableRow>

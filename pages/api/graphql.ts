@@ -39,7 +39,7 @@ const getApolloServerHandler = async () => {
     const apolloServer = new ApolloServer({
       context: createGqlContext,
       schema: await buildSchema({
-        resolvers: (resolvers as unknown) as NonEmptyArray<CallableFunction>,
+        resolvers: resolvers as unknown as NonEmptyArray<CallableFunction>,
         emitSchemaFile: {
           path: `${process.env.BASE_DIR}/graphql/schema.gql`,
         },

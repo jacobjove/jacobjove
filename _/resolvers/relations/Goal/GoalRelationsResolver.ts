@@ -1,7 +1,7 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Goal } from "@/graphql/schema/generated/models/goal.model";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { GoalMilestonesArgs } from "./args/GoalMilestonesArgs";
 
 @TypeGraphQL.Resolver((_of) => Goal)

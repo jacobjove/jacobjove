@@ -1,10 +1,14 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
-import { CREATE_CALENDAR_EVENT, UPDATE_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
 import {
   CalendarEventCreateInput,
   CalendarEventUpdateInput,
   CalendarEventWhereUniqueInput,
 } from "@/graphql/schema/generated/inputs/calendarEvent.inputs";
+import {
+  CREATE_CALENDAR_EVENT,
+  UPDATE_CALENDAR_EVENT,
+} from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
+import { ID } from "@/graphql/schema/types";
 import { CalendarEventData } from "@/utils/calendarEvents";
 import { useMutation } from "@apollo/client";
 import Button from "@mui/material/Button";
@@ -14,7 +18,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { Dispatch, FC } from "react";
-import { ID } from "@/graphql/schema/types";
 import { useUser } from "../contexts/UserContext";
 
 interface CalendarEventDialogProps extends ReturnType<typeof bindPopover> {

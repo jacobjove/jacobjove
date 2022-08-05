@@ -1,6 +1,4 @@
-import Definition from // REQUIRED_STRING,
-// OPTIONAL_STRING,
-"@/graphql/schema/definition";
+import Definition from "@/graphql/schema/definition"; // OPTIONAL_STRING, // REQUIRED_STRING,
 
 const definition: Definition = {
   name: "listItem",

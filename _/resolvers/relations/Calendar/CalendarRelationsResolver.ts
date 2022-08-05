@@ -1,9 +1,9 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Account } from "@/graphql/schema/generated/models/account.model";
 import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { CalendarEventsArgs } from "./args/CalendarEventsArgs";
 
 @TypeGraphQL.Resolver((_of) => Calendar)

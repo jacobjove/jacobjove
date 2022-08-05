@@ -1,7 +1,6 @@
 import { GqlContext } from "@/graphql/context";
+import { Routine, RoutineHabit } from "@/graphql/schema/generated/models";
 import * as TypeGraphQL from "type-graphql-v2-fork";
-import { Routine } from "@/graphql/schema/generated/models";
-import { RoutineHabit } from "@/graphql/schema/generated/models";
 import { RoutineHabitsArgs } from "./args/RoutineHabitsArgs";
 
 @TypeGraphQL.Resolver((_of) => Routine)

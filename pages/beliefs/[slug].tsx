@@ -16,11 +16,7 @@ interface BeliefProps {
 const BeliefDetailPage: FC<BeliefProps> = ({ belief }: BeliefProps) => {
   return (
     <Layout>
-      <NextSeo
-        title={belief.name}
-        canonical={`/`}
-        description={`${belief.description}`}
-      />
+      <NextSeo title={belief.name} canonical={`/`} description={`${belief.description}`} />
       <Container>
         <PageHeader>{belief.name}</PageHeader>
         {belief.description && <p dangerouslySetInnerHTML={{ __html: belief.description }} />}

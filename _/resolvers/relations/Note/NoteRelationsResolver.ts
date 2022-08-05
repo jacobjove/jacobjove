@@ -1,8 +1,8 @@
 // import { getFirestoreDocDataFromSnapshot } from "../../../helpers";
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
 import { Note } from "@/graphql/schema/generated/models/note.model";
 import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Note)
 export class NoteRelationsResolver {

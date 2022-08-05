@@ -1,8 +1,6 @@
 import { GqlContext } from "@/graphql/context";
+import { Metric, MetricApplication, MetricUsage } from "@/graphql/schema/generated/models";
 import * as TypeGraphQL from "type-graphql-v2-fork";
-import { Metric } from "@/graphql/schema/generated/models";
-import { MetricApplication } from "@/graphql/schema/generated/models";
-import { MetricUsage } from "@/graphql/schema/generated/models";
 import { MetricApplicationsArgs } from "./args/MetricApplicationsArgs";
 import { MetricUsagesArgs } from "./args/MetricUsagesArgs";
 

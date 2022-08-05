@@ -1,10 +1,10 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionSchedule } from "@/graphql/schema/generated/models/actionSchedule.model";
 import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
 import { Task } from "@/graphql/schema/generated/models/task.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => CalendarEvent)
 export class CalendarEventRelationsResolver {

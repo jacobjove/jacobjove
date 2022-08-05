@@ -1,7 +1,7 @@
-import { ObjectId } from "mongodb";
-import { PaletteMode } from "@mui/material";
-import { ObjectType, Field } from "type-graphql-v2-fork";
 import * as Scalars from "@/graphql/schema/scalars";
+import { PaletteMode } from "@mui/material";
+import { ObjectId } from "mongodb";
+import { Field, ObjectType } from "type-graphql-v2-fork";
 
 export type ID = string;
 

@@ -1,5 +1,5 @@
-import { UPSERT_USER } from "@/graphql/schema/generated/mutations/user.mutations";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import { UPSERT_USER } from "@/graphql/schema/generated/mutations/user.mutations";
 import { initializeApollo } from "@/lib/apollo";
 import { NoUndefinedField } from "@/types/global";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
@@ -162,26 +162,25 @@ const callbacks: CallbacksOptions = {
           refreshToken: freshToken.refreshToken,
         };
         const apolloClient = initializeApollo();
-        apolloClient
-          .mutate<{ upsertUser: Partial<User> }>({
-            mutation: UPSERT_USER,
-            variables: {
-              where: { email: token.email },
-              data: {
-                name: token.name,
-                email: token.email,
-                lastLogin: new Date(),
-                image: token.picture,
-                // accounts: {
-                //   upsert: {
-                //     where: { provider_remoteId },
-                //     create: { ...provider_remoteId, ...commonAccountData },
-                //     update: commonAccountData,
-                //   },
-                // },
-              },
+        apolloClient.mutate<{ upsertUser: Partial<User> }>({
+          mutation: UPSERT_USER,
+          variables: {
+            where: { email: token.email },
+            data: {
+              name: token.name,
+              email: token.email,
+              lastLogin: new Date(),
+              image: token.picture,
+              // accounts: {
+              //   upsert: {
+              //     where: { provider_remoteId },
+              //     create: { ...provider_remoteId, ...commonAccountData },
+              //     update: commonAccountData,
+              //   },
+              // },
             },
-          });
+          },
+        });
       }
     }
     // Return the previous token if the access token has not expired yet.

@@ -1,20 +1,22 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import {
+  BookReview,
+  Bookshelf,
+  Identity,
+  List,
+  NotebookUserPermission,
+  Reading,
+} from "@/graphql/schema/generated/models";
 import { Account } from "@/graphql/schema/generated/models/account.model";
 import { Belief } from "@/graphql/schema/generated/models/belief.model";
-import { BookReview } from "@/graphql/schema/generated/models";
-import { Bookshelf } from "@/graphql/schema/generated/models";
 import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
 import { Dashboard } from "@/graphql/schema/generated/models/dashboard.model";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
-import { Identity } from "@/graphql/schema/generated/models";
-import { List } from "@/graphql/schema/generated/models";
 import { Mantra } from "@/graphql/schema/generated/models/mantra.model";
 import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
-import { NotebookUserPermission } from "@/graphql/schema/generated/models";
-import { Reading } from "@/graphql/schema/generated/models";
 import { User } from "@/graphql/schema/generated/models/user.model";
 import { Value } from "@/graphql/schema/generated/models/value.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { UserAccountsArgs } from "./args/UserAccountsArgs";
 import { UserBeliefsArgs } from "./args/UserBeliefsArgs";
 import { UserBookReviewsArgs } from "./args/UserBookReviewsArgs";

@@ -1,9 +1,8 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { BookReview, Reading } from "@/graphql/schema/generated/models";
 import { Book } from "@/graphql/schema/generated/models/book.model";
-import { BookReview } from "@/graphql/schema/generated/models";
-import { Reading } from "@/graphql/schema/generated/models";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.Resolver((_of) => Reading)
 export class ReadingRelationsResolver {

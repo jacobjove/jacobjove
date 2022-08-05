@@ -5,7 +5,10 @@ import debounce from "lodash/debounce";
 import { ObjectId } from "mongodb";
 import { Dispatch, MutableRefObject, useReducer, useRef } from "react";
 
-export type InputData<T extends Model> = Omit<T, "_id" | "id" | "userId" | "createdAt" | "updatedAt"> & {
+export type InputData<T extends Model> = Omit<
+  T,
+  "_id" | "id" | "userId" | "createdAt" | "updatedAt"
+> & {
   _id?: ObjectId;
   id?: ID;
 };

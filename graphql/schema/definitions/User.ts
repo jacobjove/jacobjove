@@ -1,11 +1,11 @@
 import Definition, {
-  REQUIRED_STRING,
-  OPTIONAL_STRING,
   OPTIONAL_BOOLEAN,
+  OPTIONAL_STRING,
+  REQUIRED_STRING,
 } from "@/graphql/schema/definition";
-import CalendarModel from "../generated/models/calendar.model";
 import { DocumentType } from "@typegoose/typegoose";
 import bcrypt from "bcryptjs";
+import CalendarModel from "../generated/models/calendar.model";
 
 const COST_FACTOR = 12;
 

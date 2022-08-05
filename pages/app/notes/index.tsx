@@ -1,11 +1,13 @@
 import AppLayout from "@/components/AppLayout";
 import DeviceContext from "@/components/contexts/DeviceContext";
+import { useUser } from "@/components/contexts/UserContext";
 import NotesMenu from "@/components/notes/NotesMenu";
 import NoteViewer from "@/components/notes/NoteViewer";
-import { notebookFragment } from "@/graphql/schema/generated/fragments/notebook.fragment";
 import { noteFragment, NoteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
+import { notebookFragment } from "@/graphql/schema/generated/fragments/notebook.fragment";
 import { Note } from "@/graphql/schema/generated/models/note.model";
 import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
+import { ID } from "@/graphql/schema/types";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -15,8 +17,6 @@ import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { NextSeo } from "next-seo";
 import { useContext, useState } from "react";
-import { ID } from "@/graphql/schema/types";
-import { useUser } from "@/components/contexts/UserContext";
 
 interface NotesPageProps {
   session: Session | null;

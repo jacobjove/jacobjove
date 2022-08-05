@@ -25,7 +25,6 @@ if (process.env.NODE_ENV !== "development") {
 const modulesToTranspile = [
   // 'react-datasheet-grid'
   "date-fns",
-
 ];
 
 if (modulesToTranspile.length) {

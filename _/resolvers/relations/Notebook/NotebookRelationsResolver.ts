@@ -1,9 +1,9 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { NotebookUserPermission } from "@/graphql/schema/generated/models";
 import { Note } from "@/graphql/schema/generated/models/note.model";
 import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
-import { NotebookUserPermission } from "@/graphql/schema/generated/models";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { NotebookNotesArgs } from "./args/NotebookNotesArgs";
 import { NotebookUserPermissionsArgs } from "./args/NotebookUserPermissionsArgs";
 

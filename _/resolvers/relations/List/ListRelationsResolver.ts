@@ -1,8 +1,7 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
-import { Item } from "@/graphql/schema/generated/models";
-import { List } from "@/graphql/schema/generated/models";
+import { Item, List } from "@/graphql/schema/generated/models";
 import { User } from "@/graphql/schema/generated/models/user.model";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ListItemsArgs } from "./args/ListItemsArgs";
 
 @TypeGraphQL.Resolver((_of) => List)

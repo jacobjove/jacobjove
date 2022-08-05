@@ -24,14 +24,7 @@ export class NotebookNotesArgs {
   @TypeGraphQL.Field(() => [NoteScalarFieldEnum], { nullable: true })
   distinct?:
     | Array<
-        | "id"
-        | "notebookId"
-        | "title"
-        | "body"
-        | "public"
-        | "createdAt"
-        | "updatedAt"
-        | "archivedAt"
+        "id" | "notebookId" | "title" | "body" | "public" | "createdAt" | "updatedAt" | "archivedAt"
       >
     | undefined;
 }

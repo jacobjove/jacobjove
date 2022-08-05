@@ -1,7 +1,10 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
-import { CREATE_TASK, UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
 import { taskFragment, TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
+import { Habit } from "@/graphql/schema/generated/models/habit.model";
+import { Task } from "@/graphql/schema/generated/models/task.model";
+import { CREATE_TASK, UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
+import { ID } from "@/graphql/schema/types";
 import { buildNewItemFragment } from "@/graphql/utils/fragments";
 import { addItemToCache } from "@/utils/apollo";
 import { printError } from "@/utils/apollo/error-handling";
@@ -31,14 +34,11 @@ import MenuItem from "@mui/material/MenuItem";
 // import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { format } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, useState } from "react";
-import TasksTable from "./TasksTable";
-import { Task } from "@/graphql/schema/generated/models/task.model";
-import { Habit } from "@/graphql/schema/generated/models/habit.model";
 import { useUser } from "../contexts/UserContext";
-import { ID } from "@/graphql/schema/types";
-import { format } from "date-fns";
+import TasksTable from "./TasksTable";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   task: TaskData;
@@ -117,7 +117,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const menuProps = bindMenu(menuState);
 
   const completed = taskData.completedAt ? true : false;
-  
+
   // const habit = taskData.habit;
   const habit: Habit | null = null; // TODO
 
@@ -338,7 +338,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <Typography>{"Due date"}</Typography>
               <Box display="flex" alignItems="center">
                 <TodayIcon />
-                <Typography component="span">{taskData.dueDate ? format(taskData.dueDate, "h:m") : "No due date"}</Typography>
+                <Typography component="span">
+                  {taskData.dueDate ? format(taskData.dueDate, "h:m") : "No due date"}
+                </Typography>
               </Box>
             </Box>
             <Box my={2}>
@@ -346,7 +348,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <Box display="flex" alignItems="center">
                 <TodayIcon />
                 <Typography component="span">
-                  {taskData.plannedStartDate ? format(taskData.plannedStartDate, "h:m") : "Unscheduled"}
+                  {taskData.plannedStartDate
+                    ? format(taskData.plannedStartDate, "h:m")
+                    : "Unscheduled"}
                 </Typography>
               </Box>
             </Box>

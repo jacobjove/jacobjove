@@ -16,11 +16,7 @@ interface ValueProps {
 const ValueDetailPage: FC<ValueProps> = ({ value }: ValueProps) => {
   return (
     <Layout>
-      <NextSeo
-        title={value.name}
-        canonical={`/`}
-        description={`${value.description}`}
-      />
+      <NextSeo title={value.name} canonical={`/`} description={`${value.description}`} />
       <Container>
         <PageHeader>{value.name}</PageHeader>
         {value.description && <p dangerouslySetInnerHTML={{ __html: value.description }} />}

@@ -1,10 +1,7 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
-import { Authorship } from "@/graphql/schema/generated/models";
+import { Authorship, BookReview, Reading, Shelving } from "@/graphql/schema/generated/models";
 import { Book } from "@/graphql/schema/generated/models/book.model";
-import { BookReview } from "@/graphql/schema/generated/models";
-import { Reading } from "@/graphql/schema/generated/models";
-import { Shelving } from "@/graphql/schema/generated/models";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { BookAuthorshipsArgs } from "./args/BookAuthorshipsArgs";
 import { BookBookReviewArgs } from "./args/BookBookReviewArgs";
 import { BookReadingsArgs } from "./args/BookReadingsArgs";

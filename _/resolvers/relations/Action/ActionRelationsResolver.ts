@@ -1,8 +1,8 @@
 import { GqlContext } from "@/graphql/context";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { MetricRecord } from "@/graphql/schema/generated/models";
 import { Action } from "@/graphql/schema/generated/models/action.model";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
-import { MetricRecord } from "@/graphql/schema/generated/models";
+import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ActionMetricRecordsArgs } from "./args/ActionMetricRecordsArgs";
 
 @TypeGraphQL.Resolver((_of) => Action)

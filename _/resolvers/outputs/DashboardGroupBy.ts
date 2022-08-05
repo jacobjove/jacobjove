@@ -1,6 +1,6 @@
+import { DashboardLayouts } from "@/graphql/schema/generated/models";
 import * as GraphQLScalars from "graphql-scalars";
 import * as TypeGraphQL from "type-graphql-v2-fork";
-import { DashboardLayouts } from "@/graphql/schema/generated/models";
 import { DateTimeScalar } from "../../scalars";
 import { DashboardAvgAggregate } from "../outputs/DashboardAvgAggregate";
 import { DashboardCountAggregate } from "../outputs/DashboardCountAggregate";
