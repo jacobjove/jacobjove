@@ -1,16 +1,29 @@
-import { ID, Model } from "@/graphql/schema/types";
-import { DocumentNode, FetchResult, MutationFunctionOptions, useMutation } from "@apollo/client";
+import { Model } from "@/graphql/schema/types";
+import { RequiredKeys } from "@/types/global";
+import {
+  DocumentNode,
+  FetchResult,
+  MutationFunctionOptions,
+  MutationHookOptions,
+  MutationResult,
+  useMutation,
+} from "@apollo/client";
 import { DebouncedFunc } from "lodash";
 import debounce from "lodash/debounce";
-import { ObjectId } from "mongodb";
 import { Dispatch, MutableRefObject, useReducer, useRef } from "react";
 
-type READONLY_FIELDS = "_id" | "id" | "createdAt" | "updatedAt";
+const ID_FIELDS = ["_id", "id"] as const;
 
-export type InputData<T extends Model> = Omit<T, READONLY_FIELDS> & {
-  _id?: ObjectId;
-  id?: ID;
-};
+const READONLY_FIELDS = [...ID_FIELDS, "__typename", "createdAt", "updatedAt"] as const;
+
+type ReadonlyFields = typeof READONLY_FIELDS[number];
+
+type PotentiallyRequiredFields<T extends Model> = Exclude<keyof T, ReadonlyFields>;
+
+export type InputData<T extends Model> = RequiredKeys<Omit<T, ReadonlyFields>> & Partial<T>;
+export type InitialData<T extends Model, RequiredFields extends PotentiallyRequiredFields<T>> =
+  | T
+  | (Pick<T, RequiredFields> & Partial<InputData<T>>);
 
 const DEFAULT_MUTATION_DEBOUNCE_DELAY = 600; // 0.6 seconds
 
@@ -47,23 +60,25 @@ export function useDataReducer<T>(initialData: T): [T, Dispatch<Payload<T>>] {
   return [data as T, dispatchData as Dispatch<Payload<T>>];
 }
 
-export function useHandleMutation<MutationReturnType>(
+type MutationFunction<MutationReturnType, MutationArgsType> = (
+  options: MutationFunctionOptions<MutationReturnType, MutationArgsType>
+) => Promise<FetchResult<MutationReturnType, Record<string, unknown>, Record<string, unknown>>>;
+
+export function useHandleMutation<MutationReturnType, MutationArgsType>(
   mutation: DocumentNode,
-  abortController: MutableRefObject<AbortController | undefined>,
+  mutationHookOptions?: MutationHookOptions<MutationReturnType, MutationArgsType>,
+  // abortController: MutableRefObject<AbortController | undefined>,
   debounceDelay = DEFAULT_MUTATION_DEBOUNCE_DELAY
 ): [
-  MutableRefObject<
-    DebouncedFunc<
-      (
-        options: MutationFunctionOptions<MutationReturnType>
-      ) =>
-        | Promise<FetchResult<MutationReturnType, Record<string, unknown>, Record<string, unknown>>>
-        | undefined
-    >
-  >,
-  unknown
+  MutableRefObject<DebouncedFunc<MutationFunction<MutationReturnType, MutationArgsType>>>,
+  MutationResult<MutationReturnType>,
+  MutableRefObject<AbortController | undefined>
 ] {
-  const [mutate, extra] = useMutation<MutationReturnType>(mutation);
+  const abortController = useRef<AbortController>();
+  const [mutate, mutationResult] = useMutation<MutationReturnType, MutationArgsType>(
+    mutation,
+    mutationHookOptions
+  );
   const mutationHandlerRef = useRef(
     debounce((...args: Parameters<typeof mutate>) => {
       const controller = new window.AbortController();
@@ -75,7 +90,7 @@ export function useHandleMutation<MutationReturnType>(
       return mutate(mutationOptions);
     }, debounceDelay)
   );
-  return [mutationHandlerRef, extra];
+  return [mutationHandlerRef, mutationResult, abortController];
 }
 
 // export type InitialCalendarEventData = Pick<CalendarEventData, "start" | "calendarId"> &

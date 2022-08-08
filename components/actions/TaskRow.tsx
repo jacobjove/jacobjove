@@ -1,12 +1,17 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
 import { useUser } from "@/components/contexts/UserContext";
+import { UpdateTaskArgs } from "@/graphql/schema/generated/args/task.args";
+import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
 import { Task } from "@/graphql/schema/generated/models/task.model";
-import { UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
+import {
+  getOptimisticResponseForTaskUpdate,
+  UPDATE_TASK,
+} from "@/graphql/schema/generated/mutations/task.mutations";
 import { ID } from "@/graphql/schema/types";
 import { printError } from "@/utils/apollo/error-handling";
+import { useHandleMutation } from "@/utils/data";
 import { initializeTaskData, taskDataReducer } from "@/utils/tasks";
-import { useMutation } from "@apollo/client";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -67,27 +72,25 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
     initializeTaskData
   );
 
-  const [updateTask, { loading }] = useMutation(UPDATE_TASK);
+  const [updateTask, { loading }] = useHandleMutation<{ updateTask: TaskFragment }, UpdateTaskArgs>(
+    UPDATE_TASK
+  );
 
   onLoading(loading);
 
   const toggleCompletion = (complete: boolean) => {
     const completedAt = complete ? new Date() : null;
-    updateTask({
-      variables: {
-        where: { id: task.id },
-        data: { completedAt },
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        updateTask: {
-          __typename: "Task",
-          habit: null,
-          ...task,
-          completedAt,
+    const data = { completedAt };
+    const optimisticResponse = getOptimisticResponseForTaskUpdate(task, data);
+    updateTask
+      .current?.({
+        variables: {
+          where: { id: task.id },
+          data,
         },
-      },
-    }).catch(printError);
+        optimisticResponse,
+      })
+      ?.catch(printError);
   };
 
   const isHabit = Boolean(task.habitId);
@@ -414,6 +417,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
 export default TaskRow;
 
 function getDateTextElement(date: Date | null) {
+  if (!date) return null;
   const today = new Date();
   const dateString = date
     ? isSameDay(date, today)

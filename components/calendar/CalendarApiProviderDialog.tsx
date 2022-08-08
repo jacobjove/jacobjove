@@ -1,10 +1,13 @@
 import { useUser } from "@/components/contexts/UserContext";
+import { UpdateAccountArgs } from "@/graphql/schema/generated/args/account.args";
+import { UpdateCalendarArgs } from "@/graphql/schema/generated/args/calendar.args";
 import { accountFragment } from "@/graphql/schema/generated/fragments/account.fragment";
 import { calendarFragment } from "@/graphql/schema/generated/fragments/calendar.fragment";
 import { Account } from "@/graphql/schema/generated/models/account.model";
 import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
 import { User } from "@/graphql/schema/generated/models/user.model";
 import { GET_USER } from "@/graphql/schema/generated/queries/user.queries";
+import { useHandleMutation } from "@/utils/data";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CloseIcon from "@mui/icons-material/Close";
@@ -114,12 +117,14 @@ const CalendarSelectionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 export default function CalendarApiProviderDialog(props: CalendarApiProviderDialogProps) {
   const { provider, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
   const user = useUser();
-  const [updateAccount, { loading: loadingUpdateAccount }] = useMutation<{
-    updateAccount: Account;
-  }>(UPDATE_ACCOUNT);
-  const [updateCalendar, { loading: loadingUpdateCalendar }] = useMutation<{
-    updateCalendar: Calendar;
-  }>(UPDATE_CALENDAR);
+  const [updateAccount, { loading: loadingUpdateAccount }] = useHandleMutation<
+    { updateAccount: Account },
+    UpdateAccountArgs
+  >(UPDATE_ACCOUNT);
+  const [updateCalendar, { loading: loadingUpdateCalendar }] = useHandleMutation<
+    { updateCalendar: Calendar },
+    UpdateCalendarArgs
+  >(UPDATE_CALENDAR);
   const [addCalendars, { loading: loadingAddCalendars }] = useMutation<{
     addCalendars: Calendar[];
   }>(CREATE_CALENDARS, {
@@ -172,21 +177,22 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
     );
     // Enable calendars.
     const enablementPromises = calendarIdsToEnable.map((calendarId) => {
-      updateCalendar({
-        variables: {
-          calendarId,
-          data: { enabled: true },
-        },
-      })
-        .then(() => axios.get(`/api/calendars/${calendarId}/sync`))
+      updateCalendar
+        .current?.({
+          variables: {
+            where: { id: calendarId },
+            data: { enabled: true },
+          },
+        })
+        ?.then(() => axios.get(`/api/calendars/${calendarId}/sync`))
         .catch(alert);
     });
     // Disable calendars.
     const disablementPromises = calendarIdsToDisable.map((calendarId) => {
       // TODO: confirm this results in the calendar events being removed
-      updateCalendar({
+      updateCalendar.current?.({
         variables: {
-          calendarId,
+          where: { id: calendarId },
           data: { enabled: false },
         },
       });
@@ -267,13 +273,14 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   const removeCalendarScope = useCallback(() => {
     if (!account || loading) return;
     const newScopes = account.scopes.filter((_scope) => _scope !== scope);
-    updateAccount({
-      variables: {
-        accountId: account.id,
-        data: { scopes: newScopes },
-      },
-    })
-      .then(() => {
+    updateAccount
+      .current?.({
+        variables: {
+          where: { id: account.id },
+          data: { scopes: newScopes },
+        },
+      })
+      ?.then(() => {
         // TODO: This is a poor UX, but improving it will require non-trivial effort,
         // and it's a low-priority flow. Eventually, we will need to figure out how to
         // smoothly handle Google auth tokens with dynamic scopes.

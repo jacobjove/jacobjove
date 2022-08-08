@@ -1,8 +1,13 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import TasksTable from "@/components/actions/TasksTable";
-import { taskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
+import { UpdateTaskArgs } from "@/graphql/schema/generated/args/task.args";
+import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
 import { Task } from "@/graphql/schema/generated/models/task.model";
-import { UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
+import {
+  getOptimisticResponseForTaskUpdate,
+  UPDATE_TASK,
+} from "@/graphql/schema/generated/mutations/task.mutations";
+import { useHandleMutation } from "@/utils/data";
 import { gql, useMutation } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
@@ -13,6 +18,7 @@ import Typography from "@mui/material/Typography";
 import { addDays, endOfDay, isSameDay } from "date-fns";
 import partition from "lodash/partition";
 import { FC, useCallback, useMemo, useState } from "react";
+import { useUser } from "../contexts/UserContext";
 
 const MAX_TASK_RANK = 2 ** 31 - 1;
 const MIN_TASK_RANK = -MAX_TASK_RANK - 1;
@@ -28,25 +34,14 @@ const UPDATE_MANY_TASK_RANK = gql`
 
 type TasksView = "today" | "next7" | "all";
 
-export const fragment = gql`
-  fragment TasksTable on Query {
-    tasks {
-      ...TaskFragment
-    }
-  }
-  ${taskFragment}
-`;
-
 export interface TasksAccordionProps {
   contained?: boolean;
-  data: {
-    tasks: Task[];
-  };
 }
 
 const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => {
-  const { data } = props;
-  const { tasks: allTasks } = data;
+  const user = useUser();
+
+  const allTasks = user?.tasks ?? [];
 
   // Exclude archived tasks.
   let filteredTasks = useMemo(
@@ -69,6 +64,8 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
 
   filteredTasks = topLevelTasks.length ? topLevelTasks : subtasks;
 
+  console.log("TasksBox.filteredTasks:", filteredTasks);
+
   // Distinguish incomplete tasks from completed tasks.
   const [incompleteTasks, completeTasks] = useMemo(() => {
     return partition(filteredTasks, (task) => !task.completedAt);
@@ -79,18 +76,13 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
     return completeTasks.filter((task) => task.completedAt && isSameDay(task.completedAt, now));
   }, [completeTasks]);
 
-  // const greatestRank = incompleteTasks[incompleteTasks.length - 1]?.rank ?? MIN_TASK_RANK;
-  // const defaultRank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
-  // const [newTaskData, dispatchNewTaskData] = useReducer(
-  //   taskDataReducer,
-  //   initializeTaskData({ rank: defaultRank }),
-  //   initializeTaskData
-  // );
-
   const [recentlyCompletedTasksExpanded, setRecentlyCompletedTasksExpanded] = useState(false);
 
-  const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] =
-    useMutation(UPDATE_TASK);
+  const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] = useHandleMutation<
+    { updateTask: TaskFragment },
+    UpdateTaskArgs
+  >(UPDATE_TASK);
+
   const [updateManyTaskRank] = useMutation(UPDATE_MANY_TASK_RANK);
 
   // TODO: is this efficient enough?
@@ -163,23 +155,19 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
           },
         });
       } else {
-        updateTask({
+        updateTask.current?.({
           variables: {
             where: { id: task.id },
             data: { rank: newRank },
           },
-          optimisticResponse: {
-            updateTask: {
-              __typename: "Task",
-              ...task,
-              rank: newRank,
-            },
-          },
+          optimisticResponse: getOptimisticResponseForTaskUpdate(task, { rank: newRank }),
         });
       }
     },
     [incompleteTasks, updateTask, updateManyTaskRank]
   );
+
+  console.log("TasksBox.incompleteTasks:", incompleteTasks);
 
   const views: [TasksView, string][] = [
     ["today", "To do"],

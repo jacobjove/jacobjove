@@ -7,8 +7,8 @@ force: true
 import * as TypeGraphQL from "type-graphql-v2-fork";
 import * as Scalars from "@/graphql/schema/scalars";
 import * as Types from "@/graphql/schema/types";
-import { ID } from "@/graphql/schema/types";
-<% var filteredFields = Object.fromEntries(Object.entries(selectableFields).filter(([fieldName, field]) => !modelImports.includes(h.changeCase.pascal(h.inflection.singularize(fieldName))))); %>
+import { ID, WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
+<% var filteredFields = Object.fromEntries(Object.entries(selectableFields).filter(([fieldName, field]) => !modelImports.includes(h.changeCase.pascal(h.inflection.singularize(fieldName))))); -%>
 
 @TypeGraphQL.InputType()
 export class <%= Name %>CreateInput {
@@ -17,6 +17,8 @@ export class <%= Name %>CreateInput {
   <%= fieldName %><%= fields[fieldName].required ? "!" : "?" %>: Types.<%= fields[fieldName].type %><%= fields[fieldName].required ? "" : " | null" %><%= !fields[fieldName].required ? " | undefined" : "" %>;
 
 <% } -%>
+  @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: true })
+  archivedAt?: Types.DateTime | null | undefined;
 }
 
 @TypeGraphQL.InputType()
@@ -26,10 +28,12 @@ export class <%= Name %>UpdateInput {
   <%= fieldName %>?: Types.<%= fields[fieldName].type %><%= fields[fieldName].required ? "" : " | null" %> | undefined;
   
 <% } -%>
+  @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: true })
+  archivedAt?: Types.DateTime | null | undefined;
 }
 
 @TypeGraphQL.InputType()
-export class <%= Name %>WhereInput {
+export class <%= Name %>WhereInput extends WhereInput {
   @TypeGraphQL.Field(() => Scalars.ObjectIdScalar, { nullable: true })
   id?: ID | undefined;
 <% for (var [fieldName, field] of Object.entries(filteredFields)) { %>
@@ -39,13 +43,14 @@ export class <%= Name %>WhereInput {
 }
 
 @TypeGraphQL.InputType()
-export class <%= Name %>WhereUniqueInput {
-  @TypeGraphQL.Field(() => Scalars.ObjectIdScalar, { nullable: true })
-  id?: ID | undefined;<% if (Object.entries(filteredFields).filter(([, field]) => !!field.unique).length) { %>
-
+export class <%= Name %>WhereUniqueInput extends WhereUniqueInput {
+<% if (Object.entries(filteredFields).filter(([, field]) => !!field.unique).length) { -%>
 <% for (var [fieldName, field] of Object.entries(filteredFields).filter(([, field]) => !!field.unique)) { -%>
   @TypeGraphQL.Field(() => Scalars.<%= fields[fieldName].typeCast %>, { nullable: true })
   <%= fieldName %>?: Types.<%= fields[fieldName].type %><%= !fields[fieldName].required ? "" : " | null" %> | undefined;
-  <% } %>
-<% } %>%>
+<% } -%>
+<% } else { -%>
+  // @TypeGraphQL.Field(() => Scalars.ObjectIdScalar, { nullable: false })
+  // id!: ID;
+<% } -%>
 }

@@ -1,5 +1,6 @@
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
+import { UpdateNoteArgs } from "@/graphql/schema/generated/args/note.args";
 import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
 import { Note } from "@/graphql/schema/generated/models/note.model";
 import { useDataReducer, useHandleMutation } from "@/utils/data";
@@ -8,7 +9,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 // import Toolbar from "@mui/material/Toolbar";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 const UPDATE_NOTE = gql`
   mutation UpdateNote($noteId: String!, $data: NoteUpdateInput!) {
@@ -26,13 +27,9 @@ interface NoteViewerProps {
 const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
   const [fullScreen, setFullScreen] = useState(false);
 
-  const abortController = useRef<AbortController>();
-
   const [noteData, dispatchNoteData] = useDataReducer(note);
 
-  const [handleUpdateNote] = useHandleMutation<{
-    updateNote: Note;
-  }>(UPDATE_NOTE, abortController);
+  const [handleUpdateNote] = useHandleMutation<{ updateNote: Note }, UpdateNoteArgs>(UPDATE_NOTE);
 
   useEffect(() => {
     note && dispatchNoteData({ field: "init", value: note });
@@ -77,10 +74,9 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
             value={noteData.title}
             onChange={(event) => {
               dispatchNoteData({ field: "title", value: event.target.value });
-              abortController.current?.abort();
-              handleUpdateNote.current({
+              handleUpdateNote.current?.({
                 variables: {
-                  noteId: note.id,
+                  where: { id: note.id },
                   data: {
                     title: event.target.value,
                   },
@@ -107,10 +103,9 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
             value={noteData.body}
             onChange={(event) => {
               dispatchNoteData({ field: "body", value: event.target.value });
-              abortController.current?.abort();
               handleUpdateNote.current({
                 variables: {
-                  noteId: note.id,
+                  where: { id: note.id },
                   data: {
                     body: event.target.value,
                   },

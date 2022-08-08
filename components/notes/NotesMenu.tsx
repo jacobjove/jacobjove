@@ -1,6 +1,10 @@
 import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import SearchDialog from "@/components/search/SearchDialog";
+import {
+  CreateNotebookArgs,
+  UpdateNotebookArgs,
+} from "@/graphql/schema/generated/args/notebook.args";
 import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
 // import Select from "@/components/Select";
 import {
@@ -9,11 +13,14 @@ import {
 } from "@/graphql/schema/generated/fragments/notebook.fragment";
 import { Note } from "@/graphql/schema/generated/models/note.model";
 import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
+import {
+  CREATE_NOTEBOOK,
+  getOptimisticResponseForNotebookCreation,
+  updateCacheAfterCreatingNotebook,
+} from "@/graphql/schema/generated/mutations/notebook.mutations";
 import { ID } from "@/graphql/schema/types";
-import { buildNewItemFragment } from "@/graphql/utils/fragments";
-import { addItemToCache } from "@/utils/apollo";
-import { printError } from "@/utils/apollo/error-handling";
-import { gql, useMutation } from "@apollo/client";
+import { useHandleMutation } from "@/utils/data";
+import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -41,21 +48,11 @@ import MenuList from "@mui/material/MenuList";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import debounce from "lodash/debounce";
 import partition from "lodash/partition";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Dispatch, useContext, useEffect, useMemo, useRef, useState } from "react";
-
-const CREATE_NOTEBOOK = gql`
-  mutation CreateNotebook($data: NotebookCreateInput!) {
-    createNotebook(data: $data) {
-      ...NotebookFragment
-    }
-  }
-  ${notebookFragment}
-`;
+import { Dispatch, useContext, useEffect, useMemo, useState } from "react";
 
 const UPDATE_NOTEBOOK = gql`
   mutation UpdateNotebook($id: String!, $data: NotebookUpdateInput!) {
@@ -103,6 +100,7 @@ export default function NotesMenu({
   const [selectedNoteIds, setSelectedNoteIds] = selectedNoteIdsState;
   const user = useUser();
   const { notes, notebooks: allNotebooks } = data;
+
   const [notebooks, _archivedNotebooks] = partition(allNotebooks, (notebook) => {
     return !notebook.archivedAt;
   });
@@ -123,23 +121,17 @@ export default function NotesMenu({
     popupId: `notebook-${selectedNotebook?.id}-menu`,
   });
 
-  const [createNotebook, { loading: loadingCreateNotebook }] = useMutation<{
-    createNotebook: NotebookFragment;
-  }>(CREATE_NOTEBOOK, {
-    update(cache, { data }) {
-      const { createNotebook } = data || {};
-      addItemToCache(
-        cache,
-        createNotebook,
-        "notebooks",
-        ...buildNewItemFragment(notebookFragment, "NotebookFragment", "Notebook")
-      );
-    },
-  });
+  const [createNotebook] = useHandleMutation<
+    { createNotebook: NotebookFragment },
+    CreateNotebookArgs
+  >(CREATE_NOTEBOOK, updateCacheAfterCreatingNotebook);
 
-  const [updateNotebook] = useMutation(UPDATE_NOTEBOOK);
+  const [updateNotebook] = useHandleMutation<
+    { updateNotebook: NotebookFragment },
+    UpdateNotebookArgs
+  >(UPDATE_NOTEBOOK);
 
-  const loading = _loading || loadingCreateNotebook;
+  // const loading = _loading || loadingCreateNotebook;
 
   // Create default notebook if necessary.
   // useEffect(() => {
@@ -189,51 +181,21 @@ export default function NotesMenu({
     }
   }, [isMobile, router, filteredNotes, selectedNotebook, selectedNote, setSelectedNoteIds]);
 
-  const abortController = useRef<AbortController>();
-
-  const _handleCreateNotebook = useRef(
-    debounce((...args: Parameters<typeof createNotebook>) => {
-      const controller = new window.AbortController();
-      abortController.current = controller;
-      const [mutationOptions, ...rest] = args;
-      if (mutationOptions) {
-        mutationOptions.context = { fetchOptions: { signal: controller.signal } };
-      }
-      return createNotebook(mutationOptions, ...rest).catch(printError);
-    }, 1000)
-  );
-
   const handleCreateNotebook = async () => {
-    const now = new Date();
-    const ownerId = user?.id as string;
+    const userId = user?.id as ID;
     setAddingNewNotebook(false);
     setNewNotebookName("");
-    const result = await _handleCreateNotebook.current({
-      variables: {
-        data: {
-          title: newNotebookName,
-          owner: {
-            connect: {
-              id: ownerId,
-            },
-          },
-        },
-      },
-      optimisticResponse: {
-        createNotebook: {
-          __typename: "Notebook",
-          userId: user?.id as ID,
-          title: newNotebookName,
-          archivedAt: null,
-          createdAt: now,
-          updatedAt: now,
-          public: false,
-          id: "tmp-id",
-        },
-      },
+    const data = {
+      title: newNotebookName,
+      userId,
+    };
+    const optimisticResponse = getOptimisticResponseForNotebookCreation(data);
+    const mutationResult = await createNotebook.current({
+      variables: { data },
+      optimisticResponse,
     });
-    const { createNotebook } = result?.data || {};
-    if (createNotebook) setSelectedNotebookId(createNotebook.id);
+    if (mutationResult?.data?.createNotebook?.id)
+      setSelectedNotebookId(mutationResult.data.createNotebook.id);
   };
 
   const searchDialogProps = bindPopover(searchDialogState);
@@ -318,7 +280,7 @@ export default function NotesMenu({
                             <InputAdornment position="end">
                               <IconButton
                                 aria-label="Create new notebook"
-                                onClick={() => handleCreateNotebook()}
+                                onClick={handleCreateNotebook}
                                 edge="end"
                               >
                                 <DoneIcon />
@@ -383,10 +345,10 @@ export default function NotesMenu({
                           onClick={() => {
                             notebookMenuProps.onClose();
                             const archivedAt = new Date();
-                            updateNotebook({
+                            updateNotebook.current?.({
                               variables: {
-                                id: selectedNotebook.id,
-                                data: { archivedAt: archivedAt },
+                                where: { id: selectedNotebook.id },
+                                data: { archivedAt },
                               },
                               optimisticResponse: {
                                 updateNotebook: {
@@ -395,7 +357,7 @@ export default function NotesMenu({
                                   archivedAt,
                                 },
                               },
-                            }).catch(printError);
+                            });
                             setSelectedNotebookId(notebooks[0].id);
                           }}
                         >

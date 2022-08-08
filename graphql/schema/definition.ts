@@ -1,4 +1,7 @@
 import { DocumentType, pre } from "@typegoose/typegoose";
+import { Model } from "./types";
+
+export type FieldType = "String" | "Boolean" | "ID" | "DateTime";
 
 export default interface Definition {
   name: string;
@@ -8,8 +11,8 @@ export default interface Definition {
     {
       required: boolean;
       unique?: boolean;
-      type: string | CallableFunction | CallableFunction[];
-      typeCast: string | CallableFunction | CallableFunction[];
+      type: string;
+      typeCast?: string | CallableFunction | CallableFunction[];
       default?: unknown;
       select?: boolean;
     }
@@ -17,11 +20,11 @@ export default interface Definition {
   hooks?: {
     save: {
       pre?: Parameters<typeof pre>[1];
-      post?: (instance: DocumentType<unknown>) => void;
+      post?: (instance: DocumentType<Model>) => void;
     };
   };
 }
 
-export const REQUIRED_STRING = { required: true, type: "String", typeCast: "String" };
-export const OPTIONAL_STRING = { required: false, type: "String", typeCast: "String" };
-export const OPTIONAL_BOOLEAN = { required: false, type: "Boolean", typeCast: "Boolean" };
+export const REQUIRED_STRING = { required: true, type: "String" };
+export const OPTIONAL_STRING = { required: false, type: "String" };
+export const OPTIONAL_BOOLEAN = { required: false, type: "Boolean" };

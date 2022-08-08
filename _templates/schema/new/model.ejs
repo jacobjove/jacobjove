@@ -17,13 +17,13 @@ import { <%= h.changeCase.pascal(model) %> } from "@/graphql/schema/generated/mo
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
-@pre<<%= Name %>>("save", (definition.hooks?.save?.pre as any) ?? (async function (next) { return next() }))
-@post<<%= Name %>>("save", definition.hooks?.save?.post ?? (async (_instance) => { return; }))
+@pre<<%= Name %>>("save", (definition?.hooks?.save?.pre as any) ?? (async function (next) { return next() }))
+@post<<%= Name %>>("save", definition?.hooks?.save?.post ?? (async (_instance) => { return; }))
 export class <%= Name %> extends Model {
 <% for (var [fieldName, field] of Object.entries(fields)) { -%>
 <% var useModelType = modelImports.includes(`${field.type}`.replace(/[\[\]]/g, "")); -%>
   @TypeGraphQL.Field(() => <%= useModelType ? field.typeCast : field.typeCast.replace(/(\w)/, "Scalars.$1") %>, { nullable: <%= field.required ? "false" : "true" %>})
-  @Property({ <%- (field.typeCast === "String" || field.typeCast === "Boolean") ? `type: () => ${field.typeCast}, ` : "" %>required: <%= field.required %><%= field.unique ? ", unique: true" : "" %><%= field.select === false ? ", select: false" : "" %><%= typeof field.default !== "undefined" ? `, default: ${JSON.stringify(field.default)}` : "" %> })
+  @Property({ <%- (field.typeCast === "String" || field.typeCast === "Boolean") ? `type: () => ${field.typeCast}, ` : "" %>required: <%= field.required %><%= field.unique ? ", unique: true" : "" %><%= field.select === false ? ", select: false" : "" %><%- typeof field.default !== "undefined" ? `, default: ${JSON.stringify(field.default)}` : field.required ? "" : `, default: null` %> })
   <%= fieldName %><%= field.required ? "!" : "?" %>: <%= useModelType ? "" : "Types." %><%= field.type %><%= field.required ? "" : " | null" %>;
 
 <% } -%>}

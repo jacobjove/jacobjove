@@ -1,15 +1,19 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
-import { useUser } from "@/components/contexts/UserContext";
 import { CreateTaskArgs, UpdateTaskArgs } from "@/graphql/schema/generated/args/task.args";
-import { taskFragment, TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
+import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
 import { Task } from "@/graphql/schema/generated/models/task.model";
-import { CREATE_TASK, UPDATE_TASK } from "@/graphql/schema/generated/mutations/task.mutations";
+import {
+  CREATE_TASK,
+  getOptimisticResponseForTaskCreation,
+  getOptimisticResponseForTaskUpdate,
+  updateCacheAfterCreatingTask,
+  UPDATE_TASK,
+} from "@/graphql/schema/generated/mutations/task.mutations";
 import { ID } from "@/graphql/schema/types";
-import { buildNewItemFragment } from "@/graphql/utils/fragments";
-import { addItemToCache } from "@/utils/apollo";
 import { printError } from "@/utils/apollo/error-handling";
+import { useHandleMutation } from "@/utils/data";
 import { TaskData } from "@/utils/tasks";
 import { useMutation } from "@apollo/client";
 import CloseIcon from "@mui/icons-material/Close";
@@ -39,6 +43,7 @@ import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, useState } from "react";
+import { useUser } from "../contexts/UserContext";
 import TasksTable from "./TasksTable";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
@@ -71,24 +76,12 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     popupId: taskData.id ? `task-${taskData.id}-menu` : "new-task-menu",
   });
 
-  const [updateTask, { loading: _loadingUpdateTask }] = useMutation<
-    { updateTask: TaskFragment },
-    UpdateTaskArgs
-  >(UPDATE_TASK);
+  const [updateTask] = useHandleMutation<{ updateTask: TaskFragment }, UpdateTaskArgs>(UPDATE_TASK);
+
   const [createTask, { loading: _loadingCreateTask }] = useMutation<
     { createTask: TaskFragment },
     CreateTaskArgs
-  >(CREATE_TASK, {
-    update(cache, { data }) {
-      const { createTask } = data || {};
-      addItemToCache(
-        cache,
-        createTask,
-        "tasks",
-        ...buildNewItemFragment(taskFragment, "TaskFragment", "Task")
-      );
-    },
-  });
+  >(CREATE_TASK, updateCacheAfterCreatingTask);
 
   const handleClose = () => {
     if (stopwatchIsRunning) {
@@ -102,21 +95,21 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const handleUpdateField = (field: string, value: unknown) => {
     dispatchTaskData({ field, value });
     if (canUpdate) {
-      const now = new Date();
-      updateTask({
-        variables: {
-          where: { id: taskData.id },
-          data: { [field]: value },
-        },
-        optimisticResponse: {
-          updateTask: {
-            __typename: "Task",
-            ...(taskData as TaskData & { id: ID; createdAt: Date }),
-            updatedAt: now,
-            [field]: value,
-          },
-        },
-      }).catch(console.error);
+      const data = { [field]: value };
+      const optimisticResponse = getOptimisticResponseForTaskUpdate(taskData as TaskFragment, data);
+      // TODO
+      taskData &&
+        data &&
+        updateTask.current &&
+        updateTask
+          .current({
+            variables: {
+              where: { id: taskData.id },
+              data,
+            },
+            optimisticResponse,
+          })
+          ?.catch(console.error);
     }
   };
 
@@ -137,27 +130,15 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const saveAndExit = () => {
     if (!canUpdate && taskData.title) {
       console.log("Creating task...", taskData);
-      const now = new Date();
+      const optimisticResponse = getOptimisticResponseForTaskCreation(taskData);
       createTask({
-        variables: {
-          data: {
-            ...taskData,
-          },
-        },
-        optimisticResponse: {
-          createTask: {
-            __typename: "Task",
-            id: "tmp-id",
-            habitId: null,
-            createdAt: now,
-            updatedAt: now,
-            ...taskData,
-          },
-        },
+        variables: { data: taskData },
+        optimisticResponse,
       }).catch(printError);
       dispatchTaskData({
         field: "init",
         value: {
+          userId: user?.id as ID,
           rank: taskData.rank + 1,
         },
       }); // TODO
@@ -168,6 +149,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
       <DialogTitle sx={{ minHeight: "3.3rem", borderBottom: "1px solid gray" }}>
+        {taskData.id ?? ""}
         {!!taskData.id && !!updateTask && (
           <Box
             ml={"auto"}
@@ -214,20 +196,20 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 disabled={!taskData.id}
                 onClick={() => {
                   const archivedAt = new Date();
-                  updateTask({
-                    variables: {
-                      where: { id: taskData.id },
-                      data: { archivedAt: archivedAt },
-                    },
-                    optimisticResponse: {
-                      updateTask: {
-                        __typename: "Task",
-                        habit: null,
-                        ...taskData,
-                        archivedAt,
+                  console.log("Archiving task ", taskData.title, taskData.id);
+                  const data = { archivedAt };
+                  const optimisticResponse = getOptimisticResponseForTaskUpdate(
+                    taskData as TaskFragment,
+                    data
+                  );
+                  updateTask.current &&
+                    updateTask.current({
+                      variables: {
+                        where: { id: taskData.id },
+                        data,
                       },
-                    },
-                  }).catch(printError);
+                      optimisticResponse,
+                    });
                   menuProps.onClose();
                 }}
               >
@@ -286,7 +268,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 id="description"
                 name="description"
                 // variant="standard"
-                value={taskData.description}
+                value={taskData.description ?? ""}
                 placeholder="Task description"
                 onChange={(event) => handleUpdateField("description", event.target.value)}
               />
@@ -312,6 +294,11 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   </Box>
                 )}
               </DialogContentText>
+            )}
+            {!!taskData.archivedAt && (
+              <Box my={2}>
+                <Typography>{`This task is archived.`}</Typography>
+              </Box>
             )}
             <Box my={2}>
               {subtasks?.length ? (

@@ -6,7 +6,7 @@ import {
   initializeCalendarEventData,
 } from "@/utils/calendarEvents";
 import { PopupState, usePopupState } from "material-ui-popup-state/hooks";
-import { createContext, Dispatch, FC, useContext, useReducer } from "react";
+import { createContext, Dispatch, FC, useContext, useEffect, useReducer } from "react";
 
 type NewCalendarEventDialogContextData = {
   newCalendarEventData: CalendarEventData;
@@ -24,11 +24,14 @@ export default NewCalendarEventDialogContext;
 
 export const NewCalendarEventDialogContextProvider: FC = ({ children }) => {
   const user = useUser();
-  const start = new Date();
   const defaultCalendarId = user?.settings.defaultCalendarId as ID;
   const [newCalendarEventData, dispatchNewCalendarEventData] = useReducer(
     calendarEventDataReducer,
-    initializeCalendarEventData({ start, calendarId: defaultCalendarId }),
+    initializeCalendarEventData({
+      start: new Date(),
+      calendarId: defaultCalendarId,
+      userId: user?.id as ID,
+    }),
     initializeCalendarEventData
   );
   const newCalendarEventDialogState = usePopupState({
@@ -40,6 +43,13 @@ export const NewCalendarEventDialogContextProvider: FC = ({ children }) => {
     dispatchNewCalendarEventData,
     newCalendarEventDialogState,
   };
+  useEffect(() => {
+    if (user?.id)
+      dispatchNewCalendarEventData({
+        field: "init",
+        value: { start: new Date(), calendarId: defaultCalendarId, userId: user?.id as ID },
+      });
+  }, [user, defaultCalendarId]);
   return (
     <NewCalendarEventDialogContext.Provider value={value}>
       {children}

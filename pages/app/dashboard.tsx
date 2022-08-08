@@ -5,8 +5,16 @@ import DashboardViewer, {
 } from "@/components/dashboard/Dashboard";
 import Select from "@/components/Select";
 import { DashboardLayouts } from "@/graphql/schema/definitions/Dashboard";
-import { dashboardFragment } from "@/graphql/schema/generated/fragments/dashboard.fragment";
+import { CreateDashboardArgs } from "@/graphql/schema/generated/args/dashboard.args";
+import {
+  DashboardFragment,
+  dashboardFragment,
+} from "@/graphql/schema/generated/fragments/dashboard.fragment";
 import { Dashboard } from "@/graphql/schema/generated/models/dashboard.model";
+import {
+  CREATE_DASHBOARD,
+  updateCacheAfterCreatingDashboard,
+} from "@/graphql/schema/generated/mutations/dashboard.mutations";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
@@ -64,15 +72,6 @@ const DEFAULT_LAYOUTS = {
   ],
 };
 
-const CREATE_DASHBOARD = gql`
-  mutation CreateDashboard($data: DashboardCreateInput!) {
-    createDashboard(data: $data) {
-      ...DashboardFragment
-    }
-  }
-  ${dashboardFragment}
-`;
-
 const QUERY = gql`
   query DashboardPage {
     ...DashboardData
@@ -93,30 +92,10 @@ interface DashboardPageData extends DashboardData {
 const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
   const { loading: loadingData, error, data } = useQuery<DashboardPageData>(QUERY);
-  const [createDashboard, { loading: loadingCreateDashboard }] = useMutation(CREATE_DASHBOARD, {
-    update(cache, { data }) {
-      const { createDashboard } = data || {};
-      if (createDashboard) {
-        cache.modify({
-          fields: {
-            dashboards(existingDashboards = []) {
-              const newDashboardRef = cache.writeFragment({
-                data: createDashboard,
-                fragment: gql`
-                  fragment NewDashboard on Dashboard {
-                    ...DashboardFragment
-                  }
-                  ${dashboardFragment}
-                `,
-                fragmentName: "NewDashboard",
-              });
-              return [...existingDashboards, newDashboardRef];
-            },
-          },
-        });
-      }
-    },
-  });
+  const [createDashboard, { loading: loadingCreateDashboard }] = useMutation<
+    { createDashboard: DashboardFragment },
+    CreateDashboardArgs
+  >(CREATE_DASHBOARD, updateCacheAfterCreatingDashboard);
   const loading = loadingData || loadingCreateDashboard;
   const { dashboards, ...dashboardData } = data || { dashboards: [] };
   const defaultDashboard = dashboards?.find((dashboard) => dashboard.isDefault);
@@ -139,8 +118,8 @@ const DashboardPage: NextPage = () => {
           data: {
             name: "Daily Planner",
             isDefault: true,
-            layouts: JSON.stringify(DEFAULT_LAYOUTS),
-            user: { connect: { id: session.user.id } },
+            layouts: DEFAULT_LAYOUTS,
+            userId: session.user.id,
           },
         },
       }).catch(console.error);

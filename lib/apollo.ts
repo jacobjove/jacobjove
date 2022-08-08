@@ -29,6 +29,7 @@ const scalarsLink = withScalars({
   schema: clientSchema,
   typesMap: {
     DateTimeISO: DateTimeResolver,
+    // ObjectId: ObjectIdScalar,
   },
 });
 

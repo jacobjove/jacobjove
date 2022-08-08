@@ -6,7 +6,7 @@ const definition: Definition = {
     userId: { required: true, type: "ID", typeCast: "ObjectId" },
     name: REQUIRED_STRING,
     description: OPTIONAL_STRING,
-    archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
   },
 };
 

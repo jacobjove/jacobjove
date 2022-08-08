@@ -5,10 +5,10 @@ const definition: Definition = {
   fields: {
     userId: { required: true, type: "ID", typeCast: "ObjectId" },
     name: REQUIRED_STRING,
-    public: { required: false, type: "Boolean", typeCast: "Boolean", default: false },
+    public: { required: false, type: "Boolean", default: false },
     chronString: OPTIONAL_STRING,
     defaultDurationInMinutes: { required: false, type: "Number", typeCast: "Int" },
-    archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
   },
 };
 

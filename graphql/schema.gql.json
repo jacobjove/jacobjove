@@ -38,6 +38,14 @@
             "deprecationReason": null
           },
           {
+            "name": "archivedAt",
+            "description": null,
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -174,6 +182,14 @@
             "deprecationReason": null
           },
           {
+            "name": "archivedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "provider",
             "description": null,
             "type": {
@@ -273,6 +289,14 @@
             "deprecationReason": null
           },
           {
+            "name": "archivedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "provider",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
@@ -356,6 +380,14 @@
             "deprecationReason": null
           },
           {
+            "name": "createdAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
@@ -407,6 +439,14 @@
             "name": "syncToken",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -651,7 +691,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -678,6 +718,14 @@
             "name": "name",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -1122,14 +1170,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
-            "description": null,
-            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "authorNames",
             "description": null,
             "type": {
@@ -1157,6 +1197,14 @@
                 "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
               }
             },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -1221,6 +1269,14 @@
             "name": "title",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -1969,14 +2025,6 @@
             "deprecationReason": null
           },
           {
-            "name": "archivedAt",
-            "description": null,
-            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "calendarId",
             "description": null,
             "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
@@ -1988,6 +2036,14 @@
             "name": "canceled",
             "description": null,
             "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -2060,6 +2116,14 @@
             "name": "title",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -2210,17 +2274,17 @@
             "deprecationReason": null
           },
           {
-            "name": "archivedAt",
+            "name": "color",
             "description": null,
-            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "color",
+            "name": "createdAt",
             "description": null,
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -2285,6 +2349,14 @@
             "name": "syncToken",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -2601,7 +2673,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -2652,6 +2724,14 @@
             "name": "public",
             "description": null,
             "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -2890,7 +2970,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -2925,6 +3005,14 @@
             "name": "parentId",
             "description": null,
             "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -3201,17 +3289,17 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "chronString",
             "description": null,
-            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "chronString",
+            "name": "createdAt",
             "description": null,
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -3244,6 +3332,14 @@
             "name": "public",
             "description": null,
             "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -3480,7 +3576,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -3507,6 +3603,14 @@
             "name": "name",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -3945,7 +4049,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -3972,6 +4076,14 @@
             "name": "listId",
             "description": null,
             "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -4066,7 +4178,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -4101,6 +4213,14 @@
             "name": "name",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -4313,14 +4433,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
-            "description": null,
-            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "content",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
@@ -4329,9 +4441,25 @@
             "deprecationReason": null
           },
           {
+            "name": "createdAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -8938,11 +9066,7 @@
             "name": "body",
             "description": null,
             "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-            },
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -9049,11 +9173,7 @@
           {
             "name": "body",
             "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-            },
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -9173,17 +9293,17 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "body",
             "description": null,
-            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "body",
+            "name": "createdAt",
             "description": null,
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -9216,6 +9336,14 @@
             "name": "title",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -9476,7 +9604,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -9511,6 +9639,14 @@
             "name": "title",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -10776,17 +10912,17 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "bookId",
             "description": null,
-            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "bookId",
+            "name": "createdAt",
             "description": null,
-            "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -10819,6 +10955,14 @@
             "name": "shelfId",
             "description": null,
             "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -11209,7 +11353,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "completedAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -11217,7 +11361,7 @@
             "deprecationReason": null
           },
           {
-            "name": "completedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -11284,6 +11428,14 @@
             "name": "title",
             "description": null,
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -11426,6 +11578,22 @@
             "deprecationReason": null
           },
           {
+            "name": "goals",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "OBJECT", "name": "Goal", "ofType": null }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "habits",
             "description": null,
             "args": [],
@@ -11502,6 +11670,22 @@
             "description": null,
             "args": [],
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "notebooks",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "OBJECT", "name": "Notebook", "ofType": null }
+              }
+            },
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -11728,7 +11912,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -11795,6 +11979,14 @@
             "name": "settings",
             "description": null,
             "type": { "kind": "SCALAR", "name": "JSON", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -12031,7 +12223,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "archivedAt",
+            "name": "createdAt",
             "description": null,
             "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
             "defaultValue": null,
@@ -12063,6 +12255,14 @@
             "deprecationReason": null
           },
           {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "userId",
             "description": null,
             "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
@@ -12078,6 +12278,52 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "ValueWhereUniqueInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "ObjectId", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WhereInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "createdAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": { "kind": "SCALAR", "name": "DateTimeISO", "ofType": null },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "WhereUniqueInput",
         "description": null,
         "fields": null,
         "inputFields": [

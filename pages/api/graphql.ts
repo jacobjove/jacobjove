@@ -6,7 +6,7 @@ import "reflect-metadata";
 import { createGqlContext } from "@/graphql/context";
 import { resolvers } from "@/graphql/schema";
 import { NextApiRequest, NextApiResponse, PageConfig } from "next";
-import { buildSchema, NonEmptyArray, MiddlewareFn } from "type-graphql-v2-fork";
+import { buildSchema, MiddlewareFn } from "type-graphql-v2-fork";
 import { ApolloServer } from "apollo-server-micro";
 import { Model, Document } from "mongoose";
 import { getClassForDocument } from "@typegoose/typegoose";
@@ -35,19 +35,21 @@ declare const global: NodeJS.Global & {
 
 const getApolloServerHandler = async () => {
   if (!global.apolloServerHandler) {
+    const isProd = process.env.NODE_ENV === "production";
     if (!resolvers?.length) throw new Error("No resolvers");
     const apolloServer = new ApolloServer({
       context: createGqlContext,
       schema: await buildSchema({
-        resolvers: resolvers as unknown as NonEmptyArray<CallableFunction>,
+        // resolvers: resolvers as NonEmptyArray<CallableFunction>,
+        resolvers: [__dirname + "/**/*.resolver.{ts,js}"],
         emitSchemaFile: {
           path: `${process.env.BASE_DIR}/graphql/schema.gql`,
         },
         globalMiddlewares: [TypegooseMiddleware],
         validate: false,
       }),
-      debug: process.env.NODE_ENV !== "production",
-      introspection: true,
+      debug: !isProd,
+      introspection: !isProd,
     });
     await apolloServer.start();
     global.apolloServerHandler = apolloServer.createHandler({ path: "/api/graphql" });

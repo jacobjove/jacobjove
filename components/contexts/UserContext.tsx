@@ -2,16 +2,21 @@ import { User } from "@/graphql/schema/generated/models/user.model";
 import { GET_USER } from "@/graphql/schema/generated/queries/user.queries";
 import { printError } from "@/utils/apollo/error-handling";
 import { useLazyQuery } from "@apollo/client";
-import { useSession } from "next-auth/react";
-import { createContext, FC, useContext, useEffect } from "react";
+import { Session } from "next-auth";
+// import { useSession } from "next-auth/react";
+import { createContext, FC, ReactNode, useContext, useEffect } from "react";
 
 const UserContext = createContext<User | null>(null);
 
 export default UserContext;
 
-export const UserContextProvider: FC = ({ children }) => {
-  const { data: session, status } = useSession();
-  const loadingAuth = status === "loading";
+interface UserContextProviderProps {
+  session: Session;
+  children: ReactNode;
+}
+
+export const UserContextProvider: FC<UserContextProviderProps> = ({ session, children }) => {
+  const loadingAuth = false;
   const [getUser, { loading: loadingUser, error, data }] = useLazyQuery<{ user: User }>(GET_USER);
   const loading = loadingAuth || loadingUser;
 

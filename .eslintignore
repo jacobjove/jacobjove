@@ -3,6 +3,4 @@
 coverage
 dist
 node_modules
-
-# Necessary to avoid graphql-eslint parsing error : (
-graphql/utils/*.ts
+_

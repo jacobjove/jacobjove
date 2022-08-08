@@ -1,10 +1,14 @@
 import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
-import { userFragment } from "@/graphql/schema/generated/fragments/user.fragment";
+import { UpdateUserArgs } from "@/graphql/schema/generated/args/user.args";
+import { UserFragment } from "@/graphql/schema/generated/fragments/user.fragment";
+import {
+  getOptimisticResponseForUserUpdate,
+  UPDATE_USER,
+} from "@/graphql/schema/generated/mutations/user.mutations";
 import { UserSettings } from "@/graphql/schema/types";
-import { printError } from "@/utils/apollo/error-handling";
+import { useHandleMutation } from "@/utils/data";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
-import { gql, useMutation } from "@apollo/client";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
@@ -26,15 +30,6 @@ interface SettingsPageProps {
   session: Session | null;
 }
 
-const UPDATE_SETTINGS = gql`
-  mutation UpdateSettings($userId: ObjectId!, $settings: JSON!) {
-    updateUser(where: { id: $userId }, data: { settings: $settings }) {
-      ...UserFragment
-    }
-  }
-  ${userFragment}
-`;
-
 interface SettingOptions {
   label: string;
   defaultValue: string;
@@ -44,7 +39,10 @@ interface SettingOptions {
 const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const user = useUser();
-  const [updateSettings, { loading: loadingUpdateSetting }] = useMutation(UPDATE_SETTINGS);
+  const [updateUser, { loading: loadingUpdateSetting }] = useHandleMutation<
+    { updateUser: UserFragment },
+    UpdateUserArgs
+  >(UPDATE_USER);
   const loading = loadingUpdateSetting;
   const userSettings: UserSettings = user?.settings ?? {};
   const settings: Record<keyof UserSettings, SettingOptions> = {
@@ -65,18 +63,15 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
       ...userSettings,
       [settingName]: newValue,
     };
-    updateSettings({
+    const data = { settings: newUserSettings };
+    const optimisticResponse = getOptimisticResponseForUserUpdate(user, data);
+    updateUser.current?.({
       variables: {
-        userId: user.id,
-        settings: newUserSettings,
+        where: { id: user.id },
+        data,
       },
-      optimisticResponse: {
-        updateUser: {
-          ...user,
-          settings: newUserSettings,
-        },
-      },
-    }).catch(printError);
+      optimisticResponse,
+    });
   };
   return (
     <AppLayout>

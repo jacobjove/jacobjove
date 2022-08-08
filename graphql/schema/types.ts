@@ -1,7 +1,8 @@
 import * as Scalars from "@/graphql/schema/scalars";
 import { PaletteMode } from "@mui/material";
+import { prop as Property } from "@typegoose/typegoose";
 import { ObjectId } from "mongodb";
-import { Field, ObjectType } from "type-graphql-v2-fork";
+import { Field, InputType, ObjectType } from "type-graphql-v2-fork";
 
 export type ID = string;
 
@@ -17,7 +18,7 @@ export type NullableNumber = number | null;
 export type DateTime = Date;
 export type NullableDateTime = DateTime | null;
 
-export type Map = Record<string, string>;
+export type Map = Record<string, unknown>;
 
 export interface UserSettings {
   colorMode?: PaletteMode;
@@ -39,4 +40,23 @@ export class Model {
 
   @Field(() => Scalars.DateTime, { nullable: false })
   updatedAt!: Date;
+
+  @Field(() => Scalars.DateTime, { nullable: true })
+  @Property({ type: () => Date, required: false, default: null })
+  archivedAt?: Date | null;
+}
+
+@InputType()
+export class WhereInput {
+  @Field(() => Scalars.DateTime, { nullable: true })
+  createdAt?: Date;
+
+  @Field(() => Scalars.DateTime, { nullable: true })
+  updatedAt?: Date;
+}
+
+@InputType()
+export class WhereUniqueInput {
+  @Field(() => Scalars.ObjectIdScalar, { nullable: true })
+  id?: ID | undefined;
 }

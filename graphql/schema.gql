@@ -12,6 +12,7 @@ type Account {
   _id: ObjectId!
   accessToken: String
   accessTokenExpiry: DateTimeISO
+  archivedAt: DateTimeISO
   createdAt: DateTimeISO!
   id: ObjectId!
   provider: String!
@@ -26,6 +27,7 @@ type Account {
 input AccountCreateInput {
   accessToken: String
   accessTokenExpiry: DateTimeISO
+  archivedAt: DateTimeISO
   provider: String!
   refreshToken: String
   remoteId: String!
@@ -37,6 +39,7 @@ input AccountCreateInput {
 input AccountUpdateInput {
   accessToken: String
   accessTokenExpiry: DateTimeISO
+  archivedAt: DateTimeISO
   provider: String
   refreshToken: String
   remoteId: String
@@ -48,12 +51,14 @@ input AccountUpdateInput {
 input AccountWhereInput {
   accessToken: String
   accessTokenExpiry: DateTimeISO
+  createdAt: DateTimeISO
   id: ObjectId
   provider: String
   refreshToken: String
   remoteId: String
   scopes: [String!]
   syncToken: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -88,10 +93,11 @@ input BeliefUpdateInput {
 }
 
 input BeliefWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   description: String
   id: ObjectId
   name: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -143,9 +149,9 @@ input BookUpdateInput {
 }
 
 input BookWhereInput {
-  archivedAt: DateTimeISO
   authorNames: [String!]
   authorNamesLf: [String!]
+  createdAt: DateTimeISO
   description: String
   id: ObjectId
   isbn: String
@@ -154,6 +160,7 @@ input BookWhereInput {
   publicationYear: Int
   slug: String
   title: String
+  updatedAt: DateTimeISO
 }
 
 input BookWhereUniqueInput {
@@ -246,9 +253,9 @@ input CalendarEventUpdateInput {
 
 input CalendarEventWhereInput {
   allDay: Boolean
-  archivedAt: DateTimeISO
   calendarId: ObjectId
   canceled: Boolean
+  createdAt: DateTimeISO
   end: DateTimeISO
   habitId: ObjectId
   id: ObjectId
@@ -258,6 +265,7 @@ input CalendarEventWhereInput {
   start: DateTimeISO
   taskId: ObjectId
   title: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -281,8 +289,8 @@ input CalendarUpdateInput {
 
 input CalendarWhereInput {
   accountId: ObjectId
-  archivedAt: DateTimeISO
   color: String
+  createdAt: DateTimeISO
   enabled: Boolean
   id: ObjectId
   name: String
@@ -291,6 +299,7 @@ input CalendarWhereInput {
   public: Boolean
   remoteId: String
   syncToken: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -333,13 +342,14 @@ input DashboardUpdateInput {
 }
 
 input DashboardWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   description: String
   id: ObjectId
   isDefault: Boolean
   layouts: JSON
   name: String
   public: Boolean
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -378,11 +388,12 @@ input GoalUpdateInput {
 }
 
 input GoalWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   description: String
   habitId: ObjectId
   id: ObjectId
   parentId: ObjectId
+  updatedAt: DateTimeISO
 }
 
 input GoalWhereUniqueInput {
@@ -421,12 +432,13 @@ input HabitUpdateInput {
 }
 
 input HabitWhereInput {
-  archivedAt: DateTimeISO
   chronString: String
+  createdAt: DateTimeISO
   defaultDurationInMinutes: Int
   id: ObjectId
   name: String
   public: Boolean
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -460,10 +472,11 @@ input IdentityUpdateInput {
 }
 
 input IdentityWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   description: String
   id: ObjectId
   name: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -522,10 +535,11 @@ input ListItemUpdateInput {
 }
 
 input ListItemWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   data: JSON
   id: ObjectId
   listId: ObjectId
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -542,11 +556,12 @@ input ListUpdateInput {
 }
 
 input ListWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   description: String
   fields: JSON
   id: ObjectId
   name: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -577,9 +592,10 @@ input MantraUpdateInput {
 }
 
 input MantraWhereInput {
-  archivedAt: DateTimeISO
   content: String
+  createdAt: DateTimeISO
   id: ObjectId
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -719,7 +735,7 @@ type Mutation {
 type Note {
   _id: ObjectId!
   archivedAt: DateTimeISO
-  body: String!
+  body: String
   createdAt: DateTimeISO!
   id: ObjectId!
   notebookId: ObjectId!
@@ -731,7 +747,7 @@ type Note {
 
 input NoteCreateInput {
   archivedAt: DateTimeISO
-  body: String!
+  body: String
   notebookId: ObjectId!
   public: Boolean
   title: String!
@@ -748,12 +764,13 @@ input NoteUpdateInput {
 }
 
 input NoteWhereInput {
-  archivedAt: DateTimeISO
   body: String
+  createdAt: DateTimeISO
   id: ObjectId
   notebookId: ObjectId
   public: Boolean
   title: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -790,11 +807,12 @@ input NotebookUpdateInput {
 }
 
 input NotebookWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   description: String
   id: ObjectId
   public: Boolean
   title: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -873,12 +891,13 @@ input ShelvingUpdateInput {
 }
 
 input ShelvingWhereInput {
-  archivedAt: DateTimeISO
   bookId: ObjectId
+  createdAt: DateTimeISO
   id: ObjectId
   position: Int
   rationale: String
   shelfId: ObjectId
+  updatedAt: DateTimeISO
 }
 
 input ShelvingWhereUniqueInput {
@@ -929,8 +948,8 @@ input TaskUpdateInput {
 }
 
 input TaskWhereInput {
-  archivedAt: DateTimeISO
   completedAt: DateTimeISO
+  createdAt: DateTimeISO
   description: String
   dueDate: DateTimeISO
   habitId: ObjectId
@@ -939,6 +958,7 @@ input TaskWhereInput {
   plannedStartDate: DateTimeISO
   rank: Int
   title: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
@@ -955,6 +975,7 @@ type User {
   createdAt: DateTimeISO!
   email: String!
   emailVerified: Boolean
+  goals: [Goal!]
   habits: [Habit!]
   id: ObjectId!
   image: String
@@ -962,6 +983,7 @@ type User {
   lastLogin: DateTimeISO
   mantras: [Mantra!]
   name: String
+  notebooks: [Notebook!]
   password: String
   settings: JSON!
   tasks: [Task!]
@@ -991,7 +1013,7 @@ input UserUpdateInput {
 }
 
 input UserWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   email: String
   emailVerified: Boolean
   id: ObjectId
@@ -1000,6 +1022,7 @@ input UserWhereInput {
   lastLogin: DateTimeISO
   name: String
   settings: JSON
+  updatedAt: DateTimeISO
 }
 
 input UserWhereUniqueInput {
@@ -1033,13 +1056,23 @@ input ValueUpdateInput {
 }
 
 input ValueWhereInput {
-  archivedAt: DateTimeISO
+  createdAt: DateTimeISO
   description: String
   id: ObjectId
   name: String
+  updatedAt: DateTimeISO
   userId: ObjectId
 }
 
 input ValueWhereUniqueInput {
+  id: ObjectId
+}
+
+input WhereInput {
+  createdAt: DateTimeISO
+  updatedAt: DateTimeISO
+}
+
+input WhereUniqueInput {
   id: ObjectId
 }

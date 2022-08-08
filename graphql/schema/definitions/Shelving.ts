@@ -10,7 +10,7 @@ const definition: Definition = {
     shelfId: { required: true, type: "ID", typeCast: "ObjectId" },
     position: { required: true, type: "Number", typeCast: "Int" },
     rationale: OPTIONAL_STRING,
-    archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
   },
 };
 

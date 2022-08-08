@@ -8,16 +8,26 @@ export const addItemToCache = (
   fragmentName: string
 ) => {
   if (data) {
+    const newItemRef = cache.writeFragment({
+      data,
+      fragment,
+      fragmentName,
+    });
     cache.modify({
       fields: {
         [fieldName]: (existingItems = []) => {
-          const newItemRef = cache.writeFragment({
-            data,
-            fragment,
-            fragmentName,
-          });
           return [...existingItems, newItemRef];
         },
+        user: (instance) => {
+          if (instance[fieldName]) {
+            return {
+              ...instance,
+              [fieldName]: [...instance[fieldName], newItemRef],
+            };
+          }
+          return instance;
+        },
+        // TODO:
       },
     });
   }

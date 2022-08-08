@@ -5,7 +5,7 @@ const definition: Definition = {
   fields: {
     userId: { required: true, type: "ID", typeCast: "ObjectId" },
     provider: REQUIRED_STRING,
-    remoteId: { required: true, unique: true, type: "String", typeCast: "String" },
+    remoteId: { required: true, unique: true, type: "String" },
     scopes: { required: true, type: "String[]", typeCast: "StringArray" },
     accessToken: OPTIONAL_STRING,
     refreshToken: OPTIONAL_STRING,

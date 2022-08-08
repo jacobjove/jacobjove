@@ -1,12 +1,19 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
 import { useUser } from "@/components/contexts/UserContext";
 import {
+  CreateCalendarEventArgs,
+  UpdateCalendarEventArgs,
+} from "@/graphql/schema/generated/args/calendarEvent.args";
+import { CalendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
+import {
   CalendarEventCreateInput,
   CalendarEventUpdateInput,
   CalendarEventWhereUniqueInput,
 } from "@/graphql/schema/generated/inputs/calendarEvent.inputs";
 import {
   CREATE_CALENDAR_EVENT,
+  getOptimisticResponseForCalendarEventCreation,
+  getOptimisticResponseForCalendarEventUpdate,
   UPDATE_CALENDAR_EVENT,
 } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
 import { ID } from "@/graphql/schema/types";
@@ -35,15 +42,15 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
     ...dialogProps
   } = props;
   const user = useUser();
-  const [mutate, { loading }] = useMutation(
-    calendarEventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT
-  );
+  const [mutate, { loading }] = useMutation<
+    { createCalendarEvent: CalendarEventFragment } | { updateCalendarEvent: CalendarEventFragment },
+    CreateCalendarEventArgs | UpdateCalendarEventArgs
+  >(calendarEventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT);
   const handleSave = async () => {
     if (!calendarEventData.start) {
       alert("Start date is required.");
       return;
     }
-    const now = new Date();
     // prettier-ignore
     const mutationVars: {
       data: CalendarEventUpdateInput;
@@ -60,23 +67,11 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
     await mutate({
       variables: mutationVars,
       optimisticResponse: calendarEventData.id
-        ? {
-            updateCalendarEvent: {
-              __typename: "CalendarEvent",
-              id: calendarEventData.id,
-              ...calendarEventData,
-              updatedAt: now,
-            },
-          }
-        : {
-            createCalendarEvent: {
-              __typename: "CalendarEvent",
-              id: "tmp-id",
-              ...calendarEventData,
-              createdAt: now,
-              updatedAt: now,
-            },
-          },
+        ? getOptimisticResponseForCalendarEventUpdate(
+            calendarEventData as CalendarEventFragment,
+            calendarEventData
+          )
+        : getOptimisticResponseForCalendarEventCreation(calendarEventData),
     });
     onClose();
   };

@@ -1,124 +1,21 @@
-import { GqlContext } from "@/graphql/context";
-import { User } from "@/graphql/schema/generated/models/user.model";
-import { Model } from "@/graphql/schema/types";
-import { GraphQLResolveInfo } from "graphql";
+import { WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
+import { ObjectId } from "mongodb";
 
-export function convertFilterForMongo<T>(filter: T) {
-  if (!filter) return undefined;
-  const modifiedFilter = filter as Record<string, unknown>;
-  Object.keys(modifiedFilter).forEach(
-    (key) => modifiedFilter[key] === undefined && delete modifiedFilter[key]
+type ModifiedFilter<T extends WhereUniqueInput> = Omit<T, "id"> & { _id?: ObjectId };
+
+export function convertFilterForMongo(filter: undefined): undefined;
+export function convertFilterForMongo<T extends WhereInput>(filter: T | undefined): T | undefined;
+export function convertFilterForMongo<T extends WhereUniqueInput>(filter: T): ModifiedFilter<T>;
+export function convertFilterForMongo<T extends WhereUniqueInput>(
+  filter: T | undefined
+): T | ModifiedFilter<T> | undefined {
+  if (filter === undefined) return undefined;
+  let modifiedFilter = Object.fromEntries(
+    Object.entries(filter).filter(([, value]) => {
+      return value !== undefined;
+    })
   );
-  return modifiedFilter;
-}
-
-interface CreateItemArgs {
-  collectionName: string;
-  ctx: GqlContext;
-  info: GraphQLResolveInfo;
-  args: DocCreationArgs;
-  inlineWithUser?: boolean;
-}
-export async function createItem({
-  collectionName,
-  ctx,
-  info: _info,
-  args,
-  inlineWithUser,
-}: CreateItemArgs) {
-  throw new Error("Not implemented");
-}
-
-export async function getItem(
-  collectionName: string,
-  ctx: GqlContext,
-  info: GraphQLResolveInfo,
-  args: any
-) {
-  throw new Error("Not implemented");
-}
-
-interface QueryArgs {
-  where?: any;
-  orderBy?: any;
-  cursor?: any;
-  take?: any;
-  skip?: any;
-  distinct?: any;
-}
-
-export async function resolveRelation(
-  collectionName: string,
-  object: Model & { id: string },
-  ctx: GqlContext,
-  args: QueryArgs
-): Promise<unknown[]> {
-  throw new Error("Not implemented");
-}
-
-export async function resolveUserRelation(
-  collectionName: string,
-  user: User,
-  ctx: GqlContext,
-  args: QueryArgs
-): Promise<unknown[]> {
-  throw new Error("Not implemented");
-}
-
-export async function getCollectionData(
-  collectionName: string,
-  ctx: GqlContext,
-  info: GraphQLResolveInfo,
-  args: QueryArgs
-): Promise<unknown[]> {
-  throw new Error("Not implemented");
-}
-
-export async function getUserSubcollectionData(
-  collectionName: string,
-  ctx: GqlContext,
-  info: GraphQLResolveInfo | undefined,
-  args: QueryArgs,
-  inline?: boolean
-): Promise<unknown[]> {
-  throw new Error("Not implemented");
-}
-
-interface DocCreationArgs {
-  data: any;
-}
-
-interface DocUpdateArgs {
-  where: { id?: string };
-  data: any;
-}
-
-export async function updateItem(
-  collectionName: string,
-  ctx: GqlContext,
-  info: GraphQLResolveInfo,
-  args: DocUpdateArgs,
-  inUserSubcollection = false
-): Promise<unknown> {
-  throw new Error("Not implemented");
-}
-
-export async function toggleSelection(
-  collectionName: string,
-  ctx: GqlContext,
-  info: GraphQLResolveInfo,
-  id: string,
-  archivedAt: Date | null
-): Promise<unknown> {
-  throw new Error("Not implemented");
-}
-
-export async function upsertItem(
-  collectionName: string,
-  ctx: GqlContext,
-  info: GraphQLResolveInfo,
-  args: DocUpdateArgs,
-  inUserSubcollection = false
-): Promise<unknown> {
-  throw new Error("Not implemented");
+  if (modifiedFilter.id) modifiedFilter = { _id: modifiedFilter.id };
+  console.log("Modified filter:", modifiedFilter);
+  return modifiedFilter as ModifiedFilter<T>;
 }

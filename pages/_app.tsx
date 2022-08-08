@@ -72,7 +72,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider>
       <ApolloProvider client={apolloClient}>
-        <UserContextProvider>
+        <UserContextProvider session={session}>
           <NewTaskDialogContextProvider>
             <NewCalendarEventDialogContextProvider>
               <DeviceContext.Provider value={deviceContextData}>

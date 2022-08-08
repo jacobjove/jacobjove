@@ -1,18 +1,15 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import { DraggedCalendarEvent } from "@/components/calendar/EventBox";
 import { useUser } from "@/components/contexts/UserContext";
-import {
-  CalendarEventFragment,
-  calendarEventFragment,
-} from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
+import { CreateCalendarEventArgs } from "@/graphql/schema/generated/args/calendarEvent.args";
+import { CalendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import {
   CREATE_CALENDAR_EVENT,
+  getOptimisticResponseForCalendarEventCreation,
+  updateCacheAfterCreatingCalendarEvent,
   UPDATE_CALENDAR_EVENT,
 } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
-import { ID } from "@/graphql/schema/types";
-import { buildNewItemFragment } from "@/graphql/utils/fragments";
-import { addItemToCache } from "@/utils/apollo";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
 import { useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
@@ -52,19 +49,10 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
     updateCalendarEvent: CalendarEventFragment;
   }>(UPDATE_CALENDAR_EVENT);
-  const [addEvent, { loading: loadingCreateCalendarEvent }] = useMutation<{
-    createCalendarEvent: CalendarEventFragment;
-  }>(CREATE_CALENDAR_EVENT, {
-    update(cache, { data }) {
-      const { createCalendarEvent } = data || {};
-      addItemToCache(
-        cache,
-        createCalendarEvent,
-        "calendarEvents",
-        ...buildNewItemFragment(calendarEventFragment, "CalendarEventFragment", "CalendarEvent")
-      );
-    },
-  });
+  const [addEvent, { loading: loadingCreateCalendarEvent }] = useMutation<
+    { createCalendarEvent: CalendarEventFragment },
+    CreateCalendarEventArgs
+  >(CREATE_CALENDAR_EVENT, updateCacheAfterCreatingCalendarEvent);
   const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
@@ -105,38 +93,19 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           const calendarId = draggedTask.calendarId ?? user.settings.defaultCalendarId;
           if (!calendarId) throw new Error("No calendar ID");
           const scheduleId = draggedTask.scheduleId ?? null;
+          const userId = user.id;
           const calendarEventData = {
             title: draggedTask.title,
             start,
             end,
             allDay: false,
+            calendarId,
+            scheduleId,
+            userId,
           };
-          const calendarEventDataWithConnections = {
-            ...calendarEventData,
-            calendar: { connect: { id: calendarId } },
-            schedule: scheduleId ? { connect: { id: scheduleId } } : undefined,
-          };
-          const now = new Date();
           addEvent({
-            variables: {
-              data: calendarEventDataWithConnections,
-            },
-            optimisticResponse: {
-              createCalendarEvent: {
-                __typename: "CalendarEvent",
-                id: "tmp-id",
-                scheduleId,
-                calendarId,
-                userId: user.id as ID,
-                taskId: draggedTask.id,
-                remoteId: null,
-                createdAt: now,
-                updatedAt: now,
-                archivedAt: null,
-                ...calendarEventData,
-                allDay: calendarEventData.allDay ?? false,
-              },
-            },
+            variables: { data: calendarEventData },
+            optimisticResponse: getOptimisticResponseForCalendarEventCreation(calendarEventData),
           });
         }
         // TODO: open event dialog

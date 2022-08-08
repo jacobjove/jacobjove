@@ -19,6 +19,7 @@ export const <%= name %>Fragment = gql`
 <% } -%>
     createdAt
     updatedAt
+    archivedAt
   }
 <% for (var modelImport of modelImports) { -%>
   ${<%= h.changeCase.camel(modelImport) %>Fragment}
@@ -30,6 +31,7 @@ export type <%= Name %>Fragment = Pick<
   | "__typename"
   | "id"
   | "createdAt"
-  | "updatedAt"<% for (var [i, fieldName] of Object.keys(selectableFields).entries()) { %>
+  | "updatedAt"
+  | "archivedAt"<% for (var [i, fieldName] of Object.keys(selectableFields).entries()) { %>
   | "<%= fieldName %>"<% } %>
 >;

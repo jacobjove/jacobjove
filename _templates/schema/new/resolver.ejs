@@ -21,6 +21,9 @@ import { GqlContext } from "@/graphql/context";
 import { GraphQLResolveInfo } from "graphql";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
+<% if (Object.keys(fields).includes("userId")) { -%>
+import UserModel from "@/graphql/schema/generated/models/user.model";
+<% } -%>
 
 @TypeGraphQL.Resolver(() => <%= Name %>)
 export class <%= Name %>Resolver {
@@ -46,7 +49,7 @@ export class <%= Name %>Resolver {
     @TypeGraphQL.Args() args: FindMany<%= Name %>Args
   ): Promise<<%= Name %>[]> {
     const filter = convertFilterForMongo(args.where);
-    return <%= Name %>Model.find(filter);
+    return <%= Name %>Model.find(filter ?? {});
   }
 
   @TypeGraphQL.Mutation(() => <%= Name %>)
@@ -55,7 +58,17 @@ export class <%= Name %>Resolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: Create<%= Name %>Args
   ) {
-    return <%= Name %>Model.create(args.data);
+    const <%= name %> = await <%= Name %>Model.create(args.data);
+<% if (Object.keys(fields).includes("userId")) { -%>
+    if (<%= name %>) {
+      // NOTE: This update fails if it's not awaited.
+      await UserModel.findOneAndUpdate(
+        { _id: <%= name %>.userId },
+        { $push: { <%= h.inflection.pluralize(name) %>: { ...<%= name %> } } },
+      );
+    }
+<% } -%>
+    return <%= name %>;
   }
 
   @TypeGraphQL.Mutation(() => [<%= Name %>], { nullable: false })
@@ -75,6 +88,11 @@ export class <%= Name %>Resolver {
   ) {
     const filter = convertFilterForMongo(args.where);
     const <%= name %> = await <%= Name %>Model.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
+<% if (Object.keys(fields).includes("userId")) { -%>
+    <%= name %> && UserModel.findOneAndUpdate({ _id: <%= name %>.userId, "<%= h.inflection.pluralize(name) %>._id": <%= name %>._id }, {
+      $set: { "<%= h.inflection.pluralize(name) %>.$": { ...<%= name %> } }
+    });
+<% } -%>
     return <%= name %>;
   }
 

@@ -152,7 +152,9 @@ const DayViewer: FC<DayViewerProps> = ({
 
   // Scroll to the current time whenever it changes.
   useEffect(() => {
+    console.log("scrollOffsetPx", scrollOffsetPx);
     const scrollableDiv = scrollableDivRef.current;
+    if (!scrollableDiv) console.error(">>>>> NO SCROLLABLE DIV");
     if (scrollableDiv) scrollableDiv.scrollTo({ top: scrollOffsetPx, behavior: "smooth" });
   }, [scrollOffsetPx]);
   return (

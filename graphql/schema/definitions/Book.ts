@@ -12,7 +12,7 @@ const definition: Definition = {
     authorNamesLf: { required: true, type: "String[]", typeCast: "StringArray" },
     publicationYear: { required: false, type: "Number", typeCast: "Int" },
     originalPublicationYear: { required: false, type: "Number", typeCast: "Int" },
-    archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
     // authorships?: Authorship[];
     // readings?: Reading[];
     // shelvings?: Shelving[];

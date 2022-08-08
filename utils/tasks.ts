@@ -1,18 +1,20 @@
 import { Task } from "@/graphql/schema/generated/models/task.model";
-import { InputData } from "@/utils/data";
+import { InitialData, InputData } from "@/utils/data";
 
 export type TaskData = InputData<Task>;
-
-export type InitialTaskData = Pick<TaskData, "rank" | "userId"> & Partial<TaskData>;
+export type InitialTaskData = InitialData<Task, "rank" | "userId">;
 
 export const initializeTaskData = (taskData: InitialTaskData): TaskData => {
+  // console.error(">>>", taskData);
   return {
     title: "",
     description: "",
+    plannedStartDate: null,
     dueDate: null,
     completedAt: null,
     archivedAt: null,
     parentId: null,
+    habitId: null,
     ...taskData,
   };
 };

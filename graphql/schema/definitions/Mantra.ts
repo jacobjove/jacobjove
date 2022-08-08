@@ -5,7 +5,7 @@ const definition: Definition = {
   fields: {
     userId: { required: true, type: "ID", typeCast: "ObjectId" },
     content: REQUIRED_STRING,
-    archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
   },
 };
 

@@ -6,24 +6,33 @@ import Definition, {
 import { DocumentType } from "@typegoose/typegoose";
 import bcrypt from "bcryptjs";
 import CalendarModel from "../generated/models/calendar.model";
+import NotebookModel from "../generated/models/notebook.model";
 
 const COST_FACTOR = 12;
 
 const definition: Definition = {
   name: "user",
-  modelImports: ["Account", "Calendar", "CalendarEvent", "Habit", "Mantra", "Task"],
+  modelImports: [
+    "Account",
+    "Calendar",
+    "CalendarEvent",
+    "Goal",
+    "Habit",
+    "Mantra",
+    "Notebook",
+    "Task",
+  ],
   fields: {
     name: OPTIONAL_STRING,
     email: { ...REQUIRED_STRING, unique: true },
     emailVerified: OPTIONAL_BOOLEAN,
     image: OPTIONAL_STRING,
-    isAdmin: { required: true, default: false, type: "Boolean", typeCast: "Boolean" },
+    isAdmin: { required: true, default: false, type: "Boolean" },
     settings: { required: true, default: {}, type: "UserSettings", typeCast: "JSON" },
     lastLogin: { required: false, type: "DateTime", typeCast: "DateTime" },
-    password: { required: false, select: false, type: "String", typeCast: "String" },
-    archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    password: { required: false, select: false, type: "String" },
+    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
     accounts: { required: false, default: [], type: "Account[]", typeCast: "[Account]" },
-    tasks: { required: false, default: [], type: "Task[]", typeCast: "[Task]" },
     calendars: { required: false, default: [], type: "Calendar[]", typeCast: "[Calendar]" },
     calendarEvents: {
       required: false,
@@ -31,8 +40,11 @@ const definition: Definition = {
       type: "CalendarEvent[]",
       typeCast: "[CalendarEvent]",
     },
-    mantras: { required: false, default: [], type: "Mantra[]", typeCast: "[Mantra]" },
+    goals: { required: false, default: [], type: "Goal[]", typeCast: "[Goal]" },
     habits: { required: false, default: [], type: "Habit[]", typeCast: "[Habit]" },
+    mantras: { required: false, default: [], type: "Mantra[]", typeCast: "[Mantra]" },
+    notebooks: { required: false, default: [], type: "Notebook[]", typeCast: "[Notebook]" },
+    tasks: { required: false, default: [], type: "Task[]", typeCast: "[Task]" },
   },
   hooks: {
     save: {
@@ -44,6 +56,7 @@ const definition: Definition = {
         return next();
       },
       post: async (user: any) => {
+        let saveChanges = false;
         if (!user.calendars?.length) {
           const defaultCalendar = await CalendarModel.create({
             userId: user.id,
@@ -53,8 +66,18 @@ const definition: Definition = {
           user.markModified("calendars");
           user.settings.defaultCalendarId = defaultCalendar.id;
           user.markModified("settings");
-          user.save();
+          saveChanges = true;
         }
+        if (!user.notebooks?.length) {
+          const defaultNotebook = await NotebookModel.create({
+            userId: user.id,
+            title: "Journal",
+          });
+          user.notebooks = [defaultNotebook];
+          user.markModified("notebooks");
+          saveChanges = true;
+        }
+        saveChanges && user.save();
       },
     },
   },

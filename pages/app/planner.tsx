@@ -14,10 +14,9 @@ import { taskFragment } from "@/graphql/schema/generated/fragments/task.fragment
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import { Goal } from "@/graphql/schema/generated/models/goal.model";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
-import { Mantra } from "@/graphql/schema/generated/models/mantra.model";
 import { Task } from "@/graphql/schema/generated/models/task.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -63,92 +62,19 @@ interface PlannerPageProps {
   data: PlannerPageData;
 }
 
-interface PlannerCompanionStuffProps {
-  selectedDateState: [Date, Dispatch<Date>];
-  tasks: Task[];
-  habits: Habit[];
-  goals: Goal[];
-  mantras: Mantra[];
-}
-
-const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
-  selectedDateState,
-  tasks,
-  habits,
-  goals,
-  mantras,
-}: PlannerCompanionStuffProps) => {
-  const [fullScreen, setFullScreen] = useState(false);
-  const [value, setValue] = useState("1");
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
-  return (
-    <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
-      <Box
-        sx={{
-          borderRadius: "4px",
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
-          width: "100%",
-          height: "100%",
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          typography: "body1",
-          "& .MuiTabPanel-root": { p: 0, flexGrow: 1 },
-          "& .MuiTabs-flexContainer": {
-            justifyContent: "space-between",
-          },
-        }}
-      >
-        <FullScreenToggleToolbar fullScreenState={[fullScreen, setFullScreen]} />
-        <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="Tasks" value="1" />
-              <Tab label="Habits" value="2" />
-              <Tab label="Goals" value="3" />
-              <Tab label="Mantras" value="4" />
-            </TabList>
-          </Box>
-          <TabPanel value="1">
-            <TasksBox
-              data={{ tasks: tasks ?? [] }}
-              selectedDateState={selectedDateState}
-              displayTitle={false}
-            />
-          </TabPanel>
-          <TabPanel value="2">
-            <HabitsBox habits={habits} displayTitle={false} />
-          </TabPanel>
-          <TabPanel value="3">
-            <GoalsBox goals={goals} displayTitle={false} />
-          </TabPanel>
-          <TabPanel value="4">
-            <MantrasBox mantras={mantras} displayTitle={false} />
-          </TabPanel>
-        </TabContext>
-      </Box>
-    </FullScreenExpandableComponent>
-  );
-};
-
 const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
   console.log(">>> Rendering planner page...");
   const user = useUser({ required: true });
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const { loading: _loading, error: _error, data } = useQuery<PlannerPageData>(QUERY);
+  // const { loading: _loading, error: _error, data } = useQuery<PlannerPageData>(QUERY);
   const displaySideBySide = useMediaQuery(json2mq({ minWidth: "1000px" }));
 
   // const { calendarEvents, calendars, tasks } = data;
-  const { calendars } = user ?? {};
-  const { tasks, calendarEvents, habits, goals } = data ?? {};
+  const { calendars, calendarEvents } = user ?? {};
   // const calendarEvents =
   //   calendars?.reduce((previousValue, currentValue) => {
   //     return [...previousValue, ...(currentValue.events ?? [])];
   //   }, [] as CalendarEvent[]) ?? [];
-  const mantras = user?.mantras;
 
   return (
     <AppLayout>
@@ -207,13 +133,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
             flexDirection: "column",
           }}
         >
-          <PlannerCompanionStuff
-            tasks={tasks ?? []}
-            habits={habits ?? []}
-            goals={goals ?? []}
-            mantras={mantras ?? []}
-            selectedDateState={[selectedDate, setSelectedDate]}
-          />
+          <PlannerCompanionStuff selectedDateState={[selectedDate, setSelectedDate]} />
         </Box>
       </Box>
     </AppLayout>
@@ -230,3 +150,68 @@ export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFun
     query: QUERY,
   },
 });
+
+interface PlannerCompanionStuffProps {
+  selectedDateState: [Date, Dispatch<Date>];
+}
+
+const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
+  selectedDateState,
+}: PlannerCompanionStuffProps) => {
+  const user = useUser({ required: true });
+  const { tasks, goals, mantras, habits } = user ?? {};
+  const [fullScreen, setFullScreen] = useState(false);
+  const [value, setValue] = useState("1");
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+  return (
+    <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
+      <Box
+        sx={{
+          borderRadius: "4px",
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
+          width: "100%",
+          height: "100%",
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          typography: "body1",
+          "& .MuiTabPanel-root": { p: 0, flexGrow: 1 },
+          "& .MuiTabs-flexContainer": {
+            justifyContent: "space-between",
+          },
+        }}
+      >
+        <FullScreenToggleToolbar fullScreenState={[fullScreen, setFullScreen]} />
+        <TabContext value={value}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList onChange={handleChange} aria-label="lab API tabs example">
+              <Tab label="Tasks" value="1" />
+              <Tab label="Habits" value="2" />
+              <Tab label="Goals" value="3" />
+              <Tab label="Mantras" value="4" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">
+            <TasksBox
+              data={{ tasks: tasks ?? [] }}
+              selectedDateState={selectedDateState}
+              displayTitle={false}
+            />
+          </TabPanel>
+          <TabPanel value="2">
+            <HabitsBox habits={habits ?? []} displayTitle={false} />
+          </TabPanel>
+          <TabPanel value="3">
+            <GoalsBox goals={goals ?? []} displayTitle={false} />
+          </TabPanel>
+          <TabPanel value="4">
+            <MantrasBox mantras={mantras ?? []} displayTitle={false} />
+          </TabPanel>
+        </TabContext>
+      </Box>
+    </FullScreenExpandableComponent>
+  );
+};

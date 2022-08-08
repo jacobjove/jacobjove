@@ -7,7 +7,7 @@ const definition: Definition = {
     name: REQUIRED_STRING,
     description: OPTIONAL_STRING,
     fields: { required: true, type: "Map", typeCast: "JSON" },
-    archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
   },
 };
 

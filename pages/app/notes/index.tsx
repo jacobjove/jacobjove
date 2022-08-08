@@ -3,13 +3,18 @@ import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import NotesMenu from "@/components/notes/NotesMenu";
 import NoteViewer from "@/components/notes/NoteViewer";
+import { CreateNoteArgs } from "@/graphql/schema/generated/args/note.args";
 import { noteFragment, NoteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
-import { notebookFragment } from "@/graphql/schema/generated/fragments/notebook.fragment";
 import { Note } from "@/graphql/schema/generated/models/note.model";
-import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
+import {
+  CREATE_NOTE,
+  getOptimisticResponseForNoteCreation,
+  updateCacheAfterCreatingNote,
+} from "@/graphql/schema/generated/mutations/note.mutations";
 import { ID } from "@/graphql/schema/types";
+import { useHandleMutation } from "@/utils/data";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -22,31 +27,17 @@ interface NotesPageProps {
   session: Session | null;
 }
 
-const CREATE_NOTE = gql`
-  mutation CreateNote($data: NoteCreateInput!) {
-    createNote(data: $data) {
-      ...NoteFragment
-    }
-  }
-  ${noteFragment}
-`;
-
 const QUERY = gql`
   query GetNotes {
     notes {
       ...NoteFragment
     }
-    notebooks {
-      ...NotebookFragment
-    }
   }
   ${noteFragment}
-  ${notebookFragment}
 `;
 
 interface NotesPageData {
   notes: Note[];
-  notebooks: Notebook[];
 }
 
 const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
@@ -54,7 +45,8 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const { isMobile } = useContext(DeviceContext);
   // const notebooks = user?.notebooks;
   const { data, loading: loadingNotes, error } = useQuery<NotesPageData>(QUERY);
-  const { notebooks: _notebooks, notes: _notes } = data ?? {};
+  const _notebooks = user?.notebooks ?? [];
+  const { notes: _notes } = data ?? {};
   const notebooks = _notebooks?.filter((notebook) => !notebook.archivedAt);
   const [selectedNotebookId, setSelectedNotebookId] = useState<string | null>(null);
   const selectedNotebook = notebooks?.find((nb) => nb.id === selectedNotebookId);
@@ -63,71 +55,33 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const [selectedNoteIds, setSelectedNoteIds] = useState<string[]>([]);
   const selectedNoteId = selectedNoteIds[0];
   const selectedNote = notes?.find((note) => note.id === selectedNoteId);
-  const [createNote, { loading: loadingCreateNote }] = useMutation<{
-    createNote: NoteFragment;
-  }>(CREATE_NOTE, {
-    update(cache, { data }) {
-      const { createNote } = data || {};
-      if (createNote) {
-        cache.modify({
-          fields: {
-            notes(existingNotes = []) {
-              const newNoteRef = cache.writeFragment({
-                data: createNote,
-                fragment: gql`
-                  fragment NewNote on Note {
-                    ...NoteFragment
-                  }
-                  ${noteFragment}
-                `,
-                fragmentName: "NewNote",
-              });
-              return [...existingNotes, newNoteRef];
-            },
-          },
-        });
-      }
-    },
-  });
+  const [createNote, { loading: loadingCreateNote }] = useHandleMutation<
+    { createNote: NoteFragment },
+    CreateNoteArgs
+  >(CREATE_NOTE, updateCacheAfterCreatingNote);
 
   const loading = loadingNotes || loadingCreateNote;
 
-  // console.log(">>>", data);
-
   const handleCreateNote = async () => {
+    const userId = user?.id as ID;
     const title = "Untitled note";
     const body = "";
-    const now = new Date();
     if (!notebooks?.[0]?.id) {
       console.error("No notebooks found.");
       return;
     }
     const notebookId = selectedNotebook?.id || notebooks[0].id; // TODO
     const tmpId = "tmp-id";
-    const fetchResult = createNote({
-      variables: {
-        data: {
-          title,
-          body,
-          notebook: { connect: { id: notebookId } },
-        },
-      },
-      optimisticResponse: {
-        createNote: {
-          title,
-          body,
-          public: false,
-          userId: user?.id as ID,
-          notebookId,
-          createdAt: now,
-          updatedAt: now,
-          archivedAt: null,
-          __typename: "Note",
-          id: tmpId,
-        },
-      },
-    }).catch((error) => {
-      console.error(error);
+    const data = {
+      title,
+      body,
+      notebookId,
+      userId,
+    };
+    const optimisticResponse = getOptimisticResponseForNoteCreation(data);
+    const fetchResult = createNote.current?.({
+      variables: { data },
+      optimisticResponse,
     });
     setSelectedNoteIds([tmpId]);
     const newNoteId = (await fetchResult)?.data?.createNote?.id;

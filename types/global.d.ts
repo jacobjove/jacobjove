@@ -5,6 +5,8 @@ declare global {
   let _mongoosePromise: Promise<MongoClient>;
 }
 
+declare type RequiredKeys<T> = { [K in keyof T as undefined extends T[K] ? never : K]: T[K] };
+
 declare type NoUndefinedField<T> = {
   [P in keyof T]-?: Exclude<T[P], undefined>;
 };

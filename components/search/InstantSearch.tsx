@@ -12,8 +12,8 @@ export interface InstantSearchProps {
   label: string; // label for the search input
   query: DocumentNode; // GraphQL query that accepts "where" and "orderBy" arguments
   dataKey: string; // key associated with the search results in the GraphQL response data
-  idKey?: string;
-  labelKey: string;
+  idKey?: keyof Option;
+  labelKey: keyof Option;
   searchableFieldKeys: string[];
   getOptionKey?: (option: Option | string) => string;
   minimumSearchLength?: number; // minimum length of text input required to call `getSearchResultsForInput`
@@ -42,7 +42,7 @@ const InstantSearch: FC<InstantSearchProps> = ({
   searchableFieldKeys,
   idKey = "_id",
   getOptionKey = (option: Option | string) =>
-    typeof option === "string" ? option : option[labelKey],
+    typeof option === "string" ? option : `${option[labelKey]}`,
   minimumSearchLength = 1,
   throttleDelay = 250,
   onChange, // TODO: include in autocompleteProps after fixing signature

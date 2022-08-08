@@ -1,4 +1,6 @@
 import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
+import { ObjectId } from "mongodb";
+import UserModel from "../generated/models/user.model";
 
 const definition: Definition = {
   name: "task",
@@ -12,7 +14,21 @@ const definition: Definition = {
     habitId: { required: false, type: "ID", typeCast: "ObjectId" },
     rank: { required: true, type: "Number", typeCast: "Int" },
     completedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
-    archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+  },
+  hooks: {
+    save: {
+      post: async (instance) => {
+        if (instance && (instance as any)["userId"] && !instance?.archivedAt) {
+          UserModel.updateOne(
+            {
+              _id: new ObjectId((instance as any).userId),
+              "tasks.id": instance.id ?? instance._id.toHexString(),
+            },
+            { $set: { "users.$": { ...instance } } }
+          ).catch(console.error);
+        }
+      },
+    },
   },
 };
 

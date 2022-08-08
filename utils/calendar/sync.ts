@@ -1,62 +1,17 @@
 import AccountModel from "@/graphql/schema/generated/models/account.model";
 import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
+import { UPDATE_CALENDAR } from "@/graphql/schema/generated/mutations/calendar.mutations";
+import { UPSERT_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
+import { GET_CALENDAR } from "@/graphql/schema/generated/queries/calendar.queries";
 import { initializeApollo } from "@/lib/apollo";
 import { CalendarClient } from "@/utils/calendar/client";
 import rateLimiter from "@/utils/rate-limit";
-import { gql } from "@apollo/client";
 import { addYears } from "date-fns";
 import { Session } from "next-auth";
 
 const limiter = rateLimiter({
   ttl: 60 * 1000, // 60 seconds
 });
-
-const GET_CALENDAR = gql`
-  query GetCalendar($id: String!) {
-    calendar(where: { id: $id }) {
-      id
-      provider
-      remoteId
-      syncToken
-      account {
-        id
-        provider
-        remoteId
-        accessToken
-        refreshToken
-      }
-    }
-  }
-`;
-
-const UPDATE_CALENDAR = gql`
-  mutation UpdateCalendar($where: CalendarWhereUniqueInput!, $data: CalendarUpdateInput!) {
-    updateCalendar(where: $where, data: $data) {
-      id
-    }
-  }
-`;
-
-const UPSERT_CALENDAR_EVENT = gql`
-  mutation UpsertCalendarEvent(
-    $where: CalendarEventWhereUniqueInput!
-    $create: CalendarEventCreateInput!
-    $update: CalendarEventUpdateInput!
-  ) {
-    upsertCalendarEvent(where: $where, create: $create, update: $update) {
-      remoteId
-      calendarSourceId
-      calendarId
-      title
-      start
-      allDay
-      end
-      createdAt
-      updatedAt
-      canceled
-    }
-  }
-`;
 
 export const syncCalendar = async (calendarId: string, session: Session) => {
   const apolloClient = initializeApollo(); // TODO
@@ -166,8 +121,7 @@ export const syncCalendar = async (calendarId: string, session: Session) => {
                       calendarId,
                     },
                   },
-                  create: eventData,
-                  update: eventData,
+                  data: eventData,
                 },
               })
               .catch(console.error);
