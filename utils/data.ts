@@ -32,8 +32,6 @@ function initializeData<T>(initialData: T): T {
     // title: "",
     // description: "",
     // dueDate: null,
-    // completedAt: null,
-    // archivedAt: null,
     // parentId: null,
     ...initialData,
   };
@@ -90,29 +88,3 @@ export function useHandleMutation<MutationReturnType, MutationArgsType>(
   );
   return [mutationHandlerRef, mutationResult, abortController];
 }
-
-// export type InitialCalendarEventData = Pick<CalendarEventData, "start" | "calendarId"> &
-//   Partial<CalendarEventData>;
-
-// export const initialize = (
-//   data: InitialCalendarEventData
-// ): CalendarEventData => {
-//   // prettier-ignore
-//   if (!data.calendarId) throw new Error("Calendar ID not specified.");
-//   return {
-//     taskId: null,
-//     scheduleId: null,
-//     archivedAt: null,
-//     remoteId: null,
-//     habitId: null,
-//     title: "",
-//     notes: "",
-//     canceled: false,
-//     allDay: false,
-//     // end: data.end ??
-//     //   (!data.allDay
-//     //     ? addMinutes(new Date(data.start), DEFAULT_EVENT_LENGTH_IN_MINUTES)
-//     //     : undefined),
-//     ...data,
-//   };
-// };

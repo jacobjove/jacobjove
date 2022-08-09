@@ -1,5 +1,5 @@
 import TaskRow, { TaskRowProps } from "@/components/actions/TaskRow";
-import { Task } from "@/graphql/schema/generated/models/task.model";
+import { Task } from "@/graphql/generated/models/task.model";
 import { Button } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

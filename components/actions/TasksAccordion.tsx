@@ -1,13 +1,13 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import TasksTable from "@/components/actions/TasksTable";
-import { DistinctTasksUpdateArgs, TaskUpdateArgs } from "@/graphql/schema/generated/args/task.args";
-import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
-import { Task } from "@/graphql/schema/generated/models/task.model";
+import { DistinctTasksUpdateArgs } from "@/graphql/generated/args/task.args";
+import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
+import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import { Task } from "@/graphql/generated/models/task.model";
 import {
   getOptimisticResponseForTaskUpdate,
-  UPDATE_TASK,
   UPDATE_TASKS_DISTINCTLY,
-} from "@/graphql/schema/generated/mutations/task.mutations";
+} from "@/graphql/generated/mutations/task.mutations";
 import { useHandleMutation } from "@/utils/data";
 import { gql } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -70,10 +70,7 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
 
   const [recentlyCompletedTasksExpanded, setRecentlyCompletedTasksExpanded] = useState(false);
 
-  const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] = useHandleMutation<
-    { updateTask: TaskFragment },
-    TaskUpdateArgs
-  >(UPDATE_TASK);
+  const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] = useUpdateTask();
 
   const [updateTaskRanks] = useHandleMutation<
     { updateTasksDistinctly: TaskFragment[] },

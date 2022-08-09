@@ -5,8 +5,8 @@ import Definition, {
 } from "@/graphql/schema/definition";
 import { DocumentType } from "@typegoose/typegoose";
 import bcrypt from "bcryptjs";
-import CalendarModel from "../generated/models/calendar.model";
-import NotebookModel from "../generated/models/notebook.model";
+import CalendarModel from "../../generated/models/calendar.model";
+import NotebookModel from "../../generated/models/notebook.model";
 
 const COST_FACTOR = 12;
 

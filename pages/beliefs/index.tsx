@@ -1,7 +1,7 @@
 import SelectableBelief from "@/components/beliefs/SelectableBelief";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Belief } from "@/graphql/schema/generated/models/belief.model";
+import { Belief } from "@/graphql/generated/models/belief.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";

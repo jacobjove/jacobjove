@@ -11,11 +11,13 @@ import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import DateContext from "@/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@/components/contexts/UserContext";
-import { Calendar, CalendarEvent } from "@/graphql/schema/generated/models";
+import { Calendar, CalendarEvent } from "@/graphql/generated/models";
+import { ID } from "@/graphql/schema/types";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import {
+  addMinutes,
   differenceInMinutes,
   isBefore,
   isSameDay,
@@ -228,11 +230,17 @@ const DayViewer: FC<DayViewerProps> = ({
                         // allows us to avoid stopping propagation on click events for
                         // other elements in the slot.
                         if (e.target === e.currentTarget) {
+                          const calendarId = user?.settings.defaultCalendarId;
+                          if (!calendarId) throw new Error("No default calendar");
                           dispatchNewCalendarEventData({
                             field: "init",
                             value: {
-                              calendarId: user?.settings.defaultCalendarId,
+                              title: "",
+                              calendarId,
+                              userId: user?.id as ID,
                               start: eventSlotDate,
+                              end: addMinutes(eventSlotDate, 29),
+                              allDay: false,
                             },
                           });
                           eventEditingDialogTriggerProps.onClick(e);

@@ -1,25 +1,16 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
 import { useUser } from "@/components/contexts/UserContext";
+import { CalendarEventFragment } from "@/graphql/generated/fragments/calendarEvent.fragment";
 import {
-  CalendarEventCreationArgs,
-  CalendarEventUpdateArgs,
-} from "@/graphql/schema/generated/args/calendarEvent.args";
-import { CalendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
+  useCreateCalendarEvent,
+  useUpdateCalendarEvent,
+} from "@/graphql/generated/hooks/calendarEvent.hooks";
 import {
-  CalendarEventCreationInput,
-  CalendarEventUpdateInput,
-  CalendarEventWhereUniqueInput,
-} from "@/graphql/schema/generated/inputs/calendarEvent.inputs";
-import {
-  CREATE_CALENDAR_EVENT,
   getOptimisticResponseForCalendarEventCreation,
   getOptimisticResponseForCalendarEventUpdate,
-  UPDATE_CALENDAR_EVENT,
-} from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
-import { CalendarEventData } from "@/graphql/schema/generated/reducers/calendarEvent.reducer";
-import { ID } from "@/graphql/schema/types";
+} from "@/graphql/generated/mutations/calendarEvent.mutations";
+import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
 import { Payload } from "@/utils/data";
-import { useMutation } from "@apollo/client";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -28,11 +19,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { Dispatch, FC } from "react";
 
-interface CalendarEventDialogProps extends ReturnType<typeof bindPopover> {
+type CalendarEventDialogProps = ReturnType<typeof bindPopover> & {
   calendarEvent: CalendarEventData;
-  toggleCompletion?: Dispatch<boolean>;
   dispatchCalendarEventData: Dispatch<Payload<CalendarEventData>>;
-}
+  mutation: "create" | "update";
+};
 
 const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventDialogProps) => {
   const {
@@ -40,13 +31,13 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
     dispatchCalendarEventData,
     onClose,
     anchorEl: _anchorEl,
+    mutation,
     ...dialogProps
   } = props;
   const user = useUser();
-  const [mutate, { loading }] = useMutation<
-    { createCalendarEvent: CalendarEventFragment } | { updateCalendarEvent: CalendarEventFragment },
-    CalendarEventCreationArgs | CalendarEventUpdateArgs
-  >(calendarEventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT);
+  const [create, { loading: createLoading }] = useCreateCalendarEvent();
+  const [update, { loading: updateLoading }] = useUpdateCalendarEvent();
+  const loading = createLoading || updateLoading;
   const handleSave = async () => {
     if (!calendarEventData.start) {
       alert("Start date is required.");
@@ -57,28 +48,22 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
       console.log(calendarEventData);
       return;
     }
-    // prettier-ignore
-    const mutationVars: {
-      data: CalendarEventUpdateInput;
-      where: CalendarEventWhereUniqueInput;
-    } | {
-      data: CalendarEventCreationInput;
-    } = {
-      ...(!!calendarEventData.id && { where: { id: calendarEventData.id } }),
-      data: {
-        ...calendarEventData,
-        userId: user?.id as ID,
-      }
-    };
-    await mutate({
-      variables: mutationVars,
-      optimisticResponse: calendarEventData.id
-        ? getOptimisticResponseForCalendarEventUpdate(
-            calendarEventData as CalendarEventFragment,
-            calendarEventData
-          )
-        : getOptimisticResponseForCalendarEventCreation(calendarEventData),
-    });
+    const data = calendarEventData;
+    mutation === "create"
+      ? await create.current?.({
+          variables: { data },
+          optimisticResponse: getOptimisticResponseForCalendarEventCreation(data),
+        })
+      : await update.current?.({
+          variables: {
+            where: { id: calendarEventData.id },
+            data,
+          },
+          optimisticResponse: getOptimisticResponseForCalendarEventUpdate(
+            data as CalendarEventFragment,
+            data
+          ),
+        });
     onClose();
   };
   return (

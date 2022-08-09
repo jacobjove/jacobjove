@@ -14,7 +14,7 @@ import { parseCookies, setCookie } from "nookies";
 // import SpeedDialAction from "@mui/material/SpeedDialAction";
 // import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { FC, ReactNode, useContext, useState } from "react";
-import CalendarEventDialog from "./calendar/CalendarEventDialog";
+import CalendarEventCreationDialog from "./calendar/CalendarEventCreationDialog";
 import { useNewCalendarEventDialog } from "./contexts/NewCalendarEventDialogContext";
 import { useNewTaskDialog } from "./contexts/NewTaskDialogContext";
 
@@ -153,7 +153,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
               dispatchTaskData={dispatchNewTaskData}
               {...bindPopover(newTaskDialogState)}
             />
-            <CalendarEventDialog
+            <CalendarEventCreationDialog
               calendarEvent={newCalendarEventData}
               dispatchCalendarEventData={dispatchNewCalendarEventData}
               {...bindPopover(newCalendarEventDialogState)}

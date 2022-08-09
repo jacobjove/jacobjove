@@ -1,5 +1,5 @@
 import DataBox, { DataBoxProps } from "@/components/DataBox";
-import { Goal } from "@/graphql/schema/generated/models/goal.model";
+import { Goal } from "@/graphql/generated/models/goal.model";
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";

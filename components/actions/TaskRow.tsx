@@ -1,17 +1,10 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
 import { useUser } from "@/components/contexts/UserContext";
-import { TaskUpdateArgs } from "@/graphql/schema/generated/args/task.args";
-import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
-import { Task } from "@/graphql/schema/generated/models/task.model";
-import {
-  getOptimisticResponseForTaskUpdate,
-  UPDATE_TASK,
-} from "@/graphql/schema/generated/mutations/task.mutations";
-import { taskDataReducer } from "@/graphql/schema/generated/reducers/task.reducer";
+import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import { Task } from "@/graphql/generated/models/task.model";
+import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { ID } from "@/graphql/schema/types";
-import { useHandleMutation } from "@/utils/data";
-import { initializeTaskData } from "@/utils/tasks";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -25,7 +18,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { format, isPast, isSameDay, isSameYear, isToday } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { FC, RefObject, useMemo, useReducer, useRef, useState } from "react";
+import { FC, RefObject, useMemo, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
 export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
@@ -66,15 +59,9 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   // const habit = task.habit; // TODO
   const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
 
-  const [taskData, dispatchTaskData] = useReducer(
-    taskDataReducer,
-    initializeTaskData(task),
-    initializeTaskData
-  );
+  const [taskData, dispatchTaskData] = useTaskDataReducer(task);
 
-  const [updateTask, { loading }] = useHandleMutation<{ updateTask: TaskFragment }, TaskUpdateArgs>(
-    UPDATE_TASK
-  );
+  const [updateTask, { loading }] = useUpdateTask();
 
   onLoading(loading);
 

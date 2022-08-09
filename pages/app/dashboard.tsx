@@ -4,17 +4,17 @@ import DashboardViewer, {
   fragment as dashboardDataFragment,
 } from "@/components/dashboard/Dashboard";
 import Select from "@/components/Select";
-import { DashboardLayouts } from "@/graphql/schema/definitions/Dashboard";
-import { DashboardCreationArgs } from "@/graphql/schema/generated/args/dashboard.args";
+import { DashboardCreationArgs } from "@/graphql/generated/args/dashboard.args";
 import {
   DashboardFragment,
   dashboardFragment,
-} from "@/graphql/schema/generated/fragments/dashboard.fragment";
-import { Dashboard } from "@/graphql/schema/generated/models/dashboard.model";
+} from "@/graphql/generated/fragments/dashboard.fragment";
+import { Dashboard } from "@/graphql/generated/models/dashboard.model";
 import {
   CREATE_DASHBOARD,
   updateCacheAfterCreatingDashboard,
-} from "@/graphql/schema/generated/mutations/dashboard.mutations";
+} from "@/graphql/generated/mutations/dashboard.mutations";
+import { DashboardLayouts } from "@/graphql/schema/definitions/Dashboard";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";

@@ -1,13 +1,10 @@
 import { useUser } from "@/components/contexts/UserContext";
-import {
-  CalendarEventData,
-  calendarEventDataReducer,
-} from "@/graphql/schema/generated/reducers/calendarEvent.reducer";
+import { useCalendarEventDataReducer } from "@/graphql/generated/hooks/calendarEvent.hooks";
+import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
 import { ID } from "@/graphql/schema/types";
-import { initializeCalendarEventData } from "@/utils/calendarEvents";
 import { Payload } from "@/utils/data";
 import { PopupState, usePopupState } from "material-ui-popup-state/hooks";
-import { createContext, Dispatch, FC, useContext, useEffect, useReducer } from "react";
+import { createContext, Dispatch, FC, useContext, useEffect } from "react";
 
 type NewCalendarEventDialogContextData = {
   newCalendarEventData: CalendarEventData;
@@ -26,15 +23,12 @@ export default NewCalendarEventDialogContext;
 export const NewCalendarEventDialogContextProvider: FC = ({ children }) => {
   const user = useUser();
   const defaultCalendarId = user?.settings.defaultCalendarId as ID;
-  const [newCalendarEventData, dispatchNewCalendarEventData] = useReducer(
-    calendarEventDataReducer,
-    initializeCalendarEventData({
-      start: new Date(),
-      calendarId: defaultCalendarId,
-      userId: user?.id as ID,
-    }),
-    initializeCalendarEventData
-  );
+  const [newCalendarEventData, dispatchNewCalendarEventData] = useCalendarEventDataReducer({
+    title: "",
+    start: new Date(),
+    calendarId: defaultCalendarId,
+    userId: user?.id as ID,
+  });
   const newCalendarEventDialogState = usePopupState({
     variant: "popover",
     popupId: `new-calendarEvent-dialog`,

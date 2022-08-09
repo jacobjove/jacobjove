@@ -1,29 +1,22 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
-import { TaskCreationArgs, TaskUpdateArgs } from "@/graphql/schema/generated/args/task.args";
-import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
-import { Habit } from "@/graphql/schema/generated/models/habit.model";
-import { Task } from "@/graphql/schema/generated/models/task.model";
+import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
+import { useCreateTask, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import { Habit } from "@/graphql/generated/models/habit.model";
+import { Task } from "@/graphql/generated/models/task.model";
 import {
-  CREATE_TASK,
   getOptimisticResponseForTaskCreation,
   getOptimisticResponseForTaskUpdate,
-  updateCacheAfterCreatingTask,
-  UPDATE_TASK,
-} from "@/graphql/schema/generated/mutations/task.mutations";
+} from "@/graphql/generated/mutations/task.mutations";
+import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
-import { printError } from "@/utils/apollo/error-handling";
-import { Payload, useHandleMutation } from "@/utils/data";
-import { TaskData } from "@/utils/tasks";
-import { useMutation } from "@apollo/client";
+import { Payload } from "@/utils/data";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
-// import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotesIcon from "@mui/icons-material/Notes";
 import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";
-// import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -32,12 +25,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-// import Table from "@mui/material/Table";
-// import TableBody from "@mui/material/TableBody";
-// import TableCell from "@mui/material/TableCell";
-// import TableContainer from "@mui/material/TableContainer";
-// import TableHead from "@mui/material/TableHead";
-// import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
@@ -78,12 +65,8 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     popupId: taskData.id ? `task-${taskData.id}-menu` : "new-task-menu",
   });
 
-  const [updateTask] = useHandleMutation<{ updateTask: TaskFragment }, TaskUpdateArgs>(UPDATE_TASK);
-
-  const [createTask, { loading: _loadingCreateTask }] = useMutation<
-    { createTask: TaskFragment },
-    TaskCreationArgs
-  >(CREATE_TASK, updateCacheAfterCreatingTask);
+  const [updateTask] = useUpdateTask();
+  const [createTask] = useCreateTask();
 
   const handleClose = () => {
     if (stopwatchIsRunning) {
@@ -94,7 +77,10 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     onClose();
   };
 
-  const handleUpdateField = (field: string, value: unknown) => {
+  const handleUpdateField = (
+    field: "init" | keyof TaskData,
+    value: TaskData | TaskData[keyof TaskData]
+  ) => {
     dispatchTaskData({ field, value });
     if (canUpdate) {
       const data = { [field]: value };
@@ -133,13 +119,14 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     if (!canUpdate && taskData.title) {
       console.log("Creating task...", taskData);
       const optimisticResponse = getOptimisticResponseForTaskCreation(taskData);
-      createTask({
+      createTask.current?.({
         variables: { data: taskData },
         optimisticResponse,
-      }).catch(printError);
+      });
       dispatchTaskData({
         field: "init",
         value: {
+          title: "",
           userId: user?.id as ID,
           rank: taskData.rank + 1,
         },

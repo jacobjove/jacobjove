@@ -1,13 +1,9 @@
 import { useUser } from "@/components/contexts/UserContext";
-import { AccountUpdateArgs } from "@/graphql/schema/generated/args/account.args";
-import { CalendarUpdateArgs } from "@/graphql/schema/generated/args/calendar.args";
-import { accountFragment } from "@/graphql/schema/generated/fragments/account.fragment";
-import { calendarFragment } from "@/graphql/schema/generated/fragments/calendar.fragment";
-import { Account } from "@/graphql/schema/generated/models/account.model";
-import { Calendar } from "@/graphql/schema/generated/models/calendar.model";
-import { User } from "@/graphql/schema/generated/models/user.model";
-import { GET_USER } from "@/graphql/schema/generated/queries/user.queries";
-import { useHandleMutation } from "@/utils/data";
+import { useUpdateAccount } from "@/graphql/generated/hooks/account.hooks";
+import { useUpdateCalendar } from "@/graphql/generated/hooks/calendar.hooks";
+import { Calendar } from "@/graphql/generated/models/calendar.model";
+import { User } from "@/graphql/generated/models/user.model";
+import { GET_USER } from "@/graphql/generated/queries/user.queries";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CloseIcon from "@mui/icons-material/Close";
@@ -46,24 +42,6 @@ const CREATE_CALENDARS = gql`
       count
     }
   }
-`;
-
-const UPDATE_ACCOUNT = gql`
-  mutation UpdateAccount($accountId: String!, $data: AccountUpdateInput!) {
-    updateAccount(where: { id: $accountId }, data: $data) {
-      ...AccountFragment
-    }
-  }
-  ${accountFragment}
-`;
-
-const UPDATE_CALENDAR = gql`
-  mutation UpdateCalendar($calendarId: String!, $data: CalendarUpdateInput!) {
-    updateCalendar(where: { id: $calendarId }, data: $data) {
-      ...CalendarFragment
-    }
-  }
-  ${calendarFragment}
 `;
 
 interface CalendarProviderProps {
@@ -117,14 +95,8 @@ const CalendarSelectionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 export default function CalendarApiProviderDialog(props: CalendarApiProviderDialogProps) {
   const { provider, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
   const user = useUser();
-  const [updateAccount, { loading: loadingUpdateAccount }] = useHandleMutation<
-    { updateAccount: Account },
-    AccountUpdateArgs
-  >(UPDATE_ACCOUNT);
-  const [updateCalendar, { loading: loadingUpdateCalendar }] = useHandleMutation<
-    { updateCalendar: Calendar },
-    CalendarUpdateArgs
-  >(UPDATE_CALENDAR);
+  const [updateAccount, { loading: loadingUpdateAccount }] = useUpdateAccount();
+  const [updateCalendar, { loading: loadingUpdateCalendar }] = useUpdateCalendar();
   const [addCalendars, { loading: loadingAddCalendars }] = useMutation<{
     addCalendars: Calendar[];
   }>(CREATE_CALENDARS, {

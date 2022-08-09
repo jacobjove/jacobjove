@@ -12,7 +12,7 @@ import { getTimeOffsetPx } from "@/components/calendar/views/DayViewer";
 import DateContext from "@/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@/components/contexts/UserContext";
-import { Calendar, CalendarEvent } from "@/graphql/schema/generated/models";
+import { Calendar, CalendarEvent } from "@/graphql/generated/models";
 import { ID } from "@/graphql/schema/types";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";

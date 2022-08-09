@@ -3,16 +3,11 @@ import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import NotesMenu from "@/components/notes/NotesMenu";
 import NoteViewer from "@/components/notes/NoteViewer";
-import { NoteCreationArgs } from "@/graphql/schema/generated/args/note.args";
-import { noteFragment, NoteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
-import { Note } from "@/graphql/schema/generated/models/note.model";
-import {
-  CREATE_NOTE,
-  getOptimisticResponseForNoteCreation,
-  updateCacheAfterCreatingNote,
-} from "@/graphql/schema/generated/mutations/note.mutations";
+import { noteFragment } from "@/graphql/generated/fragments/note.fragment";
+import { useCreateNote } from "@/graphql/generated/hooks/note.hooks";
+import { Note } from "@/graphql/generated/models/note.model";
+import { getOptimisticResponseForNoteCreation } from "@/graphql/generated/mutations/note.mutations";
 import { ID } from "@/graphql/schema/types";
-import { useHandleMutation } from "@/utils/data";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
@@ -55,10 +50,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const [selectedNoteIds, setSelectedNoteIds] = useState<string[]>([]);
   const selectedNoteId = selectedNoteIds[0];
   const selectedNote = notes?.find((note) => note.id === selectedNoteId);
-  const [createNote, { loading: loadingCreateNote }] = useHandleMutation<
-    { createNote: NoteFragment },
-    NoteCreationArgs
-  >(CREATE_NOTE, updateCacheAfterCreatingNote);
+  const [createNote, { loading: loadingCreateNote }] = useCreateNote();
 
   const loading = loadingNotes || loadingCreateNote;
 

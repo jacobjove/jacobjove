@@ -1,5 +1,5 @@
-import { User } from "@/graphql/schema/generated/models/user.model";
-import { GET_USER } from "@/graphql/schema/generated/queries/user.queries";
+import { User } from "@/graphql/generated/models/user.model";
+import { GET_USER } from "@/graphql/generated/queries/user.queries";
 import { printError } from "@/utils/apollo/error-handling";
 import { useLazyQuery } from "@apollo/client";
 import { Session } from "next-auth";

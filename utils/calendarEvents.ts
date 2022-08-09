@@ -1,5 +1,5 @@
-import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
-import { CalendarEventData } from "@/graphql/schema/generated/reducers/calendarEvent.reducer";
+import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
+import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
 import { InitialData } from "@/utils/data";
 import { addMinutes } from "date-fns";
 

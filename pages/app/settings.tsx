@@ -1,13 +1,8 @@
 import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
-import { UserUpdateArgs } from "@/graphql/schema/generated/args/user.args";
-import { UserFragment } from "@/graphql/schema/generated/fragments/user.fragment";
-import {
-  getOptimisticResponseForUserUpdate,
-  UPDATE_USER,
-} from "@/graphql/schema/generated/mutations/user.mutations";
+import { useUpdateUser } from "@/graphql/generated/hooks/user.hooks";
+import { getOptimisticResponseForUserUpdate } from "@/graphql/generated/mutations/user.mutations";
 import { UserSettings } from "@/graphql/schema/types";
-import { useHandleMutation } from "@/utils/data";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
@@ -39,10 +34,7 @@ interface SettingOptions {
 const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const user = useUser();
-  const [updateUser, { loading: loadingUpdateSetting }] = useHandleMutation<
-    { updateUser: UserFragment },
-    UserUpdateArgs
-  >(UPDATE_USER);
+  const [updateUser, { loading: loadingUpdateSetting }] = useUpdateUser();
   const loading = loadingUpdateSetting;
   const userSettings: UserSettings = user?.settings ?? {};
   const settings: Record<keyof UserSettings, SettingOptions> = {

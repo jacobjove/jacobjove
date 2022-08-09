@@ -1,4 +1,4 @@
-import { User } from "@/graphql/schema/generated/models/user.model";
+import { User } from "@/graphql/generated/models/user.model";
 
 const ENABLED_PROVIDERS: CalendarProvider[] = ["google"];
 

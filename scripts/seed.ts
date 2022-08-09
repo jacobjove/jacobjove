@@ -8,11 +8,11 @@ dotenv.config();
 
 import mongoosePromise from "@/lib/mongodb";
 import usersData from "@/graphql/seeds/users";
-import UserModel from "@/graphql/schema/generated/models/user.model";
+import UserModel from "@/graphql/generated/models/user.model";
 import tasksData from "@/graphql/seeds/tasks";
-import TaskModel from "@/graphql/schema/generated/models/task.model";
-import CalendarEventModel from "@/graphql/schema/generated/models/calendarEvent.model";
-import CalendarModel from "@/graphql/schema/generated/models/calendar.model";
+import TaskModel from "@/graphql/generated/models/task.model";
+import CalendarEventModel from "@/graphql/generated/models/calendarEvent.model";
+import CalendarModel from "@/graphql/generated/models/calendar.model";
 
 async function main() {
   await mongoosePromise;

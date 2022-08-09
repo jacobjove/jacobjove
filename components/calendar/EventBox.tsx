@@ -1,15 +1,13 @@
 import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
-import { CalendarEventUpdateArgs } from "@/graphql/schema/generated/args/calendarEvent.args";
-import { CalendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
-import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
-import { UPDATE_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
-import { calendarEventDataReducer } from "@/graphql/schema/generated/reducers/calendarEvent.reducer";
-import { initializeCalendarEventData } from "@/utils/calendarEvents";
-import { useHandleMutation } from "@/utils/data";
+import {
+  useCalendarEventDataReducer,
+  useUpdateCalendarEvent,
+} from "@/graphql/generated/hooks/calendarEvent.hooks";
+import { CalendarEvent } from "@/graphql/generated/models";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
-import { Typography } from "@mui/material";
+import { Toolbar, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -20,7 +18,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import { format } from "date-fns";
 import { bindPopover, bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
-import { ComponentProps, FC, useReducer, useState } from "react";
+import { ComponentProps, FC, useState } from "react";
 import { useDrag } from "react-dnd";
 
 interface EventBoxProps extends ComponentProps<typeof Box> {
@@ -34,11 +32,7 @@ export interface DraggedCalendarEvent extends CalendarEvent {
 const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   const { event, ...rest } = props;
   const [hovered, setHovered] = useState(false);
-  const [calendarEventData, dispatchCalendarEventData] = useReducer(
-    calendarEventDataReducer,
-    initializeCalendarEventData(event),
-    initializeCalendarEventData
-  );
+  const [calendarEventData, dispatchCalendarEventData] = useCalendarEventDataReducer(event);
   const detailDialogState = usePopupState({
     variant: "popover",
     popupId: `event-${event.id}-detail-dialog`,
@@ -133,6 +127,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
         editingDialogState={editingDialogState}
       />
       <CalendarEventDialog
+        mutation={"update"}
         calendarEvent={event}
         dispatchCalendarEventData={dispatchCalendarEventData}
         {...bindPopover(editingDialogState)}
@@ -166,14 +161,14 @@ const EventDetailDialog: FC<EventDetailDialogProps> = (props: EventDetailDialogP
         onClose={onClose}
         {...dialogProps}
       >
-        <Box display="flex" justifyContent={"end"}>
+        <Toolbar sx={{ display: "flex", justifyContent: "end" }}>
           <IconButton {...bindTrigger(deletionDialogState)}>
             <DeleteIcon />
           </IconButton>
           <IconButton {...bindTrigger(editingDialogState)}>
             <EditIcon />
           </IconButton>
-        </Box>
+        </Toolbar>
         <DialogTitle>{event.title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -210,10 +205,7 @@ const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> 
 ) => {
   const { event, closeDetailDialog, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
 
-  const [updateCalendarEvent, { loading }] = useHandleMutation<
-    { updateCalendarEvent: CalendarEventFragment },
-    CalendarEventUpdateArgs
-  >(UPDATE_CALENDAR_EVENT);
+  const [updateCalendarEvent, { loading }] = useUpdateCalendarEvent();
   const handleDeletion = () => {
     const archivedAt = new Date();
     updateCalendarEvent.current?.({

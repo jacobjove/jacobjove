@@ -201,7 +201,7 @@ input CalendarCreationInput {
 
 type CalendarEvent {
   _id: ObjectId!
-  allDay: Boolean!
+  allDay: Boolean
   archivedAt: DateTimeISO
   calendarId: ObjectId!
   canceled: Boolean
@@ -220,7 +220,7 @@ type CalendarEvent {
 }
 
 input CalendarEventCreationInput {
-  allDay: Boolean!
+  allDay: Boolean
   archivedAt: DateTimeISO
   calendarId: ObjectId!
   canceled: Boolean

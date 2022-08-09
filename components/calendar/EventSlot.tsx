@@ -2,20 +2,12 @@ import { DraggedTask } from "@/components/actions/TaskRow";
 import { DraggedCalendarEvent } from "@/components/calendar/EventBox";
 import { useUser } from "@/components/contexts/UserContext";
 import {
-  CalendarEventCreationArgs,
-  CalendarEventUpdateArgs,
-} from "@/graphql/schema/generated/args/calendarEvent.args";
-import { CalendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
-import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
-import {
-  CREATE_CALENDAR_EVENT,
-  getOptimisticResponseForCalendarEventCreation,
-  updateCacheAfterCreatingCalendarEvent,
-  UPDATE_CALENDAR_EVENT,
-} from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
+  useCreateCalendarEvent,
+  useUpdateCalendarEvent,
+} from "@/graphql/generated/hooks/calendarEvent.hooks";
+import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
+import { getOptimisticResponseForCalendarEventCreation } from "@/graphql/generated/mutations/calendarEvent.mutations";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
-import { useHandleMutation } from "@/utils/data";
-import { useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
@@ -50,16 +42,8 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, view: _view, onClick, past } = props;
   const user = useUser();
   const [hovered, setHovered] = useState(false);
-  const [updateCalendarEvent, { loading: loadingUpdateCalendarEvent }] = useHandleMutation<
-    {
-      updateCalendarEvent: CalendarEventFragment;
-    },
-    CalendarEventUpdateArgs
-  >(UPDATE_CALENDAR_EVENT);
-  const [createCalendarEvent, { loading: loadingCreateCalendarEvent }] = useMutation<
-    { createCalendarEvent: CalendarEventFragment },
-    CalendarEventCreationArgs
-  >(CREATE_CALENDAR_EVENT, updateCacheAfterCreatingCalendarEvent);
+  const [updateCalendarEvent, { loading: loadingUpdateCalendarEvent }] = useUpdateCalendarEvent();
+  const [createCalendarEvent, { loading: loadingCreateCalendarEvent }] = useCreateCalendarEvent();
   const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
@@ -108,7 +92,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             scheduleId,
             userId,
           };
-          createCalendarEvent({
+          createCalendarEvent.current?.({
             variables: { data },
             optimisticResponse: getOptimisticResponseForCalendarEventCreation(data),
           });

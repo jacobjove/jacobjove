@@ -1,24 +1,12 @@
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
-import { NoteUpdateArgs } from "@/graphql/schema/generated/args/note.args";
-import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
-import { Note } from "@/graphql/schema/generated/models/note.model";
-import { useDataReducer, useHandleMutation } from "@/utils/data";
-import { gql } from "@apollo/client";
+import { useNoteDataReducer, useUpdateNote } from "@/graphql/generated/hooks/note.hooks";
+import { Note } from "@/graphql/generated/models/note.model";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 // import Toolbar from "@mui/material/Toolbar";
 import { FC, useEffect, useState } from "react";
-
-const UPDATE_NOTE = gql`
-  mutation UpdateNote($noteId: String!, $data: NoteUpdateInput!) {
-    updateNote(where: { id: $noteId }, data: $data) {
-      ...NoteFragment
-    }
-  }
-  ${noteFragment}
-`;
 
 interface NoteViewerProps {
   note: Note;
@@ -27,9 +15,9 @@ interface NoteViewerProps {
 const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
   const [fullScreen, setFullScreen] = useState(false);
 
-  const [noteData, dispatchNoteData] = useDataReducer(note);
+  const [noteData, dispatchNoteData] = useNoteDataReducer(note);
 
-  const [handleUpdateNote] = useHandleMutation<{ updateNote: Note }, NoteUpdateArgs>(UPDATE_NOTE);
+  const [handleUpdateNote] = useUpdateNote();
 
   useEffect(() => {
     note && dispatchNoteData({ field: "init", value: note });

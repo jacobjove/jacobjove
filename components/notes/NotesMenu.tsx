@@ -1,25 +1,13 @@
 import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import SearchDialog from "@/components/search/SearchDialog";
-import {
-  NotebookCreationArgs,
-  NotebookUpdateArgs,
-} from "@/graphql/schema/generated/args/notebook.args";
-import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
+import { noteFragment } from "@/graphql/generated/fragments/note.fragment";
 // import Select from "@/components/Select";
-import {
-  notebookFragment,
-  NotebookFragment,
-} from "@/graphql/schema/generated/fragments/notebook.fragment";
-import { Note } from "@/graphql/schema/generated/models/note.model";
-import { Notebook } from "@/graphql/schema/generated/models/notebook.model";
-import {
-  CREATE_NOTEBOOK,
-  getOptimisticResponseForNotebookCreation,
-  updateCacheAfterCreatingNotebook,
-} from "@/graphql/schema/generated/mutations/notebook.mutations";
+import { useCreateNotebook, useUpdateNotebook } from "@/graphql/generated/hooks/notebook.hooks";
+import { Note } from "@/graphql/generated/models/note.model";
+import { Notebook } from "@/graphql/generated/models/notebook.model";
+import { getOptimisticResponseForNotebookCreation } from "@/graphql/generated/mutations/notebook.mutations";
 import { ID } from "@/graphql/schema/types";
-import { useHandleMutation } from "@/utils/data";
 import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -53,15 +41,6 @@ import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-p
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Dispatch, useContext, useEffect, useMemo, useState } from "react";
-
-const UPDATE_NOTEBOOK = gql`
-  mutation UpdateNotebook($id: String!, $data: NotebookUpdateInput!) {
-    updateNotebook(data: $data, where: { id: $id }) {
-      ...NotebookFragment
-    }
-  }
-  ${notebookFragment}
-`;
 
 const SEARCH_QUERY = gql`
   query GetNotes($where: NoteWhereInput!, $orderBy: [NoteOrderByWithRelationInput!]) {
@@ -121,15 +100,8 @@ export default function NotesMenu({
     popupId: `notebook-${selectedNotebook?.id}-menu`,
   });
 
-  const [createNotebook] = useHandleMutation<
-    { createNotebook: NotebookFragment },
-    NotebookCreationArgs
-  >(CREATE_NOTEBOOK, updateCacheAfterCreatingNotebook);
-
-  const [updateNotebook] = useHandleMutation<
-    { updateNotebook: NotebookFragment },
-    NotebookUpdateArgs
-  >(UPDATE_NOTEBOOK);
+  const [createNotebook] = useCreateNotebook();
+  const [updateNotebook] = useUpdateNotebook();
 
   // const loading = _loading || loadingCreateNotebook;
 

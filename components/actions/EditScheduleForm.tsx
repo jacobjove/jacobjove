@@ -1,4 +1,4 @@
-import { Task } from "@/graphql/schema/generated/models/task.model";
+import { Task } from "@/graphql/generated/models/task.model";
 import { FC } from "react";
 
 interface EditScheduleFormProps {
