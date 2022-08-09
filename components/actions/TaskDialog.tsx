@@ -1,6 +1,6 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
-import { CreateTaskArgs, UpdateTaskArgs } from "@/graphql/schema/generated/args/task.args";
+import { TaskCreationArgs, TaskUpdateArgs } from "@/graphql/schema/generated/args/task.args";
 import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
 import { Habit } from "@/graphql/schema/generated/models/habit.model";
 import { Task } from "@/graphql/schema/generated/models/task.model";
@@ -13,7 +13,7 @@ import {
 } from "@/graphql/schema/generated/mutations/task.mutations";
 import { ID } from "@/graphql/schema/types";
 import { printError } from "@/utils/apollo/error-handling";
-import { useHandleMutation } from "@/utils/data";
+import { Payload, useHandleMutation } from "@/utils/data";
 import { TaskData } from "@/utils/tasks";
 import { useMutation } from "@apollo/client";
 import CloseIcon from "@mui/icons-material/Close";
@@ -48,7 +48,7 @@ import TasksTable from "./TasksTable";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   task: TaskData;
-  dispatchTaskData: Dispatch<{ field: string; value: unknown }>;
+  dispatchTaskData: Dispatch<Payload<TaskData>>;
 }
 
 const LEFT_SIDE_WIDTH = "3.3rem";
@@ -78,11 +78,11 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     popupId: taskData.id ? `task-${taskData.id}-menu` : "new-task-menu",
   });
 
-  const [updateTask] = useHandleMutation<{ updateTask: TaskFragment }, UpdateTaskArgs>(UPDATE_TASK);
+  const [updateTask] = useHandleMutation<{ updateTask: TaskFragment }, TaskUpdateArgs>(UPDATE_TASK);
 
   const [createTask, { loading: _loadingCreateTask }] = useMutation<
     { createTask: TaskFragment },
-    CreateTaskArgs
+    TaskCreationArgs
   >(CREATE_TASK, updateCacheAfterCreatingTask);
 
   const handleClose = () => {

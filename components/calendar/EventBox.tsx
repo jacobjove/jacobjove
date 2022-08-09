@@ -1,9 +1,10 @@
 import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
-import { UpdateCalendarEventArgs } from "@/graphql/schema/generated/args/calendarEvent.args";
+import { CalendarEventUpdateArgs } from "@/graphql/schema/generated/args/calendarEvent.args";
 import { CalendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import { UPDATE_CALENDAR_EVENT } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
-import { calendarEventDataReducer, initializeCalendarEventData } from "@/utils/calendarEvents";
+import { calendarEventDataReducer } from "@/graphql/schema/generated/reducers/calendarEvent.reducer";
+import { initializeCalendarEventData } from "@/utils/calendarEvents";
 import { useHandleMutation } from "@/utils/data";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -211,7 +212,7 @@ const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> 
 
   const [updateCalendarEvent, { loading }] = useHandleMutation<
     { updateCalendarEvent: CalendarEventFragment },
-    UpdateCalendarEventArgs
+    CalendarEventUpdateArgs
   >(UPDATE_CALENDAR_EVENT);
   const handleDeletion = () => {
     const archivedAt = new Date();

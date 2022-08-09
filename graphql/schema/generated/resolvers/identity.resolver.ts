@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateIdentityArgs,
-  CreateManyIdentityArgs,
+  ArgsForUpdatingManyIdentities,
   DeleteIdentityArgs,
   DeleteManyIdentityArgs,
   FindManyIdentityArgs,
   FindUniqueIdentityArgs,
-  UpdateIdentityArgs,
-  UpdateManyIdentityArgs,
-  UpsertIdentityArgs,
+  IdentitiesCreationArgs,
+  IdentityCreationArgs,
+  IdentityUpdateArgs,
+  IdentityUpsertionArgs,
 } from "@/graphql/schema/generated/args/identity.args";
 import IdentityModel, { Identity } from "@/graphql/schema/generated/models/identity.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class IdentityResolver {
   async createIdentity(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateIdentityArgs
+    @TypeGraphQL.Args() args: IdentityCreationArgs
   ) {
     const identity = await IdentityModel.create(args.data);
     if (identity) {
@@ -67,7 +67,7 @@ export class IdentityResolver {
   async createManyIdentity(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyIdentityArgs
+    @TypeGraphQL.Args() args: IdentitiesCreationArgs
   ): Promise<Identity[]> {
     throw new Error("Not implemented");
   }
@@ -76,7 +76,7 @@ export class IdentityResolver {
   async updateIdentity(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateIdentityArgs
+    @TypeGraphQL.Args() args: IdentityUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const identity = await IdentityModel.findOneAndUpdate(filter, args.data, {
@@ -96,7 +96,7 @@ export class IdentityResolver {
   async upsertIdentity(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertIdentityArgs
+    @TypeGraphQL.Args() args: IdentityUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const identity = await IdentityModel.findOneAndUpdate(filter, args.data, {
@@ -108,10 +108,19 @@ export class IdentityResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Identity], { nullable: false })
-  async updateManyIdentity(
+  async updateIdentities(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyIdentityArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyIdentities
+  ): Promise<Identity[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Identity], { nullable: false })
+  async updateIdentitiesDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyIdentities
   ): Promise<Identity[]> {
     throw new Error("Not implemented");
   }

@@ -3,7 +3,7 @@ import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import NotesMenu from "@/components/notes/NotesMenu";
 import NoteViewer from "@/components/notes/NoteViewer";
-import { CreateNoteArgs } from "@/graphql/schema/generated/args/note.args";
+import { NoteCreationArgs } from "@/graphql/schema/generated/args/note.args";
 import { noteFragment, NoteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
 import { Note } from "@/graphql/schema/generated/models/note.model";
 import {
@@ -57,7 +57,7 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const selectedNote = notes?.find((note) => note.id === selectedNoteId);
   const [createNote, { loading: loadingCreateNote }] = useHandleMutation<
     { createNote: NoteFragment },
-    CreateNoteArgs
+    NoteCreationArgs
   >(CREATE_NOTE, updateCacheAfterCreatingNote);
 
   const loading = loadingNotes || loadingCreateNote;

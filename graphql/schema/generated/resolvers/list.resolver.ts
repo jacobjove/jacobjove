@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateListArgs,
-  CreateManyListArgs,
+  ArgsForUpdatingManyLists,
   DeleteListArgs,
   DeleteManyListArgs,
   FindManyListArgs,
   FindUniqueListArgs,
-  UpdateListArgs,
-  UpdateManyListArgs,
-  UpsertListArgs,
+  ListCreationArgs,
+  ListsCreationArgs,
+  ListUpdateArgs,
+  ListUpsertionArgs,
 } from "@/graphql/schema/generated/args/list.args";
 import ListModel, { List } from "@/graphql/schema/generated/models/list.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class ListResolver {
   async createList(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateListArgs
+    @TypeGraphQL.Args() args: ListCreationArgs
   ) {
     const list = await ListModel.create(args.data);
     if (list) {
@@ -64,7 +64,7 @@ export class ListResolver {
   async createManyList(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyListArgs
+    @TypeGraphQL.Args() args: ListsCreationArgs
   ): Promise<List[]> {
     throw new Error("Not implemented");
   }
@@ -73,7 +73,7 @@ export class ListResolver {
   async updateList(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateListArgs
+    @TypeGraphQL.Args() args: ListUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const list = await ListModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -91,7 +91,7 @@ export class ListResolver {
   async upsertList(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertListArgs
+    @TypeGraphQL.Args() args: ListUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const list = await ListModel.findOneAndUpdate(filter, args.data, {
@@ -103,10 +103,19 @@ export class ListResolver {
   }
 
   @TypeGraphQL.Mutation(() => [List], { nullable: false })
-  async updateManyList(
+  async updateLists(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyListArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyLists
+  ): Promise<List[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [List], { nullable: false })
+  async updateListsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyLists
   ): Promise<List[]> {
     throw new Error("Not implemented");
   }

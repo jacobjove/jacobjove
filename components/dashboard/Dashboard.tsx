@@ -109,7 +109,7 @@ const Dashboard: FC<DashboardProps> = (props: DashboardProps) => {
         case "tasks":
           return (
             <DashboardCard title={"Actions"} editing={editing} loading={loading}>
-              <TasksBoxMemoized data={{ tasks }} selectedDateState={selectedDateState} />
+              <TasksBox selectedDateState={selectedDateState} />
             </DashboardCard>
           );
         case "identities":
@@ -252,7 +252,7 @@ function memoize<P extends { data: Record<string, any> }>(component: FC<P>) {
 }
 
 const CalendarViewerMemoized = memoize(CalendarViewer);
-const TasksBoxMemoized = memoize(TasksBox);
+// const TasksBoxMemoized = memoize(TasksBox);
 const ValuesTableMemoized = memoize(ValuesTable);
 const IdentityTableMemoized = memoize(IdentityTable);
 

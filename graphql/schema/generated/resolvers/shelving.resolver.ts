@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateManyShelvingArgs,
-  CreateShelvingArgs,
+  ArgsForUpdatingManyShelvings,
   DeleteManyShelvingArgs,
   DeleteShelvingArgs,
   FindManyShelvingArgs,
   FindUniqueShelvingArgs,
-  UpdateManyShelvingArgs,
-  UpdateShelvingArgs,
-  UpsertShelvingArgs,
+  ShelvingCreationArgs,
+  ShelvingsCreationArgs,
+  ShelvingUpdateArgs,
+  ShelvingUpsertionArgs,
 } from "@/graphql/schema/generated/args/shelving.args";
 import ShelvingModel, { Shelving } from "@/graphql/schema/generated/models/shelving.model";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
@@ -49,7 +49,7 @@ export class ShelvingResolver {
   async createShelving(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateShelvingArgs
+    @TypeGraphQL.Args() args: ShelvingCreationArgs
   ) {
     const shelving = await ShelvingModel.create(args.data);
     return shelving;
@@ -59,7 +59,7 @@ export class ShelvingResolver {
   async createManyShelving(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyShelvingArgs
+    @TypeGraphQL.Args() args: ShelvingsCreationArgs
   ): Promise<Shelving[]> {
     throw new Error("Not implemented");
   }
@@ -68,7 +68,7 @@ export class ShelvingResolver {
   async updateShelving(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateShelvingArgs
+    @TypeGraphQL.Args() args: ShelvingUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const shelving = await ShelvingModel.findOneAndUpdate(filter, args.data, {
@@ -81,7 +81,7 @@ export class ShelvingResolver {
   async upsertShelving(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertShelvingArgs
+    @TypeGraphQL.Args() args: ShelvingUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const shelving = await ShelvingModel.findOneAndUpdate(filter, args.data, {
@@ -93,10 +93,19 @@ export class ShelvingResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Shelving], { nullable: false })
-  async updateManyShelving(
+  async updateShelvings(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyShelvingArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyShelvings
+  ): Promise<Shelving[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Shelving], { nullable: false })
+  async updateShelvingsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyShelvings
   ): Promise<Shelving[]> {
     throw new Error("Not implemented");
   }

@@ -70,6 +70,7 @@
     "undeleted",
     "unstaged",
     "upsert",
+    "upsertion",
     "vercel",
     "webserver",
     "xsrf"

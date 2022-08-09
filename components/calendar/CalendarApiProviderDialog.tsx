@@ -1,6 +1,6 @@
 import { useUser } from "@/components/contexts/UserContext";
-import { UpdateAccountArgs } from "@/graphql/schema/generated/args/account.args";
-import { UpdateCalendarArgs } from "@/graphql/schema/generated/args/calendar.args";
+import { AccountUpdateArgs } from "@/graphql/schema/generated/args/account.args";
+import { CalendarUpdateArgs } from "@/graphql/schema/generated/args/calendar.args";
 import { accountFragment } from "@/graphql/schema/generated/fragments/account.fragment";
 import { calendarFragment } from "@/graphql/schema/generated/fragments/calendar.fragment";
 import { Account } from "@/graphql/schema/generated/models/account.model";
@@ -119,11 +119,11 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   const user = useUser();
   const [updateAccount, { loading: loadingUpdateAccount }] = useHandleMutation<
     { updateAccount: Account },
-    UpdateAccountArgs
+    AccountUpdateArgs
   >(UPDATE_ACCOUNT);
   const [updateCalendar, { loading: loadingUpdateCalendar }] = useHandleMutation<
     { updateCalendar: Calendar },
-    UpdateCalendarArgs
+    CalendarUpdateArgs
   >(UPDATE_CALENDAR);
   const [addCalendars, { loading: loadingAddCalendars }] = useMutation<{
     addCalendars: Calendar[];

@@ -6,7 +6,7 @@ import { ID, WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.InputType()
-export class TaskCreateInput {
+export class TaskCreationInput {
   @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
   title!: Types.String;
 

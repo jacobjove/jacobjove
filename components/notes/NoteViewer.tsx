@@ -1,6 +1,6 @@
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
-import { UpdateNoteArgs } from "@/graphql/schema/generated/args/note.args";
+import { NoteUpdateArgs } from "@/graphql/schema/generated/args/note.args";
 import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
 import { Note } from "@/graphql/schema/generated/models/note.model";
 import { useDataReducer, useHandleMutation } from "@/utils/data";
@@ -29,7 +29,7 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
 
   const [noteData, dispatchNoteData] = useDataReducer(note);
 
-  const [handleUpdateNote] = useHandleMutation<{ updateNote: Note }, UpdateNoteArgs>(UPDATE_NOTE);
+  const [handleUpdateNote] = useHandleMutation<{ updateNote: Note }, NoteUpdateArgs>(UPDATE_NOTE);
 
   useEffect(() => {
     note && dispatchNoteData({ field: "init", value: note });

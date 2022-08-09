@@ -1,24 +1,14 @@
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
-import { InitialData, InputData } from "@/utils/data";
+import { CalendarEventData } from "@/graphql/schema/generated/reducers/calendarEvent.reducer";
+import { InitialData } from "@/utils/data";
 import { addMinutes } from "date-fns";
 
 export const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
-
-export type CalendarEventData = InputData<CalendarEvent>;
 
 export type InitialCalendarEventData = InitialData<
   CalendarEvent,
   "start" | "calendarId" | "userId"
 >;
-
-export const calendarEventDataReducer = (
-  state: CalendarEventData,
-  payload: { field: string; value: unknown }
-) => {
-  if (payload.field === "init")
-    return initializeCalendarEventData(payload.value as CalendarEventData);
-  return { ...state, [payload.field]: payload.value };
-};
 
 export const initializeCalendarEventData = (
   eventData: InitialCalendarEventData

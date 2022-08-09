@@ -6,7 +6,7 @@ import { ID, WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.InputType()
-export class ShelvingCreateInput {
+export class ShelvingCreationInput {
   @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
   bookId!: Types.ID;
 

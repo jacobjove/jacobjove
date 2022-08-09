@@ -1,7 +1,10 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import { DraggedCalendarEvent } from "@/components/calendar/EventBox";
 import { useUser } from "@/components/contexts/UserContext";
-import { CreateCalendarEventArgs } from "@/graphql/schema/generated/args/calendarEvent.args";
+import {
+  CalendarEventCreationArgs,
+  CalendarEventUpdateArgs,
+} from "@/graphql/schema/generated/args/calendarEvent.args";
 import { CalendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
 import { CalendarEvent } from "@/graphql/schema/generated/models/calendarEvent.model";
 import {
@@ -11,6 +14,7 @@ import {
   UPDATE_CALENDAR_EVENT,
 } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
+import { useHandleMutation } from "@/utils/data";
 import { useMutation } from "@apollo/client";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";
@@ -46,12 +50,15 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, view: _view, onClick, past } = props;
   const user = useUser();
   const [hovered, setHovered] = useState(false);
-  const [rescheduleEvent, { loading: loadingUpdateCalendarEvent }] = useMutation<{
-    updateCalendarEvent: CalendarEventFragment;
-  }>(UPDATE_CALENDAR_EVENT);
-  const [addEvent, { loading: loadingCreateCalendarEvent }] = useMutation<
+  const [updateCalendarEvent, { loading: loadingUpdateCalendarEvent }] = useHandleMutation<
+    {
+      updateCalendarEvent: CalendarEventFragment;
+    },
+    CalendarEventUpdateArgs
+  >(UPDATE_CALENDAR_EVENT);
+  const [createCalendarEvent, { loading: loadingCreateCalendarEvent }] = useMutation<
     { createCalendarEvent: CalendarEventFragment },
-    CreateCalendarEventArgs
+    CalendarEventCreationArgs
   >(CREATE_CALENDAR_EVENT, updateCacheAfterCreatingCalendarEvent);
   const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
   const [{ isOver, canDrop }, dropRef] = useDrop(
@@ -68,11 +75,9 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           const newStart = date;
           const newEnd = addMinutes(date, differenceInMinutes(oldEnd, oldStart));
           if (draggedEvent.id) {
-            rescheduleEvent({
+            updateCalendarEvent.current?.({
               variables: {
-                where: {
-                  id: draggedEvent.id,
-                },
+                where: { id: draggedEvent.id },
                 data: {
                   start: newStart,
                   end: newEnd || undefined,
@@ -94,7 +99,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           if (!calendarId) throw new Error("No calendar ID");
           const scheduleId = draggedTask.scheduleId ?? null;
           const userId = user.id;
-          const calendarEventData = {
+          const data = {
             title: draggedTask.title,
             start,
             end,
@@ -103,9 +108,9 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             scheduleId,
             userId,
           };
-          addEvent({
-            variables: { data: calendarEventData },
-            optimisticResponse: getOptimisticResponseForCalendarEventCreation(calendarEventData),
+          createCalendarEvent({
+            variables: { data },
+            optimisticResponse: getOptimisticResponseForCalendarEventCreation(data),
           });
         }
         // TODO: open event dialog

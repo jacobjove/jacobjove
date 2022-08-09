@@ -6,7 +6,7 @@ import { ID, WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.InputType()
-export class BookCreateInput {
+export class BookCreationInput {
   @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
   isbn?: Types.String | null | undefined;
 

@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateHabitArgs,
-  CreateManyHabitArgs,
+  ArgsForUpdatingManyHabits,
   DeleteHabitArgs,
   DeleteManyHabitArgs,
   FindManyHabitArgs,
   FindUniqueHabitArgs,
-  UpdateHabitArgs,
-  UpdateManyHabitArgs,
-  UpsertHabitArgs,
+  HabitCreationArgs,
+  HabitsCreationArgs,
+  HabitUpdateArgs,
+  HabitUpsertionArgs,
 } from "@/graphql/schema/generated/args/habit.args";
 import HabitModel, { Habit } from "@/graphql/schema/generated/models/habit.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class HabitResolver {
   async createHabit(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateHabitArgs
+    @TypeGraphQL.Args() args: HabitCreationArgs
   ) {
     const habit = await HabitModel.create(args.data);
     if (habit) {
@@ -64,7 +64,7 @@ export class HabitResolver {
   async createManyHabit(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyHabitArgs
+    @TypeGraphQL.Args() args: HabitsCreationArgs
   ): Promise<Habit[]> {
     throw new Error("Not implemented");
   }
@@ -73,7 +73,7 @@ export class HabitResolver {
   async updateHabit(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateHabitArgs
+    @TypeGraphQL.Args() args: HabitUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const habit = await HabitModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -91,7 +91,7 @@ export class HabitResolver {
   async upsertHabit(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertHabitArgs
+    @TypeGraphQL.Args() args: HabitUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const habit = await HabitModel.findOneAndUpdate(filter, args.data, {
@@ -103,10 +103,19 @@ export class HabitResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Habit], { nullable: false })
-  async updateManyHabit(
+  async updateHabits(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyHabitArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyHabits
+  ): Promise<Habit[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Habit], { nullable: false })
+  async updateHabitsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyHabits
   ): Promise<Habit[]> {
     throw new Error("Not implemented");
   }

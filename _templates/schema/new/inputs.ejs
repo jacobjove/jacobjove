@@ -11,7 +11,7 @@ import { ID, WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
 <% var filteredFields = Object.fromEntries(Object.entries(selectableFields).filter(([fieldName, field]) => !modelImports.includes(h.changeCase.pascal(h.inflection.singularize(fieldName))))); -%>
 
 @TypeGraphQL.InputType()
-export class <%= Name %>CreateInput {
+export class <%= Name %>CreationInput {
 <% for (var fieldName of Object.keys(filteredFields)) { -%>
   @TypeGraphQL.Field(() => Scalars.<%= fields[fieldName].typeCast %>, { nullable: <%= fields[fieldName].required ? "false" : "true" %> })
   <%= fieldName %><%= fields[fieldName].required ? "!" : "?" %>: Types.<%= fields[fieldName].type %><%= fields[fieldName].required ? "" : " | null" %><%= !fields[fieldName].required ? " | undefined" : "" %>;

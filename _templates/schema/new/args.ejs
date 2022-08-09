@@ -8,20 +8,20 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
 import {
   <%= Name %>WhereInput,
   <%= Name %>WhereUniqueInput,
-  <%= Name %>CreateInput,
+  <%= Name %>CreationInput,
   <%= Name %>UpdateInput,
 } from "@/graphql/schema/generated/inputs/<%= name %>.inputs";
 
 @TypeGraphQL.ArgsType()
-export class Create<%= Name %>Args {
-  @TypeGraphQL.Field(() => <%= Name %>CreateInput, { nullable: false })
-  data!: <%= Name %>CreateInput;
+export class <%= Name %>CreationArgs {
+  @TypeGraphQL.Field(() => <%= Name %>CreationInput, { nullable: false })
+  data!: <%= Name %>CreationInput;
 }
 
 @TypeGraphQL.ArgsType()
-export class CreateMany<%= Name %>Args {
-  @TypeGraphQL.Field(() => <%= Name %>CreateInput, { nullable: false })
-  data!: <%= Name %>CreateInput;
+export class <%= h.inflection.pluralize(Name) %>CreationArgs {
+  @TypeGraphQL.Field(() => <%= Name %>CreationInput, { nullable: false })
+  data!: <%= Name %>CreationInput;
 }
 
 @TypeGraphQL.ArgsType()
@@ -49,7 +49,7 @@ export class FindMany<%= Name %>Args {
 }
 
 @TypeGraphQL.ArgsType()
-export class Update<%= Name %>Args {
+export class <%= Name %>UpdateArgs {
   @TypeGraphQL.Field(() => <%= Name %>WhereUniqueInput, { nullable: false })
   where!: <%= Name %>WhereUniqueInput;
 
@@ -58,7 +58,7 @@ export class Update<%= Name %>Args {
 }
 
 @TypeGraphQL.ArgsType()
-export class UpdateMany<%= Name %>Args {
+export class ArgsForUpdatingMany<%= h.inflection.pluralize(Name) %> {
   @TypeGraphQL.Field(() => <%= Name %>WhereInput, { nullable: false })
   where!: <%= Name %>WhereUniqueInput;
 
@@ -67,12 +67,18 @@ export class UpdateMany<%= Name %>Args {
 }
 
 @TypeGraphQL.ArgsType()
-export class Upsert<%= Name %>Args {
+export class Distinct<%= h.inflection.pluralize(Name) %>UpdateArgs {
+  @TypeGraphQL.Field(() => [<%= Name %>UpdateArgs], { nullable: false })
+  data!: <%= Name %>UpdateArgs[];
+}
+
+@TypeGraphQL.ArgsType()
+export class <%= Name %>UpsertionArgs {
   @TypeGraphQL.Field(() => <%= Name %>WhereUniqueInput, { nullable: false })
   where!: <%= Name %>WhereUniqueInput;
 
-  @TypeGraphQL.Field(() => <%= Name %>CreateInput, { nullable: false })
-  data!: <%= Name %>CreateInput;
+  @TypeGraphQL.Field(() => <%= Name %>CreationInput, { nullable: false })
+  data!: <%= Name %>CreationInput;
 
   // @TypeGraphQL.Field(() => <%= Name %>UpdateInput, { nullable: false })
   // update!: <%= Name %>UpdateInput;

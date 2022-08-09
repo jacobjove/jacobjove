@@ -1,6 +1,6 @@
 import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
-import { UpdateUserArgs } from "@/graphql/schema/generated/args/user.args";
+import { UserUpdateArgs } from "@/graphql/schema/generated/args/user.args";
 import { UserFragment } from "@/graphql/schema/generated/fragments/user.fragment";
 import {
   getOptimisticResponseForUserUpdate,
@@ -41,7 +41,7 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
   const user = useUser();
   const [updateUser, { loading: loadingUpdateSetting }] = useHandleMutation<
     { updateUser: UserFragment },
-    UpdateUserArgs
+    UserUpdateArgs
   >(UPDATE_USER);
   const loading = loadingUpdateSetting;
   const userSettings: UserSettings = user?.settings ?? {};

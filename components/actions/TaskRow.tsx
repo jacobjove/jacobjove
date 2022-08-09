@@ -1,17 +1,17 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
 import { useUser } from "@/components/contexts/UserContext";
-import { UpdateTaskArgs } from "@/graphql/schema/generated/args/task.args";
+import { TaskUpdateArgs } from "@/graphql/schema/generated/args/task.args";
 import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
 import { Task } from "@/graphql/schema/generated/models/task.model";
 import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASK,
 } from "@/graphql/schema/generated/mutations/task.mutations";
+import { taskDataReducer } from "@/graphql/schema/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
-import { printError } from "@/utils/apollo/error-handling";
 import { useHandleMutation } from "@/utils/data";
-import { initializeTaskData, taskDataReducer } from "@/utils/tasks";
+import { initializeTaskData } from "@/utils/tasks";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -72,7 +72,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
     initializeTaskData
   );
 
-  const [updateTask, { loading }] = useHandleMutation<{ updateTask: TaskFragment }, UpdateTaskArgs>(
+  const [updateTask, { loading }] = useHandleMutation<{ updateTask: TaskFragment }, TaskUpdateArgs>(
     UPDATE_TASK
   );
 
@@ -82,15 +82,13 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
     const completedAt = complete ? new Date() : null;
     const data = { completedAt };
     const optimisticResponse = getOptimisticResponseForTaskUpdate(task, data);
-    updateTask
-      .current?.({
-        variables: {
-          where: { id: task.id },
-          data,
-        },
-        optimisticResponse,
-      })
-      ?.catch(printError);
+    updateTask.current?.({
+      variables: {
+        where: { id: task.id },
+        data,
+      },
+      optimisticResponse,
+    });
   };
 
   const isHabit = Boolean(task.habitId);
@@ -108,9 +106,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
       <TableRow
         hover={!isDragging}
         ref={dndRef}
-        onClick={(e) => {
-          dialogTriggerProps.onClick(e);
-        }}
         sx={{
           opacity: isDragging ? 0 : 1,
           cursor: isDragging ? "grabbing" : "pointer",
@@ -162,6 +157,9 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
             ...(completed && {
               textDecoration: "line-through",
             }),
+          }}
+          onClick={(e) => {
+            dialogTriggerProps.onClick(e);
           }}
         >
           <Box

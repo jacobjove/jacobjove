@@ -7,15 +7,15 @@ force: true
 import * as TypeGraphQL from "type-graphql-v2-fork";
 import <%= Name %>Model, { <%= Name %> } from "@/graphql/schema/generated/models/<%= name %>.model";
 import {
-  Create<%= Name %>Args,
-  CreateMany<%= Name %>Args,
+  <%= Name %>CreationArgs,
+  <%= h.inflection.pluralize(Name) %>CreationArgs,
   Delete<%= Name %>Args,
   DeleteMany<%= Name %>Args,
   FindMany<%= Name %>Args,
   FindUnique<%= Name %>Args,
-  Update<%= Name %>Args,
-  UpdateMany<%= Name %>Args,
-  Upsert<%= Name %>Args,
+  <%= Name %>UpdateArgs,
+  ArgsForUpdatingMany<%= h.inflection.pluralize(Name) %>,
+  <%= Name %>UpsertionArgs,
 } from "@/graphql/schema/generated/args/<%= name %>.args";
 import { GqlContext } from "@/graphql/context";
 import { GraphQLResolveInfo } from "graphql";
@@ -56,7 +56,7 @@ export class <%= Name %>Resolver {
   async create<%= Name %>(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: Create<%= Name %>Args
+    @TypeGraphQL.Args() args: <%= Name %>CreationArgs
   ) {
     const <%= name %> = await <%= Name %>Model.create(args.data);
 <% if (Object.keys(fields).includes("userId")) { -%>
@@ -75,7 +75,7 @@ export class <%= Name %>Resolver {
   async createMany<%= Name %>(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateMany<%= Name %>Args
+    @TypeGraphQL.Args() args: <%= h.inflection.pluralize(Name) %>CreationArgs
   ): Promise<<%= Name %>[]> {
     throw new Error("Not implemented");
   }
@@ -84,7 +84,7 @@ export class <%= Name %>Resolver {
   async update<%= Name %>(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: Update<%= Name %>Args
+    @TypeGraphQL.Args() args: <%= Name %>UpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const <%= name %> = await <%= Name %>Model.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -100,7 +100,7 @@ export class <%= Name %>Resolver {
   async upsert<%= Name %>(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: Upsert<%= Name %>Args
+    @TypeGraphQL.Args() args: <%= Name %>UpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const <%= name %> = await <%= Name %>Model.findOneAndUpdate(filter, args.data, {
@@ -112,10 +112,19 @@ export class <%= Name %>Resolver {
   }
 
   @TypeGraphQL.Mutation(() => [<%= Name %>], { nullable: false })
-  async updateMany<%= Name %>(
+  async update<%= h.inflection.pluralize(Name) %>(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateMany<%= Name %>Args
+    @TypeGraphQL.Args() args: ArgsForUpdatingMany<%= h.inflection.pluralize(Name) %>
+  ): Promise<<%= Name %>[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [<%= Name %>], { nullable: false })
+  async update<%= h.inflection.pluralize(Name) %>Distinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingMany<%= h.inflection.pluralize(Name) %>
   ): Promise<<%= Name %>[]> {
     throw new Error("Not implemented");
   }

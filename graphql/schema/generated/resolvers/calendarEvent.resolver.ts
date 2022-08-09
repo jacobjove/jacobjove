@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateCalendarEventArgs,
-  CreateManyCalendarEventArgs,
+  ArgsForUpdatingManyCalendarEvents,
+  CalendarEventCreationArgs,
+  CalendarEventsCreationArgs,
+  CalendarEventUpdateArgs,
+  CalendarEventUpsertionArgs,
   DeleteCalendarEventArgs,
   DeleteManyCalendarEventArgs,
   FindManyCalendarEventArgs,
   FindUniqueCalendarEventArgs,
-  UpdateCalendarEventArgs,
-  UpdateManyCalendarEventArgs,
-  UpsertCalendarEventArgs,
 } from "@/graphql/schema/generated/args/calendarEvent.args";
 import CalendarEventModel, {
   CalendarEvent,
@@ -52,7 +52,7 @@ export class CalendarEventResolver {
   async createCalendarEvent(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateCalendarEventArgs
+    @TypeGraphQL.Args() args: CalendarEventCreationArgs
   ) {
     const calendarEvent = await CalendarEventModel.create(args.data);
     if (calendarEvent) {
@@ -69,7 +69,7 @@ export class CalendarEventResolver {
   async createManyCalendarEvent(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyCalendarEventArgs
+    @TypeGraphQL.Args() args: CalendarEventsCreationArgs
   ): Promise<CalendarEvent[]> {
     throw new Error("Not implemented");
   }
@@ -78,7 +78,7 @@ export class CalendarEventResolver {
   async updateCalendarEvent(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateCalendarEventArgs
+    @TypeGraphQL.Args() args: CalendarEventUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const calendarEvent = await CalendarEventModel.findOneAndUpdate(filter, args.data, {
@@ -98,7 +98,7 @@ export class CalendarEventResolver {
   async upsertCalendarEvent(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertCalendarEventArgs
+    @TypeGraphQL.Args() args: CalendarEventUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const calendarEvent = await CalendarEventModel.findOneAndUpdate(filter, args.data, {
@@ -110,10 +110,19 @@ export class CalendarEventResolver {
   }
 
   @TypeGraphQL.Mutation(() => [CalendarEvent], { nullable: false })
-  async updateManyCalendarEvent(
+  async updateCalendarEvents(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyCalendarEventArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyCalendarEvents
+  ): Promise<CalendarEvent[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [CalendarEvent], { nullable: false })
+  async updateCalendarEventsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyCalendarEvents
   ): Promise<CalendarEvent[]> {
     throw new Error("Not implemented");
   }

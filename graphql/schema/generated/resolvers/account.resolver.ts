@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateAccountArgs,
-  CreateManyAccountArgs,
+  AccountCreationArgs,
+  AccountsCreationArgs,
+  AccountUpdateArgs,
+  AccountUpsertionArgs,
+  ArgsForUpdatingManyAccounts,
   DeleteAccountArgs,
   DeleteManyAccountArgs,
   FindManyAccountArgs,
   FindUniqueAccountArgs,
-  UpdateAccountArgs,
-  UpdateManyAccountArgs,
-  UpsertAccountArgs,
 } from "@/graphql/schema/generated/args/account.args";
 import AccountModel, { Account } from "@/graphql/schema/generated/models/account.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class AccountResolver {
   async createAccount(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateAccountArgs
+    @TypeGraphQL.Args() args: AccountCreationArgs
   ) {
     const account = await AccountModel.create(args.data);
     if (account) {
@@ -67,7 +67,7 @@ export class AccountResolver {
   async createManyAccount(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyAccountArgs
+    @TypeGraphQL.Args() args: AccountsCreationArgs
   ): Promise<Account[]> {
     throw new Error("Not implemented");
   }
@@ -76,7 +76,7 @@ export class AccountResolver {
   async updateAccount(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateAccountArgs
+    @TypeGraphQL.Args() args: AccountUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const account = await AccountModel.findOneAndUpdate(filter, args.data, {
@@ -96,7 +96,7 @@ export class AccountResolver {
   async upsertAccount(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertAccountArgs
+    @TypeGraphQL.Args() args: AccountUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const account = await AccountModel.findOneAndUpdate(filter, args.data, {
@@ -108,10 +108,19 @@ export class AccountResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Account], { nullable: false })
-  async updateManyAccount(
+  async updateAccounts(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyAccountArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyAccounts
+  ): Promise<Account[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Account], { nullable: false })
+  async updateAccountsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyAccounts
   ): Promise<Account[]> {
     throw new Error("Not implemented");
   }

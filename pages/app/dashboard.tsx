@@ -5,7 +5,7 @@ import DashboardViewer, {
 } from "@/components/dashboard/Dashboard";
 import Select from "@/components/Select";
 import { DashboardLayouts } from "@/graphql/schema/definitions/Dashboard";
-import { CreateDashboardArgs } from "@/graphql/schema/generated/args/dashboard.args";
+import { DashboardCreationArgs } from "@/graphql/schema/generated/args/dashboard.args";
 import {
   DashboardFragment,
   dashboardFragment,
@@ -94,7 +94,7 @@ const DashboardPage: NextPage = () => {
   const { loading: loadingData, error, data } = useQuery<DashboardPageData>(QUERY);
   const [createDashboard, { loading: loadingCreateDashboard }] = useMutation<
     { createDashboard: DashboardFragment },
-    CreateDashboardArgs
+    DashboardCreationArgs
   >(CREATE_DASHBOARD, updateCacheAfterCreatingDashboard);
   const loading = loadingData || loadingCreateDashboard;
   const { dashboards, ...dashboardData } = data || { dashboards: [] };

@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateMantraArgs,
-  CreateManyMantraArgs,
+  ArgsForUpdatingManyMantras,
   DeleteMantraArgs,
   DeleteManyMantraArgs,
   FindManyMantraArgs,
   FindUniqueMantraArgs,
-  UpdateMantraArgs,
-  UpdateManyMantraArgs,
-  UpsertMantraArgs,
+  MantraCreationArgs,
+  MantrasCreationArgs,
+  MantraUpdateArgs,
+  MantraUpsertionArgs,
 } from "@/graphql/schema/generated/args/mantra.args";
 import MantraModel, { Mantra } from "@/graphql/schema/generated/models/mantra.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class MantraResolver {
   async createMantra(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateMantraArgs
+    @TypeGraphQL.Args() args: MantraCreationArgs
   ) {
     const mantra = await MantraModel.create(args.data);
     if (mantra) {
@@ -67,7 +67,7 @@ export class MantraResolver {
   async createManyMantra(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyMantraArgs
+    @TypeGraphQL.Args() args: MantrasCreationArgs
   ): Promise<Mantra[]> {
     throw new Error("Not implemented");
   }
@@ -76,7 +76,7 @@ export class MantraResolver {
   async updateMantra(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateMantraArgs
+    @TypeGraphQL.Args() args: MantraUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const mantra = await MantraModel.findOneAndUpdate(filter, args.data, {
@@ -96,7 +96,7 @@ export class MantraResolver {
   async upsertMantra(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertMantraArgs
+    @TypeGraphQL.Args() args: MantraUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const mantra = await MantraModel.findOneAndUpdate(filter, args.data, {
@@ -108,10 +108,19 @@ export class MantraResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Mantra], { nullable: false })
-  async updateManyMantra(
+  async updateMantras(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyMantraArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyMantras
+  ): Promise<Mantra[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Mantra], { nullable: false })
+  async updateMantrasDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyMantras
   ): Promise<Mantra[]> {
     throw new Error("Not implemented");
   }

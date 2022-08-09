@@ -1,12 +1,12 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
 import { useUser } from "@/components/contexts/UserContext";
 import {
-  CreateCalendarEventArgs,
-  UpdateCalendarEventArgs,
+  CalendarEventCreationArgs,
+  CalendarEventUpdateArgs,
 } from "@/graphql/schema/generated/args/calendarEvent.args";
 import { CalendarEventFragment } from "@/graphql/schema/generated/fragments/calendarEvent.fragment";
 import {
-  CalendarEventCreateInput,
+  CalendarEventCreationInput,
   CalendarEventUpdateInput,
   CalendarEventWhereUniqueInput,
 } from "@/graphql/schema/generated/inputs/calendarEvent.inputs";
@@ -16,8 +16,9 @@ import {
   getOptimisticResponseForCalendarEventUpdate,
   UPDATE_CALENDAR_EVENT,
 } from "@/graphql/schema/generated/mutations/calendarEvent.mutations";
+import { CalendarEventData } from "@/graphql/schema/generated/reducers/calendarEvent.reducer";
 import { ID } from "@/graphql/schema/types";
-import { CalendarEventData } from "@/utils/calendarEvents";
+import { Payload } from "@/utils/data";
 import { useMutation } from "@apollo/client";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -30,7 +31,7 @@ import { Dispatch, FC } from "react";
 interface CalendarEventDialogProps extends ReturnType<typeof bindPopover> {
   calendarEvent: CalendarEventData;
   toggleCompletion?: Dispatch<boolean>;
-  dispatchCalendarEventData: Dispatch<{ field: string; value: unknown }>;
+  dispatchCalendarEventData: Dispatch<Payload<CalendarEventData>>;
 }
 
 const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventDialogProps) => {
@@ -44,11 +45,16 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
   const user = useUser();
   const [mutate, { loading }] = useMutation<
     { createCalendarEvent: CalendarEventFragment } | { updateCalendarEvent: CalendarEventFragment },
-    CreateCalendarEventArgs | UpdateCalendarEventArgs
+    CalendarEventCreationArgs | CalendarEventUpdateArgs
   >(calendarEventData.id ? UPDATE_CALENDAR_EVENT : CREATE_CALENDAR_EVENT);
   const handleSave = async () => {
     if (!calendarEventData.start) {
       alert("Start date is required.");
+      return;
+    }
+    if (!calendarEventData.userId) {
+      alert("User ID is required.");
+      console.log(calendarEventData);
       return;
     }
     // prettier-ignore
@@ -56,7 +62,7 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
       data: CalendarEventUpdateInput;
       where: CalendarEventWhereUniqueInput;
     } | {
-      data: CalendarEventCreateInput;
+      data: CalendarEventCreationInput;
     } = {
       ...(!!calendarEventData.id && { where: { id: calendarEventData.id } }),
       data: {
@@ -76,7 +82,14 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
     onClose();
   };
   return (
-    <Dialog fullWidth onClose={onClose} {...dialogProps}>
+    <Dialog
+      fullWidth
+      onClose={onClose}
+      {...dialogProps}
+      onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter" && !loading) handleSave();
+      }}
+    >
       <DialogTitle>{calendarEventData.id ? "Modify" : "Create"} calendar event</DialogTitle>
       <DialogContent>
         <EventFormFields data={calendarEventData} dispatch={dispatchCalendarEventData} />

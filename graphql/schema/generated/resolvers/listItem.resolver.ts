@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateListItemArgs,
-  CreateManyListItemArgs,
+  ArgsForUpdatingManyListItems,
   DeleteListItemArgs,
   DeleteManyListItemArgs,
   FindManyListItemArgs,
   FindUniqueListItemArgs,
-  UpdateListItemArgs,
-  UpdateManyListItemArgs,
-  UpsertListItemArgs,
+  ListItemCreationArgs,
+  ListItemsCreationArgs,
+  ListItemUpdateArgs,
+  ListItemUpsertionArgs,
 } from "@/graphql/schema/generated/args/listItem.args";
 import ListItemModel, { ListItem } from "@/graphql/schema/generated/models/listItem.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class ListItemResolver {
   async createListItem(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateListItemArgs
+    @TypeGraphQL.Args() args: ListItemCreationArgs
   ) {
     const listItem = await ListItemModel.create(args.data);
     if (listItem) {
@@ -67,7 +67,7 @@ export class ListItemResolver {
   async createManyListItem(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyListItemArgs
+    @TypeGraphQL.Args() args: ListItemsCreationArgs
   ): Promise<ListItem[]> {
     throw new Error("Not implemented");
   }
@@ -76,7 +76,7 @@ export class ListItemResolver {
   async updateListItem(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateListItemArgs
+    @TypeGraphQL.Args() args: ListItemUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const listItem = await ListItemModel.findOneAndUpdate(filter, args.data, {
@@ -96,7 +96,7 @@ export class ListItemResolver {
   async upsertListItem(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertListItemArgs
+    @TypeGraphQL.Args() args: ListItemUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const listItem = await ListItemModel.findOneAndUpdate(filter, args.data, {
@@ -108,10 +108,19 @@ export class ListItemResolver {
   }
 
   @TypeGraphQL.Mutation(() => [ListItem], { nullable: false })
-  async updateManyListItem(
+  async updateListItems(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyListItemArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyListItems
+  ): Promise<ListItem[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [ListItem], { nullable: false })
+  async updateListItemsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyListItems
   ): Promise<ListItem[]> {
     throw new Error("Not implemented");
   }

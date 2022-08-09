@@ -1,4 +1,8 @@
-import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
+import Definition, {
+  OPTIONAL_BOOLEAN,
+  OPTIONAL_STRING,
+  REQUIRED_STRING,
+} from "@/graphql/schema/definition";
 
 const definition: Definition = {
   name: "calendarEvent",
@@ -12,7 +16,7 @@ const definition: Definition = {
     title: REQUIRED_STRING,
     start: { required: true, type: "DateTime", typeCast: "DateTime" },
     end: { required: false, type: "DateTime", typeCast: "DateTime" },
-    allDay: { required: true, type: "Boolean", default: false },
+    allDay: { ...OPTIONAL_BOOLEAN, default: false },
     notes: OPTIONAL_STRING,
     canceled: { required: false, type: "Boolean" },
     // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },

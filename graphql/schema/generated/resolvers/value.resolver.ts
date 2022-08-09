@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateManyValueArgs,
-  CreateValueArgs,
+  ArgsForUpdatingManyValues,
   DeleteManyValueArgs,
   DeleteValueArgs,
   FindManyValueArgs,
   FindUniqueValueArgs,
-  UpdateManyValueArgs,
-  UpdateValueArgs,
-  UpsertValueArgs,
+  ValueCreationArgs,
+  ValuesCreationArgs,
+  ValueUpdateArgs,
+  ValueUpsertionArgs,
 } from "@/graphql/schema/generated/args/value.args";
 import UserModel from "@/graphql/schema/generated/models/user.model";
 import ValueModel, { Value } from "@/graphql/schema/generated/models/value.model";
@@ -50,7 +50,7 @@ export class ValueResolver {
   async createValue(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateValueArgs
+    @TypeGraphQL.Args() args: ValueCreationArgs
   ) {
     const value = await ValueModel.create(args.data);
     if (value) {
@@ -64,7 +64,7 @@ export class ValueResolver {
   async createManyValue(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyValueArgs
+    @TypeGraphQL.Args() args: ValuesCreationArgs
   ): Promise<Value[]> {
     throw new Error("Not implemented");
   }
@@ -73,7 +73,7 @@ export class ValueResolver {
   async updateValue(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateValueArgs
+    @TypeGraphQL.Args() args: ValueUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const value = await ValueModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -91,7 +91,7 @@ export class ValueResolver {
   async upsertValue(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertValueArgs
+    @TypeGraphQL.Args() args: ValueUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const value = await ValueModel.findOneAndUpdate(filter, args.data, {
@@ -103,10 +103,19 @@ export class ValueResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Value], { nullable: false })
-  async updateManyValue(
+  async updateValues(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyValueArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyValues
+  ): Promise<Value[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Value], { nullable: false })
+  async updateValuesDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyValues
   ): Promise<Value[]> {
     throw new Error("Not implemented");
   }

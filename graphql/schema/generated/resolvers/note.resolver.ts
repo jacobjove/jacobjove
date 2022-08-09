@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateManyNoteArgs,
-  CreateNoteArgs,
+  ArgsForUpdatingManyNotes,
   DeleteManyNoteArgs,
   DeleteNoteArgs,
   FindManyNoteArgs,
   FindUniqueNoteArgs,
-  UpdateManyNoteArgs,
-  UpdateNoteArgs,
-  UpsertNoteArgs,
+  NoteCreationArgs,
+  NotesCreationArgs,
+  NoteUpdateArgs,
+  NoteUpsertionArgs,
 } from "@/graphql/schema/generated/args/note.args";
 import NoteModel, { Note } from "@/graphql/schema/generated/models/note.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class NoteResolver {
   async createNote(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateNoteArgs
+    @TypeGraphQL.Args() args: NoteCreationArgs
   ) {
     const note = await NoteModel.create(args.data);
     if (note) {
@@ -64,7 +64,7 @@ export class NoteResolver {
   async createManyNote(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyNoteArgs
+    @TypeGraphQL.Args() args: NotesCreationArgs
   ): Promise<Note[]> {
     throw new Error("Not implemented");
   }
@@ -73,7 +73,7 @@ export class NoteResolver {
   async updateNote(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateNoteArgs
+    @TypeGraphQL.Args() args: NoteUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const note = await NoteModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -91,7 +91,7 @@ export class NoteResolver {
   async upsertNote(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertNoteArgs
+    @TypeGraphQL.Args() args: NoteUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const note = await NoteModel.findOneAndUpdate(filter, args.data, {
@@ -103,10 +103,19 @@ export class NoteResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Note], { nullable: false })
-  async updateManyNote(
+  async updateNotes(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyNoteArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyNotes
+  ): Promise<Note[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Note], { nullable: false })
+  async updateNotesDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyNotes
   ): Promise<Note[]> {
     throw new Error("Not implemented");
   }

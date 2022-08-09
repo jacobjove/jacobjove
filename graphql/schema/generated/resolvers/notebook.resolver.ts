@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateManyNotebookArgs,
-  CreateNotebookArgs,
+  ArgsForUpdatingManyNotebooks,
   DeleteManyNotebookArgs,
   DeleteNotebookArgs,
   FindManyNotebookArgs,
   FindUniqueNotebookArgs,
-  UpdateManyNotebookArgs,
-  UpdateNotebookArgs,
-  UpsertNotebookArgs,
+  NotebookCreationArgs,
+  NotebooksCreationArgs,
+  NotebookUpdateArgs,
+  NotebookUpsertionArgs,
 } from "@/graphql/schema/generated/args/notebook.args";
 import NotebookModel, { Notebook } from "@/graphql/schema/generated/models/notebook.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class NotebookResolver {
   async createNotebook(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateNotebookArgs
+    @TypeGraphQL.Args() args: NotebookCreationArgs
   ) {
     const notebook = await NotebookModel.create(args.data);
     if (notebook) {
@@ -67,7 +67,7 @@ export class NotebookResolver {
   async createManyNotebook(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyNotebookArgs
+    @TypeGraphQL.Args() args: NotebooksCreationArgs
   ): Promise<Notebook[]> {
     throw new Error("Not implemented");
   }
@@ -76,7 +76,7 @@ export class NotebookResolver {
   async updateNotebook(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateNotebookArgs
+    @TypeGraphQL.Args() args: NotebookUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const notebook = await NotebookModel.findOneAndUpdate(filter, args.data, {
@@ -96,7 +96,7 @@ export class NotebookResolver {
   async upsertNotebook(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertNotebookArgs
+    @TypeGraphQL.Args() args: NotebookUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const notebook = await NotebookModel.findOneAndUpdate(filter, args.data, {
@@ -108,10 +108,19 @@ export class NotebookResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Notebook], { nullable: false })
-  async updateManyNotebook(
+  async updateNotebooks(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyNotebookArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyNotebooks
+  ): Promise<Notebook[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Notebook], { nullable: false })
+  async updateNotebooksDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyNotebooks
   ): Promise<Notebook[]> {
     throw new Error("Not implemented");
   }

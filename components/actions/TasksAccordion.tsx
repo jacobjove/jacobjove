@@ -1,14 +1,15 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import TasksTable from "@/components/actions/TasksTable";
-import { UpdateTaskArgs } from "@/graphql/schema/generated/args/task.args";
+import { DistinctTasksUpdateArgs, TaskUpdateArgs } from "@/graphql/schema/generated/args/task.args";
 import { TaskFragment } from "@/graphql/schema/generated/fragments/task.fragment";
 import { Task } from "@/graphql/schema/generated/models/task.model";
 import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASK,
+  UPDATE_TASKS_DISTINCTLY,
 } from "@/graphql/schema/generated/mutations/task.mutations";
 import { useHandleMutation } from "@/utils/data";
-import { gql, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -22,15 +23,6 @@ import { useUser } from "../contexts/UserContext";
 
 const MAX_TASK_RANK = 2 ** 31 - 1;
 const MIN_TASK_RANK = -MAX_TASK_RANK - 1;
-
-const UPDATE_MANY_TASK_RANK = gql`
-  mutation UpdateManyTaskRank($data: [UpdateManyTaskRankData!]!) {
-    updateManyTaskRank(data: $data) {
-      id
-      rank
-    }
-  }
-`;
 
 type TasksView = "today" | "next7" | "all";
 
@@ -80,10 +72,13 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
 
   const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] = useHandleMutation<
     { updateTask: TaskFragment },
-    UpdateTaskArgs
+    TaskUpdateArgs
   >(UPDATE_TASK);
 
-  const [updateManyTaskRank] = useMutation(UPDATE_MANY_TASK_RANK);
+  const [updateTaskRanks] = useHandleMutation<
+    { updateTasksDistinctly: TaskFragment[] },
+    DistinctTasksUpdateArgs
+  >(UPDATE_TASKS_DISTINCTLY);
 
   // TODO: is this efficient enough?
   const tasksBySelection = useMemo(() => {
@@ -142,16 +137,18 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
         const increment = Math.floor(
           (MAX_TASK_RANK - MIN_TASK_RANK) / (incompleteTasks.length + 1)
         );
-        const newRanks = incompleteTasks.map(({ id }, index) => ({
-          id,
+        const rearrangedTasks = incompleteTasks.map((task, index) => ({
+          ...task,
           rank: MIN_TASK_RANK + increment * (index + 1),
         }));
-        updateManyTaskRank({
-          variables: {
-            data: newRanks,
-          },
+        const data = rearrangedTasks.map(({ id, rank }) => ({
+          where: { id },
+          data: { rank },
+        }));
+        updateTaskRanks.current?.({
+          variables: { data },
           optimisticResponse: {
-            updateManyTaskRank: newRanks.map((task) => ({ __typename: "Task", ...task })),
+            updateTasksDistinctly: rearrangedTasks,
           },
         });
       } else {
@@ -164,7 +161,7 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
         });
       }
     },
-    [incompleteTasks, updateTask, updateManyTaskRank]
+    [incompleteTasks, updateTask, updateTaskRanks]
   );
 
   console.log("TasksBox.incompleteTasks:", incompleteTasks);

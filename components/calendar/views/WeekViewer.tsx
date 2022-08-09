@@ -13,10 +13,12 @@ import DateContext from "@/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@/components/contexts/UserContext";
 import { Calendar, CalendarEvent } from "@/graphql/schema/generated/models";
+import { ID } from "@/graphql/schema/types";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import {
+  addMinutes,
   differenceInMinutes,
   getDay,
   isSameDay,
@@ -85,7 +87,6 @@ export interface WeekViewerProps extends CalendarProps {
   selectedDate: Date;
   setSelectedDate: Dispatch<Date>;
   viewedHourState: [number, Dispatch<number>];
-  // dispatchInitialEventFormData: Dispatch<{ field: string; value: unknown }>;
   defaultCalendar: Calendar;
   hidden: boolean;
 }
@@ -253,11 +254,18 @@ WeekViewerProps) => {
                                 // allows us to avoid stopping propagation on click events for
                                 // other elements in the slot.
                                 if (e.target === e.currentTarget) {
+                                  const userId = user?.id as ID;
+                                  const calendarId = user?.settings.defaultCalendarId;
+                                  if (!calendarId) throw new Error("No default calendar id");
                                   dispatchNewCalendarEventData({
                                     field: "init",
                                     value: {
-                                      calendarId: user?.settings.defaultCalendarId,
+                                      title: "",
+                                      calendarId: user?.settings.defaultCalendarId as ID,
                                       start: eventSlotDate,
+                                      end: addMinutes(eventSlotDate, 29),
+                                      allDay: false,
+                                      userId,
                                     },
                                   });
                                   eventEditingDialogTriggerProps.onClick(e);

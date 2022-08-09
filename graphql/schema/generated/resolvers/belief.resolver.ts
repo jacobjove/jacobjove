@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateBeliefArgs,
-  CreateManyBeliefArgs,
+  ArgsForUpdatingManyBeliefs,
+  BeliefCreationArgs,
+  BeliefsCreationArgs,
+  BeliefUpdateArgs,
+  BeliefUpsertionArgs,
   DeleteBeliefArgs,
   DeleteManyBeliefArgs,
   FindManyBeliefArgs,
   FindUniqueBeliefArgs,
-  UpdateBeliefArgs,
-  UpdateManyBeliefArgs,
-  UpsertBeliefArgs,
 } from "@/graphql/schema/generated/args/belief.args";
 import BeliefModel, { Belief } from "@/graphql/schema/generated/models/belief.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class BeliefResolver {
   async createBelief(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateBeliefArgs
+    @TypeGraphQL.Args() args: BeliefCreationArgs
   ) {
     const belief = await BeliefModel.create(args.data);
     if (belief) {
@@ -67,7 +67,7 @@ export class BeliefResolver {
   async createManyBelief(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyBeliefArgs
+    @TypeGraphQL.Args() args: BeliefsCreationArgs
   ): Promise<Belief[]> {
     throw new Error("Not implemented");
   }
@@ -76,7 +76,7 @@ export class BeliefResolver {
   async updateBelief(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateBeliefArgs
+    @TypeGraphQL.Args() args: BeliefUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const belief = await BeliefModel.findOneAndUpdate(filter, args.data, {
@@ -96,7 +96,7 @@ export class BeliefResolver {
   async upsertBelief(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertBeliefArgs
+    @TypeGraphQL.Args() args: BeliefUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const belief = await BeliefModel.findOneAndUpdate(filter, args.data, {
@@ -108,10 +108,19 @@ export class BeliefResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Belief], { nullable: false })
-  async updateManyBelief(
+  async updateBeliefs(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyBeliefArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyBeliefs
+  ): Promise<Belief[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Belief], { nullable: false })
+  async updateBeliefsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyBeliefs
   ): Promise<Belief[]> {
     throw new Error("Not implemented");
   }

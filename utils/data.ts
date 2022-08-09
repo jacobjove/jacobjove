@@ -39,18 +39,15 @@ function initializeData<T>(initialData: T): T {
   };
 }
 
-type Payload<T> =
-  | {
-      field: "init";
-      value: T;
-    }
-  | {
-      field: keyof T;
-      value: unknown;
-    };
+export type Payload<T> = {
+  field: "init" | keyof T;
+  value: T | T[keyof T];
+};
 
-function dataReducer<T>(state: T, payload: Payload<T>) {
-  if (payload.field === "init") return initializeData(payload.value);
+export function dataReducer<T>(state: T, payload: { field: "init"; value: T }): T;
+export function dataReducer<T>(state: T, payload: { field: keyof T; value: T[keyof T] }): T;
+export function dataReducer<T>(state: T, payload: Payload<T>) {
+  if (payload.field === "init") return payload.value as T;
   return { ...state, [payload.field]: payload.value };
 }
 
@@ -87,7 +84,8 @@ export function useHandleMutation<MutationReturnType, MutationArgsType>(
       if (mutationOptions) {
         mutationOptions.context = { fetchOptions: { signal: controller.signal } };
       }
-      return mutate(mutationOptions);
+      const mutationResult = mutate(mutationOptions);
+      return mutationResult;
     }, debounceDelay)
   );
   return [mutationHandlerRef, mutationResult, abortController];

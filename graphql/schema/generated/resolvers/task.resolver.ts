@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateManyTaskArgs,
-  CreateTaskArgs,
+  ArgsForUpdatingManyTasks,
   DeleteManyTaskArgs,
   DeleteTaskArgs,
   FindManyTaskArgs,
   FindUniqueTaskArgs,
-  UpdateManyTaskArgs,
-  UpdateTaskArgs,
-  UpsertTaskArgs,
+  TaskCreationArgs,
+  TasksCreationArgs,
+  TaskUpdateArgs,
+  TaskUpsertionArgs,
 } from "@/graphql/schema/generated/args/task.args";
 import TaskModel, { Task } from "@/graphql/schema/generated/models/task.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class TaskResolver {
   async createTask(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateTaskArgs
+    @TypeGraphQL.Args() args: TaskCreationArgs
   ) {
     const task = await TaskModel.create(args.data);
     if (task) {
@@ -64,7 +64,7 @@ export class TaskResolver {
   async createManyTask(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyTaskArgs
+    @TypeGraphQL.Args() args: TasksCreationArgs
   ): Promise<Task[]> {
     throw new Error("Not implemented");
   }
@@ -73,7 +73,7 @@ export class TaskResolver {
   async updateTask(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateTaskArgs
+    @TypeGraphQL.Args() args: TaskUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const task = await TaskModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -91,7 +91,7 @@ export class TaskResolver {
   async upsertTask(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertTaskArgs
+    @TypeGraphQL.Args() args: TaskUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const task = await TaskModel.findOneAndUpdate(filter, args.data, {
@@ -103,10 +103,19 @@ export class TaskResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Task], { nullable: false })
-  async updateManyTask(
+  async updateTasks(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyTaskArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyTasks
+  ): Promise<Task[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Task], { nullable: false })
+  async updateTasksDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyTasks
   ): Promise<Task[]> {
     throw new Error("Not implemented");
   }

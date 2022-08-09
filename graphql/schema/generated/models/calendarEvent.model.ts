@@ -61,9 +61,9 @@ export class CalendarEvent extends Model {
   @Property({ required: false, default: null })
   end?: Types.DateTime | null;
 
-  @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: false })
-  @Property({ type: () => Boolean, required: true, default: false })
-  allDay!: Types.Boolean;
+  @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: true })
+  @Property({ type: () => Boolean, required: false, default: false })
+  allDay?: Types.Boolean | null;
 
   @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })

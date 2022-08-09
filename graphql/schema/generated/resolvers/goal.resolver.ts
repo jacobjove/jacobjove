@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateGoalArgs,
-  CreateManyGoalArgs,
+  ArgsForUpdatingManyGoals,
   DeleteGoalArgs,
   DeleteManyGoalArgs,
   FindManyGoalArgs,
   FindUniqueGoalArgs,
-  UpdateGoalArgs,
-  UpdateManyGoalArgs,
-  UpsertGoalArgs,
+  GoalCreationArgs,
+  GoalsCreationArgs,
+  GoalUpdateArgs,
+  GoalUpsertionArgs,
 } from "@/graphql/schema/generated/args/goal.args";
 import GoalModel, { Goal } from "@/graphql/schema/generated/models/goal.model";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
@@ -49,7 +49,7 @@ export class GoalResolver {
   async createGoal(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateGoalArgs
+    @TypeGraphQL.Args() args: GoalCreationArgs
   ) {
     const goal = await GoalModel.create(args.data);
     return goal;
@@ -59,7 +59,7 @@ export class GoalResolver {
   async createManyGoal(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyGoalArgs
+    @TypeGraphQL.Args() args: GoalsCreationArgs
   ): Promise<Goal[]> {
     throw new Error("Not implemented");
   }
@@ -68,7 +68,7 @@ export class GoalResolver {
   async updateGoal(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateGoalArgs
+    @TypeGraphQL.Args() args: GoalUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const goal = await GoalModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -79,7 +79,7 @@ export class GoalResolver {
   async upsertGoal(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertGoalArgs
+    @TypeGraphQL.Args() args: GoalUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const goal = await GoalModel.findOneAndUpdate(filter, args.data, {
@@ -91,10 +91,19 @@ export class GoalResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Goal], { nullable: false })
-  async updateManyGoal(
+  async updateGoals(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyGoalArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyGoals
+  ): Promise<Goal[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Goal], { nullable: false })
+  async updateGoalsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyGoals
   ): Promise<Goal[]> {
     throw new Error("Not implemented");
   }

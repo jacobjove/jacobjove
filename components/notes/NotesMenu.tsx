@@ -2,8 +2,8 @@ import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import SearchDialog from "@/components/search/SearchDialog";
 import {
-  CreateNotebookArgs,
-  UpdateNotebookArgs,
+  NotebookCreationArgs,
+  NotebookUpdateArgs,
 } from "@/graphql/schema/generated/args/notebook.args";
 import { noteFragment } from "@/graphql/schema/generated/fragments/note.fragment";
 // import Select from "@/components/Select";
@@ -123,12 +123,12 @@ export default function NotesMenu({
 
   const [createNotebook] = useHandleMutation<
     { createNotebook: NotebookFragment },
-    CreateNotebookArgs
+    NotebookCreationArgs
   >(CREATE_NOTEBOOK, updateCacheAfterCreatingNotebook);
 
   const [updateNotebook] = useHandleMutation<
     { updateNotebook: NotebookFragment },
-    UpdateNotebookArgs
+    NotebookUpdateArgs
   >(UPDATE_NOTEBOOK);
 
   // const loading = _loading || loadingCreateNotebook;

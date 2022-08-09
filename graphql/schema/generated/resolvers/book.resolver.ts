@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateBookArgs,
-  CreateManyBookArgs,
+  ArgsForUpdatingManyBooks,
+  BookCreationArgs,
+  BooksCreationArgs,
+  BookUpdateArgs,
+  BookUpsertionArgs,
   DeleteBookArgs,
   DeleteManyBookArgs,
   FindManyBookArgs,
   FindUniqueBookArgs,
-  UpdateBookArgs,
-  UpdateManyBookArgs,
-  UpsertBookArgs,
 } from "@/graphql/schema/generated/args/book.args";
 import BookModel, { Book } from "@/graphql/schema/generated/models/book.model";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
@@ -49,7 +49,7 @@ export class BookResolver {
   async createBook(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateBookArgs
+    @TypeGraphQL.Args() args: BookCreationArgs
   ) {
     const book = await BookModel.create(args.data);
     return book;
@@ -59,7 +59,7 @@ export class BookResolver {
   async createManyBook(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyBookArgs
+    @TypeGraphQL.Args() args: BooksCreationArgs
   ): Promise<Book[]> {
     throw new Error("Not implemented");
   }
@@ -68,7 +68,7 @@ export class BookResolver {
   async updateBook(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateBookArgs
+    @TypeGraphQL.Args() args: BookUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const book = await BookModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -79,7 +79,7 @@ export class BookResolver {
   async upsertBook(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertBookArgs
+    @TypeGraphQL.Args() args: BookUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const book = await BookModel.findOneAndUpdate(filter, args.data, {
@@ -91,10 +91,19 @@ export class BookResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Book], { nullable: false })
-  async updateManyBook(
+  async updateBooks(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyBookArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyBooks
+  ): Promise<Book[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Book], { nullable: false })
+  async updateBooksDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyBooks
   ): Promise<Book[]> {
     throw new Error("Not implemented");
   }

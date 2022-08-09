@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateManyUserArgs,
-  CreateUserArgs,
+  ArgsForUpdatingManyUsers,
   DeleteManyUserArgs,
   DeleteUserArgs,
   FindManyUserArgs,
   FindUniqueUserArgs,
-  UpdateManyUserArgs,
-  UpdateUserArgs,
-  UpsertUserArgs,
+  UserCreationArgs,
+  UsersCreationArgs,
+  UserUpdateArgs,
+  UserUpsertionArgs,
 } from "@/graphql/schema/generated/args/user.args";
 import UserModel, { User } from "@/graphql/schema/generated/models/user.model";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
@@ -49,7 +49,7 @@ export class UserResolver {
   async createUser(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateUserArgs
+    @TypeGraphQL.Args() args: UserCreationArgs
   ) {
     const user = await UserModel.create(args.data);
     return user;
@@ -59,7 +59,7 @@ export class UserResolver {
   async createManyUser(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyUserArgs
+    @TypeGraphQL.Args() args: UsersCreationArgs
   ): Promise<User[]> {
     throw new Error("Not implemented");
   }
@@ -68,7 +68,7 @@ export class UserResolver {
   async updateUser(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateUserArgs
+    @TypeGraphQL.Args() args: UserUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const user = await UserModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
@@ -79,7 +79,7 @@ export class UserResolver {
   async upsertUser(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertUserArgs
+    @TypeGraphQL.Args() args: UserUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const user = await UserModel.findOneAndUpdate(filter, args.data, {
@@ -91,10 +91,19 @@ export class UserResolver {
   }
 
   @TypeGraphQL.Mutation(() => [User], { nullable: false })
-  async updateManyUser(
+  async updateUsers(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyUserArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyUsers
+  ): Promise<User[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [User], { nullable: false })
+  async updateUsersDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyUsers
   ): Promise<User[]> {
     throw new Error("Not implemented");
   }

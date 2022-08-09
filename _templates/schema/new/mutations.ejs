@@ -6,11 +6,11 @@ force: true
 
 import { gql, MutationHookOptions } from "@apollo/client";
 import { <%= name %>Fragment, <%= Name %>Fragment } from "@/graphql/schema/generated/fragments/<%= name %>.fragment";
-import { Create<%= Name %>Args } from "@/graphql/schema/generated/args/<%= name %>.args";
-import { <%= Name %>CreateInput, <%= Name %>UpdateInput } from "@/graphql/schema/generated/inputs/<%= name %>.inputs";
+import { <%= Name %>CreationArgs } from "@/graphql/schema/generated/args/<%= name %>.args";
+import { <%= Name %>CreationInput, <%= Name %>UpdateInput } from "@/graphql/schema/generated/inputs/<%= name %>.inputs";
 
 export const CREATE_<%= h.changeCase.constantCase(name) %> = gql`
-  mutation Create<%= Name %>($data: <%= Name %>CreateInput!) {
+  mutation Create<%= Name %>($data: <%= Name %>CreationInput!) {
     create<%= Name %>(data: $data) {
       ...<%= Name %>Fragment
     }
@@ -18,7 +18,7 @@ export const CREATE_<%= h.changeCase.constantCase(name) %> = gql`
   ${<%= name %>Fragment}
 `;
 
-export const getOptimisticResponseFor<%= Name %>Creation = (data: <%= Name %>CreateInput) => {
+export const getOptimisticResponseFor<%= Name %>Creation = (data: <%= Name %>CreationInput): { create<%= Name %>: <%= Name %>Fragment } => {
   const now = new Date();
   return {
     create<%= Name %>: {
@@ -35,7 +35,7 @@ export const getOptimisticResponseFor<%= Name %>Creation = (data: <%= Name %>Cre
   };
 };
 
-export const updateCacheAfterCreating<%= Name %>: MutationHookOptions<{ create<%= Name %>: <%= Name %>Fragment }, Create<%= Name %>Args> = {
+export const updateCacheAfterCreating<%= Name %>: MutationHookOptions<{ create<%= Name %>: <%= Name %>Fragment }, <%= Name %>CreationArgs> = {
   update(cache, { data }) {
     const { create<%= Name %> } = data || {};
     if (create<%= Name %>) {
@@ -92,8 +92,26 @@ export const getOptimisticResponseFor<%= Name %>Update = (fragment: <%= Name %>F
 };
 
 export const UPSERT_<%= h.changeCase.constantCase(name) %> = gql`
-  mutation Update<%= Name %>($where: <%= Name %>WhereUniqueInput!, $data: <%= Name %>CreateInput!) {
+  mutation Update<%= Name %>($where: <%= Name %>WhereUniqueInput!, $data: <%= Name %>CreationInput!) {
     upsert<%= Name %>(where: $where, data: $data) {
+      ...<%= Name %>Fragment
+    }
+  }
+  ${<%= name %>Fragment}
+`;
+
+export const UPDATE_<%= h.changeCase.constantCase(h.inflection.pluralize(name)) %> = gql`
+  mutation Update<%= h.inflection.pluralize(Name) %>($where: <%= Name %>WhereInput!, $data: <%= Name %>UpdateInput!) {
+    update<%= h.inflection.pluralize(Name) %>(where: $where, data: $data) {
+      ...<%= Name %>Fragment
+    }
+  }
+  ${<%= name %>Fragment}
+`;
+
+export const UPDATE_<%= h.changeCase.constantCase(h.inflection.pluralize(name)) %>_DISTINCTLY = gql`
+  mutation Update<%= h.inflection.pluralize(Name) %>Distinctly($data: [<%= Name %>UpdateInput!]!) {
+    update<%= h.inflection.pluralize(Name) %>Distinctly(data: $data) {
       ...<%= Name %>Fragment
     }
   }

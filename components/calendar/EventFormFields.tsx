@@ -1,4 +1,5 @@
-import { CalendarEventData } from "@/utils/calendarEvents";
+import { CalendarEventData } from "@/graphql/schema/generated/reducers/calendarEvent.reducer";
+import { Payload } from "@/utils/data";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
@@ -8,7 +9,7 @@ import { Dispatch, FC } from "react";
 
 interface EventFormFieldsProps {
   data: CalendarEventData;
-  dispatch: Dispatch<{ field: string; value: unknown }>;
+  dispatch: Dispatch<Payload<CalendarEventData>>;
 }
 
 const EventFormFields: FC<EventFormFieldsProps> = ({

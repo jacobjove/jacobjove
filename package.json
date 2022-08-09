@@ -25,7 +25,7 @@
     "make-migrations": "if [ -n $USE_POSTGRES ]; then prisma migrate dev; fi",
     "migrate": "if [ -n $USE_POSTGRES ]; then prisma migrate deploy; fi",
     "prepare": "npx husky install",
-    "schema:generate": "export RESOLVERS_INDEX='graphql/schema/generated/resolvers/index.ts'; rm $RESOLVERS_INDEX; touch $RESOLVERS_INDEX; for filename in graphql/schema/definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen schema new --definition $(basename -- $filename); done",
+    "schema:generate": "export RESOLVER_INDEX_PATH='graphql/schema/generated/resolvers/index.ts'; rm $RESOLVER_INDEX_PATH; touch $RESOLVER_INDEX_PATH; for filename in graphql/schema/definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen schema new --definition $(basename -- $filename); done",
     "start": "next start",
     "start:dev": "next dev",
     "start:migrate": "npm run migrate && npm run start",

@@ -6,7 +6,7 @@ import { ID, WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.InputType()
-export class CalendarEventCreateInput {
+export class CalendarEventCreationInput {
   @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
   userId!: Types.ID;
 
@@ -34,8 +34,8 @@ export class CalendarEventCreateInput {
   @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: true })
   end?: Types.DateTime | null | undefined;
 
-  @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: false })
-  allDay!: Types.Boolean;
+  @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: true })
+  allDay?: Types.Boolean | null | undefined;
 
   @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
   notes?: Types.String | null | undefined;
@@ -77,7 +77,7 @@ export class CalendarEventUpdateInput {
   end?: Types.DateTime | null | undefined;
 
   @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: true })
-  allDay?: Types.Boolean | undefined;
+  allDay?: Types.Boolean | null | undefined;
 
   @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
   notes?: Types.String | null | undefined;
@@ -122,7 +122,7 @@ export class CalendarEventWhereInput extends WhereInput {
   end?: Types.DateTime | undefined;
 
   @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: true })
-  allDay?: Types.Boolean | null | undefined;
+  allDay?: Types.Boolean | undefined;
 
   @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
   notes?: Types.String | undefined;

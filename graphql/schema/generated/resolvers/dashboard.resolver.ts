@@ -2,15 +2,15 @@
 
 import { GqlContext } from "@/graphql/context";
 import {
-  CreateDashboardArgs,
-  CreateManyDashboardArgs,
+  ArgsForUpdatingManyDashboards,
+  DashboardCreationArgs,
+  DashboardsCreationArgs,
+  DashboardUpdateArgs,
+  DashboardUpsertionArgs,
   DeleteDashboardArgs,
   DeleteManyDashboardArgs,
   FindManyDashboardArgs,
   FindUniqueDashboardArgs,
-  UpdateDashboardArgs,
-  UpdateManyDashboardArgs,
-  UpsertDashboardArgs,
 } from "@/graphql/schema/generated/args/dashboard.args";
 import DashboardModel, { Dashboard } from "@/graphql/schema/generated/models/dashboard.model";
 import UserModel from "@/graphql/schema/generated/models/user.model";
@@ -50,7 +50,7 @@ export class DashboardResolver {
   async createDashboard(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateDashboardArgs
+    @TypeGraphQL.Args() args: DashboardCreationArgs
   ) {
     const dashboard = await DashboardModel.create(args.data);
     if (dashboard) {
@@ -67,7 +67,7 @@ export class DashboardResolver {
   async createManyDashboard(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: CreateManyDashboardArgs
+    @TypeGraphQL.Args() args: DashboardsCreationArgs
   ): Promise<Dashboard[]> {
     throw new Error("Not implemented");
   }
@@ -76,7 +76,7 @@ export class DashboardResolver {
   async updateDashboard(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateDashboardArgs
+    @TypeGraphQL.Args() args: DashboardUpdateArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const dashboard = await DashboardModel.findOneAndUpdate(filter, args.data, {
@@ -96,7 +96,7 @@ export class DashboardResolver {
   async upsertDashboard(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpsertDashboardArgs
+    @TypeGraphQL.Args() args: DashboardUpsertionArgs
   ) {
     const filter = convertFilterForMongo(args.where);
     const dashboard = await DashboardModel.findOneAndUpdate(filter, args.data, {
@@ -108,10 +108,19 @@ export class DashboardResolver {
   }
 
   @TypeGraphQL.Mutation(() => [Dashboard], { nullable: false })
-  async updateManyDashboard(
+  async updateDashboards(
     @TypeGraphQL.Ctx() ctx: GqlContext,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
-    @TypeGraphQL.Args() args: UpdateManyDashboardArgs
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyDashboards
+  ): Promise<Dashboard[]> {
+    throw new Error("Not implemented");
+  }
+
+  @TypeGraphQL.Mutation(() => [Dashboard], { nullable: false })
+  async updateDashboardsDistinctly(
+    @TypeGraphQL.Ctx() ctx: GqlContext,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: ArgsForUpdatingManyDashboards
   ): Promise<Dashboard[]> {
     throw new Error("Not implemented");
   }
