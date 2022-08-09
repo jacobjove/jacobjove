@@ -51,6 +51,8 @@ interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   dispatchTaskData: Dispatch<{ field: string; value: unknown }>;
 }
 
+const LEFT_SIDE_WIDTH = "3.3rem";
+
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const {
     task: taskData,
@@ -149,7 +151,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
       <DialogTitle sx={{ minHeight: "3.3rem", borderBottom: "1px solid gray" }}>
-        {taskData.id ?? ""}
         {!!taskData.id && !!updateTask && (
           <Box
             ml={"auto"}
@@ -224,12 +225,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
       </DialogTitle>
       <DialogContent sx={{ px: 0 }}>
         <Box display="flex" borderBottom={"1px solid gray"}>
-          <CompletionCheckbox
-            sx={{ alignSelf: "start", alignItems: "start" }}
-            checked={completed}
-            disabled={!canUpdate}
-            onClick={() => handleUpdateField("completedAt", new Date())}
-          />
           <Box
             mb={2}
             flexGrow={1}
@@ -244,77 +239,87 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 setEditing(false);
             }}
           >
-            <Box sx={{ "& *": { fontSize: "1.6rem", fontWeight: "400" } }}>
+            <Box display="flex" alignItems="center">
+              <CompletionCheckbox
+                sx={{ alignSelf: "start", alignItems: "start", minWidth: LEFT_SIDE_WIDTH }}
+                checked={completed}
+                disabled={!canUpdate}
+                onClick={() => handleUpdateField("completedAt", new Date())}
+              />
+              <Box sx={{ "& *": { fontSize: "1.6rem", fontWeight: "400" } }}>
+                {editing ? (
+                  <TextField
+                    autoFocus
+                    id="title"
+                    name="title"
+                    variant="standard"
+                    value={taskData.title}
+                    placeholder={"Task title"}
+                    onChange={(event) => handleUpdateField("title", event.target.value)}
+                  />
+                ) : (
+                  <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
+                    {taskData.title}
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+            <Box pl={LEFT_SIDE_WIDTH}>
               {editing ? (
                 <TextField
-                  autoFocus
-                  id="title"
-                  name="title"
-                  variant="standard"
-                  value={taskData.title}
-                  placeholder={"Task title"}
-                  onChange={(event) => handleUpdateField("title", event.target.value)}
+                  multiline
+                  fullWidth
+                  id="description"
+                  name="description"
+                  // variant="standard"
+                  value={taskData.description ?? ""}
+                  placeholder="Task description"
+                  onChange={(event) => handleUpdateField("description", event.target.value)}
                 />
               ) : (
-                <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
-                  {taskData.title}
-                </Typography>
+                <DialogContentText
+                  component="div"
+                  sx={{ mt: 1, mb: 2 }}
+                  onClick={() => setEditing(true)}
+                >
+                  {taskData.description || (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: (theme) =>
+                          theme.palette.mode === "light"
+                            ? "rgba(0,0,0,0.5)"
+                            : "rgba(255,255,255,0.5)",
+                      }}
+                    >
+                      <NotesIcon />
+                      <Typography sx={{ ml: 1 }}>{"Description"}</Typography>
+                    </Box>
+                  )}
+                </DialogContentText>
               )}
-            </Box>
-            {editing ? (
-              <TextField
-                multiline
-                fullWidth
-                id="description"
-                name="description"
-                // variant="standard"
-                value={taskData.description ?? ""}
-                placeholder="Task description"
-                onChange={(event) => handleUpdateField("description", event.target.value)}
-              />
-            ) : (
-              <DialogContentText
-                component="div"
-                sx={{ mt: 1, mb: 2 }}
-                onClick={() => setEditing(true)}
-              >
-                {taskData.description || (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      color: (theme) =>
-                        theme.palette.mode === "light"
-                          ? "rgba(0,0,0,0.5)"
-                          : "rgba(255,255,255,0.5)",
-                    }}
-                  >
-                    <NotesIcon />
-                    <Typography sx={{ ml: 1 }}>{"Description"}</Typography>
-                  </Box>
-                )}
-              </DialogContentText>
-            )}
-            {!!taskData.archivedAt && (
+              {!!taskData.archivedAt && (
+                <Box my={2}>
+                  <Typography>{`This task is archived.`}</Typography>
+                </Box>
+              )}
               <Box my={2}>
-                <Typography>{`This task is archived.`}</Typography>
+                {subtasks?.length ? (
+                  <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
+                ) : (
+                  <Typography>{`Add subtasks.`}</Typography>
+                )}
               </Box>
-            )}
-            <Box my={2}>
-              {subtasks?.length ? (
-                <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
-              ) : (
-                <Typography>{`Add subtasks.`}</Typography>
-              )}
-            </Box>
-            <Box my={2}>
-              {taskData.habitId ? (
-                <Typography>{`This task is associated with habit ${taskData.habitId}.`}</Typography>
-              ) : (
-                <Typography>
-                  {`Trying to build a new habit? Create a habit from this task.`}
-                </Typography>
-              )}
+              <Box my={2}>
+                {taskData.habitId ? (
+                  <Typography>{`This task is associated with habit ${taskData.habitId}.`}</Typography>
+                ) : (
+                  <Typography>
+                    {`Trying to build a new habit? Create a habit from this task.`}
+                  </Typography>
+                )}
+              </Box>
             </Box>
           </Box>
           <Box

@@ -23,7 +23,6 @@ const GoalsBox: FC<GoalsBoxProps> = (props: GoalsBoxProps) => {
       ) : (
         <Typography
           sx={{
-            mt: "10%",
             textAlign: "center",
           }}
         >

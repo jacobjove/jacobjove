@@ -1,9 +1,9 @@
 import { CalendarEventData } from "@/utils/calendarEvents";
-import DateTimePicker from "@mui/lab/DateTimePicker";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { Dispatch, FC } from "react";
 
 interface EventFormFieldsProps {
@@ -32,7 +32,7 @@ const EventFormFields: FC<EventFormFieldsProps> = ({
           openTo="minutes"
           value={formData.start}
           // TODO: remove these type annotations after mui lab types are updated
-          onChange={(value: Date) => dispatch({ field: "start", value })}
+          onChange={(value: Date | null) => value && dispatch({ field: "start", value })}
           renderInput={(params: TextFieldProps) => (
             <TextField {...params} sx={{ marginY: "1rem" }} required />
           )}
@@ -43,7 +43,7 @@ const EventFormFields: FC<EventFormFieldsProps> = ({
           minDateTime={formData.start}
           value={formData.end}
           // inputFormat="yyyy/MM/dd hh:mm a"
-          onChange={(value: Date) => dispatch({ field: "end", value: value })}
+          onChange={(value: Date | null) => value && dispatch({ field: "end", value })}
           renderInput={(params: TextFieldProps) => (
             <TextField {...params} sx={{ marginY: "1rem" }} />
           )}

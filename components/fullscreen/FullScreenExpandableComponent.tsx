@@ -18,6 +18,7 @@ const FullScreenExpandableComponent: FC<FullScreenExpandableComponentProps> = ({
       sx={{
         display: "flex",
         justifyContent: "center",
+        height: "100%",
         ...(fullScreen
           ? {
               position: "fixed",

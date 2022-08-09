@@ -6,17 +6,20 @@ import "reflect-metadata";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import mongoosePromise from "../lib/mongodb";
-import usersData from "../graphql/seeds/users";
+import mongoosePromise from "@/lib/mongodb";
+import usersData from "@/graphql/seeds/users";
 import UserModel from "@/graphql/schema/generated/models/user.model";
-import tasksData from "../graphql/seeds/tasks";
+import tasksData from "@/graphql/seeds/tasks";
 import TaskModel from "@/graphql/schema/generated/models/task.model";
+import CalendarEventModel from "@/graphql/schema/generated/models/calendarEvent.model";
+import CalendarModel from "@/graphql/schema/generated/models/calendar.model";
 
 async function main() {
   await mongoosePromise;
 
   // Delete extant data.
   await UserModel.deleteMany({});
+  await CalendarEventModel.deleteMany({});
   await TaskModel.deleteMany({});
 
   UserModel.insertMany(usersData);
@@ -47,13 +50,28 @@ async function main() {
     })
   );
 
+  const calendar = await CalendarModel.findOne({ userId: user._id });
+  if (!calendar?._id) throw new Error("Failed to find calendar");
+
+  const calendarEvents = await Promise.all([
+    CalendarEventModel.create({
+      userId: user._id,
+      calendarId: calendar._id,
+      title: "Test Event",
+      start: new Date(),
+    }),
+  ]);
+
   user = (await UserModel.findOneAndUpdate(
     { email: adminEmail },
-    { tasks },
+    {
+      tasks,
+      calendarEvents,
+    },
     { returnDocument: "after" }
   )) as typeof user;
 
-  console.error(user);
+  console.error(calendarEvents);
 
   // for (const taskData of tasksData) {
   //   const { subtasks, ...rest } = taskData;

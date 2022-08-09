@@ -33,6 +33,8 @@ export const UserContextProvider: FC<UserContextProviderProps> = ({ session, chi
 
 export const useUser = ({ required } = { required: false }): User | null => {
   const user = useContext(UserContext);
-  if (required && !user) console.error("User is required but is not set!");
+  if (required && !user) {
+    // console.error("User is required but is not set!");
+  }
   return user;
 };

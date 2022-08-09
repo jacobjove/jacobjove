@@ -24,7 +24,6 @@ const HabitsBox: FC<HabitsBoxProps> = (props: HabitsBoxProps) => {
       ) : (
         <Typography
           sx={{
-            mt: "10%",
             textAlign: "center",
           }}
         >

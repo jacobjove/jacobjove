@@ -195,7 +195,8 @@ const DayViewer: FC<DayViewerProps> = ({
             display="flex"
             ref={scrollableDivRef}
             position="relative"
-            className="no-scrollbar"
+            maxHeight={"100vh"}
+            className="scrollable no-scrollbar"
             sx={{
               scrollBehavior: "smooth",
               overflowY: "scroll",

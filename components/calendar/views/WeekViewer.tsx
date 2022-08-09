@@ -206,7 +206,8 @@ WeekViewerProps) => {
         display="flex"
         ref={scrollableDivRef}
         position="relative"
-        className="no-scrollbar"
+        maxHeight={"100vh"}
+        className="scrollable no-scrollbar"
         sx={{
           overflowY: "scroll",
           overflowX: "hidden",

@@ -15,6 +15,7 @@ export interface DataBoxProps {
 const DataBox: FC<DataBoxProps> = (props: DataBoxProps) => {
   const { title, displayTitle: _displayTitle, onClickAddItem, children } = props;
   const displayTitle = false;
+
   return (
     <Box
       whiteSpace="normal"

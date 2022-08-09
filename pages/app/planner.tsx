@@ -110,7 +110,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
             mr: "0.5rem",
           }}
         >
-          <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%" }}>
+          <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%", maxHeight: "100%" }}>
             <CalendarViewer
               data={{ calendarEvents: calendarEvents ?? [], calendars: calendars ?? [] }}
               selectedDateState={[selectedDate, setSelectedDate]}
@@ -121,12 +121,12 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
           sx={{
             width: "100%",
             maxWidth: "40rem",
-            // height: "100%",
             maxHeight: "100%",
             ...(displaySideBySide
               ? {
                   flexBasis: "50%",
                   flexGrow: 1,
+                  height: "100%",
                 }
               : {}),
             display: "flex",
@@ -159,7 +159,7 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
   selectedDateState,
 }: PlannerCompanionStuffProps) => {
   const user = useUser({ required: true });
-  const { tasks, goals, mantras, habits } = user ?? {};
+  const { goals, mantras, habits } = user ?? {};
   const [fullScreen, setFullScreen] = useState(false);
   const [value, setValue] = useState("1");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -195,11 +195,7 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
             </TabList>
           </Box>
           <TabPanel value="1">
-            <TasksBox
-              data={{ tasks: tasks ?? [] }}
-              selectedDateState={selectedDateState}
-              displayTitle={false}
-            />
+            <TasksBox selectedDateState={selectedDateState} displayTitle={false} />
           </TabPanel>
           <TabPanel value="2">
             <HabitsBox habits={habits ?? []} displayTitle={false} />

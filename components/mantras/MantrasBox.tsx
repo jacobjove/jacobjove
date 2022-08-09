@@ -24,7 +24,6 @@ const MantrasBox: FC<MantrasBoxProps> = (props: MantrasBoxProps) => {
       ) : (
         <Typography
           sx={{
-            mt: "10%",
             textAlign: "center",
           }}
         >

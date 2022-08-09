@@ -186,12 +186,13 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   };
   return (
     <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
-      <Box display="flex" flexDirection={"column"} height={"100%"} flexGrow={1}>
+      <Box display="flex" flexDirection={"column"} height={"100%"} flexGrow={1} maxHeight={"100%"}>
         {!props.collapseMenu && (
           <Box
             flex={"0 0 auto"}
             display="flex"
             width={"100%"}
+            maxHeight={"100%"}
             alignItems={"center"}
             justifyContent={"space-between"}
             pb="0.12rem"
