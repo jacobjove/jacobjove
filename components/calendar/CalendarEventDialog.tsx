@@ -10,6 +10,7 @@ import {
   getOptimisticResponseForCalendarEventUpdate,
 } from "@/graphql/generated/mutations/calendarEvent.mutations";
 import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
+import { ID } from "@/graphql/schema/types";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -17,6 +18,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { FC } from "react";
+import { useUser } from "../contexts/UserContext";
 
 type CalendarEventDialogProps = ReturnType<typeof bindPopover> & {
   mutation: "create" | "update";
@@ -25,13 +27,14 @@ type CalendarEventDialogProps = ReturnType<typeof bindPopover> & {
 
 const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventDialogProps) => {
   console.log("Rendering CalendarEventDialog");
+  const user = useUser();
   const { onClose, data, anchorEl: _anchorEl, mutation, ...dialogProps } = props;
   const calendarEventDataTuple = useCalendarEventDataReducer(
     data ?? {
       title: "",
       start: new Date(),
       calendarId: "",
-      userId: "",
+      userId: user?.id as ID,
     }
   );
   const [calendarEventData] = calendarEventDataTuple;

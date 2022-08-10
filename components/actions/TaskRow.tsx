@@ -1,7 +1,7 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
 import { useUser } from "@/components/contexts/UserContext";
-import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { ID } from "@/graphql/schema/types";
@@ -58,8 +58,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
 
   // const habit = task.habit; // TODO
   const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
-
-  const taskDataTuple = useTaskDataReducer(task);
 
   const [updateTask, { loading }] = useUpdateTask();
 
@@ -286,7 +284,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
             index={index}
           />
         ))}
-      <TaskDialog taskDataTuple={taskDataTuple} {...bindPopover(dialogState)} />
+      <TaskDialog data={task} {...bindPopover(dialogState)} />
     </>
   );
 };

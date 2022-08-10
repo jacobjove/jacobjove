@@ -1,7 +1,11 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { useCreateTask, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import {
+  useCreateTask,
+  useTaskDataReducer,
+  useUpdateTask,
+} from "@/graphql/generated/hooks/task.hooks";
 import { Habit } from "@/graphql/generated/models/habit.model";
 import { Task } from "@/graphql/generated/models/task.model";
 import {
@@ -10,7 +14,6 @@ import {
 } from "@/graphql/generated/mutations/task.mutations";
 import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
-import { Payload } from "@/utils/data";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -29,20 +32,26 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { Dispatch, FC, useState } from "react";
+import { FC, useState } from "react";
 import { useUser } from "../contexts/UserContext";
 import TasksTable from "./TasksTable";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
-  taskDataTuple: [TaskData, Dispatch<Payload<TaskData>>];
+  data?: TaskData;
 }
 
 const LEFT_SIDE_WIDTH = "3.3rem";
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
-  const { taskDataTuple, onClose: initialOnClose, anchorEl: _anchorEl, ...dialogProps } = props;
-  const [taskData, dispatchTaskData] = taskDataTuple;
+  const { data, onClose: initialOnClose, anchorEl: _anchorEl, ...dialogProps } = props;
   const user = useUser();
+  const [taskData, dispatchTaskData] = useTaskDataReducer(
+    data ?? {
+      title: "",
+      rank: 0, // TODO
+      userId: user?.id as ID,
+    }
+  );
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
   const [editing, setEditing] = useState(!taskData.id);
