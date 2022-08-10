@@ -29,8 +29,7 @@ if (process.env.NODE_ENV === "development") {
     // mongoClient = new MongoClient(MONGODB_URI, options);
     // global._mongoosePromise = mongoClient.connect();
     global._mongoosePromise = mongoose.connect(MONGODB_URI);
-
-    console.error(">>> Connected mongo client");
+    console.log("Connected mongo client.");
   }
   mongoosePromise = global._mongoosePromise;
 } else {
