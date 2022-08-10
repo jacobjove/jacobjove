@@ -49,7 +49,7 @@ export type DraggedTask = { type: "task" } & Pick<Task, "id" | "rank" | "title" 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const user = useUser();
   const { task, asSubtask, subtasks, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
-  const completed = !!task.completedAt;
+  const [completed, setCompleted] = useState(!!task.completedAt);
   const collapsed = _collapsed ?? false;
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
@@ -64,6 +64,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   onLoading(loading);
 
   const toggleCompletion = (complete: boolean) => {
+    setCompleted(complete);
     const completedAt = complete ? new Date() : null;
     const data = { completedAt };
     const optimisticResponse = getOptimisticResponseForTaskUpdate(task, data);
