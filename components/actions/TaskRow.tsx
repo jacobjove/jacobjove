@@ -93,16 +93,28 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
         hover={!isDragging}
         ref={dndRef}
         sx={{
-          opacity: isDragging ? 0 : 1,
+          "& *": { ...(isDragging && { opacity: 0 }) },
+          borderTop: (theme) => {
+            const dividerColor = theme.palette.divider;
+            return isDragging ? `1px solid ${dividerColor}` : "initial";
+          },
+          borderBottom: (theme) => {
+            const dividerColor = theme.palette.divider;
+            return isDragging ? `2px solid ${dividerColor}` : "initial";
+          },
           cursor: isDragging ? "grabbing" : "pointer",
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
-          backgroundColor: (theme) =>
-            asSubtask
+          // TODO: not working...
+          filter: isDragging ? "brightness(50%)" : "none",
+          backgroundColor: (theme) => {
+            const bgOpacity = isDragging ? "0.2" : "0.05";
+            return asSubtask
               ? theme.palette.mode === "light"
-                ? "rgba(0,0,0,0.05)"
-                : "rgba(255,255,255,0.05)"
-              : "transparent",
+                ? `rgba(0,0,0,${bgOpacity})`
+                : `rgba(255,255,255,${bgOpacity})`
+              : "transparent";
+          },
           "& .drag-handle": { visibility: "hidden" },
           "& .actions-menu-icon": { visibility: "hidden" },
           "&:hover": {
