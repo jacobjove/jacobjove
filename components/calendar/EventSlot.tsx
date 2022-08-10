@@ -1,5 +1,5 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
-import { DraggedCalendarEvent } from "@/components/calendar/EventBox";
+import { DraggedCalendarEvent } from "@/components/calendar/CalendarEventBox";
 import { useUser } from "@/components/contexts/UserContext";
 import {
   useCreateCalendarEvent,

@@ -1,3 +1,4 @@
+import CalendarEventBox from "@/components/calendar/CalendarEventBox";
 import {
   ALL_DAY_BOX_HEIGHT,
   HALF_HOUR_HEIGHT,
@@ -5,7 +6,6 @@ import {
   MINUTE_HEIGHT,
   START_HOUR,
 } from "@/components/calendar/constants";
-import EventBox from "@/components/calendar/EventBox";
 import EventSlot from "@/components/calendar/EventSlot";
 import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import DateContext from "@/components/contexts/DateContext";
@@ -264,7 +264,7 @@ const DayViewer: FC<DayViewerProps> = ({
                     const topOffset = `${dayStartDiffInMinutes * MINUTE_HEIGHT + 2}px`; // TODO: fix magic number
                     const height = `${eventDurationInMinutes * MINUTE_HEIGHT}px`;
                     return (
-                      <EventBox
+                      <CalendarEventBox
                         key={indexInGroup}
                         position="absolute"
                         left={`calc(1px + ${widthPercent * indexInGroup}%)`}

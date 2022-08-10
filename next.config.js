@@ -4,7 +4,6 @@
 
 process.env.BASE_DIR = __dirname;
 
-const withPlugins = require("next-compose-plugins");
 const withPWA = require("next-pwa");
 
 const plugins = [];
@@ -47,7 +46,7 @@ const nextConfig = {
   compress: process.env.NODE_ENV != "production",
   reactStrictMode: true,
   swcMinify: true,
-  experimental: { esmExternals: "loose" },
+  // experimental: { esmExternals: "loose" },
   async redirects() {
     const redirects = [
       {
@@ -60,4 +59,6 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlugins(plugins, nextConfig);
+module.exports = () => {
+  return plugins.reduce((acc, plugin) => plugin(acc), { ...nextConfig });
+};

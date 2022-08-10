@@ -21,7 +21,7 @@ import { bindPopover, bindTrigger, PopupState, usePopupState } from "material-ui
 import { ComponentProps, FC, useState } from "react";
 import { useDrag } from "react-dnd";
 
-interface EventBoxProps extends ComponentProps<typeof Box> {
+interface CalendarEventBoxProps extends ComponentProps<typeof Box> {
   event: CalendarEvent;
 }
 
@@ -29,7 +29,7 @@ export interface DraggedCalendarEvent extends CalendarEvent {
   type: "event";
 }
 
-const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
+const CalendarEventBox: FC<CalendarEventBoxProps> = (props: CalendarEventBoxProps) => {
   const { event, ...rest } = props;
   const [calendarEventData, dispatchCalendarEventData] = useCalendarEventDataReducer(event);
   const [hovered, setHovered] = useState(false);
@@ -121,28 +121,26 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
           <DragIndicatorIcon sx={{ "&:hover": { cursor: "grab" } }} />
         </div>
       </Box>
-      <EventDetailDialog
+      <CalendarEventDetailDialog
         {...bindPopover(detailDialogState)}
         event={event}
         editingDialogState={editingDialogState}
       />
-      <CalendarEventDialog
-        mutation={"update"}
-        calendarEventDataTuple={[calendarEventData, dispatchCalendarEventData]}
-        {...bindPopover(editingDialogState)}
-      />
+      <CalendarEventDialog mutation={"update"} data={event} {...bindPopover(editingDialogState)} />
     </>
   );
 };
 
-export default EventBox;
+export default CalendarEventBox;
 
-interface EventDetailDialogProps extends ReturnType<typeof bindPopover> {
+interface CalendarEventDetailDialogProps extends ReturnType<typeof bindPopover> {
   event: CalendarEvent;
   editingDialogState: PopupState;
 }
 
-const EventDetailDialog: FC<EventDetailDialogProps> = (props: EventDetailDialogProps) => {
+const CalendarEventDetailDialog: FC<CalendarEventDetailDialogProps> = (
+  props: CalendarEventDetailDialogProps
+) => {
   const { event, editingDialogState, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
   const deletionDialogState = usePopupState({
     variant: "popover",
