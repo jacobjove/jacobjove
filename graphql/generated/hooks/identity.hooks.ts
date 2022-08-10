@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type IdentityCreationMutationHookOptions = MutationHookOptions<
   { createIdentity: IdentityFragment },
@@ -46,13 +47,17 @@ export const useUpdateIdentity = (options?: IdentityUpdateMutationHookOptions) =
 export const useIdentityDataReducer = (
   data: IdentityData
 ): [IdentityData, Dispatch<Payload<IdentityData>>] => {
+  const initialData = initializeIdentityData(data);
   const [identityData, dispatchIdentityData] = useReducer(
     identityDataReducer,
-    initializeIdentityData(data),
+    initialData,
     initializeIdentityData
   );
   useEffect(() => {
-    console.log("useIdentityReducer:", data);
-  }, [data]);
+    if (data.userId && !identityData?.userId) {
+      console.log("Dispatching identity data!");
+      dispatchIdentityData({ field: "init", value: data });
+    }
+  }, [data, identityData]);
   return [identityData, dispatchIdentityData];
 };

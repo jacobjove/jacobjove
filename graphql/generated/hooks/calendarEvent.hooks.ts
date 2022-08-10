@@ -18,6 +18,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type CalendarEventCreationMutationHookOptions = MutationHookOptions<
   { createCalendarEvent: CalendarEventFragment },
@@ -49,13 +50,17 @@ export const useUpdateCalendarEvent = (options?: CalendarEventUpdateMutationHook
 export const useCalendarEventDataReducer = (
   data: CalendarEventData
 ): [CalendarEventData, Dispatch<Payload<CalendarEventData>>] => {
+  const initialData = initializeCalendarEventData(data);
   const [calendarEventData, dispatchCalendarEventData] = useReducer(
     calendarEventDataReducer,
-    initializeCalendarEventData(data),
+    initialData,
     initializeCalendarEventData
   );
   useEffect(() => {
-    console.log("useCalendarEventReducer:", data);
-  }, [data]);
+    if (data.userId && !calendarEventData?.userId) {
+      console.log("Dispatching calendarEvent data!");
+      dispatchCalendarEventData({ field: "init", value: data });
+    }
+  }, [data, calendarEventData]);
   return [calendarEventData, dispatchCalendarEventData];
 };

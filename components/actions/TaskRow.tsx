@@ -59,7 +59,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   // const habit = task.habit; // TODO
   const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
 
-  const [taskData, dispatchTaskData] = useTaskDataReducer(task);
+  const taskDataTuple = useTaskDataReducer(task);
 
   const [updateTask, { loading }] = useUpdateTask();
 
@@ -286,11 +286,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
             index={index}
           />
         ))}
-      <TaskDialog
-        task={taskData}
-        dispatchTaskData={dispatchTaskData}
-        {...bindPopover(dialogState)}
-      />
+      <TaskDialog taskDataTuple={taskDataTuple} {...bindPopover(dialogState)} />
     </>
   );
 };

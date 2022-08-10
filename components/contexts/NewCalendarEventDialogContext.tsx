@@ -1,15 +1,14 @@
-import { useUser } from "@/components/contexts/UserContext";
 import { useCalendarEventDataReducer } from "@/graphql/generated/hooks/calendarEvent.hooks";
 import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
 import { ID } from "@/graphql/schema/types";
 import { Payload } from "@/utils/data";
 import { PopupState, usePopupState } from "material-ui-popup-state/hooks";
-import { createContext, Dispatch, FC, useContext, useEffect } from "react";
+import { createContext, Dispatch, FC, useContext } from "react";
+import { useUser } from "./UserContext";
 
 type NewCalendarEventDialogContextData = {
-  newCalendarEventData: CalendarEventData;
-  dispatchNewCalendarEventData: Dispatch<Payload<CalendarEventData>>;
   newCalendarEventDialogState: PopupState;
+  newCalendarEventDataTuple: [CalendarEventData, Dispatch<Payload<CalendarEventData>>];
 };
 
 const initialValue = {};
@@ -22,35 +21,23 @@ export default NewCalendarEventDialogContext;
 
 export const NewCalendarEventDialogContextProvider: FC = ({ children }) => {
   const user = useUser();
-  const defaultCalendarId = user?.settings.defaultCalendarId as ID;
-  const [newCalendarEventData, dispatchNewCalendarEventData] = useCalendarEventDataReducer({
+  const userId = user?.id as ID;
+  const calendarId = user?.settings.defaultCalendarId as ID;
+  const newCalendarEventDataTuple = useCalendarEventDataReducer({
     title: "",
     start: new Date(),
-    calendarId: defaultCalendarId,
-    userId: user?.id as ID,
+    calendarId,
+    userId,
   });
   const newCalendarEventDialogState = usePopupState({
     variant: "popover",
     popupId: `new-calendarEvent-dialog`,
   });
   const value = {
-    newCalendarEventData,
-    dispatchNewCalendarEventData,
+    newCalendarEventDataTuple,
     newCalendarEventDialogState,
   };
-  useEffect(() => {
-    if (user?.id)
-      dispatchNewCalendarEventData({
-        field: "init",
-        value: {
-          start: new Date(),
-          calendarId: defaultCalendarId,
-          userId: user.id as ID,
-          allDay: false,
-          title: "",
-        },
-      });
-  }, [user, defaultCalendarId]);
+  console.log("Rendering NewCalendarEventDialogContextProvider");
   return (
     <NewCalendarEventDialogContext.Provider value={value}>
       {children}

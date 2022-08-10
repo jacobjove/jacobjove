@@ -30,33 +30,24 @@ export interface TasksAccordionProps {
   contained?: boolean;
 }
 
-const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => {
+const TasksAccordion: FC<TasksAccordionProps> = () => {
   const user = useUser();
-
-  const allTasks = user?.tasks ?? [];
-
-  // Exclude archived tasks.
-  let filteredTasks = useMemo(
-    () => allTasks.filter((task) => !task.archivedAt).sort((a, b) => (a.rank > b.rank ? 1 : -1)),
-    [allTasks]
-  );
-  // filteredTasks.sort((a, b) => (a.rank > b.rank ? 1 : -1));
 
   // If these are any top-level tasks, exclude the subtasks, since the top-level tasks
   // should already contain their subtasks. Otherwise, if there are no top-level tasks,
   // just show all the tasks, so that, e.g., a table of a task's subtasks can be
   // rendered in a task's detail dialog... TODO.
-  const [topLevelTasks, subtasks] = useMemo(
-    () =>
-      partition(filteredTasks, (task) => {
-        return !task.parentId;
-      }),
-    [filteredTasks]
-  );
-
-  filteredTasks = topLevelTasks.length ? topLevelTasks : subtasks;
-
-  console.log("TasksBox.filteredTasks:", filteredTasks);
+  const filteredTasks = useMemo(() => {
+    const allTasks = user?.tasks ?? [];
+    console.log("Calculating filteredTasks");
+    const unarchivedTasks = allTasks
+      .filter((task) => !task.archivedAt)
+      .sort((a, b) => (a.rank > b.rank ? 1 : -1));
+    const [topLevelTasks, subtasks] = partition(unarchivedTasks, (task) => {
+      return !task.parentId;
+    });
+    return topLevelTasks.length ? topLevelTasks : subtasks;
+  }, [user?.tasks]);
 
   // Distinguish incomplete tasks from completed tasks.
   const [incompleteTasks, completeTasks] = useMemo(() => {
@@ -161,14 +152,14 @@ const TasksAccordion: FC<TasksAccordionProps> = (props: TasksAccordionProps) => 
     [incompleteTasks, updateTask, updateTaskRanks]
   );
 
-  console.log("TasksBox.incompleteTasks:", incompleteTasks);
-
   const views: [TasksView, string][] = [
     ["today", "To do"],
     // TODO
     // ["next7", "Next 7 Days"],
     // ["all", "All"],
   ];
+
+  console.log("Rendering TasksAccordion");
 
   return (
     <TableContainer

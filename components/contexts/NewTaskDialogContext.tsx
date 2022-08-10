@@ -7,8 +7,7 @@ import { bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/
 import { createContext, Dispatch, FC, useContext, useEffect } from "react";
 
 type NewTaskDialogContextData = {
-  newTaskData: TaskData;
-  dispatchNewTaskData: Dispatch<Payload<TaskData>>;
+  newTaskDataTuple: [TaskData, Dispatch<Payload<TaskData>>];
   newTaskDialogState: PopupState;
   newTaskDialogTriggerProps: ReturnType<typeof bindTrigger>;
 };
@@ -31,16 +30,16 @@ export const NewTaskDialogContextProvider: FC = ({ children }) => {
   //   initializeTaskData({ rank: defaultRank }),
   //   initializeTaskData
   // );
-  const [newTaskData, dispatchNewTaskData] = useTaskDataReducer({
+  const newTaskDataTuple = useTaskDataReducer({
     rank: defaultRank,
     userId: user?.id as ID,
     title: "",
   });
+  const [, dispatchNewTaskData] = newTaskDataTuple;
   const newTaskDialogState = usePopupState({ variant: "popover", popupId: `new-task-dialog` });
   const newTaskDialogTriggerProps = bindTrigger(newTaskDialogState);
   const value = {
-    newTaskData,
-    dispatchNewTaskData,
+    newTaskDataTuple,
     newTaskDialogState,
     newTaskDialogTriggerProps,
   };
@@ -51,7 +50,7 @@ export const NewTaskDialogContextProvider: FC = ({ children }) => {
         value: { title: "", rank: defaultRank, userId: user.id },
       });
     }
-  }, [user]);
+  }, [user, dispatchNewTaskData]);
   return <NewTaskDialogContext.Provider value={value}>{children}</NewTaskDialogContext.Provider>;
 };
 

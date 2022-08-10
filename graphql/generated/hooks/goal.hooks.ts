@@ -14,7 +14,7 @@ import {
 } from "@/graphql/generated/reducers/goal.reducer";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
-import { Dispatch, useEffect, useReducer } from "react";
+import { Dispatch, useReducer } from "react";
 
 type GoalCreationMutationHookOptions = MutationHookOptions<
   { createGoal: GoalFragment },
@@ -38,13 +38,7 @@ export const useUpdateGoal = (options?: GoalUpdateMutationHookOptions) => {
 };
 
 export const useGoalDataReducer = (data: GoalData): [GoalData, Dispatch<Payload<GoalData>>] => {
-  const [goalData, dispatchGoalData] = useReducer(
-    goalDataReducer,
-    initializeGoalData(data),
-    initializeGoalData
-  );
-  useEffect(() => {
-    console.log("useGoalReducer:", data);
-  }, [data]);
+  const initialData = initializeGoalData(data);
+  const [goalData, dispatchGoalData] = useReducer(goalDataReducer, initialData, initializeGoalData);
   return [goalData, dispatchGoalData];
 };

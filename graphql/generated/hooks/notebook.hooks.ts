@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type NotebookCreationMutationHookOptions = MutationHookOptions<
   { createNotebook: NotebookFragment },
@@ -46,13 +47,17 @@ export const useUpdateNotebook = (options?: NotebookUpdateMutationHookOptions) =
 export const useNotebookDataReducer = (
   data: NotebookData
 ): [NotebookData, Dispatch<Payload<NotebookData>>] => {
+  const initialData = initializeNotebookData(data);
   const [notebookData, dispatchNotebookData] = useReducer(
     notebookDataReducer,
-    initializeNotebookData(data),
+    initialData,
     initializeNotebookData
   );
   useEffect(() => {
-    console.log("useNotebookReducer:", data);
-  }, [data]);
+    if (data.userId && !notebookData?.userId) {
+      console.log("Dispatching notebook data!");
+      dispatchNotebookData({ field: "init", value: data });
+    }
+  }, [data, notebookData]);
   return [notebookData, dispatchNotebookData];
 };

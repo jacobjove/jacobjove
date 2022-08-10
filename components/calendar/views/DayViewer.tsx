@@ -114,9 +114,11 @@ const DayViewer: FC<DayViewerProps> = ({
   const { calendarEvents } = data;
   const date = useContext(DateContext);
   const user = useUser();
-  const [viewedHour, setViewedHour] = viewedHourState;
+  const [viewedHour] = viewedHourState;
 
-  const { newCalendarEventDialogState, dispatchNewCalendarEventData } = useNewCalendarEventDialog();
+  const { newCalendarEventDialogState, newCalendarEventDataTuple } = useNewCalendarEventDialog();
+  const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple;
+
   const eventEditingDialogTriggerProps = bindTrigger(newCalendarEventDialogState);
 
   const scrollableDivRef = useRef<HTMLDivElement>(null);

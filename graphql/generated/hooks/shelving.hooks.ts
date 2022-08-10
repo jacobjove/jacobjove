@@ -14,7 +14,7 @@ import {
 } from "@/graphql/generated/reducers/shelving.reducer";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
-import { Dispatch, useEffect, useReducer } from "react";
+import { Dispatch, useReducer } from "react";
 
 type ShelvingCreationMutationHookOptions = MutationHookOptions<
   { createShelving: ShelvingFragment },
@@ -46,13 +46,11 @@ export const useUpdateShelving = (options?: ShelvingUpdateMutationHookOptions) =
 export const useShelvingDataReducer = (
   data: ShelvingData
 ): [ShelvingData, Dispatch<Payload<ShelvingData>>] => {
+  const initialData = initializeShelvingData(data);
   const [shelvingData, dispatchShelvingData] = useReducer(
     shelvingDataReducer,
-    initializeShelvingData(data),
+    initialData,
     initializeShelvingData
   );
-  useEffect(() => {
-    console.log("useShelvingReducer:", data);
-  }, [data]);
   return [shelvingData, dispatchShelvingData];
 };

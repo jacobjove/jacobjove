@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type MantraCreationMutationHookOptions = MutationHookOptions<
   { createMantra: MantraFragment },
@@ -43,13 +44,17 @@ export const useUpdateMantra = (options?: MantraUpdateMutationHookOptions) => {
 export const useMantraDataReducer = (
   data: MantraData
 ): [MantraData, Dispatch<Payload<MantraData>>] => {
+  const initialData = initializeMantraData(data);
   const [mantraData, dispatchMantraData] = useReducer(
     mantraDataReducer,
-    initializeMantraData(data),
+    initialData,
     initializeMantraData
   );
   useEffect(() => {
-    console.log("useMantraReducer:", data);
-  }, [data]);
+    if (data.userId && !mantraData?.userId) {
+      console.log("Dispatching mantra data!");
+      dispatchMantraData({ field: "init", value: data });
+    }
+  }, [data, mantraData]);
   return [mantraData, dispatchMantraData];
 };

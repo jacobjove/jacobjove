@@ -18,6 +18,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type DashboardCreationMutationHookOptions = MutationHookOptions<
   { createDashboard: DashboardFragment },
@@ -49,13 +50,17 @@ export const useUpdateDashboard = (options?: DashboardUpdateMutationHookOptions)
 export const useDashboardDataReducer = (
   data: DashboardData
 ): [DashboardData, Dispatch<Payload<DashboardData>>] => {
+  const initialData = initializeDashboardData(data);
   const [dashboardData, dispatchDashboardData] = useReducer(
     dashboardDataReducer,
-    initializeDashboardData(data),
+    initialData,
     initializeDashboardData
   );
   useEffect(() => {
-    console.log("useDashboardReducer:", data);
-  }, [data]);
+    if (data.userId && !dashboardData?.userId) {
+      console.log("Dispatching dashboard data!");
+      dispatchDashboardData({ field: "init", value: data });
+    }
+  }, [data, dashboardData]);
   return [dashboardData, dispatchDashboardData];
 };

@@ -104,7 +104,8 @@ WeekViewerProps) => {
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const user = useUser();
 
-  const { newCalendarEventDialogState, dispatchNewCalendarEventData } = useNewCalendarEventDialog();
+  const { newCalendarEventDialogState, newCalendarEventDataTuple } = useNewCalendarEventDialog();
+  const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple;
 
   const eventEditingDialogTriggerProps = bindTrigger(newCalendarEventDialogState);
 

@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type ValueCreationMutationHookOptions = MutationHookOptions<
   { createValue: ValueFragment },
@@ -38,13 +39,17 @@ export const useUpdateValue = (options?: ValueUpdateMutationHookOptions) => {
 };
 
 export const useValueDataReducer = (data: ValueData): [ValueData, Dispatch<Payload<ValueData>>] => {
+  const initialData = initializeValueData(data);
   const [valueData, dispatchValueData] = useReducer(
     valueDataReducer,
-    initializeValueData(data),
+    initialData,
     initializeValueData
   );
   useEffect(() => {
-    console.log("useValueReducer:", data);
-  }, [data]);
+    if (data.userId && !valueData?.userId) {
+      console.log("Dispatching value data!");
+      dispatchValueData({ field: "init", value: data });
+    }
+  }, [data, valueData]);
   return [valueData, dispatchValueData];
 };

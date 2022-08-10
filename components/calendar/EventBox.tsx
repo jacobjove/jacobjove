@@ -31,8 +31,8 @@ export interface DraggedCalendarEvent extends CalendarEvent {
 
 const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
   const { event, ...rest } = props;
-  const [hovered, setHovered] = useState(false);
   const [calendarEventData, dispatchCalendarEventData] = useCalendarEventDataReducer(event);
+  const [hovered, setHovered] = useState(false);
   const detailDialogState = usePopupState({
     variant: "popover",
     popupId: `event-${event.id}-detail-dialog`,
@@ -111,7 +111,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
             lineHeight={"0.7rem"}
             mx="0.1rem"
           >
-            {event.title}
+            {calendarEventData.title}
           </Typography>
           <Typography component="div" fontSize={"0.6rem"} lineHeight={"0.6rem"} mx="0.1rem">
             {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}
@@ -128,8 +128,7 @@ const EventBox: FC<EventBoxProps> = (props: EventBoxProps) => {
       />
       <CalendarEventDialog
         mutation={"update"}
-        calendarEvent={event}
-        dispatchCalendarEventData={dispatchCalendarEventData}
+        calendarEventDataTuple={[calendarEventData, dispatchCalendarEventData]}
         {...bindPopover(editingDialogState)}
       />
     </>

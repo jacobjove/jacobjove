@@ -14,7 +14,7 @@ import {
 } from "@/graphql/generated/reducers/user.reducer";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
-import { Dispatch, useEffect, useReducer } from "react";
+import { Dispatch, useReducer } from "react";
 
 type UserCreationMutationHookOptions = MutationHookOptions<
   { createUser: UserFragment },
@@ -38,13 +38,7 @@ export const useUpdateUser = (options?: UserUpdateMutationHookOptions) => {
 };
 
 export const useUserDataReducer = (data: UserData): [UserData, Dispatch<Payload<UserData>>] => {
-  const [userData, dispatchUserData] = useReducer(
-    userDataReducer,
-    initializeUserData(data),
-    initializeUserData
-  );
-  useEffect(() => {
-    console.log("useUserReducer:", data);
-  }, [data]);
+  const initialData = initializeUserData(data);
+  const [userData, dispatchUserData] = useReducer(userDataReducer, initialData, initializeUserData);
   return [userData, dispatchUserData];
 };

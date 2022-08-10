@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type ListItemCreationMutationHookOptions = MutationHookOptions<
   { createListItem: ListItemFragment },
@@ -46,13 +47,17 @@ export const useUpdateListItem = (options?: ListItemUpdateMutationHookOptions) =
 export const useListItemDataReducer = (
   data: ListItemData
 ): [ListItemData, Dispatch<Payload<ListItemData>>] => {
+  const initialData = initializeListItemData(data);
   const [listItemData, dispatchListItemData] = useReducer(
     listItemDataReducer,
-    initializeListItemData(data),
+    initialData,
     initializeListItemData
   );
   useEffect(() => {
-    console.log("useListItemReducer:", data);
-  }, [data]);
+    if (data.userId && !listItemData?.userId) {
+      console.log("Dispatching listItem data!");
+      dispatchListItemData({ field: "init", value: data });
+    }
+  }, [data, listItemData]);
   return [listItemData, dispatchListItemData];
 };

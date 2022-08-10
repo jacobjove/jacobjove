@@ -101,7 +101,7 @@ jobs:
           push: true
           no-cache: true
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/SelfBuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
+          tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
   deploy:
     needs: [push-image]
     runs-on: ubuntu-latest

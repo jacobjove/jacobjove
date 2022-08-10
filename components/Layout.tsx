@@ -14,7 +14,7 @@ import { parseCookies, setCookie } from "nookies";
 // import SpeedDialAction from "@mui/material/SpeedDialAction";
 // import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { FC, ReactNode, useContext, useState } from "react";
-import CalendarEventCreationDialog from "./calendar/CalendarEventCreationDialog";
+import CalendarEventDialog from "./calendar/CalendarEventDialog";
 import { useNewCalendarEventDialog } from "./contexts/NewCalendarEventDialogContext";
 import { useNewTaskDialog } from "./contexts/NewTaskDialogContext";
 
@@ -41,10 +41,10 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [appDrawerOpen, _setAppDrawerOpen] = useState(drawerExpanded);
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
-  const { newTaskData, dispatchNewTaskData, newTaskDialogState, newTaskDialogTriggerProps } =
-    useNewTaskDialog();
-  const { newCalendarEventData, dispatchNewCalendarEventData, newCalendarEventDialogState } =
-    useNewCalendarEventDialog();
+
+  const { newTaskDataTuple, newTaskDialogState, newTaskDialogTriggerProps } = useNewTaskDialog();
+
+  const { newCalendarEventDialogState } = useNewCalendarEventDialog();
 
   const setAppDrawerOpen = (open: boolean) => {
     _setAppDrawerOpen(open);
@@ -148,14 +148,9 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
                 />
               ))}
             </SpeedDial> */}
-            <TaskDialog
-              task={newTaskData}
-              dispatchTaskData={dispatchNewTaskData}
-              {...bindPopover(newTaskDialogState)}
-            />
-            <CalendarEventCreationDialog
-              calendarEvent={newCalendarEventData}
-              dispatchCalendarEventData={dispatchNewCalendarEventData}
+            <TaskDialog taskDataTuple={newTaskDataTuple} {...bindPopover(newTaskDialogState)} />
+            <CalendarEventDialog
+              mutation={"create"}
               {...bindPopover(newCalendarEventDialogState)}
             />
           </>

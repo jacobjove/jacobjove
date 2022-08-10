@@ -20,6 +20,9 @@ import {
   <%= Name %>Data,
   initialize<%= Name %>Data,
 } from "@/graphql/generated/reducers/<%= name %>.reducer";
+<% if (Object.keys(fields).includes("userId")) { -%>
+// import { useUser } from "@/components/contexts/UserContext";
+<% } -%>
 
 type <%= Name %>CreationMutationHookOptions = MutationHookOptions<
   { create<%= Name %>: <%= Name %>Fragment },
@@ -49,13 +52,19 @@ export const useUpdate<%= Name %> = (options?: <%= Name %>UpdateMutationHookOpti
 }
 
 export const use<%= Name %>DataReducer = (data: <%= Name %>Data): [<%= Name %>Data, Dispatch<Payload<<%= Name %>Data>>] => {
+  const initialData = initialize<%= Name %>Data(data);
   const [<%= name %>Data, dispatch<%= Name %>Data] = useReducer(
     <%= name %>DataReducer,
-    initialize<%= Name %>Data(data),
-    initialize<%= Name %>Data
+    initialData,
+    initialize<%= Name %>Data,
   );
+<% if (Object.keys(fields).includes("userId")) { -%>
   useEffect(() => {
-    console.log("use<%= Name %>Reducer:", data);
-  }, [data]);
+    if (data.userId && !<%= name %>Data?.userId) {
+      console.log("Dispatching <%= name %> data!");
+      dispatch<%= Name %>Data({ field: "init", value: data });
+    }
+  }, [data, <%= name %>Data]);
+<% } -%>
   return [<%= name %>Data, dispatch<%= Name %>Data];
 }

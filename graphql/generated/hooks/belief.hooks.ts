@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type BeliefCreationMutationHookOptions = MutationHookOptions<
   { createBelief: BeliefFragment },
@@ -43,13 +44,17 @@ export const useUpdateBelief = (options?: BeliefUpdateMutationHookOptions) => {
 export const useBeliefDataReducer = (
   data: BeliefData
 ): [BeliefData, Dispatch<Payload<BeliefData>>] => {
+  const initialData = initializeBeliefData(data);
   const [beliefData, dispatchBeliefData] = useReducer(
     beliefDataReducer,
-    initializeBeliefData(data),
+    initialData,
     initializeBeliefData
   );
   useEffect(() => {
-    console.log("useBeliefReducer:", data);
-  }, [data]);
+    if (data.userId && !beliefData?.userId) {
+      console.log("Dispatching belief data!");
+      dispatchBeliefData({ field: "init", value: data });
+    }
+  }, [data, beliefData]);
   return [beliefData, dispatchBeliefData];
 };

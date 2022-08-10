@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type HabitCreationMutationHookOptions = MutationHookOptions<
   { createHabit: HabitFragment },
@@ -38,13 +39,17 @@ export const useUpdateHabit = (options?: HabitUpdateMutationHookOptions) => {
 };
 
 export const useHabitDataReducer = (data: HabitData): [HabitData, Dispatch<Payload<HabitData>>] => {
+  const initialData = initializeHabitData(data);
   const [habitData, dispatchHabitData] = useReducer(
     habitDataReducer,
-    initializeHabitData(data),
+    initialData,
     initializeHabitData
   );
   useEffect(() => {
-    console.log("useHabitReducer:", data);
-  }, [data]);
+    if (data.userId && !habitData?.userId) {
+      console.log("Dispatching habit data!");
+      dispatchHabitData({ field: "init", value: data });
+    }
+  }, [data, habitData]);
   return [habitData, dispatchHabitData];
 };

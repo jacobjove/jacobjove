@@ -28,6 +28,8 @@ export const UserContextProvider: FC<UserContextProviderProps> = ({ session, chi
     } else if (!loading && error) printError(error);
   }, [session, loading, error, getUser]);
 
+  console.log("Rendering UserContextProvider");
+
   return <UserContext.Provider value={data?.user ?? null}>{children}</UserContext.Provider>;
 };
 

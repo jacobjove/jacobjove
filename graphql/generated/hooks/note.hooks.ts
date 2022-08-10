@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type NoteCreationMutationHookOptions = MutationHookOptions<
   { createNote: NoteFragment },
@@ -38,13 +39,13 @@ export const useUpdateNote = (options?: NoteUpdateMutationHookOptions) => {
 };
 
 export const useNoteDataReducer = (data: NoteData): [NoteData, Dispatch<Payload<NoteData>>] => {
-  const [noteData, dispatchNoteData] = useReducer(
-    noteDataReducer,
-    initializeNoteData(data),
-    initializeNoteData
-  );
+  const initialData = initializeNoteData(data);
+  const [noteData, dispatchNoteData] = useReducer(noteDataReducer, initialData, initializeNoteData);
   useEffect(() => {
-    console.log("useNoteReducer:", data);
-  }, [data]);
+    if (data.userId && !noteData?.userId) {
+      console.log("Dispatching note data!");
+      dispatchNoteData({ field: "init", value: data });
+    }
+  }, [data, noteData]);
   return [noteData, dispatchNoteData];
 };

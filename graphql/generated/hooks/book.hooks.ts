@@ -14,7 +14,7 @@ import {
 } from "@/graphql/generated/reducers/book.reducer";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
-import { Dispatch, useEffect, useReducer } from "react";
+import { Dispatch, useReducer } from "react";
 
 type BookCreationMutationHookOptions = MutationHookOptions<
   { createBook: BookFragment },
@@ -38,13 +38,7 @@ export const useUpdateBook = (options?: BookUpdateMutationHookOptions) => {
 };
 
 export const useBookDataReducer = (data: BookData): [BookData, Dispatch<Payload<BookData>>] => {
-  const [bookData, dispatchBookData] = useReducer(
-    bookDataReducer,
-    initializeBookData(data),
-    initializeBookData
-  );
-  useEffect(() => {
-    console.log("useBookReducer:", data);
-  }, [data]);
+  const initialData = initializeBookData(data);
+  const [bookData, dispatchBookData] = useReducer(bookDataReducer, initialData, initializeBookData);
   return [bookData, dispatchBookData];
 };

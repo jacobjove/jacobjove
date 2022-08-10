@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type AccountCreationMutationHookOptions = MutationHookOptions<
   { createAccount: AccountFragment },
@@ -46,13 +47,17 @@ export const useUpdateAccount = (options?: AccountUpdateMutationHookOptions) => 
 export const useAccountDataReducer = (
   data: AccountData
 ): [AccountData, Dispatch<Payload<AccountData>>] => {
+  const initialData = initializeAccountData(data);
   const [accountData, dispatchAccountData] = useReducer(
     accountDataReducer,
-    initializeAccountData(data),
+    initialData,
     initializeAccountData
   );
   useEffect(() => {
-    console.log("useAccountReducer:", data);
-  }, [data]);
+    if (data.userId && !accountData?.userId) {
+      console.log("Dispatching account data!");
+      dispatchAccountData({ field: "init", value: data });
+    }
+  }, [data, accountData]);
   return [accountData, dispatchAccountData];
 };

@@ -8,14 +8,11 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { Dispatch, FC } from "react";
 
 interface EventFormFieldsProps {
-  data: CalendarEventData;
-  dispatch: Dispatch<Payload<CalendarEventData>>;
+  dataTuple: [CalendarEventData, Dispatch<Payload<CalendarEventData>>];
 }
 
-const EventFormFields: FC<EventFormFieldsProps> = ({
-  data: formData,
-  dispatch,
-}: EventFormFieldsProps) => {
+const EventFormFields: FC<EventFormFieldsProps> = ({ dataTuple }: EventFormFieldsProps) => {
+  const [formData, dispatchFormData] = dataTuple;
   return (
     <div>
       <TextField
@@ -23,7 +20,7 @@ const EventFormFields: FC<EventFormFieldsProps> = ({
         label="Title"
         variant="standard"
         value={formData.title}
-        onChange={(event) => dispatch({ field: "title", value: event.target.value })}
+        onChange={(event) => dispatchFormData({ field: "title", value: event.target.value })}
         fullWidth
         autoFocus
       />
@@ -33,7 +30,7 @@ const EventFormFields: FC<EventFormFieldsProps> = ({
           openTo="minutes"
           value={formData.start}
           // TODO: remove these type annotations after mui lab types are updated
-          onChange={(value: Date | null) => value && dispatch({ field: "start", value })}
+          onChange={(value: Date | null) => value && dispatchFormData({ field: "start", value })}
           renderInput={(params: TextFieldProps) => (
             <TextField {...params} sx={{ marginY: "1rem" }} required />
           )}
@@ -44,7 +41,7 @@ const EventFormFields: FC<EventFormFieldsProps> = ({
           minDateTime={formData.start}
           value={formData.end}
           // inputFormat="yyyy/MM/dd hh:mm a"
-          onChange={(value: Date | null) => value && dispatch({ field: "end", value })}
+          onChange={(value: Date | null) => value && dispatchFormData({ field: "end", value })}
           renderInput={(params: TextFieldProps) => (
             <TextField {...params} sx={{ marginY: "1rem" }} />
           )}
@@ -61,8 +58,8 @@ const EventFormFields: FC<EventFormFieldsProps> = ({
         label="Notes"
         variant="outlined"
         margin="dense"
-        value={formData.notes}
-        onChange={(event) => dispatch({ field: "notes", value: event.target.value })}
+        value={formData.notes ?? ""}
+        onChange={(event) => dispatchFormData({ field: "notes", value: event.target.value })}
       />
     </div>
   );

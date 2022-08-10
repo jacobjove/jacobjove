@@ -34,20 +34,14 @@ import { useUser } from "../contexts/UserContext";
 import TasksTable from "./TasksTable";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
-  task: TaskData;
-  dispatchTaskData: Dispatch<Payload<TaskData>>;
+  taskDataTuple: [TaskData, Dispatch<Payload<TaskData>>];
 }
 
 const LEFT_SIDE_WIDTH = "3.3rem";
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
-  const {
-    task: taskData,
-    dispatchTaskData,
-    onClose: initialOnClose,
-    anchorEl: _anchorEl,
-    ...dialogProps
-  } = props;
+  const { taskDataTuple, onClose: initialOnClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const [taskData, dispatchTaskData] = taskDataTuple;
   const user = useUser();
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);

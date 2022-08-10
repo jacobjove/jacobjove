@@ -15,6 +15,7 @@ import {
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
+// import { useUser } from "@/components/contexts/UserContext";
 
 type TaskCreationMutationHookOptions = MutationHookOptions<
   { createTask: TaskFragment },
@@ -38,13 +39,13 @@ export const useUpdateTask = (options?: TaskUpdateMutationHookOptions) => {
 };
 
 export const useTaskDataReducer = (data: TaskData): [TaskData, Dispatch<Payload<TaskData>>] => {
-  const [taskData, dispatchTaskData] = useReducer(
-    taskDataReducer,
-    initializeTaskData(data),
-    initializeTaskData
-  );
+  const initialData = initializeTaskData(data);
+  const [taskData, dispatchTaskData] = useReducer(taskDataReducer, initialData, initializeTaskData);
   useEffect(() => {
-    console.log("useTaskReducer:", data);
-  }, [data]);
+    if (data.userId && !taskData?.userId) {
+      console.log("Dispatching task data!");
+      dispatchTaskData({ field: "init", value: data });
+    }
+  }, [data, taskData]);
   return [taskData, dispatchTaskData];
 };
