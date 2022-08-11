@@ -1,9 +1,9 @@
 import { useUser } from "@/components/contexts/UserContext";
-import { useUpdateAccount } from "@/graphql/generated/hooks/account.hooks";
-import { useUpdateCalendar } from "@/graphql/generated/hooks/calendar.hooks";
-import { Calendar } from "@/graphql/generated/models/calendar.model";
-import { User } from "@/graphql/generated/models/user.model";
-import { GET_USER } from "@/graphql/generated/queries/user.queries";
+import { useUpdateAccount } from "@/generated/hooks/account.hooks";
+import { useUpdateCalendar } from "@/generated/hooks/calendar.hooks";
+import { Calendar } from "@/generated/models/calendar.model";
+import { User } from "@/generated/models/user.model";
+import { GET_USER } from "@/generated/queries/user.queries";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CloseIcon from "@mui/icons-material/Close";

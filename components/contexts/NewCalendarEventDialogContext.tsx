@@ -1,5 +1,5 @@
-import { useCalendarEventDataReducer } from "@/graphql/generated/hooks/calendarEvent.hooks";
-import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
+import { useCalendarEventDataReducer } from "@/generated/hooks/calendarEvent.hooks";
+import { CalendarEventData } from "@/generated/reducers/calendarEvent.reducer";
 import { ID } from "@/graphql/schema/types";
 import { Payload } from "@/utils/data";
 import { PopupState, usePopupState } from "material-ui-popup-state/hooks";

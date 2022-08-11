@@ -1,4 +1,4 @@
-import { Belief } from "@/graphql/generated/models/belief.model";
+import { Belief } from "@/generated/models/belief.model";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

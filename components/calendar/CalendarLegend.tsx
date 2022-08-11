@@ -1,4 +1,4 @@
-import { Calendar } from "@/graphql/generated/models/calendar.model";
+import { Calendar } from "@/generated/models/calendar.model";
 import { ID } from "@/graphql/schema/types";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";

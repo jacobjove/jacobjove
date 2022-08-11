@@ -1,6 +1,6 @@
 import { useUser } from "@/components/contexts/UserContext";
-import { useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
-import { TaskData } from "@/graphql/generated/reducers/task.reducer";
+import { useTaskDataReducer } from "@/generated/hooks/task.hooks";
+import { TaskData } from "@/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
 import { Payload } from "@/utils/data";
 import { bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";

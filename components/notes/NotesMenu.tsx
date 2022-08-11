@@ -1,12 +1,12 @@
 import DeviceContext from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import SearchDialog from "@/components/search/SearchDialog";
-import { noteFragment } from "@/graphql/generated/fragments/note.fragment";
+import { noteFragment } from "@/generated/fragments/note.fragment";
 // import Select from "@/components/Select";
-import { useCreateNotebook, useUpdateNotebook } from "@/graphql/generated/hooks/notebook.hooks";
-import { Note } from "@/graphql/generated/models/note.model";
-import { Notebook } from "@/graphql/generated/models/notebook.model";
-import { getOptimisticResponseForNotebookCreation } from "@/graphql/generated/mutations/notebook.mutations";
+import { useCreateNotebook, useUpdateNotebook } from "@/generated/hooks/notebook.hooks";
+import { Note } from "@/generated/models/note.model";
+import { Notebook } from "@/generated/models/notebook.model";
+import { getOptimisticResponseForNotebookCreation } from "@/generated/mutations/notebook.mutations";
 import { ID } from "@/graphql/schema/types";
 import { gql } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";

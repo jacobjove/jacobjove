@@ -1,18 +1,14 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
-import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import {
-  useCreateTask,
-  useTaskDataReducer,
-  useUpdateTask,
-} from "@/graphql/generated/hooks/task.hooks";
-import { Habit } from "@/graphql/generated/models/habit.model";
-import { Task } from "@/graphql/generated/models/task.model";
+import { TaskFragment } from "@/generated/fragments/task.fragment";
+import { useCreateTask, useTaskDataReducer, useUpdateTask } from "@/generated/hooks/task.hooks";
+import { Habit } from "@/generated/models/habit.model";
+import { Task } from "@/generated/models/task.model";
 import {
   getOptimisticResponseForTaskCreation,
   getOptimisticResponseForTaskUpdate,
-} from "@/graphql/generated/mutations/task.mutations";
-import { TaskData } from "@/graphql/generated/reducers/task.reducer";
+} from "@/generated/mutations/task.mutations";
+import { TaskData } from "@/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";

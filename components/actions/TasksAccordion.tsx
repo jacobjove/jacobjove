@@ -1,13 +1,13 @@
 import { DraggedTask } from "@/components/actions/TaskRow";
 import TasksTable from "@/components/actions/TasksTable";
-import { DistinctTasksUpdateArgs } from "@/graphql/generated/args/task.args";
-import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
-import { Task } from "@/graphql/generated/models/task.model";
+import { DistinctTasksUpdateArgs } from "@/generated/args/task.args";
+import { TaskFragment } from "@/generated/fragments/task.fragment";
+import { useUpdateTask } from "@/generated/hooks/task.hooks";
+import { Task } from "@/generated/models/task.model";
 import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
-} from "@/graphql/generated/mutations/task.mutations";
+} from "@/generated/mutations/task.mutations";
 import { useHandleMutation } from "@/utils/data";
 import { gql } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";

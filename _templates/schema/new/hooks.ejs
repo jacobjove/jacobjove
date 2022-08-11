@@ -1,5 +1,5 @@
 ---
-to: graphql/generated/hooks/<%= name %>.hooks.ts
+to: generated/hooks/<%= name %>.hooks.ts
 force: true
 ---
 <% NAME = h.changeCase.constantCase(name); -%>
@@ -10,16 +10,16 @@ import {
   CREATE_<%= NAME %>,
   UPDATE_<%= NAME %>,
   updateCacheAfterCreating<%= Name %>,
-} from "@/graphql/generated/mutations/<%= name %>.mutations";
-import { <%= Name %>Fragment } from "@/graphql/generated/fragments/<%= name %>.fragment";
-import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs } from "@/graphql/generated/args/<%= name %>.args";
+} from "@/generated/mutations/<%= name %>.mutations";
+import { <%= Name %>Fragment } from "@/generated/fragments/<%= name %>.fragment";
+import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs } from "@/generated/args/<%= name %>.args";
 import { useHandleMutation, Payload } from "@/utils/data";
 import { useEffect, useReducer, Dispatch } from "react";
 import { 
   <%= name %>DataReducer,
   <%= Name %>Data,
   initialize<%= Name %>Data,
-} from "@/graphql/generated/reducers/<%= name %>.reducer";
+} from "@/generated/reducers/<%= name %>.reducer";
 <% if (Object.keys(fields).includes("userId")) { -%>
 // import { useUser } from "@/components/contexts/UserContext";
 <% } -%>

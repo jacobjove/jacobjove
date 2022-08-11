@@ -1,5 +1,5 @@
 ---
-to: graphql/generated/args/<%= name %>.args.ts
+to: generated/args/<%= name %>.args.ts
 force: true
 ---
 <% Names = h.inflection.pluralize(Name); -%>
@@ -11,7 +11,7 @@ import {
   <%= Name %>WhereUniqueInput,
   <%= Name %>CreationInput,
   <%= Name %>UpdateInput,
-} from "@/graphql/generated/inputs/<%= name %>.inputs";
+} from "@/generated/inputs/<%= name %>.inputs";
 
 @TypeGraphQL.ArgsType()
 export class <%= Name %>CreationArgs {

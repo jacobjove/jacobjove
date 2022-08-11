@@ -1,9 +1,9 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import TaskDialog from "@/components/actions/TaskDialog";
 import { useUser } from "@/components/contexts/UserContext";
-import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
-import { Task } from "@/graphql/generated/models/task.model";
-import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
+import { useUpdateTask } from "@/generated/hooks/task.hooks";
+import { Task } from "@/generated/models/task.model";
+import { getOptimisticResponseForTaskUpdate } from "@/generated/mutations/task.mutations";
 import { ID } from "@/graphql/schema/types";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -105,7 +105,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
           cursor: isDragging ? "grabbing" : "pointer",
           // TODO: A CSS transition would be nice here...
           display: collapsed ? "none" : "table-row",
-          // TODO: not working...
+          // TODO: not working... I want the slot to darken when hovered...
           filter: isDragging ? "brightness(50%)" : "none",
           backgroundColor: (theme) => {
             const bgOpacity = isDragging ? "0.2" : "0.05";

@@ -1,15 +1,15 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
-import { CalendarEventFragment } from "@/graphql/generated/fragments/calendarEvent.fragment";
+import { CalendarEventFragment } from "@/generated/fragments/calendarEvent.fragment";
 import {
   useCalendarEventDataReducer,
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
-} from "@/graphql/generated/hooks/calendarEvent.hooks";
+} from "@/generated/hooks/calendarEvent.hooks";
 import {
   getOptimisticResponseForCalendarEventCreation,
   getOptimisticResponseForCalendarEventUpdate,
-} from "@/graphql/generated/mutations/calendarEvent.mutations";
-import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
+} from "@/generated/mutations/calendarEvent.mutations";
+import { CalendarEventData } from "@/generated/reducers/calendarEvent.reducer";
 import { ID } from "@/graphql/schema/types";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";

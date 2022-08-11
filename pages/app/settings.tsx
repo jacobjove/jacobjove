@@ -1,7 +1,7 @@
 import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
-import { useUpdateUser } from "@/graphql/generated/hooks/user.hooks";
-import { getOptimisticResponseForUserUpdate } from "@/graphql/generated/mutations/user.mutations";
+import { useUpdateUser } from "@/generated/hooks/user.hooks";
+import { getOptimisticResponseForUserUpdate } from "@/generated/mutations/user.mutations";
 import { UserSettings } from "@/graphql/schema/types";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Container from "@mui/material/Container";

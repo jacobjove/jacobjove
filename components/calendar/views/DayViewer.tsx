@@ -11,7 +11,7 @@ import TimeLabelsColumn from "@/components/calendar/TimeLabelsColumn";
 import DateContext from "@/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@/components/contexts/UserContext";
-import { Calendar, CalendarEvent } from "@/graphql/generated/models";
+import { Calendar, CalendarEvent } from "@/generated/models";
 import { ID } from "@/graphql/schema/types";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";

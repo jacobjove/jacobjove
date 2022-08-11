@@ -4,9 +4,9 @@ import { useUser } from "@/components/contexts/UserContext";
 import {
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
-} from "@/graphql/generated/hooks/calendarEvent.hooks";
-import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
-import { getOptimisticResponseForCalendarEventCreation } from "@/graphql/generated/mutations/calendarEvent.mutations";
+} from "@/generated/hooks/calendarEvent.hooks";
+import { CalendarEvent } from "@/generated/models/calendarEvent.model";
+import { getOptimisticResponseForCalendarEventCreation } from "@/generated/mutations/calendarEvent.mutations";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";

@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SelectableValue from "@/components/values/SelectableValue";
-import { Value } from "@/graphql/generated/models/value.model";
+import { Value } from "@/generated/models/value.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";

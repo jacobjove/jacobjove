@@ -1,6 +1,6 @@
+import UserModel from "@/generated/models/user.model";
 import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 import { ObjectId } from "mongodb";
-import UserModel from "../../generated/models/user.model";
 
 const definition: Definition = {
   name: "task",

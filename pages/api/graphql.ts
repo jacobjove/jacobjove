@@ -9,7 +9,7 @@ import { buildSchema, MiddlewareFn, NonEmptyArray } from "type-graphql-v2-fork";
 import { ApolloServer } from "apollo-server-micro";
 import { Model, Document } from "mongoose";
 import { getClassForDocument } from "@typegoose/typegoose";
-import * as resolvers from "@/graphql/generated/resolvers";
+import * as resolvers from "@/generated/resolvers";
 
 export const TypegooseMiddleware: MiddlewareFn = async (_, next) => {
   const result = await next();
