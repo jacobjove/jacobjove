@@ -1,15 +1,11 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
-import { useUser } from "@/components/contexts/UserContext";
 import TasksTable from "@/components/data/tasks/TasksTable";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { useCreateTask, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { Habit } from "@/graphql/generated/models/habit.model";
 import { Task } from "@/graphql/generated/models/task.model";
-import {
-  getOptimisticResponseForTaskCreation,
-  getOptimisticResponseForTaskUpdate,
-} from "@/graphql/generated/mutations/task.mutations";
+import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
 import { Payload } from "@/utils/data";
@@ -31,42 +27,34 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { Dispatch, FC, useState } from "react";
+import { FC, useState } from "react";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   data: TaskData;
-  dispatchTaskData: Dispatch<Payload<TaskData>>;
 }
 
 const LEFT_SIDE_WIDTH = "3.3rem";
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
-  const {
-    data: taskData,
-    dispatchTaskData,
-    onClose: initialOnClose,
-    anchorEl: _anchorEl,
-    ...dialogProps
-  } = props;
-  const user = useUser();
+  const { data: _data, onClose: initialOnClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const [data, dispatchData] = useTaskDataReducer(_data);
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
-  const [editing, setEditing] = useState(!taskData.id);
+  const [editing, setEditing] = useState(!data.id);
 
-  const canUpdate = !!taskData.id;
+  const menuState = usePopupState({
+    variant: "popper",
+    popupId: data.id ? `task-${data.id}-menu` : "new-task-menu",
+  });
+
+  const [updateTask] = useUpdateTask();
+
+  const canUpdate = !!data.id;
 
   const onClose = () => {
     initialOnClose();
     canUpdate && setEditing(false);
   };
-
-  const menuState = usePopupState({
-    variant: "popper",
-    popupId: taskData.id ? `task-${taskData.id}-menu` : "new-task-menu",
-  });
-
-  const [updateTask] = useUpdateTask();
-  const [createTask] = useCreateTask();
 
   const handleClose = () => {
     if (stopwatchIsRunning) {
@@ -81,64 +69,45 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     field: "init" | keyof TaskData,
     value: TaskData | TaskData[keyof TaskData]
   ) => {
-    dispatchTaskData({ field, value });
+    dispatchData({ field, value } as Payload<TaskData>);
     if (canUpdate) {
       const data = { [field]: value };
-      const optimisticResponse = getOptimisticResponseForTaskUpdate(taskData as TaskFragment, data);
+      const optimisticResponse = getOptimisticResponseForTaskUpdate(data as TaskFragment, data);
       // TODO
-      taskData &&
-        data &&
+      data &&
         updateTask.current &&
-        updateTask
-          .current({
-            variables: {
-              where: { id: taskData.id },
-              data,
-            },
-            optimisticResponse,
-          })
-          ?.catch(console.error);
+        updateTask.current({
+          variables: {
+            where: { id: data.id as ID },
+            data,
+          },
+          optimisticResponse,
+        });
     }
   };
 
   const menuTriggerProps = bindTrigger(menuState);
   const menuProps = bindMenu(menuState);
 
-  const completed = taskData.completedAt ? true : false;
+  const completed = data.completedAt ? true : false;
 
-  // const habit = taskData.habit;
+  // const habit = data.habit;
   const habit: Habit | null = null; // TODO
 
-  // const subtasks = taskData.subtasks;
+  // const subtasks = data.subtasks;
   const subtasks: Task[] = []; // TODO
 
   // const metricUsages = habit?.metricUsages;
   // const metricUsages = null; // TODO
 
   const saveAndExit = () => {
-    if (!canUpdate && taskData.title) {
-      console.log("Creating task...", taskData);
-      const optimisticResponse = getOptimisticResponseForTaskCreation(taskData);
-      createTask.current?.({
-        variables: { data: taskData },
-        optimisticResponse,
-      });
-      dispatchTaskData({
-        field: "init",
-        value: {
-          title: "",
-          userId: user?.id as ID,
-          rank: taskData.rank + 1,
-        },
-      }); // TODO
-    }
     handleClose();
   };
 
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
       <DialogTitle sx={{ minHeight: "3.3rem", borderBottom: "1px solid gray" }}>
-        {!!taskData.id && !!updateTask && (
+        {!!data.id && !!updateTask && (
           <Box
             ml={"auto"}
             sx={{
@@ -149,7 +118,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             }}
           >
             <IconButton
-              title={`Display actions for ${taskData.title}`}
+              title={`Display actions for ${data.title}`}
               className="actions-menu-icon"
               {...menuTriggerProps}
               disableTouchRipple
@@ -172,7 +141,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             >
               {/* <MenuItem
                 disabled={editing}
-                title={`Edit ${taskData.title}`}
+                title={`Edit ${data.title}`}
                 onClick={() => {
                   setEditing(true);
                   menuProps.onClose();
@@ -181,20 +150,20 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 <EditIcon /> <Typography sx={{ ml: 1 }}>{"Edit task"}</Typography>
               </MenuItem> */}
               <MenuItem
-                disabled={!taskData.id}
+                disabled={!data.id}
                 onClick={() => {
                   const archivedAt = new Date();
-                  console.log("Archiving task ", taskData.title, taskData.id);
-                  const data = { archivedAt };
+                  console.log("Archiving task ", data.title, data.id);
+                  const updatedData = { archivedAt };
                   const optimisticResponse = getOptimisticResponseForTaskUpdate(
-                    taskData as TaskFragment,
-                    data
+                    data as TaskFragment,
+                    updatedData
                   );
                   updateTask.current &&
                     updateTask.current({
                       variables: {
-                        where: { id: taskData.id },
-                        data,
+                        where: { id: data.id },
+                        data: updatedData,
                       },
                       optimisticResponse,
                     });
@@ -222,8 +191,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               }
             }}
             onBlur={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget) && taskData.id)
-                setEditing(false);
+              if (!event.currentTarget.contains(event.relatedTarget) && data.id) setEditing(false);
             }}
           >
             <Box display="flex" alignItems="center">
@@ -240,13 +208,13 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     id="title"
                     name="title"
                     variant="standard"
-                    value={taskData.title}
+                    value={data.title}
                     placeholder={"Task title"}
                     onChange={(event) => handleUpdateField("title", event.target.value)}
                   />
                 ) : (
                   <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
-                    {taskData.title}
+                    {data.title}
                   </Typography>
                 )}
               </Box>
@@ -259,7 +227,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   id="description"
                   name="description"
                   // variant="standard"
-                  value={taskData.description ?? ""}
+                  value={data.description ?? ""}
                   placeholder="Task description"
                   onChange={(event) => handleUpdateField("description", event.target.value)}
                 />
@@ -269,7 +237,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   sx={{ mt: 1, mb: 2 }}
                   onClick={() => setEditing(true)}
                 >
-                  {taskData.description || (
+                  {data.description || (
                     <Box
                       sx={{
                         display: "flex",
@@ -286,7 +254,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   )}
                 </DialogContentText>
               )}
-              {!!taskData.archivedAt && (
+              {!!data.archivedAt && (
                 <Box my={2}>
                   <Typography>{`This task is archived.`}</Typography>
                 </Box>
@@ -299,8 +267,8 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 )}
               </Box>
               <Box my={2}>
-                {taskData.habitId ? (
-                  <Typography>{`This task is associated with habit ${taskData.habitId}.`}</Typography>
+                {data.habitId ? (
+                  <Typography>{`This task is associated with habit ${data.habitId}.`}</Typography>
                 ) : (
                   <Typography>
                     {`Trying to build a new habit? Create a habit from this task.`}
@@ -323,7 +291,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <Box display="flex" alignItems="center">
                 <TodayIcon />
                 <Typography component="span">
-                  {taskData.dueDate ? format(taskData.dueDate, "h:m") : "No due date"}
+                  {data.dueDate ? format(data.dueDate, "h:m") : "No due date"}
                 </Typography>
               </Box>
             </Box>
@@ -332,9 +300,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <Box display="flex" alignItems="center">
                 <TodayIcon />
                 <Typography component="span">
-                  {taskData.plannedStartDate
-                    ? format(taskData.plannedStartDate, "h:m")
-                    : "Unscheduled"}
+                  {data.plannedStartDate ? format(data.plannedStartDate, "h:m") : "Unscheduled"}
                 </Typography>
               </Box>
             </Box>

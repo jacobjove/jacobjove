@@ -33,7 +33,7 @@ export default function CreationFields<T extends Model, CreationInput extends Pa
                 onChange={(event) =>
                   dispatchData({
                     field: fieldName,
-                    value: event.target.value,
+                    value: event.target.value as unknown as CreationInput[keyof CreationInput],
                   })
                 }
               />
