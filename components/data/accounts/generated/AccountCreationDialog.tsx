@@ -1,0 +1,24 @@
+import CreationDialog from "@/components/data/CreationDialog";
+import fields from "@/graphql/generated/fields/account.fields";
+import { AccountFragment } from "@/graphql/generated/fragments/account.fragment";
+import { useAccountDataReducer, useCreateAccount } from "@/graphql/generated/hooks/account.hooks";
+import { AccountCreationInput } from "@/graphql/generated/inputs/account.inputs";
+import { Account } from "@/graphql/generated/models/account.model";
+import { getOptimisticResponseForAccountCreation } from "@/graphql/generated/mutations/account.mutations";
+import { bindPopover } from "material-ui-popup-state/hooks";
+
+export type AccountCreationDialogProps = ReturnType<typeof bindPopover>;
+
+export default function AccountCreationDialog(props: AccountCreationDialogProps) {
+  const [create] = useCreateAccount();
+  const dataTuple = useAccountDataReducer();
+  return CreationDialog<Account, AccountCreationInput, { createAccount: AccountFragment }>({
+    typeName: "account",
+    dataTuple,
+    create,
+    fields,
+    // produceInitialData,
+    getOptimisticResponse: getOptimisticResponseForAccountCreation,
+    ...props,
+  });
+}

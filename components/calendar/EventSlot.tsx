@@ -1,12 +1,12 @@
-import { DraggedTask } from "@/components/actions/TaskRow";
 import { DraggedCalendarEvent } from "@/components/calendar/CalendarEventBox";
 import { useUser } from "@/components/contexts/UserContext";
+import { DraggedTask } from "@/components/data/tasks/TaskRow";
 import {
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
-} from "@/generated/hooks/calendarEvent.hooks";
-import { CalendarEvent } from "@/generated/models/calendarEvent.model";
-import { getOptimisticResponseForCalendarEventCreation } from "@/generated/mutations/calendarEvent.mutations";
+} from "@/graphql/generated/hooks/calendarEvent.hooks";
+import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
+import { getOptimisticResponseForCalendarEventCreation } from "@/graphql/generated/mutations/calendarEvent.mutations";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";

@@ -37,10 +37,20 @@ function initializeData<T>(initialData: T): T {
   };
 }
 
-export type Payload<T> = {
-  field: "init" | keyof T;
-  value: T | T[keyof T];
-};
+// export type Payload<T> = {
+//   field: "init" | keyof T;
+//   value: T | T[keyof T];
+// };
+
+export type Payload<T> =
+  | {
+      field: "init";
+      value: Partial<T>;
+    }
+  | {
+      field: keyof T;
+      value: T[keyof T];
+    };
 
 export function dataReducer<T>(state: T, payload: { field: "init"; value: T }): T;
 export function dataReducer<T>(state: T, payload: { field: keyof T; value: T[keyof T] }): T;

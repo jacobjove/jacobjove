@@ -1,6 +1,10 @@
-import TaskDialog from "@/components/actions/TaskDialog";
+// import TaskDialog from "@/components/data/tasks/TaskDialog";
 import AppDrawer from "@/components/AppDrawer";
+import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
 import DeviceContext from "@/components/contexts/DeviceContext";
+import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
+import { useNewTaskDialog } from "@/components/contexts/NewTaskDialogContext";
+import TaskCreationDialog from "@/components/data/tasks/TaskCreationDialog";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import NotesIcon from "@mui/icons-material/Notes";
@@ -14,9 +18,6 @@ import { parseCookies, setCookie } from "nookies";
 // import SpeedDialAction from "@mui/material/SpeedDialAction";
 // import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { FC, ReactNode, useContext, useState } from "react";
-import CalendarEventDialog from "./calendar/CalendarEventDialog";
-import { useNewCalendarEventDialog } from "./contexts/NewCalendarEventDialogContext";
-import { useNewTaskDialog } from "./contexts/NewTaskDialogContext";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -148,7 +149,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
                 />
               ))}
             </SpeedDial> */}
-            <TaskDialog {...bindPopover(newTaskDialogState)} />
+            <TaskCreationDialog {...bindPopover(newTaskDialogState)} />
             <CalendarEventDialog
               mutation={"create"}
               {...bindPopover(newCalendarEventDialogState)}

@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Value } from "@/generated/models/value.model";
+import { Value } from "@/graphql/generated/models/value.model";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";

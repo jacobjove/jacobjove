@@ -1,7 +1,7 @@
 import AppLayout from "@/components/AppLayout";
-import NoteViewer from "@/components/notes/NoteViewer";
-import { noteFragment } from "@/generated/fragments/note.fragment";
-import { Note } from "@/generated/models/note.model";
+import NoteViewer from "@/components/data/notes/NoteViewer";
+import { noteFragment } from "@/graphql/generated/fragments/note.fragment";
+import { Note } from "@/graphql/generated/models/note.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";

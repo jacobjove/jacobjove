@@ -1,5 +1,5 @@
 import DataBox, { DataBoxProps } from "@/components/DataBox";
-import { Habit } from "@/generated/models/habit.model";
+import { Habit } from "@/graphql/generated/models/habit.model";
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";

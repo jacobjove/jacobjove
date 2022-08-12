@@ -1,10 +1,10 @@
 import { useUser } from "@/components/contexts/UserContext";
-import { useTaskDataReducer } from "@/generated/hooks/task.hooks";
-import { TaskData } from "@/generated/reducers/task.reducer";
+import { useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
+import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
 import { Payload } from "@/utils/data";
 import { bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
-import { createContext, Dispatch, FC, useContext, useEffect } from "react";
+import { createContext, Dispatch, FC, useContext } from "react";
 
 type NewTaskDialogContextData = {
   newTaskDataTuple: [TaskData, Dispatch<Payload<TaskData>>];
@@ -35,7 +35,6 @@ export const NewTaskDialogContextProvider: FC = ({ children }) => {
     userId: user?.id as ID,
     title: "",
   });
-  const [, dispatchNewTaskData] = newTaskDataTuple;
   const newTaskDialogState = usePopupState({ variant: "popover", popupId: `new-task-dialog` });
   const newTaskDialogTriggerProps = bindTrigger(newTaskDialogState);
   const value = {
@@ -43,14 +42,6 @@ export const NewTaskDialogContextProvider: FC = ({ children }) => {
     newTaskDialogState,
     newTaskDialogTriggerProps,
   };
-  useEffect(() => {
-    if (user?.id) {
-      dispatchNewTaskData({
-        field: "init",
-        value: { title: "", rank: defaultRank, userId: user.id },
-      });
-    }
-  }, [user, dispatchNewTaskData]);
   return <NewTaskDialogContext.Provider value={value}>{children}</NewTaskDialogContext.Provider>;
 };
 

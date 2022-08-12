@@ -1,5 +1,5 @@
-import CalendarModel from "@/generated/models/calendar.model";
-import NotebookModel from "@/generated/models/notebook.model";
+import CalendarModel from "@/graphql/generated/models/calendar.model";
+import NotebookModel from "@/graphql/generated/models/notebook.model";
 import Definition, {
   OPTIONAL_BOOLEAN,
   OPTIONAL_STRING,

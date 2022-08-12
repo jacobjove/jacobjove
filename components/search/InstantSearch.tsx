@@ -1,4 +1,4 @@
-import { Note } from "@/generated/models/note.model";
+import { Note } from "@/graphql/generated/models/note.model";
 import { useLazyQuery } from "@apollo/client";
 import Autocomplete, { AutocompleteRenderOptionState } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";

@@ -1,4 +1,5 @@
 import Definition from "@/graphql/schema/definition";
+import JSON5 from "json5";
 import path from "path";
 
 const TYPE_CAST_MAP = {
@@ -36,6 +37,7 @@ module.exports = {
         Object.entries(modifiedDefinition.fields).filter(([, field]) => field.select !== false)
       ),
       ...args,
+      JSON5,
     };
   },
 };

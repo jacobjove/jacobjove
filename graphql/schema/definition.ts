@@ -3,20 +3,26 @@ import { Model } from "./types";
 
 export type FieldType = "String" | "Boolean" | "ID" | "DateTime";
 
+export interface Field {
+  label?: string;
+  required: boolean;
+  unique?: boolean;
+  type: string;
+  typeCast?: string | CallableFunction | CallableFunction[];
+  default?: unknown;
+  select?: boolean;
+  widget?: {
+    multiline?: boolean;
+    fullWidth?: boolean;
+    placeholder?: string;
+  };
+  initialize?: boolean;
+}
+
 export default interface Definition {
   name: string;
   modelImports?: string[];
-  fields: Record<
-    string,
-    {
-      required: boolean;
-      unique?: boolean;
-      type: string;
-      typeCast?: string | CallableFunction | CallableFunction[];
-      default?: unknown;
-      select?: boolean;
-    }
-  >;
+  fields: Record<string, Field>;
   hooks?: {
     save: {
       pre?: Parameters<typeof pre>[1];

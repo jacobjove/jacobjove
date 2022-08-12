@@ -1,20 +1,22 @@
 import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 
-const definition: Definition = {
-  name: "account",
-  fields: {
-    userId: { required: true, type: "ID", typeCast: "ObjectId" },
-    provider: REQUIRED_STRING,
-    remoteId: { required: true, unique: true, type: "String" },
-    scopes: { required: true, type: "String[]", typeCast: "StringArray" },
-    accessToken: OPTIONAL_STRING,
-    refreshToken: OPTIONAL_STRING,
-    accessTokenExpiry: { required: false, type: "DateTime", typeCast: "DateTime" },
-    syncToken: OPTIONAL_STRING,
-  },
+export const accountFields = {
+  userId: { required: true, type: "ID", typeCast: "ObjectId" },
+  provider: REQUIRED_STRING,
+  remoteId: { required: true, unique: true, type: "String" },
+  scopes: { required: true, type: "String[]", typeCast: "StringArray" },
+  accessToken: OPTIONAL_STRING,
+  refreshToken: OPTIONAL_STRING,
+  accessTokenExpiry: { required: false, type: "DateTime", typeCast: "DateTime" },
+  syncToken: OPTIONAL_STRING,
 };
 
-export default definition;
+const accountDefinition: Definition = {
+  name: "account",
+  fields: accountFields,
+};
+
+export default accountDefinition;
 
 // @TypeGraphQL.Field(() => [Account], { nullable: false })
 // @Property({ required: true, default: [] })

@@ -3,7 +3,7 @@ THIS IS A SERVER-SIDE-ONLY MODULE.
 Importing from this module in client-side code will result in an error.
 */
 
-import { Account, Calendar } from "@/generated/models";
+import { Account, Calendar } from "@/graphql/generated/models";
 import { calendar_v3, google } from "googleapis";
 
 type RequiredAccountData = Pick<

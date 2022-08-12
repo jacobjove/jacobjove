@@ -27,6 +27,19 @@ export interface UserSettings {
 
 @ObjectType({ isAbstract: true })
 export class Model {
+  // declare readonly __types__: {
+  //   fragment: Fragment;
+  //   // mutationArgs: {
+  //   //   create: unknown;
+  //   // }
+  //   mutationResponses: {
+  //     create: { [key: string]: Fragment };
+  //     update: { [key: string]: Fragment };
+  //     upsert: { [key: string]: Fragment };
+  //     delete: { [key: string]: Fragment };
+  //   }
+  // };
+
   readonly __typename?: string;
 
   @Field(() => Scalars.ObjectId, { nullable: false })
@@ -60,3 +73,8 @@ export class WhereUniqueInput {
   @Field(() => Scalars.ObjectIdScalar, { nullable: true })
   id?: ID | undefined;
 }
+
+// export type Fragment<T extends Model = Model> = T["__types__"]["fragment"];
+
+export type Fragment = Pick<Model, "__typename" | "id" | "createdAt" | "updatedAt" | "archivedAt"> &
+  Record<string, unknown>;

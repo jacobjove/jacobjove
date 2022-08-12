@@ -4,6 +4,7 @@
 .next
 coverage/
 node_modules/
+
 _/
 service-account.json
 

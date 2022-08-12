@@ -1,5 +1,5 @@
-import { Task } from "@/generated/models/task.model";
-import { TaskData } from "@/generated/reducers/task.reducer";
+import { Task } from "@/graphql/generated/models/task.model";
+import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { InitialData } from "@/utils/data";
 
 export type InitialTaskData = InitialData<Task, "rank" | "userId">;

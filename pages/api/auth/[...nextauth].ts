@@ -1,5 +1,5 @@
-import { User } from "@/generated/models/user.model";
-import { UPSERT_USER } from "@/generated/mutations/user.mutations";
+import { User } from "@/graphql/generated/models/user.model";
+import { UPSERT_USER } from "@/graphql/generated/mutations/user.mutations";
 import { initializeApollo } from "@/lib/apollo";
 import { NoUndefinedField } from "@/types/global";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";

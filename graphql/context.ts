@@ -5,10 +5,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth";
 import { unstable_getServerSession } from "next-auth/next";
 
-export type GqlContext = {
+export interface GqlContext {
   session: Session | null | undefined;
   db: unknown;
-};
+}
 
 interface FromContext {
   req: NextApiRequest;

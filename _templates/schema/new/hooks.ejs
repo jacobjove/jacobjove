@@ -1,5 +1,5 @@
 ---
-to: generated/hooks/<%= name %>.hooks.ts
+to: graphql/generated/hooks/<%= name %>.hooks.ts
 force: true
 ---
 <% NAME = h.changeCase.constantCase(name); -%>
@@ -10,19 +10,24 @@ import {
   CREATE_<%= NAME %>,
   UPDATE_<%= NAME %>,
   updateCacheAfterCreating<%= Name %>,
-} from "@/generated/mutations/<%= name %>.mutations";
-import { <%= Name %>Fragment } from "@/generated/fragments/<%= name %>.fragment";
-import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs } from "@/generated/args/<%= name %>.args";
+} from "@/graphql/generated/mutations/<%= name %>.mutations";
+import { <%= Name %>Fragment } from "@/graphql/generated/fragments/<%= name %>.fragment";
+import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs } from "@/graphql/generated/args/<%= name %>.args";
 import { useHandleMutation, Payload } from "@/utils/data";
 import { useEffect, useReducer, Dispatch } from "react";
 import { 
   <%= name %>DataReducer,
   <%= Name %>Data,
   initialize<%= Name %>Data,
-} from "@/generated/reducers/<%= name %>.reducer";
-<% if (Object.keys(fields).includes("userId")) { -%>
-// import { useUser } from "@/components/contexts/UserContext";
+} from "@/graphql/generated/reducers/<%= name %>.reducer";
+<% useDefinition = Object.entries(fields).some(([, field]) => !!field.initialize); -%>
+<% useUser = Object.keys(fields).includes("userId") || Object.entries(fields).some(([, field]) => field.initializer); -%>
+<% if (useUser) { -%>
+import { useUser } from "@/components/contexts/UserContext";
 <% } -%>
+<% Object.entries(fields).filter(([, field]) => !!field.initialize).forEach(([fieldName,]) => { -%>
+import { initialize<%= Name %><%= h.inflection.titleize(fieldName) %> } from "@/graphql/schema/initializers";
+<% }); -%>
 
 type <%= Name %>CreationMutationHookOptions = MutationHookOptions<
   { create<%= Name %>: <%= Name %>Fragment },
@@ -51,20 +56,26 @@ export const useUpdate<%= Name %> = (options?: <%= Name %>UpdateMutationHookOpti
   >(UPDATE_<%= NAME %>, options);
 }
 
-export const use<%= Name %>DataReducer = (data: <%= Name %>Data): [<%= Name %>Data, Dispatch<Payload<<%= Name %>Data>>] => {
-  const initialData = initialize<%= Name %>Data(data);
+export const use<%= Name %>DataReducer = (data?: <%= Name %>Data): [<%= Name %>Data, Dispatch<Payload<<%= Name %>Data>>] => {
+<% if (useUser) { -%>
+  const user = useUser();
+<% } -%>
+  const initializedData = initialize<%= Name %>Data(data ?? <%- useUser ? "{ userId: user?.id as string }" : "{}" %>);
   const [<%= name %>Data, dispatch<%= Name %>Data] = useReducer(
     <%= name %>DataReducer,
-    initialData,
+    initializedData,
     initialize<%= Name %>Data,
   );
-<% if (Object.keys(fields).includes("userId")) { -%>
+<% if (useUser) { -%>
   useEffect(() => {
-    if (data.userId && !<%= name %>Data?.userId) {
+    if (user?.id && !<%= name %>Data?.userId) {
       console.log("Dispatching <%= name %> data!");
-      dispatch<%= Name %>Data({ field: "init", value: data });
+      dispatch<%= Name %>Data({ field: "userId", value: user.id });
+<% Object.entries(fields).filter(([, field]) => !!field.initialize).forEach(([fieldName, field]) => { -%>
+      dispatch<%= Name %>Data({ field: "<%- fieldName %>", value: initialize<%= Name %><%= h.inflection.titleize(fieldName) %>(user) });
+<% }); -%>
     }
-  }, [data, <%= name %>Data]);
+  }, [user, <%= name %>Data]);
 <% } -%>
   return [<%= name %>Data, dispatch<%= Name %>Data];
 }

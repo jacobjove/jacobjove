@@ -1,7 +1,7 @@
+import SelectableMantra from "@/components/data/mantras/SelectableMantra";
 import Layout from "@/components/Layout";
-import SelectableMantra from "@/components/mantras/SelectableMantra";
 import PageHeader from "@/components/PageHeader";
-import { Mantra } from "@/generated/models/mantra.model";
+import { Mantra } from "@/graphql/generated/models/mantra.model";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";
