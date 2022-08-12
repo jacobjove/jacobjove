@@ -1,9 +1,9 @@
+import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
+import Stopwatch from "@/components/actions/Stopwatch";
+import { useUser } from "@/components/contexts/UserContext";
+import TasksTable from "@/components/data/tasks/TasksTable";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import {
-  useCreateTask,
-  useTaskDataReducer,
-  useUpdateTask,
-} from "@/graphql/generated/hooks/task.hooks";
+import { useCreateTask, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { Habit } from "@/graphql/generated/models/habit.model";
 import { Task } from "@/graphql/generated/models/task.model";
 import {
@@ -12,38 +12,43 @@ import {
 } from "@/graphql/generated/mutations/task.mutations";
 import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
+import { Payload } from "@/utils/data";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import NotesIcon from "@mui/icons-material/Notes";
+import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { format } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { FC, useState } from "react";
-import { useUser } from "../../contexts/UserContext";
+import { Dispatch, FC, useState } from "react";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
-  data?: TaskData;
+  data: TaskData;
+  dispatchTaskData: Dispatch<Payload<TaskData>>;
 }
 
 const LEFT_SIDE_WIDTH = "3.3rem";
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
-  const { data, onClose: initialOnClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const {
+    data: taskData,
+    dispatchTaskData,
+    onClose: initialOnClose,
+    anchorEl: _anchorEl,
+    ...dialogProps
+  } = props;
   const user = useUser();
-  const [taskData, dispatchTaskData] = useTaskDataReducer(
-    data ?? {
-      title: "",
-      rank: 0, // TODO
-      userId: user?.id as ID,
-    }
-  );
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
   const [editing, setEditing] = useState(!taskData.id);
@@ -206,6 +211,143 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
         )}
       </DialogTitle>
       <DialogContent sx={{ px: 0 }}>
+        <Box display="flex" borderBottom={"1px solid gray"}>
+          <Box
+            mb={2}
+            flexGrow={1}
+            onKeyUp={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                saveAndExit();
+              }
+            }}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget) && taskData.id)
+                setEditing(false);
+            }}
+          >
+            <Box display="flex" alignItems="center">
+              <CompletionCheckbox
+                sx={{ alignSelf: "start", alignItems: "start", minWidth: LEFT_SIDE_WIDTH }}
+                checked={completed}
+                disabled={!canUpdate}
+                onClick={() => handleUpdateField("completedAt", new Date())}
+              />
+              <Box sx={{ "& *": { fontSize: "1.6rem", fontWeight: "400" } }}>
+                {editing ? (
+                  <TextField
+                    autoFocus
+                    id="title"
+                    name="title"
+                    variant="standard"
+                    value={taskData.title}
+                    placeholder={"Task title"}
+                    onChange={(event) => handleUpdateField("title", event.target.value)}
+                  />
+                ) : (
+                  <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
+                    {taskData.title}
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+            <Box pl={LEFT_SIDE_WIDTH}>
+              {editing ? (
+                <TextField
+                  multiline
+                  fullWidth
+                  id="description"
+                  name="description"
+                  // variant="standard"
+                  value={taskData.description ?? ""}
+                  placeholder="Task description"
+                  onChange={(event) => handleUpdateField("description", event.target.value)}
+                />
+              ) : (
+                <DialogContentText
+                  component="div"
+                  sx={{ mt: 1, mb: 2 }}
+                  onClick={() => setEditing(true)}
+                >
+                  {taskData.description || (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: (theme) =>
+                          theme.palette.mode === "light"
+                            ? "rgba(0,0,0,0.5)"
+                            : "rgba(255,255,255,0.5)",
+                      }}
+                    >
+                      <NotesIcon />
+                      <Typography sx={{ ml: 1 }}>{"Description"}</Typography>
+                    </Box>
+                  )}
+                </DialogContentText>
+              )}
+              {!!taskData.archivedAt && (
+                <Box my={2}>
+                  <Typography>{`This task is archived.`}</Typography>
+                </Box>
+              )}
+              <Box my={2}>
+                {subtasks?.length ? (
+                  <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
+                ) : (
+                  <Typography>{`Add subtasks.`}</Typography>
+                )}
+              </Box>
+              <Box my={2}>
+                {taskData.habitId ? (
+                  <Typography>{`This task is associated with habit ${taskData.habitId}.`}</Typography>
+                ) : (
+                  <Typography>
+                    {`Trying to build a new habit? Create a habit from this task.`}
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+          </Box>
+          <Box
+            ml={2}
+            p={2}
+            sx={{
+              bgcolor: (theme) =>
+                theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)",
+              // backgroundColor: (theme) => theme.palette.mode === "light" ? "gray" : "black"
+            }}
+          >
+            <Box my={2}>
+              <Typography>{"Due date"}</Typography>
+              <Box display="flex" alignItems="center">
+                <TodayIcon />
+                <Typography component="span">
+                  {taskData.dueDate ? format(taskData.dueDate, "h:m") : "No due date"}
+                </Typography>
+              </Box>
+            </Box>
+            <Box my={2}>
+              <Typography>{"Scheduled date"}</Typography>
+              <Box display="flex" alignItems="center">
+                <TodayIcon />
+                <Typography component="span">
+                  {taskData.plannedStartDate
+                    ? format(taskData.plannedStartDate, "h:m")
+                    : "Unscheduled"}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        {!subtasks?.length && !!habit && (
+          <Stopwatch
+            time={time}
+            setTime={setTime}
+            running={stopwatchIsRunning}
+            setRunning={setStopwatchIsRunning}
+          />
+        )}
         {/* {!metricUsages?.length ? null : (
           <Box display={"flex"} justifyContent={"center"} width={"50%"} mx={"auto"}>
             <TableContainer sx={{ my: 3 }}>

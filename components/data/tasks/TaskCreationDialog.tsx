@@ -1,3 +1,4 @@
+import { useUser } from "@/components/contexts/UserContext";
 import CreationDialog from "@/components/data/CreationDialog";
 import TasksTable from "@/components/data/tasks/TasksTable";
 import fields from "@/graphql/generated/fields/task.fields";
@@ -7,6 +8,7 @@ import { TaskCreationInput } from "@/graphql/generated/inputs/task.inputs";
 import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
 import { TaskData } from "@/graphql/generated/reducers/task.reducer";
+import { ID } from "@/graphql/schema/types";
 import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -17,6 +19,7 @@ import { bindPopover } from "material-ui-popup-state/hooks";
 export type TaskCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function TaskCreationDialog(props: TaskCreationDialogProps) {
+  const user = useUser();
   const [create] = useCreateTask();
   const dataTuple = useTaskDataReducer();
   const [data, dispatchData] = dataTuple;
@@ -30,7 +33,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
         variables: { data },
         optimisticResponse,
       });
-      dispatchData({ field: "init", value: {} }); // TODO
+      dispatchData({ field: "init", value: { userId: user?.id as ID, rank: data.rank + 1 } });
     }
     props.onClose();
   };
