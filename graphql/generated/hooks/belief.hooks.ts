@@ -13,6 +13,7 @@ import {
   beliefDataReducer,
   initializeBeliefData,
 } from "@/graphql/generated/reducers/belief.reducer";
+import { beliefCreationInputSchema } from "@/graphql/generated/schemas/belief.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -23,10 +24,11 @@ type BeliefCreationMutationHookOptions = MutationHookOptions<
 >;
 
 export const useCreateBelief = (options?: BeliefCreationMutationHookOptions) => {
-  return useHandleMutation<{ createBelief: BeliefFragment }, BeliefCreationArgs>(CREATE_BELIEF, {
-    ...updateCacheAfterCreatingBelief,
-    ...(options ?? {}),
-  });
+  return useHandleMutation<{ createBelief: BeliefFragment }, BeliefCreationArgs>(
+    CREATE_BELIEF,
+    { ...updateCacheAfterCreatingBelief, ...(options ?? {}) },
+    beliefCreationInputSchema.validate
+  );
 };
 
 type BeliefUpdateMutationHookOptions = MutationHookOptions<

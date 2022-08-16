@@ -13,6 +13,7 @@ import {
   NotebookData,
   notebookDataReducer,
 } from "@/graphql/generated/reducers/notebook.reducer";
+import { notebookCreationInputSchema } from "@/graphql/generated/schemas/notebook.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -25,10 +26,8 @@ type NotebookCreationMutationHookOptions = MutationHookOptions<
 export const useCreateNotebook = (options?: NotebookCreationMutationHookOptions) => {
   return useHandleMutation<{ createNotebook: NotebookFragment }, NotebookCreationArgs>(
     CREATE_NOTEBOOK,
-    {
-      ...updateCacheAfterCreatingNotebook,
-      ...(options ?? {}),
-    }
+    { ...updateCacheAfterCreatingNotebook, ...(options ?? {}) },
+    notebookCreationInputSchema.validate
   );
 };
 

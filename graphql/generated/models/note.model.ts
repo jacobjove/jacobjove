@@ -47,7 +47,7 @@ export class Note extends Model {
   title!: string;
 
   @TypeGraphQL.Field(() => String, { nullable: true })
-  @Property({ type: () => String, required: false, default: '""' })
+  @Property({ type: () => String, required: false, default: "" })
   body?: string | null;
 
   @TypeGraphQL.Field(() => Boolean, { nullable: true })

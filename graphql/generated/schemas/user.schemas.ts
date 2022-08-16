@@ -11,22 +11,65 @@ import { notebookCreationInputSchema } from "@/graphql/generated/schemas/noteboo
 import { taskCreationInputSchema } from "@/graphql/generated/schemas/task.schemas";
 import { array, bool, date, InferType, object, SchemaOf, string } from "yup";
 
+export const settingsSchema = object({
+  colorMode: string().nullable(),
+  defaultCalendarId: string().nullable(),
+});
+
 export const userCreationInputSchema: SchemaOf<UserCreationInput> = object({
   name: string().nullable(),
   email: string().required(),
   emailVerified: bool().nullable(),
   image: string().nullable(),
-  isAdmin: bool().required(),
-  settings: object(),
+  isAdmin: bool()
+    .required()
+    .default(() => {
+      return false;
+    }),
+  settings: settingsSchema.default(() => {
+    return {};
+  }),
   lastLogin: date().nullable(),
-  accounts: array().of(accountCreationInputSchema.required()),
-  calendars: array().of(calendarCreationInputSchema.required()),
-  calendarEvents: array().of(calendarEventCreationInputSchema.required()),
-  goals: array().of(goalCreationInputSchema.required()),
-  habits: array().of(habitCreationInputSchema.required()),
-  mantras: array().of(mantraCreationInputSchema.required()),
-  notebooks: array().of(notebookCreationInputSchema.required()),
-  tasks: array().of(taskCreationInputSchema.required()),
+  accounts: array()
+    .of(accountCreationInputSchema.required())
+    .default(() => {
+      return [];
+    }),
+  calendars: array()
+    .of(calendarCreationInputSchema.required())
+    .default(() => {
+      return [];
+    }),
+  calendarEvents: array()
+    .of(calendarEventCreationInputSchema.required())
+    .default(() => {
+      return [];
+    }),
+  goals: array()
+    .of(goalCreationInputSchema.required())
+    .default(() => {
+      return [];
+    }),
+  habits: array()
+    .of(habitCreationInputSchema.required())
+    .default(() => {
+      return [];
+    }),
+  mantras: array()
+    .of(mantraCreationInputSchema.required())
+    .default(() => {
+      return [];
+    }),
+  notebooks: array()
+    .of(notebookCreationInputSchema.required())
+    .default(() => {
+      return [];
+    }),
+  tasks: array()
+    .of(taskCreationInputSchema.required())
+    .default(() => {
+      return [];
+    }),
   archivedAt: date().nullable(),
 });
 

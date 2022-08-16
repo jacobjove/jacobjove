@@ -13,7 +13,9 @@ export const calendarEventCreationInputSchema: SchemaOf<CalendarEventCreationInp
   title: string().required(),
   start: date().required(),
   end: date().nullable(),
-  allDay: bool(),
+  allDay: bool().default(() => {
+    return false;
+  }),
   notes: string().nullable(),
   canceled: bool().nullable(),
   archivedAt: date().nullable(),

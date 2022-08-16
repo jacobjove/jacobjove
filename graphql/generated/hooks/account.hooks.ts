@@ -13,6 +13,7 @@ import {
   accountDataReducer,
   initializeAccountData,
 } from "@/graphql/generated/reducers/account.reducer";
+import { accountCreationInputSchema } from "@/graphql/generated/schemas/account.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -25,10 +26,8 @@ type AccountCreationMutationHookOptions = MutationHookOptions<
 export const useCreateAccount = (options?: AccountCreationMutationHookOptions) => {
   return useHandleMutation<{ createAccount: AccountFragment }, AccountCreationArgs>(
     CREATE_ACCOUNT,
-    {
-      ...updateCacheAfterCreatingAccount,
-      ...(options ?? {}),
-    }
+    { ...updateCacheAfterCreatingAccount, ...(options ?? {}) },
+    accountCreationInputSchema.validate
   );
 };
 

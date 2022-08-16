@@ -69,10 +69,10 @@ type MutationFunction<MutationReturnType, MutationArgsType> = (
   options: MutationFunctionOptions<MutationReturnType, MutationArgsType>
 ) => Promise<FetchResult<MutationReturnType, Record<string, unknown>, Record<string, unknown>>>;
 
-export function useHandleMutation<MutationReturnType, MutationArgsType>(
+export function useHandleMutation<MutationReturnType, MutationArgsType extends { data: unknown }>(
   mutation: DocumentNode,
   mutationHookOptions?: MutationHookOptions<MutationReturnType, MutationArgsType>,
-  // abortController: MutableRefObject<AbortController | undefined>,
+  preMutationValidator?: (data: MutationArgsType["data"]) => Promise<unknown>,
   debounceDelay = DEFAULT_MUTATION_DEBOUNCE_DELAY
 ): [
   MutableRefObject<DebouncedFunc<MutationFunction<MutationReturnType, MutationArgsType>>>,
@@ -85,15 +85,20 @@ export function useHandleMutation<MutationReturnType, MutationArgsType>(
     mutationHookOptions
   );
   const mutationHandlerRef = useRef(
-    debounce((...args: Parameters<typeof mutate>) => {
+    debounce((mutationOptions: MutationFunctionOptions<MutationReturnType, MutationArgsType>) => {
       const controller = new window.AbortController();
       abortController.current = controller;
-      const [mutationOptions] = args;
-      if (mutationOptions) {
-        mutationOptions.context = { fetchOptions: { signal: controller.signal } };
-      }
-      const mutationResult = mutate(mutationOptions);
-      return mutationResult;
+      const premutate =
+        preMutationValidator && mutationOptions?.variables?.data
+          ? preMutationValidator
+          : Promise.resolve;
+      return premutate(mutationOptions?.variables?.data).then(() => {
+        const modifiedMutationOptions = mutationOptions
+          ? { ...mutationOptions, context: { fetchOptions: { signal: controller.signal } } }
+          : mutationOptions;
+        const mutationResult = mutate(modifiedMutationOptions);
+        return mutationResult;
+      });
     }, debounceDelay)
   );
   return [mutationHandlerRef, mutationResult, abortController];

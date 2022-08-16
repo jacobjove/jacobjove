@@ -13,6 +13,7 @@ import {
   MantraData,
   mantraDataReducer,
 } from "@/graphql/generated/reducers/mantra.reducer";
+import { mantraCreationInputSchema } from "@/graphql/generated/schemas/mantra.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -23,10 +24,11 @@ type MantraCreationMutationHookOptions = MutationHookOptions<
 >;
 
 export const useCreateMantra = (options?: MantraCreationMutationHookOptions) => {
-  return useHandleMutation<{ createMantra: MantraFragment }, MantraCreationArgs>(CREATE_MANTRA, {
-    ...updateCacheAfterCreatingMantra,
-    ...(options ?? {}),
-  });
+  return useHandleMutation<{ createMantra: MantraFragment }, MantraCreationArgs>(
+    CREATE_MANTRA,
+    { ...updateCacheAfterCreatingMantra, ...(options ?? {}) },
+    mantraCreationInputSchema.validate
+  );
 };
 
 type MantraUpdateMutationHookOptions = MutationHookOptions<

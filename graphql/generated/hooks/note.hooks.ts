@@ -13,6 +13,7 @@ import {
   NoteData,
   noteDataReducer,
 } from "@/graphql/generated/reducers/note.reducer";
+import { noteCreationInputSchema } from "@/graphql/generated/schemas/note.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -23,10 +24,11 @@ type NoteCreationMutationHookOptions = MutationHookOptions<
 >;
 
 export const useCreateNote = (options?: NoteCreationMutationHookOptions) => {
-  return useHandleMutation<{ createNote: NoteFragment }, NoteCreationArgs>(CREATE_NOTE, {
-    ...updateCacheAfterCreatingNote,
-    ...(options ?? {}),
-  });
+  return useHandleMutation<{ createNote: NoteFragment }, NoteCreationArgs>(
+    CREATE_NOTE,
+    { ...updateCacheAfterCreatingNote, ...(options ?? {}) },
+    noteCreationInputSchema.validate
+  );
 };
 
 type NoteUpdateMutationHookOptions = MutationHookOptions<

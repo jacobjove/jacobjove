@@ -13,6 +13,7 @@ import {
   ListItemData,
   listItemDataReducer,
 } from "@/graphql/generated/reducers/listItem.reducer";
+import { listItemCreationInputSchema } from "@/graphql/generated/schemas/listItem.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -25,10 +26,8 @@ type ListItemCreationMutationHookOptions = MutationHookOptions<
 export const useCreateListItem = (options?: ListItemCreationMutationHookOptions) => {
   return useHandleMutation<{ createListItem: ListItemFragment }, ListItemCreationArgs>(
     CREATE_LIST_ITEM,
-    {
-      ...updateCacheAfterCreatingListItem,
-      ...(options ?? {}),
-    }
+    { ...updateCacheAfterCreatingListItem, ...(options ?? {}) },
+    listItemCreationInputSchema.validate
   );
 };
 

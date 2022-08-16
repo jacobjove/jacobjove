@@ -40,7 +40,7 @@ export class <%= Name %> extends Model {
 <% for (var [fieldName, field] of Object.entries(fields)) { -%>
 <% var useModelType = modelImports.includes(`${field.type}`) || modelImports.includes(`${field.typeArg}`); -%>
   @TypeGraphQL.Field(() => <%- getConstructor(field) %>, { nullable: <%- field.required ? "false" : "true" %>})
-  @Property({ <%- (field.type === "String" || field.type === "Boolean") ? `type: () => ${getConstructor(field)}, ` : "" %>required: <%- field.required %><%- field.unique ? ", unique: true" : "" %><%- field.select === false ? ", select: false" : "" %><%- typeof field.default !== "undefined" ? `, default: ${JSON.stringify(field.default)}` : field.required ? "" : `, default: null` %> })
+  @Property({ <%- (field.type === "String" || field.type === "Boolean") ? `type: () => ${getConstructor(field)}, ` : "" %>required: <%- field.required %><%- field.unique ? ", unique: true" : "" %><%- field.select === false ? ", select: false" : "" %><%- typeof field.default !== "undefined" ? `, default: ${typeof field.default === "string" ? field.default : JSON5.stringify(field.default)}` : field.required ? "" : `, default: null` %> })
   <%= fieldName %><%- field.required ? "!" : "?" %>: <%- field.shape ? h.changeCase.pascal(fieldName) : getType(field) %><%- (field.required || (field.type === "Boolean" && typeof field.default !== "undefined")) ? "" : " | null" %>;
 
 <% } -%>}

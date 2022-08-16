@@ -6,7 +6,9 @@ import { bool, date, InferType, number, object, SchemaOf, string } from "yup";
 export const habitCreationInputSchema: SchemaOf<HabitCreationInput> = object({
   userId: string().required(),
   name: string().required(),
-  public: bool(),
+  public: bool().default(() => {
+    return false;
+  }),
   chronString: string().nullable(),
   defaultDurationInMinutes: number().nullable(),
   archivedAt: date().nullable(),

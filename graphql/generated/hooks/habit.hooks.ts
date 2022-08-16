@@ -13,6 +13,7 @@ import {
   habitDataReducer,
   initializeHabitData,
 } from "@/graphql/generated/reducers/habit.reducer";
+import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -23,10 +24,11 @@ type HabitCreationMutationHookOptions = MutationHookOptions<
 >;
 
 export const useCreateHabit = (options?: HabitCreationMutationHookOptions) => {
-  return useHandleMutation<{ createHabit: HabitFragment }, HabitCreationArgs>(CREATE_HABIT, {
-    ...updateCacheAfterCreatingHabit,
-    ...(options ?? {}),
-  });
+  return useHandleMutation<{ createHabit: HabitFragment }, HabitCreationArgs>(
+    CREATE_HABIT,
+    { ...updateCacheAfterCreatingHabit, ...(options ?? {}) },
+    habitCreationInputSchema.validate
+  );
 };
 
 type HabitUpdateMutationHookOptions = MutationHookOptions<

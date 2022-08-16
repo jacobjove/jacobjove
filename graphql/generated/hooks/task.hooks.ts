@@ -13,6 +13,7 @@ import {
   TaskData,
   taskDataReducer,
 } from "@/graphql/generated/reducers/task.reducer";
+import { taskCreationInputSchema } from "@/graphql/generated/schemas/task.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -23,10 +24,11 @@ type TaskCreationMutationHookOptions = MutationHookOptions<
 >;
 
 export const useCreateTask = (options?: TaskCreationMutationHookOptions) => {
-  return useHandleMutation<{ createTask: TaskFragment }, TaskCreationArgs>(CREATE_TASK, {
-    ...updateCacheAfterCreatingTask,
-    ...(options ?? {}),
-  });
+  return useHandleMutation<{ createTask: TaskFragment }, TaskCreationArgs>(
+    CREATE_TASK,
+    { ...updateCacheAfterCreatingTask, ...(options ?? {}) },
+    taskCreationInputSchema.validate
+  );
 };
 
 type TaskUpdateMutationHookOptions = MutationHookOptions<

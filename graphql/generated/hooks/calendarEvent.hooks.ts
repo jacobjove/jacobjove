@@ -16,6 +16,7 @@ import {
   calendarEventDataReducer,
   initializeCalendarEventData,
 } from "@/graphql/generated/reducers/calendarEvent.reducer";
+import { calendarEventCreationInputSchema } from "@/graphql/generated/schemas/calendarEvent.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -29,10 +30,11 @@ export const useCreateCalendarEvent = (options?: CalendarEventCreationMutationHo
   return useHandleMutation<
     { createCalendarEvent: CalendarEventFragment },
     CalendarEventCreationArgs
-  >(CREATE_CALENDAR_EVENT, {
-    ...updateCacheAfterCreatingCalendarEvent,
-    ...(options ?? {}),
-  });
+  >(
+    CREATE_CALENDAR_EVENT,
+    { ...updateCacheAfterCreatingCalendarEvent, ...(options ?? {}) },
+    calendarEventCreationInputSchema.validate
+  );
 };
 
 type CalendarEventUpdateMutationHookOptions = MutationHookOptions<

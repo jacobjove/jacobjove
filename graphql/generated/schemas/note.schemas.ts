@@ -7,7 +7,9 @@ export const noteCreationInputSchema: SchemaOf<NoteCreationInput> = object({
   userId: string().required(),
   notebookId: string().required(),
   title: string().required(),
-  body: string(),
+  body: string().default(() => {
+    return "";
+  }),
   public: bool().nullable(),
   archivedAt: date().nullable(),
 });

@@ -13,6 +13,7 @@ import {
   ValueData,
   valueDataReducer,
 } from "@/graphql/generated/reducers/value.reducer";
+import { valueCreationInputSchema } from "@/graphql/generated/schemas/value.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -23,10 +24,11 @@ type ValueCreationMutationHookOptions = MutationHookOptions<
 >;
 
 export const useCreateValue = (options?: ValueCreationMutationHookOptions) => {
-  return useHandleMutation<{ createValue: ValueFragment }, ValueCreationArgs>(CREATE_VALUE, {
-    ...updateCacheAfterCreatingValue,
-    ...(options ?? {}),
-  });
+  return useHandleMutation<{ createValue: ValueFragment }, ValueCreationArgs>(
+    CREATE_VALUE,
+    { ...updateCacheAfterCreatingValue, ...(options ?? {}) },
+    valueCreationInputSchema.validate
+  );
 };
 
 type ValueUpdateMutationHookOptions = MutationHookOptions<

@@ -22,7 +22,7 @@ export const getOptimisticResponseForNoteCreation = (
     createNote: {
       __typename: "Note",
       id: "tmp-id",
-      body: '""',
+      body: "",
       public: null,
       archivedAt: null,
       ...data,

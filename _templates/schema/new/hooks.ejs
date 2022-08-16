@@ -23,6 +23,7 @@ import {
 <% useDefinition = Object.entries(fields).some(([, field]) => !!field.initialize); -%>
 <% useUser = Object.keys(fields).includes("userId") || Object.entries(fields).some(([, field]) => field.initialize); -%>
 import { useUser } from "@/components/contexts/UserContext";
+import { <%= name %>CreationInputSchema } from "@/graphql/generated/schemas/<%= name %>.schemas";
 
 type <%= Name %>CreationMutationHookOptions = MutationHookOptions<
   { create<%= Name %>: <%= Name %>Fragment },
@@ -33,10 +34,11 @@ export const useCreate<%= Name %> = (options?: <%= Name %>CreationMutationHookOp
   return useHandleMutation<
     { create<%= Name %>: <%= Name %>Fragment },
     <%= Name %>CreationArgs
-  >(CREATE_<%= NAME %>, {
-    ...updateCacheAfterCreating<%= Name %>,
-    ...(options ?? {}),
-  });
+  >(
+    CREATE_<%= NAME %>,
+    { ...updateCacheAfterCreating<%= Name %>, ...(options ?? {}) },
+    <%= name %>CreationInputSchema.validate
+  );
 }
 
 type <%= Name %>UpdateMutationHookOptions = MutationHookOptions<

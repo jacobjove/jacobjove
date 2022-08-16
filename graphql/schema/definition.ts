@@ -84,7 +84,10 @@ export function getConstructor(field: Field): string {
 
 export function getYup(field: Field): string {
   const fieldYup = TYPE_MAP[field.type].yup;
-  if (typeof fieldYup === "function" && field.typeArg) return fieldYup(field.typeArg);
+  if (typeof fieldYup === "function") {
+    if (field.typeArg) return fieldYup(field.typeArg);
+    throw new Error(`Yup schema for ${field.type} requires typeArg`);
+  }
   if (typeof fieldYup == "string") return fieldYup;
   return field.type;
 }

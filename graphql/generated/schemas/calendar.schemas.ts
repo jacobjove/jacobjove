@@ -13,7 +13,9 @@ export const calendarCreationInputSchema: SchemaOf<CalendarCreationInput> = obje
   accountId: string().nullable(),
   primary: bool().nullable(),
   public: bool().nullable(),
-  enabled: bool(),
+  enabled: bool().default(() => {
+    return true;
+  }),
   archivedAt: date().nullable(),
 });
 
