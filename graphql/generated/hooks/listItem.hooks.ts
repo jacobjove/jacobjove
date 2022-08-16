@@ -48,7 +48,8 @@ export const useListItemDataReducer = (
   data?: ListItemData
 ): [ListItemData, Dispatch<Payload<ListItemData>>] => {
   const user = useUser();
-  const initializedData = initializeListItemData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeListItemData(starterData, user);
   const [listItemData, dispatchListItemData] = useReducer(
     listItemDataReducer,
     initializedData,
@@ -56,8 +57,10 @@ export const useListItemDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !listItemData?.userId) {
-      console.log("Dispatching listItem data!");
-      dispatchListItemData({ field: "userId", value: user.id });
+      dispatchListItemData({
+        field: "init",
+        value: initializeListItemData(listItemData, user),
+      });
     }
   }, [user, listItemData]);
   return [listItemData, dispatchListItemData];

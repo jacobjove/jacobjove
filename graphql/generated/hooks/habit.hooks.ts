@@ -42,7 +42,8 @@ export const useHabitDataReducer = (
   data?: HabitData
 ): [HabitData, Dispatch<Payload<HabitData>>] => {
   const user = useUser();
-  const initializedData = initializeHabitData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeHabitData(starterData, user);
   const [habitData, dispatchHabitData] = useReducer(
     habitDataReducer,
     initializedData,
@@ -50,8 +51,10 @@ export const useHabitDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !habitData?.userId) {
-      console.log("Dispatching habit data!");
-      dispatchHabitData({ field: "userId", value: user.id });
+      dispatchHabitData({
+        field: "init",
+        value: initializeHabitData(habitData, user),
+      });
     }
   }, [user, habitData]);
   return [habitData, dispatchHabitData];

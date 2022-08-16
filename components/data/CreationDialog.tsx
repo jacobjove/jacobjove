@@ -22,7 +22,7 @@ export interface CreationDialogProps<
 > extends ReturnType<typeof bindPopover> {
   children?: React.ReactNode;
   typeName: string;
-  dataTuple: [CreationInput, Dispatch<Payload<CreationInput>>];
+  dataTuple: [Partial<CreationInput>, Dispatch<Payload<Partial<CreationInput>>>];
   fields: { [key in keyof CreationInput]: Field };
   create: MutableRefObject<
     DebouncedFunc<MutationFunction<CreationMutationData, { data: CreationInput }>>
@@ -65,9 +65,11 @@ export default function CreationDialog<
   const menuProps = bindMenu(menuState);
 
   const saveAndExit = () => {
-    const optimisticResponse = getOptimisticResponse(data);
+    // TODO: run validator!
+    const validatedData = data as CreationInput;
+    const optimisticResponse = getOptimisticResponse(validatedData);
     create.current?.({
-      variables: { data },
+      variables: { data: validatedData },
       optimisticResponse,
     });
     dispatchData({
@@ -79,17 +81,9 @@ export default function CreationDialog<
 
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
-      <DialogTitle sx={{ minHeight: "3.3rem", borderBottom: "1px solid gray" }}>
-        {"Create new " + typeName}
-        <Box
-          ml={"auto"}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
+      <DialogTitle sx={{ borderBottom: "1px solid gray", display: "flex" }}>
+        {`Create new ${typeName}`}
+        <Box ml={"auto"}>
           <Menu
             {...menuProps}
             anchorOrigin={{

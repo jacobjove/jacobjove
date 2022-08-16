@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/Account";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { DateTimeScalar, ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { AccountFragment } from "@/graphql/generated/fragments/account.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,37 +34,37 @@ export class Account extends Model {
   //     delete: { deleteAccount: AccountFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  userId!: Types.ID;
+  userId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  provider!: Types.String;
+  provider!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true, unique: true })
-  remoteId!: Types.String;
+  remoteId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.StringArray, { nullable: false })
+  @TypeGraphQL.Field(() => [String], { nullable: false })
   @Property({ required: true })
-  scopes!: Types.String[];
+  scopes!: string[];
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  accessToken?: Types.String | null;
+  accessToken?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  refreshToken?: Types.String | null;
+  refreshToken?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   @Property({ required: false, default: null })
-  accessTokenExpiry?: Types.DateTime | null;
+  accessTokenExpiry?: Date | null;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  syncToken?: Types.String | null;
+  syncToken?: string | null;
 }
 
 const AccountModel = getModelForClass<typeof Account>(Account);

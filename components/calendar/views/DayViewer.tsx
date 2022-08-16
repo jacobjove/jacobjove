@@ -232,7 +232,7 @@ const DayViewer: FC<DayViewerProps> = ({
                         // allows us to avoid stopping propagation on click events for
                         // other elements in the slot.
                         if (e.target === e.currentTarget) {
-                          const calendarId = user?.settings.defaultCalendarId;
+                          const calendarId = user?.settings.defaultCalendarId as ID; // TODO
                           if (!calendarId) throw new Error("No default calendar");
                           dispatchNewCalendarEventData({
                             field: "init",

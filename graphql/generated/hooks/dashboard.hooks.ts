@@ -51,7 +51,8 @@ export const useDashboardDataReducer = (
   data?: DashboardData
 ): [DashboardData, Dispatch<Payload<DashboardData>>] => {
   const user = useUser();
-  const initializedData = initializeDashboardData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeDashboardData(starterData, user);
   const [dashboardData, dispatchDashboardData] = useReducer(
     dashboardDataReducer,
     initializedData,
@@ -59,8 +60,10 @@ export const useDashboardDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !dashboardData?.userId) {
-      console.log("Dispatching dashboard data!");
-      dispatchDashboardData({ field: "userId", value: user.id });
+      dispatchDashboardData({
+        field: "init",
+        value: initializeDashboardData(dashboardData, user),
+      });
     }
   }, [user, dashboardData]);
   return [dashboardData, dispatchDashboardData];

@@ -46,7 +46,8 @@ export const useUpdateShelving = (options?: ShelvingUpdateMutationHookOptions) =
 export const useShelvingDataReducer = (
   data?: ShelvingData
 ): [ShelvingData, Dispatch<Payload<ShelvingData>>] => {
-  const initializedData = initializeShelvingData(data ?? {});
+  const starterData = data ?? {};
+  const initializedData = initializeShelvingData(starterData);
   const [shelvingData, dispatchShelvingData] = useReducer(
     shelvingDataReducer,
     initializedData,

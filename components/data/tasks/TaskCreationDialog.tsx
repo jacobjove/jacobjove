@@ -7,7 +7,6 @@ import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/tas
 import { TaskCreationInput } from "@/graphql/generated/inputs/task.inputs";
 import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
-import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
 import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";
@@ -24,16 +23,21 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
   const dataTuple = useTaskDataReducer();
   const [data, dispatchData] = dataTuple;
   console.log(data);
-  const subtasks: TaskData[] = [];
+  const subtasks: Task[] = [];
   const saveAndExit = () => {
     const dataIsValid = !!data.title;
+    // TODO: run validator!
+    const validatedData = data as TaskCreationInput;
     if (dataIsValid) {
-      const optimisticResponse = getOptimisticResponseForTaskCreation(data);
+      const optimisticResponse = getOptimisticResponseForTaskCreation(validatedData);
       create.current?.({
-        variables: { data },
+        variables: { data: validatedData },
         optimisticResponse,
       });
-      dispatchData({ field: "init", value: { userId: user?.id as ID, rank: data.rank + 1 } });
+      dispatchData({
+        field: "init",
+        value: { userId: user?.id as ID, rank: validatedData.rank + 1 },
+      });
     }
     props.onClose();
   };
@@ -88,7 +92,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
                 {subtasks?.length ? (
                   <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
                 ) : (
-                  <Typography>{`Add subtasks.`}</Typography>
+                  <Typography>{`Add subtask`}</Typography>
                 )}
               </Box>
               <Box my={2}>

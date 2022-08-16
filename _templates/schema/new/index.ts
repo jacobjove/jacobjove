@@ -1,12 +1,6 @@
-import Definition from "@/graphql/schema/definition";
+import Definition, { getConstructor, getType, getYup, TYPE_MAP } from "@/graphql/schema/definition";
 import JSON5 from "json5";
 import path from "path";
-
-const TYPE_CAST_MAP = {
-  ID: "ObjectId",
-  String: "String",
-  Boolean: "Boolean",
-};
 
 module.exports = {
   params: async ({ args }: { args: { definition: string } }) => {
@@ -19,13 +13,7 @@ module.exports = {
       ...definition,
       fields: Object.fromEntries(
         Object.entries(definition.fields).map(([key, value]) => {
-          return [
-            key,
-            {
-              ...value,
-              typeCast: value.typeCast ?? TYPE_CAST_MAP[value.type as keyof typeof TYPE_CAST_MAP],
-            },
-          ];
+          return [key, { ...value }];
         })
       ),
     };
@@ -38,6 +26,10 @@ module.exports = {
       ),
       ...args,
       JSON5,
+      typeMap: TYPE_MAP,
+      getType,
+      getConstructor,
+      getYup,
     };
   },
 };

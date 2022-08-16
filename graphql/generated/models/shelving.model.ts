@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/Shelving";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { Int, ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { ShelvingFragment } from "@/graphql/generated/fragments/shelving.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,21 +34,21 @@ export class Shelving extends Model {
   //     delete: { deleteShelving: ShelvingFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  bookId!: Types.ID;
+  bookId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  shelfId!: Types.ID;
+  shelfId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.Int, { nullable: false })
+  @TypeGraphQL.Field(() => Int, { nullable: false })
   @Property({ required: true })
-  position!: Types.Number;
+  position!: number;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  rationale?: Types.String | null;
+  rationale?: string | null;
 }
 
 const ShelvingModel = getModelForClass<typeof Shelving>(Shelving);

@@ -94,14 +94,15 @@ const getDesignTokens = (mode: PaletteMode) => {
 export const ColorModeContextProvider: FC = ({ children }) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const user = useUser();
-  const colorModeState = useState<PaletteMode>(user?.settings?.colorMode ?? DEFAULT_COLOR_MODE);
+  const initialColorMode = (user?.settings?.colorMode ?? DEFAULT_COLOR_MODE) as PaletteMode;
+  const colorModeState = useState<PaletteMode>(initialColorMode);
   const [mode, setMode] = colorModeState;
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   useEffect(() => {
     if (user?.settings?.colorMode) {
-      setMode(user.settings.colorMode);
+      setMode(user.settings.colorMode as PaletteMode);
     } else if (prefersDarkMode) {
       setMode("dark");
     } else {

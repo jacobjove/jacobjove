@@ -314,7 +314,6 @@ type Dashboard {
   description: String
   id: ObjectId!
   isDefault: Boolean
-  layouts: JSON!
   name: String!
   public: Boolean
   updatedAt: DateTimeISO!
@@ -325,7 +324,6 @@ input DashboardCreationInput {
   archivedAt: DateTimeISO
   description: String
   isDefault: Boolean
-  layouts: JSON!
   name: String!
   public: Boolean
   userId: ObjectId!
@@ -335,7 +333,6 @@ input DashboardUpdateInput {
   archivedAt: DateTimeISO
   description: String
   isDefault: Boolean
-  layouts: JSON
   name: String
   public: Boolean
   userId: ObjectId
@@ -346,7 +343,6 @@ input DashboardWhereInput {
   description: String
   id: ObjectId
   isDefault: Boolean
-  layouts: JSON
   name: String
   public: Boolean
   updatedAt: DateTimeISO

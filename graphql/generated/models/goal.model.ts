@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/Goal";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { GoalFragment } from "@/graphql/generated/fragments/goal.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,17 +34,17 @@ export class Goal extends Model {
   //     delete: { deleteGoal: GoalFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: true })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   @Property({ required: false, default: null })
-  habitId?: Types.ID | null;
+  habitId?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: true })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   @Property({ required: false, default: null })
-  parentId?: Types.ID | null;
+  parentId?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  description!: Types.String;
+  description!: string;
 }
 
 const GoalModel = getModelForClass<typeof Goal>(Goal);

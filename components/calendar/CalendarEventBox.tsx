@@ -1,8 +1,5 @@
 import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
-import {
-  useCalendarEventDataReducer,
-  useUpdateCalendarEvent,
-} from "@/graphql/generated/hooks/calendarEvent.hooks";
+import { useUpdateCalendarEvent } from "@/graphql/generated/hooks/calendarEvent.hooks";
 import { CalendarEvent } from "@/graphql/generated/models";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -31,7 +28,6 @@ export interface DraggedCalendarEvent extends CalendarEvent {
 
 const CalendarEventBox: FC<CalendarEventBoxProps> = (props: CalendarEventBoxProps) => {
   const { event, ...rest } = props;
-  const [calendarEventData, dispatchCalendarEventData] = useCalendarEventDataReducer(event);
   const [hovered, setHovered] = useState(false);
   const detailDialogState = usePopupState({
     variant: "popover",
@@ -111,7 +107,7 @@ const CalendarEventBox: FC<CalendarEventBoxProps> = (props: CalendarEventBoxProp
             lineHeight={"0.7rem"}
             mx="0.1rem"
           >
-            {calendarEventData.title}
+            {event.title}
           </Typography>
           <Typography component="div" fontSize={"0.6rem"} lineHeight={"0.6rem"} mx="0.1rem">
             {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}

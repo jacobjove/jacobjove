@@ -48,7 +48,8 @@ export const useCalendarDataReducer = (
   data?: CalendarData
 ): [CalendarData, Dispatch<Payload<CalendarData>>] => {
   const user = useUser();
-  const initializedData = initializeCalendarData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeCalendarData(starterData, user);
   const [calendarData, dispatchCalendarData] = useReducer(
     calendarDataReducer,
     initializedData,
@@ -56,8 +57,10 @@ export const useCalendarDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !calendarData?.userId) {
-      console.log("Dispatching calendar data!");
-      dispatchCalendarData({ field: "userId", value: user.id });
+      dispatchCalendarData({
+        field: "init",
+        value: initializeCalendarData(calendarData, user),
+      });
     }
   }, [user, calendarData]);
   return [calendarData, dispatchCalendarData];

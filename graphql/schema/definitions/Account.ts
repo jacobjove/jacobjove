@@ -1,13 +1,13 @@
-import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
+import Definition, { Field, OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 
-export const accountFields = {
-  userId: { required: true, type: "ID", typeCast: "ObjectId" },
+export const accountFields: Record<string, Field> = {
+  userId: { required: true, type: "ID" },
   provider: REQUIRED_STRING,
   remoteId: { required: true, unique: true, type: "String" },
-  scopes: { required: true, type: "String[]", typeCast: "StringArray" },
+  scopes: { required: true, type: "Array", typeArg: "String" },
   accessToken: OPTIONAL_STRING,
   refreshToken: OPTIONAL_STRING,
-  accessTokenExpiry: { required: false, type: "DateTime", typeCast: "DateTime" },
+  accessTokenExpiry: { required: false, type: "DateTime" },
   syncToken: OPTIONAL_STRING,
 };
 

@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/Book";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { Int } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { BookFragment } from "@/graphql/generated/fragments/book.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,41 +34,41 @@ export class Book extends Model {
   //     delete: { deleteBook: BookFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  isbn?: Types.String | null;
+  isbn?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  isbn13?: Types.String | null;
+  isbn13?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  title!: Types.String;
+  title!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  slug!: Types.String;
+  slug!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  description?: Types.String | null;
+  description?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.StringArray, { nullable: false })
+  @TypeGraphQL.Field(() => [String], { nullable: false })
   @Property({ required: true })
-  authorNames!: Types.String[];
+  authorNames!: string[];
 
-  @TypeGraphQL.Field(() => Scalars.StringArray, { nullable: false })
+  @TypeGraphQL.Field(() => [String], { nullable: false })
   @Property({ required: true })
-  authorNamesLf!: Types.String[];
+  authorNamesLf!: string[];
 
-  @TypeGraphQL.Field(() => Scalars.Int, { nullable: true })
+  @TypeGraphQL.Field(() => Int, { nullable: true })
   @Property({ required: false, default: null })
-  publicationYear?: Types.Number | null;
+  publicationYear?: number | null;
 
-  @TypeGraphQL.Field(() => Scalars.Int, { nullable: true })
+  @TypeGraphQL.Field(() => Int, { nullable: true })
   @Property({ required: false, default: null })
-  originalPublicationYear?: Types.Number | null;
+  originalPublicationYear?: number | null;
 }
 
 const BookModel = getModelForClass<typeof Book>(Book);

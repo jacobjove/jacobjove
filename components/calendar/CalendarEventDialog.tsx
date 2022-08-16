@@ -1,17 +1,17 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
-import { useUser } from "@/components/contexts/UserContext";
 import { CalendarEventFragment } from "@/graphql/generated/fragments/calendarEvent.fragment";
 import {
   useCalendarEventDataReducer,
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
 } from "@/graphql/generated/hooks/calendarEvent.hooks";
+import { CalendarEventCreationInput } from "@/graphql/generated/inputs/calendarEvent.inputs";
 import {
   getOptimisticResponseForCalendarEventCreation,
   getOptimisticResponseForCalendarEventUpdate,
 } from "@/graphql/generated/mutations/calendarEvent.mutations";
 import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
-import { ID } from "@/graphql/schema/types";
+import { calendarEventCreationInputSchema } from "@/graphql/generated/schemas/calendarEvent.schemas";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -27,46 +27,45 @@ type CalendarEventDialogProps = ReturnType<typeof bindPopover> & {
 
 const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventDialogProps) => {
   console.log("Rendering CalendarEventDialog");
-  const user = useUser();
   const { onClose, data, anchorEl: _anchorEl, mutation, ...dialogProps } = props;
-  const calendarEventDataTuple = useCalendarEventDataReducer(
-    data ?? {
-      title: "",
-      start: new Date(),
-      calendarId: "",
-      userId: user?.id as ID,
-    }
-  );
+  const calendarEventDataTuple = useCalendarEventDataReducer(data ?? { start: new Date() });
   const [calendarEventData] = calendarEventDataTuple;
   const [create, { loading: createLoading }] = useCreateCalendarEvent();
   const [update, { loading: updateLoading }] = useUpdateCalendarEvent();
   const loading = createLoading || updateLoading;
   const handleSave = async () => {
-    if (!calendarEventData.start) {
-      alert("Start date is required.");
-      return;
-    }
-    if (!calendarEventData.userId) {
-      alert("User ID is required.");
-      console.log(calendarEventData);
-      return;
-    }
-    const data = calendarEventData;
-    mutation === "create"
-      ? await create.current?.({
-          variables: { data },
-          optimisticResponse: getOptimisticResponseForCalendarEventCreation(data),
-        })
-      : await update.current?.({
-          variables: {
-            where: { id: calendarEventData.id },
-            data,
-          },
-          optimisticResponse: getOptimisticResponseForCalendarEventUpdate(
-            data as CalendarEventFragment,
-            data
-          ),
+    // if (!calendarEventData.start) {
+    //   alert("Start date is required.");
+    //   return;
+    // }
+    // if (!calendarEventData.userId) {
+    //   alert("User ID is required.");
+    //   console.log(calendarEventData);
+    //   return;
+    // }
+    if (mutation === "create") {
+      await calendarEventCreationInputSchema
+        .validate(calendarEventData, { strict: true })
+        .then(async () => {
+          const data = calendarEventData as CalendarEventCreationInput;
+          return create.current?.({
+            variables: { data },
+            optimisticResponse: getOptimisticResponseForCalendarEventCreation(data),
+          });
         });
+    } else {
+      const data = calendarEventData;
+      await update.current?.({
+        variables: {
+          where: { id: calendarEventData.id },
+          data,
+        },
+        optimisticResponse: getOptimisticResponseForCalendarEventUpdate(
+          data as CalendarEventFragment,
+          data
+        ),
+      });
+    }
     onClose();
   };
   return (

@@ -6,11 +6,11 @@ import Definition, {
 const definition: Definition = {
   name: "shelving",
   fields: {
-    bookId: { required: true, type: "ID", typeCast: "ObjectId" },
-    shelfId: { required: true, type: "ID", typeCast: "ObjectId" },
-    position: { required: true, type: "Number", typeCast: "Int" },
+    bookId: { required: true, type: "ID" },
+    shelfId: { required: true, type: "ID" },
+    position: { required: true, type: "Int" },
     rationale: OPTIONAL_STRING,
-    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime" },
   },
 };
 

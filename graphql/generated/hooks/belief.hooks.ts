@@ -45,7 +45,8 @@ export const useBeliefDataReducer = (
   data?: BeliefData
 ): [BeliefData, Dispatch<Payload<BeliefData>>] => {
   const user = useUser();
-  const initializedData = initializeBeliefData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeBeliefData(starterData, user);
   const [beliefData, dispatchBeliefData] = useReducer(
     beliefDataReducer,
     initializedData,
@@ -53,8 +54,10 @@ export const useBeliefDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !beliefData?.userId) {
-      console.log("Dispatching belief data!");
-      dispatchBeliefData({ field: "userId", value: user.id });
+      dispatchBeliefData({
+        field: "init",
+        value: initializeBeliefData(beliefData, user),
+      });
     }
   }, [user, beliefData]);
   return [beliefData, dispatchBeliefData];

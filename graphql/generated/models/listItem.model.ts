@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/ListItem";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { JSONResolver, ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { ListItemFragment } from "@/graphql/generated/fragments/listItem.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,17 +34,17 @@ export class ListItem extends Model {
   //     delete: { deleteListItem: ListItemFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  userId!: Types.ID;
+  userId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  listId!: Types.ID;
+  listId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.JSON, { nullable: false })
+  @TypeGraphQL.Field(() => JSONResolver, { nullable: false })
   @Property({ required: true })
-  data!: Types.Map;
+  data!: Record<string, unknown>;
 }
 
 const ListItemModel = getModelForClass<typeof ListItem>(ListItem);

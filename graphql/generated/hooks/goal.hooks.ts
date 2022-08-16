@@ -38,7 +38,8 @@ export const useUpdateGoal = (options?: GoalUpdateMutationHookOptions) => {
 };
 
 export const useGoalDataReducer = (data?: GoalData): [GoalData, Dispatch<Payload<GoalData>>] => {
-  const initializedData = initializeGoalData(data ?? {});
+  const starterData = data ?? {};
+  const initializedData = initializeGoalData(starterData);
   const [goalData, dispatchGoalData] = useReducer(
     goalDataReducer,
     initializedData,

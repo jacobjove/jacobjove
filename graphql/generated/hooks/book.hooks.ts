@@ -38,7 +38,8 @@ export const useUpdateBook = (options?: BookUpdateMutationHookOptions) => {
 };
 
 export const useBookDataReducer = (data?: BookData): [BookData, Dispatch<Payload<BookData>>] => {
-  const initializedData = initializeBookData(data ?? {});
+  const starterData = data ?? {};
+  const initializedData = initializeBookData(starterData);
   const [bookData, dispatchBookData] = useReducer(
     bookDataReducer,
     initializedData,

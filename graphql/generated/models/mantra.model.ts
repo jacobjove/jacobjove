@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/Mantra";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { MantraFragment } from "@/graphql/generated/fragments/mantra.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,13 +34,13 @@ export class Mantra extends Model {
   //     delete: { deleteMantra: MantraFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  userId!: Types.ID;
+  userId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  content!: Types.String;
+  content!: string;
 }
 
 const MantraModel = getModelForClass<typeof Mantra>(Mantra);

@@ -3,16 +3,16 @@ import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/d
 const definition: Definition = {
   name: "book",
   fields: {
-    isbn: { ...OPTIONAL_STRING },
-    isbn13: { ...OPTIONAL_STRING },
+    isbn: { label: "ISBN", ...OPTIONAL_STRING },
+    isbn13: { label: "ISBN13", ...OPTIONAL_STRING },
     title: REQUIRED_STRING,
     slug: REQUIRED_STRING,
     description: OPTIONAL_STRING,
-    authorNames: { required: true, type: "String[]", typeCast: "StringArray" },
-    authorNamesLf: { required: true, type: "String[]", typeCast: "StringArray" },
-    publicationYear: { required: false, type: "Number", typeCast: "Int" },
-    originalPublicationYear: { required: false, type: "Number", typeCast: "Int" },
-    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    authorNames: { required: true, type: "Array", typeArg: "String" },
+    authorNamesLf: { required: true, type: "Array", typeArg: "String" },
+    publicationYear: { required: false, type: "Int" },
+    originalPublicationYear: { required: false, type: "Int" },
+    // archivedAt: { required: false, type: "DateTime" },
     // authorships?: Authorship[];
     // readings?: Reading[];
     // shelvings?: Shelving[];

@@ -5,8 +5,10 @@ import {
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
 } from "@/graphql/generated/hooks/calendarEvent.hooks";
+import { CalendarEventCreationInput } from "@/graphql/generated/inputs/calendarEvent.inputs";
 import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
 import { getOptimisticResponseForCalendarEventCreation } from "@/graphql/generated/mutations/calendarEvent.mutations";
+import { calendarEventCreationInputSchema } from "@/graphql/generated/schemas/calendarEvent.schemas";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";
@@ -49,7 +51,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
     () => ({
       accept: ["event", "task"],
       canDrop: () => !loading,
-      drop: (item: ItemDroppableOnEventSlot) => {
+      drop: async (item: ItemDroppableOnEventSlot) => {
         if (!user) return;
         if (item.type === "event") {
           const { type: _, ...draggedEvent } = item;
@@ -92,9 +94,12 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             scheduleId,
             userId,
           };
+          const validatedData = await calendarEventCreationInputSchema.validate(data).then(() => {
+            return data as CalendarEventCreationInput;
+          });
           createCalendarEvent.current?.({
-            variables: { data },
-            optimisticResponse: getOptimisticResponseForCalendarEventCreation(data),
+            variables: { data: validatedData },
+            optimisticResponse: getOptimisticResponseForCalendarEventCreation(validatedData),
           });
         }
         // TODO: open event dialog

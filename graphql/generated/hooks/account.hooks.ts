@@ -48,7 +48,8 @@ export const useAccountDataReducer = (
   data?: AccountData
 ): [AccountData, Dispatch<Payload<AccountData>>] => {
   const user = useUser();
-  const initializedData = initializeAccountData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeAccountData(starterData, user);
   const [accountData, dispatchAccountData] = useReducer(
     accountDataReducer,
     initializedData,
@@ -56,8 +57,10 @@ export const useAccountDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !accountData?.userId) {
-      console.log("Dispatching account data!");
-      dispatchAccountData({ field: "userId", value: user.id });
+      dispatchAccountData({
+        field: "init",
+        value: initializeAccountData(accountData, user),
+      });
     }
   }, [user, accountData]);
   return [accountData, dispatchAccountData];

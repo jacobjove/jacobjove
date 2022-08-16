@@ -1,16 +1,8 @@
 import { Timestamp } from "firebase/firestore";
 import { GraphQLScalarType, Kind } from "graphql";
 import { ObjectId } from "mongodb";
-export { JSONResolver as JSON } from "graphql-scalars";
+export { JSONResolver } from "graphql-scalars";
 export { Int } from "type-graphql-v2-fork";
-export { StringResolver as String };
-export { BooleanResolver as Boolean };
-export { ObjectIdScalar as ObjectId };
-export { DateTimeScalar as DateTime };
-
-const StringResolver = String;
-
-const BooleanResolver = Boolean;
 
 export const StringArray = [String];
 

@@ -3,10 +3,10 @@ import Definition from "@/graphql/schema/definition"; // OPTIONAL_STRING, // REQ
 const definition: Definition = {
   name: "listItem",
   fields: {
-    userId: { required: true, type: "ID", typeCast: "ObjectId" },
-    listId: { required: true, type: "ID", typeCast: "ObjectId" },
+    userId: { required: true, type: "ID" },
+    listId: { required: true, type: "ID" },
     data: { required: true, type: "Map", typeCast: "JSON" },
-    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime" },
   },
 };
 

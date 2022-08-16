@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/Task";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { DateTimeScalar, Int, ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,41 +34,41 @@ export class Task extends Model {
   //     delete: { deleteTask: TaskFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  title!: Types.String;
+  title!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  description?: Types.String | null;
+  description?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   @Property({ required: false, default: null })
-  plannedStartDate?: Types.DateTime | null;
+  plannedStartDate?: Date | null;
 
-  @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   @Property({ required: false, default: null })
-  dueDate?: Types.DateTime | null;
+  dueDate?: Date | null;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  userId!: Types.ID;
+  userId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: true })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   @Property({ required: false, default: null })
-  parentId?: Types.ID | null;
+  parentId?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: true })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   @Property({ required: false, default: null })
-  habitId?: Types.ID | null;
+  habitId?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.Int, { nullable: false })
+  @TypeGraphQL.Field(() => Int, { nullable: false })
   @Property({ required: true })
-  rank!: Types.Number;
+  rank!: number;
 
-  @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   @Property({ required: false, default: null })
-  completedAt?: Types.DateTime | null;
+  completedAt?: Date | null;
 }
 
 const TaskModel = getModelForClass<typeof Task>(Task);

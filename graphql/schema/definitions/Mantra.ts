@@ -3,9 +3,9 @@ import Definition, { REQUIRED_STRING } from "@/graphql/schema/definition";
 const definition: Definition = {
   name: "mantra",
   fields: {
-    userId: { required: true, type: "ID", typeCast: "ObjectId" },
+    userId: { required: true, type: "ID" },
     content: REQUIRED_STRING,
-    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime" },
   },
 };
 

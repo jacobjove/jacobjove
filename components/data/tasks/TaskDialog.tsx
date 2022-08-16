@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotesIcon from "@mui/icons-material/Notes";
 import TodayIcon from "@mui/icons-material/Today";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -263,7 +264,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 {subtasks?.length ? (
                   <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
                 ) : (
-                  <Typography>{`Add subtasks.`}</Typography>
+                  <Button>{`Add subtasks.`}</Button>
                 )}
               </Box>
               <Box my={2}>

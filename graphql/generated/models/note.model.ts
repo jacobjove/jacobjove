@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/Note";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { NoteFragment } from "@/graphql/generated/fragments/note.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,25 +34,25 @@ export class Note extends Model {
   //     delete: { deleteNote: NoteFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  userId!: Types.ID;
+  userId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  notebookId!: Types.ID;
+  notebookId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  title!: Types.String;
+  title!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: '""' })
-  body?: Types.String | null;
+  body?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   @Property({ type: () => Boolean, required: false, default: null })
-  public?: Types.Boolean | null;
+  public?: boolean | null;
 }
 
 const NoteModel = getModelForClass<typeof Note>(Note);

@@ -9,6 +9,7 @@ import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
 } from "@/graphql/generated/mutations/task.mutations";
+import { MAX_TASK_RANK, MIN_TASK_RANK } from "@/graphql/schema/constants";
 import { useHandleMutation } from "@/utils/data";
 import { gql } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";

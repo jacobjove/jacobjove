@@ -1,8 +1,8 @@
 import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
 import { useUpdateUser } from "@/graphql/generated/hooks/user.hooks";
+import { Settings } from "@/graphql/generated/models/user.model";
 import { getOptimisticResponseForUserUpdate } from "@/graphql/generated/mutations/user.mutations";
-import { UserSettings } from "@/graphql/schema/types";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
@@ -36,8 +36,8 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
   const user = useUser();
   const [updateUser, { loading: loadingUpdateSetting }] = useUpdateUser();
   const loading = loadingUpdateSetting;
-  const userSettings: UserSettings = user?.settings ?? {};
-  const settings: Record<keyof UserSettings, SettingOptions> = {
+  const userSettings: Settings = user?.settings ?? {};
+  const settings: Record<keyof Settings, SettingOptions> = {
     colorMode: {
       label: "Color mode",
       defaultValue: "light",
@@ -51,11 +51,11 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
   };
   const handleSettingChange = (settingName: string, newValue: string) => {
     if (!user) return;
-    const newUserSettings = {
+    const newSettings = {
       ...userSettings,
       [settingName]: newValue,
     };
-    const data = { settings: newUserSettings };
+    const data = { settings: newSettings };
     const optimisticResponse = getOptimisticResponseForUserUpdate(user, data);
     updateUser.current?.({
       variables: {
@@ -106,7 +106,7 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
               </TableHead>
               <TableBody>
                 {Object.keys(settings).map((key) => {
-                  const fieldName = key as keyof UserSettings;
+                  const fieldName = key as keyof Settings;
                   const { label, defaultValue, choices } = settings[fieldName];
                   const currentValue = userSettings[fieldName] ?? defaultValue;
                   return (

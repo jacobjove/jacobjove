@@ -48,7 +48,8 @@ export const useNotebookDataReducer = (
   data?: NotebookData
 ): [NotebookData, Dispatch<Payload<NotebookData>>] => {
   const user = useUser();
-  const initializedData = initializeNotebookData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeNotebookData(starterData, user);
   const [notebookData, dispatchNotebookData] = useReducer(
     notebookDataReducer,
     initializedData,
@@ -56,8 +57,10 @@ export const useNotebookDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !notebookData?.userId) {
-      console.log("Dispatching notebook data!");
-      dispatchNotebookData({ field: "userId", value: user.id });
+      dispatchNotebookData({
+        field: "init",
+        value: initializeNotebookData(notebookData, user),
+      });
     }
   }, [user, notebookData]);
   return [notebookData, dispatchNotebookData];

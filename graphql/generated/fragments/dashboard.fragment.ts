@@ -10,7 +10,6 @@ export const dashboardFragment = gql`
     userId
     name
     description
-    layouts
     isDefault
     public
     createdAt
@@ -29,7 +28,6 @@ export type DashboardFragment = Pick<
   | "userId"
   | "name"
   | "description"
-  | "layouts"
   | "isDefault"
   | "public"
 >;

@@ -45,7 +45,8 @@ export const useMantraDataReducer = (
   data?: MantraData
 ): [MantraData, Dispatch<Payload<MantraData>>] => {
   const user = useUser();
-  const initializedData = initializeMantraData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeMantraData(starterData, user);
   const [mantraData, dispatchMantraData] = useReducer(
     mantraDataReducer,
     initializedData,
@@ -53,8 +54,10 @@ export const useMantraDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !mantraData?.userId) {
-      console.log("Dispatching mantra data!");
-      dispatchMantraData({ field: "userId", value: user.id });
+      dispatchMantraData({
+        field: "init",
+        value: initializeMantraData(mantraData, user),
+      });
     }
   }, [user, mantraData]);
   return [mantraData, dispatchMantraData];

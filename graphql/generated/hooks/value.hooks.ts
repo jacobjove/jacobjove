@@ -42,7 +42,8 @@ export const useValueDataReducer = (
   data?: ValueData
 ): [ValueData, Dispatch<Payload<ValueData>>] => {
   const user = useUser();
-  const initializedData = initializeValueData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeValueData(starterData, user);
   const [valueData, dispatchValueData] = useReducer(
     valueDataReducer,
     initializedData,
@@ -50,8 +51,10 @@ export const useValueDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !valueData?.userId) {
-      console.log("Dispatching value data!");
-      dispatchValueData({ field: "userId", value: user.id });
+      dispatchValueData({
+        field: "init",
+        value: initializeValueData(valueData, user),
+      });
     }
   }, [user, valueData]);
   return [valueData, dispatchValueData];

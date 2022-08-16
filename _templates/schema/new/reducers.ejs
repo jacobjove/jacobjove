@@ -7,27 +7,44 @@ force: true
 import { <%= Name %>CreationInput } from "@/graphql/generated/inputs/<%= name %>.inputs";
 import { ID } from "@/graphql/schema/types";
 import { Payload } from "@/utils/data";
+import { UserFragment } from "@/graphql/generated/fragments/user.fragment";
 <% requiredFields = Object.fromEntries(Object.entries(selectableFields).filter(([fieldName, field]) => field.required)); -%>
+<% initiallyRequiredFieldEntries = Object.entries(requiredFields).filter(([fieldName, field]) => (field.type !== "String" && typeof field.initialize === "undefined" && typeof field.default === "undefined" && field.type !== "Array")); -%>
+<% requiredStringFieldEntries = Object.entries(requiredFields).filter(([fieldName, field]) => field.type === "String"); -%>
 <% requireUserId = Object.entries(requiredFields).some(([fieldName, field]) => fieldName === "userId"); -%>
+<% Object.entries(fields).filter(([, field]) => !!field.initialize).forEach(([fieldName,]) => { -%>
+import { initialize<%= Name %><%= h.changeCase.pascal(fieldName) %> } from "@/graphql/schema/initializers";
+<% }); -%>
 
-export type <%= Name %>Data = <%= Name %>CreationInput & { id?: ID };
+export type <%= Name %>Data = Partial<<%= Name %>CreationInput> & { id?: ID };
 // export type <%= Name %>Data = InputData<<%= Name %>>;
 // export type Initial<%= Name %>Data = InitialData<<%= Name %>, "rank" | "userId">;
-export type Partial<%= Name %>Data = <%- requireUserId ? "{ userId: ID } & " : "" %>Partial<<%= Name %>Data>
 
-export function initialize<%= Name %>Data(data: Partial<%= Name %>Data): <%= Name %>Data {
+export function initialize<%= Name %>Data(data: Partial<<%= Name %>Data>, user?: UserFragment | null | undefined): Partial<<%= Name %>Data> {
+<% if (requireUserId) { -%>
+  if (!user) return data;
+<% } -%>
   return {
-<% for (var [fieldName, field] of Object.entries(requiredFields).filter(([, field]) => field.type === "String")) { -%>
+<% if (requireUserId) { -%>
+    userId: user.id,
+<% } -%>
+<% for (var [fieldName, field] of requiredStringFieldEntries) { -%>
     <%- fieldName %>: "",
 <% } -%>
-<% for (var [fieldName, field] of Object.entries(requiredFields).filter(([, field]) => field.type.includes("["))) { -%>
+<% for (var [fieldName, field] of Object.entries(requiredFields).filter(([, field]) => field.type === "Array")) { -%>
     <%- fieldName %>: [],
+<% } -%>
+<% for (var [fieldName, field] of Object.entries(requiredFields).filter(([, field]) => typeof field.default !== "undefined")) { -%>
+  <%- fieldName %>: <%- JSON5.stringify(field.default) %>,
+<% } -%>
+<% for (var [fieldName, field] of Object.entries(requiredFields).filter(([, field]) => field.initialize)) { -%>
+    <%- fieldName %>: initialize<%= Name %><%= h.changeCase.pascal(fieldName) %>(user),
 <% } -%>
     ...data,
   };
 }
 
 export function <%= name %>DataReducer(state: <%= Name %>Data, payload: Payload<<%= Name %>Data>) {
-  if (payload.field === "init") return initialize<%= Name %>Data(payload.value as Partial<%= Name %>Data);
+  if (payload.field === "init") return initialize<%= Name %>Data(payload.value as Partial<<%= Name %>Data>);
   return { ...state, [payload.field]: payload.value };
 }

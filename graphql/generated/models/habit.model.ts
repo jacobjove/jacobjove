@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/Habit";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { Int, ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { HabitFragment } from "@/graphql/generated/fragments/habit.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,25 +34,25 @@ export class Habit extends Model {
   //     delete: { deleteHabit: HabitFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  userId!: Types.ID;
+  userId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  name!: Types.String;
+  name!: string;
 
-  @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   @Property({ type: () => Boolean, required: false, default: false })
-  public?: Types.Boolean;
+  public?: boolean;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  chronString?: Types.String | null;
+  chronString?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.Int, { nullable: true })
+  @TypeGraphQL.Field(() => Int, { nullable: true })
   @Property({ required: false, default: null })
-  defaultDurationInMinutes?: Types.Number | null;
+  defaultDurationInMinutes?: number | null;
 }
 
 const HabitModel = getModelForClass<typeof Habit>(Habit);

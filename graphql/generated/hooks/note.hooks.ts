@@ -40,7 +40,8 @@ export const useUpdateNote = (options?: NoteUpdateMutationHookOptions) => {
 
 export const useNoteDataReducer = (data?: NoteData): [NoteData, Dispatch<Payload<NoteData>>] => {
   const user = useUser();
-  const initializedData = initializeNoteData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeNoteData(starterData, user);
   const [noteData, dispatchNoteData] = useReducer(
     noteDataReducer,
     initializedData,
@@ -48,8 +49,10 @@ export const useNoteDataReducer = (data?: NoteData): [NoteData, Dispatch<Payload
   );
   useEffect(() => {
     if (user?.id && !noteData?.userId) {
-      console.log("Dispatching note data!");
-      dispatchNoteData({ field: "userId", value: user.id });
+      dispatchNoteData({
+        field: "init",
+        value: initializeNoteData(noteData, user),
+      });
     }
   }, [user, noteData]);
   return [noteData, dispatchNoteData];

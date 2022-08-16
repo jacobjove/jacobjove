@@ -40,7 +40,8 @@ export const useUpdateList = (options?: ListUpdateMutationHookOptions) => {
 
 export const useListDataReducer = (data?: ListData): [ListData, Dispatch<Payload<ListData>>] => {
   const user = useUser();
-  const initializedData = initializeListData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeListData(starterData, user);
   const [listData, dispatchListData] = useReducer(
     listDataReducer,
     initializedData,
@@ -48,8 +49,10 @@ export const useListDataReducer = (data?: ListData): [ListData, Dispatch<Payload
   );
   useEffect(() => {
     if (user?.id && !listData?.userId) {
-      console.log("Dispatching list data!");
-      dispatchListData({ field: "userId", value: user.id });
+      dispatchListData({
+        field: "init",
+        value: initializeListData(listData, user),
+      });
     }
   }, [user, listData]);
   return [listData, dispatchListData];

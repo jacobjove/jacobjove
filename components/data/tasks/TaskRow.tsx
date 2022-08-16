@@ -5,7 +5,6 @@ import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
-import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -24,7 +23,7 @@ import { FC, RefObject, useMemo, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
 export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
-  subtasks: (Task | TaskData)[];
+  subtasks: Task[];
   asSubtask?: boolean;
   index: number;
   move?: (draggedTask: DraggedTask, hoveredTask: Task) => Partial<DraggedTask> | null;
@@ -32,9 +31,9 @@ export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collap
 }
 
 interface TaskRowContentProps {
-  task: Task | TaskData;
+  task: Task;
   asSubtask?: boolean;
-  subtasks: (Task | TaskData)[];
+  subtasks: Task[];
   collapsed?: boolean;
   dndRef: RefObject<HTMLTableRowElement>;
   isDragging: boolean;
@@ -315,7 +314,7 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       type: "task",
       item: {
         type: "task",
-        id: task.id,
+        id: task.id as ID, // TODO
         rank: task.rank,
         title: task.title,
         completedAt: task.completedAt,

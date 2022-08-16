@@ -30,11 +30,22 @@ export interface DashboardComponent extends LayoutItem {
 const definition: Definition = {
   name: "dashboard",
   fields: {
-    userId: { required: true, type: "ID", typeCast: "ObjectId" },
+    userId: { required: true, type: "ID" },
     name: REQUIRED_STRING,
     description: OPTIONAL_STRING,
-    layouts: { required: true, type: "Map", typeCast: "JSON" },
-    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // layouts: {
+    //   required: true,
+    //   type: "Map",
+    //   typeCast: "JSON",
+    //   shape: {
+    //     xxs: { type: "Array", required: false },
+    //     xs: { type: "Array", required: false },
+    //     sm: { type: "Array", required: false },
+    //     md: { type: "Array", required: false },
+    //     lg: { type: "Array", required: false },
+    //     xl: { type: "Array", required: false },
+    //   }
+    // },
     isDefault: OPTIONAL_BOOLEAN,
     public: OPTIONAL_BOOLEAN,
   },

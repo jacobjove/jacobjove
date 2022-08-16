@@ -2,11 +2,11 @@
 
 import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 import definition from "@/graphql/schema/definitions/CalendarEvent";
-import * as Scalars from "@/graphql/schema/scalars";
-import * as Types from "@/graphql/schema/types";
+import { DateTimeScalar, ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { getModelForClass, ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
+// import { CalendarEventFragment } from "@/graphql/generated/fragments/calendarEvent.fragment";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
@@ -34,53 +34,53 @@ export class CalendarEvent extends Model {
   //     delete: { deleteCalendarEvent: CalendarEventFragment };
   //   };
   // }
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  userId!: Types.ID;
+  userId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: false })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
-  calendarId!: Types.ID;
+  calendarId!: string;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  remoteId?: Types.String | null;
+  remoteId?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: true })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   @Property({ required: false, default: null })
-  scheduleId?: Types.ID | null;
+  scheduleId?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: true })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   @Property({ required: false, default: null })
-  habitId?: Types.ID | null;
+  habitId?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.ObjectId, { nullable: true })
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   @Property({ required: false, default: null })
-  taskId?: Types.ID | null;
+  taskId?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: false })
+  @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
-  title!: Types.String;
+  title!: string;
 
-  @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: false })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: false })
   @Property({ required: true })
-  start!: Types.DateTime;
+  start!: Date;
 
-  @TypeGraphQL.Field(() => Scalars.DateTime, { nullable: true })
+  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   @Property({ required: false, default: null })
-  end?: Types.DateTime | null;
+  end?: Date | null;
 
-  @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   @Property({ type: () => Boolean, required: false, default: false })
-  allDay?: Types.Boolean;
+  allDay?: boolean;
 
-  @TypeGraphQL.Field(() => Scalars.String, { nullable: true })
+  @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  notes?: Types.String | null;
+  notes?: string | null;
 
-  @TypeGraphQL.Field(() => Scalars.Boolean, { nullable: true })
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
   @Property({ type: () => Boolean, required: false, default: null })
-  canceled?: Types.Boolean | null;
+  canceled?: boolean | null;
 }
 
 const CalendarEventModel = getModelForClass<typeof CalendarEvent>(CalendarEvent);

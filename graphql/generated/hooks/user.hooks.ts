@@ -38,7 +38,8 @@ export const useUpdateUser = (options?: UserUpdateMutationHookOptions) => {
 };
 
 export const useUserDataReducer = (data?: UserData): [UserData, Dispatch<Payload<UserData>>] => {
-  const initializedData = initializeUserData(data ?? {});
+  const starterData = data ?? {};
+  const initializedData = initializeUserData(starterData);
   const [userData, dispatchUserData] = useReducer(
     userDataReducer,
     initializedData,

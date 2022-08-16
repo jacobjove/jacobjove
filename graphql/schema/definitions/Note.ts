@@ -3,12 +3,12 @@ import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/d
 const definition: Definition = {
   name: "note",
   fields: {
-    userId: { required: true, type: "ID", typeCast: "ObjectId" },
-    notebookId: { required: true, type: "ID", typeCast: "ObjectId" },
+    userId: { required: true, type: "ID" },
+    notebookId: { required: true, type: "ID" },
     title: REQUIRED_STRING,
     body: { ...OPTIONAL_STRING, default: '""' },
     public: { required: false, type: "Boolean" },
-    // archivedAt: { required: false, type: "DateTime", typeCast: "DateTime" },
+    // archivedAt: { required: false, type: "DateTime" },
   },
 };
 

@@ -21,13 +21,8 @@ import {
   initialize<%= Name %>Data,
 } from "@/graphql/generated/reducers/<%= name %>.reducer";
 <% useDefinition = Object.entries(fields).some(([, field]) => !!field.initialize); -%>
-<% useUser = Object.keys(fields).includes("userId") || Object.entries(fields).some(([, field]) => field.initializer); -%>
-<% if (useUser) { -%>
+<% useUser = Object.keys(fields).includes("userId") || Object.entries(fields).some(([, field]) => field.initialize); -%>
 import { useUser } from "@/components/contexts/UserContext";
-<% } -%>
-<% Object.entries(fields).filter(([, field]) => !!field.initialize).forEach(([fieldName,]) => { -%>
-import { initialize<%= Name %><%= h.inflection.titleize(fieldName) %> } from "@/graphql/schema/initializers";
-<% }); -%>
 
 type <%= Name %>CreationMutationHookOptions = MutationHookOptions<
   { create<%= Name %>: <%= Name %>Fragment },
@@ -60,7 +55,13 @@ export const use<%= Name %>DataReducer = (data?: <%= Name %>Data): [<%= Name %>D
 <% if (useUser) { -%>
   const user = useUser();
 <% } -%>
-  const initializedData = initialize<%= Name %>Data(data ?? <%- useUser ? "{ userId: user?.id as string }" : "{}" %>);
+  const starterData = data ?? {};
+  const initializedData = initialize<%= Name %>Data(
+    starterData,
+<% if (useUser) { -%>
+    user
+<% } -%>
+  );
   const [<%= name %>Data, dispatch<%= Name %>Data] = useReducer(
     <%= name %>DataReducer,
     initializedData,
@@ -69,11 +70,10 @@ export const use<%= Name %>DataReducer = (data?: <%= Name %>Data): [<%= Name %>D
 <% if (useUser) { -%>
   useEffect(() => {
     if (user?.id && !<%= name %>Data?.userId) {
-      console.log("Dispatching <%= name %> data!");
-      dispatch<%= Name %>Data({ field: "userId", value: user.id });
-<% Object.entries(fields).filter(([, field]) => !!field.initialize).forEach(([fieldName, field]) => { -%>
-      dispatch<%= Name %>Data({ field: "<%- fieldName %>", value: initialize<%= Name %><%= h.inflection.titleize(fieldName) %>(user) });
-<% }); -%>
+      dispatch<%= Name %>Data({
+        field: "init",
+        value: initialize<%= Name %>Data(<%= name %>Data, user),
+      });
     }
   }, [user, <%= name %>Data]);
 <% } -%>

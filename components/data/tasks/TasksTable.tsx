@@ -1,7 +1,6 @@
 import { useNewTaskDialog } from "@/components/contexts/NewTaskDialogContext";
 import TaskRow, { TaskRowProps } from "@/components/data/tasks/TaskRow";
 import { Task } from "@/graphql/generated/models/task.model";
-import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { Button } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,7 +13,7 @@ import { FC } from "react";
 const PREFERRED_FONT_SIZE = "0.8rem";
 
 export interface TasksTableProps {
-  tasks: (Task | TaskData)[];
+  tasks: Task[];
   appendable?: boolean;
   moveTaskRow: TaskRowProps["move"];
   updateTaskRank: TaskRowProps["onDrop"];

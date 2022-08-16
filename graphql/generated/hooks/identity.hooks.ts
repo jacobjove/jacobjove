@@ -48,7 +48,8 @@ export const useIdentityDataReducer = (
   data?: IdentityData
 ): [IdentityData, Dispatch<Payload<IdentityData>>] => {
   const user = useUser();
-  const initializedData = initializeIdentityData(data ?? { userId: user?.id as string });
+  const starterData = data ?? {};
+  const initializedData = initializeIdentityData(starterData, user);
   const [identityData, dispatchIdentityData] = useReducer(
     identityDataReducer,
     initializedData,
@@ -56,8 +57,10 @@ export const useIdentityDataReducer = (
   );
   useEffect(() => {
     if (user?.id && !identityData?.userId) {
-      console.log("Dispatching identity data!");
-      dispatchIdentityData({ field: "userId", value: user.id });
+      dispatchIdentityData({
+        field: "init",
+        value: initializeIdentityData(identityData, user),
+      });
     }
   }, [user, identityData]);
   return [identityData, dispatchIdentityData];
