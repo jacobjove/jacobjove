@@ -26,7 +26,6 @@ type CalendarEventDialogProps = ReturnType<typeof bindPopover> & {
 };
 
 const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventDialogProps) => {
-  console.log("Rendering CalendarEventDialog");
   const { onClose, data, anchorEl: _anchorEl, mutation, ...dialogProps } = props;
   const calendarEventDataTuple = useCalendarEventDataReducer(data ?? { start: new Date() });
   const [calendarEventData] = calendarEventDataTuple;
@@ -68,6 +67,7 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
     }
     onClose();
   };
+  console.log("Rendering CalendarEventDialog!");
   return (
     <Dialog
       fullWidth

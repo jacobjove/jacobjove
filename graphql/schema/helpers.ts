@@ -16,6 +16,6 @@ export function convertFilterForMongo<T extends WhereUniqueInput>(
     })
   );
   if (modifiedFilter.id) modifiedFilter = { _id: modifiedFilter.id };
-  console.log("Modified filter:", modifiedFilter);
+  // console.log("Modified filter:", modifiedFilter);
   return modifiedFilter as ModifiedFilter<T>;
 }

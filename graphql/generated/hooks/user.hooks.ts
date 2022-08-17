@@ -12,7 +12,10 @@ import {
   UserData,
   userDataReducer,
 } from "@/graphql/generated/reducers/user.reducer";
-import { userCreationInputSchema } from "@/graphql/generated/schemas/user.schemas";
+import {
+  userCreationInputSchema,
+  userUpdateInputSchema,
+} from "@/graphql/generated/schemas/user.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useReducer } from "react";
@@ -26,7 +29,7 @@ export const useCreateUser = (options?: UserCreationMutationHookOptions) => {
   return useHandleMutation<{ createUser: UserFragment }, UserCreationArgs>(
     CREATE_USER,
     { ...updateCacheAfterCreatingUser, ...(options ?? {}) },
-    userCreationInputSchema.validate
+    userCreationInputSchema
   );
 };
 
@@ -36,7 +39,11 @@ type UserUpdateMutationHookOptions = MutationHookOptions<
 >;
 
 export const useUpdateUser = (options?: UserUpdateMutationHookOptions) => {
-  return useHandleMutation<{ updateUser: UserFragment }, UserUpdateArgs>(UPDATE_USER, options);
+  return useHandleMutation<{ updateUser: UserFragment }, UserUpdateArgs>(
+    UPDATE_USER,
+    options,
+    userUpdateInputSchema
+  );
 };
 
 export const useUserDataReducer = (data?: UserData): [UserData, Dispatch<Payload<UserData>>] => {

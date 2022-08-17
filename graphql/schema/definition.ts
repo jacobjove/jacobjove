@@ -1,7 +1,13 @@
 import * as Models from "@/graphql/generated/models";
-import { DocumentType, pre } from "@typegoose/typegoose";
+// import { Model } from "@/graphql/schema/types";
+import { DocumentType } from "@typegoose/typegoose";
 import { camelize } from "inflection";
+import JSON5 from "json5";
 import { Model } from "./types";
+
+declare type ReturnVoid = void | Promise<void>;
+declare type HookNextErrorFn = (err?: Error) => ReturnVoid;
+type PreFnWithDocumentType<T> = (this: DocumentType<T>, next: HookNextErrorFn) => ReturnVoid;
 
 export type FieldType =
   | "Array"
@@ -13,23 +19,25 @@ export type FieldType =
   | "Number"
   | "String";
 
+type Mutation = "create" | "update";
+
 export const TYPE_MAP: Record<
   FieldType,
   {
-    type: string | ((arg: string) => string);
-    caster: string | ((arg: string) => string);
-    yup: string | ((arg: string) => string);
+    type: string | ((arg: string, mutation?: Mutation) => string);
+    caster: string | ((arg: string, mutation?: Mutation) => string);
+    yup: string | ((arg: string, mutation: Mutation) => string);
   }
 > = {
   Array: {
     type: (arg) => `${arg in TYPE_MAP ? TYPE_MAP[arg as keyof typeof TYPE_MAP].type : arg}[]`,
     caster: (arg) => `[${arg in TYPE_MAP ? TYPE_MAP[arg as keyof typeof TYPE_MAP].caster : arg}]`,
-    yup: (arg) =>
+    yup: (arg, mutation) =>
       `array().of(${
         arg in TYPE_MAP
           ? TYPE_MAP[arg as keyof typeof TYPE_MAP].yup
           : camelize(arg, true) + "CreationInputSchema"
-      }.required())`,
+      }${mutation === "create" ? ".required()" : ""})`,
   },
   Boolean: {
     type: "boolean",
@@ -82,17 +90,42 @@ export function getConstructor(field: Field): string {
   return field.type;
 }
 
-export function getYup(field: Field): string {
-  const fieldYup = TYPE_MAP[field.type].yup;
-  if (typeof fieldYup === "function") {
-    if (field.typeArg) return fieldYup(field.typeArg);
-    throw new Error(`Yup schema for ${field.type} requires typeArg`);
+export function getYup(field: Field, mutation: Mutation = "create"): string {
+  // <%- (field.required ? ".required()" : (typeof field.default !== "undefined") ? "" : field.type === "Boolean" ? ".notRequired()" : ".nullable()" %><%- typeof field.default !== "undefined" ? `.default(() => { return ${typeof field.default === "string" ? field.default : JSON5.stringify(field.default)}; })` : ""%>,
+  let ret = "";
+  if (field.type === "Map" && field.shape) {
+    ret = `${field.name}Schema`;
+  } else {
+    let fieldYupType = TYPE_MAP[field.type].yup;
+    if (typeof fieldYupType === "function") {
+      if (field.typeArg) {
+        fieldYupType = fieldYupType(field.typeArg, mutation);
+      }
+    }
+    ret = `${fieldYupType}`;
   }
-  if (typeof fieldYup == "string") return fieldYup;
-  return field.type;
+  if (field.required) {
+    if (mutation === "update") {
+      ret += ".notRequired()";
+    } else if (field.type !== "Map") {
+      ret += ".required()";
+    }
+  } else {
+    if (!(field.type === "Boolean" && typeof field.default !== "undefined")) {
+      ret += ".nullable()";
+    }
+    ret += ".notRequired()";
+  }
+  if (typeof field.default !== "undefined" && mutation === "create") {
+    ret += `.default(() => { return ${
+      typeof field.default === "string" ? field.default : JSON5.stringify(field.default)
+    }; })`;
+  }
+  return ret;
 }
 
 export type Field = {
+  name?: string;
   label?: string;
   required: boolean;
   unique?: boolean;
@@ -125,14 +158,14 @@ export type Field = {
     initialize?: boolean;
   };
 
-export default interface Definition {
+export default interface Definition<T extends string = string> {
   name: string;
   modelImports?: string[];
-  fields: Record<string, Field>;
+  fields: Record<T, Field>;
   hooks?: {
     save: {
-      pre?: Parameters<typeof pre>[1];
-      post?: (instance: DocumentType<Model>) => void;
+      pre?: PreFnWithDocumentType<Partial<Model> & { [key in T]?: unknown }>;
+      post?: (instance: DocumentType<Partial<Model> & { [key in T]?: unknown }>) => void;
     };
   };
 }

@@ -48,7 +48,7 @@ export type DraggedTask = { type: "task" } & Pick<Task, "id" | "rank" | "title" 
   };
 
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
-  const user = useUser();
+  const { user } = useUser();
   const { task, asSubtask, subtasks, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
   const [completed, setCompleted] = useState(!!task.completedAt);
   const collapsed = _collapsed ?? false;

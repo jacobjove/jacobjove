@@ -23,7 +23,7 @@ import {
 <% useDefinition = Object.entries(fields).some(([, field]) => !!field.initialize); -%>
 <% useUser = Object.keys(fields).includes("userId") || Object.entries(fields).some(([, field]) => field.initialize); -%>
 import { useUser } from "@/components/contexts/UserContext";
-import { <%= name %>CreationInputSchema } from "@/graphql/generated/schemas/<%= name %>.schemas";
+import { <%= name %>CreationInputSchema, <%= name %>UpdateInputSchema } from "@/graphql/generated/schemas/<%= name %>.schemas";
 
 type <%= Name %>CreationMutationHookOptions = MutationHookOptions<
   { create<%= Name %>: <%= Name %>Fragment },
@@ -37,7 +37,7 @@ export const useCreate<%= Name %> = (options?: <%= Name %>CreationMutationHookOp
   >(
     CREATE_<%= NAME %>,
     { ...updateCacheAfterCreating<%= Name %>, ...(options ?? {}) },
-    <%= name %>CreationInputSchema.validate
+    <%= name %>CreationInputSchema,
   );
 }
 
@@ -50,12 +50,16 @@ export const useUpdate<%= Name %> = (options?: <%= Name %>UpdateMutationHookOpti
   return useHandleMutation<
     { update<%= Name %>: <%= Name %>Fragment },
     <%= Name %>UpdateArgs
-  >(UPDATE_<%= NAME %>, options);
+  >(
+    UPDATE_<%= NAME %>, 
+    options,
+    <%= name %>UpdateInputSchema,
+  );
 }
 
 export const use<%= Name %>DataReducer = (data?: <%= Name %>Data): [<%= Name %>Data, Dispatch<Payload<<%= Name %>Data>>] => {
 <% if (useUser) { -%>
-  const user = useUser();
+  const { user } = useUser();
 <% } -%>
   const starterData = data ?? {};
   const initializedData = initialize<%= Name %>Data(

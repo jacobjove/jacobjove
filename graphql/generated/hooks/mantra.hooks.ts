@@ -13,7 +13,10 @@ import {
   MantraData,
   mantraDataReducer,
 } from "@/graphql/generated/reducers/mantra.reducer";
-import { mantraCreationInputSchema } from "@/graphql/generated/schemas/mantra.schemas";
+import {
+  mantraCreationInputSchema,
+  mantraUpdateInputSchema,
+} from "@/graphql/generated/schemas/mantra.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -27,7 +30,7 @@ export const useCreateMantra = (options?: MantraCreationMutationHookOptions) => 
   return useHandleMutation<{ createMantra: MantraFragment }, MantraCreationArgs>(
     CREATE_MANTRA,
     { ...updateCacheAfterCreatingMantra, ...(options ?? {}) },
-    mantraCreationInputSchema.validate
+    mantraCreationInputSchema
   );
 };
 
@@ -39,14 +42,15 @@ type MantraUpdateMutationHookOptions = MutationHookOptions<
 export const useUpdateMantra = (options?: MantraUpdateMutationHookOptions) => {
   return useHandleMutation<{ updateMantra: MantraFragment }, MantraUpdateArgs>(
     UPDATE_MANTRA,
-    options
+    options,
+    mantraUpdateInputSchema
   );
 };
 
 export const useMantraDataReducer = (
   data?: MantraData
 ): [MantraData, Dispatch<Payload<MantraData>>] => {
-  const user = useUser();
+  const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeMantraData(starterData, user);
   const [mantraData, dispatchMantraData] = useReducer(

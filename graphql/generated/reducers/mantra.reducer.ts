@@ -17,7 +17,7 @@ export function initializeMantraData(
   return {
     userId: user.id,
     content: "",
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

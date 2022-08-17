@@ -40,7 +40,7 @@ export function initialize<%= Name %>Data(data: Partial<<%= Name %>Data>, user?:
 <% for (var [fieldName, field] of Object.entries(requiredFields).filter(([, field]) => field.initialize)) { -%>
     <%- fieldName %>: initialize<%= Name %><%= h.changeCase.pascal(fieldName) %>(user),
 <% } -%>
-    ...data,
+    ...(Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined))), // TODO: make this unnecessary
   };
 }
 

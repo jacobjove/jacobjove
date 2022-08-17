@@ -17,7 +17,7 @@ export function initializeUserData(
     email: "",
     isAdmin: false,
     settings: {},
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

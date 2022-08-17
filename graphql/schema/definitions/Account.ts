@@ -1,19 +1,40 @@
-import Definition, { Field, OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
+import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 
-export const accountFields: Record<string, Field> = {
-  userId: { required: true, type: "ID" },
-  provider: REQUIRED_STRING,
-  remoteId: { required: true, unique: true, type: "String" },
-  scopes: { required: true, type: "Array", typeArg: "String" },
-  accessToken: OPTIONAL_STRING,
-  refreshToken: OPTIONAL_STRING,
-  accessTokenExpiry: { required: false, type: "DateTime" },
-  syncToken: OPTIONAL_STRING,
-};
+const accountFields = [
+  "userId",
+  "provider",
+  "remoteId",
+  "scopes",
+  "accessToken",
+  "refreshToken",
+  "accessTokenExpiry",
+  "syncToken",
+] as const;
+type AccountFields = typeof accountFields[number];
 
-const accountDefinition: Definition = {
+// export const accountFields: Record<AccountFieldNames, Field> = {
+//   userId: { required: true, type: "ID" },
+//   provider: REQUIRED_STRING,
+//   remoteId: { required: true, unique: true, type: "String" },
+//   scopes: { required: true, type: "Array", typeArg: "String" },
+//   accessToken: OPTIONAL_STRING,
+//   refreshToken: OPTIONAL_STRING,
+//   accessTokenExpiry: { required: false, type: "DateTime" },
+//   syncToken: OPTIONAL_STRING,
+// };
+
+const accountDefinition: Definition<AccountFields> = {
   name: "account",
-  fields: accountFields,
+  fields: {
+    userId: { required: true, type: "ID" },
+    provider: REQUIRED_STRING,
+    remoteId: { required: true, unique: true, type: "String" },
+    scopes: { required: true, type: "Array", typeArg: "String" },
+    accessToken: OPTIONAL_STRING,
+    refreshToken: OPTIONAL_STRING,
+    accessTokenExpiry: { required: false, type: "DateTime" },
+    syncToken: OPTIONAL_STRING,
+  },
 };
 
 export default accountDefinition;

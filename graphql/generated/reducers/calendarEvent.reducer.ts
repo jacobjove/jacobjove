@@ -19,7 +19,7 @@ export function initializeCalendarEventData(
     userId: user.id,
     title: "",
     calendarId: initializeCalendarEventCalendarId(user),
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

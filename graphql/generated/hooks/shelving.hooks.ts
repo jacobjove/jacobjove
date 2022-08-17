@@ -12,7 +12,10 @@ import {
   ShelvingData,
   shelvingDataReducer,
 } from "@/graphql/generated/reducers/shelving.reducer";
-import { shelvingCreationInputSchema } from "@/graphql/generated/schemas/shelving.schemas";
+import {
+  shelvingCreationInputSchema,
+  shelvingUpdateInputSchema,
+} from "@/graphql/generated/schemas/shelving.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useReducer } from "react";
@@ -26,7 +29,7 @@ export const useCreateShelving = (options?: ShelvingCreationMutationHookOptions)
   return useHandleMutation<{ createShelving: ShelvingFragment }, ShelvingCreationArgs>(
     CREATE_SHELVING,
     { ...updateCacheAfterCreatingShelving, ...(options ?? {}) },
-    shelvingCreationInputSchema.validate
+    shelvingCreationInputSchema
   );
 };
 
@@ -38,7 +41,8 @@ type ShelvingUpdateMutationHookOptions = MutationHookOptions<
 export const useUpdateShelving = (options?: ShelvingUpdateMutationHookOptions) => {
   return useHandleMutation<{ updateShelving: ShelvingFragment }, ShelvingUpdateArgs>(
     UPDATE_SHELVING,
-    options
+    options,
+    shelvingUpdateInputSchema
   );
 };
 

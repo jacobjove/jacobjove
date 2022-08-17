@@ -77,7 +77,7 @@ export default function NotesMenu({
   handleCreateNote,
 }: NotesMenuProps) {
   const [selectedNoteIds, setSelectedNoteIds] = selectedNoteIdsState;
-  const user = useUser();
+  const { user } = useUser();
   const { notes, notebooks: allNotebooks } = data;
 
   const [notebooks, _archivedNotebooks] = partition(allNotebooks, (notebook) => {

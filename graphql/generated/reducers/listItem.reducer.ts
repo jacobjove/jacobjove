@@ -16,7 +16,7 @@ export function initializeListItemData(
   if (!user) return data;
   return {
     userId: user.id,
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

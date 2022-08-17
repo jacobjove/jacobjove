@@ -1,6 +1,19 @@
 import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 
-const definition: Definition = {
+const bookFields = [
+  "isbn",
+  "isbn13",
+  "title",
+  "slug",
+  "description",
+  "authorNames",
+  "authorNamesLf",
+  "publicationYear",
+  "originalPublicationYear",
+] as const;
+type BookFields = typeof bookFields[number];
+
+const definition: Definition<BookFields> = {
   name: "book",
   fields: {
     isbn: { label: "ISBN", ...OPTIONAL_STRING },

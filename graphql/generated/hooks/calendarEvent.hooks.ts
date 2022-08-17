@@ -16,7 +16,10 @@ import {
   calendarEventDataReducer,
   initializeCalendarEventData,
 } from "@/graphql/generated/reducers/calendarEvent.reducer";
-import { calendarEventCreationInputSchema } from "@/graphql/generated/schemas/calendarEvent.schemas";
+import {
+  calendarEventCreationInputSchema,
+  calendarEventUpdateInputSchema,
+} from "@/graphql/generated/schemas/calendarEvent.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -33,7 +36,7 @@ export const useCreateCalendarEvent = (options?: CalendarEventCreationMutationHo
   >(
     CREATE_CALENDAR_EVENT,
     { ...updateCacheAfterCreatingCalendarEvent, ...(options ?? {}) },
-    calendarEventCreationInputSchema.validate
+    calendarEventCreationInputSchema
   );
 };
 
@@ -45,14 +48,15 @@ type CalendarEventUpdateMutationHookOptions = MutationHookOptions<
 export const useUpdateCalendarEvent = (options?: CalendarEventUpdateMutationHookOptions) => {
   return useHandleMutation<{ updateCalendarEvent: CalendarEventFragment }, CalendarEventUpdateArgs>(
     UPDATE_CALENDAR_EVENT,
-    options
+    options,
+    calendarEventUpdateInputSchema
   );
 };
 
 export const useCalendarEventDataReducer = (
   data?: CalendarEventData
 ): [CalendarEventData, Dispatch<Payload<CalendarEventData>>] => {
-  const user = useUser();
+  const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeCalendarEventData(starterData, user);
   const [calendarEventData, dispatchCalendarEventData] = useReducer(

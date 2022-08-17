@@ -25,7 +25,7 @@ export type Settings = {
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 @pre<User>(
   "save",
-  (definition?.hooks?.save?.pre as any) ??
+  definition?.hooks?.save?.pre ??
     async function (next) {
       return next();
     }

@@ -6,7 +6,7 @@ force: true
 <% var filteredFields = Object.fromEntries(Object.entries(selectableFields)); -%>
 
 import { object, string, number, date, bool, array, InferType, SchemaOf } from 'yup';
-import { <%= Name %>CreationInput } from '@/graphql/generated/inputs/<%= name %>.inputs';
+import { <%= Name %>CreationInput, <%= Name %>UpdateInput } from '@/graphql/generated/inputs/<%= name %>.inputs';
 <% for (var modelImport of modelImports) { -%>
 import { <%= h.changeCase.camel(modelImport) %>CreationInputSchema } from "@/graphql/generated/schemas/<%= h.changeCase.camel(modelImport) %>.schemas";
 <% } -%>
@@ -14,16 +14,24 @@ import { <%= h.changeCase.camel(modelImport) %>CreationInputSchema } from "@/gra
 <% for (var [fieldName, field] of Object.entries(filteredFields).filter(([, field]) => field.shape)) { -%>
 export const <%- fieldName %>Schema = object({
 <% for (var [propertyName, property] of Object.entries(field.shape)) { -%>
-  <%- propertyName %>: <%- getYup(property) %><%- (property.type === "Map" && property.required) ? "" : property.required ? ".required()" : (typeof property.default !== "undefined") ? "" : ".nullable()" %><%- typeof property.default !== "undefined" ? `.default(() => { return ${typeof property.default === "string" ? property.default : JSON5.stringify(property.default)}; })` : ""%>,
+  <%- propertyName %>: <%- getYup(property) %>,
 <% } -%>
 });
 <% } -%>
 
 export const <%= name %>CreationInputSchema: SchemaOf<<%= Name %>CreationInput> = object({
 <% for (var [fieldName, field] of Object.entries(filteredFields)) { -%>
-  <%- fieldName %>: <%- field.shape ? `${fieldName}Schema` : getYup(field) %><%- (field.type === "Map" && field.required) ? "" : field.required ? ".required()" : (typeof field.default !== "undefined") ? "" : ".nullable()" %><%- typeof field.default !== "undefined" ? `.default(() => { return ${typeof field.default === "string" ? field.default : JSON5.stringify(field.default)}; })` : ""%>,
+  <%- fieldName %>: <%- getYup(field) %>,
 <% } -%>
-  archivedAt: date().nullable(),
+  archivedAt: date().nullable().notRequired(),
+});
+
+export const <%= name %>UpdateInputSchema: SchemaOf<<%= Name %>UpdateInput> = object({
+<% for (var [fieldName, field] of Object.entries(filteredFields)) { -%>
+  <%- fieldName %>: <%- getYup(field, "update") %>,
+<% } -%>
+  archivedAt: date().nullable().notRequired(),
 });
 
 export type <%= Name %>CreationInputSchemaType = InferType<typeof <%= name %>CreationInputSchema>;
+  export type <%= Name %>UpdateInputSchemaType = InferType<typeof <%= name %>UpdateInputSchema>;

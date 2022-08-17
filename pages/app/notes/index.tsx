@@ -36,7 +36,7 @@ interface NotesPageData {
 }
 
 const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
-  const user = useUser();
+  const { user } = useUser();
   const { isMobile } = useContext(DeviceContext);
   // const notebooks = user?.notebooks;
   const { data, loading: loadingNotes, error } = useQuery<NotesPageData>(QUERY);

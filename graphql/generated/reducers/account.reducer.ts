@@ -19,7 +19,7 @@ export function initializeAccountData(
     provider: "",
     remoteId: "",
     scopes: [],
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

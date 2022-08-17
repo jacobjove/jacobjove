@@ -66,9 +66,6 @@ COPY --from=builder /app/.next /app/.next
 # Copy prisma schema and migrations from the builder stage.
 # COPY --from=builder /app/prisma /app/
 
-# Install firebase tools.
-RUN npm i -g firebase-tools
-
 # Install required dependencies, and if in dev mode, make the build directory writable.
 COPY package*.json /app/
 RUN if [ "$NODE_ENV" = "development" ]; \

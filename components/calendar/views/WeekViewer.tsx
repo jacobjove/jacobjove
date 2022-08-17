@@ -102,7 +102,7 @@ WeekViewerProps) => {
   const date = useContext(DateContext);
   const [viewedHour, _] = viewedHourState;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
-  const user = useUser();
+  const { user } = useUser();
 
   const { newCalendarEventDialogState, newCalendarEventDataTuple } = useNewCalendarEventDialog();
   const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple;

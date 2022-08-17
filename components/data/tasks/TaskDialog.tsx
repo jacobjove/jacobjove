@@ -8,7 +8,7 @@ import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
-import { Payload } from "@/utils/data";
+import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -66,27 +66,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     onClose();
   };
 
-  const handleUpdateField = (
-    field: "init" | keyof TaskData,
-    value: TaskData | TaskData[keyof TaskData]
-  ) => {
-    dispatchData({ field, value } as Payload<TaskData>);
-    if (canUpdate) {
-      const data = { [field]: value };
-      const optimisticResponse = getOptimisticResponseForTaskUpdate(data as TaskFragment, data);
-      // TODO
-      data &&
-        updateTask.current &&
-        updateTask.current({
-          variables: {
-            where: { id: data.id as ID },
-            data,
-          },
-          optimisticResponse,
-        });
-    }
-  };
-
   const menuTriggerProps = bindTrigger(menuState);
   const menuProps = bindMenu(menuState);
 
@@ -101,7 +80,24 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   // const metricUsages = habit?.metricUsages;
   // const metricUsages = null; // TODO
 
+  const saveChanges = () => {
+    if (data) {
+      const optimisticResponse = getOptimisticResponseForTaskUpdate(data as TaskFragment, data);
+      // TODO
+      updateTask.current &&
+        updateTask.current({
+          variables: {
+            where: { id: data.id as ID },
+            data,
+          },
+          optimisticResponse,
+        });
+    }
+    setEditing(false);
+  };
+
   const saveAndExit = () => {
+    saveChanges();
     handleClose();
   };
 
@@ -188,7 +184,8 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             onKeyUp={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
-                saveAndExit();
+                if (editing) return saveChanges();
+                return saveAndExit();
               }
             }}
             onBlur={(event) => {
@@ -200,7 +197,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 sx={{ alignSelf: "start", alignItems: "start", minWidth: LEFT_SIDE_WIDTH }}
                 checked={completed}
                 disabled={!canUpdate}
-                onClick={() => handleUpdateField("completedAt", new Date())}
+                onClick={() => {
+                  dispatchData({ field: "completedAt", value: new Date() });
+                }}
               />
               <Box sx={{ "& *": { fontSize: "1.6rem", fontWeight: "400" } }}>
                 {editing ? (
@@ -211,7 +210,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     variant="standard"
                     value={data.title}
                     placeholder={"Task title"}
-                    onChange={(event) => handleUpdateField("title", event.target.value)}
+                    onChange={(event) =>
+                      dispatchData({ field: "title", value: event.target.value })
+                    }
                   />
                 ) : (
                   <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
@@ -230,7 +231,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   // variant="standard"
                   value={data.description ?? ""}
                   placeholder="Task description"
-                  onChange={(event) => handleUpdateField("description", event.target.value)}
+                  onChange={(event) =>
+                    dispatchData({ field: "description", value: event.target.value })
+                  }
                 />
               ) : (
                 <DialogContentText
@@ -264,7 +267,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 {subtasks?.length ? (
                   <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
                 ) : (
-                  <Button>{`Add subtasks.`}</Button>
+                  <Button sx={{ pr: 2 }}>
+                    <AddIcon sx={{ mr: 1 }} /> {"Add subtask"}
+                  </Button>
                 )}
               </Box>
               <Box my={2}>

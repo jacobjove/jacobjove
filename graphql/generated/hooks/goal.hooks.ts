@@ -12,7 +12,10 @@ import {
   goalDataReducer,
   initializeGoalData,
 } from "@/graphql/generated/reducers/goal.reducer";
-import { goalCreationInputSchema } from "@/graphql/generated/schemas/goal.schemas";
+import {
+  goalCreationInputSchema,
+  goalUpdateInputSchema,
+} from "@/graphql/generated/schemas/goal.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useReducer } from "react";
@@ -26,7 +29,7 @@ export const useCreateGoal = (options?: GoalCreationMutationHookOptions) => {
   return useHandleMutation<{ createGoal: GoalFragment }, GoalCreationArgs>(
     CREATE_GOAL,
     { ...updateCacheAfterCreatingGoal, ...(options ?? {}) },
-    goalCreationInputSchema.validate
+    goalCreationInputSchema
   );
 };
 
@@ -36,7 +39,11 @@ type GoalUpdateMutationHookOptions = MutationHookOptions<
 >;
 
 export const useUpdateGoal = (options?: GoalUpdateMutationHookOptions) => {
-  return useHandleMutation<{ updateGoal: GoalFragment }, GoalUpdateArgs>(UPDATE_GOAL, options);
+  return useHandleMutation<{ updateGoal: GoalFragment }, GoalUpdateArgs>(
+    UPDATE_GOAL,
+    options,
+    goalUpdateInputSchema
+  );
 };
 
 export const useGoalDataReducer = (data?: GoalData): [GoalData, Dispatch<Payload<GoalData>>] => {

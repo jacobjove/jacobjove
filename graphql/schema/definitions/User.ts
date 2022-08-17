@@ -10,7 +10,28 @@ import bcrypt from "bcryptjs";
 
 const COST_FACTOR = 12;
 
-const definition: Definition = {
+const userFields = [
+  "name",
+  "email",
+  "emailVerified",
+  "image",
+  "isAdmin",
+  "password",
+  "settings",
+  "lastLogin",
+  "accounts",
+  "calendars",
+  "notebooks",
+  "habits",
+  "calendarEvents",
+  "goals",
+  "mantras",
+  "tasks",
+] as const;
+
+type UserFields = typeof userFields[number];
+
+const definition: Definition<UserFields> = {
   name: "user",
   modelImports: [
     "Account",

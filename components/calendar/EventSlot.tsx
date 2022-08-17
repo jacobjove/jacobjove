@@ -42,7 +42,7 @@ const Root = styled("div")(({ theme }) => ({
 
 const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const { date, view: _view, onClick, past } = props;
-  const user = useUser();
+  const { user } = useUser();
   const [hovered, setHovered] = useState(false);
   const [updateCalendarEvent, { loading: loadingUpdateCalendarEvent }] = useUpdateCalendarEvent();
   const [createCalendarEvent, { loading: loadingCreateCalendarEvent }] = useCreateCalendarEvent();
@@ -121,6 +121,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   if (past) {
     classNames.push("past");
   }
+  // console.log("Rendering EventSlot", date);
   return (
     <Root
       ref={dropRef}

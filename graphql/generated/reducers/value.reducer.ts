@@ -17,7 +17,7 @@ export function initializeValueData(
   return {
     userId: user.id,
     name: "",
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

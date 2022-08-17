@@ -1,4 +1,3 @@
-import { Timestamp } from "firebase/firestore";
 import { GraphQLScalarType, Kind } from "graphql";
 import { ObjectId } from "mongodb";
 export { JSONResolver } from "graphql-scalars";
@@ -27,27 +26,16 @@ export const ObjectIdScalar = new GraphQLScalarType({
   },
 });
 
-interface TimestampConstructor {
-  seconds: number;
-  nanoseconds: number;
-}
-
 export const DateTimeScalar = new GraphQLScalarType({
   name: "DateTimeISO",
   description:
     "The javascript `Date` as string. Type represents date and time as the ISO Date string.",
-  serialize: (value: unknown): string => {
+  serialize: (value): string => {
     // Return an ISO string.
     try {
       if (value instanceof Date) return value.toISOString();
       if (typeof value === "string") return new Date(value).toISOString();
-      const timestamp = Object.prototype.hasOwnProperty.call(value, "toDate")
-        ? (value as Timestamp)
-        : new Timestamp(
-            (value as TimestampConstructor).seconds,
-            (value as TimestampConstructor).nanoseconds
-          );
-      return timestamp.toDate().toISOString();
+      throw new Error(`Invalid type: ${typeof value}`);
     } catch (err) {
       throw new Error(
         `Failed to serialize time value: ${JSON.stringify(value)} (${typeof value}); ${err}`

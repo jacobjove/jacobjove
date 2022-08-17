@@ -14,7 +14,7 @@ export function initializeShelvingData(
   user?: UserFragment | null | undefined
 ): Partial<ShelvingData> {
   return {
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

@@ -18,7 +18,7 @@ import { bindPopover } from "material-ui-popup-state/hooks";
 export type TaskCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function TaskCreationDialog(props: TaskCreationDialogProps) {
-  const user = useUser();
+  const { user } = useUser();
   const [create] = useCreateTask();
   const dataTuple = useTaskDataReducer();
   const [data, dispatchData] = dataTuple;
@@ -41,6 +41,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
     }
     props.onClose();
   };
+  console.log("Rendering TaskCreationDialog");
   return CreationDialog<Task, TaskCreationInput, { createTask: TaskFragment }>({
     typeName: "task",
     dataTuple,

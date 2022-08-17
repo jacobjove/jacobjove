@@ -15,7 +15,7 @@ export function initializeGoalData(
 ): Partial<GoalData> {
   return {
     description: "",
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

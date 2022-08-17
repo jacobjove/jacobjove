@@ -17,7 +17,7 @@ export function initializeNotebookData(
   return {
     userId: user.id,
     title: "",
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

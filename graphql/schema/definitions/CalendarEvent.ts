@@ -4,7 +4,24 @@ import Definition, {
   REQUIRED_STRING,
 } from "@/graphql/schema/definition";
 
-const definition: Definition = {
+const calendarEventFields = [
+  "userId",
+  "calendarId",
+  "remoteId",
+  "scheduleId",
+  "habitId",
+  "taskId",
+  "title",
+  "start",
+  "end",
+  "allDay",
+  "notes",
+  "canceled",
+] as const;
+
+type CalendarEventFields = typeof calendarEventFields[number];
+
+const definition: Definition<CalendarEventFields> = {
   name: "calendarEvent",
   fields: {
     userId: { required: true, type: "ID" },
@@ -19,7 +36,6 @@ const definition: Definition = {
     allDay: { ...OPTIONAL_BOOLEAN, default: false },
     notes: OPTIONAL_STRING,
     canceled: { required: false, type: "Boolean" },
-    // archivedAt: { required: false, type: "DateTime" },
   },
 };
 

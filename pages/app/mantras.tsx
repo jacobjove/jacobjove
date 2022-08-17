@@ -24,7 +24,7 @@ interface MantrasPageProps {
 
 const MantrasPage: NextPage<MantrasPageProps> = (_props: MantrasPageProps) => {
   const { data: session } = useSession();
-  const user = useUser();
+  const { user } = useUser();
   if (!session || !user) return null;
   const mantras = user.mantras ?? [];
   return (

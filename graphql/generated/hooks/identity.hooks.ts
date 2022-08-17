@@ -13,7 +13,10 @@ import {
   identityDataReducer,
   initializeIdentityData,
 } from "@/graphql/generated/reducers/identity.reducer";
-import { identityCreationInputSchema } from "@/graphql/generated/schemas/identity.schemas";
+import {
+  identityCreationInputSchema,
+  identityUpdateInputSchema,
+} from "@/graphql/generated/schemas/identity.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -27,7 +30,7 @@ export const useCreateIdentity = (options?: IdentityCreationMutationHookOptions)
   return useHandleMutation<{ createIdentity: IdentityFragment }, IdentityCreationArgs>(
     CREATE_IDENTITY,
     { ...updateCacheAfterCreatingIdentity, ...(options ?? {}) },
-    identityCreationInputSchema.validate
+    identityCreationInputSchema
   );
 };
 
@@ -39,14 +42,15 @@ type IdentityUpdateMutationHookOptions = MutationHookOptions<
 export const useUpdateIdentity = (options?: IdentityUpdateMutationHookOptions) => {
   return useHandleMutation<{ updateIdentity: IdentityFragment }, IdentityUpdateArgs>(
     UPDATE_IDENTITY,
-    options
+    options,
+    identityUpdateInputSchema
   );
 };
 
 export const useIdentityDataReducer = (
   data?: IdentityData
 ): [IdentityData, Dispatch<Payload<IdentityData>>] => {
-  const user = useUser();
+  const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeIdentityData(starterData, user);
   const [identityData, dispatchIdentityData] = useReducer(

@@ -13,7 +13,7 @@ module.exports = {
       ...definition,
       fields: Object.fromEntries(
         Object.entries(definition.fields).map(([key, value]) => {
-          return [key, { ...value }];
+          return [key, { name: key, ...value }];
         })
       ),
     };

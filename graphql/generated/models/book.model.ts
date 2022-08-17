@@ -12,7 +12,7 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 @pre<Book>(
   "save",
-  (definition?.hooks?.save?.pre as any) ??
+  definition?.hooks?.save?.pre ??
     async function (next) {
       return next();
     }

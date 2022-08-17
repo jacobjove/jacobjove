@@ -13,7 +13,10 @@ import {
   ListData,
   listDataReducer,
 } from "@/graphql/generated/reducers/list.reducer";
-import { listCreationInputSchema } from "@/graphql/generated/schemas/list.schemas";
+import {
+  listCreationInputSchema,
+  listUpdateInputSchema,
+} from "@/graphql/generated/schemas/list.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -27,7 +30,7 @@ export const useCreateList = (options?: ListCreationMutationHookOptions) => {
   return useHandleMutation<{ createList: ListFragment }, ListCreationArgs>(
     CREATE_LIST,
     { ...updateCacheAfterCreatingList, ...(options ?? {}) },
-    listCreationInputSchema.validate
+    listCreationInputSchema
   );
 };
 
@@ -37,11 +40,15 @@ type ListUpdateMutationHookOptions = MutationHookOptions<
 >;
 
 export const useUpdateList = (options?: ListUpdateMutationHookOptions) => {
-  return useHandleMutation<{ updateList: ListFragment }, ListUpdateArgs>(UPDATE_LIST, options);
+  return useHandleMutation<{ updateList: ListFragment }, ListUpdateArgs>(
+    UPDATE_LIST,
+    options,
+    listUpdateInputSchema
+  );
 };
 
 export const useListDataReducer = (data?: ListData): [ListData, Dispatch<Payload<ListData>>] => {
-  const user = useUser();
+  const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeListData(starterData, user);
   const [listData, dispatchListData] = useReducer(

@@ -13,7 +13,10 @@ import {
   beliefDataReducer,
   initializeBeliefData,
 } from "@/graphql/generated/reducers/belief.reducer";
-import { beliefCreationInputSchema } from "@/graphql/generated/schemas/belief.schemas";
+import {
+  beliefCreationInputSchema,
+  beliefUpdateInputSchema,
+} from "@/graphql/generated/schemas/belief.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -27,7 +30,7 @@ export const useCreateBelief = (options?: BeliefCreationMutationHookOptions) => 
   return useHandleMutation<{ createBelief: BeliefFragment }, BeliefCreationArgs>(
     CREATE_BELIEF,
     { ...updateCacheAfterCreatingBelief, ...(options ?? {}) },
-    beliefCreationInputSchema.validate
+    beliefCreationInputSchema
   );
 };
 
@@ -39,14 +42,15 @@ type BeliefUpdateMutationHookOptions = MutationHookOptions<
 export const useUpdateBelief = (options?: BeliefUpdateMutationHookOptions) => {
   return useHandleMutation<{ updateBelief: BeliefFragment }, BeliefUpdateArgs>(
     UPDATE_BELIEF,
-    options
+    options,
+    beliefUpdateInputSchema
   );
 };
 
 export const useBeliefDataReducer = (
   data?: BeliefData
 ): [BeliefData, Dispatch<Payload<BeliefData>>] => {
-  const user = useUser();
+  const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeBeliefData(starterData, user);
   const [beliefData, dispatchBeliefData] = useReducer(

@@ -13,7 +13,10 @@ import {
   ValueData,
   valueDataReducer,
 } from "@/graphql/generated/reducers/value.reducer";
-import { valueCreationInputSchema } from "@/graphql/generated/schemas/value.schemas";
+import {
+  valueCreationInputSchema,
+  valueUpdateInputSchema,
+} from "@/graphql/generated/schemas/value.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -27,7 +30,7 @@ export const useCreateValue = (options?: ValueCreationMutationHookOptions) => {
   return useHandleMutation<{ createValue: ValueFragment }, ValueCreationArgs>(
     CREATE_VALUE,
     { ...updateCacheAfterCreatingValue, ...(options ?? {}) },
-    valueCreationInputSchema.validate
+    valueCreationInputSchema
   );
 };
 
@@ -37,13 +40,17 @@ type ValueUpdateMutationHookOptions = MutationHookOptions<
 >;
 
 export const useUpdateValue = (options?: ValueUpdateMutationHookOptions) => {
-  return useHandleMutation<{ updateValue: ValueFragment }, ValueUpdateArgs>(UPDATE_VALUE, options);
+  return useHandleMutation<{ updateValue: ValueFragment }, ValueUpdateArgs>(
+    UPDATE_VALUE,
+    options,
+    valueUpdateInputSchema
+  );
 };
 
 export const useValueDataReducer = (
   data?: ValueData
 ): [ValueData, Dispatch<Payload<ValueData>>] => {
-  const user = useUser();
+  const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeValueData(starterData, user);
   const [valueData, dispatchValueData] = useReducer(

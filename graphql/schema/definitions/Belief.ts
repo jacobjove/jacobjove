@@ -1,12 +1,14 @@
 import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 
-const definition: Definition = {
+const beliefFields = ["userId", "name", "description"] as const;
+type BeliefFields = typeof beliefFields[number];
+
+const definition: Definition<BeliefFields> = {
   name: "belief",
   fields: {
     userId: { required: true, type: "ID" },
     name: REQUIRED_STRING,
     description: OPTIONAL_STRING,
-    // archivedAt: { required: false, type: "DateTime" },
   },
 };
 

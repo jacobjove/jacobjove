@@ -29,7 +29,7 @@ export interface TasksAccordionProps {
 }
 
 const TasksAccordion: FC<TasksAccordionProps> = () => {
-  const user = useUser();
+  const { user } = useUser();
 
   // If these are any top-level tasks, exclude the subtasks, since the top-level tasks
   // should already contain their subtasks. Otherwise, if there are no top-level tasks,

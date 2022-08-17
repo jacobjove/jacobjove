@@ -94,7 +94,7 @@ const CalendarSelectionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 
 export default function CalendarApiProviderDialog(props: CalendarApiProviderDialogProps) {
   const { provider, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
-  const user = useUser();
+  const { user } = useUser();
   const [updateAccount, { loading: loadingUpdateAccount }] = useUpdateAccount();
   const [updateCalendar, { loading: loadingUpdateCalendar }] = useUpdateCalendar();
   const [addCalendars, { loading: loadingAddCalendars }] = useMutation<{

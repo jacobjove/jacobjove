@@ -20,7 +20,7 @@ const NewCalendarEventDialogContext = createContext<NewCalendarEventDialogContex
 export default NewCalendarEventDialogContext;
 
 export const NewCalendarEventDialogContextProvider: FC = ({ children }) => {
-  const user = useUser();
+  const { user } = useUser();
   const userId = user?.id as ID;
   const calendarId = user?.settings.defaultCalendarId as ID;
   const newCalendarEventDataTuple = useCalendarEventDataReducer({

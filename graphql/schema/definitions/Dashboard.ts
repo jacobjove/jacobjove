@@ -27,7 +27,11 @@ export interface DashboardComponent extends LayoutItem {
   i: DashboardComponentKey;
 }
 
-const definition: Definition = {
+const dashboardFields = ["userId", "name", "description", "isDefault", "public"] as const;
+
+type DashboardFields = typeof dashboardFields[number];
+
+const definition: Definition<DashboardFields> = {
   name: "dashboard",
   fields: {
     userId: { required: true, type: "ID" },

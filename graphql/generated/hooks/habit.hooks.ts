@@ -13,7 +13,10 @@ import {
   habitDataReducer,
   initializeHabitData,
 } from "@/graphql/generated/reducers/habit.reducer";
-import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
+import {
+  habitCreationInputSchema,
+  habitUpdateInputSchema,
+} from "@/graphql/generated/schemas/habit.schemas";
 import { Payload, useHandleMutation } from "@/utils/data";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
@@ -27,7 +30,7 @@ export const useCreateHabit = (options?: HabitCreationMutationHookOptions) => {
   return useHandleMutation<{ createHabit: HabitFragment }, HabitCreationArgs>(
     CREATE_HABIT,
     { ...updateCacheAfterCreatingHabit, ...(options ?? {}) },
-    habitCreationInputSchema.validate
+    habitCreationInputSchema
   );
 };
 
@@ -37,13 +40,17 @@ type HabitUpdateMutationHookOptions = MutationHookOptions<
 >;
 
 export const useUpdateHabit = (options?: HabitUpdateMutationHookOptions) => {
-  return useHandleMutation<{ updateHabit: HabitFragment }, HabitUpdateArgs>(UPDATE_HABIT, options);
+  return useHandleMutation<{ updateHabit: HabitFragment }, HabitUpdateArgs>(
+    UPDATE_HABIT,
+    options,
+    habitUpdateInputSchema
+  );
 };
 
 export const useHabitDataReducer = (
   data?: HabitData
 ): [HabitData, Dispatch<Payload<HabitData>>] => {
-  const user = useUser();
+  const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeHabitData(starterData, user);
   const [habitData, dispatchHabitData] = useReducer(

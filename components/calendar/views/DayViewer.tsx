@@ -113,7 +113,7 @@ const DayViewer: FC<DayViewerProps> = ({
 }: DayViewerProps) => {
   const { calendarEvents } = data;
   const date = useContext(DateContext);
-  const user = useUser();
+  const { user } = useUser();
   const [viewedHour] = viewedHourState;
 
   const { newCalendarEventDialogState, newCalendarEventDataTuple } = useNewCalendarEventDialog();
@@ -156,11 +156,11 @@ const DayViewer: FC<DayViewerProps> = ({
 
   // Scroll to the current time whenever it changes.
   useEffect(() => {
-    console.log("scrollOffsetPx", scrollOffsetPx);
     const scrollableDiv = scrollableDivRef.current;
-    if (!scrollableDiv) console.error(">>>>> NO SCROLLABLE DIV");
+    if (!scrollableDiv) console.error("NO SCROLLABLE DIV");
     if (scrollableDiv) scrollableDiv.scrollTo({ top: scrollOffsetPx, behavior: "smooth" });
   }, [scrollOffsetPx]);
+  console.log("Rendering DayViewer!");
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
       {loading ? (

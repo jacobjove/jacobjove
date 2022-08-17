@@ -3,7 +3,7 @@ import HabitsBox from "@/components/actions/HabitsBox";
 import AppLayout from "@/components/AppLayout";
 import CalendarViewer from "@/components/calendar";
 import { useUser } from "@/components/contexts/UserContext";
-import MantrasBox from "@/components/data/mantras/MantrasBox";
+// import MantrasBox from "@/components/data/mantras/MantrasBox";
 import TasksBox from "@/components/data/tasks/TasksBox";
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
@@ -63,8 +63,7 @@ interface PlannerPageProps {
 }
 
 const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
-  console.log(">>> Rendering planner page...");
-  const user = useUser({ required: true });
+  const { user } = useUser({ required: true });
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   // const { loading: _loading, error: _error, data } = useQuery<PlannerPageData>(QUERY);
   const displaySideBySide = useMediaQuery(json2mq({ minWidth: "1000px" }));
@@ -75,7 +74,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
   //   calendars?.reduce((previousValue, currentValue) => {
   //     return [...previousValue, ...(currentValue.events ?? [])];
   //   }, [] as CalendarEvent[]) ?? [];
-
+  console.log(">>> Rendering planner page...");
   return (
     <AppLayout>
       <NextSeo
@@ -158,7 +157,7 @@ interface PlannerCompanionStuffProps {
 const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
   selectedDateState,
 }: PlannerCompanionStuffProps) => {
-  const user = useUser({ required: true });
+  const { user } = useUser({ required: true });
   const { goals, mantras, habits } = user ?? {};
   const [fullScreen, setFullScreen] = useState(false);
   const [value, setValue] = useState("1");
@@ -187,11 +186,15 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
         <FullScreenToggleToolbar fullScreenState={[fullScreen, setFullScreen]} />
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <TabList
+              sx={{ "& .MuiTab-root": { flexGrow: 1 } }}
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+            >
               <Tab label="Tasks" value="1" />
               <Tab label="Habits" value="2" />
               <Tab label="Goals" value="3" />
-              <Tab label="Mantras" value="4" />
+              {/* <Tab label="Mantras" value="4" /> */}
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -203,9 +206,9 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
           <TabPanel value="3">
             <GoalsBox goals={goals ?? []} displayTitle={false} />
           </TabPanel>
-          <TabPanel value="4">
+          {/* <TabPanel value="4">
             <MantrasBox mantras={mantras ?? []} displayTitle={false} />
-          </TabPanel>
+          </TabPanel> */}
         </TabContext>
       </Box>
     </FullScreenExpandableComponent>

@@ -1,6 +1,16 @@
 import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 
-const definition: Definition = {
+const habitFields = [
+  "userId",
+  "name",
+  "public",
+  "chronString",
+  "defaultDurationInMinutes",
+] as const;
+
+type HabitFields = typeof habitFields[number];
+
+const definition: Definition<HabitFields> = {
   name: "habit",
   fields: {
     userId: { required: true, type: "ID" },

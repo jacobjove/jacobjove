@@ -33,7 +33,7 @@ interface SettingOptions {
 
 const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const user = useUser();
+  const { user } = useUser();
   const [updateUser, { loading: loadingUpdateSetting }] = useUpdateUser();
   const loading = loadingUpdateSetting;
   const userSettings: Settings = user?.settings ?? {};

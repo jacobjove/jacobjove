@@ -11,6 +11,7 @@ import {
 import { DebouncedFunc } from "lodash";
 import debounce from "lodash/debounce";
 import { Dispatch, MutableRefObject, useReducer, useRef } from "react";
+import { SchemaOf } from "yup";
 
 const ID_FIELDS = ["_id", "id"] as const;
 
@@ -72,7 +73,7 @@ type MutationFunction<MutationReturnType, MutationArgsType> = (
 export function useHandleMutation<MutationReturnType, MutationArgsType extends { data: unknown }>(
   mutation: DocumentNode,
   mutationHookOptions?: MutationHookOptions<MutationReturnType, MutationArgsType>,
-  preMutationValidator?: (data: MutationArgsType["data"]) => Promise<unknown>,
+  preMutationValidationSchema?: SchemaOf<MutationArgsType["data"]>,
   debounceDelay = DEFAULT_MUTATION_DEBOUNCE_DELAY
 ): [
   MutableRefObject<DebouncedFunc<MutationFunction<MutationReturnType, MutationArgsType>>>,
@@ -88,17 +89,13 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
     debounce((mutationOptions: MutationFunctionOptions<MutationReturnType, MutationArgsType>) => {
       const controller = new window.AbortController();
       abortController.current = controller;
-      const premutate =
-        preMutationValidator && mutationOptions?.variables?.data
-          ? preMutationValidator
-          : Promise.resolve;
-      return premutate(mutationOptions?.variables?.data).then(() => {
-        const modifiedMutationOptions = mutationOptions
-          ? { ...mutationOptions, context: { fetchOptions: { signal: controller.signal } } }
-          : mutationOptions;
-        const mutationResult = mutate(modifiedMutationOptions);
-        return mutationResult;
-      });
+      preMutationValidationSchema &&
+        preMutationValidationSchema.validateSync(mutationOptions?.variables?.data);
+      const modifiedMutationOptions = mutationOptions
+        ? { ...mutationOptions, context: { fetchOptions: { signal: controller.signal } } }
+        : mutationOptions;
+      const mutationResult = mutate(modifiedMutationOptions);
+      return mutationResult;
     }, debounceDelay)
   );
   return [mutationHandlerRef, mutationResult, abortController];

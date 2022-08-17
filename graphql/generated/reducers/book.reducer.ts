@@ -18,7 +18,7 @@ export function initializeBookData(
     slug: "",
     authorNames: [],
     authorNamesLf: [],
-    ...data,
+    ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }
 

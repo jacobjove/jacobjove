@@ -25,7 +25,7 @@ export type <%= h.changeCase.pascal(fieldName) %> = {
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
-@pre<<%= Name %>>("save", (definition?.hooks?.save?.pre as any) ?? (async function (next) { return next() }))
+@pre<<%= Name %>>("save", definition?.hooks?.save?.pre ?? (async function (next) { return next() }))
 @post<<%= Name %>>("save", definition?.hooks?.save?.post ?? (async (_instance) => { return; }))
 export class <%= Name %> extends Model {
   // declare readonly __types__: {

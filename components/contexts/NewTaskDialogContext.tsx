@@ -21,7 +21,7 @@ const NewTaskDialogContext = createContext<NewTaskDialogContextData>(
 export default NewTaskDialogContext;
 
 export const NewTaskDialogContextProvider: FC = ({ children }) => {
-  const user = useUser();
+  const { user } = useUser();
   const defaultRank = 1;
   // const greatestRank = incompleteTasks[incompleteTasks.length - 1]?.rank ?? MIN_TASK_RANK;
   // const defaultRank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));

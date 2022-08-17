@@ -1,6 +1,10 @@
 import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 
-const definition: Definition = {
+const notebookFields = ["userId", "title", "description", "public"] as const;
+
+type NotebookFields = typeof notebookFields[number];
+
+const definition: Definition<NotebookFields> = {
   name: "notebook",
   fields: {
     userId: { required: true, type: "ID" },

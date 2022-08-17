@@ -56,7 +56,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
   const heightInPx = props.heightInPx ?? 60;
   const router = useRouter();
   const { data: session } = useSession();
-  const user = useUser();
+  const { user } = useUser();
   const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
   const navMenuState = usePopupState({ variant: "popover", popupId: "nav-menu" });
   const [colorMode, setColorMode] = useContext(ColorModeContext);

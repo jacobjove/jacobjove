@@ -3,7 +3,11 @@ import Definition, {
   OPTIONAL_STRING,
 } from "@/graphql/schema/definition";
 
-const definition: Definition = {
+const shelvingFields = ["bookId", "shelfId", "position", "rationale"] as const;
+
+type ShelvingFields = typeof shelvingFields[number];
+
+const definition: Definition<ShelvingFields> = {
   name: "shelving",
   fields: {
     bookId: { required: true, type: "ID" },

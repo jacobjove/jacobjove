@@ -59,7 +59,7 @@ interface CalendarApiMenuItemProps extends MenuItemProps {
 }
 
 const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children, ...props }) => {
-  const user = useUser();
+  const { user } = useUser();
   const dialogState = usePopupState({
     variant: "popover",
     popupId: `${provider}-calendar-api-dialog`,
@@ -117,7 +117,7 @@ const selectedCalendarIdsReducer = (
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
   const { loading, data: _data, defaultView, ...rest } = props;
-  const user = useUser();
+  const { user } = useUser();
   const date = useContext(DateContext);
   const [selectedDate, setSelectedDate] = props.selectedDateState;
   const viewedHourState = useState<number>(getHours(date));
@@ -184,6 +184,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     // dispatchInitialEventFormData,
     defaultCalendar,
   };
+  console.log("Rendering calendar viewer!");
   return (
     <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
       <Box display="flex" flexDirection={"column"} height={"100%"} flexGrow={1} maxHeight={"100%"}>
@@ -284,26 +285,32 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
           </Box>
         )}
         <Box flex={"1 1 auto"} minHeight={0} position="relative">
-          <DayViewer
-            loading={loading}
-            data={data}
-            viewedHourState={viewedHourState}
-            {...commonViewProps}
-            hidden={view != "day"}
-          />
-          <WeekViewer
-            loading={loading}
-            data={data}
-            viewedHourState={viewedHourState}
-            {...commonViewProps}
-            hidden={view != "week"}
-          />
-          <MonthViewer
-            loading={loading}
-            data={data}
-            {...commonViewProps}
-            hidden={view != "month"}
-          />
+          {view === "day" && (
+            <DayViewer
+              loading={loading}
+              data={data}
+              viewedHourState={viewedHourState}
+              {...commonViewProps}
+              hidden={view != "day"}
+            />
+          )}
+          {view === "week" && (
+            <WeekViewer
+              loading={loading}
+              data={data}
+              viewedHourState={viewedHourState}
+              {...commonViewProps}
+              hidden={view != "week"}
+            />
+          )}
+          {view === "month" && (
+            <MonthViewer
+              loading={loading}
+              data={data}
+              {...commonViewProps}
+              hidden={view != "month"}
+            />
+          )}
           {/* TODO: After prettifying the legend, change `>= 1` to `> 1` so that the legend is only displayed if there are multiple calendars */}
           {/* {(enabledCalendars?.length ?? 0) >= 1 && (
           <Box position="absolute" bottom={1} right={1} zIndex={1e14}>
