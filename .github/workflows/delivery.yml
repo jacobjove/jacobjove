@@ -161,6 +161,7 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SERVER_TARGET: /var/www/${{ secrets.DOMAIN }}
           DOMAIN: ${{ secrets.DOMAIN }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           if [[ -z "$DOMAIN" ]]; then
             echo "Must provide DOMAIN in environment" 1>&2
@@ -170,7 +171,8 @@ jobs:
           mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+          echo "Adding SSH private key..."
+          ssh-add - <<< "$SSH_PRIVATE_KEY"
           echo "Transferring files to $SERVER_HOST ..."
           shopt -s nullglob dotglob
           export files_to_transport=(dist/*)

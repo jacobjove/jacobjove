@@ -97,6 +97,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
         maxWidth={"100%"}
         maxHeight={"100%"}
         p={"0.5rem"}
+        sx={{ "&> *": { m: "0.25rem" } }}
       >
         <Card
           sx={{
@@ -107,7 +108,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
             flexBasis: "50%",
             flexGrow: 1,
             flexShrink: 0,
-            mr: "0.5rem",
           }}
         >
           <Box sx={{ padding: "0 0.2rem 0.2rem 0.2rem", height: "100%", maxHeight: "100%" }}>
