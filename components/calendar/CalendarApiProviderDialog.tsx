@@ -108,7 +108,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
 
   const loading = loadingUpdateAccount || loadingUpdateCalendar || loadingAddCalendars;
 
-  // TODO: should any of this be memoized or put into a useEffect?
+  // TODO: should any of this be memoized or put into a useEffect??
   const { name, Icon, scope, defaultScopes, disabled } = CALENDAR_PROVIDERS[provider];
   const account = user?.accounts?.find((account) => account.provider === provider) || null;
   const calendarIntegrationIsEnabled = account?.scopes.includes(scope);
