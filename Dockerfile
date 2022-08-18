@@ -2,7 +2,7 @@
 # BASE
 ##################################
 
-FROM node:16 AS base
+FROM node:18 AS base
 
 ENV PORT 3000
 
