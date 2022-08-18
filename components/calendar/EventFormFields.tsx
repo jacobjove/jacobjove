@@ -29,7 +29,6 @@ const EventFormFields: FC<EventFormFieldsProps> = ({ dataTuple }: EventFormField
           label="Start"
           openTo="minutes"
           value={formData.start}
-          // TODO: remove these type annotations after mui lab types are updated
           onChange={(value: Date | null) => value && dispatchFormData({ field: "start", value })}
           renderInput={(params: TextFieldProps) => (
             <TextField {...params} sx={{ marginY: "1rem" }} required />

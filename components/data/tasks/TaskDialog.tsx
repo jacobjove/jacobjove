@@ -190,8 +190,8 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 }}
               />
               <TitleAndDescriptionFields
-                titlePropName={"title"}
-                descriptionPropName={"description"}
+                titleConfig={{ name: "title", label: "Title" }}
+                descriptionConfig={{ name: "description", label: "Description" }}
                 dataTuple={[data, dispatchData]}
                 editingState={[editing, setEditing]}
                 sx={{ mt: "0.1rem" }}

@@ -3,7 +3,6 @@ services:
     image: ghcr.io/iacobfred/selfbuilder:latest
     depends_on:
       - mongo
-    #   - postgres
     #   - graphql
     ports:
       - 3000:3000 # Next.js application
@@ -53,7 +52,6 @@ services:
         condition: unless-stopped
     expose:
       - "6379"
-    # TODO: https://stackoverflow.com/questions/47088261/restarting-an-unhealthy-docker-container-based-on-healthcheck
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 20s
@@ -62,21 +60,6 @@ services:
       start_period: 20s
     volumes:
       - "data:/data"
-  # postgres:
-  #   image: postgres:14
-  #   expose:
-  #     - "5432"
-  #   env_file:
-  #     - ./.env
-  #   healthcheck:
-  #     test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #     start_period: 30s
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-
   # cypress:
   #   # https://github.com/cypress-io/cypress-docker-images
   #   image: "cypress/included:8.4.1"

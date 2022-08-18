@@ -126,7 +126,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
             "& .actions-menu-icon": { visibility: "visible" },
           },
           "& td, th": {
-            padding: 0,
+            py: 0,
             "& svg": {
               fontSize: "1.33rem",
               color: "#808080",
@@ -164,8 +164,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
           <Box
             sx={{
               position: "relative",
-              margin: "0.25rem",
-              paddingX: 0,
               minHeight: "2.2rem",
               minWidth: 0,
               height: "auto",
@@ -186,7 +184,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               justifyContent: "space-between",
             }}
           >
-            <Box p={1}>
+            <Box py={1}>
               <Typography
                 sx={{
                   fontSize: asSubtask ? "0.7rem" : "0.8rem",

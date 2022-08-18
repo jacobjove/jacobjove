@@ -33,14 +33,16 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
       sx={{
         minWidth: 100,
         "& th": { px: "0.25rem", py: "1px", fontSize: "0.75rem", lineHeight: "0.9rem" },
-        "& td": { padding: 0, fontSize: PREFERRED_FONT_SIZE },
+        "& td": { px: "0.25rem", fontSize: PREFERRED_FONT_SIZE },
       }}
       size="small"
       aria-label="table of tasks"
     >
       <TableHead>
         <TableRow>
-          <TableCell component={"th"}>{"Done?"}</TableCell>
+          <TableCell component={"th"} sx={{ minWidth: "3.3rem" }}>
+            {"Done?"}
+          </TableCell>
           <TableCell component={"th"} sx={{ width: "90%" }}>
             {"Task"}
           </TableCell>
@@ -118,14 +120,13 @@ const NewTaskRow: FC<NewTaskRowProps> = ({ setAddingNewTask }: NewTaskRowProps) 
   };
   return (
     <>
-      <TableRow>
+      <TableRow onBlur={() => (newTaskData.title ? null : setAddingNewTask(false))}>
         <TableCell />
         <TableCell>
           <TitleAndDescriptionFields
             dataTuple={[newTaskData, dispatchNewTaskData]}
-            titlePropName={"title"}
-            titleFontSizeRem={1}
-            descriptionPropName={"description"}
+            titleConfig={{ name: "title", label: "Task title", fontSizeRem: 1 }}
+            descriptionConfig={{ name: "description", label: "Task description (optional)" }}
             includeIcon={false}
             editingState={[editing, setEditing]}
             onKeyUp={(e) => {
@@ -135,13 +136,13 @@ const NewTaskRow: FC<NewTaskRowProps> = ({ setAddingNewTask }: NewTaskRowProps) 
                 if (!newTaskData.title) return setAddingNewTask(false);
               }
             }}
-            sx={{ mt: 1 }}
+            // sx={{ py: 1 }}
           />
         </TableCell>
-        <TableCell colSpan={2} />
+        <TableCell colSpan={3} />
       </TableRow>
       <TableRow>
-        <TableCell colSpan={4}>
+        <TableCell colSpan={5}>
           <Box width="100%" display="flex">
             <Button sx={{ ml: "auto" }} onClick={() => setAddingNewTask(false)}>
               {"Cancel"}
@@ -149,6 +150,7 @@ const NewTaskRow: FC<NewTaskRowProps> = ({ setAddingNewTask }: NewTaskRowProps) 
             <Button onClick={handleCreateTask}>{"Save"}</Button>
           </Box>
         </TableCell>
+        {/* <TableCell /> */}
       </TableRow>
     </>
   );

@@ -6,13 +6,18 @@ import Typography from "@mui/material/Typography";
 import { SxProps } from "@mui/system";
 import { Dispatch, useState } from "react";
 
+interface FieldConfig<Name extends string> {
+  name: Name;
+  label: string;
+  fontSizeRem?: number;
+}
+
 interface TitleAndDescriptionFieldsProps<
   TitlePropName extends string,
   DescriptionPropName extends string
 > {
-  titlePropName: TitlePropName;
-  descriptionPropName: DescriptionPropName;
-  titleFontSizeRem?: number;
+  titleConfig: FieldConfig<TitlePropName>;
+  descriptionConfig: FieldConfig<DescriptionPropName>;
   editingState: [boolean, Dispatch<boolean>];
   includeIcon?: boolean;
   dataTuple: [
@@ -39,12 +44,11 @@ export default function TitleAndDescriptionFields<
   TitlePropName extends string,
   DescriptionPropName extends string
 >({
-  titlePropName,
-  descriptionPropName,
+  titleConfig,
+  descriptionConfig,
   editingState,
   dataTuple,
   includeIcon: _includeIcon,
-  titleFontSizeRem: _titleFontSizeRem,
   onKeyUp: _onKeyUp,
   sx,
 }: TitleAndDescriptionFieldsProps<TitlePropName, DescriptionPropName>) {
@@ -52,10 +56,17 @@ export default function TitleAndDescriptionFields<
   // const editing = true;
   const [data, dispatchData] = dataTuple;
   const [descriptionFocused, setDescriptionFocused] = useState(false);
+  const { name: titleName, label: titleLabel, fontSizeRem: _titleFontSizeRem } = titleConfig;
+  const {
+    name: descriptionName,
+    label: descriptionLabel,
+    fontSizeRem: _descriptionFontSizeRem,
+  } = descriptionConfig;
   const includeIcon = _includeIcon ?? true;
   const titleFontSizeRem = _titleFontSizeRem || 1.5;
   const titleFontSize = `${titleFontSizeRem}rem`;
-  const descriptionFontSize = `${titleFontSizeRem * 0.8}rem`;
+  const descriptionFontSize = _descriptionFontSizeRem ?? `${titleFontSizeRem * 0.7}rem`;
+  console.log(descriptionFontSize);
   const onKeyUp =
     _onKeyUp ??
     ((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -73,9 +84,9 @@ export default function TitleAndDescriptionFields<
           <TextField
             autoFocus
             id="title"
-            name={titlePropName}
-            placeholder={"Title"}
-            value={data[titlePropName] ?? ""}
+            name={titleName ?? "title"}
+            placeholder={titleLabel ?? "Title"}
+            value={data[titleName] ?? ""}
             onChange={(event) => dispatchData({ field: "title", value: event.target.value })}
             onKeyUp={onKeyUp}
             variant="standard"
@@ -88,15 +99,13 @@ export default function TitleAndDescriptionFields<
             sx={{ fontSize: titleFontSize }}
             onClick={() => setEditing(true)}
           >
-            {data[titlePropName] ?? ""}
+            {data[titleName] ?? ""}
           </Typography>
         )}
       </Box>
       <Box
         display="flex"
         sx={{
-          mt: 1,
-          mb: 2,
           alignItems: "center",
           fontSize: descriptionFontSize,
           color: (theme) =>
@@ -104,20 +113,20 @@ export default function TitleAndDescriptionFields<
         }}
         onClick={() => setEditing(true)}
       >
-        {includeIcon && !data[descriptionPropName] && !descriptionFocused && (
+        {includeIcon && !data[descriptionName] && !descriptionFocused && (
           <NotesIcon sx={{ mr: 1 }} />
         )}
         {editing ? (
           <TextField
             id="description"
-            name="description"
-            placeholder="Description"
+            name={descriptionName ?? "description"}
+            placeholder={descriptionLabel ?? "Description"}
             multiline
             fullWidth
             variant="standard"
             InputProps={{ disableUnderline: true }}
-            sx={{ "& *": { p: 0, fontSize: descriptionFontSize } }}
-            value={data[descriptionPropName] ?? ""}
+            sx={{ "& *": { p: 0, mt: "0.05rem", fontSize: descriptionFontSize } }}
+            value={data[descriptionName] ?? ""}
             onFocus={() => setDescriptionFocused(true)}
             onBlur={() => setDescriptionFocused(false)}
             onChange={(event) => dispatchData({ field: "description", value: event.target.value })}
@@ -125,7 +134,7 @@ export default function TitleAndDescriptionFields<
           />
         ) : (
           <Typography fontSize={descriptionFontSize}>
-            {data[descriptionPropName] || "Description"}
+            {data[descriptionName] || "Description"}
           </Typography>
         )}
       </Box>
