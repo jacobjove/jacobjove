@@ -159,7 +159,7 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           echo "Adding SSH private key..."
-          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+          ssh-add - << 'EOF' ${{ secrets.SSH_PRIVATE_KEY }}EOF
           echo "Added SSH private key."
           shopt -s nullglob dotglob
           export files_to_transport=(dist/*)

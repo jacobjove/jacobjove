@@ -67,7 +67,7 @@ const CALENDAR_PROVIDERS: Record<CalendarProvider, CalendarProviderProps> = {
   apple: {
     name: "Apple",
     Icon: AppleIcon,
-    scope: "", // TODO
+    scope: "", // TODO..
     defaultScopes: [],
     disabled: true,
   },
