@@ -22,7 +22,7 @@ services:
       args:
         NODE_ENV: development
       network: host
-    command: npm run dev
+    # command: npm run dev
     environment:
       NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
       NEXTAUTH_URL: "http://localhost:3000"

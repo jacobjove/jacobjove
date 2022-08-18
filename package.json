@@ -14,7 +14,7 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
-    "build": "eslint . --fix; next build",
+    "build": "if [ $NODE_ENV -ne production ]; then eslint . --fix; fi; next build",
     "build:migrate": "if [ -n $USE_POSTGRES ]; then prisma generate; fi && npm run migrate && next build",
     "code:generate": "npm run schema:generate",
     "cypress:open": "cypress open",
