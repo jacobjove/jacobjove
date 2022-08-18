@@ -15,7 +15,7 @@ const plugins = [
   }),
 ];
 
-// TODO: remove this condition after pwa config bug is fixed:
+// TODO
 // https://github.com/shadowwalker/next-pwa/issues/371
 if (process.env.NODE_ENV !== "development") {
   // https://flaviocopes.com/nextjs-analyze-app-bundle/
