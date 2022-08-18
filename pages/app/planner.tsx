@@ -109,7 +109,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
             mr: "0.5rem",
           }}
         >
-          <Box sx={{ padding: "0.2rem 0.2rem 0.5rem", height: "100%", maxHeight: "100%" }}>
+          <Box sx={{ padding: "0 0.2rem 0.2rem 0.2rem", height: "100%", maxHeight: "100%" }}>
             <CalendarViewer
               data={{ calendarEvents: calendarEvents ?? [], calendars: calendars ?? [] }}
               selectedDateState={[selectedDate, setSelectedDate]}

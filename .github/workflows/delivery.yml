@@ -169,7 +169,7 @@ jobs:
           shopt -s nullglob dotglob
           export files_to_transport=(dist/*)
           echo "${files_to_transport[@]}"
-          scp -o StrictHostKeyChecking=no -P ${SSH_PORT:=22} -r "${files_to_transport[@]}" jacob@$SERVER_HOST:$SERVER_TARGET
+          scp -o StrictHostKeyChecking=no -P ${SSH_PORT:=22} -r "${files_to_transport[@]}" jacob@${SERVER_HOST:=$DOMAIN}:${SERVER_TARGET:=/var/www/$DOMAIN}
           echo "Starting SSH session with $SERVER_HOST..."
           ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST << 'ENDSSH'
             cd /var/www/selfbuilder.com
