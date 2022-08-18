@@ -223,6 +223,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               </IconButton>
             )}
           </Box>
+          {task.description && <Typography>{task.description}</Typography>}
         </TableCell>
         <TableCell>
           <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>

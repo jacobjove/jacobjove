@@ -1,6 +1,7 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
 import TasksTable from "@/components/data/tasks/TasksTable";
+import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { Habit } from "@/graphql/generated/models/habit.model";
@@ -12,19 +13,16 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import NotesIcon from "@mui/icons-material/Notes";
 import TodayIcon from "@mui/icons-material/Today";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
+// import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
@@ -136,21 +134,12 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 "aria-labelledby": "calendar-menu-button-x",
               }}
             >
-              {/* <MenuItem
-                disabled={editing}
-                title={`Edit ${data.title}`}
-                onClick={() => {
-                  setEditing(true);
-                  menuProps.onClose();
-                }}
-              >
-                <EditIcon /> <Typography sx={{ ml: 1 }}>{"Edit task"}</Typography>
-              </MenuItem> */}
               <MenuItem
                 disabled={!data.id}
                 onClick={() => {
                   const archivedAt = new Date();
-                  console.log("Archiving task ", data.title, data.id);
+                  dispatchData({ field: "archivedAt", value: archivedAt });
+                  menuProps.onClose();
                   const updatedData = { archivedAt };
                   const optimisticResponse = getOptimisticResponseForTaskUpdate(
                     data as TaskFragment,
@@ -164,7 +153,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                       },
                       optimisticResponse,
                     });
-                  menuProps.onClose();
                 }}
               >
                 <DeleteIcon /> <Typography sx={{ ml: 1 }}>{"Delete task"}</Typography>
@@ -192,7 +180,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               if (!event.currentTarget.contains(event.relatedTarget) && data.id) setEditing(false);
             }}
           >
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" my={1}>
               <CompletionCheckbox
                 sx={{ alignSelf: "start", alignItems: "start", minWidth: LEFT_SIDE_WIDTH }}
                 checked={completed}
@@ -201,73 +189,26 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   dispatchData({ field: "completedAt", value: new Date() });
                 }}
               />
-              <Box sx={{ "& *": { fontSize: "1.6rem", fontWeight: "400" } }}>
-                {editing ? (
-                  <TextField
-                    autoFocus
-                    id="title"
-                    name="title"
-                    variant="standard"
-                    value={data.title}
-                    placeholder={"Task title"}
-                    onChange={(event) =>
-                      dispatchData({ field: "title", value: event.target.value })
-                    }
-                  />
-                ) : (
-                  <Typography component="span" variant="h2" onClick={() => setEditing(true)}>
-                    {data.title}
-                  </Typography>
-                )}
-              </Box>
+              <TitleAndDescriptionFields
+                titlePropName={"title"}
+                descriptionPropName={"description"}
+                dataTuple={[data, dispatchData]}
+                editingState={[editing, setEditing]}
+                sx={{ mt: "0.1rem" }}
+              />
             </Box>
-            <Box pl={LEFT_SIDE_WIDTH}>
-              {editing ? (
-                <TextField
-                  multiline
-                  fullWidth
-                  id="description"
-                  name="description"
-                  // variant="standard"
-                  value={data.description ?? ""}
-                  placeholder="Task description"
-                  onChange={(event) =>
-                    dispatchData({ field: "description", value: event.target.value })
-                  }
-                />
-              ) : (
-                <DialogContentText
-                  component="div"
-                  sx={{ mt: 1, mb: 2 }}
-                  onClick={() => setEditing(true)}
-                >
-                  {data.description || (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        color: (theme) =>
-                          theme.palette.mode === "light"
-                            ? "rgba(0,0,0,0.5)"
-                            : "rgba(255,255,255,0.5)",
-                      }}
-                    >
-                      <NotesIcon />
-                      <Typography sx={{ ml: 1 }}>{"Description"}</Typography>
-                    </Box>
-                  )}
-                </DialogContentText>
-              )}
-              {!!data.archivedAt && (
+            <Box pl={LEFT_SIDE_WIDTH} fontSize={"0.9rem"}>
+              {/* {!!data.archivedAt && (
                 <Box my={2}>
                   <Typography>{`This task is archived.`}</Typography>
                 </Box>
-              )}
+              )} */}
               <Box my={2}>
                 {subtasks?.length ? (
                   <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
                 ) : (
-                  <Button sx={{ pr: 2 }}>
+                  // TODO
+                  <Button sx={{ pr: 2, ml: "-0.55rem" }} onClick={() => null} disabled={true}>
                     <AddIcon sx={{ mr: 1 }} /> {"Add subtask"}
                   </Button>
                 )}
@@ -277,7 +218,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   <Typography>{`This task is associated with habit ${data.habitId}.`}</Typography>
                 ) : (
                   <Typography>
-                    {`Trying to build a new habit? Create a habit from this task.`}
+                    {/* {`Trying to build a new habit? Create a habit from this task.`} */}
                   </Typography>
                 )}
               </Box>
@@ -285,30 +226,76 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
           </Box>
           <Box
             ml={2}
-            p={2}
+            py={1}
+            px={"0.75rem"}
             sx={{
+              flexBasis: "30%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+              justifyContent: "start",
               bgcolor: (theme) =>
                 theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)",
               // backgroundColor: (theme) => theme.palette.mode === "light" ? "gray" : "black"
             }}
           >
-            <Box my={2}>
-              <Typography>{"Due date"}</Typography>
-              <Box display="flex" alignItems="center">
-                <TodayIcon />
-                <Typography component="span">
-                  {data.dueDate ? format(data.dueDate, "h:m") : "No due date"}
-                </Typography>
-              </Box>
+            <Box
+              width={"100%"}
+              py={1}
+              alignItems={"center"}
+              justifyContent={"start"}
+              borderBottom={"1px solid gray"}
+            >
+              <Button
+                sx={{
+                  fontSize: "0.9rem",
+                  width: "100%",
+                  textTransform: "none",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: (theme) =>
+                    theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
+                }}
+                disabled={!!data.dueDate}
+                onClick={() => null}
+              >
+                {"Due date "}
+                {!data.dueDate && <AddIcon sx={{ ml: 1 }} />}
+              </Button>
+              {data.dueDate && (
+                <Box display="flex" alignItems="center">
+                  <TodayIcon />{" "}
+                  <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
+                    {data.dueDate ? format(data.dueDate, "h:m") : "No due date"}
+                  </Typography>
+                </Box>
+              )}
             </Box>
-            <Box my={2}>
-              <Typography>{"Scheduled date"}</Typography>
-              <Box display="flex" alignItems="center">
-                <TodayIcon />
-                <Typography component="span">
-                  {data.plannedStartDate ? format(data.plannedStartDate, "h:m") : "Unscheduled"}
-                </Typography>
-              </Box>
+            <Box width={"100%"} py={1} borderBottom={"1px solid gray"}>
+              <Button
+                sx={{
+                  fontSize: "0.9rem",
+                  width: "100%",
+                  textTransform: "none",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: (theme) =>
+                    theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
+                }}
+                disabled={!!data.plannedStartDate}
+                onClick={() => null}
+              >
+                {"Scheduled date "}
+                {!data.dueDate && <AddIcon sx={{ ml: 1 }} />}
+              </Button>
+              {data.plannedStartDate && (
+                <Box display="flex" alignItems="center">
+                  <TodayIcon />{" "}
+                  <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
+                    {data.plannedStartDate ? format(data.plannedStartDate, "h:m") : "Unscheduled"}
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>
@@ -358,9 +345,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
           </Box>
         )} */}
       </DialogContent>
-      <DialogActions>
-        {/* {editing && <Button onClick={saveAndExit}>{"Done"}</Button>} */}
-      </DialogActions>
+      {/* <DialogActions>
+        {editing && <Button onClick={saveAndExit}>{"Done"}</Button>}
+      </DialogActions> */}
     </Dialog>
   );
 };
