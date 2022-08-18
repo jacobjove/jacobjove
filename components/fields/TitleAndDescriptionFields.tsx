@@ -65,7 +65,7 @@ export default function TitleAndDescriptionFields<
   const includeIcon = _includeIcon ?? true;
   const titleFontSizeRem = _titleFontSizeRem || 1.5;
   const titleFontSize = `${titleFontSizeRem}rem`;
-  const descriptionFontSize = _descriptionFontSizeRem ?? `${titleFontSizeRem * 0.7}rem`;
+  const descriptionFontSize = _descriptionFontSizeRem ?? `${titleFontSizeRem * 0.75}rem`;
   console.log(descriptionFontSize);
   const onKeyUp =
     _onKeyUp ??

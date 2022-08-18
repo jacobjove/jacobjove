@@ -8,6 +8,7 @@ import { FC, ReactNode, SyntheticEvent } from "react";
 export interface DataBoxProps {
   title: string;
   displayTitle?: boolean;
+  includeAddButton?: boolean;
   onClickAddItem?: (event: SyntheticEvent) => void;
   children: ReactNode;
 }
@@ -15,6 +16,7 @@ export interface DataBoxProps {
 const DataBox: FC<DataBoxProps> = (props: DataBoxProps) => {
   const { title, displayTitle: _displayTitle, onClickAddItem, children } = props;
   const displayTitle = false;
+  const includeToolbar = false;
 
   return (
     <Box
@@ -29,32 +31,34 @@ const DataBox: FC<DataBoxProps> = (props: DataBoxProps) => {
           theme.palette.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
       }}
     >
-      <Toolbar>
-        {displayTitle && (
-          <Typography
-            component="h2"
-            variant="h4"
-            sx={{
-              mx: 1,
-              mt: 1,
-              fontSize: "1rem",
-              fontWeight: "bold",
-              color: (theme) =>
-                theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
-              textTransform: "uppercase",
-            }}
-          >
-            {title}
-          </Typography>
-        )}
-        <Box ml={"auto"}>
-          {onClickAddItem && (
-            <IconButton onClick={onClickAddItem}>
-              <AddIcon />
-            </IconButton>
+      {includeToolbar && (
+        <Toolbar>
+          {displayTitle && (
+            <Typography
+              component="h2"
+              variant="h4"
+              sx={{
+                mx: 1,
+                mt: 1,
+                fontSize: "1rem",
+                fontWeight: "bold",
+                color: (theme) =>
+                  theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
+                textTransform: "uppercase",
+              }}
+            >
+              {title}
+            </Typography>
           )}
-        </Box>
-      </Toolbar>
+          <Box ml={"auto"}>
+            {onClickAddItem && (
+              <IconButton onClick={onClickAddItem}>
+                <AddIcon />
+              </IconButton>
+            )}
+          </Box>
+        </Toolbar>
+      )}
       {children}
     </Box>
   );

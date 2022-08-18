@@ -168,6 +168,9 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "column",
+        "& .MuiPaper-root": {
+          margin: 0,
+        },
       }}
     >
       {views.map(([key]) => (

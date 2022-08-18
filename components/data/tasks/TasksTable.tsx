@@ -125,7 +125,7 @@ const NewTaskRow: FC<NewTaskRowProps> = ({ setAddingNewTask }: NewTaskRowProps) 
         <TableCell>
           <TitleAndDescriptionFields
             dataTuple={[newTaskData, dispatchNewTaskData]}
-            titleConfig={{ name: "title", label: "Task title", fontSizeRem: 1 }}
+            titleConfig={{ name: "title", label: "Task title", fontSizeRem: 0.85 }}
             descriptionConfig={{ name: "description", label: "Task description (optional)" }}
             includeIcon={false}
             editingState={[editing, setEditing]}
