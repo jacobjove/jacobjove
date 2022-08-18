@@ -24,6 +24,7 @@ const GoalsBox: FC<GoalsBoxProps> = (props: GoalsBoxProps) => {
         <Typography
           sx={{
             textAlign: "center",
+            mt: "3rem",
           }}
         >
           {"You don't have any goals yet."}

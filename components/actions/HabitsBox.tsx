@@ -25,6 +25,7 @@ const HabitsBox: FC<HabitsBoxProps> = (props: HabitsBoxProps) => {
         <Typography
           sx={{
             textAlign: "center",
+            mt: "3rem",
           }}
         >
           {"You don't have any habits yet."}

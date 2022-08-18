@@ -162,10 +162,10 @@ jobs:
           SERVER_TARGET: /var/www/${{ secrets.DOMAIN }}
           DOMAIN: ${{ secrets.DOMAIN }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        shell: bash
         run: |
           if [[ -z "$DOMAIN" ]]; then
-            echo "Must provide DOMAIN in environment" 1>&2
-            exit 1
+            echo "Must provide DOMAIN in environment"; exit 1
           fi
           echo "Adding GitHub to known hosts...
           mkdir -p ~/.ssh

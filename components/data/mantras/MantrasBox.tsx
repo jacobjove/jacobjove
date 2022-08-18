@@ -25,6 +25,7 @@ const MantrasBox: FC<MantrasBoxProps> = (props: MantrasBoxProps) => {
         <Typography
           sx={{
             textAlign: "center",
+            mt: "3rem",
           }}
         >
           {"You don't have any mantras yet."}
