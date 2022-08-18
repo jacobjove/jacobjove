@@ -82,7 +82,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                   sx={{
                     textTransform: "none",
                     fontStyle: "italic",
-                    color: (theme) => (theme.palette.mode === "light" ? "lightgray" : "darkgray"),
+                    // color: (theme) => (theme.palette.mode === "light" ? "lightgray" : "darkgray"),
                     py: "0.25rem",
                     pl: "3rem", // TODO: match checkbox width
                     width: "100%",

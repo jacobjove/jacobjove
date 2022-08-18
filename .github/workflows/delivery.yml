@@ -164,9 +164,6 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         shell: bash
         run: |
-          if [[ -z "$DOMAIN" ]]; then
-            echo "Must provide DOMAIN in environment"; exit 1
-          fi
           echo "Adding GitHub to known hosts...
           mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
