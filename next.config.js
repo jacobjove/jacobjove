@@ -18,14 +18,6 @@ const plugins = [
 // TODO: remove this condition after pwa config bug is fixed:
 // https://github.com/shadowwalker/next-pwa/issues/371
 if (process.env.NODE_ENV !== "development") {
-  // plugins.push(
-  //   withPWA({
-  //     pwa: {
-  //       disable: process.env.NODE_ENV === "development",
-  //       dest: "public",
-  //     },
-  //   })
-  // );
   // https://flaviocopes.com/nextjs-analyze-app-bundle/
   const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",

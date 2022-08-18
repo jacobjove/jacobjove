@@ -157,8 +157,9 @@ jobs:
       - name: Deploy to server
         id: deploy-image
         env:
+          SERVER_HOST: ${{ secrets.DOMAIN }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
-          SERVER_TARGET: ${{ secrets.SERVER_TARGET }}
+          SERVER_TARGET: /var/www/${{ secrets.DOMAIN }}
           DOMAIN: ${{ secrets.DOMAIN }}
         run: |
           if [[ -z "$DOMAIN" ]]; then
@@ -174,10 +175,10 @@ jobs:
           shopt -s nullglob dotglob
           export files_to_transport=(dist/*)
           echo "${files_to_transport[@]}"
-          scp -o StrictHostKeyChecking=no -P ${SSH_PORT:=22} -r "${files_to_transport[@]}" jacob@${SERVER_HOST:=$DOMAIN}:${SERVER_TARGET:=/var/www/$DOMAIN}
+          scp -o StrictHostKeyChecking=no -P ${SSH_PORT:=22} -r "${files_to_transport[@]}" jacob@${SERVER_HOST}:${SERVER_TARGET}
           echo "Starting SSH session with $SERVER_HOST..."
           ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST << 'ENDSSH'
-            cd "/var/www/$DOMAIN"
+            cd "$SERVER_TARGET"
             echo "" && echo "Setting environment variables..."
             set -a && source .env && echo "Finished setting environment variables."
             set +a
