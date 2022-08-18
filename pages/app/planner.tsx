@@ -90,6 +90,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
       <Box
         display="flex"
         flexDirection={displaySideBySide ? "row" : "column"}
+        alignItems="center"
         justifyContent="center"
         width={"100%"}
         height={"100%"}
