@@ -159,8 +159,13 @@ jobs:
         env:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SERVER_TARGET: ${{ secrets.SERVER_TARGET }}
+          DOMAIN: ${{ secrets.DOMAIN }}
         run: |
-          echo "Adding GitHub to known hosts..."
+          if [[ -z "$DOMAIN" ]]; then
+            echo "Must provide DOMAIN in environment" 1>&2
+            exit 1
+          fi
+          echo "Adding GitHub to known hosts...
           mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
