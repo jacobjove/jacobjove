@@ -66,7 +66,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
     DistinctTasksUpdateArgs
   >(UPDATE_TASKS_DISTINCTLY);
 
-  // TODO: is this efficient enough?
+  // TODO
   const tasksBySelection = useMemo(() => {
     return {
       all: incompleteTasks,
