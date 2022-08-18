@@ -84,7 +84,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
                     fontStyle: "italic",
                     // color: (theme) => (theme.palette.mode === "light" ? "lightgray" : "darkgray"),
                     py: "0.25rem",
-                    pl: "3rem", // TODO: match checkbox width
+                    pl: "3rem", // TODO: match checkbox width.
                     width: "100%",
                     display: "flex",
                     justifyContent: "start",
