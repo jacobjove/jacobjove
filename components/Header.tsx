@@ -1,5 +1,6 @@
 import ColorModeContext from "@/components/contexts/ColorModeContext";
 import { useUser } from "@/components/contexts/UserContext";
+import logoImg from "@/public/logo.png";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -68,7 +69,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
         <Toolbar disableGutters style={{ height: `${heightInPx}px`, minHeight: `${heightInPx}px` }}>
           <Link href={`${router.pathname.includes("/app/") ? "/app" : "/"}`}>
             <a style={{ display: "flex", alignItems: "center" }}>
-              <Image alt="SelfBuilder logo" src={`/logo.png`} width={40} height={40} />
+              <Image alt="SelfBuilder logo" src={logoImg} width={40} height={40} />
               <Typography
                 noWrap
                 component="span"
