@@ -2,7 +2,7 @@
 # BUILDER
 ##################################
 
-FROM node:16 AS builder
+FROM node:16.14.2 AS builder
 
 ENV PORT 3000
 
@@ -30,7 +30,7 @@ RUN NODE_ENV=${NODE_ENV} npm run build
 # RUNNER
 ##################################
 
-FROM node:16 as runner
+FROM node:16.14.2 as runner
 
 LABEL org.opencontainers.image.source https://github.com/iacobfred/SelfBuilder
 
