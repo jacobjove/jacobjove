@@ -15,7 +15,7 @@ services:
     environment:
       MONGODB_HOST: "mongo"
       NEXTAUTH_URL_INTERNAL: "http://nextjs:3000"
-      NEXTAUTH_URL: "https://www.orega.org"
+      NEXTAUTH_URL: "https://orega.org"
       NODE_ENV: production
     volumes:
       - ./.env:/app/.env
