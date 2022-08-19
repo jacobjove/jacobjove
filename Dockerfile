@@ -41,13 +41,13 @@ ENV NODE_ENV ${NODE_ENV}
 WORKDIR /app
 
 # Copy compiled JavaScript from the builder stage.
-# TODO: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/package*.json ./
+COPY —-from=builder /app/next.config.js ./
 
-# Copy package.json and package-lock.json to the container; remove unnecessary dependencies.
-COPY package*.json .
 RUN npm ci
+
 ENV PATH /app/node_modules/.bin:$PATH
 
 # Make the build directory writable in dev mode?
