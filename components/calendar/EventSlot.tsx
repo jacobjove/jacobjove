@@ -9,7 +9,7 @@ import { CalendarEventCreationInput } from "@/graphql/generated/inputs/calendarE
 import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
 import { getOptimisticResponseForCalendarEventCreation } from "@/graphql/generated/mutations/calendarEvent.mutations";
 import { calendarEventCreationInputSchema } from "@/graphql/generated/schemas/calendarEvent.schemas";
-import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/calendarEvents";
+import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/constants";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
