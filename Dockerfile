@@ -1,52 +1,36 @@
 ##################################
-# BASE
+# BUILDER
 ##################################
 
-FROM node:16 AS base
+FROM node:16 AS builder
 
 ENV PORT 3000
 
 ARG NODE_ENV=development
 
-# ARG DATABASE_URL="postgresql://postgres:password@localhost:5432/db?schema=public&sslmode=prefer"
-# ENV DATABASE_URL $DATABASE_URL
+ENV NODE_OPTIONS --max_old_space_size=4096
 
-# Create app directory.
-RUN mkdir -p /app
+# # Create app directory.
+# RUN mkdir -p /app
 
 # Define the working directory of the container.
 WORKDIR /app
 
-##################################
-# BUILDER
-##################################
-
-FROM base AS builder
-
-# Copy NODE_ENV from the previous stage.
-ARG NODE_ENV
-
-ENV NODE_OPTIONS --max_old_space_size=4096
-
 # Copy package.json and package-lock.json to the container.
 COPY package*.json /app/
 
-# Install dependencies.
-# Always use NODE_ENV=development so Typescript etc. are installed for building
-RUN npm set cache .npm; NODE_ENV=development npm ci || \
-  (npm cache clean -f && NODE_ENV=development npm ci)
-
-# Copy source files.
-COPY . /app
+# Install all dependencies, including dev dependencies so the project can be built.
+RUN NODE_ENV=development npm ci
 
 # Build app.
+COPY . .
 RUN NODE_ENV=${NODE_ENV} npm run build
 
 ##################################
 # RUNNER
 ##################################
 
-FROM base
+FROM node:16 as runner
 
 LABEL org.opencontainers.image.source https://github.com/iacobfred/SelfBuilder
 
@@ -54,29 +38,23 @@ LABEL org.opencontainers.image.source https://github.com/iacobfred/SelfBuilder
 ARG NODE_ENV
 ENV NODE_ENV ${NODE_ENV}
 
-# Create app directory.
-RUN mkdir -p /app
-
 # Define the working directory of the container.
 WORKDIR /app
 
 # Copy compiled JavaScript from the builder stage.
-COPY --from=builder /app/.next /app/.next
+# TODO: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
 
-# Copy prisma schema and migrations from the builder stage.
-# COPY --from=builder /app/prisma /app/
+# Copy package.json and package-lock.json to the container; remove unnecessary dependencies.
+COPY package*.json .
+RUN npm ci
 
-# Install required dependencies, and if in dev mode, make the build directory writable.
-COPY package*.json /app/
-RUN if [ "$NODE_ENV" = "development" ]; \
-  then npm ci; chmod g+w -R "/app/.next/"; \
-  else npm ci --omit=dev; fi
+# Make the build directory writable in dev mode.
+RUN if [ "$NODE_ENV" = "development" ]; then chmod g+w -R "/app/.next/"; fi
 
 # Expose Next.js web application port.
 EXPOSE 3000
-
-# Expose Node.js debug port.
-EXPOSE 9229
 
 # Switch to non-root user.
 USER www-data

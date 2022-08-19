@@ -15,7 +15,7 @@ services:
       NEXTAUTH_URL: "https://www.orega.org"
       NODE_ENV: production
     volumes:
-      - ./.env:/root/.env
+      - ./.env:/app/.env
 
   # graphql:
   #   image: nextjs:latest
