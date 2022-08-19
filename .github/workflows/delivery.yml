@@ -146,7 +146,7 @@ jobs:
           files_to_transport=(".env" "docker-compose.yml" ".config/nginx.conf")
           mkdir -p dist/
           for filepath in "${files_to_transport[@]}"; do
-            cp "$filepath" "dist/$filepath"
+            cp "$filepath" "dist/"
           done
       # - name: Deploy to Staging server
       #   # https://github.com/marketplace/actions/ssh-deploy
