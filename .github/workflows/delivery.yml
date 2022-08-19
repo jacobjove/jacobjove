@@ -17,64 +17,15 @@ on:
       - setup.sh
 
 env:
-  ADMINS: ${{ secrets.ADMINS }}
-  DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
-  ALPHA_VANTAGE_ACCESS_KEY: ${{ secrets.ALPHA_VANTAGE_ACCESS_KEY }}
-  BRAINTREE_MERCHANT_ID: ${{ secrets.BRAINTREE_MERCHANT_ID }}
-  BRAINTREE_PUBLIC_KEY: ${{ secrets.BRAINTREE_PUBLIC_KEY }}
-  BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
-  CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
-  CLOUDFLARE_PASSWORD: ${{ secrets.CLOUDFLARE_PASSWORD }}
-  CONTENT_MANAGER_EMAIL: ${{ secrets.CONTENT_MANAGER_EMAIL }}
-  CONTENT_MANAGER_PAT: ${{ secrets.CONTENT_MANAGER_PAT }}
-  ELASTIC_PASSWORD: ${{ secrets.ELASTIC_PASSWORD }}
-  EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-  EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-  EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-  EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-  NODE_ENV: prod
-  FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
-  IMGUR_CLIENT_SECRET: ${{ secrets.IMGUR_CLIENT_SECRET }}
-  POSTGRES_DB: SelfBuilder
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-  RCLONE_GDRIVE_SA_CREDENTIALS: ${{ secrets.RCLONE_GDRIVE_SA_CREDENTIALS }}
-  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  SENTRY_FRONTEND_DSN: ${{ secrets.SENTRY_FRONTEND_DSN }}
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SHA: ${{ github.sha }}
-  SOCIAL_AUTH_DISCORD_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_DISCORD_CLIENT_ID }}
-  SOCIAL_AUTH_DISCORD_KEY: ${{ secrets.SOCIAL_AUTH_DISCORD_KEY }}
-  SOCIAL_AUTH_DISCORD_SECRET: ${{ secrets.SOCIAL_AUTH_DISCORD_SECRET }}
-  SOCIAL_AUTH_FACEBOOK_KEY: ${{ secrets.SOCIAL_AUTH_FACEBOOK_KEY }}
-  SOCIAL_AUTH_FACEBOOK_SECRET: ${{ secrets.SOCIAL_AUTH_FACEBOOK_SECRET }}
-  SOCIAL_AUTH_GITHUB_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_GITHUB_CLIENT_ID }}
-  SOCIAL_AUTH_GITHUB_SECRET: ${{ secrets.SOCIAL_AUTH_GITHUB_SECRET }}
-  SOCIAL_AUTH_GOOGLE_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_GOOGLE_CLIENT_ID }}
-  SOCIAL_AUTH_GOOGLE_SECRET: ${{ secrets.SOCIAL_AUTH_GOOGLE_SECRET }}
-  SOCIAL_AUTH_TWITTER_KEY: ${{ secrets.SOCIAL_AUTH_TWITTER_KEY }}
-  SOCIAL_AUTH_TWITTER_SECRET: ${{ secrets.SOCIAL_AUTH_TWITTER_SECRET }}
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-  X_RAPIDAPI_KEY: ${{ secrets.X_RAPIDAPI_KEY }}
 
 jobs:
   push-image:
     environment: prod
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
@@ -89,6 +40,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Write dotenv file
+        uses: iamsauravsharma/create-dotenv@v1.2.1
+        # with:
+        #   env-prefix: ''  # Optional (default: '')
+        #   file-name: '.env'  # Optional (default : '.env')
+        #   directory: '.'  # Optional (default: '.')
+        # env: # env available for only this steps
+        #   IS_SERVER: true
+        #   ENV_KEY_USERNAME: admin
+        #   ENV_KEY_API_KEY: USER_API_KEY
+      - name: Fix generated dotenv file
+        run: |
+          sed -i -r 's/(^[^=-]+)\-/\1_/g' .env
+          sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
+          sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
       - name: Build image without cache
         uses: docker/build-push-action@v3
         with:
