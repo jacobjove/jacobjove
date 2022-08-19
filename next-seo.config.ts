@@ -18,7 +18,7 @@ const NextSeoConfig: DefaultSeoProps = {
   description: DESCRIPTION,
   openGraph: {
     type: "website",
-    url: "https://www.habitbuilder.com/",
+    url: "https://www.selfbuilder.com/",
     site_name: SITE_NAME,
     title: SITE_NAME,
     description: DESCRIPTION,

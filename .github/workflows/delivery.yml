@@ -30,6 +30,17 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Cache dotenv
+        id: cache-dotenv
+        uses: actions/cache@v3
+        with:
+          path: |
+            .env.development
+            .env.production
+          key: ${{ runner.os }}-primes
+      - name: Generate Prime Numbers
+        if: steps.cache-primes.outputs.cache-hit != 'true'
+        run: /generate-primes.sh -d prime-numbers
       - name: Write dotenv file
         # https://github.com/iamsauravsharma/create-dotenv
         uses: iamsauravsharma/create-dotenv@v1.2.1
