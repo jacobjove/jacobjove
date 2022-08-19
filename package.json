@@ -102,6 +102,7 @@
     "redis": "^4.2.0",
     "reflect-metadata": "^0.1.13",
     "sass": "^1.52.2",
+    "sharp": "^0.30.7",
     "type-graphql-v2-fork": "^2.0.0-alpha2",
     "typeface-open-sans": "^1.1.13",
     "use-debounce": "^7.0.1",
