@@ -10,17 +10,16 @@ ARG NODE_ENV=production
 
 ENV NODE_OPTIONS --max_old_space_size=4096
 
-# # Create app directory.
-# RUN mkdir -p /app
-
 # Define the working directory of the container.
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the container.
 COPY package*.json /app/
 
-# Install all dependencies, including dev dependencies so the project can be built.
+# Install dependencies, always including dev dependencies so the project can be built.
 RUN NODE_ENV=development npm ci
+
+ENV PATH /app/node_modules/.bin:$PATH
 
 # Build app.
 COPY . .
@@ -49,9 +48,10 @@ COPY --from=builder /app/public ./public
 # Copy package.json and package-lock.json to the container; remove unnecessary dependencies.
 COPY package*.json .
 RUN npm ci
+ENV PATH /app/node_modules/.bin:$PATH
 
-# Make the build directory writable in dev mode.
-RUN if [ "$NODE_ENV" = "development" ]; then chmod g+w -R "/app/.next/"; fi
+# Make the build directory writable in dev mode?
+# RUN if [ "$NODE_ENV" = "development" ]; then chmod g+w -R "/app/.next/"; fi
 
 # Expose Next.js web application port.
 EXPOSE 3000
