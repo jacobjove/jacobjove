@@ -104,7 +104,7 @@ jobs:
           file: ./Dockerfile
           load: false
           push: false
-          no-cache: true
+          no-cache: false
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
       - name: Run Snyk to check image for vulnerabilities

@@ -4,17 +4,6 @@ const SITE_NAME = "SelfBuilder";
 const DESCRIPTION = "Build good habits, break bad habits, and be your best self.";
 
 const NextSeoConfig: DefaultSeoProps = {
-  // openGraph: {
-  //   type: 'website',
-  //   locale: 'en_IE',
-  //   url: 'https://www.url.ie/',
-  //   site_name: 'SiteName',
-  // },
-  // twitter: {
-  //   handle: '@handle',
-  //   site: '@site',
-  //   cardType: 'summary_large_image',
-  // },
   description: DESCRIPTION,
   openGraph: {
     type: "website",
@@ -37,6 +26,11 @@ const NextSeoConfig: DefaultSeoProps = {
     //   },
     // ],
   },
+  // twitter: {
+  //   handle: '@handle',
+  //   site: '@site',
+  //   cardType: 'summary_large_image',
+  // },
   twitter: {
     handle: "@SelfBuilder",
     cardType: "summary",
