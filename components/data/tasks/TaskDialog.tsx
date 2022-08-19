@@ -182,7 +182,12 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
           >
             <Box display="flex" alignItems="center" my={1}>
               <CompletionCheckbox
-                sx={{ alignSelf: "start", alignItems: "start", minWidth: LEFT_SIDE_WIDTH }}
+                sx={{
+                  alignSelf: "start",
+                  alignItems: "start",
+                  minWidth: LEFT_SIDE_WIDTH,
+                  py: "0.2rem",
+                }}
                 checked={completed}
                 disabled={!canUpdate}
                 onClick={() => {
@@ -194,7 +199,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 descriptionConfig={{ name: "description", label: "Description" }}
                 dataTuple={[data, dispatchData]}
                 editingState={[editing, setEditing]}
-                sx={{ mt: "0.1rem" }}
               />
             </Box>
             <Box pl={LEFT_SIDE_WIDTH} fontSize={"0.9rem"}>
@@ -275,6 +279,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <Button
                 sx={{
                   fontSize: "0.9rem",
+                  textAlign: "left",
                   width: "100%",
                   textTransform: "none",
                   display: "flex",

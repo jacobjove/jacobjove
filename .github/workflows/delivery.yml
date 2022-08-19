@@ -166,7 +166,7 @@ jobs:
           echo "${files_to_transport[@]}"
           echo "Transferring files to server ..."
           scp -o StrictHostKeyChecking=no -P ${SSH_PORT:=22} -r "${files_to_transport[@]}" jacob@${SERVER_HOST}:${SERVER_TARGET}
-          echo "Starting SSH session with ${SERVER_HOST}..."
+          echo "Starting SSH session with ${SERVER_HOST}:${SERVER_TARGET} ..."
           ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST << 'ENDSSH'
             cd $SERVER_TARGET
             set -a && source .env && echo "Finished setting environment variables."

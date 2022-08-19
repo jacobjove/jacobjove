@@ -63,10 +63,10 @@ export default function TitleAndDescriptionFields<
     fontSizeRem: _descriptionFontSizeRem,
   } = descriptionConfig;
   const includeIcon = _includeIcon ?? true;
-  const titleFontSizeRem = _titleFontSizeRem || 1.5;
+  const titleFontSizeRem = _titleFontSizeRem || 1.25;
   const titleFontSize = `${titleFontSizeRem}rem`;
-  const descriptionFontSize = _descriptionFontSizeRem ?? `${titleFontSizeRem * 0.75}rem`;
-  console.log(descriptionFontSize);
+  const descriptionFontSize = `${titleFontSizeRem * 0.75}rem`;
+  console.log("Description", descriptionFontSize);
   const onKeyUp =
     _onKeyUp ??
     ((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -125,7 +125,7 @@ export default function TitleAndDescriptionFields<
             fullWidth
             variant="standard"
             InputProps={{ disableUnderline: true }}
-            sx={{ "& *": { p: 0, mt: "0.05rem", fontSize: descriptionFontSize } }}
+            sx={{ "& .MuiInput-root": { p: 0, mt: "0.05rem", fontSize: descriptionFontSize } }}
             value={data[descriptionName] ?? ""}
             onFocus={() => setDescriptionFocused(true)}
             onBlur={() => setDescriptionFocused(false)}
