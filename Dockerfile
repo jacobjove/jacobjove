@@ -14,7 +14,7 @@ ENV NODE_OPTIONS --max_old_space_size=4096
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the container.
-COPY package*.json /app/
+COPY package*.json ./
 
 # Install dependencies, always including dev dependencies so the project can be built.
 RUN NODE_ENV=development npm ci
@@ -42,9 +42,9 @@ WORKDIR /app
 
 # Copy compiled JavaScript from the builder stage.
 COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package*.json ./
-COPY —-from=builder /app/next.config.js ./
+COPY public ./public
+COPY package*.json ./
+COPY next.config.js ./
 
 RUN npm ci
 
