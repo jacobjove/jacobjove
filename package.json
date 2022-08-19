@@ -14,7 +14,7 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
-    "build": "if [ $NODE_ENV == development ]; then eslint . --fix; fi; next build",
+    "build": "next build",
     "code:generate": "npm run schema:generate",
     "cypress:open": "cypress open",
     "db:seed": "ts-node -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} scripts/seed.ts",
@@ -26,7 +26,6 @@
     "schema:generate": "for filename in graphql/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in graphql/schema/definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen schema new --definition $(basename -- $filename); done",
     "start": "next start",
     "start:dev": "next dev",
-    "start:migrate": "npm run migrate && npm run start",
     "test": "jest",
     "test:ci": "jest --ci",
     "test:coverage": "jest --coverage",
