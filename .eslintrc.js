@@ -36,7 +36,7 @@ module.exports = {
     node: true,
   },
   // https://eslint.org/docs/user-guide/configuring/configuration-files#extending-configuration-files
-  extends: ["eslint:recommended", "next"],
+  extends: ["next/core-web-vitals"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
