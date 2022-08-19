@@ -241,7 +241,6 @@ WeekViewerProps) => {
                             // included in the 2:00 slot.
                             { roundingMethod: "round" } // ceil also works
                           );
-                          // console.log("Inspecting event", event.title, event.start, event.end, diff, Math.abs(diff) < 30 && diff > 0);
                           return Math.abs(diff) < 30 && diff >= 0;
                         });
                         return (
