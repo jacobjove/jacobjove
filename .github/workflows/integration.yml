@@ -1,12 +1,5 @@
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 
-# !! WARNING !!
-# Do not modify this file directly!
-# !! WARNING !!
-#
-# It is generated from: ../workflows-src/integration.yml
-# using the script from https://github.com/mithro/actions-includes@main
-
 name: integration
 on:
   pull_request:
@@ -29,49 +22,13 @@ on:
       jobs:
         description: Comma-separated list of names of jobs to trigger
         required: false
-        default: setup-script,build,pytest,e2e,test-deploy
+        default: build,test-deploy
+
 env:
-  ADMINS: ${{ secrets.ADMINS }}
-  DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
-  ALPHA_VANTAGE_ACCESS_KEY: ${{ secrets.ALPHA_VANTAGE_ACCESS_KEY }}
-  BRAINTREE_MERCHANT_ID: ${{ secrets.BRAINTREE_MERCHANT_ID }}
-  BRAINTREE_PUBLIC_KEY: ${{ secrets.BRAINTREE_PUBLIC_KEY }}
-  BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
-  CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
-  CLOUDFLARE_PASSWORD: ${{ secrets.CLOUDFLARE_PASSWORD }}
-  CONTENT_MANAGER_EMAIL: ${{ secrets.CONTENT_MANAGER_EMAIL }}
-  CONTENT_MANAGER_PAT: ${{ secrets.CONTENT_MANAGER_PAT }}
-  ELASTIC_PASSWORD: ${{ secrets.ELASTIC_PASSWORD }}
-  EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-  EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-  EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-  EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-  FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
-  IMGUR_CLIENT_SECRET: ${IMGUR_CLIENT_SECRET}
-  POSTGRES_HOST: postgres
-  POSTGRES_DB: postgres
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
-  RCLONE_GDRIVE_SA_CREDENTIALS: ${{ secrets.RCLONE_GDRIVE_SA_CREDENTIALS }}
-  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  SENTRY_FRONTEND_DSN: ${{ secrets.SENTRY_FRONTEND_DSN }}
+  SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SHA: ${{ github.sha }}
-  SOCIAL_AUTH_DISCORD_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_DISCORD_CLIENT_ID }}
-  SOCIAL_AUTH_DISCORD_KEY: ${{ secrets.SOCIAL_AUTH_DISCORD_KEY }}
-  SOCIAL_AUTH_DISCORD_SECRET: ${{ secrets.SOCIAL_AUTH_DISCORD_SECRET }}
-  SOCIAL_AUTH_FACEBOOK_KEY: ${{ secrets.SOCIAL_AUTH_FACEBOOK_KEY }}
-  SOCIAL_AUTH_FACEBOOK_SECRET: ${{ secrets.SOCIAL_AUTH_FACEBOOK_SECRET }}
-  SOCIAL_AUTH_GITHUB_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_GITHUB_CLIENT_ID }}
-  SOCIAL_AUTH_GITHUB_SECRET: ${{ secrets.SOCIAL_AUTH_GITHUB_SECRET }}
-  SOCIAL_AUTH_GOOGLE_CLIENT_ID: ${{ secrets.SOCIAL_AUTH_GOOGLE_CLIENT_ID }}
-  SOCIAL_AUTH_GOOGLE_SECRET: ${{ secrets.SOCIAL_AUTH_GOOGLE_SECRET }}
-  SOCIAL_AUTH_TWITTER_KEY: ${{ secrets.SOCIAL_AUTH_TWITTER_KEY }}
-  SOCIAL_AUTH_TWITTER_SECRET: ${{ secrets.SOCIAL_AUTH_TWITTER_SECRET }}
-  X_RAPIDAPI_KEY: ${{ secrets.X_RAPIDAPI_KEY }}
+
 jobs:
   changed-files:
     name: Get changed files
@@ -146,7 +103,7 @@ jobs:
           context: .
           file: ./Dockerfile
           load: false
-          push: true
+          push: false
           no-cache: true
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
@@ -158,72 +115,6 @@ jobs:
         with:
           image: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
           args: --file=Dockerfile
-  pytest:
-    name: Run backend integration tests
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 3
-      matrix:
-        python-version: [3.9]
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started.
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
-        # Set health checks to wait until redis has started.
-        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
-    environment: test
-    env:
-      TESTING: true
-    steps:
-      - name: Check out main branch
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Specify Docker Compose version
-        run: |
-          echo ""
-          echo "Installed version: $(docker compose version)"
-          version=2.2.1
-          docker compose version | grep --quiet "$version" || {
-            echo "Installing Docker Compose version $version ..."
-            mkdir -p ~/.docker/cli-plugins/
-            curl -SL "https://github.com/docker/compose/releases/download/v${version}/docker-compose-linux-x86_64" -o ~/.docker/cli-plugins/docker-compose
-            chmod +x ~/.docker/cli-plugins/docker-compose
-            echo "Installed version: $(docker compose version)"
-          }
-      - name: Configure Docker Compose
-        shell: bash
-        run: |
-          echo "Configuring Docker Compose..."
-          if [[ -f docker-compose.test.yml ]]; then
-            echo "Using docker-compose.test.yml for default overrides..."
-            cp docker-compose.test.yml docker-compose.override.yml
-          fi
-          echo "Done."
-      - name: Add hosts to /etc/hosts
-        shell: bash
-        run: |
-          hosts=("postgres" "redis" "elasticsearch" "selfbuilder.dev.net")
-          echo "Updating hosts file..."
-          for host in "${hosts[@]}"; do
-            sudo echo "127.0.0.1 $host" | sudo tee -a /etc/hosts
-          done
-          echo "Done."
   test-deploy:
     name: Test deploy
     needs: [changed-files, build]

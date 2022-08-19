@@ -20,17 +20,41 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SHA: ${{ github.sha }}
-  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
 jobs:
   push-image:
-    environment: prod
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Write dotenv file
+        # https://github.com/iamsauravsharma/create-dotenv
+        uses: iamsauravsharma/create-dotenv@v1.2.1
+        with:
+          env-prefix: "_" # Optional (default: '')
+        env: # env available for only this steps
+          _AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+          _AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
+          _AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+          _AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          _SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      - name: Finalize dotenv file
+        # Make sure to test: https://sed.js.org/
+        run: |
+          echo "Merging production env vars into dotenv file..."
+          mv .env .env.tmp
+          sort -u -t '=' -k 1,1 .env.production .env.tmp > .env
+          echo "Removing leading underscores..."
+          sed -i -r 's/^_//g' .env
+          echo "Replacing hyphens with underscores in var names..."
+          sed -i -r 's/(^[^=-]+)\-/\1_/g' .env
+          echo "Making further fancy adjustments..."
+          sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
+          sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
+          echo "Finished preparing dotenv file."
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -40,21 +64,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Write dotenv file
-        uses: iamsauravsharma/create-dotenv@v1.2.1
-        # with:
-        #   env-prefix: ''  # Optional (default: '')
-        #   file-name: '.env'  # Optional (default : '.env')
-        #   directory: '.'  # Optional (default: '.')
-        # env: # env available for only this steps
-        #   IS_SERVER: true
-        #   ENV_KEY_USERNAME: admin
-        #   ENV_KEY_API_KEY: USER_API_KEY
-      - name: Fix generated dotenv file
-        run: |
-          sed -i -r 's/(^[^=-]+)\-/\1_/g' .env
-          sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
-          sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
       - name: Build image without cache
         uses: docker/build-push-action@v3
         with:
@@ -71,27 +80,37 @@ jobs:
   deploy:
     needs: [push-image]
     runs-on: ubuntu-latest
-    environment: prod
+    environment: production
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Write dotenv file
+        # https://github.com/iamsauravsharma/create-dotenv
         uses: iamsauravsharma/create-dotenv@v1.2.1
-        # with:
-        #   env-prefix: ''  # Optional (default: '')
-        #   file-name: '.env'  # Optional (default : '.env')
-        #   directory: '.'  # Optional (default: '.')
-        # env: # env available for only this steps
-        #   IS_SERVER: true
-        #   ENV_KEY_USERNAME: admin
-        #   ENV_KEY_API_KEY: USER_API_KEY
-      - name: Fix generated dotenv file
+        with:
+          env-prefix: "_" # Optional (default: '')
+        env: # env available for only this steps
+          _AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+          _AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
+          _AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+          _AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          _SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      - name: Finalize dotenv file
+        # Make sure to test: https://sed.js.org/
         run: |
+          echo "Merging production env vars into dotenv file..."
+          mv .env .env.tmp
+          sort -u -t '=' -k 1,1 .env.production .env.tmp > .env
+          echo "Removing leading underscores..."
+          sed -i -r 's/^_//g' .env
+          echo "Replacing hyphens with underscores in var names..."
           sed -i -r 's/(^[^=-]+)\-/\1_/g' .env
+          echo "Making further fancy adjustments..."
           sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
           sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
+          echo "Finished preparing dotenv file."
       - name: Prepare files to deploy
         run: |
           files_to_transport=(".env" "./docker-compose.yml")
@@ -116,6 +135,7 @@ jobs:
           DOMAIN: ${{ secrets.DOMAIN }}
           SERVER_HOST: ${{ secrets.DOMAIN }}
           SERVER_TARGET: /var/www/${{ secrets.DOMAIN }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         shell: bash
@@ -133,9 +153,4 @@ jobs:
           echo "Transferring files to server ..."
           scp -o StrictHostKeyChecking=no -P ${SSH_PORT:=22} -r "${files_to_transport[@]}" jacob@${SERVER_HOST}:${SERVER_TARGET}
           echo "Starting SSH session with ${SERVER_HOST}:${SERVER_TARGET} ..."
-          ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST << 'ENDSSH'
-            cd /var/www/orega.org
-            set -a && source .env && echo "Finished setting environment variables."
-            set +a
-            docker compose up -d
-          ENDSSH
+          ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST "cd /var/www/${DOMAIN} && set -a && source .env && set +a && docker compose up -d"
