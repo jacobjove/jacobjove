@@ -1,12 +1,15 @@
 services:
   nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
     image: ghcr.io/iacobfred/selfbuilder:latest
     depends_on:
       - mongo
     #   - graphql
     ports:
       - 3000:3000 # Next.js application
-      - 9229:9229 # Node.js debug port
     env_file:
       - ./.env
     environment:

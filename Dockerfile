@@ -6,7 +6,7 @@ FROM node:16 AS builder
 
 ENV PORT 3000
 
-ARG NODE_ENV=development
+ARG NODE_ENV=production
 
 ENV NODE_OPTIONS --max_old_space_size=4096
 
