@@ -102,9 +102,9 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          load: false
           push: false
-          no-cache: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
       - name: Run Snyk to check image for vulnerabilities

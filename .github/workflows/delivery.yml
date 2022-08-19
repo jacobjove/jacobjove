@@ -71,7 +71,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image without cache
+      - name: Build image with cache
+        # https://github.com/docker/build-push-action
         uses: docker/build-push-action@v3
         with:
           build-args: |
@@ -79,7 +80,22 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          load: false
+          push: true
+          # no-cache: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          secret-files: ENV_FILE=./.env
+          tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
+      - name: Build image without cache
+        if: ${{ failure() }}
+        # https://github.com/docker/build-push-action
+        uses: docker/build-push-action@v3
+        with:
+          build-args: |
+            NODE_ENV=production
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
           push: true
           no-cache: true
           secret-files: ENV_FILE=./.env
