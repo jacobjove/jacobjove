@@ -47,6 +47,8 @@ export type DraggedTask = { type: "task" } & Pick<Task, "id" | "rank" | "title" 
     scheduleId?: ID | null;
   };
 
+const TASK_TITLE_FONT_SIZE_REM = 0.9;
+
 const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const { user } = useUser();
   const { task, asSubtask, subtasks, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
@@ -184,15 +186,24 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               justifyContent: "space-between",
             }}
           >
-            <Box py={1}>
-              <Typography
-                sx={{
-                  fontSize: asSubtask ? "0.7rem" : "0.8rem",
-                  textTransform: "none",
-                }}
-              >
-                {task.title}
-              </Typography>
+            <Box>
+              <Box py={1}>
+                <Typography
+                  sx={{
+                    fontSize: asSubtask
+                      ? `${TASK_TITLE_FONT_SIZE_REM * 0.9}rem`
+                      : `${TASK_TITLE_FONT_SIZE_REM}rem`,
+                    textTransform: "none",
+                  }}
+                >
+                  {task.title}
+                </Typography>
+                {task.description && (
+                  <Typography fontSize={`${TASK_TITLE_FONT_SIZE_REM * 0.75}rem`}>
+                    {task.description}
+                  </Typography>
+                )}
+              </Box>
               {subtasks?.length ? (
                 <IconButton
                   title={`${subtasksExpanded ? "Collapse" : "Expand"}`}
@@ -221,7 +232,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               </IconButton>
             )}
           </Box>
-          {task.description && <Typography>{task.description}</Typography>}
         </TableCell>
         <TableCell>
           <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>

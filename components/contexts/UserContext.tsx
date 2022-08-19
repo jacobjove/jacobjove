@@ -26,13 +26,13 @@ export const UserContextProvider: FC<UserContextProviderProps> = ({ session, chi
   const email = session?.user?.email;
   const { data, loading, error } = useQuery(GET_USER, { variables: { where: { email } } });
   const contextData = { user: data?.user, loading, error };
-  console.log("Rendering UserContextProvider with user:", data, loading, error);
+  // console.log("Rendering UserContextProvider with user:", data, loading, error);
   return <UserContext.Provider value={contextData}>{children}</UserContext.Provider>;
 };
 
 export const useUser = ({ required } = { required: false }): UserContextData => {
   const { user, loading, error } = useContext(UserContext);
-  if (!user && !loading) console.log("useUser: User is not yet available!");
+  if (error) console.error("useUser error:", error);
   if (required && !user) {
     // console.error("User is required but is not set!");
   }

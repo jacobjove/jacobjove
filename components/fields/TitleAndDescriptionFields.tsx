@@ -65,8 +65,8 @@ export default function TitleAndDescriptionFields<
   const includeIcon = _includeIcon ?? true;
   const titleFontSizeRem = _titleFontSizeRem || 1.25;
   const titleFontSize = `${titleFontSizeRem}rem`;
-  const descriptionFontSize = `${titleFontSizeRem * 0.75}rem`;
-  console.log("Description", descriptionFontSize);
+  const descriptionFontSize = `${_descriptionFontSizeRem ?? titleFontSizeRem * 0.75}rem`;
+  console.log(">>>>>Description", descriptionFontSize);
   const onKeyUp =
     _onKeyUp ??
     ((event: React.KeyboardEvent<HTMLInputElement>) => {
