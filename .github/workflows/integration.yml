@@ -141,7 +141,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           build-args: |
-            NODE_ENV=prod
+            NODE_ENV=production
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
