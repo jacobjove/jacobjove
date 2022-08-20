@@ -145,9 +145,7 @@ jobs:
       - name: Finalize dotenv file
         # Make sure to test: https://sed.js.org/
         run: |
-          echo "Merging production env vars into dotenv file..."
-          mv .env .env.tmp
-          sort -u -t '=' -k 1,1 .env.production .env.tmp > .env
+          if [[ -f .env.production ]]; then echo "Merging production env vars into dotenv file..."; mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.production .env.tmp > .env; fi
           echo "Removing leading underscores..."
           sed -i -r 's/^_//g' .env
           echo "Replacing hyphens with underscores in var names..."
@@ -156,10 +154,11 @@ jobs:
           sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
           sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
           grep -P -q '^[A-Z_]+?=$' .env && echo "Found empty var name: $(grep -P '^[A-Z_]+?=$' .env)" && exit 1
+          mv .env .env.next
           echo "Finished preparing dotenv file."
       - name: Prepare files to deploy
         run: |
-          files_to_transport=(".env" "docker-compose.yml" ".config/nginx.conf")
+          files_to_transport=(".env.next" "docker-compose.yml" ".config/nginx.conf")
           mkdir -p dist/
           for filepath in "${files_to_transport[@]}"; do
             cp "$filepath" "dist/"
@@ -202,8 +201,10 @@ jobs:
           echo "Starting SSH session with ${SERVER_HOST}:${SERVER_TARGET} ..."
           ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST "
             cd /var/www/${DOMAIN} && 
+            if test -f .env; then mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.next .env.tmp > .env; fi;
+            rm .env.next;
             set -a && source .env && set +a && 
             docker compose pull && 
             docker compose up -d &&
-            if [ $RELOAD_WEBSERVER == true ]; then echo 'Reloading webserver...'; nginx -s reload; fi
+            if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi
           "
