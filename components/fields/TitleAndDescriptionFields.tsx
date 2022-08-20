@@ -53,7 +53,6 @@ export default function TitleAndDescriptionFields<
   sx,
 }: TitleAndDescriptionFieldsProps<TitlePropName, DescriptionPropName>) {
   const [editing, setEditing] = editingState;
-  // const editing = true;
   const [data, dispatchData] = dataTuple;
   const [descriptionFocused, setDescriptionFocused] = useState(false);
   const { name: titleName, label: titleLabel, fontSizeRem: _titleFontSizeRem } = titleConfig;

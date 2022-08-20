@@ -22,6 +22,21 @@ env:
   SHA: ${{ github.sha }}
 
 jobs:
+  changed-files:
+    name: Get changed files
+    runs-on: ubuntu-latest
+    outputs:
+      added-files: ${{ steps.changed-files.outputs.added_files }}
+      deleted-files: ${{ steps.changed-files.outputs.deleted_files }}
+      modified-files: ${{ steps.changed-files.outputs.modified_files }}
+      all-changed-files: ${{ steps.changed-files.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v27
   push-image:
     environment: production
     runs-on: ubuntu-latest
@@ -101,7 +116,7 @@ jobs:
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
   deploy:
-    needs: [push-image]
+    needs: [changed-files, push-image]
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -163,6 +178,7 @@ jobs:
         id: deploy-image
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
+          RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
           SERVER_HOST: ${{ secrets.DOMAIN }}
           SERVER_TARGET: /var/www/${{ secrets.DOMAIN }}
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -183,4 +199,10 @@ jobs:
           echo "Transferring files to server ..."
           scp -o StrictHostKeyChecking=no -P ${SSH_PORT:=22} -r "${files_to_transport[@]}" jacob@${SERVER_HOST}:${SERVER_TARGET}
           echo "Starting SSH session with ${SERVER_HOST}:${SERVER_TARGET} ..."
-          ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST "cd /var/www/${DOMAIN} && set -a && source .env && set +a && docker compose pull && docker compose up -d"
+          ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST "
+            cd /var/www/${DOMAIN} && 
+            set -a && source .env && set +a && 
+            docker compose pull && 
+            docker compose up -d &&
+            if [ $RELOAD_WEBSERVER == true ]; then echo "Reloading webserver..."; nginx -s reload; fi
+          "
