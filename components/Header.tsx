@@ -149,13 +149,15 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                 </Link>
               </Box>
             ))}
-            <IconButton
-              sx={{ ml: 1 }}
-              onClick={() => setColorMode(colorMode === "light" ? "dark" : "light")}
-              color="inherit"
-            >
-              {colorMode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
+            {user?.isAdmin && (
+              <IconButton
+                sx={{ ml: 1 }}
+                onClick={() => setColorMode(colorMode === "light" ? "dark" : "light")}
+                color="inherit"
+              >
+                {colorMode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+            )}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             {(session && (

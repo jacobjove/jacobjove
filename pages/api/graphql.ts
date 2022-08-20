@@ -40,7 +40,6 @@ const getApolloServerHandler = async () => {
       context: createGqlContext,
       schema: await buildSchema({
         resolvers: Object.values(resolvers) as unknown as NonEmptyArray<CallableFunction>,
-        // resolvers: [__dirname + "/**/*.resolver.{ts,js}"],
         emitSchemaFile: isProd ? false : { path: `${process.env.BASE_DIR}/graphql/schema.gql` },
         globalMiddlewares: [TypegooseMiddleware],
         validate: false,
