@@ -155,6 +155,7 @@ jobs:
           echo "Making further fancy adjustments..."
           sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
           sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
+          grep -P -q '^[A-Z_]+?=$' .env && echo "Found empty var name: $(grep -P '^[A-Z_]+?=$' .env)" && exit 1
           echo "Finished preparing dotenv file."
       - name: Prepare files to deploy
         run: |
