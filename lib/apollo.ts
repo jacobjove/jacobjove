@@ -61,6 +61,7 @@ function createApolloClient() {
     ssrMode: typeof window === "undefined",
     // https://www.apollographql.com/docs/react/api/link/introduction/#additive-composition
     link: from([scalarsLink, errorLink, debounceLink, terminalLink]),
+    // TODO: https://www.apollographql.com/docs/apollo-server/performance/cache-backends/#configuring-external-caching
     cache: new InMemoryCache({
       //   typePolicies: {
       //     Query: {

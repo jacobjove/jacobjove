@@ -46,6 +46,7 @@ const getApolloServerHandler = async () => {
       }),
       debug: !isProd,
       introspection: !isProd,
+      cache: "bounded",
     });
     await apolloServer.start();
     global.apolloServerHandler = apolloServer.createHandler({ path: "/api/graphql" });

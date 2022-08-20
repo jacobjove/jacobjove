@@ -50,8 +50,8 @@ RUN npm ci
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-# Make the build directory writable in dev mode?
-# RUN if [ "$NODE_ENV" = "development" ]; then chmod g+w -R "/app/.next/"; fi
+RUN chown -R www-data:www-data ./.next
+# chmod g+w -R ./.next
 
 # Expose Next.js web application port.
 EXPOSE 3000
