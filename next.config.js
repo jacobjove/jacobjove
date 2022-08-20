@@ -7,6 +7,8 @@ process.env.BASE_DIR = __dirname;
 const withPWA = require("next-pwa");
 
 const plugins = [
+  // TODO
+  // https://github.com/shadowwalker/next-pwa/issues/371
   withPWA({
     pwa: {
       disable: process.env.NODE_ENV === "development",
@@ -15,8 +17,6 @@ const plugins = [
   }),
 ];
 
-// TODO
-// https://github.com/shadowwalker/next-pwa/issues/371
 if (process.env.NODE_ENV !== "development") {
   // https://flaviocopes.com/nextjs-analyze-app-bundle/
   const withBundleAnalyzer = require("@next/bundle-analyzer")({
