@@ -4,7 +4,12 @@ import { FC } from "react";
 type AppLayoutProps = Omit<LayoutProps, "inApp">;
 
 const AppLayout: FC<AppLayoutProps> = (props: AppLayoutProps) => {
-  return <Layout {...props} inApp={true} />;
+  const { children, ...rest } = props;
+  return (
+    <Layout {...rest} inApp={true}>
+      {children}
+    </Layout>
+  );
 };
 
 export default AppLayout;

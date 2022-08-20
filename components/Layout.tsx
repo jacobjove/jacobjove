@@ -1,7 +1,7 @@
 // import TaskDialog from "@/components/data/tasks/TaskDialog";
 import AppDrawer from "@/components/AppDrawer";
 import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
-import DeviceContext from "@/components/contexts/DeviceContext";
+import { useDeviceData } from "@/components/contexts/DeviceContext";
 import { useNewCalendarEventDialog } from "@/components/contexts/NewCalendarEventDialogContext";
 import { useNewTaskDialog } from "@/components/contexts/NewTaskDialogContext";
 import TaskCreationDialog from "@/components/data/tasks/TaskCreationDialog";
@@ -17,7 +17,7 @@ import { parseCookies, setCookie } from "nookies";
 // import SpeedDial from "@mui/material/SpeedDial";
 // import SpeedDialAction from "@mui/material/SpeedDialAction";
 // import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import { FC, ReactNode, useContext, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -31,7 +31,7 @@ const FOOTER_HEIGHT_REM = 3;
 const DRAWER_EXPANDED_COOKIE_NAME = "drawerExpanded";
 
 const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) => {
-  const { isDesktop } = useContext(DeviceContext);
+  const { isDesktop } = useDeviceData();
   const cookies = parseCookies();
   const drawerExpandedCookieValue = cookies[DRAWER_EXPANDED_COOKIE_NAME];
   const drawerExpanded = drawerExpandedCookieValue
@@ -85,8 +85,8 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
     <>
       <div
         style={{
-          height: "100vh",
-          maxHeight: "100vh",
+          height: "100%",
+          maxHeight: "100%",
           position: "relative",
           display: "flex",
           flexDirection: "column",
@@ -100,12 +100,12 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
             position: "relative",
             display: "flex",
             flexGrow: 1,
-            height: `calc(100vh - ${headerHeight})`,
-            maxHeight: `calc(100vh - ${headerHeight})`,
+            height: `calc(100% - ${headerHeight})`,
+            maxHeight: `calc(100% - ${headerHeight})`,
           }}
         >
           {inApp && (
-            <div style={{ position: "sticky", top: 0, maxHeight: "100vh" }}>
+            <div style={{ position: "sticky", top: 0, maxHeight: "100%" }}>
               {/* Note: AppDrawer uses absolute positioning. */}
               <AppDrawer open={appDrawerOpen} setOpen={setAppDrawerOpen} />
             </div>

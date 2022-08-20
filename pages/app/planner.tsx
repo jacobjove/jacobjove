@@ -2,6 +2,7 @@ import GoalsBox from "@/components/actions/GoalsBox";
 import HabitsBox from "@/components/actions/HabitsBox";
 import AppLayout from "@/components/AppLayout";
 import CalendarViewer from "@/components/calendar";
+import { useDeviceData } from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 // import MantrasBox from "@/components/data/mantras/MantrasBox";
 import TasksBox from "@/components/data/tasks/TasksBox";
@@ -66,7 +67,10 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
   const { user } = useUser({ required: true });
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   // const { loading: _loading, error: _error, data } = useQuery<PlannerPageData>(QUERY);
-  const displaySideBySide = useMediaQuery(json2mq({ minWidth: "1000px" }));
+
+  const isLessThan1000pxWide = useMediaQuery(json2mq({ minWidth: "1000px" }));
+  const { isLandscape } = useDeviceData();
+  const displaySideBySide = isLandscape || isLessThan1000pxWide;
 
   // const { calendarEvents, calendars, tasks } = data;
   const { calendars, calendarEvents } = user ?? {};
@@ -96,7 +100,8 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
         height={"100%"}
         maxWidth={"100%"}
         maxHeight={"100%"}
-        p={"0.5rem"}
+        px={"0.5rem"}
+        py={"0.25rem"}
         sx={{ "&> *": { m: "0.25rem" } }}
       >
         <Card

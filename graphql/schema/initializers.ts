@@ -10,7 +10,7 @@ export const initializeTaskRank = (user: UserFragment): number => {
 export const initializeCalendarEventCalendarId = (user: UserFragment): string => {
   let defaultCalendarId = user.settings.defaultCalendarId;
   if (!defaultCalendarId) {
-    console.error("No default calendar id found!");
+    console.error("No default calendar id found for user", user);
     defaultCalendarId = user.calendars?.[0]?.id ?? "";
   }
   return defaultCalendarId;

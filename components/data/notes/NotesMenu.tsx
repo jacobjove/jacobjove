@@ -1,4 +1,4 @@
-import DeviceContext from "@/components/contexts/DeviceContext";
+import { useDeviceData } from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import SearchDialog from "@/components/search/SearchDialog";
 import { noteFragment } from "@/graphql/generated/fragments/note.fragment";
@@ -40,7 +40,7 @@ import partition from "lodash/partition";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Dispatch, useContext, useEffect, useMemo, useState } from "react";
+import { Dispatch, useEffect, useMemo, useState } from "react";
 
 const SEARCH_QUERY = gql`
   query GetNotes($where: NoteWhereInput!, $orderBy: [NoteOrderByWithRelationInput!]) {
@@ -89,7 +89,7 @@ export default function NotesMenu({
       : notes;
   }, [selectedNotebook, notes]);
   const router = useRouter();
-  const { isMobile } = useContext(DeviceContext);
+  const { isMobile } = useDeviceData();
 
   const [addingNewNotebook, setAddingNewNotebook] = useState(false);
   const [newNotebookName, setNewNotebookName] = useState("");

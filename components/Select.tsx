@@ -1,8 +1,8 @@
-import DeviceContext from "@/components/contexts/DeviceContext";
+import { useDeviceData } from "@/components/contexts/DeviceContext";
 import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
 import _Select, { SelectChangeEvent, SelectProps as _SelectProps } from "@mui/material/Select";
-import { ChangeEvent, FC, ReactElement, useContext } from "react";
+import { ChangeEvent, FC, ReactElement } from "react";
 
 // prettier-ignore
 type Option = {
@@ -28,7 +28,7 @@ type SelectProps = Omit<_SelectProps, "children" | "onChange"> & {
 
 const Select: FC<SelectProps> = ({ options, onChange, ...props }) => {
   const { name, id } = props.inputProps || {};
-  const { isMobile } = useContext(DeviceContext);
+  const { isMobile } = useDeviceData();
   const onSelectMap = Object.fromEntries(
     options.map((option) => {
       // Value is guaranteed to be a string and is accessible in the change events

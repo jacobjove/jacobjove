@@ -142,7 +142,7 @@ const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
     <div
       style={{
         display: "flex",
-        height: "100vh",
+        height: "100%",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",

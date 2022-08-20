@@ -158,6 +158,9 @@ const DayViewer: FC<DayViewerProps> = ({
   useEffect(() => {
     const scrollableDiv = scrollableDivRef.current;
     if (!scrollableDiv) console.error("NO SCROLLABLE DIV");
+    const windowHeight = window.innerHeight;
+    console.log("scrollOffsetPx", scrollOffsetPx);
+    console.log("windowHeight", windowHeight);
     if (scrollableDiv) scrollableDiv.scrollTo({ top: scrollOffsetPx, behavior: "smooth" });
   }, [scrollOffsetPx]);
   console.log("Rendering DayViewer!");
@@ -199,7 +202,7 @@ const DayViewer: FC<DayViewerProps> = ({
             display="flex"
             ref={scrollableDivRef}
             position="relative"
-            maxHeight={"100vh"}
+            maxHeight={"100%"}
             className="scrollable no-scrollbar"
             sx={{
               scrollBehavior: "smooth",

@@ -1,7 +1,7 @@
-import DeviceContext from "@/components/contexts/DeviceContext";
 // import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 // import BentoIcon from "@mui/icons-material/Bento";
 // import BookIcon from "@mui/icons-material/Book";
+import { useDeviceData } from "@/components/contexts/DeviceContext";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -25,7 +25,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, Fragment, ReactNode, useContext } from "react";
+import { FC, Fragment, ReactNode } from "react";
 
 type MenuItem = [string, string, typeof DashboardIcon, boolean];
 
@@ -119,7 +119,7 @@ const AppDrawer: FC<AppDrawerProps> = (props: AppDrawerProps) => {
   const { open, setOpen } = props;
   const router = useRouter();
   const theme = useTheme();
-  const { isMobile } = useContext(DeviceContext);
+  const { isMobile } = useDeviceData();
   const handleDrawerOpen = () => {
     setOpen(true);
   };

@@ -1,5 +1,5 @@
 import AppLayout from "@/components/AppLayout";
-import DeviceContext from "@/components/contexts/DeviceContext";
+import { useDeviceData } from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import NotesMenu from "@/components/data/notes/NotesMenu";
 import NoteViewer from "@/components/data/notes/NoteViewer";
@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { NextSeo } from "next-seo";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 interface NotesPageProps {
   session: Session | null;
@@ -37,7 +37,7 @@ interface NotesPageData {
 
 const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const { user } = useUser();
-  const { isMobile } = useContext(DeviceContext);
+  const { isMobile } = useDeviceData();
   // const notebooks = user?.notebooks;
   const { data, loading: loadingNotes, error } = useQuery<NotesPageData>(QUERY);
   const _notebooks = user?.notebooks ?? [];
