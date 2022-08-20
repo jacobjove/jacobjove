@@ -45,13 +45,18 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
   useEffect(() => {
     const handleOrientationChange = function (e: Event) {
-      setIsLandscape((e.target as ScreenOrientation).type.toString().includes("landscape"));
+      const newOrientation = window.screen.orientation?.type;
+      if (newOrientation) {
+        setIsLandscape(newOrientation.toString().includes("landscape"));
+      } else {
+        console.error("Could not determine orientation:", newOrientation, e);
+      }
     };
     if (typeof window !== "undefined") {
-      window.screen.orientation.addEventListener("change", handleOrientationChange);
+      window.addEventListener("orientationchange", handleOrientationChange);
     }
     return function cleanup() {
-      window.screen.orientation.removeEventListener("change", handleOrientationChange);
+      window?.removeEventListener("orientationchange", handleOrientationChange);
     };
   }, []);
 
