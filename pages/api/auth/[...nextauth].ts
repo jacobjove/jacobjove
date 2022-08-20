@@ -1,6 +1,5 @@
-import { User } from "@/graphql/generated/models/user.model";
-import { UPSERT_USER } from "@/graphql/generated/mutations/user.mutations";
-import { initializeApollo } from "@/lib/apollo";
+import AccountModel from "@/graphql/generated/models/account.model";
+import UserModel from "@/graphql/generated/models/user.model";
 import { NoUndefinedField } from "@/types/global";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
@@ -161,26 +160,30 @@ const callbacks: CallbacksOptions = {
           accessTokenExpiry: new Date(freshToken.accessTokenExpiry),
           refreshToken: freshToken.refreshToken,
         };
-        const apolloClient = initializeApollo();
-        apolloClient.mutate<{ upsertUser: Partial<User> }>({
-          mutation: UPSERT_USER,
-          variables: {
-            where: { email: token.email },
-            data: {
-              name: token.name,
-              email: token.email,
-              lastLogin: new Date(),
-              image: token.picture,
-              // accounts: {
-              //   upsert: {
-              //     where: { provider_remoteId },
-              //     create: { ...provider_remoteId, ...commonAccountData },
-              //     update: commonAccountData,
-              //   },
-              // },
-            },
+        const user = await UserModel.findOneAndUpdate(
+          { email: token.email },
+          {
+            name: token.name,
+            email: token.email,
+            lastLogin: new Date(),
+            image: token.picture,
           },
-        });
+          {
+            upsert: true,
+            new: true,
+            returnDocument: "after",
+          }
+        );
+        // TODO: avoid awaiting?
+        if (!user.accounts?.some((a) => a.provider === freshToken.provider)) {
+          await AccountModel.create({
+            ...provider_remoteId,
+            ...commonAccountData,
+            userId: user._id,
+          }).then(async (account) => {
+            await UserModel.updateOne({ email: token.email }, { $push: { accounts: account } });
+          });
+        }
       }
     }
     // Return the previous token if the access token has not expired yet.
