@@ -124,14 +124,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Cache dotenv
-        id: cache-dotenv
-        uses: actions/cache@v3
-        with:
-          path: .env
-          key: env-vars-${{ hashFiles('.env.*') }}
       - name: Write dotenv file
-        if: steps.cache-dotenv.outputs.cache-hit != 'true'
         # https://github.com/iamsauravsharma/create-dotenv
         uses: iamsauravsharma/create-dotenv@v1.2.1
         with:
@@ -145,7 +138,7 @@ jobs:
       - name: Finalize dotenv file
         # Make sure to test: https://sed.js.org/
         run: |
-          if [[ -f .env.production ]]; then echo "Merging production env vars into dotenv file..."; mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.production .env.tmp > .env; fi
+          if [[ -f .env.production ]]; then echo "Merging production env vars into dotenv file..."; mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.tmp .env.production > .env; fi
           echo "Removing leading underscores..."
           sed -i -r 's/^_//g' .env
           echo "Replacing hyphens with underscores in var names..."

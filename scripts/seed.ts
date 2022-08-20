@@ -1,6 +1,6 @@
 /* eslint-disable import/order */
 // organize-imports-ignore
-// NOTE: reflect-metadata must be imported at the top!
+// NOTE: reflect-metadata must be imported at the top.
 import "reflect-metadata";
 
 import * as dotenv from "dotenv";
