@@ -195,7 +195,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST "
             cd /var/www/${DOMAIN} && 
             if test -f .env; then mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.next .env.tmp > .env; fi;
-            rm .env.next;
+            rm .env.next; rm .env.tmp;
             set -a && source .env && set +a && 
             docker compose pull && 
             docker compose up -d &&
