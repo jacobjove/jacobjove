@@ -37,6 +37,16 @@ export type Settings = {
       return;
     })
 )
+@post<User>("findOneAndUpdate", async function (result) {
+  const rawResult = result as unknown as {
+    value: typeof result;
+    lastErrorObject: {
+      updatedExisting: boolean;
+    };
+  };
+  if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
+  definition?.hooks?.save?.post?.(rawResult.value);
+})
 export class User extends Model {
   // declare readonly __types__: {
   //   fragment: UserFragment;

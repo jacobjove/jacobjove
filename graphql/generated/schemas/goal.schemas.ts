@@ -4,6 +4,7 @@ import { GoalCreationInput, GoalUpdateInput } from "@/graphql/generated/inputs/g
 import { date, InferType, object, SchemaOf, string } from "yup";
 
 export const goalCreationInputSchema: SchemaOf<GoalCreationInput> = object({
+  userId: string().required(),
   habitId: string().nullable().notRequired(),
   parentId: string().nullable().notRequired(),
   description: string().required(),
@@ -11,6 +12,7 @@ export const goalCreationInputSchema: SchemaOf<GoalCreationInput> = object({
 });
 
 export const goalUpdateInputSchema: SchemaOf<GoalUpdateInput> = object({
+  userId: string().notRequired(),
   habitId: string().nullable().notRequired(),
   parentId: string().nullable().notRequired(),
   description: string().notRequired(),

@@ -7,6 +7,7 @@ export const goalFragment = gql`
   fragment GoalFragment on Goal {
     __typename
     id
+    userId
     habitId
     parentId
     description
@@ -23,6 +24,7 @@ export type GoalFragment = Pick<
   | "createdAt"
   | "updatedAt"
   | "archivedAt"
+  | "userId"
   | "habitId"
   | "parentId"
   | "description"

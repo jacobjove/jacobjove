@@ -24,6 +24,16 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
       return;
     })
 )
+@post<Goal>("findOneAndUpdate", async function (result) {
+  const rawResult = result as unknown as {
+    value: typeof result;
+    lastErrorObject: {
+      updatedExisting: boolean;
+    };
+  };
+  if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
+  definition?.hooks?.save?.post?.(rawResult.value);
+})
 export class Goal extends Model {
   // declare readonly __types__: {
   //   fragment: GoalFragment;
@@ -34,6 +44,10 @@ export class Goal extends Model {
   //     delete: { deleteGoal: GoalFragment };
   //   };
   // }
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
+  @Property({ required: true })
+  userId!: string;
+
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   @Property({ required: false, default: null })
   habitId?: string | null;

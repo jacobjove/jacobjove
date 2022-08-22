@@ -13,6 +13,7 @@ import {
   GoalUpsertionArgs,
 } from "@/graphql/generated/args/goal.args";
 import GoalModel, { Goal } from "@/graphql/generated/models/goal.model";
+import UserModel from "@/graphql/generated/models/user.model";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";
@@ -52,6 +53,10 @@ export class GoalResolver {
     @TypeGraphQL.Args() args: GoalCreationArgs
   ) {
     const goal = await GoalModel.create(args.data);
+    if (goal) {
+      // NOTE: This update fails if it's not awaited.
+      await UserModel.findOneAndUpdate({ _id: goal.userId }, { $push: { goals: { ...goal } } });
+    }
     return goal;
   }
 
@@ -72,6 +77,14 @@ export class GoalResolver {
   ) {
     const filter = convertFilterForMongo(args.where);
     const goal = await GoalModel.findOneAndUpdate(filter, args.data, { returnDocument: "after" });
+    // NOTE: This update fails if it's not awaited.
+    goal &&
+      (await UserModel.findOneAndUpdate(
+        { _id: goal.userId, "goals._id": goal._id },
+        {
+          $set: { "goals.$": { ...goal } },
+        }
+      ));
     return goal;
   }
 

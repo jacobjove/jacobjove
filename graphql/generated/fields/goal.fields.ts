@@ -9,6 +9,12 @@ type FieldKey = Exclude<
 >;
 
 const fields: Record<FieldKey, Field> = {
+  userId: {
+    label: "userId",
+    type: "ID",
+    required: true,
+    widget: {},
+  },
   habitId: {
     label: "habitId",
     type: "ID",

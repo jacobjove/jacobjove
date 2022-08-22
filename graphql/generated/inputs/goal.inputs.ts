@@ -6,6 +6,9 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
 
 @TypeGraphQL.InputType()
 export class GoalCreationInput {
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
+  userId!: string;
+
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   habitId?: string | null | undefined;
 
@@ -21,6 +24,9 @@ export class GoalCreationInput {
 
 @TypeGraphQL.InputType()
 export class GoalUpdateInput {
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  userId?: string | undefined;
+
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   habitId?: string | null | undefined;
 
@@ -38,6 +44,9 @@ export class GoalUpdateInput {
 export class GoalWhereInput extends WhereInput {
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   id?: ID | undefined;
+
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  userId?: string | null | undefined;
 
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   habitId?: string | undefined;

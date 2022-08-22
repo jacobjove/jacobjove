@@ -1,4 +1,5 @@
 import { useUser } from "@/components/contexts/UserContext";
+import { useUpdateUser } from "@/graphql/generated/hooks/user.hooks";
 import { createTheme, PaletteMode } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { ThemeProvider } from "@mui/material/styles";
@@ -93,6 +94,7 @@ const getDesignTokens = (mode: PaletteMode) => {
 
 export const ColorModeContextProvider: FC = ({ children }) => {
   const { user } = useUser();
+  const [updateUser] = useUpdateUser();
 
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const prefersLightMode = useMediaQuery("(prefers-color-scheme: light)");
@@ -114,8 +116,21 @@ export const ColorModeContextProvider: FC = ({ children }) => {
       setMode(selectedColorMode);
     } else {
       setMode(preferredColorMode);
+      if (user && !user.settings.colorMode) {
+        updateUser.current?.({
+          variables: {
+            where: { id: user.id },
+            data: {
+              settings: {
+                ...user.settings,
+                colorMode: preferredColorMode,
+              },
+            },
+          },
+        });
+      }
     }
-  }, [selectedColorMode, preferredColorMode, setMode]);
+  }, [selectedColorMode, preferredColorMode, setMode, user, updateUser]);
 
   return (
     <ColorModeContext.Provider value={colorModeState}>

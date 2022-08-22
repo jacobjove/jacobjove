@@ -367,6 +367,7 @@ type Goal {
   id: ObjectId!
   parentId: ObjectId
   updatedAt: DateTimeISO!
+  userId: ObjectId!
 }
 
 input GoalCreationInput {
@@ -374,6 +375,7 @@ input GoalCreationInput {
   description: String!
   habitId: ObjectId
   parentId: ObjectId
+  userId: ObjectId!
 }
 
 input GoalUpdateInput {
@@ -381,6 +383,7 @@ input GoalUpdateInput {
   description: String
   habitId: ObjectId
   parentId: ObjectId
+  userId: ObjectId
 }
 
 input GoalWhereInput {
@@ -390,6 +393,7 @@ input GoalWhereInput {
   id: ObjectId
   parentId: ObjectId
   updatedAt: DateTimeISO
+  userId: ObjectId
 }
 
 input GoalWhereUniqueInput {

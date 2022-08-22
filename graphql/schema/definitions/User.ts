@@ -112,7 +112,7 @@ const definition: Definition<UserFields> = {
         return next();
       },
       post: async (user: any) => {
-        console.log(">>>>>>> User save.post");
+        console.error(">>>>>>> User save.post");
         let saveChanges = false;
         if (!user.calendars?.length) {
           const defaultCalendar = await CalendarModel.create({

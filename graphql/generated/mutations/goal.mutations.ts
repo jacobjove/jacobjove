@@ -50,6 +50,14 @@ export const updateCacheAfterCreatingGoal: MutationHookOptions<
         fragmentName: "NewGoal",
       });
       cache.modify({
+        id: `User:${createGoal.userId}`,
+        fields: {
+          goals(existingGoalRefs = []) {
+            return [...existingGoalRefs, newGoalRef];
+          },
+        },
+      });
+      cache.modify({
         fields: {
           goals(existingGoals = []) {
             return [...existingGoals, newGoalRef];

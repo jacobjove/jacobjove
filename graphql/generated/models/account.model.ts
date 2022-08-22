@@ -24,6 +24,16 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
       return;
     })
 )
+@post<Account>("findOneAndUpdate", async function (result) {
+  const rawResult = result as unknown as {
+    value: typeof result;
+    lastErrorObject: {
+      updatedExisting: boolean;
+    };
+  };
+  if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
+  definition?.hooks?.save?.post?.(rawResult.value);
+})
 export class Account extends Model {
   // declare readonly __types__: {
   //   fragment: AccountFragment;

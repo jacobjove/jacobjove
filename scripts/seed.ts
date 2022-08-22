@@ -13,14 +13,21 @@ import tasksData from "@/graphql/seeds/tasks";
 import TaskModel from "@/graphql/generated/models/task.model";
 import CalendarEventModel from "@/graphql/generated/models/calendarEvent.model";
 import CalendarModel from "@/graphql/generated/models/calendar.model";
+import AccountModel from "@/graphql/generated/models/account.model";
+
+const START_FRESH = true;
+const SEED_RAW_USER_ONLY = true;
 
 async function main() {
   await mongoosePromise;
 
   // Delete extant data.
   await UserModel.deleteMany({});
+  await AccountModel.deleteMany({});
   await CalendarEventModel.deleteMany({});
   await TaskModel.deleteMany({});
+
+  if (START_FRESH) return;
 
   UserModel.insertMany(usersData);
   const adminEmail = process.env.ADMIN_USER || `test@gmail.com`;
@@ -32,46 +39,49 @@ async function main() {
   let user = await UserModel.create(adminData);
   if (!user) throw new Error("Failed to create admin user");
 
-  const tasks = await Promise.all(
-    tasksData.map(async (_) => {
-      const { subtasks, ...taskData } = _;
-      const task = await TaskModel.create({
-        ...taskData,
-        userId: user._id,
-      });
-      subtasks?.forEach(async (_) => {
-        await TaskModel.create({
-          ..._,
-          parentId: task._id,
+  if (SEED_RAW_USER_ONLY) {
+    console.log("Seeded raw user only.");
+    return;
+  } else {
+    const tasks = await Promise.all(
+      tasksData.map(async (_) => {
+        const { subtasks, ...taskData } = _;
+        const task = await TaskModel.create({
+          ...taskData,
           userId: user._id,
         });
-      });
-      return task;
-    })
-  );
+        subtasks?.forEach(async (_) => {
+          await TaskModel.create({
+            ..._,
+            parentId: task._id,
+            userId: user._id,
+          });
+        });
+        return task;
+      })
+    );
 
-  const calendar = await CalendarModel.findOne({ userId: user._id });
-  if (!calendar?._id) throw new Error("Failed to find calendar");
+    const calendar = await CalendarModel.findOne({ userId: user._id });
+    if (!calendar?._id) throw new Error("Failed to find calendar");
 
-  const calendarEvents = await Promise.all([
-    CalendarEventModel.create({
-      userId: user._id,
-      calendarId: calendar._id,
-      title: "Test Event",
-      start: new Date(),
-    }),
-  ]);
+    const calendarEvents = await Promise.all([
+      CalendarEventModel.create({
+        userId: user._id,
+        calendarId: calendar._id,
+        title: "Test Event",
+        start: new Date(),
+      }),
+    ]);
 
-  user = (await UserModel.findOneAndUpdate(
-    { email: adminEmail },
-    {
-      tasks,
-      calendarEvents,
-    },
-    { returnDocument: "after" }
-  )) as typeof user;
-
-  console.error(calendarEvents);
+    user = (await UserModel.findOneAndUpdate(
+      { email: adminEmail },
+      {
+        tasks,
+        calendarEvents,
+      },
+      { returnDocument: "after" }
+    )) as typeof user;
+  }
 
   // for (const taskData of tasksData) {
   //   const { subtasks, ...rest } = taskData;

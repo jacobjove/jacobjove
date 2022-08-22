@@ -160,7 +160,7 @@ const callbacks: CallbacksOptions = {
           accessTokenExpiry: new Date(freshToken.accessTokenExpiry),
           refreshToken: freshToken.refreshToken,
         };
-        const user = await UserModel.findOneAndUpdate(
+        const userUpsertResult = await UserModel.findOneAndUpdate(
           { email: token.email },
           {
             name: token.name,
@@ -172,8 +172,16 @@ const callbacks: CallbacksOptions = {
             upsert: true,
             new: true,
             returnDocument: "after",
+            runValidators: true,
+            setDefaultsOnInsert: true,
+            rawResult: true,
           }
         );
+        const user = userUpsertResult.value;
+        if (!user) throw new Error("Failed to upsert user!");
+        console.log();
+        console.log(">>>", user);
+        console.log();
         // TODO: avoid awaiting?
         if (!user.accounts?.some((a) => a.provider === freshToken.provider)) {
           await AccountModel.create({

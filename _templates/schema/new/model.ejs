@@ -27,6 +27,19 @@ export type <%= h.changeCase.pascal(fieldName) %> = {
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 @pre<<%= Name %>>("save", definition?.hooks?.save?.pre ?? (async function (next) { return next() }))
 @post<<%= Name %>>("save", definition?.hooks?.save?.post ?? (async (_instance) => { return; }))
+@post<<%= Name %>>(
+  "findOneAndUpdate",
+  async function (result) {
+    const rawResult = result as unknown as {
+      value: typeof result;
+      lastErrorObject: {
+        updatedExisting: boolean;
+      }
+    };
+    if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
+    definition?.hooks?.save?.post?.(rawResult.value);
+  }
+)
 export class <%= Name %> extends Model {
   // declare readonly __types__: {
   //   fragment: <%= Name %>Fragment;

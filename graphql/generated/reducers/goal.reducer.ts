@@ -13,7 +13,9 @@ export function initializeGoalData(
   data: Partial<GoalData>,
   user?: UserFragment | null | undefined
 ): Partial<GoalData> {
+  if (!user) return data;
   return {
+    userId: user.id,
     description: "",
     ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
