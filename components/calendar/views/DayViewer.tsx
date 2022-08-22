@@ -236,7 +236,7 @@ const DayViewer: FC<DayViewerProps> = ({
                         // other elements in the slot.
                         if (e.target === e.currentTarget) {
                           const calendarId = user?.settings.defaultCalendarId as ID; // TODO
-                          if (!calendarId) throw new Error("No default calendar");
+                          if (!calendarId) throw new Error("DayViewer: No default calendar");
                           dispatchNewCalendarEventData({
                             field: "init",
                             value: {

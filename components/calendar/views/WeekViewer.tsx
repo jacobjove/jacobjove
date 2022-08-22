@@ -256,7 +256,8 @@ WeekViewerProps) => {
                                 if (e.target === e.currentTarget) {
                                   const userId = user?.id as ID;
                                   const calendarId = user?.settings.defaultCalendarId;
-                                  if (!calendarId) throw new Error("No default calendar id");
+                                  if (!calendarId)
+                                    throw new Error("WeekViewer: No default calendar id");
                                   dispatchNewCalendarEventData({
                                     field: "init",
                                     value: {

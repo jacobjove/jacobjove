@@ -92,23 +92,30 @@ const getDesignTokens = (mode: PaletteMode) => {
 };
 
 export const ColorModeContextProvider: FC = ({ children }) => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const { user } = useUser();
-  const initialColorMode = (user?.settings?.colorMode ?? DEFAULT_COLOR_MODE) as PaletteMode;
-  const colorModeState = useState<PaletteMode>(initialColorMode);
-  const [mode, setMode] = colorModeState;
 
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersLightMode = useMediaQuery("(prefers-color-scheme: light)");
+
+  const selectedColorMode = user?.settings?.colorMode as PaletteMode | undefined;
+  const preferredColorMode: PaletteMode = prefersDarkMode
+    ? "dark"
+    : prefersLightMode
+    ? "light"
+    : DEFAULT_COLOR_MODE;
+
+  const colorModeState = useState<PaletteMode>(selectedColorMode ?? preferredColorMode);
+
+  const [mode, setMode] = colorModeState;
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   useEffect(() => {
-    if (user?.settings?.colorMode) {
-      setMode(user.settings.colorMode as PaletteMode);
-    } else if (prefersDarkMode) {
-      setMode("dark");
+    if (selectedColorMode) {
+      setMode(selectedColorMode);
     } else {
-      setMode(DEFAULT_COLOR_MODE);
+      setMode(preferredColorMode);
     }
-  }, [user?.settings?.colorMode, prefersDarkMode, setMode]);
+  }, [selectedColorMode, preferredColorMode, setMode]);
 
   return (
     <ColorModeContext.Provider value={colorModeState}>

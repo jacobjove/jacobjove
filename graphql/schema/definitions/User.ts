@@ -103,13 +103,16 @@ const definition: Definition<UserFields> = {
   hooks: {
     save: {
       pre: async function (next) {
+        console.log(">>>>>>> User save.pre");
         const instance = this as DocumentType<any>;
         if (instance.isModified("password") && instance.password) {
           instance.password = await bcrypt.hash(instance.password, COST_FACTOR);
         }
+        console.log(">>>>>>> User save.pre:", this);
         return next();
       },
       post: async (user: any) => {
+        console.log(">>>>>>> User save.post");
         let saveChanges = false;
         if (!user.calendars?.length) {
           const defaultCalendar = await CalendarModel.create({
@@ -131,6 +134,7 @@ const definition: Definition<UserFields> = {
           user.markModified("notebooks");
           saveChanges = true;
         }
+        console.log(">>>>>>> User save.post:", user);
         saveChanges && user.save();
       },
     },

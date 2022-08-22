@@ -166,7 +166,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   if (!user) return null;
 
   const defaultCalendar = enabledCalendars[0]; // TODO
-  if (!defaultCalendar) console.error("No default calendar!");
+  if (!defaultCalendar) console.error("CalendarViewer: No default calendar!");
 
   // TODO: refactor how data is passed between calendar components?
   const data = {
