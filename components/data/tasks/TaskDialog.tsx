@@ -1,6 +1,7 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
 import TasksTable from "@/components/data/tasks/TasksTable";
+import { Cron } from "@/components/fields/cron";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
@@ -41,6 +42,8 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
   const [editing, setEditing] = useState(!data.id);
+  const [convertingToHabit, setConvertingToHabit] = useState(false);
+  const [cron, setCron] = useState<string>("0 1 * * *");
 
   const menuState = usePopupState({
     variant: "popper",
@@ -297,27 +300,51 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 onClick={() => null}
               >
                 {"Scheduled date "}
-                {!data.dueDate && <AddIcon sx={{ ml: 1 }} />}
+                {!data.plannedStartDate && <AddIcon sx={{ ml: 1 }} />}
               </Button>
               {data.plannedStartDate && (
-                <Box display="flex" alignItems="center">
+                <Button sx={{ display: "flex", alignItems: "center", color: "inherit" }}>
                   <TodayIcon />{" "}
                   <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
-                    {data.plannedStartDate ? format(data.plannedStartDate, "h:m") : "Unscheduled"}
+                    {data.plannedStartDate
+                      ? format(data.plannedStartDate, "M/d, h:mm a")
+                      : "Unscheduled"}
                   </Typography>
-                </Box>
+                </Button>
               )}
             </Box>
             <Box py={2}>
               <Box display="flex" px={1}>
-                <Typography>{`Type: `}</Typography>
-                <Typography mx={1}>{data.habitId ? "Habit" : "One-off task"}</Typography>
+                <Typography>{`Type: ${
+                  data.habitId ?? convertingToHabit ? "Habit" : "One-off task"
+                }`}</Typography>
               </Box>
-              {data.habitId ? null : (
-                <Button sx={{ pr: 2 }}>
-                  <ArrowForwardIcon sx={{ mr: 1 }} /> {"Convert to habit"}
-                </Button>
-              )}
+              <Box>
+                {data.habitId ? null : convertingToHabit ? (
+                  <Box
+                    px={1}
+                    sx={{
+                      position: "relative",
+                      "& .react-js-cron-select": {
+                        display: "flex",
+                      },
+                      "& .react-js-cron-field": {
+                        alignItems: "start",
+                      },
+                    }}
+                  >
+                    <Cron value={cron || ""} setValue={setCron} />
+                    <Box display={"flex"} justifyContent={"right"}>
+                      <Button onClick={() => setConvertingToHabit(false)}>{"Cancel"}</Button>
+                      <Button onClick={() => alert("Not yet implemented")}>{"Save"}</Button>
+                    </Box>
+                  </Box>
+                ) : (
+                  <Button sx={{ pr: 2 }} onClick={() => setConvertingToHabit(true)}>
+                    <ArrowForwardIcon sx={{ mr: 1 }} /> {"Convert to habit"}
+                  </Button>
+                )}
+              </Box>
             </Box>
           </Box>
         </Box>

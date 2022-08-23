@@ -223,8 +223,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
         <TableCell>
           <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
             {scheduledDate && (
-              <Typography
-                component="span"
+              <Box
                 fontSize="0.8rem"
                 textAlign={"center"}
                 sx={{
@@ -233,15 +232,14 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                 }}
               >
                 {scheduledDateTextElement}
-              </Typography>
+              </Box>
             )}
           </Box>
         </TableCell>
         <TableCell>
           <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
             {dueDate ? (
-              <Typography
-                component="span"
+              <Box
                 fontSize="0.8rem"
                 textAlign={"center"}
                 sx={{
@@ -250,7 +248,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                 }}
               >
                 {dueDateTextElement}
-              </Typography>
+              </Box>
             ) : habit?.chronString ? (
               <IconButton
                 // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
@@ -404,25 +402,29 @@ export default TaskRow;
 function getDateTextElement(date: Date | null) {
   if (!date) return null;
   const today = new Date();
-  const dateString = date
-    ? isSameDay(date, today)
-      ? "Today"
-      : isSameYear(date, today)
-      ? format(date, "M/d")
-      : date.toLocaleDateString()
-    : "";
+  const dateString = date ? (
+    isSameDay(date, today) ? (
+      <span style={{ fontWeight: "bold" }}>{"Today"}</span>
+    ) : isSameYear(date, today) ? (
+      format(date, "M/d")
+    ) : (
+      date.toLocaleDateString()
+    )
+  ) : (
+    ""
+  );
   const timeString = date?.getTime() ? format(date, "h:mm a") : "";
   return dateString ? (
-    <span>
-      {dateString}
+    <Box fontSize={"inherit"} lineHeight={1}>
+      <Typography fontSize={"inherit"}>
+        {dateString}
+        {!!timeString && ", "}
+      </Typography>
       {!!timeString && (
-        <>
-          {", "}
-          <Typography component="small" variant="inherit" sx={{ display: "inline-block" }}>
-            {timeString}
-          </Typography>
-        </>
+        <Typography component="small" variant="inherit">
+          {timeString}
+        </Typography>
       )}
-    </span>
+    </Box>
   ) : null;
 }
