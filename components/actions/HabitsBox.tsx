@@ -1,7 +1,10 @@
+import HabitCreationDialog from "@/components/data/habits/generated/HabitCreationDialog";
 import DataBox, { DataBoxProps } from "@/components/DataBox";
 import { Habit } from "@/graphql/generated/models/habit.model";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC } from "react";
 
 type HabitsBoxProps = Pick<DataBoxProps, "displayTitle"> & {
@@ -11,6 +14,10 @@ type HabitsBoxProps = Pick<DataBoxProps, "displayTitle"> & {
 
 const HabitsBox: FC<HabitsBoxProps> = (props: HabitsBoxProps) => {
   const { habits, displayTitle } = props;
+  const newHabitDialogState = usePopupState({
+    variant: "popover",
+    popupId: `new-habit-dialog`,
+  });
   return (
     <DataBox title={"Habits"} displayTitle={displayTitle}>
       {habits?.length ? (
@@ -22,14 +29,20 @@ const HabitsBox: FC<HabitsBoxProps> = (props: HabitsBoxProps) => {
           );
         })
       ) : (
-        <Typography
-          sx={{
-            textAlign: "center",
-            mt: "3rem",
-          }}
-        >
-          {"You don't have any habits yet."}
-        </Typography>
+        <Box textAlign={"center"} my={2}>
+          <Typography
+            sx={{
+              textAlign: "center",
+              my: "1rem",
+            }}
+          >
+            {"You don't have any habits yet."}
+          </Typography>
+          <Button variant={"contained"} {...bindTrigger(newHabitDialogState)}>
+            {"Create a habit"}
+          </Button>
+          <HabitCreationDialog {...bindPopover(newHabitDialogState)} />
+        </Box>
       )}
     </DataBox>
   );
