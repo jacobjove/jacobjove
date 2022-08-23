@@ -65,7 +65,6 @@ export default function TitleAndDescriptionFields<
   const titleFontSizeRem = _titleFontSizeRem || 1.25;
   const titleFontSize = `${titleFontSizeRem}rem`;
   const descriptionFontSize = `${_descriptionFontSizeRem ?? titleFontSizeRem * 0.75}rem`;
-  console.log(">>>>>Description", descriptionFontSize);
   const onKeyUp =
     _onKeyUp ??
     ((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -81,7 +80,7 @@ export default function TitleAndDescriptionFields<
       <Box>
         {editing ? (
           <TextField
-            autoFocus
+            autoFocus={!descriptionFocused}
             id="title"
             name={titleName ?? "title"}
             placeholder={titleLabel ?? "Title"}
@@ -96,7 +95,10 @@ export default function TitleAndDescriptionFields<
           <Typography
             component={"h1"}
             sx={{ fontSize: titleFontSize }}
-            onClick={() => setEditing(true)}
+            onClick={() => {
+              setDescriptionFocused(false);
+              setEditing(true);
+            }}
           >
             {data[titleName] ?? ""}
           </Typography>
@@ -110,13 +112,17 @@ export default function TitleAndDescriptionFields<
           color: (theme) =>
             theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
         }}
-        onClick={() => setEditing(true)}
+        onClick={() => {
+          setDescriptionFocused(true);
+          setEditing(true);
+        }}
       >
         {includeIcon && !data[descriptionName] && !descriptionFocused && (
           <NotesIcon sx={{ mr: 1 }} />
         )}
         {editing ? (
           <TextField
+            autoFocus={descriptionFocused}
             id="description"
             name={descriptionName ?? "description"}
             placeholder={descriptionLabel ?? "Description"}

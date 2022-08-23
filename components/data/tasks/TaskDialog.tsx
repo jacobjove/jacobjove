@@ -10,6 +10,7 @@ import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutation
 import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -207,24 +208,26 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   <Typography>{`This task is archived.`}</Typography>
                 </Box>
               )} */}
-              <Box my={2}>
-                {subtasks?.length ? (
-                  <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
-                ) : (
-                  // TODO
-                  <Button sx={{ pr: 2, ml: "-0.55rem" }} onClick={() => null} disabled={true}>
-                    <AddIcon sx={{ mr: 1 }} /> {"Add subtask"}
-                  </Button>
-                )}
-              </Box>
-              <Box my={2}>
-                {data.habitId ? (
-                  <Typography>{`This task is associated with habit ${data.habitId}.`}</Typography>
-                ) : (
-                  <Typography>
-                    {/* {`Trying to build a new habit? Create a habit from this task.`} */}
-                  </Typography>
-                )}
+              <Box my={2} ml={"-0.55rem"}>
+                <Box my={2}>
+                  {subtasks?.length ? (
+                    <TasksTable
+                      tasks={subtasks}
+                      moveTaskRow={undefined}
+                      updateTaskRank={undefined}
+                    />
+                  ) : (
+                    // TODO
+                    <Button sx={{ pr: 2 }} onClick={() => alert("Not yet implemented")}>
+                      <AddIcon sx={{ mr: 1 }} /> {"Add subtask"}
+                    </Button>
+                  )}
+                </Box>
+                <Box my={2}>
+                  {data.habitId ? (
+                    <Typography>{`This task is associated with habit ${data.habitId}.`}</Typography>
+                  ) : null}
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -233,26 +236,30 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             py={1}
             px={"0.75rem"}
             sx={{
-              flexBasis: "30%",
+              flexBasis: "33%",
               display: "flex",
               flexDirection: "column",
               alignItems: "start",
               justifyContent: "start",
               bgcolor: (theme) =>
                 theme.palette.mode === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)",
-              // backgroundColor: (theme) => theme.palette.mode === "light" ? "gray" : "black"
+              "& > *": {
+                "&:not(:last-child)": {
+                  borderBottom: "1px solid gray",
+                },
+                width: "100%",
+                py: 1,
+                color: (theme) =>
+                  theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
+              },
+              "& *": {
+                fontSize: "0.85rem",
+              },
             }}
           >
-            <Box
-              width={"100%"}
-              py={1}
-              alignItems={"center"}
-              justifyContent={"start"}
-              borderBottom={"1px solid gray"}
-            >
+            <Box alignItems={"center"} justifyContent={"start"}>
               <Button
                 sx={{
-                  fontSize: "0.9rem",
                   width: "100%",
                   textTransform: "none",
                   display: "flex",
@@ -275,10 +282,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 </Box>
               )}
             </Box>
-            <Box width={"100%"} py={1} borderBottom={"1px solid gray"}>
+            <Box>
               <Button
                 sx={{
-                  fontSize: "0.9rem",
                   textAlign: "left",
                   width: "100%",
                   textTransform: "none",
@@ -300,6 +306,17 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     {data.plannedStartDate ? format(data.plannedStartDate, "h:m") : "Unscheduled"}
                   </Typography>
                 </Box>
+              )}
+            </Box>
+            <Box py={2}>
+              <Box display="flex" px={1}>
+                <Typography>{`Type: `}</Typography>
+                <Typography mx={1}>{data.habitId ? "Habit" : "One-off task"}</Typography>
+              </Box>
+              {data.habitId ? null : (
+                <Button sx={{ pr: 2 }}>
+                  <ArrowForwardIcon sx={{ mr: 1 }} /> {"Convert to habit"}
+                </Button>
               )}
             </Box>
           </Box>
