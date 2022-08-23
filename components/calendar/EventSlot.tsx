@@ -5,9 +5,11 @@ import {
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
 } from "@/graphql/generated/hooks/calendarEvent.hooks";
+import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { CalendarEventCreationInput } from "@/graphql/generated/inputs/calendarEvent.inputs";
 import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
 import { getOptimisticResponseForCalendarEventCreation } from "@/graphql/generated/mutations/calendarEvent.mutations";
+import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { calendarEventCreationInputSchema } from "@/graphql/generated/schemas/calendarEvent.schemas";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/constants";
 import { styled } from "@mui/material/styles";
@@ -46,7 +48,8 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
   const [hovered, setHovered] = useState(false);
   const [updateCalendarEvent, { loading: loadingUpdateCalendarEvent }] = useUpdateCalendarEvent();
   const [createCalendarEvent, { loading: loadingCreateCalendarEvent }] = useCreateCalendarEvent();
-  const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent;
+  const [updateTask, { loading: loadingUpdateTask }] = useUpdateTask();
+  const loading = loadingCreateCalendarEvent || loadingUpdateCalendarEvent || loadingUpdateTask;
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
       accept: ["event", "task"],
@@ -80,10 +83,9 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
         } else if (item.type === "task") {
           const start = date;
           const end = addMinutes(date, DEFAULT_EVENT_LENGTH_IN_MINUTES);
-          const { type: _, ...draggedTask } = item;
-          const calendarId = draggedTask.calendarId ?? user.settings.defaultCalendarId;
-          if (!calendarId) throw new Error("No calendar ID");
-          const scheduleId = draggedTask.scheduleId ?? null;
+          const { type: _type, index: _index, ...draggedTask } = item;
+          const calendarId = user.settings.defaultCalendarId;
+          const scheduleId = null;
           const userId = user.id;
           const data = {
             title: draggedTask.title,
@@ -93,6 +95,7 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             calendarId,
             scheduleId,
             userId,
+            taskId: draggedTask.id,
           };
           const validatedData = await calendarEventCreationInputSchema.validate(data).then(() => {
             return data as CalendarEventCreationInput;
@@ -100,6 +103,15 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           createCalendarEvent.current?.({
             variables: { data: validatedData },
             optimisticResponse: getOptimisticResponseForCalendarEventCreation(validatedData),
+          });
+          updateTask.current?.({
+            variables: {
+              where: { id: draggedTask.id },
+              data: { plannedStartDate: start },
+            },
+            optimisticResponse: getOptimisticResponseForTaskUpdate(draggedTask, {
+              plannedStartDate: start,
+            }),
           });
         }
         // TODO: open event dialog

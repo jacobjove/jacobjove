@@ -5,7 +5,6 @@ import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
-import { ID } from "@/graphql/schema/types";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -41,11 +40,7 @@ interface TaskRowContentProps {
   onEditing: (isEditing: boolean) => void;
 }
 
-export type DraggedTask = { type: "task" } & Pick<Task, "id" | "rank" | "title" | "completedAt"> & {
-    index: number;
-    calendarId?: ID;
-    scheduleId?: ID | null;
-  };
+export type DraggedTask = { type: "task" } & Task & { index: number };
 
 const TASK_TITLE_FONT_SIZE_REM = 0.9;
 
@@ -315,12 +310,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
       type: "task",
       item: {
         type: "task",
-        id: task.id as ID, // TODO
-        rank: task.rank,
-        title: task.title,
-        completedAt: task.completedAt,
+        ...task,
         index,
-        // TODO: add calendarId and scheduleId.
       },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
