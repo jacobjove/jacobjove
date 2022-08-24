@@ -198,8 +198,8 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
               aria-label="lab API tabs example"
             >
               <Tab label="Tasks" value="1" />
-              <Tab label="Habits" value="2" />
-              <Tab label="Goals" value="3" />
+              <Tab label="Habits" value="2" disabled={!user?.isAdmin} />
+              <Tab label="Goals" value="3" disabled={!user?.isAdmin} />
               {/* <Tab label="Mantras" value="4" /> */}
             </TabList>
           </Box>
@@ -207,9 +207,11 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
             <TasksBox selectedDateState={selectedDateState} displayTitle={false} />
           </TabPanel>
           <TabPanel value="2">
+            <p style={{ textAlign: "center" }}>TODO: Enable this tab for non-admins.</p>
             <HabitsBox habits={habits ?? []} displayTitle={false} />
           </TabPanel>
           <TabPanel value="3">
+            <p style={{ textAlign: "center" }}>TODO: Enable this tab for non-admins.</p>
             <GoalsBox goals={goals ?? []} displayTitle={false} />
           </TabPanel>
           {/* <TabPanel value="4">

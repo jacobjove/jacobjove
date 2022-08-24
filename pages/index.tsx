@@ -27,12 +27,12 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
           justifyContent={"center"}
         >
           <Box maxWidth={"24rem"}>
-            <Typography component="p" my={1}>
+            <Typography component="p" my={2}>
               {
                 "SelfBuilder (currently under development) is an app designed to help you build your best self."
               }
             </Typography>
-            <Typography component="p" my={1}>
+            <Typography component="p" my={2}>
               {"The app functions primarily as a daily planner, helping you to manage your time "}
               {"and build habits in order to accomplish your personal goals."}
             </Typography>
