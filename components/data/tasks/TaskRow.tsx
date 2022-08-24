@@ -249,16 +249,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               >
                 {dueDateTextElement}
               </Box>
-            ) : habit?.cron ? (
-              <IconButton
-                // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
-                onClick={(event) => {
-                  event.preventDefault();
-                  console.info("You clicked the schedule icon.");
-                }}
-              >
-                <RepeatIcon sx={{ color: "gray" }} />
-              </IconButton>
             ) : null}
           </Box>
         </TableCell>
