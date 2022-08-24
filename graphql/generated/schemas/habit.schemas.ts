@@ -6,12 +6,13 @@ import { bool, date, InferType, number, object, SchemaOf, string } from "yup";
 export const habitCreationInputSchema: SchemaOf<HabitCreationInput> = object({
   userId: string().required(),
   name: string().required(),
+  description: string().nullable().notRequired(),
   public: bool()
     .notRequired()
     .default(() => {
       return false;
     }),
-  chronString: string().nullable().notRequired(),
+  cron: string().nullable().notRequired(),
   defaultDurationInMinutes: number().nullable().notRequired(),
   archivedAt: date().nullable().notRequired(),
 });
@@ -19,8 +20,9 @@ export const habitCreationInputSchema: SchemaOf<HabitCreationInput> = object({
 export const habitUpdateInputSchema: SchemaOf<HabitUpdateInput> = object({
   userId: string().notRequired(),
   name: string().notRequired(),
+  description: string().nullable().notRequired(),
   public: bool().notRequired(),
-  chronString: string().nullable().notRequired(),
+  cron: string().nullable().notRequired(),
   defaultDurationInMinutes: number().nullable().notRequired(),
   archivedAt: date().nullable().notRequired(),
 });

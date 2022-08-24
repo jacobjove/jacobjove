@@ -12,11 +12,14 @@ export class HabitCreationInput {
   @TypeGraphQL.Field(() => String, { nullable: false })
   name!: string;
 
+  @TypeGraphQL.Field(() => String, { nullable: true })
+  description?: string | null | undefined;
+
   @TypeGraphQL.Field(() => Boolean, { nullable: true })
   public?: boolean | undefined;
 
   @TypeGraphQL.Field(() => String, { nullable: true })
-  chronString?: string | null | undefined;
+  cron?: string | null | undefined;
 
   @TypeGraphQL.Field(() => Int, { nullable: true })
   defaultDurationInMinutes?: number | null | undefined;
@@ -33,11 +36,14 @@ export class HabitUpdateInput {
   @TypeGraphQL.Field(() => String, { nullable: true })
   name?: string | undefined;
 
+  @TypeGraphQL.Field(() => String, { nullable: true })
+  description?: string | null | undefined;
+
   @TypeGraphQL.Field(() => Boolean, { nullable: true })
   public?: boolean | undefined;
 
   @TypeGraphQL.Field(() => String, { nullable: true })
-  chronString?: string | null | undefined;
+  cron?: string | null | undefined;
 
   @TypeGraphQL.Field(() => Int, { nullable: true })
   defaultDurationInMinutes?: number | null | undefined;
@@ -57,11 +63,14 @@ export class HabitWhereInput extends WhereInput {
   @TypeGraphQL.Field(() => String, { nullable: true })
   name?: string | null | undefined;
 
+  @TypeGraphQL.Field(() => String, { nullable: true })
+  description?: string | undefined;
+
   @TypeGraphQL.Field(() => Boolean, { nullable: true })
   public?: boolean | undefined;
 
   @TypeGraphQL.Field(() => String, { nullable: true })
-  chronString?: string | undefined;
+  cron?: string | undefined;
 
   @TypeGraphQL.Field(() => Int, { nullable: true })
   defaultDurationInMinutes?: number | undefined;

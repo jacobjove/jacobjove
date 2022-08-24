@@ -8,8 +8,8 @@ import {
   MutationResult,
   useMutation,
 } from "@apollo/client";
-import { DebouncedFunc } from "lodash";
-import debounce from "lodash/debounce";
+// import { DebouncedFunc } from "lodash";
+import pDebounce from "p-debounce";
 import { Dispatch, MutableRefObject, useReducer, useRef } from "react";
 import { SchemaOf } from "yup";
 
@@ -67,7 +67,7 @@ export function useDataReducer<T>(initialData: T): [T, Dispatch<Payload<T>>] {
 }
 
 type MutationFunction<MutationReturnType, MutationArgsType> = (
-  options: MutationFunctionOptions<MutationReturnType, MutationArgsType>
+  options?: MutationFunctionOptions<MutationReturnType, MutationArgsType>
 ) => Promise<FetchResult<MutationReturnType, Record<string, unknown>, Record<string, unknown>>>;
 
 export function useHandleMutation<MutationReturnType, MutationArgsType extends { data: unknown }>(
@@ -76,17 +76,19 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
   preMutationValidationSchema?: SchemaOf<MutationArgsType["data"]>,
   debounceDelay = DEFAULT_MUTATION_DEBOUNCE_DELAY
 ): [
-  MutableRefObject<DebouncedFunc<MutationFunction<MutationReturnType, MutationArgsType>>>,
+  MutableRefObject<MutationFunction<MutationReturnType, MutationArgsType>>,
   MutationResult<MutationReturnType>,
   MutableRefObject<AbortController | undefined>
 ] {
+  console.log("useHandleMutation");
   const abortController = useRef<AbortController>();
   const [mutate, mutationResult] = useMutation<MutationReturnType, MutationArgsType>(
     mutation,
     mutationHookOptions
   );
   const mutationHandlerRef = useRef(
-    debounce((mutationOptions: MutationFunctionOptions<MutationReturnType, MutationArgsType>) => {
+    pDebounce((mutationOptions?: MutationFunctionOptions<MutationReturnType, MutationArgsType>) => {
+      console.log("useHandleMutation.debouncedFunction");
       const controller = new window.AbortController();
       abortController.current = controller;
       preMutationValidationSchema &&
@@ -95,6 +97,7 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
         ? { ...mutationOptions, context: { fetchOptions: { signal: controller.signal } } }
         : mutationOptions;
       const mutationResult = mutate(modifiedMutationOptions);
+      console.log("mutationResult", mutationResult);
       return mutationResult;
     }, debounceDelay)
   );

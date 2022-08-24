@@ -403,9 +403,10 @@ input GoalWhereUniqueInput {
 type Habit {
   _id: ObjectId!
   archivedAt: DateTimeISO
-  chronString: String
   createdAt: DateTimeISO!
+  cron: String
   defaultDurationInMinutes: Int
+  description: String
   id: ObjectId!
   name: String!
   public: Boolean
@@ -415,8 +416,9 @@ type Habit {
 
 input HabitCreationInput {
   archivedAt: DateTimeISO
-  chronString: String
+  cron: String
   defaultDurationInMinutes: Int
+  description: String
   name: String!
   public: Boolean
   userId: ObjectId!
@@ -424,17 +426,19 @@ input HabitCreationInput {
 
 input HabitUpdateInput {
   archivedAt: DateTimeISO
-  chronString: String
+  cron: String
   defaultDurationInMinutes: Int
+  description: String
   name: String
   public: Boolean
   userId: ObjectId
 }
 
 input HabitWhereInput {
-  chronString: String
   createdAt: DateTimeISO
+  cron: String
   defaultDurationInMinutes: Int
+  description: String
   id: ObjectId
   name: String
   public: Boolean

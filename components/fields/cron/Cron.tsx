@@ -29,7 +29,7 @@ export default function Cron(props: CronProps) {
     humanizeValue = false,
     disabled = false,
     readOnly = false,
-    leadingZero = false,
+    leadingZero = true,
     shortcuts = ["@yearly", "@annually", "@monthly", "@weekly", "@daily", "@midnight", "@hourly"],
     clockFormat,
     periodicityOnDoubleClick = true,
@@ -37,14 +37,15 @@ export default function Cron(props: CronProps) {
     allowedDropdowns = ["period", "months", "month-days", "week-days", "hours", "minutes"],
     allowedPeriods = ["year", "month", "week", "day", "hour", "minute", "reboot"],
   } = props;
+  // const date = new Date();
   const internalValueRef = useRef<string>(value);
   const defaultPeriodRef = useRef<PeriodType>(defaultPeriod);
   const [period, setPeriod] = useState<PeriodType>("day");
   const [monthDays, setMonthDays] = useState<number[] | undefined>();
   const [months, setMonths] = useState<number[] | undefined>();
   const [weekDays, setWeekDays] = useState<number[] | undefined>();
-  const [hours, setHours] = useState<number[] | undefined>();
-  const [minutes, setMinutes] = useState<number[] | undefined>();
+  const [hours, setHours] = useState<number[] | undefined>([12]);
+  const [minutes, setMinutes] = useState<number[] | undefined>([0]);
   const [error, setInternalError] = useState<boolean>(false);
   const [valueCleared, setValueCleared] = useState<boolean>(false);
   const previousValueCleared = usePrevious(valueCleared);

@@ -11,7 +11,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import { DebouncedFunc } from "lodash";
 import { bindMenu, bindPopover, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, MutableRefObject } from "react";
 
@@ -24,9 +23,7 @@ export interface CreationDialogProps<
   typeName: string;
   dataTuple: [Partial<CreationInput>, Dispatch<Payload<Partial<CreationInput>>>];
   fields: { [key in keyof CreationInput]: Field };
-  create: MutableRefObject<
-    DebouncedFunc<MutationFunction<CreationMutationData, { data: CreationInput }>>
-  >;
+  create: MutableRefObject<MutationFunction<CreationMutationData, { data: CreationInput }>>;
   produceInitialData?: () => CreationInput;
   getOptimisticResponse: (data: CreationInput) => CreationMutationData;
 }

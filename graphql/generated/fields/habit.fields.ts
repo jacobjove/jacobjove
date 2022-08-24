@@ -21,14 +21,20 @@ const fields: Record<FieldKey, Field> = {
     required: true,
     widget: {},
   },
+  description: {
+    label: "description",
+    type: "String",
+    required: false,
+    widget: {},
+  },
   public: {
     label: "public",
     type: "Boolean",
     required: false,
     widget: {},
   },
-  chronString: {
-    label: "chronString",
+  cron: {
+    label: "cron",
     type: "String",
     required: false,
     widget: {},

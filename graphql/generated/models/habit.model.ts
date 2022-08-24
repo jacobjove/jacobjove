@@ -52,13 +52,17 @@ export class Habit extends Model {
   @Property({ type: () => String, required: true })
   name!: string;
 
+  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Property({ type: () => String, required: false, default: null })
+  description?: string | null;
+
   @TypeGraphQL.Field(() => Boolean, { nullable: true })
   @Property({ type: () => Boolean, required: false, default: false })
   public?: boolean;
 
   @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
-  chronString?: string | null;
+  cron?: string | null;
 
   @TypeGraphQL.Field(() => Int, { nullable: true })
   @Property({ required: false, default: null })

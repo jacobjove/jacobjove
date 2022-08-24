@@ -22,8 +22,9 @@ export const getOptimisticResponseForHabitCreation = (
     createHabit: {
       __typename: "Habit",
       id: "tmp-id",
+      description: null,
       public: false,
-      chronString: null,
+      cron: null,
       defaultDurationInMinutes: null,
       archivedAt: null,
       ...data,

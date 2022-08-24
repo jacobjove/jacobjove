@@ -4,11 +4,14 @@ import TasksTable from "@/components/data/tasks/TasksTable";
 import { Cron } from "@/components/fields/cron";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
+import { useCreateHabit } from "@/graphql/generated/hooks/habit.hooks";
 import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { Habit } from "@/graphql/generated/models/habit.model";
 import { Task } from "@/graphql/generated/models/task.model";
+import { getOptimisticResponseForHabitCreation } from "@/graphql/generated/mutations/habit.mutations";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { TaskData } from "@/graphql/generated/reducers/task.reducer";
+import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
 import { ID } from "@/graphql/schema/types";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -44,13 +47,17 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const [editing, setEditing] = useState(!data.id);
   const [convertingToHabit, setConvertingToHabit] = useState(false);
   const [cron, setCron] = useState<string>("0 1 * * *");
+  const [validating, setValidating] = useState(false);
 
   const menuState = usePopupState({
     variant: "popper",
     popupId: data.id ? `task-${data.id}-menu` : "new-task-menu",
   });
 
-  const [updateTask] = useUpdateTask();
+  const [updateTask, { loading: loadingUpdateTask }] = useUpdateTask();
+  const [createHabit, { loading: loadingCreateHabit }] = useCreateHabit();
+
+  const loading = loadingUpdateTask || loadingCreateHabit;
 
   const canUpdate = !!data.id;
 
@@ -101,6 +108,36 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const saveAndExit = () => {
     saveChanges();
     handleClose();
+  };
+
+  const handleNewHabitCreation = async () => {
+    const newHabitData = {
+      name: data.title,
+      description: data.description,
+      userId: data.userId,
+      cron: cron,
+    };
+    setValidating(true);
+    const validatedData = await habitCreationInputSchema.validate(newHabitData);
+    setValidating(false);
+    const result = await createHabit.current?.({
+      variables: { data: validatedData },
+      optimisticResponse: getOptimisticResponseForHabitCreation(validatedData),
+    });
+    const newHabit = result.data?.createHabit;
+    if (newHabit) {
+      dispatchData({
+        field: "habitId",
+        value: newHabit.id,
+      });
+      updateTask.current?.({
+        variables: {
+          where: { id: data.id },
+          data: { habitId: newHabit.id },
+        },
+      });
+      setConvertingToHabit(false);
+    }
   };
 
   return (
@@ -239,7 +276,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             py={1}
             px={"0.75rem"}
             sx={{
-              flexBasis: "33%",
+              flexBasis: "40%",
               display: "flex",
               flexDirection: "column",
               alignItems: "start",
@@ -271,7 +308,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
                 }}
                 disabled={!!data.dueDate}
-                onClick={() => null}
+                onClick={() => alert("Not yet implemented")}
               >
                 {"Due date "}
                 {!data.dueDate && <AddIcon sx={{ ml: 1 }} />}
@@ -297,7 +334,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
                 }}
                 disabled={!!data.plannedStartDate}
-                onClick={() => null}
+                onClick={() => alert("Not yet implemented")}
               >
                 {"Scheduled date "}
                 {!data.plannedStartDate && <AddIcon sx={{ ml: 1 }} />}
@@ -336,7 +373,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     <Cron value={cron || ""} setValue={setCron} />
                     <Box display={"flex"} justifyContent={"right"}>
                       <Button onClick={() => setConvertingToHabit(false)}>{"Cancel"}</Button>
-                      <Button onClick={() => alert("Not yet implemented")}>{"Save"}</Button>
+                      <Button disabled={validating || loading} onClick={handleNewHabitCreation}>
+                        {validating ? "Validating..." : loading ? "Saving..." : "Save"}
+                      </Button>
                     </Box>
                   </Box>
                 ) : (

@@ -1,8 +1,8 @@
 import { MenuItem } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import React, { useCallback, useMemo, useRef } from "react";
-import { formatValue, parsePartArray, partToString } from "../converter";
-import { DEFAULT_LOCALE_EN } from "../locale";
+import { useCallback, useMemo, useRef } from "react";
+import { formatValue } from "../converter";
+// import { DEFAULT_LOCALE_EN } from "../locale";
 import { Clicks, CustomSelectProps } from "../types";
 import { classNames, sort } from "../utils";
 
@@ -12,8 +12,7 @@ export default function CustomSelect(props: CustomSelectProps) {
     grid = true,
     optionsList,
     setValue,
-    locale,
-    className,
+    // locale,
     humanizeLabels,
     disabled,
     readOnly,
@@ -33,55 +32,51 @@ export default function CustomSelect(props: CustomSelectProps) {
     return value ?? [];
   }, [value]);
 
-  const options = useMemo(
-    () => {
-      if (optionsList) {
-        return optionsList.map((option, index) => {
-          const number = unit.min === 0 ? index : index + 1;
-
-          return {
-            value: number.toString(),
-            label: option,
-          };
-        });
-      }
-
-      return [...Array(unit.total)].map((e, index) => {
+  const options = useMemo(() => {
+    if (optionsList) {
+      return optionsList.map((option, index) => {
         const number = unit.min === 0 ? index : index + 1;
 
         return {
           value: number.toString(),
-          label: formatValue(number, unit, humanizeLabels, leadingZero, clockFormat),
+          label: option,
         };
       });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [optionsList, leadingZero, humanizeLabels, clockFormat]
-  );
-  const localeJSON = JSON.stringify(locale);
-  const renderTag = useCallback(
-    (props: { value: string[] | undefined }) => {
-      const { value: itemValue } = props;
+    }
 
-      if (!value || value[0] !== Number(itemValue)) {
-        return <></>;
-      }
+    return [...Array(unit.total)].map((e, index) => {
+      console.log("Calculating options for unit", unit.type);
+      const number = unit.min === 0 ? index : index + 1;
+      return {
+        value: number.toString(),
+        label: formatValue(number, unit, humanizeLabels, leadingZero, clockFormat),
+      };
+    });
+  }, [optionsList, leadingZero, humanizeLabels, clockFormat, unit]);
+  // const localeJSON = JSON.stringify(locale);
+  // const renderTag = useCallback(
+  //   (props: { value: string[] | undefined }) => {
+  //     const { value: itemValue } = props;
 
-      const parsedArray = parsePartArray(value, unit);
-      const cronValue = partToString(parsedArray, unit, humanizeLabels, leadingZero, clockFormat);
-      const testEveryValue = cronValue.match(/^\*\/([0-9]+),?/) || [];
+  //     if (!value || value[0] !== Number(itemValue)) {
+  //       return <></>;
+  //     }
 
-      return (
-        <div>
-          {testEveryValue[1]
-            ? `${locale.everyText || DEFAULT_LOCALE_EN.everyText} ${testEveryValue[1]}`
-            : cronValue}
-        </div>
-      );
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value, localeJSON, humanizeLabels, leadingZero, clockFormat]
-  );
+  //     const parsedArray = parsePartArray(value, unit);
+  //     const cronValue = partToString(parsedArray, unit, humanizeLabels, leadingZero, clockFormat);
+  //     const testEveryValue = cronValue.match(/^\*\/([0-9]+),?/) || [];
+
+  //     return (
+  //       <div>
+  //         {testEveryValue[1]
+  //           ? `${locale.everyText || DEFAULT_LOCALE_EN.everyText} ${testEveryValue[1]}`
+  //           : cronValue}
+  //       </div>
+  //     );
+  //   },
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [value, localeJSON, humanizeLabels, leadingZero, clockFormat]
+  // );
 
   const simpleClick = useCallback(
     (newValueOption: number | number[]) => {
@@ -194,16 +189,6 @@ export default function CustomSelect(props: CustomSelectProps) {
     }
   }, [setValue, readOnly]);
 
-  const internalClassName = useMemo(
-    () =>
-      classNames({
-        "react-js-cron-select": true,
-        "react-js-cron-custom-select": true,
-        [`${className}-select`]: !!className,
-      }),
-    [className]
-  );
-
   const dropdownClassNames = useMemo(
     () =>
       classNames({
@@ -218,11 +203,9 @@ export default function CustomSelect(props: CustomSelectProps) {
         "react-js-cron-custom-select-dropdown-hours-twelve-hour-clock":
           unit.type === "hours" && clockFormat === "12-hour-clock",
         "react-js-cron-custom-select-dropdown-grid": !!grid,
-        [`${className}-select-dropdown`]: !!className,
-        [`${className}-select-dropdown-${unit.type}`]: !!className,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [className, grid, clockFormat, period]
+    [grid, clockFormat, period]
   );
 
   return (
@@ -233,8 +216,7 @@ export default function CustomSelect(props: CustomSelectProps) {
       value={stringValue}
       // onClear={onClear}
       // tagRender={renderTag}
-      className={internalClassName}
-      // dropdownClassName={dropdownClassNames}
+      className={"react-js-cron-select react-js-cron-custom-select"}
       // showSearch={false}
       // showArrow={!readOnly}
       // menuItemSelectedIcon={null}

@@ -19,7 +19,7 @@ import { dedup, range, setError, sort } from "./utils";
  * Set values from cron string
  */
 export function setValuesFromCronString(
-  cronString: string,
+  cron: string,
   setInternalError: SetInternalError,
   onError: OnError,
   allowEmpty: AllowEmpty,
@@ -40,7 +40,7 @@ export function setValuesFromCronString(
   let error = false;
 
   // Handle empty cron string
-  if (!cronString) {
+  if (!cron) {
     if (allowEmpty === "always" || (firstRender && allowEmpty === "for-default-value")) {
       return;
     }
@@ -50,8 +50,8 @@ export function setValuesFromCronString(
 
   if (!error) {
     // Shortcuts management
-    if (shortcuts && (shortcuts === true || shortcuts.includes(cronString as any))) {
-      if (cronString === "@reboot") {
+    if (shortcuts && (shortcuts === true || shortcuts.includes(cron as any))) {
+      if (cron === "@reboot") {
         setPeriod("reboot");
 
         return;
@@ -59,16 +59,16 @@ export function setValuesFromCronString(
 
       // Convert a shortcut to a valid cron string
       const shortcutObject = SUPPORTED_SHORTCUTS.find(
-        (supportedShortcut) => supportedShortcut.name === cronString
+        (supportedShortcut) => supportedShortcut.name === cron
       );
 
       if (shortcutObject) {
-        cronString = shortcutObject.value;
+        cron = shortcutObject.value;
       }
     }
 
     try {
-      const cronParts = parseCronString(cronString);
+      const cronParts = parseCronString(cron);
       const period = getPeriodFromCronParts(cronParts);
 
       setPeriod(period);
@@ -83,7 +83,7 @@ export function setValuesFromCronString(
     }
   }
   if (error) {
-    internalValueRef.current = cronString;
+    internalValueRef.current = cron;
     setInternalError(true);
     setError(onError, locale);
   }
@@ -423,15 +423,14 @@ function outOfRange(values: number[], unit: Unit) {
  * Parses the step from a part string
  */
 function parseStep(step: string, unit: Unit) {
-  if (typeof step !== "undefined") {
-    const parsedStep = parseInt(step, 10);
+  if (typeof step === "undefined") return;
+  const parsedStep = parseInt(step, 10);
 
-    if (isNaN(parsedStep) || parsedStep < 1) {
-      throw new Error(`Invalid interval step value "${step}" for ${unit.type}`);
-    }
-
-    return parsedStep;
+  if (isNaN(parsedStep) || parsedStep < 1) {
+    throw new Error(`Invalid interval step value "${step}" for ${unit.type}`);
   }
+
+  return parsedStep;
 }
 
 /**
@@ -467,6 +466,7 @@ function getStep(values: number[]) {
       return step;
     }
   }
+  return;
 }
 
 /**

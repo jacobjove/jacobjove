@@ -9,8 +9,9 @@ export const habitFragment = gql`
     id
     userId
     name
+    description
     public
-    chronString
+    cron
     defaultDurationInMinutes
     createdAt
     updatedAt
@@ -27,7 +28,8 @@ export type HabitFragment = Pick<
   | "archivedAt"
   | "userId"
   | "name"
+  | "description"
   | "public"
-  | "chronString"
+  | "cron"
   | "defaultDurationInMinutes"
 >;

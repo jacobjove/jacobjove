@@ -249,7 +249,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
               >
                 {dueDateTextElement}
               </Box>
-            ) : habit?.chronString ? (
+            ) : habit?.cron ? (
               <IconButton
                 // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
                 onClick={(event) => {
