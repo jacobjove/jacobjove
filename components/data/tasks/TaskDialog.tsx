@@ -1,5 +1,6 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
+import { useUser } from "@/components/contexts/UserContext";
 import TasksTable from "@/components/data/tasks/TasksTable";
 import { Cron } from "@/components/fields/cron";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
@@ -41,6 +42,7 @@ const LEFT_SIDE_WIDTH = "3.3rem";
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const { data: _data, onClose: initialOnClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const { user } = useUser();
   const [data, dispatchData] = useTaskDataReducer(_data);
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
@@ -80,8 +82,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
 
   const completed = data.completedAt ? true : false;
 
-  // const habit = data.habit;
-  const habit: Habit | null = null; // TODO
+  const habit: Habit | null | undefined = data.habitId
+    ? user?.habits?.find((habit) => habit.id === data.habitId)
+    : null;
 
   // const subtasks = data.subtasks;
   const subtasks: Task[] = []; // TODO
@@ -263,11 +266,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     </Button>
                   )}
                 </Box>
-                <Box my={2}>
-                  {data.habitId ? (
-                    <Typography>{`This task is associated with habit ${data.habitId}.`}</Typography>
-                  ) : null}
-                </Box>
               </Box>
             </Box>
           </Box>
@@ -351,10 +349,23 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               )}
             </Box>
             <Box py={2}>
-              <Box display="flex" px={1}>
-                <Typography>{`Type: ${
-                  data.habitId ?? convertingToHabit ? "Habit" : "One-off task"
-                }`}</Typography>
+              <Box px={1}>
+                {habit ? (
+                  <>
+                    <Typography>
+                      {`This task is associated with your `}
+                      {'"'}
+                      <a onClick={() => alert("Not yet implemented")}>
+                        {habit.name.replace(/\.$/, "")}
+                      </a>
+                      {'"'}
+                      {` habit.`}
+                    </Typography>
+                    <Typography>{`Keep it up!`}</Typography>
+                  </>
+                ) : (
+                  <Typography>{"This is a one-off task."}</Typography>
+                )}
               </Box>
               <Box>
                 {data.habitId ? null : convertingToHabit ? (

@@ -80,7 +80,6 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
   MutationResult<MutationReturnType>,
   MutableRefObject<AbortController | undefined>
 ] {
-  console.log("useHandleMutation");
   const abortController = useRef<AbortController>();
   const [mutate, mutationResult] = useMutation<MutationReturnType, MutationArgsType>(
     mutation,
@@ -88,7 +87,6 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
   );
   const mutationHandlerRef = useRef(
     pDebounce((mutationOptions?: MutationFunctionOptions<MutationReturnType, MutationArgsType>) => {
-      console.log("useHandleMutation.debouncedFunction");
       const controller = new window.AbortController();
       abortController.current = controller;
       preMutationValidationSchema &&
@@ -96,9 +94,7 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
       const modifiedMutationOptions = mutationOptions
         ? { ...mutationOptions, context: { fetchOptions: { signal: controller.signal } } }
         : mutationOptions;
-      const mutationResult = mutate(modifiedMutationOptions);
-      console.log("mutationResult", mutationResult);
-      return mutationResult;
+      return mutate(modifiedMutationOptions);
     }, debounceDelay)
   );
   return [mutationHandlerRef, mutationResult, abortController];
