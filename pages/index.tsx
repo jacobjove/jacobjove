@@ -39,10 +39,20 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
           </Box>
           <Box marginTop="2rem">
             <Link href={props.ctaHref} passHref>
-              <Button variant={"contained"} color={"primary"}>
+              <Button variant={"contained"} color={"primary"} sx={{ mx: 2 }}>
                 {props.ctaHref === "/app/home" ? "Go to app" : "Sign up"}
               </Button>
             </Link>
+            {props.ctaHref !== "/app/home" && (
+              <>
+                {" or "}
+                <Link href={props.ctaHref} passHref>
+                  <Button variant={"contained"} color={"primary"} sx={{ mx: 2 }}>
+                    {"Sign in"}
+                  </Button>
+                </Link>
+              </>
+            )}
           </Box>
         </Box>
       </Container>
