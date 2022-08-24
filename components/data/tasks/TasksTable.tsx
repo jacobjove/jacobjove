@@ -31,6 +31,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   return (
     <Table
       sx={{
+        mt: 1,
         minWidth: 100,
         "& th": { px: "0.25rem", py: "1px", fontSize: "0.75rem", lineHeight: "0.9rem" },
         "& td": { px: "0.25rem", fontSize: PREFERRED_FONT_SIZE },
