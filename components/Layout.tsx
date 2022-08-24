@@ -150,10 +150,12 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
               ))}
             </SpeedDial> */}
             <TaskCreationDialog {...bindPopover(newTaskDialogState)} />
-            <CalendarEventDialog
-              mutation={"create"}
-              {...bindPopover(newCalendarEventDialogState)}
-            />
+            {newCalendarEventDialogState && (
+              <CalendarEventDialog
+                mutation={"create"}
+                {...bindPopover(newCalendarEventDialogState)}
+              />
+            )}
           </>
         )}
       </div>

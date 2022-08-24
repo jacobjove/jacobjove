@@ -117,9 +117,11 @@ const DayViewer: FC<DayViewerProps> = ({
   const [viewedHour] = viewedHourState;
 
   const { newCalendarEventDialogState, newCalendarEventDataTuple } = useNewCalendarEventDialog();
-  const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple;
+  const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple ?? [];
 
-  const eventEditingDialogTriggerProps = bindTrigger(newCalendarEventDialogState);
+  const eventEditingDialogTriggerProps = newCalendarEventDialogState
+    ? bindTrigger(newCalendarEventDialogState)
+    : undefined;
 
   const scrollableDivRef = useRef<HTMLDivElement>(null);
 
@@ -157,7 +159,6 @@ const DayViewer: FC<DayViewerProps> = ({
   // Scroll to the current time whenever it changes.
   useEffect(() => {
     const scrollableDiv = scrollableDivRef.current;
-    if (!scrollableDiv) console.error("NO SCROLLABLE DIV");
     const windowHeight = window.innerHeight;
     console.log("scrollOffsetPx", scrollOffsetPx);
     console.log("windowHeight", windowHeight);
@@ -237,18 +238,19 @@ const DayViewer: FC<DayViewerProps> = ({
                         if (e.target === e.currentTarget) {
                           const calendarId = user?.settings.defaultCalendarId as ID; // TODO
                           if (!calendarId) throw new Error("DayViewer: No default calendar");
-                          dispatchNewCalendarEventData({
-                            field: "init",
-                            value: {
-                              title: "",
-                              calendarId,
-                              userId: user?.id as ID,
-                              start: eventSlotDate,
-                              end: addMinutes(eventSlotDate, 29),
-                              allDay: false,
-                            },
-                          });
-                          eventEditingDialogTriggerProps.onClick(e);
+                          dispatchNewCalendarEventData &&
+                            dispatchNewCalendarEventData({
+                              field: "init",
+                              value: {
+                                title: "",
+                                calendarId,
+                                userId: user?.id as ID,
+                                start: eventSlotDate,
+                                end: addMinutes(eventSlotDate, 29),
+                                allDay: false,
+                              },
+                            });
+                          eventEditingDialogTriggerProps?.onClick(e);
                         }
                       }}
                     />

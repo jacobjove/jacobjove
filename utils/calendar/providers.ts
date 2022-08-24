@@ -1,4 +1,4 @@
-import { User } from "@/graphql/generated/models/user.model";
+import { UserFragment } from "@/graphql/generated/fragments/user.fragment";
 
 const ENABLED_PROVIDERS: CalendarProvider[] = ["google"];
 
@@ -15,7 +15,7 @@ export const getCalendarScope = (provider: CalendarProvider): string => {
   }
 };
 
-export const providerIsEnabledForUser = (provider: CalendarProvider, user: User) => {
+export const providerIsEnabledForUser = (provider: CalendarProvider, user: UserFragment) => {
   return Boolean(
     user?.accounts?.find(
       (account) =>

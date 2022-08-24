@@ -64,7 +64,7 @@ interface PlannerPageProps {
 }
 
 const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
-  const { user } = useUser({ required: true });
+  const { user } = useUser();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   // const { loading: _loading, error: _error, data } = useQuery<PlannerPageData>(QUERY);
 
@@ -163,7 +163,7 @@ interface PlannerCompanionStuffProps {
 const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
   selectedDateState,
 }: PlannerCompanionStuffProps) => {
-  const { user } = useUser({ required: true });
+  const { user } = useUser();
   const { goals, mantras, habits } = user ?? {};
   const [fullScreen, setFullScreen] = useState(false);
   const [value, setValue] = useState("1");

@@ -130,6 +130,8 @@ const callbacks: CallbacksOptions = {
     return true;
   },
   async redirect({ url, baseUrl }) {
+    console.log("🔑 redirect", { url, baseUrl });
+    if (url === baseUrl || url === `${baseUrl}/`) return `${baseUrl}/app`;
     if (url.startsWith(baseUrl)) return url;
     // Allow relative callback URLs.
     if (url.startsWith("/")) return new URL(url, baseUrl).toString();

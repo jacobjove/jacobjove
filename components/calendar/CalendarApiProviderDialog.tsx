@@ -1,8 +1,8 @@
 import { useUser } from "@/components/contexts/UserContext";
+import { UserFragment } from "@/graphql/generated/fragments/user.fragment";
 import { useUpdateAccount } from "@/graphql/generated/hooks/account.hooks";
 import { useUpdateCalendar } from "@/graphql/generated/hooks/calendar.hooks";
 import { Calendar } from "@/graphql/generated/models/calendar.model";
-import { User } from "@/graphql/generated/models/user.model";
 import { GET_USER } from "@/graphql/generated/queries/user.queries";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -181,7 +181,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   }, 2000);
 
   const refreshCalendarList = useThrottledCallback(
-    async (user: User, provider: CalendarProvider, calendars: Calendar[] | undefined) => {
+    async (user: UserFragment, provider: CalendarProvider, calendars: Calendar[] | undefined) => {
       setRefreshing(true);
       return await axios
         .get(`/api/calendars?provider=${provider}`)

@@ -31,7 +31,9 @@ const DynamicPageTransitionProgressBar = dynamic(
 // label, href, enabled
 type Page = [string, string, boolean];
 
-const pages: Page[] = [["About", "/about", false]];
+const pages: Page[] = [
+  // ["About", "/about", false]
+];
 
 const settings: Page[] = [
   ["Profile", "/profile", false],

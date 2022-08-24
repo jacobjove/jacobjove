@@ -105,9 +105,11 @@ WeekViewerProps) => {
   const { user } = useUser();
 
   const { newCalendarEventDialogState, newCalendarEventDataTuple } = useNewCalendarEventDialog();
-  const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple;
+  const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple ?? [];
 
-  const eventEditingDialogTriggerProps = bindTrigger(newCalendarEventDialogState);
+  const eventEditingDialogTriggerProps = newCalendarEventDialogState
+    ? bindTrigger(newCalendarEventDialogState)
+    : undefined;
 
   const selectedDayIndex = getDay(selectedDate);
 
@@ -258,18 +260,19 @@ WeekViewerProps) => {
                                   const calendarId = user?.settings.defaultCalendarId;
                                   if (!calendarId)
                                     throw new Error("WeekViewer: No default calendar id");
-                                  dispatchNewCalendarEventData({
-                                    field: "init",
-                                    value: {
-                                      title: "",
-                                      calendarId: user?.settings.defaultCalendarId as ID,
-                                      start: eventSlotDate,
-                                      end: addMinutes(eventSlotDate, 29),
-                                      allDay: false,
-                                      userId,
-                                    },
-                                  });
-                                  eventEditingDialogTriggerProps.onClick(e);
+                                  dispatchNewCalendarEventData &&
+                                    dispatchNewCalendarEventData({
+                                      field: "init",
+                                      value: {
+                                        title: "",
+                                        calendarId: user?.settings.defaultCalendarId as ID,
+                                        start: eventSlotDate,
+                                        end: addMinutes(eventSlotDate, 29),
+                                        allDay: false,
+                                        userId,
+                                      },
+                                    });
+                                  eventEditingDialogTriggerProps?.onClick(e);
                                 }
                               }}
                             />
