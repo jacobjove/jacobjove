@@ -2,6 +2,7 @@ import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
 import Stopwatch from "@/components/actions/Stopwatch";
 import { useUser } from "@/components/contexts/UserContext";
 import TasksTable from "@/components/data/tasks/TasksTable";
+import DateSelector from "@/components/dates/DateSelector";
 import { Cron } from "@/components/fields/cron";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
@@ -11,7 +12,6 @@ import { Habit } from "@/graphql/generated/models/habit.model";
 import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForHabitCreation } from "@/graphql/generated/mutations/habit.mutations";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
-import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
 import { ID } from "@/graphql/schema/types";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,7 +20,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TodayIcon from "@mui/icons-material/Today";
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 // import DialogActions from "@mui/material/DialogActions";
@@ -30,12 +30,19 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import { format } from "date-fns";
-import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { addDays, format } from "date-fns";
+import { endOfDay } from "date-fns/esm";
+import {
+  bindMenu,
+  bindPopover,
+  bindTrigger,
+  PopupState,
+  usePopupState,
+} from "material-ui-popup-state/hooks";
 import { FC, useState } from "react";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
-  data: TaskData;
+  data: TaskFragment;
 }
 
 const LEFT_SIDE_WIDTH = "3.3rem";
@@ -56,10 +63,46 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     popupId: data.id ? `task-${data.id}-menu` : "new-task-menu",
   });
 
+  const dueDateMenuState = usePopupState({
+    variant: "popper",
+    popupId: data.id ? `task-${data.id}-due-date-menu` : "new-task-due-date-menu",
+  });
+
+  const scheduledDateMenuState = usePopupState({
+    variant: "popper",
+    popupId: data.id ? `task-${data.id}-scheduled-date-menu` : "new-task-scheduled-date-menu",
+  });
+
   const [updateTask, { loading: loadingUpdateTask }] = useUpdateTask();
   const [createHabit, { loading: loadingCreateHabit }] = useCreateHabit();
 
   const loading = loadingUpdateTask || loadingCreateHabit;
+
+  const handleSetDueDate = (date: Date | null) => {
+    dispatchData({
+      field: "dueDate",
+      value: date,
+    });
+    updateTask.current?.({
+      variables: { where: { id: data.id }, data: { dueDate: date } },
+      optimisticResponse: getOptimisticResponseForTaskUpdate(data as TaskFragment, {
+        dueDate: date,
+      }),
+    });
+  };
+
+  const handleSetScheduledDate = (date: Date | null) => {
+    dispatchData({
+      field: "plannedStartDate",
+      value: date,
+    });
+    updateTask.current?.({
+      variables: { where: { id: data.id }, data: { plannedStartDate: date } },
+      optimisticResponse: getOptimisticResponseForTaskUpdate(data as TaskFragment, {
+        plannedStartDate: date,
+      }),
+    });
+  };
 
   const canUpdate = !!data.id;
 
@@ -239,7 +282,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 }}
               />
               <TitleAndDescriptionFields
-                titleConfig={{ name: "title", label: "Title" }}
+                titleConfig={{ name: "title", label: "Title", fontSizeRem: 1.35 }}
                 descriptionConfig={{ name: "description", label: "Description" }}
                 dataTuple={[data, dispatchData]}
                 editingState={[editing, setEditing]}
@@ -306,18 +349,18 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
                 }}
                 disabled={!!data.dueDate}
-                onClick={() => alert("Not yet implemented")}
+                {...bindTrigger(dueDateMenuState)}
               >
                 {"Due date "}
                 {!data.dueDate && <AddIcon sx={{ ml: 1 }} />}
               </Button>
+              <DateMenu
+                date={data.dueDate ?? new Date()}
+                setDate={handleSetDueDate}
+                menuState={dueDateMenuState}
+              />
               {data.dueDate && (
-                <Box display="flex" alignItems="center">
-                  <TodayIcon />{" "}
-                  <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
-                    {data.dueDate ? format(data.dueDate, "h:m") : "No due date"}
-                  </Typography>
-                </Box>
+                <SelectedDateButton date={data.dueDate} {...bindTrigger(dueDateMenuState)} />
               )}
             </Box>
             <Box>
@@ -332,20 +375,29 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                     theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
                 }}
                 disabled={!!data.plannedStartDate}
-                onClick={() => alert("Not yet implemented")}
+                {...bindTrigger(scheduledDateMenuState)}
               >
                 {"Scheduled date "}
                 {!data.plannedStartDate && <AddIcon sx={{ ml: 1 }} />}
               </Button>
+              <DateMenu
+                date={data.plannedStartDate ?? new Date()}
+                setDate={handleSetScheduledDate}
+                menuState={scheduledDateMenuState}
+              />
               {data.plannedStartDate && (
-                <Button sx={{ display: "flex", alignItems: "center", color: "inherit" }}>
-                  <TodayIcon />{" "}
-                  <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
-                    {data.plannedStartDate
-                      ? format(data.plannedStartDate, "M/d, h:mm a")
-                      : "Unscheduled"}
-                  </Typography>
-                </Button>
+                <SelectedDateButton
+                  date={data.plannedStartDate}
+                  {...bindTrigger(scheduledDateMenuState)}
+                />
+                // <Button sx={{ display: "flex", alignItems: "center", color: "inherit" }}>
+                //   <TodayIcon />{" "}
+                //   <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
+                //     {data.plannedStartDate
+                //       ? format(data.plannedStartDate, "M/d, h:mm a")
+                //       : "Unscheduled"}
+                //   </Typography>
+                // </Button>
               )}
             </Box>
             <Box py={2}>
@@ -452,3 +504,71 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
 };
 
 export default TaskDialog;
+
+interface DateMenuProps {
+  date: Date | null;
+  setDate: (date: Date | null) => void;
+  menuState: PopupState;
+}
+export function DateMenu({ date, setDate, menuState }: DateMenuProps) {
+  const now = new Date();
+  const today = endOfDay(now);
+  const tomorrow = addDays(today, 1);
+  const menuProps = bindMenu(menuState);
+  return (
+    <Menu
+      {...menuProps}
+      PaperProps={{
+        sx: {
+          minWidth: "13.5rem",
+          maxWidth: "13.5rem",
+        },
+      }}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
+      sx={{
+        width: "100%",
+      }}
+      // sx={{
+      //   display: { xs: "block", md: "none" },
+      // }}
+    >
+      <MenuItem
+        onClick={() => {
+          setDate(today);
+          menuProps.onClose();
+        }}
+      >
+        {"Today"}
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          setDate(tomorrow);
+          menuProps.onClose();
+        }}
+      >
+        {"Tomorrow"}
+      </MenuItem>
+      <MenuItem>
+        <DateSelector date={date ?? new Date()} setDate={setDate} dateFormat={"M/d"} />
+      </MenuItem>
+    </Menu>
+  );
+}
+
+function SelectedDateButton({ date, sx, ...buttonProps }: { date: Date } & ButtonProps) {
+  return (
+    <Button sx={{ color: "inherit", ...sx }} {...buttonProps}>
+      <TodayIcon />{" "}
+      <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
+        {date ? format(date, "M/d, h:mm a") : null}
+      </Typography>
+    </Button>
+  );
+}

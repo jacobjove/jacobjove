@@ -118,7 +118,7 @@ export default function TitleAndDescriptionFields<
         }}
       >
         {includeIcon && !data[descriptionName] && !descriptionFocused && (
-          <NotesIcon sx={{ mr: 1 }} />
+          <NotesIcon sx={{ mr: 1, ml: "-2px" }} />
         )}
         {editing ? (
           <TextField

@@ -220,7 +220,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
             )}
           </Box>
         </TableCell>
-        <TableCell>
+        <TableCell sx={{ minWidth: "4rem" }}>
           <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
             {scheduledDate && (
               <Box
@@ -236,7 +236,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
             )}
           </Box>
         </TableCell>
-        <TableCell>
+        <TableCell sx={{ minWidth: "4rem" }}>
           <Box px="0.25rem" display="flex" justifyContent={"center"} width={"100%"}>
             {dueDate ? (
               <Box
