@@ -1,6 +1,5 @@
 import mongoosePromise from "@/lib/mongodb";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-// import { MongoClient } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth";
 import { unstable_getServerSession } from "next-auth/next";
@@ -17,12 +16,7 @@ interface FromContext {
 
 export async function createGqlContext({ req, res }: FromContext): Promise<GqlContext> {
   const session = await unstable_getServerSession(req, res, authOptions);
-  const mongoClient = await mongoosePromise.catch((err) => {
-    console.error();
-    console.error(">>> ERROR:");
-    console.error(err);
-    console.error("^^^^^");
-  });
+  const mongoClient = await mongoosePromise;
   return {
     session,
     db: mongoClient,

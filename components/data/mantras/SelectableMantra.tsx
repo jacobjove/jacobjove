@@ -1,5 +1,5 @@
 import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
-import { Mantra } from "@/graphql/generated/models/mantra.model";
+import { Mantra } from "@/graphql/generated/types/mantra.type";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";

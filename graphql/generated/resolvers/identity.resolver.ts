@@ -12,8 +12,9 @@ import {
   IdentityUpdateArgs,
   IdentityUpsertionArgs,
 } from "@/graphql/generated/args/identity.args";
-import IdentityModel, { Identity } from "@/graphql/generated/models/identity.model";
+import IdentityModel from "@/graphql/generated/models/identity.model";
 import UserModel from "@/graphql/generated/models/user.model";
+import { Identity } from "@/graphql/generated/types/identity.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

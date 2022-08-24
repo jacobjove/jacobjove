@@ -8,11 +8,11 @@ import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFi
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useCreateHabit } from "@/graphql/generated/hooks/habit.hooks";
 import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
-import { Habit } from "@/graphql/generated/models/habit.model";
-import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForHabitCreation } from "@/graphql/generated/mutations/habit.mutations";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
+import { Habit } from "@/graphql/generated/types/habit.type";
+import { Task } from "@/graphql/generated/types/task.type";
 import { ID } from "@/graphql/schema/types";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";

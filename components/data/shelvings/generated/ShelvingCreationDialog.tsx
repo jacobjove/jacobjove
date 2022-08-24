@@ -6,8 +6,8 @@ import {
   useShelvingDataReducer,
 } from "@/graphql/generated/hooks/shelving.hooks";
 import { ShelvingCreationInput } from "@/graphql/generated/inputs/shelving.inputs";
-import { Shelving } from "@/graphql/generated/models/shelving.model";
 import { getOptimisticResponseForShelvingCreation } from "@/graphql/generated/mutations/shelving.mutations";
+import { Shelving } from "@/graphql/generated/types/shelving.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type ShelvingCreationDialogProps = ReturnType<typeof bindPopover>;

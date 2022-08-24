@@ -6,8 +6,8 @@ import {
   useIdentityDataReducer,
 } from "@/graphql/generated/hooks/identity.hooks";
 import { IdentityCreationInput } from "@/graphql/generated/inputs/identity.inputs";
-import { Identity } from "@/graphql/generated/models/identity.model";
 import { getOptimisticResponseForIdentityCreation } from "@/graphql/generated/mutations/identity.mutations";
+import { Identity } from "@/graphql/generated/types/identity.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type IdentityCreationDialogProps = ReturnType<typeof bindPopover>;

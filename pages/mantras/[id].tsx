@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Mantra } from "@/graphql/generated/models/mantra.model";
+import { Mantra } from "@/graphql/generated/types/mantra.type";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";

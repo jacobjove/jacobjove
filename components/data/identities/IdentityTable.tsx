@@ -1,5 +1,5 @@
 import Onboarder from "@/components/Onboarder";
-import { Identity } from "@/graphql/generated/models";
+import { Identity } from "@/graphql/generated/types";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";

@@ -3,8 +3,8 @@ import fields from "@/graphql/generated/fields/value.fields";
 import { ValueFragment } from "@/graphql/generated/fragments/value.fragment";
 import { useCreateValue, useValueDataReducer } from "@/graphql/generated/hooks/value.hooks";
 import { ValueCreationInput } from "@/graphql/generated/inputs/value.inputs";
-import { Value } from "@/graphql/generated/models/value.model";
 import { getOptimisticResponseForValueCreation } from "@/graphql/generated/mutations/value.mutations";
+import { Value } from "@/graphql/generated/types/value.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type ValueCreationDialogProps = ReturnType<typeof bindPopover>;

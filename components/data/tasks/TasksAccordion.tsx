@@ -4,11 +4,11 @@ import TasksTable from "@/components/data/tasks/TasksTable";
 import { DistinctTasksUpdateArgs } from "@/graphql/generated/args/task.args";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
-import { Task } from "@/graphql/generated/models/task.model";
 import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
 } from "@/graphql/generated/mutations/task.mutations";
+import { Task } from "@/graphql/generated/types/task.type";
 import { MAX_TASK_RANK, MIN_TASK_RANK } from "@/graphql/schema/constants";
 import { useHandleMutation } from "@/utils/data";
 import { gql } from "@apollo/client";

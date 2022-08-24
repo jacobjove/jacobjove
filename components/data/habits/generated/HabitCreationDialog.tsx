@@ -3,8 +3,8 @@ import fields from "@/graphql/generated/fields/habit.fields";
 import { HabitFragment } from "@/graphql/generated/fragments/habit.fragment";
 import { useCreateHabit, useHabitDataReducer } from "@/graphql/generated/hooks/habit.hooks";
 import { HabitCreationInput } from "@/graphql/generated/inputs/habit.inputs";
-import { Habit } from "@/graphql/generated/models/habit.model";
 import { getOptimisticResponseForHabitCreation } from "@/graphql/generated/mutations/habit.mutations";
+import { Habit } from "@/graphql/generated/types/habit.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type HabitCreationDialogProps = ReturnType<typeof bindPopover>;

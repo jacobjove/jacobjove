@@ -12,8 +12,9 @@ import {
   FindManyAccountArgs,
   FindUniqueAccountArgs,
 } from "@/graphql/generated/args/account.args";
-import AccountModel, { Account } from "@/graphql/generated/models/account.model";
+import AccountModel from "@/graphql/generated/models/account.model";
 import UserModel from "@/graphql/generated/models/user.model";
+import { Account } from "@/graphql/generated/types/account.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

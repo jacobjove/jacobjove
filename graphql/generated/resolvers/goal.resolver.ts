@@ -12,8 +12,9 @@ import {
   GoalUpdateArgs,
   GoalUpsertionArgs,
 } from "@/graphql/generated/args/goal.args";
-import GoalModel, { Goal } from "@/graphql/generated/models/goal.model";
+import GoalModel from "@/graphql/generated/models/goal.model";
 import UserModel from "@/graphql/generated/models/user.model";
+import { Goal } from "@/graphql/generated/types/goal.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

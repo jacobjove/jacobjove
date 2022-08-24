@@ -6,8 +6,8 @@ import {
   useCreateCalendar,
 } from "@/graphql/generated/hooks/calendar.hooks";
 import { CalendarCreationInput } from "@/graphql/generated/inputs/calendar.inputs";
-import { Calendar } from "@/graphql/generated/models/calendar.model";
 import { getOptimisticResponseForCalendarCreation } from "@/graphql/generated/mutations/calendar.mutations";
+import { Calendar } from "@/graphql/generated/types/calendar.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type CalendarCreationDialogProps = ReturnType<typeof bindPopover>;

@@ -3,8 +3,8 @@ import fields from "@/graphql/generated/fields/mantra.fields";
 import { MantraFragment } from "@/graphql/generated/fragments/mantra.fragment";
 import { useCreateMantra, useMantraDataReducer } from "@/graphql/generated/hooks/mantra.hooks";
 import { MantraCreationInput } from "@/graphql/generated/inputs/mantra.inputs";
-import { Mantra } from "@/graphql/generated/models/mantra.model";
 import { getOptimisticResponseForMantraCreation } from "@/graphql/generated/mutations/mantra.mutations";
+import { Mantra } from "@/graphql/generated/types/mantra.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type MantraCreationDialogProps = ReturnType<typeof bindPopover>;

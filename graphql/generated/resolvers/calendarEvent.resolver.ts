@@ -12,8 +12,9 @@ import {
   FindManyCalendarEventArgs,
   FindUniqueCalendarEventArgs,
 } from "@/graphql/generated/args/calendarEvent.args";
-import CalendarEventModel, { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
+import CalendarEventModel from "@/graphql/generated/models/calendarEvent.model";
 import UserModel from "@/graphql/generated/models/user.model";
+import { CalendarEvent } from "@/graphql/generated/types/calendarEvent.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

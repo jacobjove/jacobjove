@@ -1,7 +1,7 @@
 import SelectableIdentity from "@/components/data/identities/SelectableIdentity";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Identity } from "@/graphql/generated/models";
+import { Identity } from "@/graphql/generated/types";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import { Divider } from "@mui/material";

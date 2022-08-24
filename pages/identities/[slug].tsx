@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
-import { Identity } from "@/graphql/generated/models";
+import { Identity } from "@/graphql/generated/types";
 import { Container } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";

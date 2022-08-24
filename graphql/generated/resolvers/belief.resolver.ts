@@ -12,8 +12,9 @@ import {
   FindManyBeliefArgs,
   FindUniqueBeliefArgs,
 } from "@/graphql/generated/args/belief.args";
-import BeliefModel, { Belief } from "@/graphql/generated/models/belief.model";
+import BeliefModel from "@/graphql/generated/models/belief.model";
 import UserModel from "@/graphql/generated/models/user.model";
+import { Belief } from "@/graphql/generated/types/belief.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

@@ -1,5 +1,3 @@
-import CalendarModel from "@/graphql/generated/models/calendar.model";
-import NotebookModel from "@/graphql/generated/models/notebook.model";
 import Definition, {
   OPTIONAL_BOOLEAN,
   OPTIONAL_STRING,
@@ -103,16 +101,15 @@ const definition: Definition<UserFields> = {
   hooks: {
     save: {
       pre: async function (next) {
-        console.log(">>>>>>> User save.pre");
         const instance = this as DocumentType<any>;
         if (instance.isModified("password") && instance.password) {
           instance.password = await bcrypt.hash(instance.password, COST_FACTOR);
         }
-        console.log(">>>>>>> User save.pre:", this);
         return next();
       },
       post: async (user: any) => {
-        console.error(">>>>>>> User save.post");
+        const CalendarModel = (await import("@/graphql/generated/models/calendar.model")) as any;
+        const NotebookModel = (await import("@/graphql/generated/models/notebook.model")) as any;
         let saveChanges = false;
         if (!user.calendars?.length) {
           const defaultCalendar = await CalendarModel.create({

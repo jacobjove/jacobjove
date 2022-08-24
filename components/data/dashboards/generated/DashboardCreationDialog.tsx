@@ -6,8 +6,8 @@ import {
   useDashboardDataReducer,
 } from "@/graphql/generated/hooks/dashboard.hooks";
 import { DashboardCreationInput } from "@/graphql/generated/inputs/dashboard.inputs";
-import { Dashboard } from "@/graphql/generated/models/dashboard.model";
 import { getOptimisticResponseForDashboardCreation } from "@/graphql/generated/mutations/dashboard.mutations";
+import { Dashboard } from "@/graphql/generated/types/dashboard.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type DashboardCreationDialogProps = ReturnType<typeof bindPopover>;

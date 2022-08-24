@@ -2,9 +2,9 @@
 import TaskRow, { TaskRowProps } from "@/components/data/tasks/TaskRow";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
-import { Task } from "@/graphql/generated/models/task.model";
 import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
 import { taskCreationInputSchema } from "@/graphql/generated/schemas/task.schemas";
+import { Task } from "@/graphql/generated/types/task.type";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";

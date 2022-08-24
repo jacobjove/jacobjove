@@ -1,4 +1,4 @@
-import * as Models from "@/graphql/generated/models";
+import * as Types from "@/graphql/generated/types";
 // import { Model } from "@/graphql/schema/types";
 import { DocumentType } from "@typegoose/typegoose";
 import { camelize } from "inflection";
@@ -132,7 +132,7 @@ export type Field = {
 } & (
   | {
       type: "Array";
-      typeArg: FieldType | keyof typeof Models;
+      typeArg: FieldType | keyof typeof Types;
     }
   | {
       type: "Map";
@@ -146,7 +146,7 @@ export type Field = {
       type: Exclude<FieldType, "Array" | "Map" | "String">;
     }
 ) & {
-    typeArg?: FieldType | keyof typeof Models;
+    typeArg?: FieldType | keyof typeof Types;
     typeCast?: string | CallableFunction | CallableFunction[];
     default?: unknown;
     select?: boolean;

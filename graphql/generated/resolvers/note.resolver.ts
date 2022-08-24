@@ -12,8 +12,9 @@ import {
   NoteUpdateArgs,
   NoteUpsertionArgs,
 } from "@/graphql/generated/args/note.args";
-import NoteModel, { Note } from "@/graphql/generated/models/note.model";
+import NoteModel from "@/graphql/generated/models/note.model";
 import UserModel from "@/graphql/generated/models/user.model";
+import { Note } from "@/graphql/generated/types/note.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

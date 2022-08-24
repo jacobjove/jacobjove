@@ -12,7 +12,8 @@ import {
   ShelvingUpdateArgs,
   ShelvingUpsertionArgs,
 } from "@/graphql/generated/args/shelving.args";
-import ShelvingModel, { Shelving } from "@/graphql/generated/models/shelving.model";
+import ShelvingModel from "@/graphql/generated/models/shelving.model";
+import { Shelving } from "@/graphql/generated/types/shelving.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

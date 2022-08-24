@@ -3,8 +3,8 @@ import fields from "@/graphql/generated/fields/note.fields";
 import { NoteFragment } from "@/graphql/generated/fragments/note.fragment";
 import { useCreateNote, useNoteDataReducer } from "@/graphql/generated/hooks/note.hooks";
 import { NoteCreationInput } from "@/graphql/generated/inputs/note.inputs";
-import { Note } from "@/graphql/generated/models/note.model";
 import { getOptimisticResponseForNoteCreation } from "@/graphql/generated/mutations/note.mutations";
+import { Note } from "@/graphql/generated/types/note.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type NoteCreationDialogProps = ReturnType<typeof bindPopover>;

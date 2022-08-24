@@ -3,8 +3,8 @@ import fields from "@/graphql/generated/fields/belief.fields";
 import { BeliefFragment } from "@/graphql/generated/fragments/belief.fragment";
 import { useBeliefDataReducer, useCreateBelief } from "@/graphql/generated/hooks/belief.hooks";
 import { BeliefCreationInput } from "@/graphql/generated/inputs/belief.inputs";
-import { Belief } from "@/graphql/generated/models/belief.model";
 import { getOptimisticResponseForBeliefCreation } from "@/graphql/generated/mutations/belief.mutations";
+import { Belief } from "@/graphql/generated/types/belief.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type BeliefCreationDialogProps = ReturnType<typeof bindPopover>;

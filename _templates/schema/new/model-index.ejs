@@ -3,4 +3,4 @@ inject: true
 to: graphql/generated/models/index.ts
 append: true
 ---
-export { <%= Name %> } from "./<%= name %>.model";
+export { default as <%= Name %>Model } from "./<%= name %>.model";

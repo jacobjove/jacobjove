@@ -1,5 +1,6 @@
 import AccountModel from "@/graphql/generated/models/account.model";
 import UserModel from "@/graphql/generated/models/user.model";
+import mongoosePromise from "@/lib/mongodb";
 import { NoUndefinedField } from "@/types/global";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
@@ -130,7 +131,7 @@ const callbacks: CallbacksOptions = {
     return true;
   },
   async redirect({ url, baseUrl }) {
-    console.log("🔑 redirect", { url, baseUrl });
+    // console.log("🔑 redirect", { url, baseUrl });
     if (url === baseUrl || url === `${baseUrl}/`) return `${baseUrl}/app`;
     if (url.startsWith(baseUrl)) return url;
     // Allow relative callback URLs.
@@ -162,6 +163,7 @@ const callbacks: CallbacksOptions = {
           accessTokenExpiry: new Date(freshToken.accessTokenExpiry),
           refreshToken: freshToken.refreshToken,
         };
+        await mongoosePromise;
         const userUpsertResult = await UserModel.findOneAndUpdate(
           { email: token.email },
           {
@@ -181,9 +183,6 @@ const callbacks: CallbacksOptions = {
         );
         const user = userUpsertResult.value;
         if (!user) throw new Error("Failed to upsert user!");
-        console.log();
-        console.log(">>>", user);
-        console.log();
         // TODO: avoid awaiting?
         if (!user.accounts?.some((a) => a.provider === freshToken.provider)) {
           await AccountModel.create({

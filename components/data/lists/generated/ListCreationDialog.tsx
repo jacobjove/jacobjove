@@ -3,8 +3,8 @@ import fields from "@/graphql/generated/fields/list.fields";
 import { ListFragment } from "@/graphql/generated/fragments/list.fragment";
 import { useCreateList, useListDataReducer } from "@/graphql/generated/hooks/list.hooks";
 import { ListCreationInput } from "@/graphql/generated/inputs/list.inputs";
-import { List } from "@/graphql/generated/models/list.model";
 import { getOptimisticResponseForListCreation } from "@/graphql/generated/mutations/list.mutations";
+import { List } from "@/graphql/generated/types/list.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type ListCreationDialogProps = ReturnType<typeof bindPopover>;

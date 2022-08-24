@@ -60,7 +60,7 @@ const nextConfig = {
   swcMinify: true,
 };
 
-module.exports = () => {
+module.exports = async () => {
   return plugins.reduce((acc, plugin) => {
     return plugin(acc), { ...nextConfig };
   });

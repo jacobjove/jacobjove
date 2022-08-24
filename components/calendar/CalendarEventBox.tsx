@@ -1,6 +1,6 @@
 import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
 import { useUpdateCalendarEvent } from "@/graphql/generated/hooks/calendarEvent.hooks";
-import { CalendarEvent } from "@/graphql/generated/models";
+import { CalendarEvent } from "@/graphql/generated/types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";

@@ -1,4 +1,3 @@
-import UserModel from "@/graphql/generated/models/user.model";
 import Definition, { Field, OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
 import { DocumentType } from "@typegoose/typegoose";
 import { ObjectId } from "mongodb";
@@ -30,13 +29,14 @@ const fields: Record<TaskFields, Field> = {
   completedAt: { required: false, type: "DateTime" },
 };
 
-const definition: Definition<TaskFields> = {
+const TASK_DEFINITION: Definition<TaskFields> = {
   name: "task",
   fields,
   hooks: {
     save: {
       post: async (instance: DocumentType<Partial<Model> & { [key in TaskFields]?: unknown }>) => {
         if (instance && instance.userId && !instance?.archivedAt) {
+          const UserModel = (await import("@/graphql/generated/models/user.model")) as any;
           UserModel.updateOne(
             {
               _id: new ObjectId(instance.userId as string | ObjectId),
@@ -50,4 +50,4 @@ const definition: Definition<TaskFields> = {
   },
 };
 
-export default definition;
+export default TASK_DEFINITION;

@@ -55,12 +55,12 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
         <Box m={"auto"} p={4} maxWidth={"40rem"}>
           {!!Object.keys(errors).length && (
             <>
-              <Alert severity="error">
+              <Alert severity="error" sx={{ alignItems: "center" }}>
                 {/* {Array.isArray(errors) ? errors.map((error) => <p key={error}>{error}</p>) : <p>{errors}</p>} */}
                 {Object.entries(errors || {}).map(([prop, value]) => {
                   return (
                     <p className="error-message" key={prop}>
-                      {value}
+                      {"Error:"} {value}
                     </p>
                   );
                 })}

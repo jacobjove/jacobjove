@@ -12,8 +12,9 @@ import {
   ListItemUpdateArgs,
   ListItemUpsertionArgs,
 } from "@/graphql/generated/args/listItem.args";
-import ListItemModel, { ListItem } from "@/graphql/generated/models/listItem.model";
+import ListItemModel from "@/graphql/generated/models/listItem.model";
 import UserModel from "@/graphql/generated/models/user.model";
+import { ListItem } from "@/graphql/generated/types/listItem.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

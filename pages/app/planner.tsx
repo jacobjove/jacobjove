@@ -12,10 +12,10 @@ import { calendarEventFragment } from "@/graphql/generated/fragments/calendarEve
 import { goalFragment } from "@/graphql/generated/fragments/goal.fragment";
 import { habitFragment } from "@/graphql/generated/fragments/habit.fragment";
 import { taskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
-import { Goal } from "@/graphql/generated/models/goal.model";
-import { Habit } from "@/graphql/generated/models/habit.model";
-import { Task } from "@/graphql/generated/models/task.model";
+import { CalendarEvent } from "@/graphql/generated/types/calendarEvent.type";
+import { Goal } from "@/graphql/generated/types/goal.type";
+import { Habit } from "@/graphql/generated/types/habit.type";
+import { Task } from "@/graphql/generated/types/task.type";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import TabContext from "@mui/lab/TabContext";

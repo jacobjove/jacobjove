@@ -13,7 +13,8 @@ import {
   ValueUpsertionArgs,
 } from "@/graphql/generated/args/value.args";
 import UserModel from "@/graphql/generated/models/user.model";
-import ValueModel, { Value } from "@/graphql/generated/models/value.model";
+import ValueModel from "@/graphql/generated/models/value.model";
+import { Value } from "@/graphql/generated/types/value.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

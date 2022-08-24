@@ -7,10 +7,10 @@ import {
 } from "@/graphql/generated/hooks/calendarEvent.hooks";
 import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { CalendarEventCreationInput } from "@/graphql/generated/inputs/calendarEvent.inputs";
-import { CalendarEvent } from "@/graphql/generated/models/calendarEvent.model";
 import { getOptimisticResponseForCalendarEventCreation } from "@/graphql/generated/mutations/calendarEvent.mutations";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { calendarEventCreationInputSchema } from "@/graphql/generated/schemas/calendarEvent.schemas";
+import { CalendarEvent } from "@/graphql/generated/types/calendarEvent.type";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@/utils/constants";
 import { styled } from "@mui/material/styles";
 import { addMinutes, differenceInMinutes } from "date-fns";

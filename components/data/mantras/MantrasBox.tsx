@@ -1,5 +1,5 @@
 import DataBox, { DataBoxProps } from "@/components/DataBox";
-import { Mantra } from "@/graphql/generated/models/mantra.model";
+import { Mantra } from "@/graphql/generated/types/mantra.type";
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";

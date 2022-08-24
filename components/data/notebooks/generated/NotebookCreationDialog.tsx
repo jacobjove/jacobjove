@@ -6,8 +6,8 @@ import {
   useNotebookDataReducer,
 } from "@/graphql/generated/hooks/notebook.hooks";
 import { NotebookCreationInput } from "@/graphql/generated/inputs/notebook.inputs";
-import { Notebook } from "@/graphql/generated/models/notebook.model";
 import { getOptimisticResponseForNotebookCreation } from "@/graphql/generated/mutations/notebook.mutations";
+import { Notebook } from "@/graphql/generated/types/notebook.type";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type NotebookCreationDialogProps = ReturnType<typeof bindPopover>;

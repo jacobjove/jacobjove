@@ -12,7 +12,8 @@ import {
   FindManyBookArgs,
   FindUniqueBookArgs,
 } from "@/graphql/generated/args/book.args";
-import BookModel, { Book } from "@/graphql/generated/models/book.model";
+import BookModel from "@/graphql/generated/models/book.model";
+import { Book } from "@/graphql/generated/types/book.type";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";
