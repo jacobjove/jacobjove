@@ -345,6 +345,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   textTransform: "none",
                   display: "flex",
                   justifyContent: "space-between",
+                  ...(!!data.dueDate && { mb: -1 }),
                   color: (theme) =>
                     theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
                 }}
@@ -371,6 +372,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   textTransform: "none",
                   display: "flex",
                   justifyContent: "space-between",
+                  ...(!!data.plannedStartDate && { mb: -1 }),
                   color: (theme) =>
                     theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
                 }}
