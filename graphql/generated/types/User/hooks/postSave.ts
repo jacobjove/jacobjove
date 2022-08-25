@@ -3,13 +3,11 @@
 import mongoosePromise from "@/lib/mongodb";
 
 export const postSave = async (user: any) => {
-  const mongoose = await mongoosePromise;
-  const CalendarModel = mongoose.model("Calendar");
-  const NotebookModel = mongoose.model("Notebook");
-  // const CalendarModel = (await import(`${process.env.BASE_DIR}/graphql/generated/models/calendar.model`)) as any;
-  // const NotebookModel = (await import(`${process.env.BASE_DIR}/graphql/generated/models/notebook.model`)) as any;
+  let mongoose: undefined | Awaited<typeof mongoosePromise> = undefined;
   let saveChanges = false;
   if (!user.calendars?.length) {
+    mongoose = await mongoosePromise;
+    const CalendarModel = mongoose.model("Calendar");
     const defaultCalendar = await CalendarModel.create({
       userId: user.id,
       name: "Default calendar",
@@ -21,6 +19,8 @@ export const postSave = async (user: any) => {
     saveChanges = true;
   }
   if (!user.notebooks?.length) {
+    mongoose = await mongoosePromise;
+    const NotebookModel = mongoose.model("Notebook");
     const defaultNotebook = await NotebookModel.create({
       userId: user.id,
       title: "Journal",
