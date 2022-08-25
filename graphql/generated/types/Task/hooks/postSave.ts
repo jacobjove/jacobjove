@@ -1,10 +1,12 @@
 /* Edit this file to add a non-default post-save hook for the Task type. */
 
+import mongoosePromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 
 export const postSave = async (task: any) => {
   if (task && task.userId && !task?.archivedAt) {
-    const UserModel = await import(`${process.env.BASE_DIR}/graphql/generated/models/UserModel`);
+    const mongoose = await mongoosePromise;
+    const UserModel = mongoose.model("User");
     UserModel.updateOne(
       {
         _id: new ObjectId(task.userId as string | ObjectId),

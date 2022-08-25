@@ -1,8 +1,11 @@
 /* Edit this file to add a non-default post-save hook for the User type. */
 
-import { CalendarModel, NotebookModel } from "@/graphql/generated/models";
+import mongoosePromise from "@/lib/mongodb";
 
 export const postSave = async (user: any) => {
+  const mongoose = await mongoosePromise;
+  const CalendarModel = mongoose.model("Calendar");
+  const NotebookModel = mongoose.model("Notebook");
   // const CalendarModel = (await import(`${process.env.BASE_DIR}/graphql/generated/models/calendar.model`)) as any;
   // const NotebookModel = (await import(`${process.env.BASE_DIR}/graphql/generated/models/notebook.model`)) as any;
   let saveChanges = false;
