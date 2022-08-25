@@ -5,6 +5,7 @@ import { ListCreationArgs, ListUpdateArgs } from "@/graphql/generated/args/list.
 import { ListFragment } from "@/graphql/generated/fragments/list.fragment";
 import {
   CREATE_LIST,
+  getOptimisticResponseForListCreation,
   updateCacheAfterCreatingList,
   UPDATE_LIST,
 } from "@/graphql/generated/mutations/list.mutations";
@@ -30,7 +31,8 @@ export const useCreateList = (options?: ListCreationMutationHookOptions) => {
   return useHandleMutation<{ createList: ListFragment }, ListCreationArgs>(
     CREATE_LIST,
     { ...updateCacheAfterCreatingList, ...(options ?? {}) },
-    listCreationInputSchema
+    listCreationInputSchema,
+    getOptimisticResponseForListCreation
   );
 };
 

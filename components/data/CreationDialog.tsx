@@ -25,7 +25,6 @@ export interface CreationDialogProps<
   fields: { [key in keyof CreationInput]: Field };
   create: MutableRefObject<MutationFunction<CreationMutationData, { data: CreationInput }>>;
   produceInitialData?: () => CreationInput;
-  getOptimisticResponse: (data: CreationInput) => CreationMutationData;
 }
 
 export default function CreationDialog<
@@ -38,7 +37,6 @@ export default function CreationDialog<
   fields: _fields,
   dataTuple,
   create,
-  getOptimisticResponse,
   produceInitialData,
   onClose: initialOnClose,
   anchorEl: _anchorEl,
@@ -64,10 +62,8 @@ export default function CreationDialog<
   const saveAndExit = () => {
     // TODO: run validator!
     const validatedData = data as CreationInput;
-    const optimisticResponse = getOptimisticResponse(validatedData);
     create.current?.({
       variables: { data: validatedData },
-      optimisticResponse,
     });
     dispatchData({
       field: "init",

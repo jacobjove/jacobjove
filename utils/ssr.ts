@@ -26,7 +26,7 @@ export const buildGetServerSidePropsFunc = ({
 }: BuildServerSidePropsOptions | undefined = {}) => {
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
-    console.log(">>> SSRing for", req.url);
+    // console.log(">>> SSRing for", req.url);
     const session = await unstable_getServerSession(context.req, context.res, authOptions);
     if (!session && unauthedRedirectDestination) {
       return {

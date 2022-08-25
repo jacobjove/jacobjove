@@ -6,7 +6,6 @@ import {
   useNotebookDataReducer,
 } from "@/graphql/generated/hooks/notebook.hooks";
 import { NotebookCreationInput } from "@/graphql/generated/inputs/notebook.inputs";
-import { getOptimisticResponseForNotebookCreation } from "@/graphql/generated/mutations/notebook.mutations";
 import Notebook from "@/graphql/generated/types/Notebook";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
@@ -21,7 +20,6 @@ export default function NotebookCreationDialog(props: NotebookCreationDialogProp
     create,
     fields,
     // produceInitialData,
-    getOptimisticResponse: getOptimisticResponseForNotebookCreation,
     ...props,
   });
 }

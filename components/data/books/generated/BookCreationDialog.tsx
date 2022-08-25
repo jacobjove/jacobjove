@@ -3,7 +3,6 @@ import fields from "@/graphql/generated/fields/book.fields";
 import { BookFragment } from "@/graphql/generated/fragments/book.fragment";
 import { useBookDataReducer, useCreateBook } from "@/graphql/generated/hooks/book.hooks";
 import { BookCreationInput } from "@/graphql/generated/inputs/book.inputs";
-import { getOptimisticResponseForBookCreation } from "@/graphql/generated/mutations/book.mutations";
 import Book from "@/graphql/generated/types/Book";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
@@ -18,7 +17,6 @@ export default function BookCreationDialog(props: BookCreationDialogProps) {
     create,
     fields,
     // produceInitialData,
-    getOptimisticResponse: getOptimisticResponseForBookCreation,
     ...props,
   });
 }

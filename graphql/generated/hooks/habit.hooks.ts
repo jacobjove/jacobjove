@@ -5,6 +5,7 @@ import { HabitCreationArgs, HabitUpdateArgs } from "@/graphql/generated/args/hab
 import { HabitFragment } from "@/graphql/generated/fragments/habit.fragment";
 import {
   CREATE_HABIT,
+  getOptimisticResponseForHabitCreation,
   updateCacheAfterCreatingHabit,
   UPDATE_HABIT,
 } from "@/graphql/generated/mutations/habit.mutations";
@@ -30,7 +31,8 @@ export const useCreateHabit = (options?: HabitCreationMutationHookOptions) => {
   return useHandleMutation<{ createHabit: HabitFragment }, HabitCreationArgs>(
     CREATE_HABIT,
     { ...updateCacheAfterCreatingHabit, ...(options ?? {}) },
-    habitCreationInputSchema
+    habitCreationInputSchema,
+    getOptimisticResponseForHabitCreation
   );
 };
 

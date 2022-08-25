@@ -5,6 +5,7 @@ import { CalendarCreationArgs, CalendarUpdateArgs } from "@/graphql/generated/ar
 import { CalendarFragment } from "@/graphql/generated/fragments/calendar.fragment";
 import {
   CREATE_CALENDAR,
+  getOptimisticResponseForCalendarCreation,
   updateCacheAfterCreatingCalendar,
   UPDATE_CALENDAR,
 } from "@/graphql/generated/mutations/calendar.mutations";
@@ -30,7 +31,8 @@ export const useCreateCalendar = (options?: CalendarCreationMutationHookOptions)
   return useHandleMutation<{ createCalendar: CalendarFragment }, CalendarCreationArgs>(
     CREATE_CALENDAR,
     { ...updateCacheAfterCreatingCalendar, ...(options ?? {}) },
-    calendarCreationInputSchema
+    calendarCreationInputSchema,
+    getOptimisticResponseForCalendarCreation
   );
 };
 

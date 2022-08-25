@@ -6,7 +6,6 @@ import {
   useListItemDataReducer,
 } from "@/graphql/generated/hooks/listItem.hooks";
 import { ListItemCreationInput } from "@/graphql/generated/inputs/listItem.inputs";
-import { getOptimisticResponseForListItemCreation } from "@/graphql/generated/mutations/listItem.mutations";
 import ListItem from "@/graphql/generated/types/ListItem";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
@@ -21,7 +20,6 @@ export default function ListItemCreationDialog(props: ListItemCreationDialogProp
     create,
     fields,
     // produceInitialData,
-    getOptimisticResponse: getOptimisticResponseForListItemCreation,
     ...props,
   });
 }

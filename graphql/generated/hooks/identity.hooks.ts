@@ -5,6 +5,7 @@ import { IdentityCreationArgs, IdentityUpdateArgs } from "@/graphql/generated/ar
 import { IdentityFragment } from "@/graphql/generated/fragments/identity.fragment";
 import {
   CREATE_IDENTITY,
+  getOptimisticResponseForIdentityCreation,
   updateCacheAfterCreatingIdentity,
   UPDATE_IDENTITY,
 } from "@/graphql/generated/mutations/identity.mutations";
@@ -30,7 +31,8 @@ export const useCreateIdentity = (options?: IdentityCreationMutationHookOptions)
   return useHandleMutation<{ createIdentity: IdentityFragment }, IdentityCreationArgs>(
     CREATE_IDENTITY,
     { ...updateCacheAfterCreatingIdentity, ...(options ?? {}) },
-    identityCreationInputSchema
+    identityCreationInputSchema,
+    getOptimisticResponseForIdentityCreation
   );
 };
 

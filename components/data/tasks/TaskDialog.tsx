@@ -8,7 +8,6 @@ import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFi
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useCreateHabit } from "@/graphql/generated/hooks/habit.hooks";
 import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
-import { getOptimisticResponseForHabitCreation } from "@/graphql/generated/mutations/habit.mutations";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
 import Habit from "@/graphql/generated/types/Habit";
@@ -180,7 +179,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     setValidating(false);
     const result = await createHabit.current?.({
       variables: { data: validatedData },
-      optimisticResponse: getOptimisticResponseForHabitCreation(validatedData),
     });
     const newHabit = result.data?.createHabit;
     if (newHabit) {

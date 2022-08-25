@@ -5,6 +5,7 @@ import { BeliefCreationArgs, BeliefUpdateArgs } from "@/graphql/generated/args/b
 import { BeliefFragment } from "@/graphql/generated/fragments/belief.fragment";
 import {
   CREATE_BELIEF,
+  getOptimisticResponseForBeliefCreation,
   updateCacheAfterCreatingBelief,
   UPDATE_BELIEF,
 } from "@/graphql/generated/mutations/belief.mutations";
@@ -30,7 +31,8 @@ export const useCreateBelief = (options?: BeliefCreationMutationHookOptions) => 
   return useHandleMutation<{ createBelief: BeliefFragment }, BeliefCreationArgs>(
     CREATE_BELIEF,
     { ...updateCacheAfterCreatingBelief, ...(options ?? {}) },
-    beliefCreationInputSchema
+    beliefCreationInputSchema,
+    getOptimisticResponseForBeliefCreation
   );
 };
 

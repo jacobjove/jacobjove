@@ -5,7 +5,6 @@ force: true
 
 import CreationDialog from "@/components/data/CreationDialog";
 import { useCreate<%= Name %>, use<%= Name %>DataReducer } from "@/graphql/generated/hooks/<%= name %>.hooks";
-import { getOptimisticResponseFor<%= Name %>Creation } from "@/graphql/generated/mutations/<%= name %>.mutations";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { <%= Name %>CreationInput } from "@/graphql/generated/inputs/<%= name %>.inputs";
 import <%= Name %> from "@/graphql/generated/types/<%= Name %>";
@@ -23,7 +22,6 @@ export default function <%= Name %>CreationDialog(props: <%= Name %>CreationDial
     create,
     fields,
     // produceInitialData,
-    getOptimisticResponse: getOptimisticResponseFor<%= Name %>Creation,
     ...props,
   });
 }

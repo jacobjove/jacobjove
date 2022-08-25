@@ -24,6 +24,10 @@ import {
 <% useUser = Object.keys(fields).includes("userId") || Object.entries(fields).some(([, field]) => field.initialize); -%>
 import { useUser } from "@/components/contexts/UserContext";
 import { <%= name %>CreationInputSchema, <%= name %>UpdateInputSchema } from "@/graphql/generated/schemas/<%= name %>.schemas";
+import {
+  getOptimisticResponseFor<%= Name %>Creation,
+  getOptimisticResponseFor<%= Name %>Update,
+} from "@/graphql/generated/mutations/<%= name %>.mutations";
 
 type <%= Name %>CreationMutationHookOptions = MutationHookOptions<
   { create<%= Name %>: <%= Name %>Fragment },
@@ -38,6 +42,7 @@ export const useCreate<%= Name %> = (options?: <%= Name %>CreationMutationHookOp
     CREATE_<%= NAME %>,
     { ...updateCacheAfterCreating<%= Name %>, ...(options ?? {}) },
     <%= name %>CreationInputSchema,
+    getOptimisticResponseFor<%= Name %>Creation,
   );
 }
 

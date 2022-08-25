@@ -5,6 +5,7 @@ import { MantraCreationArgs, MantraUpdateArgs } from "@/graphql/generated/args/m
 import { MantraFragment } from "@/graphql/generated/fragments/mantra.fragment";
 import {
   CREATE_MANTRA,
+  getOptimisticResponseForMantraCreation,
   updateCacheAfterCreatingMantra,
   UPDATE_MANTRA,
 } from "@/graphql/generated/mutations/mantra.mutations";
@@ -30,7 +31,8 @@ export const useCreateMantra = (options?: MantraCreationMutationHookOptions) => 
   return useHandleMutation<{ createMantra: MantraFragment }, MantraCreationArgs>(
     CREATE_MANTRA,
     { ...updateCacheAfterCreatingMantra, ...(options ?? {}) },
-    mantraCreationInputSchema
+    mantraCreationInputSchema,
+    getOptimisticResponseForMantraCreation
   );
 };
 

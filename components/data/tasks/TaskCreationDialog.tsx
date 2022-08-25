@@ -5,7 +5,6 @@ import fields from "@/graphql/generated/fields/task.fields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
 import { TaskCreationInput } from "@/graphql/generated/inputs/task.inputs";
-import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
 import Task from "@/graphql/generated/types/Task";
 import { ID } from "@/graphql/schema/types";
 import TodayIcon from "@mui/icons-material/Today";
@@ -28,10 +27,8 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
     // TODO: run validator!
     const validatedData = data as TaskCreationInput;
     if (dataIsValid) {
-      const optimisticResponse = getOptimisticResponseForTaskCreation(validatedData);
       create.current?.({
         variables: { data: validatedData },
-        optimisticResponse,
       });
       dispatchData({
         field: "init",
@@ -40,14 +37,11 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
     }
     props.onClose();
   };
-  console.log("Rendering TaskCreationDialog");
   return CreationDialog<Task, TaskCreationInput, { createTask: TaskFragment }>({
     typeName: "task",
     dataTuple,
     create,
     fields,
-    // produceInitialData,
-    getOptimisticResponse: getOptimisticResponseForTaskCreation,
     ...props,
     children: (
       <>

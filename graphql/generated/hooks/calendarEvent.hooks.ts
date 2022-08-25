@@ -8,6 +8,7 @@ import {
 import { CalendarEventFragment } from "@/graphql/generated/fragments/calendarEvent.fragment";
 import {
   CREATE_CALENDAR_EVENT,
+  getOptimisticResponseForCalendarEventCreation,
   updateCacheAfterCreatingCalendarEvent,
   UPDATE_CALENDAR_EVENT,
 } from "@/graphql/generated/mutations/calendarEvent.mutations";
@@ -36,7 +37,8 @@ export const useCreateCalendarEvent = (options?: CalendarEventCreationMutationHo
   >(
     CREATE_CALENDAR_EVENT,
     { ...updateCacheAfterCreatingCalendarEvent, ...(options ?? {}) },
-    calendarEventCreationInputSchema
+    calendarEventCreationInputSchema,
+    getOptimisticResponseForCalendarEventCreation
   );
 };
 

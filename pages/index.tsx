@@ -6,15 +6,16 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { NextPage } from "next";
 import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 
 interface DefaultPageProps {
-  session: Session;
+  session: Session | null;
 }
 
-const DefaultPage: NextPage<DefaultPageProps> = ({ session }: DefaultPageProps) => {
-  // const currentDate = props.date;
+const DefaultPage: NextPage<DefaultPageProps> = (_props: DefaultPageProps) => {
+  const { data: session } = useSession();
   return (
     <Layout>
       <NextSeo title={"SelfBuilder"} canonical={"/"} description={"Be your best self."} />

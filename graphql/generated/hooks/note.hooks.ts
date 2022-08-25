@@ -5,6 +5,7 @@ import { NoteCreationArgs, NoteUpdateArgs } from "@/graphql/generated/args/note.
 import { NoteFragment } from "@/graphql/generated/fragments/note.fragment";
 import {
   CREATE_NOTE,
+  getOptimisticResponseForNoteCreation,
   updateCacheAfterCreatingNote,
   UPDATE_NOTE,
 } from "@/graphql/generated/mutations/note.mutations";
@@ -30,7 +31,8 @@ export const useCreateNote = (options?: NoteCreationMutationHookOptions) => {
   return useHandleMutation<{ createNote: NoteFragment }, NoteCreationArgs>(
     CREATE_NOTE,
     { ...updateCacheAfterCreatingNote, ...(options ?? {}) },
-    noteCreationInputSchema
+    noteCreationInputSchema,
+    getOptimisticResponseForNoteCreation
   );
 };
 

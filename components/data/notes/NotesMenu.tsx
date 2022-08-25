@@ -4,7 +4,6 @@ import SearchDialog from "@/components/search/SearchDialog";
 import { noteFragment } from "@/graphql/generated/fragments/note.fragment";
 // import Select from "@/components/Select";
 import { useCreateNotebook, useUpdateNotebook } from "@/graphql/generated/hooks/notebook.hooks";
-import { getOptimisticResponseForNotebookCreation } from "@/graphql/generated/mutations/notebook.mutations";
 import Note from "@/graphql/generated/types/Note";
 import Notebook from "@/graphql/generated/types/Notebook";
 import { ID } from "@/graphql/schema/types";
@@ -161,10 +160,8 @@ export default function NotesMenu({
       title: newNotebookName,
       userId,
     };
-    const optimisticResponse = getOptimisticResponseForNotebookCreation(data);
     const mutationResult = await createNotebook.current({
       variables: { data },
-      optimisticResponse,
     });
     if (mutationResult?.data?.createNotebook?.id)
       setSelectedNotebookId(mutationResult.data.createNotebook.id);

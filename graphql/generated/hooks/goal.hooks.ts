@@ -5,6 +5,7 @@ import { GoalCreationArgs, GoalUpdateArgs } from "@/graphql/generated/args/goal.
 import { GoalFragment } from "@/graphql/generated/fragments/goal.fragment";
 import {
   CREATE_GOAL,
+  getOptimisticResponseForGoalCreation,
   updateCacheAfterCreatingGoal,
   UPDATE_GOAL,
 } from "@/graphql/generated/mutations/goal.mutations";
@@ -30,7 +31,8 @@ export const useCreateGoal = (options?: GoalCreationMutationHookOptions) => {
   return useHandleMutation<{ createGoal: GoalFragment }, GoalCreationArgs>(
     CREATE_GOAL,
     { ...updateCacheAfterCreatingGoal, ...(options ?? {}) },
-    goalCreationInputSchema
+    goalCreationInputSchema,
+    getOptimisticResponseForGoalCreation
   );
 };
 

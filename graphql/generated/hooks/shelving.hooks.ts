@@ -4,6 +4,7 @@ import { ShelvingCreationArgs, ShelvingUpdateArgs } from "@/graphql/generated/ar
 import { ShelvingFragment } from "@/graphql/generated/fragments/shelving.fragment";
 import {
   CREATE_SHELVING,
+  getOptimisticResponseForShelvingCreation,
   updateCacheAfterCreatingShelving,
   UPDATE_SHELVING,
 } from "@/graphql/generated/mutations/shelving.mutations";
@@ -29,7 +30,8 @@ export const useCreateShelving = (options?: ShelvingCreationMutationHookOptions)
   return useHandleMutation<{ createShelving: ShelvingFragment }, ShelvingCreationArgs>(
     CREATE_SHELVING,
     { ...updateCacheAfterCreatingShelving, ...(options ?? {}) },
-    shelvingCreationInputSchema
+    shelvingCreationInputSchema,
+    getOptimisticResponseForShelvingCreation
   );
 };
 

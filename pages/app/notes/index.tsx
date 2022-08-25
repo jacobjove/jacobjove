@@ -5,7 +5,6 @@ import NotesMenu from "@/components/data/notes/NotesMenu";
 import NoteViewer from "@/components/data/notes/NoteViewer";
 import { noteFragment } from "@/graphql/generated/fragments/note.fragment";
 import { useCreateNote } from "@/graphql/generated/hooks/note.hooks";
-import { getOptimisticResponseForNoteCreation } from "@/graphql/generated/mutations/note.mutations";
 import Note from "@/graphql/generated/types/Note";
 import { ID } from "@/graphql/schema/types";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
@@ -70,10 +69,8 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
       notebookId,
       userId,
     };
-    const optimisticResponse = getOptimisticResponseForNoteCreation(data);
     const fetchResult = createNote.current?.({
       variables: { data },
-      optimisticResponse,
     });
     setSelectedNoteIds([tmpId]);
     const newNoteId = (await fetchResult)?.data?.createNote?.id;

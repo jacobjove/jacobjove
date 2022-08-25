@@ -3,7 +3,6 @@ import fields from "@/graphql/generated/fields/task.fields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
 import { TaskCreationInput } from "@/graphql/generated/inputs/task.inputs";
-import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
 import Task from "@/graphql/generated/types/Task";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
@@ -18,7 +17,6 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
     create,
     fields,
     // produceInitialData,
-    getOptimisticResponse: getOptimisticResponseForTaskCreation,
     ...props,
   });
 }

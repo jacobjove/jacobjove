@@ -5,6 +5,7 @@ import { ValueCreationArgs, ValueUpdateArgs } from "@/graphql/generated/args/val
 import { ValueFragment } from "@/graphql/generated/fragments/value.fragment";
 import {
   CREATE_VALUE,
+  getOptimisticResponseForValueCreation,
   updateCacheAfterCreatingValue,
   UPDATE_VALUE,
 } from "@/graphql/generated/mutations/value.mutations";
@@ -30,7 +31,8 @@ export const useCreateValue = (options?: ValueCreationMutationHookOptions) => {
   return useHandleMutation<{ createValue: ValueFragment }, ValueCreationArgs>(
     CREATE_VALUE,
     { ...updateCacheAfterCreatingValue, ...(options ?? {}) },
-    valueCreationInputSchema
+    valueCreationInputSchema,
+    getOptimisticResponseForValueCreation
   );
 };
 

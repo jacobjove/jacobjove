@@ -4,6 +4,7 @@ import { UserCreationArgs, UserUpdateArgs } from "@/graphql/generated/args/user.
 import { UserFragment } from "@/graphql/generated/fragments/user.fragment";
 import {
   CREATE_USER,
+  getOptimisticResponseForUserCreation,
   updateCacheAfterCreatingUser,
   UPDATE_USER,
 } from "@/graphql/generated/mutations/user.mutations";
@@ -29,7 +30,8 @@ export const useCreateUser = (options?: UserCreationMutationHookOptions) => {
   return useHandleMutation<{ createUser: UserFragment }, UserCreationArgs>(
     CREATE_USER,
     { ...updateCacheAfterCreatingUser, ...(options ?? {}) },
-    userCreationInputSchema
+    userCreationInputSchema,
+    getOptimisticResponseForUserCreation
   );
 };
 

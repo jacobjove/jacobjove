@@ -5,6 +5,7 @@ import { TaskCreationArgs, TaskUpdateArgs } from "@/graphql/generated/args/task.
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import {
   CREATE_TASK,
+  getOptimisticResponseForTaskCreation,
   updateCacheAfterCreatingTask,
   UPDATE_TASK,
 } from "@/graphql/generated/mutations/task.mutations";
@@ -30,7 +31,8 @@ export const useCreateTask = (options?: TaskCreationMutationHookOptions) => {
   return useHandleMutation<{ createTask: TaskFragment }, TaskCreationArgs>(
     CREATE_TASK,
     { ...updateCacheAfterCreatingTask, ...(options ?? {}) },
-    taskCreationInputSchema
+    taskCreationInputSchema,
+    getOptimisticResponseForTaskCreation
   );
 };
 

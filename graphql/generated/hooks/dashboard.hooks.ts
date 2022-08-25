@@ -8,6 +8,7 @@ import {
 import { DashboardFragment } from "@/graphql/generated/fragments/dashboard.fragment";
 import {
   CREATE_DASHBOARD,
+  getOptimisticResponseForDashboardCreation,
   updateCacheAfterCreatingDashboard,
   UPDATE_DASHBOARD,
 } from "@/graphql/generated/mutations/dashboard.mutations";
@@ -33,7 +34,8 @@ export const useCreateDashboard = (options?: DashboardCreationMutationHookOption
   return useHandleMutation<{ createDashboard: DashboardFragment }, DashboardCreationArgs>(
     CREATE_DASHBOARD,
     { ...updateCacheAfterCreatingDashboard, ...(options ?? {}) },
-    dashboardCreationInputSchema
+    dashboardCreationInputSchema,
+    getOptimisticResponseForDashboardCreation
   );
 };
 

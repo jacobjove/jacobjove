@@ -74,6 +74,7 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
   mutation: DocumentNode,
   mutationHookOptions?: MutationHookOptions<MutationReturnType, MutationArgsType>,
   preMutationValidationSchema?: SchemaOf<MutationArgsType["data"]>,
+  getOptimisticResponse?: (data: MutationArgsType["data"]) => MutationReturnType,
   debounceDelay = DEFAULT_MUTATION_DEBOUNCE_DELAY
 ): [
   MutableRefObject<MutationFunction<MutationReturnType, MutationArgsType>>,
@@ -89,10 +90,17 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
     pDebounce((mutationOptions?: MutationFunctionOptions<MutationReturnType, MutationArgsType>) => {
       const controller = new window.AbortController();
       abortController.current = controller;
-      preMutationValidationSchema &&
+      if (preMutationValidationSchema) {
         preMutationValidationSchema.validateSync(mutationOptions?.variables?.data);
+      }
       const modifiedMutationOptions = mutationOptions
-        ? { ...mutationOptions, context: { fetchOptions: { signal: controller.signal } } }
+        ? {
+            ...(!!(getOptimisticResponse && mutationOptions?.variables?.data) && {
+              optimisticResponse: getOptimisticResponse(mutationOptions?.variables?.data),
+            }),
+            ...mutationOptions,
+            context: { fetchOptions: { signal: controller.signal } },
+          }
         : mutationOptions;
       return mutate(modifiedMutationOptions);
     }, debounceDelay)

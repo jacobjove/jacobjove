@@ -5,6 +5,7 @@ import { AccountCreationArgs, AccountUpdateArgs } from "@/graphql/generated/args
 import { AccountFragment } from "@/graphql/generated/fragments/account.fragment";
 import {
   CREATE_ACCOUNT,
+  getOptimisticResponseForAccountCreation,
   updateCacheAfterCreatingAccount,
   UPDATE_ACCOUNT,
 } from "@/graphql/generated/mutations/account.mutations";
@@ -30,7 +31,8 @@ export const useCreateAccount = (options?: AccountCreationMutationHookOptions) =
   return useHandleMutation<{ createAccount: AccountFragment }, AccountCreationArgs>(
     CREATE_ACCOUNT,
     { ...updateCacheAfterCreatingAccount, ...(options ?? {}) },
-    accountCreationInputSchema
+    accountCreationInputSchema,
+    getOptimisticResponseForAccountCreation
   );
 };
 

@@ -4,6 +4,7 @@ import { BookCreationArgs, BookUpdateArgs } from "@/graphql/generated/args/book.
 import { BookFragment } from "@/graphql/generated/fragments/book.fragment";
 import {
   CREATE_BOOK,
+  getOptimisticResponseForBookCreation,
   updateCacheAfterCreatingBook,
   UPDATE_BOOK,
 } from "@/graphql/generated/mutations/book.mutations";
@@ -29,7 +30,8 @@ export const useCreateBook = (options?: BookCreationMutationHookOptions) => {
   return useHandleMutation<{ createBook: BookFragment }, BookCreationArgs>(
     CREATE_BOOK,
     { ...updateCacheAfterCreatingBook, ...(options ?? {}) },
-    bookCreationInputSchema
+    bookCreationInputSchema,
+    getOptimisticResponseForBookCreation
   );
 };
 

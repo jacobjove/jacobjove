@@ -6,10 +6,7 @@ import {
   useUpdateCalendarEvent,
 } from "@/graphql/generated/hooks/calendarEvent.hooks";
 import { CalendarEventCreationInput } from "@/graphql/generated/inputs/calendarEvent.inputs";
-import {
-  getOptimisticResponseForCalendarEventCreation,
-  getOptimisticResponseForCalendarEventUpdate,
-} from "@/graphql/generated/mutations/calendarEvent.mutations";
+import { getOptimisticResponseForCalendarEventUpdate } from "@/graphql/generated/mutations/calendarEvent.mutations";
 import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
 import { calendarEventCreationInputSchema } from "@/graphql/generated/schemas/calendarEvent.schemas";
 import Button from "@mui/material/Button";
@@ -49,7 +46,6 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
           const data = calendarEventData as CalendarEventCreationInput;
           return create.current?.({
             variables: { data },
-            optimisticResponse: getOptimisticResponseForCalendarEventCreation(data),
           });
         });
     } else {

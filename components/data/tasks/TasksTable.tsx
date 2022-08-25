@@ -1,8 +1,6 @@
-// import { useNewTaskDialog } from "@/components/contexts/NewTaskDialogContext";
 import TaskRow, { TaskRowProps } from "@/components/data/tasks/TaskRow";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
-import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
 import { taskCreationInputSchema } from "@/graphql/generated/schemas/task.schemas";
 import Task from "@/graphql/generated/types/Task";
 import Box from "@mui/material/Box";
@@ -12,7 +10,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-// import { bindTrigger } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, useState } from "react";
 
 const PREFERRED_FONT_SIZE = "0.8rem";
@@ -115,7 +112,6 @@ const NewTaskRow: FC<NewTaskRowProps> = ({ setAddingNewTask }: NewTaskRowProps) 
     const data = await taskCreationInputSchema.validate(newTaskData);
     createTask.current?.({
       variables: { data },
-      optimisticResponse: getOptimisticResponseForTaskCreation(data),
     });
     setAddingNewTask(false);
   };

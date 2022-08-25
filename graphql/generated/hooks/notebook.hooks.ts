@@ -5,6 +5,7 @@ import { NotebookCreationArgs, NotebookUpdateArgs } from "@/graphql/generated/ar
 import { NotebookFragment } from "@/graphql/generated/fragments/notebook.fragment";
 import {
   CREATE_NOTEBOOK,
+  getOptimisticResponseForNotebookCreation,
   updateCacheAfterCreatingNotebook,
   UPDATE_NOTEBOOK,
 } from "@/graphql/generated/mutations/notebook.mutations";
@@ -30,7 +31,8 @@ export const useCreateNotebook = (options?: NotebookCreationMutationHookOptions)
   return useHandleMutation<{ createNotebook: NotebookFragment }, NotebookCreationArgs>(
     CREATE_NOTEBOOK,
     { ...updateCacheAfterCreatingNotebook, ...(options ?? {}) },
-    notebookCreationInputSchema
+    notebookCreationInputSchema,
+    getOptimisticResponseForNotebookCreation
   );
 };
 
