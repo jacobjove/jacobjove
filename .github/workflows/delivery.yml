@@ -199,5 +199,6 @@ jobs:
             set -a && source .env && set +a && 
             docker compose pull && 
             docker compose up -d &&
-            if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi
+            if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi;
+            docker system prune -f
           "

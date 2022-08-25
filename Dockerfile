@@ -45,6 +45,8 @@ COPY --from=builder /app/.next ./.next
 COPY public ./public
 COPY package*.json ./
 COPY next.config.js ./
+# Necessary to support dynamic imports in post-save hooks for the time being... TODO
+COPY graphql ./graphql
 
 RUN npm ci
 
