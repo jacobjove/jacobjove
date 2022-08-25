@@ -1,5 +1,5 @@
-import AccountModel from "@/graphql/generated/models/account.model";
-import UserModel from "@/graphql/generated/models/user.model";
+import AccountModel from "@/graphql/generated/models/AccountModel";
+import UserModel from "@/graphql/generated/models/UserModel";
 import mongoosePromise from "@/lib/mongodb";
 import { NoUndefinedField } from "@/types/global";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
@@ -164,6 +164,7 @@ const callbacks: CallbacksOptions = {
           refreshToken: freshToken.refreshToken,
         };
         await mongoosePromise;
+        console.error("UPSERTING USER...");
         const userUpsertResult = await UserModel.findOneAndUpdate(
           { email: token.email },
           {
@@ -290,7 +291,7 @@ async function refreshAccessToken(token: JWT) {
 export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/options#callbacks
   callbacks,
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === "development" && false,
   // https://next-auth.js.org/configuration/pages
   pages: {
     signIn: "/auth/signin",

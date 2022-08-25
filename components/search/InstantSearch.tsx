@@ -1,4 +1,4 @@
-import { Note } from "@/graphql/generated/types/note.type";
+import Note from "@/graphql/generated/types/Note";
 import { useLazyQuery } from "@apollo/client";
 import Autocomplete, { AutocompleteRenderOptionState } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
@@ -48,7 +48,7 @@ const InstantSearch: FC<InstantSearchProps> = ({
   onChange, // TODO: include in autocompleteProps after fixing signature
   autocompleteProps,
 }: InstantSearchProps) => {
-  const [getResults, { data, loading, error }] = useLazyQuery(QUERY, {
+  const [getResults, { data, loading: _loading, error: _error }] = useLazyQuery(QUERY, {
     // TODO: this could be cache only if we already have all notes in the cache...
     fetchPolicy: "network-only",
   });

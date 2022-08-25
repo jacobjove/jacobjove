@@ -1,6 +1,6 @@
 import HabitCreationDialog from "@/components/data/habits/generated/HabitCreationDialog";
 import DataBox, { DataBoxProps } from "@/components/DataBox";
-import { Habit } from "@/graphql/generated/types/habit.type";
+import Habit from "@/graphql/generated/types/Habit";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";

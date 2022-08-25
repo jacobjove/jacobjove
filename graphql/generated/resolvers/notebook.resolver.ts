@@ -12,9 +12,9 @@ import {
   NotebookUpdateArgs,
   NotebookUpsertionArgs,
 } from "@/graphql/generated/args/notebook.args";
-import NotebookModel from "@/graphql/generated/models/notebook.model";
-import UserModel from "@/graphql/generated/models/user.model";
-import { Notebook } from "@/graphql/generated/types/notebook.type";
+import NotebookModel from "@/graphql/generated/models/NotebookModel";
+import UserModel from "@/graphql/generated/models/UserModel";
+import Notebook from "@/graphql/generated/types/Notebook";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

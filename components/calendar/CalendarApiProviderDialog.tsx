@@ -3,7 +3,7 @@ import { UserFragment } from "@/graphql/generated/fragments/user.fragment";
 import { useUpdateAccount } from "@/graphql/generated/hooks/account.hooks";
 import { useUpdateCalendar } from "@/graphql/generated/hooks/calendar.hooks";
 import { GET_USER } from "@/graphql/generated/queries/user.queries";
-import { Calendar } from "@/graphql/generated/types/calendar.type";
+import Calendar from "@/graphql/generated/types/Calendar";
 import { gql, useMutation } from "@apollo/client";
 import AppleIcon from "@mui/icons-material/Apple";
 import CloseIcon from "@mui/icons-material/Close";

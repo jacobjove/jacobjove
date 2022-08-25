@@ -1,5 +1,5 @@
 // import SelectionToggleIcon from "@/components/icons/SelectionToggleIcon";
-import { Habit } from "@/graphql/generated/types/habit.type";
+import Habit from "@/graphql/generated/types/Habit";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 // import Button from "@mui/material/Button";

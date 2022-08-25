@@ -3,10 +3,6 @@ import Definition, {
   OPTIONAL_STRING,
   REQUIRED_STRING,
 } from "@/graphql/schema/definition";
-import { DocumentType } from "@typegoose/typegoose";
-import bcrypt from "bcryptjs";
-
-const COST_FACTOR = 12;
 
 const userFields = [
   "name",
@@ -97,44 +93,6 @@ const definition: Definition<UserFields> = {
       typeCast: "[Notebook]",
     },
     tasks: { required: false, default: [], type: "Array", typeArg: "Task", typeCast: "[Task]" },
-  },
-  hooks: {
-    save: {
-      pre: async function (next) {
-        const instance = this as DocumentType<any>;
-        if (instance.isModified("password") && instance.password) {
-          instance.password = await bcrypt.hash(instance.password, COST_FACTOR);
-        }
-        return next();
-      },
-      post: async (user: any) => {
-        const CalendarModel = (await import("@/graphql/generated/models/calendar.model")) as any;
-        const NotebookModel = (await import("@/graphql/generated/models/notebook.model")) as any;
-        let saveChanges = false;
-        if (!user.calendars?.length) {
-          const defaultCalendar = await CalendarModel.create({
-            userId: user.id,
-            name: "Default calendar",
-          });
-          user.calendars = [defaultCalendar];
-          user.markModified("calendars");
-          user.settings.defaultCalendarId = defaultCalendar.id;
-          user.markModified("settings");
-          saveChanges = true;
-        }
-        if (!user.notebooks?.length) {
-          const defaultNotebook = await NotebookModel.create({
-            userId: user.id,
-            title: "Journal",
-          });
-          user.notebooks = [defaultNotebook];
-          user.markModified("notebooks");
-          saveChanges = true;
-        }
-        console.log(">>>>>>> User save.post:", user);
-        saveChanges && user.save();
-      },
-    },
   },
 };
 

@@ -1,6 +1,28 @@
 import { WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
 import { ObjectId } from "mongodb";
 
+declare type ReturnVoid = void | Promise<void>;
+export type HookNextErrorFn = (err?: Error) => ReturnVoid;
+
+export async function preSave(next: HookNextErrorFn) {
+  return next();
+}
+
+export async function postSave(_instance: unknown) {
+  return;
+}
+
+// export async function postFindOneAndUpdate(result: unknown) {
+//   const rawResult = result as unknown as {
+//     value: typeof result;
+//     lastErrorObject: {
+//       updatedExisting: boolean;
+//     }
+//   };
+//   if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
+//   postSave(rawResult.value);
+// }
+
 type ModifiedFilter<T extends WhereUniqueInput> = Omit<T, "id"> & { _id?: ObjectId };
 
 export function convertFilterForMongo(filter: undefined): undefined;

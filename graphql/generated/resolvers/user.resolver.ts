@@ -12,8 +12,8 @@ import {
   UserUpdateArgs,
   UserUpsertionArgs,
 } from "@/graphql/generated/args/user.args";
-import UserModel from "@/graphql/generated/models/user.model";
-import { User } from "@/graphql/generated/types/user.type";
+import UserModel from "@/graphql/generated/models/UserModel";
+import User from "@/graphql/generated/types/User";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

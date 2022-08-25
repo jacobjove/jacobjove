@@ -8,15 +8,17 @@ dotenv.config();
 
 import mongoosePromise from "@/lib/mongodb";
 import usersData from "@/graphql/seeds/users";
-import UserModel from "@/graphql/generated/models/user.model";
 import tasksData from "@/graphql/seeds/tasks";
-import TaskModel from "@/graphql/generated/models/task.model";
-import HabitModel from "@/graphql/generated/models/habit.model";
-import CalendarEventModel from "@/graphql/generated/models/calendarEvent.model";
-import CalendarModel from "@/graphql/generated/models/calendar.model";
-import AccountModel from "@/graphql/generated/models/account.model";
+import {
+  TaskModel,
+  HabitModel,
+  CalendarEventModel,
+  CalendarModel,
+  AccountModel,
+  UserModel,
+} from "@/graphql/generated/models";
 
-const START_FRESH = false;
+const START_FRESH = true;
 const SEED_RAW_USER_ONLY = false;
 
 async function main() {

@@ -4,7 +4,7 @@ import TaskDialog from "@/components/data/tasks/TaskDialog";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
-import { Task } from "@/graphql/generated/types/task.type";
+import Task from "@/graphql/generated/types/Task";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";

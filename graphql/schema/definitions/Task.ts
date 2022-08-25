@@ -1,7 +1,4 @@
 import Definition, { Field, OPTIONAL_STRING, REQUIRED_STRING } from "@/graphql/schema/definition";
-import { DocumentType } from "@typegoose/typegoose";
-import { ObjectId } from "mongodb";
-import { Model } from "../types";
 
 const taskFields = [
   "title",
@@ -32,22 +29,6 @@ const fields: Record<TaskFields, Field> = {
 const TASK_DEFINITION: Definition<TaskFields> = {
   name: "task",
   fields,
-  hooks: {
-    save: {
-      post: async (instance: DocumentType<Partial<Model> & { [key in TaskFields]?: unknown }>) => {
-        if (instance && instance.userId && !instance?.archivedAt) {
-          const UserModel = (await import("@/graphql/generated/models/user.model")) as any;
-          UserModel.updateOne(
-            {
-              _id: new ObjectId(instance.userId as string | ObjectId),
-              "tasks.id": instance.id ?? instance._id.toHexString(),
-            },
-            { $set: { "users.$": { ...instance } } }
-          ).catch(console.error);
-        }
-      },
-    },
-  },
 };
 
 export default TASK_DEFINITION;

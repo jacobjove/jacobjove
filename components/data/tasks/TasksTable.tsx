@@ -4,7 +4,7 @@ import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFi
 import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
 import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
 import { taskCreationInputSchema } from "@/graphql/generated/schemas/task.schemas";
-import { Task } from "@/graphql/generated/types/task.type";
+import Task from "@/graphql/generated/types/Task";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";

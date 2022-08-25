@@ -6,7 +6,7 @@ import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
 import { TaskCreationInput } from "@/graphql/generated/inputs/task.inputs";
 import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
-import { Task } from "@/graphql/generated/types/task.type";
+import Task from "@/graphql/generated/types/Task";
 import { ID } from "@/graphql/schema/types";
 import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";

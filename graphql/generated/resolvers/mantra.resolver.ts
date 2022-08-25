@@ -12,9 +12,9 @@ import {
   MantraUpdateArgs,
   MantraUpsertionArgs,
 } from "@/graphql/generated/args/mantra.args";
-import MantraModel from "@/graphql/generated/models/mantra.model";
-import UserModel from "@/graphql/generated/models/user.model";
-import { Mantra } from "@/graphql/generated/types/mantra.type";
+import MantraModel from "@/graphql/generated/models/MantraModel";
+import UserModel from "@/graphql/generated/models/UserModel";
+import Mantra from "@/graphql/generated/types/Mantra";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

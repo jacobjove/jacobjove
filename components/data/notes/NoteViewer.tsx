@@ -1,7 +1,7 @@
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
 import { useNoteDataReducer, useUpdateNote } from "@/graphql/generated/hooks/note.hooks";
-import { Note } from "@/graphql/generated/types/note.type";
+import Note from "@/graphql/generated/types/Note";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";

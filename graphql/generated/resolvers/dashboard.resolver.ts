@@ -12,9 +12,9 @@ import {
   FindManyDashboardArgs,
   FindUniqueDashboardArgs,
 } from "@/graphql/generated/args/dashboard.args";
-import DashboardModel from "@/graphql/generated/models/dashboard.model";
-import UserModel from "@/graphql/generated/models/user.model";
-import { Dashboard } from "@/graphql/generated/types/dashboard.type";
+import DashboardModel from "@/graphql/generated/models/DashboardModel";
+import UserModel from "@/graphql/generated/models/UserModel";
+import Dashboard from "@/graphql/generated/types/Dashboard";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

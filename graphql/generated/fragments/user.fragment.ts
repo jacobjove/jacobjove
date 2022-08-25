@@ -8,7 +8,7 @@ import { habitFragment } from "@/graphql/generated/fragments/habit.fragment";
 import { mantraFragment } from "@/graphql/generated/fragments/mantra.fragment";
 import { notebookFragment } from "@/graphql/generated/fragments/notebook.fragment";
 import { taskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { User } from "@/graphql/generated/types/user.type";
+import User from "@/graphql/generated/types/User";
 import { gql } from "@apollo/client";
 
 export const userFragment = gql`

@@ -4,7 +4,7 @@ import { GoalFragment } from "@/graphql/generated/fragments/goal.fragment";
 import { useCreateGoal, useGoalDataReducer } from "@/graphql/generated/hooks/goal.hooks";
 import { GoalCreationInput } from "@/graphql/generated/inputs/goal.inputs";
 import { getOptimisticResponseForGoalCreation } from "@/graphql/generated/mutations/goal.mutations";
-import { Goal } from "@/graphql/generated/types/goal.type";
+import Goal from "@/graphql/generated/types/Goal";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type GoalCreationDialogProps = ReturnType<typeof bindPopover>;

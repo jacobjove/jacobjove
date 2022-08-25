@@ -2,7 +2,7 @@ import AppLayout from "@/components/AppLayout";
 import { useUser } from "@/components/contexts/UserContext";
 import { useUpdateUser } from "@/graphql/generated/hooks/user.hooks";
 import { getOptimisticResponseForUserUpdate } from "@/graphql/generated/mutations/user.mutations";
-import { Settings } from "@/graphql/generated/types/user.type";
+import { Settings } from "@/graphql/generated/types/User";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";

@@ -1,4 +1,4 @@
-import { Mantra } from "@/graphql/generated/types/mantra.type";
+import Mantra from "@/graphql/generated/types/Mantra";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

@@ -12,9 +12,9 @@ import {
   TaskUpdateArgs,
   TaskUpsertionArgs,
 } from "@/graphql/generated/args/task.args";
-import TaskModel from "@/graphql/generated/models/task.model";
-import UserModel from "@/graphql/generated/models/user.model";
-import { Task } from "@/graphql/generated/types/task.type";
+import TaskModel from "@/graphql/generated/models/TaskModel";
+import UserModel from "@/graphql/generated/models/UserModel";
+import Task from "@/graphql/generated/types/Task";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

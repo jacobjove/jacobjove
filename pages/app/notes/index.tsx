@@ -6,7 +6,7 @@ import NoteViewer from "@/components/data/notes/NoteViewer";
 import { noteFragment } from "@/graphql/generated/fragments/note.fragment";
 import { useCreateNote } from "@/graphql/generated/hooks/note.hooks";
 import { getOptimisticResponseForNoteCreation } from "@/graphql/generated/mutations/note.mutations";
-import { Note } from "@/graphql/generated/types/note.type";
+import Note from "@/graphql/generated/types/Note";
 import { ID } from "@/graphql/schema/types";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql, useQuery } from "@apollo/client";

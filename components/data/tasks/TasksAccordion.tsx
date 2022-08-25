@@ -8,7 +8,7 @@ import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
 } from "@/graphql/generated/mutations/task.mutations";
-import { Task } from "@/graphql/generated/types/task.type";
+import Task from "@/graphql/generated/types/Task";
 import { MAX_TASK_RANK, MIN_TASK_RANK } from "@/graphql/schema/constants";
 import { useHandleMutation } from "@/utils/data";
 import { gql } from "@apollo/client";

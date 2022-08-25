@@ -6,7 +6,7 @@ force: true
 
 import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar, ObjectIdScalar, Int, JSONResolver } from "@/graphql/schema/scalars";
-import { ID, DateTime, WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
+import { ID, WhereInput, WhereUniqueInput } from "@/graphql/schema/types";
 <% var filteredFields = Object.fromEntries(Object.entries(selectableFields).filter(([fieldName, field]) => !modelImports.includes(h.changeCase.pascal(h.inflection.singularize(fieldName))))); -%>
 
 @TypeGraphQL.InputType()
@@ -17,7 +17,7 @@ export class <%= Name %>CreationInput {
 
 <% } -%>
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
-  archivedAt?: DateTime | null | undefined;
+  archivedAt?: Date | null | undefined;
 }
 
 @TypeGraphQL.InputType()
@@ -28,7 +28,7 @@ export class <%= Name %>UpdateInput {
   
 <% } -%>
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
-  archivedAt?: DateTime | null | undefined;
+  archivedAt?: Date | null | undefined;
 }
 
 @TypeGraphQL.InputType()

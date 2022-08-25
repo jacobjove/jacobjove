@@ -11,8 +11,8 @@ import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/tas
 import { getOptimisticResponseForHabitCreation } from "@/graphql/generated/mutations/habit.mutations";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
-import { Habit } from "@/graphql/generated/types/habit.type";
-import { Task } from "@/graphql/generated/types/task.type";
+import Habit from "@/graphql/generated/types/Habit";
+import Task from "@/graphql/generated/types/Task";
 import { ID } from "@/graphql/schema/types";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -56,6 +56,16 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const [convertingToHabit, setConvertingToHabit] = useState(false);
   const [cron, setCron] = useState<string>("0 1 * * *");
   const [validating, setValidating] = useState(false);
+
+  // TODO: refactor?
+  const [dirtyFields, setDirtyFields] = useState<string[]>([]);
+
+  const handleDispatchData = ({ field, value }: Parameters<typeof dispatchData>[0]) => {
+    dispatchData({ field, value } as Parameters<typeof dispatchData>[0]);
+    if (!dirtyFields.includes(field)) {
+      setDirtyFields([...dirtyFields, field]);
+    }
+  };
 
   const menuState = usePopupState({
     variant: "popper",
@@ -135,14 +145,17 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   // const metricUsages = null; // TODO
 
   const saveChanges = () => {
-    if (data) {
+    if (dirtyFields.length) {
+      const dataForUpdate = Object.fromEntries(
+        Object.entries(data).filter(([field]) => dirtyFields.includes(field))
+      );
       const optimisticResponse = getOptimisticResponseForTaskUpdate(data as TaskFragment, data);
       // TODO
       updateTask.current &&
         updateTask.current({
           variables: {
             where: { id: data.id as ID },
-            data,
+            data: dataForUpdate,
           },
           optimisticResponse,
         });
@@ -283,7 +296,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <TitleAndDescriptionFields
                 titleConfig={{ name: "title", label: "Title", fontSizeRem: 1.35 }}
                 descriptionConfig={{ name: "description", label: "Description" }}
-                dataTuple={[data, dispatchData]}
+                dataTuple={[data, handleDispatchData]}
                 editingState={[editing, setEditing]}
               />
             </Box>

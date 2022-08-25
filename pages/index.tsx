@@ -5,15 +5,15 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { NextPage } from "next";
+import { Session } from "next-auth";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 
 interface DefaultPageProps {
-  date: string;
-  ctaHref: string;
+  session: Session;
 }
 
-const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
+const DefaultPage: NextPage<DefaultPageProps> = ({ session }: DefaultPageProps) => {
   // const currentDate = props.date;
   return (
     <Layout>
@@ -38,15 +38,21 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
             </Typography>
           </Box>
           <Box marginTop="2rem">
-            <Link href={props.ctaHref} passHref>
-              <Button variant={"contained"} color={"primary"} sx={{ mx: 2 }}>
-                {props.ctaHref === "/app/home" ? "Go to app" : "Sign up"}
-              </Button>
-            </Link>
-            {props.ctaHref !== "/app/home" && (
+            {session?.user ? (
+              <Link href={"/app/home"} passHref>
+                <Button variant={"contained"} color={"primary"} sx={{ mx: 2 }}>
+                  {"Go to app"}
+                </Button>
+              </Link>
+            ) : (
               <>
+                <Link href={"/auth/registration"} passHref>
+                  <Button variant={"contained"} color={"primary"} sx={{ mx: 2 }}>
+                    {"Sign up"}
+                  </Button>
+                </Link>
                 {" or "}
-                <Link href={props.ctaHref} passHref>
+                <Link href={"/auth/signin"} passHref>
                   <Button variant={"contained"} color={"primary"} sx={{ mx: 2 }}>
                     {"Sign in"}
                   </Button>
@@ -62,11 +68,7 @@ const DefaultPage: NextPage<DefaultPageProps> = (props: DefaultPageProps) => {
 export default DefaultPage;
 
 export const getServerSideProps = buildGetServerSidePropsFunc({
-  props: async (context, session) => {
-    const today = new Date();
-    return {
-      date: today.toISOString(),
-      ctaHref: session ? "/app/home" : "/auth/registration",
-    };
+  props: async (_, session) => {
+    return { session };
   },
 });

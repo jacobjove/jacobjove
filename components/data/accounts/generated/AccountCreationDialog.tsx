@@ -4,7 +4,7 @@ import { AccountFragment } from "@/graphql/generated/fragments/account.fragment"
 import { useAccountDataReducer, useCreateAccount } from "@/graphql/generated/hooks/account.hooks";
 import { AccountCreationInput } from "@/graphql/generated/inputs/account.inputs";
 import { getOptimisticResponseForAccountCreation } from "@/graphql/generated/mutations/account.mutations";
-import { Account } from "@/graphql/generated/types/account.type";
+import Account from "@/graphql/generated/types/Account";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type AccountCreationDialogProps = ReturnType<typeof bindPopover>;

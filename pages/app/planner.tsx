@@ -12,10 +12,10 @@ import { calendarEventFragment } from "@/graphql/generated/fragments/calendarEve
 import { goalFragment } from "@/graphql/generated/fragments/goal.fragment";
 import { habitFragment } from "@/graphql/generated/fragments/habit.fragment";
 import { taskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { CalendarEvent } from "@/graphql/generated/types/calendarEvent.type";
-import { Goal } from "@/graphql/generated/types/goal.type";
-import { Habit } from "@/graphql/generated/types/habit.type";
-import { Task } from "@/graphql/generated/types/task.type";
+import CalendarEvent from "@/graphql/generated/types/CalendarEvent";
+import Goal from "@/graphql/generated/types/Goal";
+import Habit from "@/graphql/generated/types/Habit";
+import Task from "@/graphql/generated/types/Task";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import TabContext from "@mui/lab/TabContext";
@@ -66,18 +66,12 @@ interface PlannerPageProps {
 const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
   const { user } = useUser();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  // const { loading: _loading, error: _error, data } = useQuery<PlannerPageData>(QUERY);
 
   const isLessThan1000pxWide = useMediaQuery(json2mq({ minWidth: "1000px" }));
   const { isLandscape } = useDeviceData();
   const displaySideBySide = isLandscape || isLessThan1000pxWide;
 
-  // const { calendarEvents, calendars, tasks } = data;
   const { calendars, calendarEvents } = user ?? {};
-  // const calendarEvents =
-  //   calendars?.reduce((previousValue, currentValue) => {
-  //     return [...previousValue, ...(currentValue.events ?? [])];
-  //   }, [] as CalendarEvent[]) ?? [];
   console.log(">>> Rendering planner page...");
   return (
     <AppLayout>

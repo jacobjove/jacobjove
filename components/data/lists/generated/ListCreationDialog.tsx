@@ -4,7 +4,7 @@ import { ListFragment } from "@/graphql/generated/fragments/list.fragment";
 import { useCreateList, useListDataReducer } from "@/graphql/generated/hooks/list.hooks";
 import { ListCreationInput } from "@/graphql/generated/inputs/list.inputs";
 import { getOptimisticResponseForListCreation } from "@/graphql/generated/mutations/list.mutations";
-import { List } from "@/graphql/generated/types/list.type";
+import List from "@/graphql/generated/types/List";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type ListCreationDialogProps = ReturnType<typeof bindPopover>;

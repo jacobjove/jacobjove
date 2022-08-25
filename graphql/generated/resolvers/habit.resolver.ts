@@ -12,9 +12,9 @@ import {
   HabitUpdateArgs,
   HabitUpsertionArgs,
 } from "@/graphql/generated/args/habit.args";
-import HabitModel from "@/graphql/generated/models/habit.model";
-import UserModel from "@/graphql/generated/models/user.model";
-import { Habit } from "@/graphql/generated/types/habit.type";
+import HabitModel from "@/graphql/generated/models/HabitModel";
+import UserModel from "@/graphql/generated/models/UserModel";
+import Habit from "@/graphql/generated/types/Habit";
 import { convertFilterForMongo } from "@/graphql/schema/helpers";
 import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { GraphQLResolveInfo } from "graphql";

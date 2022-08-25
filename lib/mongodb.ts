@@ -33,7 +33,6 @@ if (process.env.NODE_ENV === "development") {
   }
   mongoosePromise = global._mongoosePromise;
 } else {
-  // In production mode, it's best to not use a global variable.
   mongoosePromise = mongoose.connect(MONGODB_URI);
 }
 

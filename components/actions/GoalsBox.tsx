@@ -1,6 +1,6 @@
 import GoalCreationDialog from "@/components/data/goals/generated/GoalCreationDialog";
 import DataBox, { DataBoxProps } from "@/components/DataBox";
-import { Goal } from "@/graphql/generated/types/goal.type";
+import Goal from "@/graphql/generated/types/Goal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
