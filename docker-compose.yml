@@ -7,9 +7,8 @@ services:
     image: ghcr.io/iacobfred/selfbuilder:latest
     depends_on:
       - mongo
-    #   - graphql
     ports:
-      - 3000:3000 # Next.js application
+      - 3000:3000
     env_file:
       - ./.env
     environment:
@@ -19,16 +18,6 @@ services:
       NODE_ENV: production
     volumes:
       - ./.env:/app/.env
-
-  # graphql:
-  #   image: nextjs:latest
-  #   depends_on:
-  #     - postgres
-  #   ports:
-  #     - 4000:4000 # GraphQL application
-  #   env_file:
-  #     - ./.env
-
   mongo:
     image: mongo:4.2
     deploy:
@@ -48,7 +37,6 @@ services:
     volumes:
       - data:/data
       - .config/healthchecks/mongo-healthcheck.sh:/healthcheck.sh
-
   redis:
     image: redis
     deploy:

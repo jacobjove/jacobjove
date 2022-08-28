@@ -1,20 +1,4 @@
 services:
-  # graphql:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     args:
-  #       NODE_ENV: development
-  #     network: host
-  #   image: nextjs:latest
-  #   user: root
-  #   volumes:
-  #     - .:/app
-  #     # Prevent the container's node_modules and .next folders from being overwritten 
-  #     # by the initial mapping of the local directory to /app.
-  #     - ./node_modules:/app/node_modules
-  #     - ./.next:/app/.next
-
   nextjs:
     build:
       context: .
@@ -35,7 +19,6 @@ services:
       # by the initial mapping of the local directory to /app.
       - ./node_modules:/app/node_modules
       - ./.next:/app/.next
-
   mongo:
     ports:
       - 27017:27017
