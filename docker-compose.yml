@@ -30,7 +30,7 @@ services:
   #     - ./.env
 
   mongo:
-    image: mongo:latest
+    image: mongo:4.2
     deploy:
       restart_policy:
         condition: on-failure
@@ -38,7 +38,7 @@ services:
     env_file:
       - ./.env
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      test: bash /healthcheck.sh
       interval: 10s
       timeout: 10s
       retries: 3
@@ -47,6 +47,7 @@ services:
       - "27017"
     volumes:
       - data:/data
+      - .config/healthchecks/mongo-healthcheck.sh:/healthcheck.sh
 
   redis:
     image: redis
