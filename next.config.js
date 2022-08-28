@@ -38,7 +38,7 @@ if (modulesToTranspile.length) {
 
 const nextConfig = {
   compiler: {
-    removeConsole: process.env.NODE_ENV !== "development",
+    removeConsole: process.env.NODE_ENV !== "development" && process.env.DEBUG !== "true",
   },
   // Delegate static file compression to Nginx in production.
   // https://nextjs.org/docs/api-reference/next.config.js/compression
