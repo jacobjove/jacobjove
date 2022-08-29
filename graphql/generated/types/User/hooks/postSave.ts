@@ -34,5 +34,6 @@ export const postSave = async (user: any) => {
     user.markModified("notebooks");
     saveChanges = true;
   }
+  console.log("postSave", user);
   saveChanges && user.save();
 };
