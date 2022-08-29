@@ -13,6 +13,6 @@ export const postSave = async (task: any) => {
         "tasks.id": task.id ?? task._id.toHexString(),
       },
       { $set: { "users.$": { ...task } } }
-    ).catch(console.error);
+    );
   }
 };
