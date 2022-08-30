@@ -3,7 +3,11 @@ import CreationDialog from "@/components/data/CreationDialog";
 import TasksTable from "@/components/data/tasks/TasksTable";
 import fields from "@/graphql/generated/fields/task.fields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { useCreateTask, useTaskReducer } from "@/graphql/generated/hooks/task.hooks";
+import {
+  useCreateTask,
+  useTaskReducer,
+  useTasksReducer,
+} from "@/graphql/generated/hooks/task.hooks";
 import { TaskCreationInput } from "@/graphql/generated/inputs/task.inputs";
 import Task from "@/graphql/generated/types/Task";
 import { ID } from "@/graphql/schema/types";
@@ -21,7 +25,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
   const [create] = useCreateTask();
   const dataTuple = useTaskReducer();
   const [data, dispatchData] = dataTuple;
-  const subtasks: TaskFragment[] = [];
+  const [subtasks, dispatchSubtasks] = useTasksReducer([]);
   const saveAndExit = () => {
     const dataIsValid = !!data.title;
     // TODO: run validator!
@@ -84,7 +88,11 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
               />
               <Box my={2}>
                 {subtasks?.length ? (
-                  <TasksTable tasks={subtasks} moveTaskRow={undefined} updateTaskRank={undefined} />
+                  <TasksTable
+                    tasksDataTuple={[subtasks, dispatchSubtasks]}
+                    moveTaskRow={undefined}
+                    updateTaskRank={undefined}
+                  />
                 ) : (
                   <Typography>{`Add subtask`}</Typography>
                 )}

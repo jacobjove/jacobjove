@@ -7,7 +7,11 @@ import { Cron } from "@/components/fields/cron";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useCreateHabit } from "@/graphql/generated/hooks/habit.hooks";
-import { useTaskReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import {
+  useTaskReducer,
+  useTasksReducer,
+  useUpdateTask,
+} from "@/graphql/generated/hooks/task.hooks";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
 import Habit from "@/graphql/generated/types/Habit";
@@ -36,7 +40,7 @@ import {
   PopupState,
   usePopupState,
 } from "material-ui-popup-state/hooks";
-import { FC, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   data: TaskFragment;
@@ -136,11 +140,18 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     ? user?.habits?.find((habit) => habit.id === data.habitId)
     : null;
 
-  // const subtasks = data.subtasks;
-  const subtasks: TaskFragment[] = []; // TODO
+  const initialSubtasks = useMemo(
+    () => user?.tasks?.filter((task) => task.parentId === data.id) ?? [],
+    [data.id, user?.tasks]
+  );
+  const [subtasks, dispatchSubtasks] = useTasksReducer(initialSubtasks);
 
   // const metricUsages = habit?.metricUsages;
   // const metricUsages = null; // TODO
+
+  useEffect(() => {
+    dispatchSubtasks({ type: "init", payload: initialSubtasks });
+  }, [initialSubtasks, dispatchSubtasks]);
 
   const saveChanges = () => {
     if (dirtyFields.length) {
@@ -307,7 +318,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 <Box my={2}>
                   {subtasks?.length ? (
                     <TasksTable
-                      tasksDataTuple={[subtasks]}
+                      tasksDataTuple={[subtasks, dispatchSubtasks]}
                       moveTaskRow={undefined}
                       updateTaskRank={undefined}
                     />
