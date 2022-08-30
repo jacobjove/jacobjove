@@ -1,6 +1,6 @@
 import { Field } from "@/graphql/schema/definition";
 import { Fragment, Model } from "@/graphql/schema/types";
-import { Payload } from "@/utils/data";
+import { Payload } from "@/utils/data/reduction";
 import { MutationFunction } from "@apollo/client";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";

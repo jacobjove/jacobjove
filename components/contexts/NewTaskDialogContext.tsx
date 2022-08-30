@@ -1,8 +1,8 @@
 import { useUser } from "@/components/contexts/UserContext";
-import { useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
+import { useTaskReducer } from "@/graphql/generated/hooks/task.hooks";
 import { TaskData } from "@/graphql/generated/reducers/task.reducer";
 import { ID } from "@/graphql/schema/types";
-import { Payload } from "@/utils/data";
+import { Payload } from "@/utils/data/reduction";
 import { bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
 import { createContext, Dispatch, FC, useContext } from "react";
 
@@ -26,11 +26,11 @@ export const NewTaskDialogContextProvider: FC = ({ children }) => {
   // const greatestRank = incompleteTasks[incompleteTasks.length - 1]?.rank ?? MIN_TASK_RANK;
   // const defaultRank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
   // const [newTaskData, dispatchNewTaskData] = useReducer(
-  //   taskDataReducer,
+  //   taskReducer,
   //   initializeTaskData({ rank: defaultRank }),
   //   initializeTaskData
   // );
-  const newTaskDataTuple = useTaskDataReducer({
+  const newTaskDataTuple = useTaskReducer({
     rank: defaultRank,
     userId: user?.id as ID,
     title: "",

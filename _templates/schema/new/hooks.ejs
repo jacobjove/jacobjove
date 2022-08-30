@@ -13,10 +13,11 @@ import {
 } from "@/graphql/generated/mutations/<%= name %>.mutations";
 import { <%= Name %>Fragment } from "@/graphql/generated/fragments/<%= name %>.fragment";
 import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs } from "@/graphql/generated/args/<%= name %>.args";
-import { useHandleMutation, Payload } from "@/utils/data";
+import { useHandleMutation } from "@/utils/data/mutation";
+import { Payload } from "@/utils/data/reduction";
 import { useEffect, useReducer, Dispatch } from "react";
 import { 
-  <%= name %>DataReducer,
+  <%= name %>Reducer,
   <%= Name %>Data,
   initialize<%= Name %>Data,
 } from "@/graphql/generated/reducers/<%= name %>.reducer";
@@ -62,7 +63,7 @@ export const useUpdate<%= Name %> = (options?: <%= Name %>UpdateMutationHookOpti
   );
 }
 
-export const use<%= Name %>DataReducer = (data?: <%= Name %>Data): [<%= Name %>Data, Dispatch<Payload<<%= Name %>Data>>] => {
+export const use<%= Name %>Reducer = (data?: <%= Name %>Data): [<%= Name %>Data, Dispatch<Payload<<%= Name %>Data>>] => {
 <% if (useUser) { -%>
   const { user } = useUser();
 <% } -%>
@@ -74,7 +75,7 @@ export const use<%= Name %>DataReducer = (data?: <%= Name %>Data): [<%= Name %>D
 <% } -%>
   );
   const [<%= name %>Data, dispatch<%= Name %>Data] = useReducer(
-    <%= name %>DataReducer,
+    <%= name %>Reducer,
     initializedData,
     initialize<%= Name %>Data,
   );

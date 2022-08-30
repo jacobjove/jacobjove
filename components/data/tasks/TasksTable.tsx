@@ -1,8 +1,9 @@
 import TaskRow, { TaskRowProps } from "@/components/data/tasks/TaskRow";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
+import { useCreateTask, useTaskReducer } from "@/graphql/generated/hooks/task.hooks";
 import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
+import { tasksReducer } from "@/graphql/generated/reducers/task.reducer";
 import { taskCreationInputSchema } from "@/graphql/generated/schemas/task.schemas";
 import { ID } from "@/graphql/schema/types";
 import Box from "@mui/material/Box";
@@ -46,43 +47,11 @@ type Action =
       payload: TaskFragment[];
     };
 
-function tasksReducer(state: TaskFragment[], action: Action) {
-  switch (action.type) {
-    case "init":
-      return action.payload;
-    case "append":
-      return [...state, action.payload];
-    case "insert":
-      return [
-        // part of the array before the specified index
-        ...state.slice(0, action.payload.index),
-        // inserted item
-        action.payload.task,
-        // part of the array after the specified index
-        ...state.slice(action.payload.index),
-      ];
-    // case "update":
-    //   return {
-    //     ...state,
-    //     tasks: state.map((task) => {
-    //       if (task.id === action.task.id) {
-    //         return action.task;
-    //       }
-    //       return task;
-    //     }),
-    //   };
-    case "remove":
-      return state.filter((task) => task.id !== action.payload.id);
-    default:
-      return state;
-  }
-}
-
 const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const { tasks: _tasks, appendable, moveTaskRow, updateTaskRank } = props;
   const [createTask] = useCreateTask();
   const [addingTask, setAddingTask] = useState(false);
-  const [newTaskData, dispatchNewTaskData] = useTaskDataReducer();
+  const [newTaskData, dispatchNewTaskData] = useTaskReducer();
   const [tasks, dispatch] = useReducer(tasksReducer, _tasks);
 
   useEffect(() => {
@@ -182,7 +151,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 export default TasksTable;
 
 interface NewTaskRowProps {
-  dataTuple: ReturnType<typeof useTaskDataReducer>;
+  dataTuple: ReturnType<typeof useTaskReducer>;
   setAddingNewTask: Dispatch<boolean>;
   onSave: () => void;
 }

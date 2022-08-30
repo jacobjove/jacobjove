@@ -12,13 +12,14 @@ import {
 import {
   initializeTaskData,
   TaskData,
-  taskDataReducer,
+  taskReducer,
 } from "@/graphql/generated/reducers/task.reducer";
 import {
   taskCreationInputSchema,
   taskUpdateInputSchema,
 } from "@/graphql/generated/schemas/task.schemas";
-import { Payload, useHandleMutation } from "@/utils/data";
+import { useHandleMutation } from "@/utils/data/mutation";
+import { Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -49,15 +50,11 @@ export const useUpdateTask = (options?: TaskUpdateMutationHookOptions) => {
   );
 };
 
-export const useTaskDataReducer = (data?: TaskData): [TaskData, Dispatch<Payload<TaskData>>] => {
+export const useTaskReducer = (data?: TaskData): [TaskData, Dispatch<Payload<TaskData>>] => {
   const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeTaskData(starterData, user);
-  const [taskData, dispatchTaskData] = useReducer(
-    taskDataReducer,
-    initializedData,
-    initializeTaskData
-  );
+  const [taskData, dispatchTaskData] = useReducer(taskReducer, initializedData, initializeTaskData);
   useEffect(() => {
     if (user?.id && !taskData?.userId) {
       dispatchTaskData({

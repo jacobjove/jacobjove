@@ -1,5 +1,5 @@
 import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
-import { Payload } from "@/utils/data";
+import { Payload } from "@/utils/data/reduction";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";

@@ -14,14 +14,15 @@ import {
 } from "@/graphql/generated/mutations/dashboard.mutations";
 import {
   DashboardData,
-  dashboardDataReducer,
+  dashboardReducer,
   initializeDashboardData,
 } from "@/graphql/generated/reducers/dashboard.reducer";
 import {
   dashboardCreationInputSchema,
   dashboardUpdateInputSchema,
 } from "@/graphql/generated/schemas/dashboard.schemas";
-import { Payload, useHandleMutation } from "@/utils/data";
+import { useHandleMutation } from "@/utils/data/mutation";
+import { Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -52,14 +53,14 @@ export const useUpdateDashboard = (options?: DashboardUpdateMutationHookOptions)
   );
 };
 
-export const useDashboardDataReducer = (
+export const useDashboardReducer = (
   data?: DashboardData
 ): [DashboardData, Dispatch<Payload<DashboardData>>] => {
   const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeDashboardData(starterData, user);
   const [dashboardData, dispatchDashboardData] = useReducer(
-    dashboardDataReducer,
+    dashboardReducer,
     initializedData,
     initializeDashboardData
   );

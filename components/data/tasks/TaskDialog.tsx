@@ -7,7 +7,7 @@ import { Cron } from "@/components/fields/cron";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useCreateHabit } from "@/graphql/generated/hooks/habit.hooks";
-import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import { useTaskReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
 import Habit from "@/graphql/generated/types/Habit";
@@ -47,7 +47,7 @@ const LEFT_SIDE_WIDTH = "3.3rem";
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
   const { data: _data, onClose: initialOnClose, anchorEl: _anchorEl, ...dialogProps } = props;
   const { user } = useUser();
-  const [data, dispatchData] = useTaskDataReducer(_data);
+  const [data, dispatchData] = useTaskReducer(_data);
   const [time, setTime] = useState(0);
   const [stopwatchIsRunning, setStopwatchIsRunning] = useState(false);
   const [editing, setEditing] = useState(!data.id);

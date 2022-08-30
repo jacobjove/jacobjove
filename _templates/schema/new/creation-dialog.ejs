@@ -4,7 +4,7 @@ force: true
 ---
 
 import CreationDialog from "@/components/data/CreationDialog";
-import { useCreate<%= Name %>, use<%= Name %>DataReducer } from "@/graphql/generated/hooks/<%= name %>.hooks";
+import { useCreate<%= Name %>, use<%= Name %>Reducer } from "@/graphql/generated/hooks/<%= name %>.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { <%= Name %>CreationInput } from "@/graphql/generated/inputs/<%= name %>.inputs";
 import <%= Name %> from "@/graphql/generated/types/<%= Name %>";
@@ -15,7 +15,7 @@ export type <%= Name %>CreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function <%= Name %>CreationDialog(props: <%= Name %>CreationDialogProps) {
   const [create,] = useCreate<%= Name %>();
-  const dataTuple = use<%= Name %>DataReducer();
+  const dataTuple = use<%= Name %>Reducer();
   return CreationDialog<<%= Name %>, <%= Name %>CreationInput, { create<%= Name %>: <%= Name %>Fragment }>({
     typeName: "<%= name %>",
     dataTuple,

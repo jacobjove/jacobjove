@@ -3,7 +3,7 @@
 import { UserFragment } from "@/graphql/generated/fragments/user.fragment";
 import { UserCreationInput } from "@/graphql/generated/inputs/user.inputs";
 import { ID } from "@/graphql/schema/types";
-import { Payload } from "@/utils/data";
+import { ArrayAction, arrayReducer, Payload } from "@/utils/data/reduction";
 
 export type UserData = Partial<UserCreationInput> & { id?: ID };
 // export type UserData = InputData<User>;
@@ -21,7 +21,11 @@ export function initializeUserData(
   };
 }
 
-export function userDataReducer(state: UserData, payload: Payload<UserData>) {
+export function userReducer(state: UserData, payload: Payload<UserData>) {
   if (payload.field === "init") return initializeUserData(payload.value as Partial<UserData>);
   return { ...state, [payload.field]: payload.value };
+}
+
+export function usersReducer(state: UserFragment[], action: ArrayAction<UserFragment>) {
+  return arrayReducer<UserFragment>(state, action);
 }

@@ -11,14 +11,15 @@ import {
 } from "@/graphql/generated/mutations/belief.mutations";
 import {
   BeliefData,
-  beliefDataReducer,
+  beliefReducer,
   initializeBeliefData,
 } from "@/graphql/generated/reducers/belief.reducer";
 import {
   beliefCreationInputSchema,
   beliefUpdateInputSchema,
 } from "@/graphql/generated/schemas/belief.schemas";
-import { Payload, useHandleMutation } from "@/utils/data";
+import { useHandleMutation } from "@/utils/data/mutation";
+import { Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -49,14 +50,14 @@ export const useUpdateBelief = (options?: BeliefUpdateMutationHookOptions) => {
   );
 };
 
-export const useBeliefDataReducer = (
+export const useBeliefReducer = (
   data?: BeliefData
 ): [BeliefData, Dispatch<Payload<BeliefData>>] => {
   const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeBeliefData(starterData, user);
   const [beliefData, dispatchBeliefData] = useReducer(
-    beliefDataReducer,
+    beliefReducer,
     initializedData,
     initializeBeliefData
   );

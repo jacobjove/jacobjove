@@ -1,6 +1,6 @@
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
-import { useNoteDataReducer, useUpdateNote } from "@/graphql/generated/hooks/note.hooks";
+import { useNoteReducer, useUpdateNote } from "@/graphql/generated/hooks/note.hooks";
 import Note from "@/graphql/generated/types/Note";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -15,7 +15,7 @@ interface NoteViewerProps {
 const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
   const [fullScreen, setFullScreen] = useState(false);
 
-  const [noteData, dispatchNoteData] = useNoteDataReducer(note);
+  const [noteData, dispatchNoteData] = useNoteReducer(note);
 
   const [handleUpdateNote] = useUpdateNote();
 

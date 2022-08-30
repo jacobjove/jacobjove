@@ -11,14 +11,15 @@ import {
 } from "@/graphql/generated/mutations/account.mutations";
 import {
   AccountData,
-  accountDataReducer,
+  accountReducer,
   initializeAccountData,
 } from "@/graphql/generated/reducers/account.reducer";
 import {
   accountCreationInputSchema,
   accountUpdateInputSchema,
 } from "@/graphql/generated/schemas/account.schemas";
-import { Payload, useHandleMutation } from "@/utils/data";
+import { useHandleMutation } from "@/utils/data/mutation";
+import { Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -49,14 +50,14 @@ export const useUpdateAccount = (options?: AccountUpdateMutationHookOptions) => 
   );
 };
 
-export const useAccountDataReducer = (
+export const useAccountReducer = (
   data?: AccountData
 ): [AccountData, Dispatch<Payload<AccountData>>] => {
   const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeAccountData(starterData, user);
   const [accountData, dispatchAccountData] = useReducer(
-    accountDataReducer,
+    accountReducer,
     initializedData,
     initializeAccountData
   );

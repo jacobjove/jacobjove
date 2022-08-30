@@ -2,7 +2,7 @@ import CreationDialog from "@/components/data/CreationDialog";
 import fields from "@/graphql/generated/fields/calendarEvent.fields";
 import { CalendarEventFragment } from "@/graphql/generated/fragments/calendarEvent.fragment";
 import {
-  useCalendarEventDataReducer,
+  useCalendarEventReducer,
   useCreateCalendarEvent,
 } from "@/graphql/generated/hooks/calendarEvent.hooks";
 import { CalendarEventCreationInput } from "@/graphql/generated/inputs/calendarEvent.inputs";
@@ -13,7 +13,7 @@ export type CalendarEventCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function CalendarEventCreationDialog(props: CalendarEventCreationDialogProps) {
   const [create] = useCreateCalendarEvent();
-  const dataTuple = useCalendarEventDataReducer();
+  const dataTuple = useCalendarEventReducer();
   return CreationDialog<
     CalendarEvent,
     CalendarEventCreationInput,

@@ -1,6 +1,6 @@
 import { Field } from "@/graphql/schema/definition";
 import { Model } from "@/graphql/schema/types";
-import { Payload } from "@/utils/data";
+import { Payload } from "@/utils/data/reduction";
 import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import { Dispatch } from "react";

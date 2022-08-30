@@ -10,14 +10,15 @@ import {
 } from "@/graphql/generated/mutations/book.mutations";
 import {
   BookData,
-  bookDataReducer,
+  bookReducer,
   initializeBookData,
 } from "@/graphql/generated/reducers/book.reducer";
 import {
   bookCreationInputSchema,
   bookUpdateInputSchema,
 } from "@/graphql/generated/schemas/book.schemas";
-import { Payload, useHandleMutation } from "@/utils/data";
+import { useHandleMutation } from "@/utils/data/mutation";
+import { Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useReducer } from "react";
 
@@ -48,13 +49,9 @@ export const useUpdateBook = (options?: BookUpdateMutationHookOptions) => {
   );
 };
 
-export const useBookDataReducer = (data?: BookData): [BookData, Dispatch<Payload<BookData>>] => {
+export const useBookReducer = (data?: BookData): [BookData, Dispatch<Payload<BookData>>] => {
   const starterData = data ?? {};
   const initializedData = initializeBookData(starterData);
-  const [bookData, dispatchBookData] = useReducer(
-    bookDataReducer,
-    initializedData,
-    initializeBookData
-  );
+  const [bookData, dispatchBookData] = useReducer(bookReducer, initializedData, initializeBookData);
   return [bookData, dispatchBookData];
 };

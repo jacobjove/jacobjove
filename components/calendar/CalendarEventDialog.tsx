@@ -1,7 +1,7 @@
 import EventFormFields from "@/components/calendar/EventFormFields";
 import { CalendarEventFragment } from "@/graphql/generated/fragments/calendarEvent.fragment";
 import {
-  useCalendarEventDataReducer,
+  useCalendarEventReducer,
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
 } from "@/graphql/generated/hooks/calendarEvent.hooks";
@@ -24,7 +24,7 @@ type CalendarEventDialogProps = ReturnType<typeof bindPopover> & {
 
 const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventDialogProps) => {
   const { onClose, data, anchorEl: _anchorEl, mutation, ...dialogProps } = props;
-  const calendarEventDataTuple = useCalendarEventDataReducer(data ?? { start: new Date() });
+  const calendarEventDataTuple = useCalendarEventReducer(data ?? { start: new Date() });
   const [calendarEventData] = calendarEventDataTuple;
   const [create, { loading: createLoading }] = useCreateCalendarEvent();
   const [update, { loading: updateLoading }] = useUpdateCalendarEvent();

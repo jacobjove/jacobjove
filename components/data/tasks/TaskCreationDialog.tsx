@@ -3,7 +3,7 @@ import CreationDialog from "@/components/data/CreationDialog";
 import TasksTable from "@/components/data/tasks/TasksTable";
 import fields from "@/graphql/generated/fields/task.fields";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
+import { useCreateTask, useTaskReducer } from "@/graphql/generated/hooks/task.hooks";
 import { TaskCreationInput } from "@/graphql/generated/inputs/task.inputs";
 import Task from "@/graphql/generated/types/Task";
 import { ID } from "@/graphql/schema/types";
@@ -19,7 +19,7 @@ export type TaskCreationDialogProps = ReturnType<typeof bindPopover>;
 export default function TaskCreationDialog(props: TaskCreationDialogProps) {
   const { user } = useUser();
   const [create] = useCreateTask();
-  const dataTuple = useTaskDataReducer();
+  const dataTuple = useTaskReducer();
   const [data, dispatchData] = dataTuple;
   const subtasks: TaskFragment[] = [];
   const saveAndExit = () => {

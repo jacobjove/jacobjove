@@ -14,14 +14,15 @@ import {
 } from "@/graphql/generated/mutations/calendarEvent.mutations";
 import {
   CalendarEventData,
-  calendarEventDataReducer,
+  calendarEventReducer,
   initializeCalendarEventData,
 } from "@/graphql/generated/reducers/calendarEvent.reducer";
 import {
   calendarEventCreationInputSchema,
   calendarEventUpdateInputSchema,
 } from "@/graphql/generated/schemas/calendarEvent.schemas";
-import { Payload, useHandleMutation } from "@/utils/data";
+import { useHandleMutation } from "@/utils/data/mutation";
+import { Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -55,14 +56,14 @@ export const useUpdateCalendarEvent = (options?: CalendarEventUpdateMutationHook
   );
 };
 
-export const useCalendarEventDataReducer = (
+export const useCalendarEventReducer = (
   data?: CalendarEventData
 ): [CalendarEventData, Dispatch<Payload<CalendarEventData>>] => {
   const { user } = useUser();
   const starterData = data ?? {};
   const initializedData = initializeCalendarEventData(starterData, user);
   const [calendarEventData, dispatchCalendarEventData] = useReducer(
-    calendarEventDataReducer,
+    calendarEventReducer,
     initializedData,
     initializeCalendarEventData
   );

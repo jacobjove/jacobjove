@@ -1,5 +1,5 @@
 import { CalendarEventData } from "@/graphql/generated/reducers/calendarEvent.reducer";
-import { Payload } from "@/utils/data";
+import { Payload } from "@/utils/data/reduction";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { Dispatch, FC } from "react";
 import CalendarEventDialog from "./CalendarEventDialog";
