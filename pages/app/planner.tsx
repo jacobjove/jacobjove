@@ -8,14 +8,15 @@ import { useUser } from "@/components/contexts/UserContext";
 import TasksBox from "@/components/data/tasks/TasksBox";
 import FullScreenExpandableComponent from "@/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@/components/fullscreen/FullScreenToggleToolbar";
-import { calendarEventFragment } from "@/graphql/generated/fragments/calendarEvent.fragment";
+import {
+  CalendarEventFragment,
+  calendarEventFragment,
+} from "@/graphql/generated/fragments/calendarEvent.fragment";
 import { goalFragment } from "@/graphql/generated/fragments/goal.fragment";
 import { habitFragment } from "@/graphql/generated/fragments/habit.fragment";
-import { taskFragment } from "@/graphql/generated/fragments/task.fragment";
-import CalendarEvent from "@/graphql/generated/types/CalendarEvent";
+import { TaskFragment, taskFragment } from "@/graphql/generated/fragments/task.fragment";
 import Goal from "@/graphql/generated/types/Goal";
 import Habit from "@/graphql/generated/types/Habit";
-import Task from "@/graphql/generated/types/Task";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import { gql } from "@apollo/client";
 import TabContext from "@mui/lab/TabContext";
@@ -53,8 +54,8 @@ const QUERY = gql`
 `;
 
 interface PlannerPageData {
-  tasks: Task[];
-  calendarEvents: CalendarEvent[];
+  tasks: TaskFragment[];
+  calendarEvents: CalendarEventFragment[];
   habits: Habit[];
   goals: Goal[];
 }

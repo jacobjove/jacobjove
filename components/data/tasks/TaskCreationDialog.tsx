@@ -21,7 +21,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
   const [create] = useCreateTask();
   const dataTuple = useTaskDataReducer();
   const [data, dispatchData] = dataTuple;
-  const subtasks: Task[] = [];
+  const subtasks: TaskFragment[] = [];
   const saveAndExit = () => {
     const dataIsValid = !!data.title;
     // TODO: run validator!

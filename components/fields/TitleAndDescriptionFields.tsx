@@ -69,8 +69,7 @@ export default function TitleAndDescriptionFields<
     _onKeyUp ??
     ((event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
-        // TODO
-        console.error("Handle enter key");
+        alert("Handler for Enter key is not implemented");
       } else if (event.key === "Escape") {
         event.preventDefault();
         setEditing(false);

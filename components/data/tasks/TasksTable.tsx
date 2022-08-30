@@ -1,8 +1,10 @@
 import TaskRow, { TaskRowProps } from "@/components/data/tasks/TaskRow";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
+import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
 import { useCreateTask, useTaskDataReducer } from "@/graphql/generated/hooks/task.hooks";
+import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
 import { taskCreationInputSchema } from "@/graphql/generated/schemas/task.schemas";
-import Task from "@/graphql/generated/types/Task";
+import { ID } from "@/graphql/schema/types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -10,21 +12,97 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Dispatch, FC, useState } from "react";
+import { Dispatch, FC, useEffect, useReducer, useState } from "react";
 
 const PREFERRED_FONT_SIZE = "0.8rem";
 
 export interface TasksTableProps {
-  tasks: Task[];
+  tasks: TaskFragment[];
   appendable?: boolean;
   moveTaskRow: TaskRowProps["move"];
   updateTaskRank: TaskRowProps["onDrop"];
 }
 
+type Action =
+  | {
+      type: "append";
+      payload: TaskFragment;
+    }
+  | {
+      type: "insert";
+      payload: {
+        task: TaskFragment;
+        index: number;
+      };
+    }
+  | {
+      type: "remove";
+      payload: {
+        id: ID;
+      };
+    }
+  | {
+      type: "init";
+      payload: TaskFragment[];
+    };
+
+function tasksReducer(state: TaskFragment[], action: Action) {
+  switch (action.type) {
+    case "init":
+      return action.payload;
+    case "append":
+      return [...state, action.payload];
+    case "insert":
+      return [
+        // part of the array before the specified index
+        ...state.slice(0, action.payload.index),
+        // inserted item
+        action.payload.task,
+        // part of the array after the specified index
+        ...state.slice(action.payload.index),
+      ];
+    // case "update":
+    //   return {
+    //     ...state,
+    //     tasks: state.map((task) => {
+    //       if (task.id === action.task.id) {
+    //         return action.task;
+    //       }
+    //       return task;
+    //     }),
+    //   };
+    case "remove":
+      return state.filter((task) => task.id !== action.payload.id);
+    default:
+      return state;
+  }
+}
+
 const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
-  const { tasks, appendable, moveTaskRow, updateTaskRank } = props;
-  // const { newTaskDialogState } = useNewTaskDialog();
+  const { tasks: _tasks, appendable, moveTaskRow, updateTaskRank } = props;
+  const [createTask] = useCreateTask();
   const [addingTask, setAddingTask] = useState(false);
+  const [newTaskData, dispatchNewTaskData] = useTaskDataReducer();
+  const [tasks, dispatch] = useReducer(tasksReducer, _tasks);
+
+  useEffect(() => {
+    dispatch({
+      type: "init",
+      payload: _tasks,
+    });
+  }, [_tasks]);
+
+  const onSaveNewTask = async () => {
+    const data = await taskCreationInputSchema.validate(newTaskData);
+    const optimisticResponse = getOptimisticResponseForTaskCreation(data);
+    createTask.current?.({ variables: { data }, optimisticResponse }, { skipValidation: true });
+    setAddingTask(false);
+    dispatch({
+      type: "append",
+      payload: optimisticResponse.createTask,
+    });
+  };
+
   return (
     <Table
       sx={{
@@ -69,13 +147,16 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
         })}
         {appendable &&
           (addingTask ? (
-            <NewTaskRow setAddingNewTask={setAddingTask} />
+            <NewTaskRow
+              dataTuple={[newTaskData, dispatchNewTaskData]}
+              onSave={onSaveNewTask}
+              setAddingNewTask={setAddingTask}
+            />
           ) : (
             <TableRow>
               <TableCell colSpan={5}>
                 <Button
                   variant="text"
-                  // {...(newTaskDialogState && bindTrigger(newTaskDialogState))}
                   onClick={() => setAddingTask(true)}
                   sx={{
                     textTransform: "none",
@@ -101,19 +182,21 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
 export default TasksTable;
 
 interface NewTaskRowProps {
+  dataTuple: ReturnType<typeof useTaskDataReducer>;
   setAddingNewTask: Dispatch<boolean>;
+  onSave: () => void;
 }
 
-const NewTaskRow: FC<NewTaskRowProps> = ({ setAddingNewTask }: NewTaskRowProps) => {
-  const [newTaskData, dispatchNewTaskData] = useTaskDataReducer();
-  const [createTask] = useCreateTask();
+const NewTaskRow: FC<NewTaskRowProps> = ({
+  dataTuple,
+  onSave,
+  setAddingNewTask,
+}: NewTaskRowProps) => {
+  const [newTaskData, dispatchNewTaskData] = dataTuple;
   const [editing, setEditing] = useState(true);
   const handleCreateTask = async () => {
-    const data = await taskCreationInputSchema.validate(newTaskData);
-    createTask.current?.({
-      variables: { data },
-    });
-    setAddingNewTask(false);
+    onSave();
+    dispatchNewTaskData({ field: "init", value: {} });
   };
   return (
     <>
@@ -130,10 +213,10 @@ const NewTaskRow: FC<NewTaskRowProps> = ({ setAddingNewTask }: NewTaskRowProps) 
               if (e.key === "Enter") {
                 handleCreateTask();
               } else if (e.key === "Escape") {
-                if (!newTaskData.title) return setAddingNewTask(false);
+                setAddingNewTask(false);
+                dispatchNewTaskData({ field: "init", value: {} });
               }
             }}
-            // sx={{ py: 1 }}
           />
         </TableCell>
         <TableCell colSpan={3} />

@@ -8,7 +8,6 @@ import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
 } from "@/graphql/generated/mutations/task.mutations";
-import Task from "@/graphql/generated/types/Task";
 import { MAX_TASK_RANK, MIN_TASK_RANK } from "@/graphql/schema/constants";
 import { useHandleMutation } from "@/utils/data";
 import { gql } from "@apollo/client";
@@ -84,7 +83,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
 
   // Enable re-ordering the tasks.
   const moveTaskRow = useCallback(
-    (draggedTask: DraggedTask, hoveredTask: Task) => {
+    (draggedTask: DraggedTask, hoveredTask: TaskFragment) => {
       if (draggedTask.id === hoveredTask.id || loadingUpdateTask) return null;
 
       const temporaryRank = hoveredTask.rank + (draggedTask.rank < hoveredTask.rank ? 1 : -1);

@@ -67,7 +67,8 @@ export function useDataReducer<T>(initialData: T): [T, Dispatch<Payload<T>>] {
 }
 
 type MutationFunction<MutationReturnType, MutationArgsType> = (
-  options?: MutationFunctionOptions<MutationReturnType, MutationArgsType>
+  mutationOptions?: MutationFunctionOptions<MutationReturnType, MutationArgsType>,
+  handlerOptions?: { skipValidation?: boolean }
 ) => Promise<FetchResult<MutationReturnType, Record<string, unknown>, Record<string, unknown>>>;
 
 export function useHandleMutation<MutationReturnType, MutationArgsType extends { data: unknown }>(
@@ -87,23 +88,29 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
     mutationHookOptions
   );
   const mutationHandlerRef = useRef(
-    pDebounce((mutationOptions?: MutationFunctionOptions<MutationReturnType, MutationArgsType>) => {
-      const controller = new window.AbortController();
-      abortController.current = controller;
-      if (preMutationValidationSchema) {
-        preMutationValidationSchema.validateSync(mutationOptions?.variables?.data);
-      }
-      const modifiedMutationOptions = mutationOptions
-        ? {
-            ...(!!(getOptimisticResponse && mutationOptions?.variables?.data) && {
-              optimisticResponse: getOptimisticResponse(mutationOptions?.variables?.data),
-            }),
-            ...mutationOptions,
-            context: { fetchOptions: { signal: controller.signal } },
-          }
-        : mutationOptions;
-      return mutate(modifiedMutationOptions);
-    }, debounceDelay)
+    pDebounce(
+      (
+        mutationOptions?: MutationFunctionOptions<MutationReturnType, MutationArgsType>,
+        handlerOptions?: { skipValidation?: boolean }
+      ) => {
+        const controller = new window.AbortController();
+        abortController.current = controller;
+        if (preMutationValidationSchema && !handlerOptions?.skipValidation) {
+          preMutationValidationSchema.validateSync(mutationOptions?.variables?.data);
+        }
+        const modifiedMutationOptions = mutationOptions
+          ? {
+              ...(!!(getOptimisticResponse && mutationOptions?.variables?.data) && {
+                optimisticResponse: getOptimisticResponse(mutationOptions?.variables?.data),
+              }),
+              ...mutationOptions,
+              context: { fetchOptions: { signal: controller.signal } },
+            }
+          : mutationOptions;
+        return mutate(modifiedMutationOptions);
+      },
+      debounceDelay
+    )
   );
   return [mutationHandlerRef, mutationResult, abortController];
 }

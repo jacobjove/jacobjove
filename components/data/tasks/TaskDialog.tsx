@@ -11,7 +11,6 @@ import { useTaskDataReducer, useUpdateTask } from "@/graphql/generated/hooks/tas
 import { getOptimisticResponseForTaskUpdate } from "@/graphql/generated/mutations/task.mutations";
 import { habitCreationInputSchema } from "@/graphql/generated/schemas/habit.schemas";
 import Habit from "@/graphql/generated/types/Habit";
-import Task from "@/graphql/generated/types/Task";
 import { ID } from "@/graphql/schema/types";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -138,7 +137,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     : null;
 
   // const subtasks = data.subtasks;
-  const subtasks: Task[] = []; // TODO
+  const subtasks: TaskFragment[] = []; // TODO
 
   // const metricUsages = habit?.metricUsages;
   // const metricUsages = null; // TODO
