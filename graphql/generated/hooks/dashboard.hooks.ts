@@ -15,6 +15,7 @@ import {
 import {
   DashboardData,
   dashboardReducer,
+  dashboardsReducer,
   initializeDashboardData,
 } from "@/graphql/generated/reducers/dashboard.reducer";
 import {
@@ -22,7 +23,7 @@ import {
   dashboardUpdateInputSchema,
 } from "@/graphql/generated/schemas/dashboard.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -73,4 +74,10 @@ export const useDashboardReducer = (
     }
   }, [user, dashboardData]);
   return [dashboardData, dispatchDashboardData];
+};
+
+export const useDashboardsReducer = (
+  data: DashboardFragment[]
+): [DashboardFragment[], Dispatch<ArrayAction<DashboardFragment>>] => {
+  return useReducer(dashboardsReducer, data);
 };

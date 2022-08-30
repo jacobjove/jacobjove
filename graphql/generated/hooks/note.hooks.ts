@@ -13,13 +13,14 @@ import {
   initializeNoteData,
   NoteData,
   noteReducer,
+  notesReducer,
 } from "@/graphql/generated/reducers/note.reducer";
 import {
   noteCreationInputSchema,
   noteUpdateInputSchema,
 } from "@/graphql/generated/schemas/note.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -64,4 +65,10 @@ export const useNoteReducer = (data?: NoteData): [NoteData, Dispatch<Payload<Not
     }
   }, [user, noteData]);
   return [noteData, dispatchNoteData];
+};
+
+export const useNotesReducer = (
+  data: NoteFragment[]
+): [NoteFragment[], Dispatch<ArrayAction<NoteFragment>>] => {
+  return useReducer(notesReducer, data);
 };

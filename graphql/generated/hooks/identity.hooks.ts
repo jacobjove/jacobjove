@@ -10,6 +10,7 @@ import {
   UPDATE_IDENTITY,
 } from "@/graphql/generated/mutations/identity.mutations";
 import {
+  identitiesReducer,
   IdentityData,
   identityReducer,
   initializeIdentityData,
@@ -19,7 +20,7 @@ import {
   identityUpdateInputSchema,
 } from "@/graphql/generated/schemas/identity.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -70,4 +71,10 @@ export const useIdentityReducer = (
     }
   }, [user, identityData]);
   return [identityData, dispatchIdentityData];
+};
+
+export const useIdentitiesReducer = (
+  data: IdentityFragment[]
+): [IdentityFragment[], Dispatch<ArrayAction<IdentityFragment>>] => {
+  return useReducer(identitiesReducer, data);
 };

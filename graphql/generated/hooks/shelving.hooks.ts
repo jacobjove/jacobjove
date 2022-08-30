@@ -12,13 +12,14 @@ import {
   initializeShelvingData,
   ShelvingData,
   shelvingReducer,
+  shelvingsReducer,
 } from "@/graphql/generated/reducers/shelving.reducer";
 import {
   shelvingCreationInputSchema,
   shelvingUpdateInputSchema,
 } from "@/graphql/generated/schemas/shelving.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useReducer } from "react";
 
@@ -60,4 +61,10 @@ export const useShelvingReducer = (
     initializeShelvingData
   );
   return [shelvingData, dispatchShelvingData];
+};
+
+export const useShelvingsReducer = (
+  data: ShelvingFragment[]
+): [ShelvingFragment[], Dispatch<ArrayAction<ShelvingFragment>>] => {
+  return useReducer(shelvingsReducer, data);
 };

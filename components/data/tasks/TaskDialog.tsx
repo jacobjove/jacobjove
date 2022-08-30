@@ -307,7 +307,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 <Box my={2}>
                   {subtasks?.length ? (
                     <TasksTable
-                      tasks={subtasks}
+                      tasksDataTuple={[subtasks]}
                       moveTaskRow={undefined}
                       updateTaskRank={undefined}
                     />

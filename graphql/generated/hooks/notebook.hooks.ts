@@ -13,13 +13,14 @@ import {
   initializeNotebookData,
   NotebookData,
   notebookReducer,
+  notebooksReducer,
 } from "@/graphql/generated/reducers/notebook.reducer";
 import {
   notebookCreationInputSchema,
   notebookUpdateInputSchema,
 } from "@/graphql/generated/schemas/notebook.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -70,4 +71,10 @@ export const useNotebookReducer = (
     }
   }, [user, notebookData]);
   return [notebookData, dispatchNotebookData];
+};
+
+export const useNotebooksReducer = (
+  data: NotebookFragment[]
+): [NotebookFragment[], Dispatch<ArrayAction<NotebookFragment>>] => {
+  return useReducer(notebooksReducer, data);
 };

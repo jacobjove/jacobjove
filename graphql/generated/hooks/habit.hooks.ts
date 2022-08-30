@@ -12,6 +12,7 @@ import {
 import {
   HabitData,
   habitReducer,
+  habitsReducer,
   initializeHabitData,
 } from "@/graphql/generated/reducers/habit.reducer";
 import {
@@ -19,7 +20,7 @@ import {
   habitUpdateInputSchema,
 } from "@/graphql/generated/schemas/habit.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -68,4 +69,10 @@ export const useHabitReducer = (data?: HabitData): [HabitData, Dispatch<Payload<
     }
   }, [user, habitData]);
   return [habitData, dispatchHabitData];
+};
+
+export const useHabitsReducer = (
+  data: HabitFragment[]
+): [HabitFragment[], Dispatch<ArrayAction<HabitFragment>>] => {
+  return useReducer(habitsReducer, data);
 };

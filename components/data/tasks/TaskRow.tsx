@@ -318,11 +318,8 @@ const TaskRow: FC<TaskRowProps> = (props: TaskRowProps) => {
         onDrop?.(draggedTask.index);
       },
       hover(draggedItem, monitor: DropTargetMonitor) {
-        if (draggedItem.type !== "task") return;
+        if (draggedItem.type !== "task" || !dndRef.current || !move || !monitor.canDrop()) return;
         const draggedTask = draggedItem as DraggedTask;
-        if (!dndRef.current || !move || !monitor.canDrop()) {
-          return;
-        }
         const dragIndex = draggedTask.index;
         const hoverIndex = index;
 

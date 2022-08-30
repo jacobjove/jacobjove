@@ -1,11 +1,12 @@
 import TaskRow, { TaskRowProps } from "@/components/data/tasks/TaskRow";
 import TitleAndDescriptionFields from "@/components/fields/TitleAndDescriptionFields";
-import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { useCreateTask, useTaskReducer } from "@/graphql/generated/hooks/task.hooks";
+import {
+  useCreateTask,
+  useTaskReducer,
+  useTasksReducer,
+} from "@/graphql/generated/hooks/task.hooks";
 import { getOptimisticResponseForTaskCreation } from "@/graphql/generated/mutations/task.mutations";
-import { tasksReducer } from "@/graphql/generated/reducers/task.reducer";
 import { taskCreationInputSchema } from "@/graphql/generated/schemas/task.schemas";
-import { ID } from "@/graphql/schema/types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -13,58 +14,36 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Dispatch, FC, useEffect, useReducer, useState } from "react";
+import { Dispatch, FC, useState } from "react";
 
 const PREFERRED_FONT_SIZE = "0.8rem";
 
 export interface TasksTableProps {
-  tasks: TaskFragment[];
+  tasksDataTuple: ReturnType<typeof useTasksReducer>;
   appendable?: boolean;
   moveTaskRow: TaskRowProps["move"];
   updateTaskRank: TaskRowProps["onDrop"];
 }
 
-type Action =
-  | {
-      type: "append";
-      payload: TaskFragment;
-    }
-  | {
-      type: "insert";
-      payload: {
-        task: TaskFragment;
-        index: number;
-      };
-    }
-  | {
-      type: "remove";
-      payload: {
-        id: ID;
-      };
-    }
-  | {
-      type: "init";
-      payload: TaskFragment[];
-    };
-
 const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
-  const { tasks: _tasks, appendable, moveTaskRow, updateTaskRank } = props;
+  const { tasksDataTuple, appendable, moveTaskRow, updateTaskRank } = props;
+  const [tasks, dispatch] = tasksDataTuple;
   const [createTask] = useCreateTask();
   const [addingTask, setAddingTask] = useState(false);
   const [newTaskData, dispatchNewTaskData] = useTaskReducer();
-  const [tasks, dispatch] = useReducer(tasksReducer, _tasks);
-
-  useEffect(() => {
-    dispatch({
-      type: "init",
-      payload: _tasks,
-    });
-  }, [_tasks]);
+  console.log("new task rank:", newTaskData.rank);
 
   const onSaveNewTask = async () => {
     const data = await taskCreationInputSchema.validate(newTaskData);
     const optimisticResponse = getOptimisticResponseForTaskCreation(data);
-    createTask.current?.({ variables: { data }, optimisticResponse }, { skipValidation: true });
+    createTask
+      .current?.({ variables: { data }, optimisticResponse }, { skipValidation: true })
+      .then(() => {
+        dispatchNewTaskData({
+          field: "init",
+          value: {},
+        });
+      });
     setAddingTask(false);
     dispatch({
       type: "append",
@@ -72,6 +51,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     });
   };
 
+  console.log("Table tasks:", tasks);
   return (
     <Table
       sx={{
@@ -163,10 +143,7 @@ const NewTaskRow: FC<NewTaskRowProps> = ({
 }: NewTaskRowProps) => {
   const [newTaskData, dispatchNewTaskData] = dataTuple;
   const [editing, setEditing] = useState(true);
-  const handleCreateTask = async () => {
-    onSave();
-    dispatchNewTaskData({ field: "init", value: {} });
-  };
+  const handleCreateTask = () => onSave();
   return (
     <>
       <TableRow onBlur={() => (newTaskData.title ? null : setAddingNewTask(false))}>

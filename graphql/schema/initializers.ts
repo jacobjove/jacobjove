@@ -4,7 +4,9 @@ import { MAX_TASK_RANK, MIN_TASK_RANK } from "@/graphql/schema/constants";
 export const initializeTaskRank = (user: UserFragment): number => {
   const incompleteTasks = user.tasks?.filter((task) => !task.completedAt) ?? [];
   const greatestRank = incompleteTasks[incompleteTasks.length - 1]?.rank ?? MIN_TASK_RANK;
-  return Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
+  const rank = Math.floor(greatestRank + Math.floor((MAX_TASK_RANK - greatestRank) / 2));
+  console.log(`Initializing task rank to ${rank} based on greatest rank:`, greatestRank);
+  return rank;
 };
 
 export const initializeCalendarEventCalendarId = (user: UserFragment): string => {

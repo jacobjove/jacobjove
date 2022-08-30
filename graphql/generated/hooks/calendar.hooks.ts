@@ -12,6 +12,7 @@ import {
 import {
   CalendarData,
   calendarReducer,
+  calendarsReducer,
   initializeCalendarData,
 } from "@/graphql/generated/reducers/calendar.reducer";
 import {
@@ -19,7 +20,7 @@ import {
   calendarUpdateInputSchema,
 } from "@/graphql/generated/schemas/calendar.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -70,4 +71,10 @@ export const useCalendarReducer = (
     }
   }, [user, calendarData]);
   return [calendarData, dispatchCalendarData];
+};
+
+export const useCalendarsReducer = (
+  data: CalendarFragment[]
+): [CalendarFragment[], Dispatch<ArrayAction<CalendarFragment>>] => {
+  return useReducer(calendarsReducer, data);
 };

@@ -12,6 +12,7 @@ import {
 import {
   GoalData,
   goalReducer,
+  goalsReducer,
   initializeGoalData,
 } from "@/graphql/generated/reducers/goal.reducer";
 import {
@@ -19,7 +20,7 @@ import {
   goalUpdateInputSchema,
 } from "@/graphql/generated/schemas/goal.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -64,4 +65,10 @@ export const useGoalReducer = (data?: GoalData): [GoalData, Dispatch<Payload<Goa
     }
   }, [user, goalData]);
   return [goalData, dispatchGoalData];
+};
+
+export const useGoalsReducer = (
+  data: GoalFragment[]
+): [GoalFragment[], Dispatch<ArrayAction<GoalFragment>>] => {
+  return useReducer(goalsReducer, data);
 };

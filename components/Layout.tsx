@@ -1,4 +1,3 @@
-// import TaskDialog from "@/components/data/tasks/TaskDialog";
 import AppDrawer from "@/components/AppDrawer";
 import CalendarEventDialog from "@/components/calendar/CalendarEventDialog";
 import { useDeviceData } from "@/components/contexts/DeviceContext";
@@ -43,7 +42,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
   const [appDrawerOpen, _setAppDrawerOpen] = useState(drawerExpanded);
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
 
-  const { newTaskDataTuple, newTaskDialogState, newTaskDialogTriggerProps } = useNewTaskDialog();
+  const { newTaskDialogState, newTaskDialogTriggerProps } = useNewTaskDialog();
 
   const { newCalendarEventDialogState } = useNewCalendarEventDialog();
 

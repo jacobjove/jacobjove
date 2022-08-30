@@ -13,13 +13,14 @@ import {
   initializeValueData,
   ValueData,
   valueReducer,
+  valuesReducer,
 } from "@/graphql/generated/reducers/value.reducer";
 import {
   valueCreationInputSchema,
   valueUpdateInputSchema,
 } from "@/graphql/generated/schemas/value.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -68,4 +69,10 @@ export const useValueReducer = (data?: ValueData): [ValueData, Dispatch<Payload<
     }
   }, [user, valueData]);
   return [valueData, dispatchValueData];
+};
+
+export const useValuesReducer = (
+  data: ValueFragment[]
+): [ValueFragment[], Dispatch<ArrayAction<ValueFragment>>] => {
+  return useReducer(valuesReducer, data);
 };

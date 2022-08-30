@@ -13,13 +13,14 @@ import {
   initializeListData,
   ListData,
   listReducer,
+  listsReducer,
 } from "@/graphql/generated/reducers/list.reducer";
 import {
   listCreationInputSchema,
   listUpdateInputSchema,
 } from "@/graphql/generated/schemas/list.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -64,4 +65,10 @@ export const useListReducer = (data?: ListData): [ListData, Dispatch<Payload<Lis
     }
   }, [user, listData]);
   return [listData, dispatchListData];
+};
+
+export const useListsReducer = (
+  data: ListFragment[]
+): [ListFragment[], Dispatch<ArrayAction<ListFragment>>] => {
+  return useReducer(listsReducer, data);
 };

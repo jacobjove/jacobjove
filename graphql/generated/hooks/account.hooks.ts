@@ -12,6 +12,7 @@ import {
 import {
   AccountData,
   accountReducer,
+  accountsReducer,
   initializeAccountData,
 } from "@/graphql/generated/reducers/account.reducer";
 import {
@@ -19,7 +20,7 @@ import {
   accountUpdateInputSchema,
 } from "@/graphql/generated/schemas/account.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -70,4 +71,10 @@ export const useAccountReducer = (
     }
   }, [user, accountData]);
   return [accountData, dispatchAccountData];
+};
+
+export const useAccountsReducer = (
+  data: AccountFragment[]
+): [AccountFragment[], Dispatch<ArrayAction<AccountFragment>>] => {
+  return useReducer(accountsReducer, data);
 };

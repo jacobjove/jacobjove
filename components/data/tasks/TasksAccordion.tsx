@@ -3,14 +3,13 @@ import { DraggedTask } from "@/components/data/tasks/TaskRow";
 import TasksTable from "@/components/data/tasks/TasksTable";
 import { DistinctTasksUpdateArgs } from "@/graphql/generated/args/task.args";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
-import { useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
+import { useTasksReducer, useUpdateTask } from "@/graphql/generated/hooks/task.hooks";
 import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
 } from "@/graphql/generated/mutations/task.mutations";
 import { MAX_TASK_RANK, MIN_TASK_RANK } from "@/graphql/schema/constants";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { gql } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -19,7 +18,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Typography from "@mui/material/Typography";
 import { addDays, endOfDay, isSameDay } from "date-fns";
 import partition from "lodash/partition";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
 type TasksView = "today" | "next7" | "all";
 
@@ -30,21 +29,23 @@ export interface TasksAccordionProps {
 const TasksAccordion: FC<TasksAccordionProps> = () => {
   const { user } = useUser();
 
+  const [tasks, dispatchTasks] = useTasksReducer(user?.tasks ?? []);
+
+  console.log("ABC:", tasks);
   // If these are any top-level tasks, exclude the subtasks, since the top-level tasks
   // should already contain their subtasks. Otherwise, if there are no top-level tasks,
   // just show all the tasks, so that, e.g., a table of a task's subtasks can be
   // rendered in a task's detail dialog... TODO.
   const filteredTasks = useMemo(() => {
-    const allTasks = user?.tasks ?? [];
     console.log("Calculating filteredTasks");
-    const unarchivedTasks = allTasks
+    const unarchivedTasks = tasks
       .filter((task) => !task.archivedAt)
       .sort((a, b) => (a.rank > b.rank ? 1 : -1));
     const [topLevelTasks, subtasks] = partition(unarchivedTasks, (task) => {
       return !task.parentId;
     });
     return topLevelTasks.length ? topLevelTasks : subtasks;
-  }, [user?.tasks]);
+  }, [tasks]);
 
   // Distinguish incomplete tasks from completed tasks.
   const [incompleteTasks, completeTasks] = useMemo(() => {
@@ -85,24 +86,30 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
   const moveTaskRow = useCallback(
     (draggedTask: DraggedTask, hoveredTask: TaskFragment) => {
       if (draggedTask.id === hoveredTask.id || loadingUpdateTask) return null;
-
-      const temporaryRank = hoveredTask.rank + (draggedTask.rank < hoveredTask.rank ? 1 : -1);
-      apolloClient.cache.writeFragment({
-        id: `Task:${draggedTask.id}`,
-        data: {
-          rank: temporaryRank,
-        },
-        fragment: gql`
-          fragment UpdateTaskRank on Task {
-            rank
-          }
-        `,
-        fragmentName: "UpdateTaskRank",
+      const direction = draggedTask.rank < hoveredTask.rank ? "down" : "up";
+      const temporaryRank = hoveredTask.rank + (direction === "up" ? -1 : 1);
+      console.log(`Moving task to rank ${temporaryRank}`);
+      dispatchTasks({
+        type: "updateItem",
+        payload: { id: draggedTask.id, item: { ...draggedTask, rank: temporaryRank } },
       });
+      console.log(`Dispatched ${temporaryRank}`);
+      // apolloClient.cache.writeFragment({
+      //   id: `Task:${draggedTask.id}`,
+      //   data: {
+      //     rank: temporaryRank,
+      //   },
+      //   fragment: gql`
+      //     fragment UpdateTaskRank on Task {
+      //       rank
+      //     }
+      //   `,
+      //   fragmentName: "UpdateTaskRank",
+      // });
       // returning modified fields allows an actively dragging task to update
       return { rank: temporaryRank };
     },
-    [loadingUpdateTask, apolloClient.cache]
+    [loadingUpdateTask, dispatchTasks]
   );
 
   const updateTaskRank = useCallback(
@@ -156,6 +163,14 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
     // ["all", "All"],
   ];
 
+  useEffect(() => {
+    console.log("INITIALIZING TASKS");
+    dispatchTasks({
+      type: "init",
+      payload: tasks,
+    });
+  }, [tasks, dispatchTasks]);
+
   console.log("Rendering TasksAccordion");
 
   return (
@@ -195,7 +210,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
           </AccordionSummary> */}
           <AccordionDetails>
             <TasksTable
-              tasks={tasksBySelection[key]}
+              tasksDataTuple={[tasksBySelection[key], dispatchTasks]}
               moveTaskRow={moveTaskRow}
               updateTaskRank={updateTaskRank}
               appendable
@@ -224,7 +239,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
           </AccordionSummary>
           <AccordionDetails>
             <TasksTable
-              tasks={recentlyCompletedTasks}
+              tasksDataTuple={[recentlyCompletedTasks, dispatchTasks]}
               moveTaskRow={undefined}
               updateTaskRank={undefined}
             />

@@ -13,13 +13,14 @@ import {
   initializeMantraData,
   MantraData,
   mantraReducer,
+  mantrasReducer,
 } from "@/graphql/generated/reducers/mantra.reducer";
 import {
   mantraCreationInputSchema,
   mantraUpdateInputSchema,
 } from "@/graphql/generated/schemas/mantra.schemas";
 import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload } from "@/utils/data/reduction";
+import { ArrayAction, Payload } from "@/utils/data/reduction";
 import { MutationHookOptions } from "@apollo/client";
 import { Dispatch, useEffect, useReducer } from "react";
 
@@ -70,4 +71,10 @@ export const useMantraReducer = (
     }
   }, [user, mantraData]);
   return [mantraData, dispatchMantraData];
+};
+
+export const useMantrasReducer = (
+  data: MantraFragment[]
+): [MantraFragment[], Dispatch<ArrayAction<MantraFragment>>] => {
+  return useReducer(mantrasReducer, data);
 };

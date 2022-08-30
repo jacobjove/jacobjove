@@ -66,6 +66,20 @@ export type ArrayAction<T extends { id: ID }> =
       };
     }
   | {
+      type: "updateItem";
+      payload: {
+        id: T["id"];
+        item: T;
+      };
+    }
+  | {
+      type: "move";
+      payload: {
+        id: T["id"];
+        index: number;
+      };
+    }
+  | {
       type: "remove";
       payload: {
         id: T["id"];
@@ -77,11 +91,20 @@ export type ArrayAction<T extends { id: ID }> =
     };
 
 export function arrayReducer<T extends { id: ID }>(state: T[], action: ArrayAction<T>) {
+  let array: T[];
+  let item: T | undefined;
+  let index: number;
   switch (action.type) {
     case "init":
       return action.payload;
     case "append":
       return [...state, action.payload];
+    case "move":
+      item = state.find((_) => _.id === action.payload.id);
+      if (!item) return state;
+      array = state.filter((_) => _.id !== action.payload.id);
+      console.log("moving item", item, "to index", action.payload.index);
+      return [...array.slice(0, action.payload.index), item, ...array.slice(action.payload.index)];
     case "insert":
       return [
         // part of the array before the specified index
@@ -91,16 +114,9 @@ export function arrayReducer<T extends { id: ID }>(state: T[], action: ArrayActi
         // part of the array after the specified index
         ...state.slice(action.payload.index),
       ];
-    // case "update":
-    //   return {
-    //     ...state,
-    //     tasks: state.map((task) => {
-    //       if (task.id === action.task.id) {
-    //         return action.task;
-    //       }
-    //       return task;
-    //     }),
-    //   };
+    case "updateItem":
+      index = state.findIndex((_) => _.id === action.payload.id);
+      return [...state.slice(0, index), action.payload.item, ...state.slice(index + 1)];
     case "remove":
       return state.filter((item) => item.id !== action.payload.id);
     default:
