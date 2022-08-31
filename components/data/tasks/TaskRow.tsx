@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import cronstrue from "cronstrue";
 import { format, isPast, isSameDay, isSameYear, isToday } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
@@ -54,6 +55,8 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
 
   // const habit = task.habit; // TODO
   const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
+  console.log("Habit", habit);
+  // const streak = habit?.streak ?? 0;
 
   const [updateTask, { loading }] = useUpdateTask();
 
@@ -205,9 +208,9 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                 </IconButton>
               ) : null}
             </Box>
-            {task.habitId && (
+            {habit?.cron && (
               <IconButton
-                // title={`every ${task.habit.schedules[0].frequency.toLowerCase()}`}
+                title={cronstrue.toString(habit.cron, { verbose: true })}
                 onClick={(event) => {
                   event.preventDefault();
                   console.info("You clicked the schedule icon.");
