@@ -5,22 +5,13 @@ import { JSONResolver, ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
-import { postSave, preSave } from "./hooks";
+import { postSave, postUpdate, preSave } from "./hooks";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 @pre<ListItem>("save", preSave)
 @post<ListItem>("save", postSave)
-@post<ListItem>("findOneAndUpdate", async function (result) {
-  const rawResult = result as unknown as {
-    value: typeof result;
-    lastErrorObject: {
-      updatedExisting: boolean;
-    };
-  };
-  if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
-  return postSave(rawResult.value);
-})
+@post<ListItem>("findOneAndUpdate", postUpdate)
 export default class ListItem extends Model {
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })

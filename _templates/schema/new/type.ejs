@@ -12,7 +12,7 @@ import { DEFAULT_MODEL_OPTIONS } from "@/graphql/schema/constants";
 <% for (var model of modelImports) { -%>
 import <%= h.changeCase.pascal(model) %> from "@/graphql/generated/types/<%= h.changeCase.pascal(model) %>";
 <% } -%>
-import { preSave, postSave } from "./hooks";
+import { preSave, postSave, postUpdate } from "./hooks";
 <% for (var [fieldName, field] of Object.entries(fields).filter(([,field]) => (field.type === "Map" && field.shape))) { -%>
 
 export type <%= h.changeCase.pascal(fieldName) %> = {
@@ -26,19 +26,7 @@ export type <%= h.changeCase.pascal(fieldName) %> = {
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 @pre<<%= Name %>>("save", preSave)
 @post<<%= Name %>>("save", postSave)
-@post<<%= Name %>>(
-  "findOneAndUpdate",
-  async function (result) {
-    const rawResult = result as unknown as {
-      value: typeof result;
-      lastErrorObject: {
-        updatedExisting: boolean;
-      }
-    };
-    if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
-    return postSave(rawResult.value);
-  }
-)
+@post<<%= Name %>>("findOneAndUpdate", postUpdate)
 export default class <%= Name %> extends Model {
 <% for (var [fieldName, field] of Object.entries(fields)) { -%>
 <% var useModelType = modelImports.includes(`${field.type}`) || modelImports.includes(`${field.typeArg}`); -%>

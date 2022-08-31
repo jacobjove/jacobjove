@@ -12,6 +12,17 @@ export async function postSave(_instance: unknown) {
   return;
 }
 
+export async function postUpdate<T>(result: T) {
+  const rawResult = result as unknown as {
+    value: typeof result;
+    lastErrorObject: {
+      updatedExisting: boolean;
+    };
+  };
+  if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
+  return postSave(rawResult.value);
+}
+
 // export async function postFindOneAndUpdate(result: unknown) {
 //   const rawResult = result as unknown as {
 //     value: typeof result;

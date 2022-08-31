@@ -13,7 +13,7 @@ import { DateTimeScalar, JSONResolver } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
-import { postSave, preSave } from "./hooks";
+import { postSave, postUpdate, preSave } from "./hooks";
 
 export type Settings = {
   colorMode?: string;
@@ -24,16 +24,7 @@ export type Settings = {
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 @pre<User>("save", preSave)
 @post<User>("save", postSave)
-@post<User>("findOneAndUpdate", async function (result) {
-  const rawResult = result as unknown as {
-    value: typeof result;
-    lastErrorObject: {
-      updatedExisting: boolean;
-    };
-  };
-  if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
-  return postSave(rawResult.value);
-})
+@post<User>("findOneAndUpdate", postUpdate)
 export default class User extends Model {
   @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })

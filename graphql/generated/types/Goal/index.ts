@@ -5,22 +5,13 @@ import { ObjectIdScalar } from "@/graphql/schema/scalars";
 import { Model } from "@/graphql/schema/types";
 import { ModelOptions, post, pre, prop as Property } from "@typegoose/typegoose";
 import * as TypeGraphQL from "type-graphql-v2-fork";
-import { postSave, preSave } from "./hooks";
+import { postSave, postUpdate, preSave } from "./hooks";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 @pre<Goal>("save", preSave)
 @post<Goal>("save", postSave)
-@post<Goal>("findOneAndUpdate", async function (result) {
-  const rawResult = result as unknown as {
-    value: typeof result;
-    lastErrorObject: {
-      updatedExisting: boolean;
-    };
-  };
-  if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
-  return postSave(rawResult.value);
-})
+@post<Goal>("findOneAndUpdate", postUpdate)
 export default class Goal extends Model {
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })

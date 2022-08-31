@@ -20,6 +20,7 @@ import { XYCoord } from "dnd-core";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC, RefObject, useMemo, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
+import CompletionTallyChart from "../habits/CompletionTallyChart";
 
 export interface TaskRowProps extends Pick<TaskRowContentProps, "task" | "collapsed"> {
   subtasks: TaskFragment[];
@@ -205,6 +206,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                 </IconButton>
               ) : null}
             </Box>
+            {!!habit && <CompletionTallyChart nCompletions={0} />}
             {habit?.cron && (
               <IconButton
                 title={cronstrue.toString(habit.cron, { verbose: true })}
