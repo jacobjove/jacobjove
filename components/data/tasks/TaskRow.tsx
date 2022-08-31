@@ -53,10 +53,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
 
-  // const habit = task.habit; // TODO
   const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
-  console.log("Habit", habit);
-  // const streak = habit?.streak ?? 0;
 
   const [updateTask, { loading }] = useUpdateTask();
 
