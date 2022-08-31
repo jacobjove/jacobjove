@@ -293,7 +293,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   alignSelf: "start",
                   alignItems: "start",
                   minWidth: LEFT_SIDE_WIDTH,
-                  py: "0.2rem",
+                  py: "0.47rem",
                 }}
                 checked={completed}
                 disabled={!canUpdate}
@@ -302,8 +302,8 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 }}
               />
               <TitleAndDescriptionFields
-                titleConfig={{ name: "title", label: "Title", fontSizeRem: 1.35 }}
-                descriptionConfig={{ name: "description", label: "Description" }}
+                titleConfig={{ name: "title", label: "Title", fontSizeRem: 1.6 }}
+                descriptionConfig={{ name: "description", label: "Description", fontSizeRem: 1 }}
                 dataTuple={[data, handleDispatchData]}
                 editingState={[editing, setEditing]}
               />
@@ -426,7 +426,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               <Box px={1}>
                 {habit ? (
                   <>
-                    <Typography>
+                    <Typography component={"p"} fontSize={"inherit"}>
                       {`This task is associated with your `}
                       {'"'}
                       <a onClick={() => alert("Not yet implemented")}>
@@ -435,9 +435,13 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                       {'"'}
                       {` habit.`}
                     </Typography>
-                    <Typography>{`Keep it up!`}</Typography>
+                    <Typography
+                      component={"p"}
+                      fontSize={"inherit"}
+                      mt={1}
+                    >{`Keep it up!`}</Typography>
                   </>
-                ) : (
+                ) : convertingToHabit ? null : (
                   <Typography>{"This is a one-off task."}</Typography>
                 )}
               </Box>

@@ -1,4 +1,5 @@
 import CompletionCheckbox from "@/components/actions/CompletionCheckbox";
+import { useDeviceData } from "@/components/contexts/DeviceContext";
 import { useUser } from "@/components/contexts/UserContext";
 import TaskDialog from "@/components/data/tasks/TaskDialog";
 import { TaskFragment } from "@/graphql/generated/fragments/task.fragment";
@@ -13,7 +14,6 @@ import IconButton from "@mui/material/IconButton";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { format, isPast, isSameDay, isSameYear, isToday } from "date-fns";
 import { XYCoord } from "dnd-core";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
@@ -48,9 +48,8 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const { task, asSubtask, subtasks, collapsed: _collapsed, dndRef, isDragging, onLoading } = props;
   const [completed, setCompleted] = useState(!!task.completedAt);
   const collapsed = _collapsed ?? false;
-  const isMobile = useMediaQuery("(max-width: 600px)");
+  const { isMobile } = useDeviceData();
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
-
   const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
 
   // const habit = task.habit; // TODO
@@ -112,7 +111,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                 : `rgba(255,255,255,${bgOpacity})`
               : "transparent";
           },
-          "& .drag-handle": { visibility: "hidden" },
+          "& .drag-handle": { visibility: isMobile ? "visible" : "hidden" },
           "& .actions-menu-icon": { visibility: "hidden" },
           "&:hover": {
             "& .drag-handle": {
