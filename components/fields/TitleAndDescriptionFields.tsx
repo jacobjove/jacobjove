@@ -94,7 +94,7 @@ export default function TitleAndDescriptionFields<
         ) : (
           <Typography
             component={"h1"}
-            sx={{ fontSize: titleFontSize }}
+            sx={{ fontSize: titleFontSize, lineHeight: 1 }}
             onClick={() => {
               setDescriptionFocused(false);
               setEditing(true);

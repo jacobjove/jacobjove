@@ -19,6 +19,7 @@ import { NextPage } from "next";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
+import Head from "next/head";
 import { FC, ReactElement, useEffect, useState } from "react";
 import { getSelectorsByUserAgent } from "react-device-detect";
 import { DndProvider } from "react-dnd";
@@ -62,8 +63,9 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
   useEffect(() => {
     if (typeof window !== "undefined" && navigator.userAgent) {
+      const selectorsFromUserAgent = getSelectorsByUserAgent(navigator.userAgent);
       setDeviceContextData({
-        ...getSelectorsByUserAgent(navigator.userAgent),
+        ...selectorsFromUserAgent,
         isMobileWidth,
         isLandscape,
       });
@@ -87,16 +89,26 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DndProvider
                         backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}
+                        options={deviceContextData.isMobile ? { delayTouchStart: 200 } : {}}
                       >
                         <DateContextProvider>
-                          <DefaultSeo {...SEO} />
-                          {(Component as PageWithAuth).auth ? (
-                            <Auth>
+                          <>
+                            <Head>
+                              {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
+                              <meta
+                                name="viewport"
+                                content="width=device-width, initial-scale=1, maximum-scale=1"
+                              />
+                            </Head>
+                            <DefaultSeo {...SEO} />
+                            {(Component as PageWithAuth).auth ? (
+                              <Auth>
+                                <Component {...pageProps} />
+                              </Auth>
+                            ) : (
                               <Component {...pageProps} />
-                            </Auth>
-                          ) : (
-                            <Component {...pageProps} />
-                          )}
+                            )}
+                          </>
                         </DateContextProvider>
                       </DndProvider>
                     </LocalizationProvider>

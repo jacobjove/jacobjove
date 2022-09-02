@@ -31,13 +31,11 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
 
   const [tasks, dispatchTasks] = useTasksReducer(user?.tasks ?? []);
 
-  console.log("ABC:", tasks);
   // If these are any top-level tasks, exclude the subtasks, since the top-level tasks
   // should already contain their subtasks. Otherwise, if there are no top-level tasks,
   // just show all the tasks, so that, e.g., a table of a task's subtasks can be
   // rendered in a task's detail dialog... TODO.
   const filteredTasks = useMemo(() => {
-    console.log("Calculating filteredTasks");
     const unarchivedTasks = tasks
       .filter((task) => !task.archivedAt)
       .sort((a, b) => (a.rank > b.rank ? 1 : -1));

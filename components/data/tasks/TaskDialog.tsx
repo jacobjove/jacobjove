@@ -355,6 +355,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               },
               "& *": {
                 fontSize: "0.85rem",
+                lineHeight: 1.15,
               },
             }}
           >
@@ -392,6 +393,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   textTransform: "none",
                   display: "flex",
                   justifyContent: "space-between",
+                  lineHeight: 1,
                   ...(!!data.plannedStartDate && { mb: -1 }),
                   color: (theme) =>
                     theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
