@@ -1,3 +1,4 @@
+import { INTRODUCTORY_PARAGRAPHS } from "@/common/constants/content";
 import Layout from "@/components/Layout";
 import { buildGetServerSidePropsFunc } from "@/utils/ssr";
 import Box from "@mui/material/Box";
@@ -28,15 +29,11 @@ const DefaultPage: NextPage<DefaultPageProps> = (_props: DefaultPageProps) => {
           justifyContent={"center"}
         >
           <Box maxWidth={"24rem"}>
-            <Typography component="p" my={2}>
-              {
-                "SelfBuilder (currently under development) is an app designed to help you build your best self."
-              }
-            </Typography>
-            <Typography component="p" my={2}>
-              {"The app functions primarily as a daily planner, helping you to manage your time "}
-              {"and build habits in order to accomplish your personal goals."}
-            </Typography>
+            {INTRODUCTORY_PARAGRAPHS.map((paragraph, index) => (
+              <Typography key={index} component="p" my={2}>
+                {paragraph}
+              </Typography>
+            ))}
           </Box>
           <Box marginTop="2rem">
             {session?.user ? (

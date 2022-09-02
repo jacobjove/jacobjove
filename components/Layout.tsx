@@ -35,7 +35,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
   const drawerExpandedCookieValue = cookies[DRAWER_EXPANDED_COOKIE_NAME];
   const drawerExpanded = drawerExpandedCookieValue
     ? drawerExpandedCookieValue === "true"
-    : isDesktop;
+    : !!isDesktop;
   const headerHeight = `${HEADER_HEIGHT_PX}px`;
   const footerHeight = `${FOOTER_HEIGHT_REM}rem`;
   const isMobile = useMediaQuery("(max-width: 600px)");
