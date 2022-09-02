@@ -180,6 +180,7 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
                       ? `${TASK_TITLE_FONT_SIZE_REM * 0.9}rem`
                       : `${TASK_TITLE_FONT_SIZE_REM}rem`,
                     textTransform: "none",
+                    lineHeight: 1.1,
                   }}
                 >
                   {task.title}
