@@ -63,7 +63,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
     {
       icon: <TaskAltIcon />,
       name: "Task",
-      onClick: newTaskDialogTriggerProps.onClick,
+      onClick: newTaskDialogTriggerProps?.onClick,
     },
     {
       icon: <TodayIcon />,
@@ -148,7 +148,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
                 />
               ))}
             </SpeedDial> */}
-            <TaskCreationDialog {...bindPopover(newTaskDialogState)} />
+            {newTaskDialogState && <TaskCreationDialog {...bindPopover(newTaskDialogState)} />}
             {newCalendarEventDialogState && (
               <CalendarEventDialog
                 mutation={"create"}

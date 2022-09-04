@@ -9,9 +9,8 @@ import Habit from "@web/graphql/generated/types/Habit";
 import Mantra from "@web/graphql/generated/types/Mantra";
 import Notebook from "@web/graphql/generated/types/Notebook";
 import Task from "@web/graphql/generated/types/Task";
-import { DEFAULT_MODEL_OPTIONS } from "@web/graphql/schema/constants";
 import { DateTimeScalar, JSONResolver } from "@web/graphql/schema/scalars";
-import { Model } from "@web/graphql/schema/types";
+import { DEFAULT_MODEL_OPTIONS, Model } from "@web/graphql/schema/types";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 import { postSave, postUpdate, preSave } from "./hooks";
 

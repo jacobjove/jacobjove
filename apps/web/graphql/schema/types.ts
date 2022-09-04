@@ -1,10 +1,23 @@
-import { prop as Property } from "@typegoose/typegoose";
+import { prop as Property, Severity } from "@typegoose/typegoose";
+import { IModelOptions } from "@typegoose/typegoose/lib/types";
 import { DateTimeScalar, ObjectIdScalar } from "@web/graphql/schema/scalars";
 import { ObjectId } from "mongodb";
 import { Field, InputType, ObjectType } from "type-graphql-v2-fork";
 
 export type ID = string;
 export type Map = Record<string, unknown>;
+
+export const DEFAULT_MODEL_OPTIONS: IModelOptions = {
+  schemaOptions: {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    minimize: false, // https://mongoosejs.com/docs/guide.html#minimize
+  },
+  options: {
+    allowMixed: Severity.ALLOW,
+  },
+};
 
 @ObjectType({ isAbstract: true })
 export class Model {
