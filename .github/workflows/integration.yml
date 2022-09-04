@@ -106,14 +106,14 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
+          tags: ghcr.io/iacobfred/portfolio:${{ github.sha }}
       - name: Run Snyk to check image for vulnerabilities
         continue-on-error: true
         uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
+          image: ghcr.io/iacobfred/portfolio:${{ github.sha }}
           args: --file=Dockerfile
   test-deploy:
     name: Test deploy
@@ -150,7 +150,7 @@ jobs:
       - name: Add hosts to /etc/hosts
         shell: bash
         run: |
-          hosts=("postgres" "redis" "elasticsearch" "selfbuilder.dev.net")
+          hosts=("postgres" "redis" "elasticsearch" "portfolio.dev.net")
           echo "Updating hosts file..."
           for host in "${hosts[@]}"; do
             sudo echo "127.0.0.1 $host" | sudo tee -a /etc/hosts
