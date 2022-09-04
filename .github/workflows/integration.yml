@@ -107,14 +107,6 @@ jobs:
           cache-to: type=gha,mode=max
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/portfolio:${{ github.sha }}
-      - name: Run Snyk to check image for vulnerabilities
-        continue-on-error: true
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ghcr.io/iacobfred/portfolio:${{ github.sha }}
-          args: --file=Dockerfile
   test-deploy:
     name: Test deploy
     needs: [changed-files, build]
