@@ -27,6 +27,21 @@ export default function Home({
         <p>
           {"This is my portfolio."}
         </p>
+        <p>
+          {"Here are a couple apps I've built:"}
+        </p>
+        <ul>
+          <li>
+            <Link href={`https://selfbuilder.orega.org/`}>
+              <a>{"SelfBuilder"}</a>
+            </Link>
+          </li>
+          <li>
+            <Link href={`https://modularhistory.orega.org/`}>
+              <a>{"ModularHistory"}</a>
+            </Link>
+          </li>
+        </ul>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
