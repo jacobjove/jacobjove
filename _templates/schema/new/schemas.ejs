@@ -8,7 +8,7 @@ force: true
 import { object, string, number, date, bool, array, InferType, SchemaOf } from 'yup';
 import { <%= Name %>CreationInput, <%= Name %>UpdateInput } from '@/graphql/generated/inputs/<%= name %>.inputs';
 <% for (var modelImport of modelImports) { -%>
-import { <%= h.changeCase.camel(modelImport) %>CreationInputSchema } from "@/graphql/generated/schemas/<%= h.changeCase.camel(modelImport) %>.schemas";
+import { <%= h.changeCase.camel(modelImport) %>CreationInputSchema } from "@web/graphql/generated/schemas/<%= h.changeCase.camel(modelImport) %>.schemas";
 <% } -%>
 
 <% for (var [fieldName, field] of Object.entries(filteredFields).filter(([, field]) => field.shape)) { -%>

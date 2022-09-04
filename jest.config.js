@@ -9,4 +9,5 @@ module.exports = {
   transform: {
     "^.+\\.(ts|tsx)$": "babel-jest",
   },
+  projects: "<rootDir>/libs/common",
 };

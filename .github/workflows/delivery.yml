@@ -152,7 +152,6 @@ jobs:
       - name: Prepare files to deploy
         run: |
           files_to_transport=(".env.next" "docker-compose.yml" ".config/nginx.conf" ".config/healthchecks/mongo-healthcheck.sh")
-          mkdir -p dist/
           for filepath in "${files_to_transport[@]}"; do
             mkdir -p dist/$(dirname "${filepath}")
             cp "$filepath" "dist/${filepath}"

@@ -11,26 +11,26 @@ import {
   CREATE_<%= NAME %>,
   UPDATE_<%= NAME %>,
   updateCacheAfterCreating<%= Name %>,
-} from "@/graphql/generated/mutations/<%= name %>.mutations";
-import { <%= Name %>Fragment } from "@/graphql/generated/fragments/<%= name %>.fragment";
-import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs } from "@/graphql/generated/args/<%= name %>.args";
-import { useHandleMutation } from "@/utils/data/mutation";
-import { Payload, ArrayAction } from "@/utils/data/reduction";
+} from "@web/graphql/generated/mutations/<%= name %>.mutations";
+import { <%= Name %>Fragment } from "@web/graphql/generated/fragments/<%= name %>.fragment";
+import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs } from "@web/graphql/generated/args/<%= name %>.args";
+import { useHandleMutation } from "@web/utils/data/mutation";
+import { Payload, ArrayAction } from "@web/utils/data/reduction";
 import { useEffect, useReducer, Dispatch } from "react";
 import { 
   <%= name %>Reducer,
   <%= names %>Reducer,
   <%= Name %>Data,
   initialize<%= Name %>Data,
-} from "@/graphql/generated/reducers/<%= name %>.reducer";
+} from "@web/graphql/generated/reducers/<%= name %>.reducer";
 <% useDefinition = Object.entries(fields).some(([, field]) => !!field.initialize); -%>
 <% useUser = Object.keys(fields).includes("userId") || Object.entries(fields).some(([, field]) => field.initialize); -%>
-import { useUser } from "@/components/contexts/UserContext";
-import { <%= name %>CreationInputSchema, <%= name %>UpdateInputSchema } from "@/graphql/generated/schemas/<%= name %>.schemas";
+import { useUser } from "@web/components/contexts/UserContext";
+import { <%= name %>CreationInputSchema, <%= name %>UpdateInputSchema } from "@web/graphql/generated/schemas/<%= name %>.schemas";
 import {
   getOptimisticResponseFor<%= Name %>Creation,
   getOptimisticResponseFor<%= Name %>Update,
-} from "@/graphql/generated/mutations/<%= name %>.mutations";
+} from "@web/graphql/generated/mutations/<%= name %>.mutations";
 
 type <%= Name %>CreationMutationHookOptions = MutationHookOptions<
   { create<%= Name %>: <%= Name %>Fragment },

@@ -1,4 +1,3 @@
-/* eslint-disable import/order */
 // organize-imports-ignore
 // NOTE: reflect-metadata must be imported at the top.
 import "reflect-metadata";
@@ -6,9 +5,9 @@ import "reflect-metadata";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import mongoosePromise from "@/lib/mongodb";
-import usersData from "@/graphql/seeds/users";
-import tasksData from "@/graphql/seeds/tasks";
+import mongoosePromise from "@web/lib/mongodb";
+import usersData from "@web/graphql/seeds/users";
+import tasksData from "@web/graphql/seeds/tasks";
 import {
   TaskModel,
   HabitModel,
@@ -16,7 +15,7 @@ import {
   CalendarModel,
   AccountModel,
   UserModel,
-} from "@/graphql/generated/models";
+} from "@web/graphql/generated/models";
 
 const START_FRESH = true;
 const SEED_RAW_USER_ONLY = false;
