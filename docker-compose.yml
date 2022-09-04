@@ -1,0 +1,74 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+      args:
+        - PORT=${PORT}
+    image: ghcr.io/iacobfred/selfbuilder:latest
+    depends_on:
+      - mongo
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - ./.env
+    environment:
+      MONGODB_HOST: mongo
+      NEXTAUTH_URL_INTERNAL: "http://nextjs:${PORT}"
+      NEXTAUTH_URL: "https://orega.org"
+      NODE_ENV: production
+    volumes:
+      - ./.env:/app/.env
+  # mongo:
+  #   image: mongo:4.2
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       max_attempts: 3
+  #   env_file:
+  #     - ./.env
+  #   healthcheck:
+  #     test: bash /healthcheck.sh
+  #     interval: 10s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 20s
+  #   expose:
+  #     - "27017"
+  #   volumes:
+  #     - data:/data
+  #     - .config/healthchecks/mongo-healthcheck.sh:/healthcheck.sh
+  # redis:
+  #   image: redis
+  #   deploy:
+  #     restart_policy:
+  #       condition: unless-stopped
+  #   expose:
+  #     - "6379"
+  #   healthcheck:
+  #     test: [ "CMD", "redis-cli", "ping" ]
+  #     interval: 20s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 20s
+  #   volumes:
+  #     - "data:/data"
+  # cypress:
+  #   # https://github.com/cypress-io/cypress-docker-images
+  #   image: "cypress/included:8.4.1"
+  #   # depends_on:
+  #   #   nextjs:
+  #   #     condition: service_healthy
+  #   environment:
+  #     - CYPRESS_baseUrl=http://localhost:3000/
+  #   working_dir: /e2e
+  #   volumes:
+  #     - ./cypress:/e2e/cypress
+  #     - ./cypress.json:/e2e/cypress.json
+
+  # For more information on how volumes work, please see https://docs.docker.com/storage/volumes/
+volumes:
+  # Note: `data` is used by both redis and mongodb
+  data: null
+  postgres_data: null

@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "dev": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next dev",
+    "start": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next start"
   },
   "dependencies": {
     "date-fns": "^2.11.1",
