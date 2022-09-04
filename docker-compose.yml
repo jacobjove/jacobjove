@@ -6,9 +6,9 @@ services:
       network: host
       args:
         - PORT=${PORT}
-    image: ghcr.io/iacobfred/selfbuilder:latest
-    depends_on:
-      - mongo
+    image: ghcr.io/iacobfred/portfolio:latest
+    # depends_on:
+    #   - mongo
     ports:
       - ${PORT}:${PORT}
     env_file:

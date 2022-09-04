@@ -19,6 +19,3 @@ services:
       # by the initial mapping of the local directory to /app.
       - ./node_modules:/app/node_modules
       - ./.next:/app/.next
-  mongo:
-    ports:
-      - 27017:27017

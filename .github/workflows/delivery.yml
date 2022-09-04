@@ -100,7 +100,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
+          tags: ghcr.io/iacobfred/portfolio:${{ github.sha }},ghcr.io/iacobfred/portfolio:latest
       - name: Build image without cache
         if: ${{ failure() }}
         # https://github.com/docker/build-push-action
@@ -114,7 +114,7 @@ jobs:
           push: true
           no-cache: true
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
+          tags: ghcr.io/iacobfred/portfolio:${{ github.sha }},ghcr.io/iacobfred/portfolio:latest
   deploy:
     needs: [changed-files, push-image]
     runs-on: ubuntu-latest
