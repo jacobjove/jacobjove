@@ -57,6 +57,7 @@ jobs:
         uses: iamsauravsharma/create-dotenv@v1.2.1
         with:
           env-prefix: "_" # Optional (default: '')
+          _PORT: 3000
         # env: # env available for only this steps
         #   _SECRET_KEY: ${{ secrets.SECRET_KEY }}
       - name: Finalize dotenv file
