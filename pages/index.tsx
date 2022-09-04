@@ -41,6 +41,11 @@ export default function Home({
               <a>{"ModularHistory"}</a>
             </Link>
           </li>
+          <li>
+            <Link href={`https://www.kwstriping.com/`}>
+              <a>{"KW Striping"}</a>
+            </Link>
+          </li>
         </ul>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
