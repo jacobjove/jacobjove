@@ -8,12 +8,12 @@ services:
     depends_on:
       - mongo
     ports:
-      - 3000:3000
+      - 3001:3001
     env_file:
       - ./apps/web/.env
     environment:
       MONGODB_HOST: mongo
-      NEXTAUTH_URL_INTERNAL: "http://nextjs:3000"
+      NEXTAUTH_URL_INTERNAL: "http://nextjs:3001"
       NEXTAUTH_URL: "https://orega.org"
       NODE_ENV: production
     volumes:
@@ -59,7 +59,7 @@ services:
   #   #   nextjs:
   #   #     condition: service_healthy
   #   environment:
-  #     - CYPRESS_baseUrl=http://localhost:3000/
+  #     - CYPRESS_baseUrl=http://localhost:3001/
   #   working_dir: /e2e
   #   volumes:
   #     - ./cypress:/e2e/cypress

@@ -8,8 +8,8 @@ services:
         NODE_ENV: development
     # command: bash -c "export NODE_ENV=development && npm run dev"
     environment:
-      NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
-      NEXTAUTH_URL: "http://localhost:3000"
+      NEXT_PUBLIC_BASE_URL: "http://localhost:3001"
+      NEXTAUTH_URL: "http://localhost:3001"
       NODE_ENV: development
       REACT_EDITOR: code
     user: root # avoid permissions issues with writing in build dir

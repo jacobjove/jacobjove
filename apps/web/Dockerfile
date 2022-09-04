@@ -4,7 +4,7 @@
 
 FROM node:16.14.2 AS builder
 
-ENV PORT 3000
+ENV PORT 3001
 
 ARG NODE_ENV=production
 
@@ -54,14 +54,14 @@ RUN chown -R www-data:www-data ./.next
 # chmod g+w -R ./.next
 
 # Expose Next.js web application port.
-EXPOSE 3000
+EXPOSE 3001
 
 # Switch to non-root user.
 USER www-data
 
 # Define health check.
 HEALTHCHECK --interval=30s --timeout=7s --start-period=60s --retries=3 \
-  CMD curl --fail http://localhost:3000/ || exit 1
+  CMD curl --fail http://localhost:3001/ || exit 1
 
 # Start the app.
 # CMD ["npm", "run", "start:migrate"]
