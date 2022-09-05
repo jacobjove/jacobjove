@@ -1,19 +1,19 @@
-import Head from 'next/head'
-import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData } from '../lib/posts'
-import Link from 'next/link'
+import Head from "next/head";
+import Layout, { siteTitle } from "../components/layout";
+import utilStyles from "../styles/utils.module.css";
+import { getSortedPostsData } from "../lib/posts";
+import Link from "next/link";
 // import Date from '../components/date'
-import { GetStaticProps } from 'next'
+import { GetStaticProps } from "next";
 
 export default function Home({
-  allPostsData
+  allPostsData,
 }: {
   allPostsData: {
-    date: string
-    title: string
-    id: string
-  }[]
+    date: string;
+    title: string;
+    id: string;
+  }[];
 }) {
   return (
     <Layout home>
@@ -21,15 +21,9 @@ export default function Home({
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>
-          {"Hi, I'm Jacob."}
-        </p>
-        <p>
-          {"This is my portfolio."}
-        </p>
-        <p>
-          {"Here are a couple apps I've built:"}
-        </p>
+        <p>{"Hi, I'm Jacob."}</p>
+        <p>{"This is my portfolio."}</p>
+        <p>{"Here are a couple apps I've built:"}</p>
         <ul>
           <li>
             <Link href={`https://selfbuilder.orega.org/`}>
@@ -65,14 +59,14 @@ export default function Home({
         </ul>
       </section> */}
     </Layout>
-  )
+  );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData()
+  const allPostsData = getSortedPostsData();
   return {
     props: {
-      allPostsData
-    }
-  }
-}
+      allPostsData,
+    },
+  };
+};
