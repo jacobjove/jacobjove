@@ -55,6 +55,9 @@ COPY public ./public
 COPY package*.json ./
 COPY next.config.js ./
 
+# https://joshtronic.com/2022/07/10/husky-command-not-found-with-npm-install-production/
+RUN npm set-script prepare ''
+
 RUN npm ci
 
 ENV PATH /app/node_modules/.bin:$PATH
