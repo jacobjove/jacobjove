@@ -15,8 +15,8 @@ on:
       - "**.md"
       - "**.rst"
       - config/hooks/**
-  schedule:
-    - cron: 0 9 * * *
+  # schedule:
+  #   - cron: 0 9 * * *
   workflow_dispatch:
     inputs:
       jobs:
