@@ -11,6 +11,9 @@ import { Model, Document } from "mongoose";
 import { getClassForDocument } from "@typegoose/typegoose";
 import * as resolvers from "@web/graphql/generated/resolvers";
 
+const IS_PROD = process.env.NODE_ENV === "production";
+const IS_DEV = process.env.NODE_ENV === "development";
+
 export const TypegooseMiddleware: MiddlewareFn = async (_, next) => {
   const result = await next();
   if (Array.isArray(result)) {
@@ -35,18 +38,21 @@ declare const global: NodeJS.Global & {
 
 const getApolloServerHandler = async () => {
   if (!global.apolloServerHandler) {
-    const isProd = process.env.NODE_ENV === "production";
     const apolloServer = new ApolloServer({
       context: createGqlContext,
       schema: await buildSchema({
         resolvers: Object.values(resolvers) as unknown as NonEmptyArray<CallableFunction>,
-        emitSchemaFile: isProd ? false : { path: `${process.env.BASE_DIR}/graphql/schema.gql` },
+        emitSchemaFile: IS_DEV ? { path: `${process.env.BASE_DIR}/graphql/schema.gql` } : false,
         globalMiddlewares: [TypegooseMiddleware],
-        validate: false,
+        validate: false, // TODO: investigate
       }),
-      debug: !isProd,
-      introspection: !isProd,
+      debug: !IS_PROD,
+      introspection: IS_DEV,
       cache: "bounded",
+      // TODO: https://www.apollographql.com/docs/apollo-server/security/cors/
+      // cors: {
+      //   origin: ["https://studio.apollographql.com"],
+      // }
     });
     await apolloServer.start();
     global.apolloServerHandler = apolloServer.createHandler({ path: "/api/graphql" });

@@ -18,7 +18,7 @@
     "test": "nx test",
     "code:generate": "npm run schema:generate",
     "cypress:open": "cypress open",
-    "db:seed": "ts-node -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} scripts/seed.ts",
+    "db:seed": "ts-node -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
     "generate": "npm run schema:generate && graphql-codegen --config codegen.yml; eslint . --fix",
     "generate:watch": "graphql-codegen --config codegen.yml --watch",
     "lint": "next lint",
