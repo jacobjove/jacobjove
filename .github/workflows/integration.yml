@@ -9,7 +9,7 @@ on:
     paths-ignore:
       - .gitignore
       - .github/**
-      - "!.github/integration.yml"
+      - "!.github/workflows/integration.yml"
       - .idea/**
       - .vscode/**
       - "**.md"
