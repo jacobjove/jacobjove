@@ -127,7 +127,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.3
+        uses: iacobfred/generate-dotenv@v0.2.4
         with:
           template-paths: |
             .config/_.env
