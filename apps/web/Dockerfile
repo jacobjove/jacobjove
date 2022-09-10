@@ -32,6 +32,7 @@ ENV PATH /root/apps/web/node_modules/.bin:$PATH
 COPY tsconfig.base.json /root/
 COPY libs /root/libs
 COPY apps/web /root/apps/web
+COPY .env /root/apps/web/.env
 
 # Build app for production.
 RUN NODE_ENV=production npm run build
