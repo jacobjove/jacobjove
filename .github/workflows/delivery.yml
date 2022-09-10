@@ -94,7 +94,7 @@ jobs:
             NODE_ENV=production
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./Dockerfile
+          file: ./apps/web/Dockerfile
           push: true
           # no-cache: true
           cache-from: type=gha
@@ -110,7 +110,7 @@ jobs:
             NODE_ENV=production
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./Dockerfile
+          file: ./apps/web/Dockerfile
           push: true
           no-cache: true
           secret-files: ENV_FILE=./.env
@@ -124,52 +124,28 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Write dotenv file
-        # https://github.com/iamsauravsharma/create-dotenv
-        uses: iamsauravsharma/create-dotenv@v1.2.1
+      - name: Generate .env file
+        uses: iacobfred/generate-dotenv@v0.2.3
         with:
-          env-prefix: "_" # Optional (default: '')
+          template-paths: |
+            .config/_.env
+            .config/_.env.prod
         env: # env available for only this steps
-          _AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
-          _AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
-          _AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
-          _AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
-          _SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      - name: Finalize dotenv file
-        # Make sure to test: https://sed.js.org/
-        run: |
-          if [[ -f .env.production ]]; then echo "Merging production env vars into dotenv file..."; mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.tmp .env.production > .env; fi
-          echo "Removing leading underscores..."
-          sed -i -r 's/^_//g' .env
-          echo "Replacing hyphens with underscores in var names..."
-          sed -i -r 's/(^[^=-]+)\-/\1_/g' .env
-          echo "Making further fancy adjustments..."
-          sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
-          sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
-          grep -P -q '^[A-Z_]+?=$' .env && echo "Found empty var name: $(grep -P '^[A-Z_]+?=$' .env)" && exit 1
-          mv .env .env.next
-          echo "Finished preparing dotenv file."
-      - name: Prepare files to deploy
-        run: |
-          files_to_transport=(".env.next" "docker-compose.yml" ".config/nginx.conf" ".config/healthchecks/mongo-healthcheck.sh")
-          mkdir -p dist/
-          for filepath in "${files_to_transport[@]}"; do
-            mkdir -p dist/$(dirname "${filepath}")
-            cp "$filepath" "dist/${filepath}"
-          done
-      # - name: Deploy to Staging server
-      #   # https://github.com/marketplace/actions/ssh-deploy
-      #   uses: easingthemes/ssh-deploy@main
-      #   env:
-      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     # ARGS: "-rltgoDzvO"
-      #     SOURCE: "dist/"
-      #     REMOTE_HOST: ${{ secrets.SERVER_HOST }}
-      #     REMOTE_USER: ${{ secrets.SERVER_USER }}
-      #     TARGET: ${{ secrets.SERVER_TARGET }}
-      #     # EXCLUDE: "/dist/, /node_modules/"
+          AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+          AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
+          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
       - name: Deploy to server
-        id: deploy-image
+        uses: iacobfred/deploy-docker-ssh@v0.2.8
+        with:
+          host: ${{ secrets.DOMAIN }}
+          user: jacob
+          target: /var/www/${{ secrets.DOMAIN }}
+          files: ".env docker-compose.yml .config"
+          ssh-port: ${{ secrets.SSH_PORT }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: "set -a && source .env && set +a && SHA=${{ github.sha }} GHCR_PASSWORD=${{ secrets.GITHUB_TOKEN }} docker compose pull && docker compose up -d && if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi; docker system prune -f"
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
           RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
@@ -178,25 +154,3 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        shell: bash
-        run: |
-          echo "Adding GitHub to known hosts..."
-          mkdir -p ~/.ssh
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          echo "Adding SSH private key..."
-          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
-          echo "Added SSH private key."
-          echo "Transferring files to server ..."
-          rsync -rPv -e "ssh -p ${SSH_PORT:=22} -o 'StrictHostKeyChecking no'" dist/ jacob@${SERVER_HOST}:${SERVER_TARGET}
-          echo "Starting SSH session with ${SERVER_HOST}:${SERVER_TARGET} ..."
-          ssh -o StrictHostKeyChecking=no -p $SSH_PORT jacob@$SERVER_HOST "
-            cd /var/www/${DOMAIN} && 
-            if test -f .env; then mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.next .env.tmp > .env; fi;
-            rm .env.next; rm .env.tmp;
-            set -a && source .env && set +a && 
-            docker compose pull && 
-            docker compose up -d &&
-            if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi;
-            docker system prune -f
-          "

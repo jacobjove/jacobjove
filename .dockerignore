@@ -29,6 +29,7 @@ node_modules/
 *.njsproj
 *.sln
 *.sw?
+.npm
 
 # PyCharm / IntelliJ / Visual Studio Code
 .idea

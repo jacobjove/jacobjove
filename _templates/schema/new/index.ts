@@ -1,4 +1,9 @@
-import Definition, { getConstructor, getType, getYup, TYPE_MAP } from "@/graphql/schema/definition";
+import Definition, {
+  getConstructor,
+  getType,
+  getYup,
+  TYPE_MAP,
+} from "@web/graphql/schema/definition";
 import JSON5 from "json5";
 import path from "path";
 

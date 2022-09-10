@@ -36,7 +36,6 @@ module.exports = {
     node: true,
   },
   // https://eslint.org/docs/user-guide/configuring/configuration-files#extending-configuration-files
-  extends: ["next/core-web-vitals"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -44,23 +43,10 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "unused-imports"],
+  plugins: ["react", "unused-imports", "@nrwl/nx"],
   rules: sharedRules,
   // https://eslint.org/docs/user-guide/configuring/configuration-files#how-do-overrides-work
   overrides: [
-    {
-      files: ["*.ts", "*.tsx", "**/*.ts", "**/*.tsx"],
-      extends: [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "next",
-      ],
-      // https://www.npmjs.com/package/@typescript-eslint/parser
-      parser: "@typescript-eslint/parser",
-      plugins: ["react", "@typescript-eslint", "unused-imports"],
-      rules: sharedRules,
-    },
     {
       files: ["*.test.tsx", "**/*.test.tsx"],
       rules: { "@typescript-eslint/no-non-null-assertion": "off" },
@@ -78,6 +64,66 @@ module.exports = {
     {
       files: ["*.ts"],
       processor: "@graphql-eslint/graphql",
+    },
+    {
+      files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      extends: [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        // "next",
+      ],
+      // https://www.npmjs.com/package/@typescript-eslint/parser
+      parser: "@typescript-eslint/parser",
+      plugins: ["react", "@typescript-eslint", "unused-imports"],
+      // rules: sharedRules,
+      rules: {
+        ...sharedRules,
+        // https://nx.dev/core-features/enforce-project-boundaries#enforce-project-boundaries
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            allowCircularSelfDependency: true,
+            enforceBuildableLibDependency: true,
+            allow: [],
+            // https://nx.dev/core-features/enforce-project-boundaries#tags
+            depConstraints: [
+              {
+                sourceTag: "*",
+                onlyDependOnLibsWithTags: ["*"],
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ["*.ts", "*.tsx"],
+      extends: ["plugin:@nrwl/nx/typescript"],
+      rules: {},
+    },
+    {
+      files: ["*.js", "*.jsx"],
+      extends: ["plugin:@nrwl/nx/javascript"],
+      rules: {},
+    },
+    {
+      files: ["tsconfig.json"],
+      extends: ["plugin:jsonc/recommended-with-jsonc"],
+      // TODO: https://ota-meshi.github.io/eslint-plugin-jsonc/rules/sort-keys.html
+      rules: {
+        "jsonc/sort-keys": [
+          "error",
+          // https://ota-meshi.github.io/eslint-plugin-jsonc/rules/sort-keys.html#options
+          {
+            pathPattern: ".*", // All properties
+            order: {
+              type: "asc",
+            },
+            minKeys: 4,
+          },
+        ],
+      },
     },
   ],
 };

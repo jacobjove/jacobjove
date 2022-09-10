@@ -1,15 +1,15 @@
 ---
-to: components/data/<%= h.inflection.pluralize(name) %>/generated/<%= Name %>CreationDialog.tsx
+to: apps/web/components/data/<%= h.inflection.pluralize(name) %>/generated/<%= Name %>CreationDialog.tsx
 force: true
 ---
 
-import CreationDialog from "@/components/data/CreationDialog";
-import { useCreate<%= Name %>, use<%= Name %>Reducer } from "@/graphql/generated/hooks/<%= name %>.hooks";
+import CreationDialog from "@web/components/data/CreationDialog";
+import { useCreate<%= Name %>, use<%= Name %>Reducer } from "@web/graphql/generated/hooks/<%= name %>.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { <%= Name %>CreationInput } from "@/graphql/generated/inputs/<%= name %>.inputs";
-import <%= Name %> from "@/graphql/generated/types/<%= Name %>";
-import { <%= Name %>Fragment } from "@/graphql/generated/fragments/<%= name %>.fragment";
-import fields from "@/graphql/generated/fields/<%= name %>.fields";
+import { <%= Name %>CreationInput } from "@web/graphql/generated/inputs/<%= name %>.inputs";
+import <%= Name %> from "@web/graphql/generated/types/<%= Name %>";
+import { <%= Name %>Fragment } from "@web/graphql/generated/fragments/<%= name %>.fragment";
+import fields from "@web/graphql/generated/fields/<%= name %>.fields";
 
 export type <%= Name %>CreationDialogProps = ReturnType<typeof bindPopover>;
 
