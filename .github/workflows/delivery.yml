@@ -38,6 +38,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v29.0.3
   push-image:
+    name: Push image
     environment: production
     runs-on: ubuntu-latest
     steps:
@@ -116,6 +117,7 @@ jobs:
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
   deploy:
+    name: Deploy
     needs: [changed-files, push-image]
     runs-on: ubuntu-latest
     environment: production
