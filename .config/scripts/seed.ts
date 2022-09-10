@@ -33,7 +33,7 @@ async function main() {
   if (START_FRESH) return;
 
   UserModel.insertMany(usersData);
-  const adminEmail = process.env.ADMIN_USER || `test@gmail.com`;
+  const adminEmail = process.env.ADMIN_EMAIL || `test@gmail.com`;
   // Create the admin user.
   const adminData = {
     email: adminEmail,
