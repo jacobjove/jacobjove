@@ -10,7 +10,6 @@ services:
       - ${NEXTJS_PORT}:${NEXTJS_PORT}
     env_file:
       - .env
-      - ./apps/web/.env
     environment:
       MONGODB_HOST: mongo
       NEXTAUTH_URL_INTERNAL: "http://nextjs:${NEXTJS_PORT}"
@@ -23,7 +22,7 @@ services:
         condition: on-failure
         max_attempts: 3
     env_file:
-      - ./apps/web/.env
+      - .env
     healthcheck:
       test: bash /healthcheck.sh
       interval: 10s
