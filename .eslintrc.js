@@ -79,12 +79,14 @@ module.exports = {
       // rules: sharedRules,
       rules: {
         ...sharedRules,
+        // https://nx.dev/core-features/enforce-project-boundaries#enforce-project-boundaries
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
             allowCircularSelfDependency: true,
             enforceBuildableLibDependency: true,
             allow: [],
+            // https://nx.dev/core-features/enforce-project-boundaries#tags
             depConstraints: [
               {
                 sourceTag: "*",
@@ -104,6 +106,24 @@ module.exports = {
       files: ["*.js", "*.jsx"],
       extends: ["plugin:@nrwl/nx/javascript"],
       rules: {},
+    },
+    {
+      files: ["tsconfig.json"],
+      extends: ["plugin:jsonc/recommended-with-jsonc"],
+      // TODO: https://ota-meshi.github.io/eslint-plugin-jsonc/rules/sort-keys.html
+      rules: {
+        "jsonc/sort-keys": [
+          "error",
+          // https://ota-meshi.github.io/eslint-plugin-jsonc/rules/sort-keys.html#options
+          {
+            pathPattern: ".*", // All properties
+            order: {
+              type: "asc",
+            },
+            minKeys: 4,
+          },
+        ],
+      },
     },
   ],
 };

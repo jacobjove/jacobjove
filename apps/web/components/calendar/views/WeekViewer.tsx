@@ -292,7 +292,3 @@ WeekViewerProps) => {
 };
 
 export default WeekViewer;
-
-const zeroToHour = (date: Date, hour: number) => {
-  return setHours(setMinutes(setSeconds(date, 0), 0), hour);
-};

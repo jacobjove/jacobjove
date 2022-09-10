@@ -60,9 +60,9 @@ const Root = styled("div")(({ theme }) => ({
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const MonthViewer: FC<ViewerProps> = ({ selectedDate, hidden, data }: ViewerProps) => {
+const MonthViewer: FC<ViewerProps> = ({ selectedDate, hidden, data: _data }: ViewerProps) => {
   const date = useContext(DateContext);
-  const { calendarEvents } = data;
+  // const { calendarEvents } = data;
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayIndex = getDay(firstDayOfMonth);
   return (

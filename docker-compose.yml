@@ -1,23 +1,21 @@
 services:
   nextjs:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile
-      network: host
+      context: .
+      dockerfile: apps/web/Dockerfile
     image: ghcr.io/iacobfred/selfbuilder:latest
     depends_on:
       - mongo
     ports:
-      - 3001:3001
+      - ${NEXTJS_PORT}:${NEXTJS_PORT}
     env_file:
+      - .env
       - ./apps/web/.env
     environment:
       MONGODB_HOST: mongo
-      NEXTAUTH_URL_INTERNAL: "http://nextjs:3001"
+      NEXTAUTH_URL_INTERNAL: "http://nextjs:${NEXTJS_PORT}"
       NEXTAUTH_URL: "https://selfbuilder.orega.org"
       NODE_ENV: production
-    volumes:
-      - ./.env:/app/.env
   mongo:
     image: mongo:4.2
     deploy:
@@ -59,7 +57,7 @@ services:
   #   #   nextjs:
   #   #     condition: service_healthy
   #   environment:
-  #     - CYPRESS_baseUrl=http://localhost:3001/
+  #     - CYPRESS_baseUrl=http://localhost:${NEXTJS_PORT}/
   #   working_dir: /e2e
   #   volumes:
   #     - ./cypress:/e2e/cypress

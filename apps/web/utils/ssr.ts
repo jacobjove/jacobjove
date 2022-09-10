@@ -2,10 +2,12 @@ import { QueryOptions } from "@apollo/client";
 import { addApolloState, initializeApollo } from "@web/lib/apollo";
 import { authOptions } from "@web/pages/api/auth/[...nextauth]";
 import { printError } from "@web/utils/apollo/error-handling";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
 import { unstable_getServerSession } from "next-auth/next";
 import nookies from "nookies";
+
+type GetServerSidePropsResult = ReturnType<GetServerSideProps>;
 
 interface BuildServerSidePropsOptions {
   unauthedRedirectDestination?: string;
@@ -14,7 +16,7 @@ interface BuildServerSidePropsOptions {
   props?: (
     context: GetServerSidePropsContext,
     session: Session | null
-  ) => Promise<{ [key: string]: unknown }>;
+  ) => Promise<Record<string, unknown>>;
 }
 
 const EXECUTE_SERVER_SIDE_QUERIES = false;
@@ -23,7 +25,7 @@ export const buildGetServerSidePropsFunc = ({
   unauthedRedirectDestination,
   query,
   props: getProps,
-}: BuildServerSidePropsOptions | undefined = {}) => {
+}: BuildServerSidePropsOptions): GetServerSideProps => {
   return async (context: GetServerSidePropsContext) => {
     // const { req } = context;
     const session = await unstable_getServerSession(context.req, context.res, authOptions);
@@ -35,10 +37,7 @@ export const buildGetServerSidePropsFunc = ({
         },
       };
     }
-    const props = getProps ? await getProps(context, session) : ({} as { [key: string]: unknown });
-    props.session = session;
-    const cookies = nookies.get(context);
-    props.cookies = cookies;
+    const propsPromise = getProps ? getProps(context, session) : Promise.resolve({});
     const apolloClient = query ? initializeApollo() : null;
     if (EXECUTE_SERVER_SIDE_QUERIES && query && apolloClient) {
       if (unauthedRedirectDestination && !session) {
@@ -56,6 +55,15 @@ export const buildGetServerSidePropsFunc = ({
         })
         .catch(printError);
     }
-    return apolloClient ? addApolloState(apolloClient, { props }) : { props };
+    const result = {
+      props: {
+        ...(await propsPromise),
+        session,
+        cookies: nookies.get(context),
+      },
+    };
+    return (
+      apolloClient ? addApolloState(apolloClient, result) : result
+    ) as GetServerSidePropsResult;
   };
 };

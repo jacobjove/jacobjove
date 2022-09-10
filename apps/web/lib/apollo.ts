@@ -7,11 +7,18 @@ import merge from "deepmerge";
 import { buildClientSchema, IntrospectionQuery } from "graphql";
 import { DateTimeResolver } from "graphql-scalars";
 import isEqual from "lodash/isEqual";
-import { AppProps } from "next/app";
 import { useMemo } from "react";
 
 // const schema = buildClientSchema(introspectionResult);
 const clientSchema = buildClientSchema(introspectionResult as unknown as IntrospectionQuery);
+
+// TODO: figure out if types are broken;
+// file bug with Next.js related to inconsistent use of pageProps in example:
+// https://github.com/vercel/next.js/blob/canary/examples/with-apollo/lib/apolloClient.js
+interface PageProps {
+  props?: Record<string, unknown>;
+  __APOLLO_STATE__?: NormalizedCacheObject;
+}
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
@@ -74,7 +81,7 @@ function createApolloClient() {
   });
 }
 
-export function initializeApollo(initialState = null) {
+export function initializeApollo(initialState: NormalizedCacheObject | null = null) {
   const _apolloClient = apolloClient ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -103,18 +110,14 @@ export function initializeApollo(initialState = null) {
   return _apolloClient;
 }
 
-export function addApolloState(
-  client: ApolloClient<NormalizedCacheObject>,
-  pageProps: AppProps["pageProps"]
-) {
-  // console.log(typeof pageProps, pageProps);
+export function addApolloState(client: ApolloClient<NormalizedCacheObject>, pageProps: PageProps) {
   if (pageProps?.props) {
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
   }
   return pageProps;
 }
 
-export function useApollo(pageProps: AppProps["pageProps"]) {
+export function useApollo(pageProps: PageProps) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
   const store = useMemo(() => initializeApollo(state), [state]);
   return store;

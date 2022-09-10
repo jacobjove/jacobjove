@@ -18,8 +18,9 @@ const GOOGLE_AUTHORIZATION_URL =
     response_type: "code",
   });
 
-const { VERCEL_ENV, APP_ENV } = process.env;
-let useMockProviders = VERCEL_ENV === "preview";
+const { APP_ENV } = process.env;
+
+let useMockProviders = false;
 if (APP_ENV === "test") {
   console.log("⚠️ Using mocked auth providers");
   useMockProviders = true;

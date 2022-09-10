@@ -165,6 +165,7 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+  console.error("TODO: Display mantras:", mantras);
   return (
     <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
       <Box

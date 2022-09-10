@@ -57,7 +57,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
 
   const [recentlyCompletedTasksExpanded, setRecentlyCompletedTasksExpanded] = useState(false);
 
-  const [updateTask, { loading: loadingUpdateTask, client: apolloClient }] = useUpdateTask();
+  const [updateTask, { loading: loadingUpdateTask }] = useUpdateTask();
 
   const [updateTaskRanks] = useHandleMutation<
     { updateTasksDistinctly: TaskFragment[] },

@@ -25,7 +25,7 @@ import { useRouter } from "next/router";
 import { FC, useContext } from "react";
 
 const DynamicPageTransitionProgressBar = dynamic(
-  () => import("web/components/PageTransitionProgressBar")
+  () => import("@web/components/PageTransitionProgressBar")
 );
 
 // label, href, enabled

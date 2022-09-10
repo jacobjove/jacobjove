@@ -1,5 +1,11 @@
-/* eslint-disable */
-export default {
+import nextJest from "next/jest";
+
+// https://nextjs.org/docs/advanced-features/compiler#jest
+
+const createJestConfig = nextJest({ dir: "./" });
+
+// TODO: ... nx / next
+const config = {
   displayName: "web",
   preset: "../../jest.preset.js",
   transform: {
@@ -9,3 +15,7 @@ export default {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   coverageDirectory: "../../coverage/apps/web",
 };
+
+const mergedConfig = createJestConfig(config);
+
+export default mergedConfig;

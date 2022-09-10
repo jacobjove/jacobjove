@@ -1,10 +1,8 @@
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider, NormalizedCacheObject } from "@apollo/client";
 import CssBaseline from "@mui/material/CssBaseline";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import "@root/node_modules/react-grid-layout/css/styles.css";
-import "@root/node_modules/react-resizable/css/styles.css";
 import { ColorModeContextProvider } from "@web/components/contexts/ColorModeContext";
 import { DateContextProvider } from "@web/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@web/components/contexts/DeviceContext";
@@ -16,6 +14,7 @@ import { useApollo } from "@web/lib/apollo";
 import SEO from "@web/next-seo.config";
 import "@web/public/styles/global.css";
 import { NextPage } from "next";
+import { Session } from "next-auth";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
@@ -25,7 +24,9 @@ import { getSelectorsByUserAgent } from "react-device-detect";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
+import "react-grid-layout/css/styles.css";
 import TagManager from "react-gtm-module";
+import "react-resizable/css/styles.css";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
 // TODO: https://github.com/vercel/next.js/discussions/15518#discussioncomment-42875
@@ -37,7 +38,12 @@ export type PageWithAuth = NextPage & {
   auth?: boolean;
 };
 
-function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+interface PageProps {
+  session?: Session | null;
+  __APOLLO_STATE__?: NormalizedCacheObject;
+}
+
+function App({ Component, pageProps: { session, ...pageProps } }: AppProps<PageProps>) {
   const apolloClient = useApollo(pageProps);
 
   const isMobileWidth = useMediaQuery("(max-width: 600px)");

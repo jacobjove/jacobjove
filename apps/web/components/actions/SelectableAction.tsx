@@ -1,10 +1,10 @@
-// import SelectionToggleIcon from "@web/components/icons/SelectionToggleIcon";
 import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import SelectionToggleIcon from "@web/components/icons/SelectionToggleIcon";
 import Habit from "@web/graphql/generated/types/Habit";
-// import Button from "@mui/material/Button";
 import { useSession } from "next-auth/react";
-// import Link from "next/link";
+import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";
 
 const TOGGLE_IDENTIFICATION = gql`
@@ -51,7 +51,7 @@ const SelectableAction: FC<SelectableActionProps> = ({
   };
   return (
     <Box key={act.name} position="relative" display="inline-block">
-      {/* <Link href={`/habits/${act.slug}`} key={act.name} passHref prefetch={false}>
+      <Link href={`/habits/${act.id}`} key={act.name} passHref prefetch={false}>
         <Button
           component="a"
           variant="outlined"
@@ -68,10 +68,10 @@ const SelectableAction: FC<SelectableActionProps> = ({
         </Button>
       </Link>
       <Box position="absolute" right="1.5rem" display="inline-block" top="24%">
-        <a href={`/habits/${act.slug}`} onClick={toggleSelection}>
+        <a href={`/habits/${act.id}`} onClick={toggleSelection}>
           <SelectionToggleIcon positive={selected} />
         </a>
-      </Box> */}
+      </Box>
     </Box>
   );
 };

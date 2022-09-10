@@ -2,6 +2,9 @@ import NotesIcon from "@mui/icons-material/Notes";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import TodayIcon from "@mui/icons-material/Today";
 import Backdrop from "@mui/material/Backdrop";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppDrawer from "@web/components/AppDrawer";
 import CalendarEventDialog from "@web/components/calendar/CalendarEventDialog";
@@ -13,9 +16,6 @@ import Footer from "@web/components/Footer";
 import Header from "@web/components/Header";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { parseCookies, setCookie } from "nookies";
-// import SpeedDial from "@mui/material/SpeedDial";
-// import SpeedDialAction from "@mui/material/SpeedDialAction";
-// import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { FC, ReactNode, useState } from "react";
 
 export interface LayoutProps {
@@ -80,6 +80,7 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
       },
     },
   ];
+  const useSpeedDial = false;
   return (
     <>
       <div
@@ -125,29 +126,31 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
         </div>
         {inApp && (
           <>
-            {/* <SpeedDial
-              ariaLabel="Dashboard speed dial"
-              sx={{
-                position: "sticky",
-                bottom: 16,
-                right: 0,
-                marginRight: "16px",
-                alignItems: "end",
-              }}
-              icon={<SpeedDialIcon />}
-              onClose={handleSpeedDialClose}
-              onOpen={handleSpeedDialOpen}
-            >
-              {speedDialActions.map((action) => (
-                <SpeedDialAction
-                  key={action.name}
-                  icon={action.icon}
-                  tooltipTitle={action.name}
-                  tooltipOpen // TODO: on mobile only?
-                  onClick={action.onClick}
-                />
-              ))}
-            </SpeedDial> */}
+            {useSpeedDial && (
+              <SpeedDial
+                ariaLabel="Dashboard speed dial"
+                sx={{
+                  position: "sticky",
+                  bottom: 16,
+                  right: 0,
+                  marginRight: "16px",
+                  alignItems: "end",
+                }}
+                icon={<SpeedDialIcon />}
+                onClose={handleSpeedDialClose}
+                onOpen={handleSpeedDialOpen}
+              >
+                {speedDialActions.map((action) => (
+                  <SpeedDialAction
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                    tooltipOpen // TODO: on mobile only?
+                    onClick={action.onClick}
+                  />
+                ))}
+              </SpeedDial>
+            )}
             {newTaskDialogState && <TaskCreationDialog {...bindPopover(newTaskDialogState)} />}
             {newCalendarEventDialogState && (
               <CalendarEventDialog

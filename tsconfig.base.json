@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
@@ -15,14 +16,17 @@
     "moduleResolution": "node",
     "noEmit": true,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "paths": {
-      "@web/*": ["apps/web/*"],
-      "@native/*": ["apps/native/*"],
       "@common/*": ["libs/common/src/*"],
-      "@root/*": ["./*"]
+      "@native/*": ["apps/native/*"],
+      "@root/*": ["./*"],
+      "@web/*": ["apps/web/*"],
+      "react-swipeable-views": ["react-swipeable-views-react-18-fix"]
     },
     "removeComments": true,
     "resolveJsonModule": true,
+    "rootDir": ".",
     "skipLibCheck": true,
     "sourceMap": true,
     "sourceRoot": "/",

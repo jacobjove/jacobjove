@@ -29,7 +29,7 @@ const TasksBox: FC<TasksBoxProps> = (props: TasksBoxProps) => {
     <DataBox
       title={"Tasks"}
       displayTitle={displayTitle}
-      onClickAddItem={newTaskDialogTriggerProps.onClick}
+      onClickAddItem={newTaskDialogTriggerProps?.onClick}
     >
       <Box minHeight={0} flexGrow={1}>
         {

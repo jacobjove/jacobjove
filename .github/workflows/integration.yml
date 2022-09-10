@@ -14,7 +14,7 @@ on:
       - .vscode/**
       - "**.md"
       - "**.rst"
-      - config/hooks/**
+      - .config/hooks/**
   # schedule:
   #   - cron: 0 9 * * *
   workflow_dispatch:

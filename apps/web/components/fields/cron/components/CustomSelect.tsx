@@ -1,15 +1,15 @@
-import { MenuItem } from "@mui/material";
+import { IconButton, MenuItem } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useCallback, useMemo, useRef } from "react";
 import { formatValue } from "../converter";
 // import { DEFAULT_LOCALE_EN } from "../locale";
 import { Clicks, CustomSelectProps } from "../types";
-import { classNames, sort } from "../utils";
+import { sort } from "../utils";
 
 export default function CustomSelect(props: CustomSelectProps) {
   const {
     value,
-    grid = true,
+    // grid = true,
     optionsList,
     setValue,
     // locale,
@@ -18,7 +18,7 @@ export default function CustomSelect(props: CustomSelectProps) {
     readOnly,
     leadingZero,
     clockFormat,
-    period,
+    // period,
     unit,
     periodicityOnDoubleClick,
     mode,
@@ -189,24 +189,24 @@ export default function CustomSelect(props: CustomSelectProps) {
     }
   }, [setValue, readOnly]);
 
-  const dropdownClassNames = useMemo(
-    () =>
-      classNames({
-        "react-js-cron-select-dropdown": true,
-        [`react-js-cron-select-dropdown-${unit.type}`]: true,
-        "react-js-cron-custom-select-dropdown": true,
-        [`react-js-cron-custom-select-dropdown-${unit.type}`]: true,
-        [`react-js-cron-custom-select-dropdown-minutes-large`]:
-          unit.type === "minutes" && period !== "hour" && period !== "day",
-        [`react-js-cron-custom-select-dropdown-minutes-medium`]:
-          unit.type === "minutes" && (period === "day" || period === "hour"),
-        "react-js-cron-custom-select-dropdown-hours-twelve-hour-clock":
-          unit.type === "hours" && clockFormat === "12-hour-clock",
-        "react-js-cron-custom-select-dropdown-grid": !!grid,
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [grid, clockFormat, period]
-  );
+  // const dropdownClassNames = useMemo(
+  //   () =>
+  //     classNames({
+  //       "react-js-cron-select-dropdown": true,
+  //       [`react-js-cron-select-dropdown-${unit.type}`]: true,
+  //       "react-js-cron-custom-select-dropdown": true,
+  //       [`react-js-cron-custom-select-dropdown-${unit.type}`]: true,
+  //       [`react-js-cron-custom-select-dropdown-minutes-large`]:
+  //         unit.type === "minutes" && period !== "hour" && period !== "day",
+  //       [`react-js-cron-custom-select-dropdown-minutes-medium`]:
+  //         unit.type === "minutes" && (period === "day" || period === "hour"),
+  //       "react-js-cron-custom-select-dropdown-hours-twelve-hour-clock":
+  //         unit.type === "hours" && clockFormat === "12-hour-clock",
+  //       "react-js-cron-custom-select-dropdown-grid": !!grid,
+  //     }),
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [grid, clockFormat, period]
+  // );
 
   return (
     <Select<string[] | undefined>
@@ -215,6 +215,11 @@ export default function CustomSelect(props: CustomSelectProps) {
       open={readOnly ? false : undefined}
       value={stringValue}
       // onClear={onClear}
+      endAdornment={
+        !!onClear && (
+          <IconButton {...(!stringValue ? { sx: { display: "none" } } : {})} onClick={onClear} />
+        )
+      }
       // tagRender={renderTag}
       className={"react-js-cron-select react-js-cron-custom-select"}
       // showSearch={false}

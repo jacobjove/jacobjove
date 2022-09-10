@@ -1,15 +1,17 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "SelfBuilder",
+  "npmScope": "selfbuilder",
   "affected": {
     "defaultBase": "main"
   },
   "implicitDependencies": {
+    ".eslintrc.js": "*",
+    "nx.json": "*",
     "package.json": {
       "dependencies": "*",
       "devDependencies": "*"
     },
-    ".eslintrc.js": "*"
+    "tsconfig.base.json": "*"
   },
   "tasksRunnerOptions": {
     "default": {

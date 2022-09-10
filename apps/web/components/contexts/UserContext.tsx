@@ -18,7 +18,7 @@ const UserContext = createContext<UserContextData>({
 export default UserContext;
 
 interface UserContextProviderProps {
-  session?: Session;
+  session?: Session | null;
   children: ReactNode;
 }
 

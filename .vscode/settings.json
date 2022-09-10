@@ -28,9 +28,8 @@
     "**/Thumbs.db": true,
     "**/*.pyc": true,
     "**/__pycache__": true,
-    "**/node_modules": true,
-    "**/dist": true,
-    "**/.next": true
+    "**/node_modules": false,
+    ".next": true
   },
   "gitlens.currentLine.scrollable": false,
   "php.suggest.basic": false,
