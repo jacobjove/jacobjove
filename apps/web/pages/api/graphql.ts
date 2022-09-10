@@ -11,6 +11,7 @@ import { Model, Document } from "mongoose";
 import { getClassForDocument } from "@typegoose/typegoose";
 import * as resolvers from "@web/graphql/generated/resolvers";
 import { parseDomain, ParseResultType } from "parse-domain";
+import cors from "micro-cors";
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const IS_DEV = process.env.NODE_ENV === "development";
@@ -51,12 +52,6 @@ const getApolloServerHandler = async () => {
       introspection: IS_DEV,
       cache: "bounded",
       // TODO: https://www.apollographql.com/docs/apollo-server/security/cors/
-      // cors: {
-      //   origin: [
-      //     "https://studio.apollographql.com",
-      //     process.env.NEXT_PUBLIC_BASE_URL,
-      //   ],
-      // }
     });
     await apolloServer.start();
     global.apolloServerHandler = apolloServer.createHandler({ path: "/api/graphql" });
@@ -65,25 +60,37 @@ const getApolloServerHandler = async () => {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   const allowedOrigins = ["https://studio.apollographql.com"];
-  if (process.env.NEXT_PUBLIC_DOMAIN) {
-    allowedOrigins.push(`https://${process.env.NEXT_PUBLIC_DOMAIN}`);
-    const baseUrlParseResult = parseDomain(process.env.NEXT_PUBLIC_DOMAIN);
-    if (baseUrlParseResult?.type === ParseResultType.Listed) {
-      const { domain, topLevelDomains } = baseUrlParseResult;
-      allowedOrigins.push(`https://${domain}.${topLevelDomains.join(".")}`);
-    }
+  if (!process.env.NEXT_PUBLIC_BASE_URL) {
+    throw new Error("NEXT_PUBLIC_BASE_URL is not defined.");
+  } else if (!process.env.NEXT_PUBLIC_DOMAIN) {
+    throw new Error("NEXT_PUBLIC_DOMAIN is not defined.");
   }
-  for (const allowedOrigin of allowedOrigins) {
-    res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  allowedOrigins.push(process.env.NEXT_PUBLIC_BASE_URL);
+  const httpProtocol = process.env.NEXT_PUBLIC_BASE_URL.startsWith("https") ? "https" : "http";
+  const baseUrlParseResult = parseDomain(process.env.NEXT_PUBLIC_DOMAIN);
+  if (baseUrlParseResult?.type === ParseResultType.Listed) {
+    const { domain, topLevelDomains } = baseUrlParseResult;
+    const baseDomainUrl = `${httpProtocol}://${domain}.${topLevelDomains.join(".")}`;
+    if (!allowedOrigins.includes(baseDomainUrl)) allowedOrigins.push(baseDomainUrl);
   }
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  const origin = typeof req.headers.origin === "string" ? req.headers.origin : undefined;
+  console.error("Origin:", origin, ", Allowed origins:", allowedOrigins);
+  const withCors = cors({
+    allowCredentials: true,
+    allowMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: [
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept",
+    ],
+    ...(origin && allowedOrigins.includes(origin) && { origin }),
+  });
   if (req.method === "OPTIONS") {
     res.end();
     return false;
   }
-  return (await getApolloServerHandler())(req, res);
+  const apolloServerHandler = await getApolloServerHandler();
+  return withCors(apolloServerHandler);
 };
 
 export default handler;
