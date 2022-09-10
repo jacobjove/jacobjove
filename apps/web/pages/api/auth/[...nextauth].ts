@@ -74,6 +74,7 @@ if (useMockProviders) {
       clientId: process.env.AUTH_GOOGLE_ID ?? "",
       clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
       authorization: GOOGLE_AUTHORIZATION_URL,
+      checks: ["state"],
     }),
     GitHubProvider({
       clientId: process.env.AUTH_GITHUB_ID ?? "",
