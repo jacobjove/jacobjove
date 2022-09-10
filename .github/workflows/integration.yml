@@ -102,17 +102,9 @@ jobs:
             NODE_ENV=production
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./Dockerfile
+          file: ./apps/web/Dockerfile
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
-      - name: Run Snyk to check image for vulnerabilities
-        continue-on-error: true
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
-          args: --file=Dockerfile
