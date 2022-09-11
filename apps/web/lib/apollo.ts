@@ -51,6 +51,7 @@ const terminalLink = new HttpLink({
   credentials: "same-site", // Additional fetch() options like `credentials` or `headers`
   fetchOptions: {
     mode: "no-cors",
+    // mode: "same-site",
   },
 });
 // createUploadLink({
