@@ -85,7 +85,7 @@ jobs:
         with:
           template-paths: |
             .config/_.env
-            apps/web/.env.production
+            .config/_.env.production
         env:
           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
