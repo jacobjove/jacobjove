@@ -9,6 +9,8 @@ import { DateTimeResolver } from "graphql-scalars";
 import isEqual from "lodash/isEqual";
 import { useMemo } from "react";
 
+if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error("NEXT_PUBLIC_BASE_URL is not defined");
+
 // const schema = buildClientSchema(introspectionResult);
 const clientSchema = buildClientSchema(introspectionResult as unknown as IntrospectionQuery);
 
@@ -45,9 +47,9 @@ const debounceLink = new DebounceLink(500);
 // TODO: https://github.com/jaydenseric/apollo-upload-client
 const terminalLink = new HttpLink({
   uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`, // Server URL (must be absolute)
-  credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
+  credentials: "same-site", // Additional fetch() options like `credentials` or `headers`
   fetchOptions: {
-    credentials: "same-origin",
+    credentials: "same-site",
   },
 });
 // createUploadLink({
