@@ -50,7 +50,7 @@ const terminalLink = new HttpLink({
   // https://www.apollographql.com/docs/apollo-server/security/cors/
   credentials: "same-site", // Additional fetch() options like `credentials` or `headers`
   fetchOptions: {
-    credentials: "same-site",
+    mode: "no-cors",
   },
 });
 // createUploadLink({

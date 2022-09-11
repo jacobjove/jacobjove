@@ -81,6 +81,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     allowMethods: ["GET", "POST", "OPTIONS"],
     allowHeaders: [
       "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Origin",
       "Origin",
       "X-Requested-With",
       "Content-Type",
