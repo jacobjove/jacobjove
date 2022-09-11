@@ -13,8 +13,6 @@ services:
     environment:
       MONGODB_HOST: mongo
       NEXTAUTH_URL_INTERNAL: "http://nextjs:${NEXTJS_PORT}"
-      NEXTAUTH_URL: "https://selfbuilder.orega.org"
-      NODE_ENV: production
   mongo:
     image: mongo:4.2
     deploy:
