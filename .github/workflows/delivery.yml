@@ -54,7 +54,7 @@ jobs:
           template-paths: |
             .config/_.env
       - name: Deploy to server
-        uses: iacobfred/deploy-docker-ssh@v0.2.8
+        uses: iacobfred/deploy-docker-ssh@v0.2.9
         with:
           host: ${{ secrets.DOMAIN }}
           user: jacob
