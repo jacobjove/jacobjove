@@ -1,11 +1,5 @@
 x-environment: &default-environment
     DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
-    SECRET_KEY: ${SECRET_KEY}
-    PORT: 8003
-    GLITCHTIP_BASE_URL: ${GLITCHTIP_BASE_URL}
-    GLITCHTIP_DOMAIN: ${GLITCHTIP_BASE_URL}
-    EMAIL_URL: ${EMAIL_URL}
-    DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
     ENABLE_OPEN_USER_REGISTRATION: "True"
 
 x-depends_on: &default-depends_on
@@ -17,6 +11,7 @@ services:
         image: glitchtip/glitchtip:latest
         depends_on: *default-depends_on
         command: "./manage.py migrate"
+        env_file: .env
         environment: *default-environment
     postgres:
         image: postgres:14
@@ -42,13 +37,15 @@ services:
         image: glitchtip/glitchtip:latest
         depends_on: *default-depends_on
         ports:
-            - "8000:8000"
+            - "${PORT}:8080"
+        env_file: .env
         environment: *default-environment
         restart: unless-stopped
     worker:
         image: glitchtip/glitchtip:latest
         command: celery -A glitchtip worker -B -l INFO
         depends_on: *default-depends_on
+        env_file: .env
         environment: *default-environment
         restart: unless-stopped
 
