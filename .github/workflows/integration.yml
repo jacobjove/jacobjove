@@ -23,11 +23,6 @@ on:
         required: false
         default: build
 
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  SERVER_HOST: ${{ secrets.SERVER_HOST }}
-  SHA: ${{ github.sha }}
-
 jobs:
   changed-files:
     name: Get changed files
@@ -85,14 +80,11 @@ jobs:
           template-paths: |
             .config/_.env
         env:
-          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
-          AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
-          AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
-          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
-          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
-          NEXT_PUBLIC_DOMAIN: ${{ secrets.NEXT_PUBLIC_DOMAIN }}
-          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+          DOMAIN: ${{ secrets.DOMAIN }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          GLITCHTIP_BASE_URL: ${{ secrets.GLITCHTIP_BASE_URL }}
+          DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
+          EMAIL_URL: ${{ secrets.EMAIL_URL }}
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2.0.0
         with:
