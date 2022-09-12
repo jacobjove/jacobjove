@@ -20,8 +20,8 @@ import {
   ArgsForUpdatingMany<%= Names %>,
   <%= Name %>UpsertionArgs,
 } from "@web/graphql/generated/args/<%= name %>.args";
-import { GqlContext } from "@web/graphql/context";
-import { GraphQLResolveInfo } from "graphql";
+import type { GqlContext } from "@web/graphql/context";
+import type { GraphQLResolveInfo } from "graphql";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 <% if (Object.keys(fields).includes("userId")) { -%>
