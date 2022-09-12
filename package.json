@@ -154,7 +154,7 @@
     "husky": "^8.0.0",
     "hygen": "^6.2.8",
     "jest": "28.1.1",
-    "jest-environment-jsdom": "28.1.1",
+    "jest-environment-jsdom": "29.0.3",
     "json5": "^2.2.1",
     "lint-staged": "^13.0.3",
     "nginx-linter": "^0.6.3",
