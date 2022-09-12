@@ -1,0 +1,35 @@
+---
+to: apps/web/graphql/generated/shortcuts/<%= name %>.shortcuts.ts
+force: true
+---
+
+import { postSave } from "@web/graphql/generated/types/<%= Name %>/hooks";
+import <%= Name %>Model from "@web/graphql/generated/models/<%= Name %>Model";
+import { <%= Name %>CreationArgs, <%= Name %>UpsertionArgs } from "@web/graphql/generated/args/<%= name %>.args";
+
+export const create<%= Name %> = async (args: <%= Name %>CreationArgs) => {
+  const <%= name %> = await <%= Name %>Model.create(args);
+  if (<%= name %>) postSave(<%= name %>);
+  return <%= name %>;
+}
+
+export const upsert<%= Name %> = async (args: <%= Name %>UpsertionArgs) => {
+  const { where, data } = args;
+  const <%= name %>UpsertResult = await <%= Name %>Model.findOneAndUpdate(
+    where,
+    data,
+    {
+      upsert: true,
+      new: true,
+      returnDocument: "after",
+      runValidators: true,
+      setDefaultsOnInsert: true,
+      rawResult: true,
+    }
+  );
+  const <%= name %> = <%= name %>UpsertResult.value;
+  if (<%= name %> && !<%= name %>UpsertResult.lastErrorObject?.updatedExisting) {
+    postSave(<%= name %>);
+  }
+  return <%= name %>;
+}

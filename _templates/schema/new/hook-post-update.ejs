@@ -1,7 +1,7 @@
 ---
-to: apps/web/graphql/generated/types/<%= Name %>/hooks/postUpdate.ts
+to: apps/web/graphql/generated/types/<%= Name %>/hooks/postUpsert.ts
 unless_exists: true
 ---
 /* Edit this file to add a non-default post-save hook for the <%= Name %> type. */
 
-export { postUpdate } from "@web/graphql/schema/helpers";
+export { postUpsert } from "@web/graphql/schema/helpers";

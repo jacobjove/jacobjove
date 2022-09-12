@@ -1,7 +1,7 @@
 import { withSentry } from "@sentry/nextjs";
 import AccountModel from "@web/graphql/generated/models/AccountModel";
 import UserModel from "@web/graphql/generated/models/UserModel";
-import { postSave } from "@web/graphql/generated/types/User/hooks/postSave";
+import { upsertUser } from "@root/apps/web/graphql/generated/shortcuts/user.shortcuts";
 import mongoosePromise from "@web/lib/mongodb";
 import { NoUndefinedField } from "@web/types/global";
 import { PageConfig } from "next";
@@ -170,27 +170,17 @@ const callbacks: CallbacksOptions = {
         };
         await mongoosePromise;
         console.error("UPSERTING USER...");
-        const userUpsertResult = await UserModel.findOneAndUpdate(
-          { email: token.email },
-          {
+        const user = await upsertUser({
+          where: { email: token.email },
+          data: {
             name: token.name,
-            email: token.email,
+            email: token.email as string,
             lastLogin: new Date(),
             image: token.picture,
-          },
-          {
-            upsert: true,
-            new: true,
-            returnDocument: "after",
-            runValidators: true,
-            setDefaultsOnInsert: true,
-            rawResult: true,
-          }
-        );
-        if (userUpsertResult.value && !userUpsertResult.lastErrorObject?.updatedExisting) {
-          postSave(userUpsertResult.value);
-        }
-        const user = userUpsertResult.value;
+            isAdmin: false,
+            settings: {},
+          }}
+          );
         if (!user) throw new Error("Failed to upsert user!");
         // TODO: avoid awaiting?
         if (!user.accounts?.some((a) => a.provider === freshToken.provider)) {

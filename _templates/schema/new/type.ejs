@@ -7,12 +7,12 @@ force: true
 import * as TypeGraphQL from "type-graphql-v2-fork";
 import { ObjectIdScalar, DateTimeScalar, Int, JSONResolver } from "@web/graphql/schema/scalars";
 import { Model } from "@web/graphql/schema/types";
-import { prop as Property, pre, post, ModelOptions } from "@typegoose/typegoose";
+import { prop as Property, ModelOptions } from "@typegoose/typegoose";
 import { DEFAULT_MODEL_OPTIONS } from "@web/graphql/schema/types";
 <% for (var model of modelImports) { -%>
 import <%= h.changeCase.pascal(model) %> from "@web/graphql/generated/types/<%= h.changeCase.pascal(model) %>";
 <% } -%>
-import { preSave, postSave, postUpdate } from "./hooks";
+import { preSave, postSave, postUpsert } from "./hooks";
 <% for (var [fieldName, field] of Object.entries(fields).filter(([,field]) => (field.type === "Map" && field.shape))) { -%>
 
 export type <%= h.changeCase.pascal(fieldName) %> = {
@@ -24,9 +24,6 @@ export type <%= h.changeCase.pascal(fieldName) %> = {
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
-@pre<<%= Name %>>("save", preSave)
-@post<<%= Name %>>("save", postSave)
-@post<<%= Name %>>("findOneAndUpdate", postUpdate)
 export default class <%= Name %> extends Model {
 <% for (var [fieldName, field] of Object.entries(fields)) { -%>
 <% var useModelType = modelImports.includes(`${field.type}`) || modelImports.includes(`${field.typeArg}`); -%>

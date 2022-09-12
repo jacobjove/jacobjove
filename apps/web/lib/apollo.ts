@@ -50,6 +50,7 @@ const customFetch = (uri: Parameters<typeof fetch>[0], options: Parameters<typeo
   return fetch(uri, options);
 };
 
+// https://github.com/jaydenseric/apollo-upload-client#function-createuploadlink
 const terminalLink = createUploadLink({
   // uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
   uri: "/api/graphql",

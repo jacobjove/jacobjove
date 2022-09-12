@@ -12,7 +12,7 @@ export async function postSave(_instance: unknown) {
   return;
 }
 
-export async function postUpdate<T>(result: T) {
+export async function postUpsert<T>(result: T) {
   const rawResult = result as unknown as {
     value: typeof result;
     lastErrorObject: {

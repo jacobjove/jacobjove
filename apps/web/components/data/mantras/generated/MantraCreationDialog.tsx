@@ -1,15 +1,15 @@
 import CreationDialog from "@web/components/data/CreationDialog";
-import fields from "@web/graphql/generated/fields/mantra.fields";
-import { MantraFragment } from "@web/graphql/generated/fragments/mantra.fragment";
 import { useCreateMantra, useMantraReducer } from "@web/graphql/generated/hooks/mantra.hooks";
+import { bindPopover } from "material-ui-popup-state/hooks";
 import { MantraCreationInput } from "@web/graphql/generated/inputs/mantra.inputs";
 import Mantra from "@web/graphql/generated/types/Mantra";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { MantraFragment } from "@web/graphql/generated/fragments/mantra.fragment";
+import fields from "@web/graphql/generated/fields/mantra.fields";
 
 export type MantraCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function MantraCreationDialog(props: MantraCreationDialogProps) {
-  const [create] = useCreateMantra();
+  const [create,] = useCreateMantra();
   const dataTuple = useMantraReducer();
   return CreationDialog<Mantra, MantraCreationInput, { createMantra: MantraFragment }>({
     typeName: "mantra",

@@ -6,13 +6,15 @@ import Calendar from "@web/graphql/generated/types/Calendar";
 import Notebook from "@web/graphql/generated/types/Notebook";
 import User from "@web/graphql/generated/types/User";
 
-export const postSave = async (user: DocumentType<User>) => {
+type UserDocument = Pick<
+  DocumentType<User>,
+  "calendars" | "notebooks" | "settings" | "id" | "markModified" | "save"
+>;
+
+export const postSave = async (user: UserDocument) => {
   // let _mongoose: undefined | Awaited<typeof mongoosePromise> = undefined;
   let saveChanges = false;
   if (!user.calendars?.length) {
-    // _mongoose = await mongoosePromise;
-    console.error("User has no calendars, creating a default one with userId", user._id);
-
     const CalendarModel = getModelForClass(Calendar);
     const defaultCalendar = await CalendarModel.create({
       userId: user.id,
