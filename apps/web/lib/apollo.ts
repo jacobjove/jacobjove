@@ -46,34 +46,21 @@ const scalarsLink = withScalars({
 const debounceLink = new DebounceLink(500);
 
 const customFetch = (uri: Parameters<typeof fetch>[0], options: Parameters<typeof fetch>[1]) => {
-  console.error("customFetch", uri, options);
+  console.warn("customFetch", uri, options);
   return fetch(uri, options);
 };
 
-// TODO: https://github.com/jaydenseric/apollo-upload-client
-// const terminalLink = new HttpLink({
-//   // Specify the absolute URL for the GraphQL server.
-//   uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
-//   // https://www.apollographql.com/docs/apollo-server/security/cors/
-//   // credentials: "same-site", // Additional fetch() options like `credentials` or `headers`
-//   // fetchOptions: {
-//   //   mode: "no-cors",
-//   //   // mode: "same-site",
-//   // },
-// });
-
 const terminalLink = createUploadLink({
-  uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`, // Server URL (must be absolute)
+  // uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
+  uri: "/api/graphql",
   fetch: customFetch,
-  //   credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
-  //   fetchOptions: {
-  //     credentials: "same-origin",
-  //   }
+  // credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
+  // fetchOptions: {
+  //   credentials: "same-origin",
+  // }
   // fetchOptions: {
   //   mode: 'cors',
   // },
-  // credentials: 'include',
-  // fetch: enhancedFetch,
 });
 
 function createApolloClient() {
