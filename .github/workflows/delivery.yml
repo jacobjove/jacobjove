@@ -54,7 +54,7 @@ jobs:
           template-paths: |
             .config/_.env
       - name: Deploy to server
-        uses: iacobfred/deploy-docker-ssh@v0.2.9
+        uses: iacobfred/deploy-docker-ssh@v0.3.0
         with:
           host: ${{ secrets.DOMAIN }}
           user: jacob
@@ -64,10 +64,4 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           command: "docker compose pull && docker compose up -d --force-recreate && if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi; docker system prune -f"
         env:
-          DOMAIN: ${{ secrets.DOMAIN }}
           RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'routes.conf') }}
-          SERVER_HOST: ${{ secrets.DOMAIN }}
-          SERVER_TARGET: /var/www/${{ secrets.DOMAIN }}
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
