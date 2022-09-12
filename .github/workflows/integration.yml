@@ -48,8 +48,6 @@ jobs:
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Specify Docker Compose version
         run: |
           echo ""
@@ -71,9 +69,6 @@ jobs:
             cp docker-compose.test.yml docker-compose.override.yml
           fi
           echo "Done."
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v2
       - name: Generate .env file
         uses: iacobfred/generate-dotenv@v0.2.5
         with:
@@ -85,22 +80,3 @@ jobs:
           GLITCHTIP_BASE_URL: ${{ secrets.GLITCHTIP_BASE_URL }}
           DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
           EMAIL_URL: ${{ secrets.EMAIL_URL }}
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2.0.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image without cache
-        uses: docker/build-push-action@v3
-        with:
-          build-args: |
-            NODE_ENV=production
-          builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          file: ./apps/web/Dockerfile
-          push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }}
