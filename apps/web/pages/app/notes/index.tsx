@@ -132,18 +132,27 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
                       alignItems: "center",
                       justifyContent: "center",
                       height: "100%",
+                      padding: 4,
                     }}
                   >
-                    {"Select a note from the menu, or"}
-                    &nbsp;
-                    <Button
-                      variant="text"
-                      sx={{ m: 0, p: 0, textTransform: "none", fontSize: "inherit" }}
-                      onClick={handleCreateNote}
-                    >
-                      {"create a new one"}
-                    </Button>
-                    {"."}
+                    <Box textAlign={"center"}>
+                      {"Select a note from the menu, or "}
+                      <Button
+                        variant="text"
+                        sx={{
+                          m: 0,
+                          p: 0,
+                          textTransform: "none",
+                          fontSize: "inherit",
+                          display: "inline",
+                          lineHeight: "inherit",
+                        }}
+                        onClick={handleCreateNote}
+                      >
+                        {"create a new one"}
+                      </Button>
+                      {"."}
+                    </Box>
                   </Box>
                 )}
               </Box>

@@ -4,6 +4,7 @@ import UserModel from "@web/graphql/generated/models/UserModel";
 import { postSave } from "@web/graphql/generated/types/User/hooks/postSave";
 import mongoosePromise from "@web/lib/mongodb";
 import { NoUndefinedField } from "@web/types/global";
+import { PageConfig } from "next";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { AppProviders } from "next-auth/providers";
@@ -229,7 +230,7 @@ const callbacks: CallbacksOptions = {
         expires: '2021-12-27T17:57:11.871Z'
       }
 
-      And the token might look like this: 
+      And the token might look like this:
       {
         name: 'Jacob Fredericksen',
         email: 'jacob.t.fredericksen@gmail.com',
@@ -321,3 +322,11 @@ export const authOptions: NextAuthOptions = {
 const nextAuthHandler = NextAuth(authOptions);
 
 export default withSentry(nextAuthHandler);
+
+export const config: PageConfig = {
+  api: {
+    // https://github.com/getsentry/sentry-javascript/issues/3852
+    // https://nextjs.org/docs/api-routes/api-middlewares#custom-config
+    externalResolver: true,
+  },
+};

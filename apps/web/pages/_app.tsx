@@ -19,20 +19,26 @@ import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import Script from "next/script";
 import { FC, ReactElement, useEffect, useState } from "react";
 import { getSelectorsByUserAgent } from "react-device-detect";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import "react-grid-layout/css/styles.css";
-import TagManager from "react-gtm-module";
 import "react-resizable/css/styles.css";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
-// TODO: https://github.com/vercel/next.js/discussions/15518#discussioncomment-42875
-const tagManagerArgs = {
-  gtmId: `${process.env.NEXT_PUBLIC_GTM_ID}`, // e.g., 'GTM-XXXXXX'
-};
+// TODO: https://morganfeeney.com/how-to/integrate-google-tag-manager-with-next-js
+
+// https://tagmanager.google.com/#/container/accounts/6056934818/containers/93489699/workspaces/2
+const GOOGLE_TAG_MANAGER_SCRIPT = `
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
+`;
 
 export type PageWithAuth = NextPage & {
   auth?: boolean;
@@ -78,9 +84,9 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps<PageP
     }
   }, [isMobileWidth, isLandscape]);
 
-  useEffect(() => {
-    TagManager.initialize(tagManagerArgs);
-  }, []);
+  // useEffect(() => {
+  //   TagManager.initialize(tagManagerArgs);
+  // }, []);
 
   return (
     <SessionProvider>
@@ -107,6 +113,9 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps<PageP
                               />
                             </Head>
                             <DefaultSeo {...SEO} />
+                            <Script id="google-tag-manager" strategy="afterInteractive">
+                              {GOOGLE_TAG_MANAGER_SCRIPT}
+                            </Script>
                             {(Component as PageWithAuth).auth ? (
                               <Auth>
                                 <Component {...pageProps} />

@@ -1,4 +1,4 @@
-import { ApolloClient, from, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
+import { ApolloClient, from, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import introspectionResult from "@web/graphql/schema.gql.json";
 import DebounceLink from "apollo-link-debounce";
@@ -8,6 +8,7 @@ import { buildClientSchema, IntrospectionQuery } from "graphql";
 import { DateTimeResolver } from "graphql-scalars";
 import isEqual from "lodash/isEqual";
 import { useMemo } from "react";
+import { createUploadLink } from "apollo-upload-client";
 
 if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error("NEXT_PUBLIC_BASE_URL is not defined");
 
@@ -44,33 +45,41 @@ const scalarsLink = withScalars({
 
 const debounceLink = new DebounceLink(500);
 
+const customFetch = (uri: Parameters<typeof fetch>[0], options: Parameters<typeof fetch>[1]) => {
+  console.error("customFetch", uri, options);
+  return fetch(uri, options);
+};
+
 // TODO: https://github.com/jaydenseric/apollo-upload-client
-const terminalLink = new HttpLink({
-  // Specify the absolute URL for the GraphQL server.
-  uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
-  // https://www.apollographql.com/docs/apollo-server/security/cors/
-  // credentials: "same-site", // Additional fetch() options like `credentials` or `headers`
-  // fetchOptions: {
-  //   mode: "no-cors",
-  //   // mode: "same-site",
-  // },
-});
-// createUploadLink({
-//   uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`, // Server URL (must be absolute)
-//   //   credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
-//   //   fetchOptions: {
-//   //     credentials: "same-origin",
-//   //   }
-//   fetchOptions: {
-//     mode: 'cors',
-//   },
-//   credentials: 'include',
-//   // fetch: enhancedFetch,
+// const terminalLink = new HttpLink({
+//   // Specify the absolute URL for the GraphQL server.
+//   uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
+//   // https://www.apollographql.com/docs/apollo-server/security/cors/
+//   // credentials: "same-site", // Additional fetch() options like `credentials` or `headers`
+//   // fetchOptions: {
+//   //   mode: "no-cors",
+//   //   // mode: "same-site",
+//   // },
 // });
 
+const terminalLink = createUploadLink({
+  uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`, // Server URL (must be absolute)
+  fetch: customFetch,
+  //   credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
+  //   fetchOptions: {
+  //     credentials: "same-origin",
+  //   }
+  // fetchOptions: {
+  //   mode: 'cors',
+  // },
+  // credentials: 'include',
+  // fetch: enhancedFetch,
+});
+
 function createApolloClient() {
+  // Do not include `uri`, `credentials`, or `headers` options in the ApolloClient constructor.
+  // See https://github.com/jaydenseric/apollo-upload-client
   return new ApolloClient({
-    ssrMode: typeof window === "undefined",
     // https://www.apollographql.com/docs/react/api/link/introduction/#additive-composition
     link: from([scalarsLink, errorLink, debounceLink, terminalLink]),
     // TODO: https://www.apollographql.com/docs/apollo-server/performance/cache-backends/#configuring-external-caching
@@ -83,6 +92,7 @@ function createApolloClient() {
       //     },
       //   },
     }),
+    ssrMode: typeof window === "undefined",
   });
 }
 

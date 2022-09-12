@@ -1,15 +1,10 @@
 services:
   nextjs:
-    # command: bash -c "npm run start"
     environment:
-      NEXT_PUBLIC_BASE_URL: "http://selfbuilder.dev.net"
-      NEXTAUTH_URL: "http://selfbuilder.dev.net"
-      # NODE_ENV: development
       REACT_EDITOR: code
-    # user: root # avoid permissions issues with writing in build dir
     volumes:
       - .env:/app/.env.local
-    #     # Prevent the container's node_modules and .next folders from being overwritten 
+    #     # Prevent the container's node_modules and .next folders from being overwritten
     #     # by the initial mapping of the local directory to /app.
     #   - ./dist/apps/web/node_modules:/app/node_modules
     #   - ./dist/apps/web/.next:/app/.next
