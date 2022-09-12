@@ -3,7 +3,8 @@
     "words": [
         "buildx",
         "dotenv",
-        "glitchtip"
+        "glitchtip",
+        "webserver"
     ],
     "flagWords": [
         "hte"
