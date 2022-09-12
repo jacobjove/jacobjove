@@ -28,6 +28,7 @@ env:
   NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
   NEXTJS_PORT: ${{ secrets.NEXTJS_PORT }}
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SHA: ${{ github.sha }}
 
@@ -46,7 +47,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v29.0.3
+        uses: tj-actions/changed-files@v29.0.4
   push-image:
     name: Push image
     environment: production

@@ -46,13 +46,13 @@ const debounceLink = new DebounceLink(500);
 
 // TODO: https://github.com/jaydenseric/apollo-upload-client
 const terminalLink = new HttpLink({
-  uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`, // Server URL (must be absolute)
+  uri: `/api/graphql`, // Server URL (must be absolute)
   // https://www.apollographql.com/docs/apollo-server/security/cors/
-  credentials: "same-site", // Additional fetch() options like `credentials` or `headers`
-  fetchOptions: {
-    mode: "no-cors",
-    // mode: "same-site",
-  },
+  // credentials: "same-site", // Additional fetch() options like `credentials` or `headers`
+  // fetchOptions: {
+  //   mode: "no-cors",
+  //   // mode: "same-site",
+  // },
 });
 // createUploadLink({
 //   uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`, // Server URL (must be absolute)

@@ -1,20 +1,24 @@
 /* Edit this file to add a non-default post-save hook for the User type. */
 
 // import mongoosePromise from "@web/lib/mongodb";
-import { getModelForClass } from "@typegoose/typegoose";
+import { DocumentType, getModelForClass } from "@typegoose/typegoose";
 import Calendar from "@web/graphql/generated/types/Calendar";
 import Notebook from "@web/graphql/generated/types/Notebook";
+import User from "@web/graphql/generated/types/User";
 
-export const postSave = async (user: any) => {
+export const postSave = async (user: DocumentType<User>) => {
   // let _mongoose: undefined | Awaited<typeof mongoosePromise> = undefined;
   let saveChanges = false;
   if (!user.calendars?.length) {
     // _mongoose = await mongoosePromise;
+    console.error("User has no calendars, creating a default one with userId", user._id);
+
     const CalendarModel = getModelForClass(Calendar);
     const defaultCalendar = await CalendarModel.create({
       userId: user.id,
       name: "Default calendar",
     });
+
     user.calendars = [defaultCalendar];
     user.markModified("calendars");
     user.settings.defaultCalendarId = defaultCalendar.id;
@@ -33,6 +37,6 @@ export const postSave = async (user: any) => {
     user.markModified("notebooks");
     saveChanges = true;
   }
-  console.log("postSave", user);
+  console.error(`POST_SAVE USER: ${user}`);
   saveChanges && user.save();
 };

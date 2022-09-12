@@ -30,7 +30,7 @@ import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
-import { Dispatch, FC, useState } from "react";
+import { Dispatch, FC, useEffect, useState } from "react";
 
 const QUERY = gql`
   query PlannerPage {
@@ -165,7 +165,9 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  console.error("TODO: Display mantras:", mantras);
+  useEffect(() => {
+    !!mantras?.length && alert(mantras.join("\n\n"));
+  }, [mantras]);
   return (
     <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
       <Box

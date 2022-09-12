@@ -27,14 +27,8 @@ node_modules
 *.sublime-workspace
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
 npm-debug.log
 yarn-error.log
-testem.log
-/typings
 
 # System Files
 .DS_Store
@@ -62,7 +56,6 @@ DerivedData
 **/ios/.xcode.env.local
 
 # Android/IntelliJ
-#
 build/
 .idea
 .gradle
@@ -101,3 +94,6 @@ buck-out/
 **/vendor/bundle/
 
 apps/native-e2e/artifacts
+
+# Sentry
+.sentryclirc

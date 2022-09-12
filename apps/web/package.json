@@ -49,6 +49,7 @@
     "@mui/x-date-pickers": "^5.0.0-beta.3",
     "@next/bundle-analyzer": "^12.2.5",
     "@nrwl/next": "*",
+    "@sentry/nextjs": "*",
     "@typegoose/typegoose": "^9.10.1",
     "apollo-link-debounce": "^3.0.0",
     "apollo-link-scalars": "^4.0.1",

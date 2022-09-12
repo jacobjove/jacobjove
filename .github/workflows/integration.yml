@@ -44,7 +44,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v29.0.3
+        uses: tj-actions/changed-files@v29.0.4
   build:
     name: Build image
     needs: changed-files
@@ -96,6 +96,7 @@ jobs:
           NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
           NEXTJS_PORT: ${{ secrets.NEXTJS_PORT }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2.0.0
         with:

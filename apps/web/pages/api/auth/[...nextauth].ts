@@ -1,5 +1,7 @@
+import { withSentry } from "@sentry/nextjs";
 import AccountModel from "@web/graphql/generated/models/AccountModel";
 import UserModel from "@web/graphql/generated/models/UserModel";
+import { postSave } from "@web/graphql/generated/types/User/hooks/postSave";
 import mongoosePromise from "@web/lib/mongodb";
 import { NoUndefinedField } from "@web/types/global";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
@@ -184,6 +186,9 @@ const callbacks: CallbacksOptions = {
             rawResult: true,
           }
         );
+        if (userUpsertResult.value && !userUpsertResult.lastErrorObject?.updatedExisting) {
+          postSave(userUpsertResult.value);
+        }
         const user = userUpsertResult.value;
         if (!user) throw new Error("Failed to upsert user!");
         // TODO: avoid awaiting?
@@ -313,4 +318,6 @@ export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
 };
 
-export default NextAuth(authOptions);
+const nextAuthHandler = NextAuth(authOptions);
+
+export default withSentry(nextAuthHandler);

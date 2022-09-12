@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withNx = require("@nrwl/next/plugins/with-nx");
 const withPWA = require("next-pwa");
+const { withSentryConfig } = require("@sentry/nextjs");
+
 // const path = require("path");
 
 const REQUIRED_ENV_VARS = ["NEXT_PUBLIC_DOMAIN"];
@@ -12,6 +14,11 @@ for (const envVar of REQUIRED_ENV_VARS) {
     throw new Error(`Environment variable ${envVar} is required.`);
   }
 }
+
+const sentryWebpackPluginOptions = {
+  // https://github.com/getsentry/sentry-webpack-plugin#options
+  silent: true,
+};
 
 const plugins = [
   // TODO
@@ -85,6 +92,15 @@ const nextConfig = {
       },
     ];
   },
+  sentry: {
+    // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
+    // for client-side builds. (This will be the default starting in
+    // `@sentry/nextjs` version 8.0.0.) See
+    // https://webpack.js.org/configuration/devtool/ and
+    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
+    // for more information.
+    hideSourceMaps: true,
+  },
   swcMinify: true,
   // https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
   webpack: (config) => {
@@ -107,7 +123,7 @@ const nextConfig = {
 };
 
 module.exports = async () => {
-  return withNx({
+  const configWithNx = withNx({
     nx: {
       // Set this to true if you would like to to use SVGR
       // See: https://github.com/gregberge/svgr
@@ -117,4 +133,5 @@ module.exports = async () => {
       return plugin(acc), { ...nextConfig };
     }),
   });
+  return withSentryConfig(configWithNx, sentryWebpackPluginOptions);
 };

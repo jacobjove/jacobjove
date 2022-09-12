@@ -6,7 +6,7 @@ force: true
 <% var filteredFields = Object.fromEntries(Object.entries(selectableFields)); -%>
 
 import { object, string, number, date, bool, array, InferType, SchemaOf } from 'yup';
-import { <%= Name %>CreationInput, <%= Name %>UpdateInput } from '@/graphql/generated/inputs/<%= name %>.inputs';
+import { <%= Name %>CreationInput, <%= Name %>UpdateInput } from '@web/graphql/generated/inputs/<%= name %>.inputs';
 <% for (var modelImport of modelImports) { -%>
 import { <%= h.changeCase.camel(modelImport) %>CreationInputSchema } from "@web/graphql/generated/schemas/<%= h.changeCase.camel(modelImport) %>.schemas";
 <% } -%>

@@ -4,4 +4,10 @@ unless_exists: true
 ---
 /* Edit this file to add a non-default post-save hook for the <%= Name %> type. */
 
-export { postSave } from "@web/graphql/schema/helpers";
+import { DocumentType } from "@typegoose/typegoose";
+import { postSave as _postSave } from "@web/graphql/schema/helpers";
+import <%= Name %> from "@web/graphql/generated/types/<%= Name %>";
+
+export const postSave = async (user: DocumentType<<%= Name %>>) => {
+  return _postSave(user);
+}

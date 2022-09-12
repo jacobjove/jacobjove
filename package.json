@@ -13,6 +13,7 @@
   ],
   "private": true,
   "scripts": {
+    "dev": "nx serve",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
@@ -21,11 +22,11 @@
     "migrations:run": "nx migrate --run-migrations",
     "code:generate": "npm run schema:generate",
     "cypress:open": "cypress open",
-    "db:seed": "ts-node -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
+    "db:seed": "ts-node --project tsconfig.base.json -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
     "generate": "npm run schema:generate && graphql-codegen --config codegen.yml; eslint . --fix",
     "generate:watch": "graphql-codegen --config codegen.yml --watch",
     "prepare": "npx husky install",
-    "schema:generate": "for filename in graphql/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in graphql/schema/definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen schema new --definition $(basename -- $filename); done"
+    "schema:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in apps/web/graphql/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in apps/web/graphql/schema/definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen schema new --definition $(basename -- $filename); done"
   },
   "dependencies": {
     "@apollo/client": "^3.6.8",
@@ -43,6 +44,7 @@
     "@next/bundle-analyzer": "^12.2.5",
     "@nrwl/next": "14.7.3",
     "@nrwl/react-native": "14.7.3",
+    "@sentry/nextjs": "^7.12.1",
     "@typegoose/typegoose": "^9.10.1",
     "apollo-link-debounce": "^3.0.0",
     "apollo-link-scalars": "^4.0.1",

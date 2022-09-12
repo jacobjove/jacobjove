@@ -1,16 +1,11 @@
 module.exports = {
-  extends: [
-    "plugin:@nrwl/nx/react-typescript",
-    "next",
-    "next/core-web-vitals",
-    "../../.eslintrc.js",
-  ],
+  extends: ["plugin:@nrwl/nx/react-typescript", "next/core-web-vitals", "../../.eslintrc.js"],
   ignorePatterns: ["!**/*", ".next/**/*"],
   overrides: [
     {
       files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
       rules: {
-        "@next/next/no-html-link-for-pages": ["error", "apps/web/pages"],
+        "@next/next/no-html-link-for-pages": "error",
       },
     },
     {
@@ -24,6 +19,11 @@ module.exports = {
   ],
   rules: {
     "@next/next/no-html-link-for-pages": "off",
+  },
+  settings: {
+    next: {
+      rootDir: "apps/web",
+    },
   },
   env: {
     jest: true,
