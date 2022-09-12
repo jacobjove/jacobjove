@@ -1,6 +1,7 @@
 import { postSave } from "@web/graphql/generated/types/Note/hooks";
 import NoteModel from "@web/graphql/generated/models/NoteModel";
 import { NoteCreationArgs, NoteUpsertionArgs } from "@web/graphql/generated/args/note.args";
+import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
 export const createNote = async (args: NoteCreationArgs) => {
   const note = await NoteModel.create(args);
@@ -10,7 +11,7 @@ export const createNote = async (args: NoteCreationArgs) => {
 
 export const upsertNote = async (args: NoteUpsertionArgs) => {
   const { where, data } = args;
-  const noteUpsertResult = await NoteModel.findOneAndUpdate(where, data, {
+  const noteUpsertResult = await NoteModel.findOneAndUpdate(convertFilterForMongo(where), data, {
     upsert: true,
     new: true,
     returnDocument: "after",

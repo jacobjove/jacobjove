@@ -179,8 +179,8 @@ const callbacks: CallbacksOptions = {
             image: token.picture,
             isAdmin: false,
             settings: {},
-          }}
-          );
+          },
+        });
         if (!user) throw new Error("Failed to upsert user!");
         // TODO: avoid awaiting?
         if (!user.accounts?.some((a) => a.provider === freshToken.provider)) {

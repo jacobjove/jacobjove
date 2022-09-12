@@ -22,7 +22,9 @@ import {
   beliefCreationInputSchema,
   beliefUpdateInputSchema,
 } from "@web/graphql/generated/schemas/belief.schemas";
-import { getOptimisticResponseForBeliefCreation } from "@web/graphql/generated/mutations/belief.mutations";
+import {
+  getOptimisticResponseForBeliefCreation,
+} from "@web/graphql/generated/mutations/belief.mutations";
 
 type BeliefCreationMutationHookOptions = MutationHookOptions<
   { createBelief: BeliefFragment },

@@ -25,7 +25,9 @@ import {
   identityCreationInputSchema,
   identityUpdateInputSchema,
 } from "@web/graphql/generated/schemas/identity.schemas";
-import { getOptimisticResponseForIdentityCreation } from "@web/graphql/generated/mutations/identity.mutations";
+import {
+  getOptimisticResponseForIdentityCreation,
+} from "@web/graphql/generated/mutations/identity.mutations";
 
 type IdentityCreationMutationHookOptions = MutationHookOptions<
   { createIdentity: IdentityFragment },

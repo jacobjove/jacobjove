@@ -4,6 +4,7 @@ import {
   NotebookCreationArgs,
   NotebookUpsertionArgs,
 } from "@web/graphql/generated/args/notebook.args";
+import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
 export const createNotebook = async (args: NotebookCreationArgs) => {
   const notebook = await NotebookModel.create(args);
@@ -13,14 +14,18 @@ export const createNotebook = async (args: NotebookCreationArgs) => {
 
 export const upsertNotebook = async (args: NotebookUpsertionArgs) => {
   const { where, data } = args;
-  const notebookUpsertResult = await NotebookModel.findOneAndUpdate(where, data, {
-    upsert: true,
-    new: true,
-    returnDocument: "after",
-    runValidators: true,
-    setDefaultsOnInsert: true,
-    rawResult: true,
-  });
+  const notebookUpsertResult = await NotebookModel.findOneAndUpdate(
+    convertFilterForMongo(where),
+    data,
+    {
+      upsert: true,
+      new: true,
+      returnDocument: "after",
+      runValidators: true,
+      setDefaultsOnInsert: true,
+      rawResult: true,
+    }
+  );
   const notebook = notebookUpsertResult.value;
   if (notebook && !notebookUpsertResult.lastErrorObject?.updatedExisting) {
     postSave(notebook);

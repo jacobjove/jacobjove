@@ -99,8 +99,7 @@ export class TaskResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: TaskUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertTask({ where: filter, data: args.data });
+    return _upsertTask(args);
   }
 
   @TypeGraphQL.Mutation(() => [Task], { nullable: false })

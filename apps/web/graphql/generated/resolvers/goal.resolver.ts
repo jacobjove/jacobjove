@@ -99,8 +99,7 @@ export class GoalResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: GoalUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertGoal({ where: filter, data: args.data });
+    return _upsertGoal(args);
   }
 
   @TypeGraphQL.Mutation(() => [Goal], { nullable: false })

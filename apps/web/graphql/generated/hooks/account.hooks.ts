@@ -22,7 +22,9 @@ import {
   accountCreationInputSchema,
   accountUpdateInputSchema,
 } from "@web/graphql/generated/schemas/account.schemas";
-import { getOptimisticResponseForAccountCreation } from "@web/graphql/generated/mutations/account.mutations";
+import {
+  getOptimisticResponseForAccountCreation,
+} from "@web/graphql/generated/mutations/account.mutations";
 
 type AccountCreationMutationHookOptions = MutationHookOptions<
   { createAccount: AccountFragment },

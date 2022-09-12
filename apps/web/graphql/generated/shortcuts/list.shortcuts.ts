@@ -1,6 +1,7 @@
 import { postSave } from "@web/graphql/generated/types/List/hooks";
 import ListModel from "@web/graphql/generated/models/ListModel";
 import { ListCreationArgs, ListUpsertionArgs } from "@web/graphql/generated/args/list.args";
+import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
 export const createList = async (args: ListCreationArgs) => {
   const list = await ListModel.create(args);
@@ -10,7 +11,7 @@ export const createList = async (args: ListCreationArgs) => {
 
 export const upsertList = async (args: ListUpsertionArgs) => {
   const { where, data } = args;
-  const listUpsertResult = await ListModel.findOneAndUpdate(where, data, {
+  const listUpsertResult = await ListModel.findOneAndUpdate(convertFilterForMongo(where), data, {
     upsert: true,
     new: true,
     returnDocument: "after",

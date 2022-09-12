@@ -99,8 +99,7 @@ export class NoteResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: NoteUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertNote({ where: filter, data: args.data });
+    return _upsertNote(args);
   }
 
   @TypeGraphQL.Mutation(() => [Note], { nullable: false })

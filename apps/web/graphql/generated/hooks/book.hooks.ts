@@ -21,7 +21,9 @@ import {
   bookCreationInputSchema,
   bookUpdateInputSchema,
 } from "@web/graphql/generated/schemas/book.schemas";
-import { getOptimisticResponseForBookCreation } from "@web/graphql/generated/mutations/book.mutations";
+import {
+  getOptimisticResponseForBookCreation,
+} from "@web/graphql/generated/mutations/book.mutations";
 
 type BookCreationMutationHookOptions = MutationHookOptions<
   { createBook: BookFragment },

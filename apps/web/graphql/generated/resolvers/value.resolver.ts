@@ -99,8 +99,7 @@ export class ValueResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: ValueUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertValue({ where: filter, data: args.data });
+    return _upsertValue(args);
   }
 
   @TypeGraphQL.Mutation(() => [Value], { nullable: false })

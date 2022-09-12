@@ -99,8 +99,7 @@ export class HabitResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: HabitUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertHabit({ where: filter, data: args.data });
+    return _upsertHabit(args);
   }
 
   @TypeGraphQL.Mutation(() => [Habit], { nullable: false })

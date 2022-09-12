@@ -104,8 +104,7 @@ export class NotebookResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: NotebookUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertNotebook({ where: filter, data: args.data });
+    return _upsertNotebook(args);
   }
 
   @TypeGraphQL.Mutation(() => [Notebook], { nullable: false })

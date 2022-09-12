@@ -86,8 +86,7 @@ export class BookResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: BookUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertBook({ where: filter, data: args.data });
+    return _upsertBook(args);
   }
 
   @TypeGraphQL.Mutation(() => [Book], { nullable: false })

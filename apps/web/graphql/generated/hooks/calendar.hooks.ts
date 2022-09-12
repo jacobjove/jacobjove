@@ -25,7 +25,9 @@ import {
   calendarCreationInputSchema,
   calendarUpdateInputSchema,
 } from "@web/graphql/generated/schemas/calendar.schemas";
-import { getOptimisticResponseForCalendarCreation } from "@web/graphql/generated/mutations/calendar.mutations";
+import {
+  getOptimisticResponseForCalendarCreation,
+} from "@web/graphql/generated/mutations/calendar.mutations";
 
 type CalendarCreationMutationHookOptions = MutationHookOptions<
   { createCalendar: CalendarFragment },

@@ -22,7 +22,9 @@ import {
   habitCreationInputSchema,
   habitUpdateInputSchema,
 } from "@web/graphql/generated/schemas/habit.schemas";
-import { getOptimisticResponseForHabitCreation } from "@web/graphql/generated/mutations/habit.mutations";
+import {
+  getOptimisticResponseForHabitCreation,
+} from "@web/graphql/generated/mutations/habit.mutations";
 
 type HabitCreationMutationHookOptions = MutationHookOptions<
   { createHabit: HabitFragment },

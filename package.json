@@ -20,7 +20,7 @@
     "//": "https://nx.dev/core-features/automate-updating-dependencies",
     "migrations:make": "nx migrate",
     "migrations:run": "nx migrate --run-migrations",
-    "code:generate": "npm run schema:generate",
+    "code:generate": "npm run schema:generate && prettier -w **/*.ts && eslint --fix --ext .ts",
     "cypress:open": "cypress open",
     "db:seed": "ts-node --project tsconfig.base.json -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
     "generate": "npm run schema:generate && graphql-codegen --config codegen.yml; eslint . --fix",

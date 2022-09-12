@@ -99,8 +99,7 @@ export class ListResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: ListUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertList({ where: filter, data: args.data });
+    return _upsertList(args);
   }
 
   @TypeGraphQL.Mutation(() => [List], { nullable: false })

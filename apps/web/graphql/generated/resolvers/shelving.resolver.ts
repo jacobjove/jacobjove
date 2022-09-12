@@ -88,8 +88,7 @@ export class ShelvingResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: ShelvingUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertShelving({ where: filter, data: args.data });
+    return _upsertShelving(args);
   }
 
   @TypeGraphQL.Mutation(() => [Shelving], { nullable: false })

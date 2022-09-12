@@ -6,6 +6,7 @@ force: true
 import { postSave } from "@web/graphql/generated/types/<%= Name %>/hooks";
 import <%= Name %>Model from "@web/graphql/generated/models/<%= Name %>Model";
 import { <%= Name %>CreationArgs, <%= Name %>UpsertionArgs } from "@web/graphql/generated/args/<%= name %>.args";
+import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
 export const create<%= Name %> = async (args: <%= Name %>CreationArgs) => {
   const <%= name %> = await <%= Name %>Model.create(args);
@@ -16,7 +17,7 @@ export const create<%= Name %> = async (args: <%= Name %>CreationArgs) => {
 export const upsert<%= Name %> = async (args: <%= Name %>UpsertionArgs) => {
   const { where, data } = args;
   const <%= name %>UpsertResult = await <%= Name %>Model.findOneAndUpdate(
-    where,
+    convertFilterForMongo(where),
     data,
     {
       upsert: true,

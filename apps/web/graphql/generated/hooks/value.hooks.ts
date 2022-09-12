@@ -22,7 +22,9 @@ import {
   valueCreationInputSchema,
   valueUpdateInputSchema,
 } from "@web/graphql/generated/schemas/value.schemas";
-import { getOptimisticResponseForValueCreation } from "@web/graphql/generated/mutations/value.mutations";
+import {
+  getOptimisticResponseForValueCreation,
+} from "@web/graphql/generated/mutations/value.mutations";
 
 type ValueCreationMutationHookOptions = MutationHookOptions<
   { createValue: ValueFragment },

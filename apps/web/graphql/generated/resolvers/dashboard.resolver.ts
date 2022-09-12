@@ -104,8 +104,7 @@ export class DashboardResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: DashboardUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertDashboard({ where: filter, data: args.data });
+    return _upsertDashboard(args);
   }
 
   @TypeGraphQL.Mutation(() => [Dashboard], { nullable: false })

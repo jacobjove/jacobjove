@@ -104,8 +104,7 @@ export class BeliefResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: BeliefUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertBelief({ where: filter, data: args.data });
+    return _upsertBelief(args);
   }
 
   @TypeGraphQL.Mutation(() => [Belief], { nullable: false })

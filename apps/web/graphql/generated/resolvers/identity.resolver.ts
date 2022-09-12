@@ -104,8 +104,7 @@ export class IdentityResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: IdentityUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertIdentity({ where: filter, data: args.data });
+    return _upsertIdentity(args);
   }
 
   @TypeGraphQL.Mutation(() => [Identity], { nullable: false })

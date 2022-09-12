@@ -25,7 +25,9 @@ import {
   dashboardCreationInputSchema,
   dashboardUpdateInputSchema,
 } from "@web/graphql/generated/schemas/dashboard.schemas";
-import { getOptimisticResponseForDashboardCreation } from "@web/graphql/generated/mutations/dashboard.mutations";
+import {
+  getOptimisticResponseForDashboardCreation,
+} from "@web/graphql/generated/mutations/dashboard.mutations";
 
 type DashboardCreationMutationHookOptions = MutationHookOptions<
   { createDashboard: DashboardFragment },

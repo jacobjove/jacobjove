@@ -22,7 +22,9 @@ import {
   mantraCreationInputSchema,
   mantraUpdateInputSchema,
 } from "@web/graphql/generated/schemas/mantra.schemas";
-import { getOptimisticResponseForMantraCreation } from "@web/graphql/generated/mutations/mantra.mutations";
+import {
+  getOptimisticResponseForMantraCreation,
+} from "@web/graphql/generated/mutations/mantra.mutations";
 
 type MantraCreationMutationHookOptions = MutationHookOptions<
   { createMantra: MantraFragment },

@@ -86,8 +86,7 @@ export class UserResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: UserUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertUser({ where: filter, data: args.data });
+    return _upsertUser(args);
   }
 
   @TypeGraphQL.Mutation(() => [User], { nullable: false })

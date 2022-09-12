@@ -107,8 +107,7 @@ export class <%= Name %>Resolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: <%= Name %>UpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsert<%= Name %>({ where: filter, data: args.data });
+    return _upsert<%= Name %>(args);
   }
 
   @TypeGraphQL.Mutation(() => [<%= Name %>], { nullable: false })

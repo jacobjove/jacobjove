@@ -22,7 +22,9 @@ import {
   listCreationInputSchema,
   listUpdateInputSchema,
 } from "@web/graphql/generated/schemas/list.schemas";
-import { getOptimisticResponseForListCreation } from "@web/graphql/generated/mutations/list.mutations";
+import {
+  getOptimisticResponseForListCreation,
+} from "@web/graphql/generated/mutations/list.mutations";
 
 type ListCreationMutationHookOptions = MutationHookOptions<
   { createList: ListFragment },

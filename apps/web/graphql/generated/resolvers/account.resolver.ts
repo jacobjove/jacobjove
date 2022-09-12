@@ -104,8 +104,7 @@ export class AccountResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: AccountUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertAccount({ where: filter, data: args.data });
+    return _upsertAccount(args);
   }
 
   @TypeGraphQL.Mutation(() => [Account], { nullable: false })

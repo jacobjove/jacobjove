@@ -4,6 +4,7 @@ import {
   AccountCreationArgs,
   AccountUpsertionArgs,
 } from "@web/graphql/generated/args/account.args";
+import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
 export const createAccount = async (args: AccountCreationArgs) => {
   const account = await AccountModel.create(args);
@@ -13,14 +14,18 @@ export const createAccount = async (args: AccountCreationArgs) => {
 
 export const upsertAccount = async (args: AccountUpsertionArgs) => {
   const { where, data } = args;
-  const accountUpsertResult = await AccountModel.findOneAndUpdate(where, data, {
-    upsert: true,
-    new: true,
-    returnDocument: "after",
-    runValidators: true,
-    setDefaultsOnInsert: true,
-    rawResult: true,
-  });
+  const accountUpsertResult = await AccountModel.findOneAndUpdate(
+    convertFilterForMongo(where),
+    data,
+    {
+      upsert: true,
+      new: true,
+      returnDocument: "after",
+      runValidators: true,
+      setDefaultsOnInsert: true,
+      rawResult: true,
+    }
+  );
   const account = accountUpsertResult.value;
   if (account && !accountUpsertResult.lastErrorObject?.updatedExisting) {
     postSave(account);

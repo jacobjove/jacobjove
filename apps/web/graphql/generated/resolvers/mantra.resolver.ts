@@ -104,8 +104,7 @@ export class MantraResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: MantraUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertMantra({ where: filter, data: args.data });
+    return _upsertMantra(args);
   }
 
   @TypeGraphQL.Mutation(() => [Mantra], { nullable: false })

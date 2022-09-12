@@ -104,8 +104,7 @@ export class CalendarEventResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: CalendarEventUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertCalendarEvent({ where: filter, data: args.data });
+    return _upsertCalendarEvent(args);
   }
 
   @TypeGraphQL.Mutation(() => [CalendarEvent], { nullable: false })

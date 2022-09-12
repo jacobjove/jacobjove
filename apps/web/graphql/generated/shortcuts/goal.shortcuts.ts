@@ -1,6 +1,7 @@
 import { postSave } from "@web/graphql/generated/types/Goal/hooks";
 import GoalModel from "@web/graphql/generated/models/GoalModel";
 import { GoalCreationArgs, GoalUpsertionArgs } from "@web/graphql/generated/args/goal.args";
+import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
 export const createGoal = async (args: GoalCreationArgs) => {
   const goal = await GoalModel.create(args);
@@ -10,7 +11,7 @@ export const createGoal = async (args: GoalCreationArgs) => {
 
 export const upsertGoal = async (args: GoalUpsertionArgs) => {
   const { where, data } = args;
-  const goalUpsertResult = await GoalModel.findOneAndUpdate(where, data, {
+  const goalUpsertResult = await GoalModel.findOneAndUpdate(convertFilterForMongo(where), data, {
     upsert: true,
     new: true,
     returnDocument: "after",

@@ -4,6 +4,7 @@ import {
   ListItemCreationArgs,
   ListItemUpsertionArgs,
 } from "@web/graphql/generated/args/listItem.args";
+import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
 export const createListItem = async (args: ListItemCreationArgs) => {
   const listItem = await ListItemModel.create(args);
@@ -13,14 +14,18 @@ export const createListItem = async (args: ListItemCreationArgs) => {
 
 export const upsertListItem = async (args: ListItemUpsertionArgs) => {
   const { where, data } = args;
-  const listItemUpsertResult = await ListItemModel.findOneAndUpdate(where, data, {
-    upsert: true,
-    new: true,
-    returnDocument: "after",
-    runValidators: true,
-    setDefaultsOnInsert: true,
-    rawResult: true,
-  });
+  const listItemUpsertResult = await ListItemModel.findOneAndUpdate(
+    convertFilterForMongo(where),
+    data,
+    {
+      upsert: true,
+      new: true,
+      returnDocument: "after",
+      runValidators: true,
+      setDefaultsOnInsert: true,
+      rawResult: true,
+    }
+  );
   const listItem = listItemUpsertResult.value;
   if (listItem && !listItemUpsertResult.lastErrorObject?.updatedExisting) {
     postSave(listItem);

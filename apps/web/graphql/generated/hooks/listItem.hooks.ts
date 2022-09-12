@@ -25,7 +25,9 @@ import {
   listItemCreationInputSchema,
   listItemUpdateInputSchema,
 } from "@web/graphql/generated/schemas/listItem.schemas";
-import { getOptimisticResponseForListItemCreation } from "@web/graphql/generated/mutations/listItem.mutations";
+import {
+  getOptimisticResponseForListItemCreation,
+} from "@web/graphql/generated/mutations/listItem.mutations";
 
 type ListItemCreationMutationHookOptions = MutationHookOptions<
   { createListItem: ListItemFragment },

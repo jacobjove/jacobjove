@@ -22,7 +22,9 @@ import {
   noteCreationInputSchema,
   noteUpdateInputSchema,
 } from "@web/graphql/generated/schemas/note.schemas";
-import { getOptimisticResponseForNoteCreation } from "@web/graphql/generated/mutations/note.mutations";
+import {
+  getOptimisticResponseForNoteCreation,
+} from "@web/graphql/generated/mutations/note.mutations";
 
 type NoteCreationMutationHookOptions = MutationHookOptions<
   { createNote: NoteFragment },

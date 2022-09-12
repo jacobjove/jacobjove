@@ -25,7 +25,9 @@ import {
   notebookCreationInputSchema,
   notebookUpdateInputSchema,
 } from "@web/graphql/generated/schemas/notebook.schemas";
-import { getOptimisticResponseForNotebookCreation } from "@web/graphql/generated/mutations/notebook.mutations";
+import {
+  getOptimisticResponseForNotebookCreation,
+} from "@web/graphql/generated/mutations/notebook.mutations";
 
 type NotebookCreationMutationHookOptions = MutationHookOptions<
   { createNotebook: NotebookFragment },

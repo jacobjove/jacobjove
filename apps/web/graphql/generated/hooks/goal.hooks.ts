@@ -22,7 +22,9 @@ import {
   goalCreationInputSchema,
   goalUpdateInputSchema,
 } from "@web/graphql/generated/schemas/goal.schemas";
-import { getOptimisticResponseForGoalCreation } from "@web/graphql/generated/mutations/goal.mutations";
+import {
+  getOptimisticResponseForGoalCreation,
+} from "@web/graphql/generated/mutations/goal.mutations";
 
 type GoalCreationMutationHookOptions = MutationHookOptions<
   { createGoal: GoalFragment },

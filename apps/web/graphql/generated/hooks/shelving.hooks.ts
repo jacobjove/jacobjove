@@ -24,7 +24,9 @@ import {
   shelvingCreationInputSchema,
   shelvingUpdateInputSchema,
 } from "@web/graphql/generated/schemas/shelving.schemas";
-import { getOptimisticResponseForShelvingCreation } from "@web/graphql/generated/mutations/shelving.mutations";
+import {
+  getOptimisticResponseForShelvingCreation,
+} from "@web/graphql/generated/mutations/shelving.mutations";
 
 type ShelvingCreationMutationHookOptions = MutationHookOptions<
   { createShelving: ShelvingFragment },

@@ -21,7 +21,9 @@ import {
   userCreationInputSchema,
   userUpdateInputSchema,
 } from "@web/graphql/generated/schemas/user.schemas";
-import { getOptimisticResponseForUserCreation } from "@web/graphql/generated/mutations/user.mutations";
+import {
+  getOptimisticResponseForUserCreation,
+} from "@web/graphql/generated/mutations/user.mutations";
 
 type UserCreationMutationHookOptions = MutationHookOptions<
   { createUser: UserFragment },

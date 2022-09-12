@@ -104,8 +104,7 @@ export class ListItemResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: ListItemUpsertionArgs
   ) {
-    const filter = convertFilterForMongo(args.where);
-    return _upsertListItem({ where: filter, data: args.data });
+    return _upsertListItem(args);
   }
 
   @TypeGraphQL.Mutation(() => [ListItem], { nullable: false })

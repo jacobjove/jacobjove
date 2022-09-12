@@ -4,6 +4,7 @@ import {
   IdentityCreationArgs,
   IdentityUpsertionArgs,
 } from "@web/graphql/generated/args/identity.args";
+import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
 export const createIdentity = async (args: IdentityCreationArgs) => {
   const identity = await IdentityModel.create(args);
@@ -13,14 +14,18 @@ export const createIdentity = async (args: IdentityCreationArgs) => {
 
 export const upsertIdentity = async (args: IdentityUpsertionArgs) => {
   const { where, data } = args;
-  const identityUpsertResult = await IdentityModel.findOneAndUpdate(where, data, {
-    upsert: true,
-    new: true,
-    returnDocument: "after",
-    runValidators: true,
-    setDefaultsOnInsert: true,
-    rawResult: true,
-  });
+  const identityUpsertResult = await IdentityModel.findOneAndUpdate(
+    convertFilterForMongo(where),
+    data,
+    {
+      upsert: true,
+      new: true,
+      returnDocument: "after",
+      runValidators: true,
+      setDefaultsOnInsert: true,
+      rawResult: true,
+    }
+  );
   const identity = identityUpsertResult.value;
   if (identity && !identityUpsertResult.lastErrorObject?.updatedExisting) {
     postSave(identity);

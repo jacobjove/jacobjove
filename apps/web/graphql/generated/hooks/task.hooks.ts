@@ -22,7 +22,9 @@ import {
   taskCreationInputSchema,
   taskUpdateInputSchema,
 } from "@web/graphql/generated/schemas/task.schemas";
-import { getOptimisticResponseForTaskCreation } from "@web/graphql/generated/mutations/task.mutations";
+import {
+  getOptimisticResponseForTaskCreation,
+} from "@web/graphql/generated/mutations/task.mutations";
 
 type TaskCreationMutationHookOptions = MutationHookOptions<
   { createTask: TaskFragment },
