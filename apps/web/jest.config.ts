@@ -1,21 +1,22 @@
-import nextJest from "next/jest";
+/* eslint-disable */
+// import nextJest from "next/jest";
+import { Config } from "jest";
 
 // https://nextjs.org/docs/advanced-features/compiler#jest
+// const createJestConfig = nextJest({ dir: "./" });
 
-const createJestConfig = nextJest({ dir: "./" });
-
-// TODO: ... nx / next
-const config = {
+const config: Config = {
   displayName: "web",
   preset: "../../jest.preset.js",
-  transform: {
-    "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "@nrwl/react/plugins/jest",
-    // "^.+\\.[tj]sx?$": "babel-jest",
+  globals: {
+    "ts-jest": {
+      tsconfig: "<rootDir>/tsconfig.spec.json",
+    },
   },
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   coverageDirectory: "../../coverage/apps/web",
 };
 
-const mergedConfig = createJestConfig(config);
+// const mergedConfig = createJestConfig(config);
 
-export default mergedConfig;
+export default config;
+// export default mergedConfig;
