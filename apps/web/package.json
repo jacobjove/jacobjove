@@ -163,27 +163,5 @@
   },
   "resolutions": {
     "webpack": "^5.0.0-beta.30"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.{css,scss}": [
-      "prettier --write",
-      "stylelint --fix"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
-  },
-  "prettier": {
-    "printWidth": 100
-  },
-  "stylelint": {
-    "extends": "stylelint-config-standard"
-  },
-  "workspaces": [
-    "apps/*"
-  ]
+  }
 }

@@ -1,8 +1,7 @@
 // https://eslint.org/docs/user-guide/configuring/
 
-const sharedRules = {
-  // "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^_", ignoreRestSiblings: true }],
-  // "@typescript-eslint/no-explicit-any": "off",
+const rules = {
+  "@typescript-eslint/no-explicit-any": "error",
   "@typescript-eslint/explicit-module-boundary-types": "off",
   "@typescript-eslint/no-unused-vars": [
     "warn",
@@ -46,7 +45,7 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react", "unused-imports", "@nrwl/nx", "@typescript-eslint", "@graphql-eslint"],
-  rules: sharedRules,
+  rules,
   // https://eslint.org/docs/user-guide/configuring/configuration-files#how-do-overrides-work
   overrides: [
     {
@@ -55,10 +54,7 @@ module.exports = {
     },
     {
       files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      plugins: ["react", "@typescript-eslint", "unused-imports"],
-      // rules: sharedRules,
       rules: {
-        ...sharedRules,
         // https://nx.dev/core-features/enforce-project-boundaries#enforce-project-boundaries
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
@@ -86,12 +82,18 @@ module.exports = {
       extends: ["plugin:@nrwl/nx/javascript"],
     },
     {
-      files: ["tsconfig.json"],
+      files: ["*.json"],
       extends: ["plugin:jsonc/recommended-with-jsonc"],
+      rules: {
+        "@typescript-eslint/no-unused-expressions": "off",
+      },
+    },
+    {
+      files: ["tsconfig*.json"],
       // TODO: https://ota-meshi.github.io/eslint-plugin-jsonc/rules/sort-keys.html
       rules: {
         "jsonc/sort-keys": [
-          "error",
+          "warn",
           // https://ota-meshi.github.io/eslint-plugin-jsonc/rules/sort-keys.html#options
           {
             pathPattern: ".*", // All properties
