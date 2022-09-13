@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/book.fields";
 export type BookCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function BookCreationDialog(props: BookCreationDialogProps) {
-  const [create,] = useCreateBook();
+  const [create] = useCreateBook();
   const dataTuple = useBookReducer();
   return CreationDialog<Book, BookCreationInput, { createBook: BookFragment }>({
     typeName: "book",

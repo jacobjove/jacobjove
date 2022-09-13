@@ -40,7 +40,7 @@ services:
     expose:
       - "6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 20s
       timeout: 10s
       retries: 3

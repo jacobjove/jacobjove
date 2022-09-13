@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/habit.fields";
 export type HabitCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function HabitCreationDialog(props: HabitCreationDialogProps) {
-  const [create,] = useCreateHabit();
+  const [create] = useCreateHabit();
   const dataTuple = useHabitReducer();
   return CreationDialog<Habit, HabitCreationInput, { createHabit: HabitFragment }>({
     typeName: "habit",

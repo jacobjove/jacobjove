@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/belief.fields";
 export type BeliefCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function BeliefCreationDialog(props: BeliefCreationDialogProps) {
-  const [create,] = useCreateBelief();
+  const [create] = useCreateBelief();
   const dataTuple = useBeliefReducer();
   return CreationDialog<Belief, BeliefCreationInput, { createBelief: BeliefFragment }>({
     typeName: "belief",

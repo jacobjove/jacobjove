@@ -6,30 +6,48 @@ import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
 
 @TypeGraphQL.InputType()
 export class TaskCreationInput {
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: false })
   title!: string;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   description?: string | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   plannedStartDate?: Date | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   dueDate?: Date | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   userId!: string;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   parentId?: string | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   habitId?: string | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => Int, { nullable: false })
   rank!: number;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   completedAt?: Date | null | undefined;
 

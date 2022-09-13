@@ -169,7 +169,6 @@ const callbacks: CallbacksOptions = {
           refreshToken: freshToken.refreshToken,
         };
         await mongoosePromise;
-        console.error("UPSERTING USER...");
         const user = await upsertUser({
           where: { email: token.email },
           data: {
@@ -177,11 +176,9 @@ const callbacks: CallbacksOptions = {
             email: token.email as string,
             lastLogin: new Date(),
             image: token.picture,
-            isAdmin: false,
-            settings: {},
           },
         });
-        if (!user) throw new Error("Failed to upsert user!");
+        if (!user) throw new Error("Failed to upsert user.");
         // TODO: avoid awaiting?
         if (!user.accounts?.some((a) => a.provider === freshToken.provider)) {
           await AccountModel.create({

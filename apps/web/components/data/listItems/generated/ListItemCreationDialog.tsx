@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/listItem.fields";
 export type ListItemCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function ListItemCreationDialog(props: ListItemCreationDialogProps) {
-  const [create,] = useCreateListItem();
+  const [create] = useCreateListItem();
   const dataTuple = useListItemReducer();
   return CreationDialog<ListItem, ListItemCreationInput, { createListItem: ListItemFragment }>({
     typeName: "listItem",

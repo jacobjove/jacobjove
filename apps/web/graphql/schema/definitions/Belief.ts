@@ -1,7 +1,7 @@
 import Definition, { OPTIONAL_STRING, REQUIRED_STRING } from "@web/graphql/schema/definition";
 
-const beliefFields = ["userId", "name", "description"] as const;
-type BeliefFields = typeof beliefFields[number];
+const BELIEF_FIELDS = ["userId", "name", "description"] as const;
+type BeliefFields = typeof BELIEF_FIELDS[number];
 
 const definition: Definition<BeliefFields> = {
   name: "belief",

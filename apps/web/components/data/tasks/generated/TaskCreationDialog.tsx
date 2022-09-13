@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/task.fields";
 export type TaskCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function TaskCreationDialog(props: TaskCreationDialogProps) {
-  const [create,] = useCreateTask();
+  const [create] = useCreateTask();
   const dataTuple = useTaskReducer();
   return CreationDialog<Task, TaskCreationInput, { createTask: TaskFragment }>({
     typeName: "task",

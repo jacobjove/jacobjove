@@ -15,8 +15,6 @@ export function initializeUserData(
 ): Partial<UserData> {
   return {
     email: "",
-    isAdmin: false,
-    settings: {},
     ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary
   };
 }

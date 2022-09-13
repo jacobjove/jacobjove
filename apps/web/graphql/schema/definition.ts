@@ -79,6 +79,7 @@ export const TYPE_MAP: Record<
 export function getType(field: Field): string {
   const fieldType = TYPE_MAP[field.type].type;
   if (typeof fieldType === "function" && field.typeArg) return fieldType(field.typeArg);
+  // if (field.type === "Map" && field.shape) return h.changeCase.pascal(field.name)
   if (typeof fieldType == "string") return fieldType;
   return field.type;
 }
@@ -111,7 +112,10 @@ export function getYup(field: Field, mutation: Mutation = "create"): string {
       ret += ".required()";
     }
   } else {
-    if (!(field.type === "Boolean" && typeof field.default !== "undefined")) {
+    if (
+      field.nullable !== false &&
+      !(field.type === "Boolean" && typeof field.default !== "undefined")
+    ) {
       ret += ".nullable()";
     }
     ret += ".notRequired()";
@@ -128,6 +132,7 @@ export type Field = {
   name?: string;
   label?: string;
   required: boolean;
+  nullable?: boolean;
   unique?: boolean;
 } & (
   | {

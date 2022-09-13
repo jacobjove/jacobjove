@@ -6,15 +6,23 @@ import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
 
 @TypeGraphQL.InputType()
 export class ShelvingCreationInput {
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   bookId!: string;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   shelfId!: string;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => Int, { nullable: false })
   position!: number;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   rationale?: string | null | undefined;
 

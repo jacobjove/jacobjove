@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/goal.fields";
 export type GoalCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function GoalCreationDialog(props: GoalCreationDialogProps) {
-  const [create,] = useCreateGoal();
+  const [create] = useCreateGoal();
   const dataTuple = useGoalReducer();
   return CreationDialog<Goal, GoalCreationInput, { createGoal: GoalFragment }>({
     typeName: "goal",

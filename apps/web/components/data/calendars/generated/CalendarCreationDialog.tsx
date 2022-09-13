@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/calendar.fields";
 export type CalendarCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function CalendarCreationDialog(props: CalendarCreationDialogProps) {
-  const [create,] = useCreateCalendar();
+  const [create] = useCreateCalendar();
   const dataTuple = useCalendarReducer();
   return CreationDialog<Calendar, CalendarCreationInput, { createCalendar: CalendarFragment }>({
     typeName: "calendar",

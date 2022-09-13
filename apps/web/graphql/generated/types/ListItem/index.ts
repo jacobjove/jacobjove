@@ -5,18 +5,25 @@ import { ObjectIdScalar, JSONResolver } from "@web/graphql/schema/scalars";
 import { Model } from "@web/graphql/schema/types";
 import { prop as Property, ModelOptions } from "@typegoose/typegoose";
 import { DEFAULT_MODEL_OPTIONS } from "@web/graphql/schema/types";
+// import { preSave, postSave, postUpsert } from "./hooks";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 export default class ListItem extends Model {
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
   userId!: string;
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
   listId!: string;
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => JSONResolver, { nullable: false })
   @Property({ required: true })
   data!: Record<string, unknown>;

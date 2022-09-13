@@ -8,14 +8,27 @@ module.exports = {
         "@next/next/no-html-link-for-pages": "error",
       },
     },
+    // {
+    //   files: ["*.graphql", "*.gql"],
+    //   parser: "@graphql-eslint/eslint-plugin",
+    //   // https://github.com/B2o5T/graphql-eslint/blob/master/docs/README.md
+    //   rules: { "@graphql-eslint/known-type-names": "error" },
+    //   parserOptions: {
+    //     schema: "graphql/schema.gql",
+    //   },
+    // },
     {
-      files: ["*.ts", "*.tsx"],
-      rules: {},
+      files: ["*.ts"],
+      processor: "@graphql-eslint/graphql",
     },
-    {
-      files: ["*.js", "*.jsx"],
-      rules: {},
-    },
+    // {
+    //   files: ["*.ts", "*.tsx"],
+    //   rules: {},
+    // },
+    // {
+    //   files: ["*.js", "*.jsx"],
+    //   rules: {},
+    // },
   ],
   rules: {
     "@next/next/no-html-link-for-pages": "off",

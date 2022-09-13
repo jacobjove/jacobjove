@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/note.fields";
 export type NoteCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function NoteCreationDialog(props: NoteCreationDialogProps) {
-  const [create,] = useCreateNote();
+  const [create] = useCreateNote();
   const dataTuple = useNoteReducer();
   return CreationDialog<Note, NoteCreationInput, { createNote: NoteFragment }>({
     typeName: "note",

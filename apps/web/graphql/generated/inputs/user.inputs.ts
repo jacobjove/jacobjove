@@ -3,27 +3,42 @@
 import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar, ObjectIdScalar, JSONResolver } from "@web/graphql/schema/scalars";
 import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
+import { Settings } from "@web/graphql/generated/types/User";
 
 @TypeGraphQL.InputType()
 export class UserCreationInput {
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   name?: string | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: false })
   email!: string;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => Boolean, { nullable: true })
   emailVerified?: boolean | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   image?: string | null | undefined;
 
-  @TypeGraphQL.Field(() => Boolean, { nullable: false })
-  isAdmin!: boolean;
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
+  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  isAdmin?: boolean | undefined;
 
-  @TypeGraphQL.Field(() => JSONResolver, { nullable: false })
-  settings!: Record<string, unknown>;
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
+  @TypeGraphQL.Field(() => JSONResolver, { nullable: true })
+  settings?: Settings | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   lastLogin?: Date | null | undefined;
 
@@ -49,7 +64,7 @@ export class UserUpdateInput {
   isAdmin?: boolean | undefined;
 
   @TypeGraphQL.Field(() => JSONResolver, { nullable: true })
-  settings?: Record<string, unknown> | undefined;
+  settings?: Settings | undefined;
 
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   lastLogin?: Date | null | undefined;
@@ -76,10 +91,10 @@ export class UserWhereInput extends WhereInput {
   image?: string | undefined;
 
   @TypeGraphQL.Field(() => Boolean, { nullable: true })
-  isAdmin?: boolean | null | undefined;
+  isAdmin?: boolean | undefined;
 
   @TypeGraphQL.Field(() => JSONResolver, { nullable: true })
-  settings?: Record<string, unknown> | null | undefined;
+  settings?: Record<string, unknown> | undefined;
 
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   lastLogin?: Date | undefined;

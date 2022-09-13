@@ -25,6 +25,8 @@ export const getOptimisticResponseForUserCreation = (
       name: null,
       emailVerified: null,
       image: null,
+      isAdmin: false,
+      settings: {},
       lastLogin: null,
       accounts: [],
       calendars: [],

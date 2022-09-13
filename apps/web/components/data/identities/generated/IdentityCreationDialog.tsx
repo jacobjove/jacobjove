@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/identity.fields";
 export type IdentityCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function IdentityCreationDialog(props: IdentityCreationDialogProps) {
-  const [create,] = useCreateIdentity();
+  const [create] = useCreateIdentity();
   const dataTuple = useIdentityReducer();
   return CreationDialog<Identity, IdentityCreationInput, { createIdentity: IdentityFragment }>({
     typeName: "identity",

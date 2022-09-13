@@ -222,6 +222,9 @@ export default function NotesMenu({
                 overflowY: "hidden",
                 py: "0.4rem",
                 // maxHeight: "100%",
+                "& .MuiCollapse-root": {
+                  ml: 0,
+                },
               }}
               // expanded={notebookTreeExpanded ? ["0"] : []}
               defaultExpanded={["root"]}

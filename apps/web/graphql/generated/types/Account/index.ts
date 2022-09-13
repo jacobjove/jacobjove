@@ -5,38 +5,55 @@ import { ObjectIdScalar, DateTimeScalar } from "@web/graphql/schema/scalars";
 import { Model } from "@web/graphql/schema/types";
 import { prop as Property, ModelOptions } from "@typegoose/typegoose";
 import { DEFAULT_MODEL_OPTIONS } from "@web/graphql/schema/types";
+// import { preSave, postSave, postUpsert } from "./hooks";
 
 @TypeGraphQL.ObjectType()
 @ModelOptions(DEFAULT_MODEL_OPTIONS)
 export default class Account extends Model {
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   @Property({ required: true })
   userId!: string;
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true })
   provider!: string;
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: false })
   @Property({ type: () => String, required: true, unique: true })
   remoteId!: string;
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => [String], { nullable: false })
   @Property({ required: true })
   scopes!: string[];
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
   accessToken?: string | null;
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
   refreshToken?: string | null;
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
   @Property({ required: false, default: null })
   accessTokenExpiry?: Date | null;
 
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   @Property({ type: () => String, required: false, default: null })
   syncToken?: string | null;

@@ -12,12 +12,12 @@ import { DEFAULT_MODEL_OPTIONS } from "@web/graphql/schema/types";
 <% for (var model of modelImports) { -%>
 import <%= h.changeCase.pascal(model) %> from "@web/graphql/generated/types/<%= h.changeCase.pascal(model) %>";
 <% } -%>
-import { preSave, postSave, postUpsert } from "./hooks";
+// import { preSave, postSave, postUpsert } from "./hooks";
 <% for (var [fieldName, field] of Object.entries(fields).filter(([,field]) => (field.type === "Map" && field.shape))) { -%>
 
 export type <%= h.changeCase.pascal(fieldName) %> = {
 <% for (var [key, value] of Object.entries(field.shape)) { -%>
-  <%= key %><%- value.required ? "" : "?" %>: <%- typeMap[value.type]?.type %><%- field.required ? "" : " | null" %>;
+  <%= key %><%- (value.required || typeof value.default !== "undefined") ? "" : "?" %>: <%- typeMap[value.type]?.type %><%- (typeof value.nullable !== "undefined" ? !value.nullable : value.required) ? "" : " | null" %>;
 <% } -%>
 };
 <% } -%>
@@ -27,8 +27,11 @@ export type <%= h.changeCase.pascal(fieldName) %> = {
 export default class <%= Name %> extends Model {
 <% for (var [fieldName, field] of Object.entries(fields)) { -%>
 <% var useModelType = modelImports.includes(`${field.type}`) || modelImports.includes(`${field.typeArg}`); -%>
+<% var nonNullable = field.required || (typeof field.default !== "undefined" && field.nullable === false); -%>
+  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => <%- getConstructor(field) %>, { nullable: <%- field.required ? "false" : "true" %>})
   @Property({ <%- (field.type === "String" || field.type === "Boolean") ? `type: () => ${getConstructor(field)}, ` : "" %>required: <%- field.required %><%- field.unique ? ", unique: true" : "" %><%- field.select === false ? ", select: false" : "" %><%- typeof field.default !== "undefined" ? `, default: ${typeof field.default === "string" ? field.default : JSON5.stringify(field.default)}` : field.required ? "" : `, default: null` %> })
-  <%= fieldName %><%- field.required ? "!" : "?" %>: <%- field.shape ? h.changeCase.pascal(fieldName) : getType(field) %><%- (field.required || (field.type === "Boolean" && typeof field.default !== "undefined")) ? "" : " | null" %>;
+  <%= fieldName %><%- nonNullable ? "!" : "?" %>: <%- field.shape ? h.changeCase.pascal(fieldName) : getType(field) %><%- (nonNullable || (field.type === "Boolean" && typeof field.default !== "undefined")) ? "" : " | null" %>;
 
 <% } -%>}

@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/shelving.fields";
 export type ShelvingCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function ShelvingCreationDialog(props: ShelvingCreationDialogProps) {
-  const [create,] = useCreateShelving();
+  const [create] = useCreateShelving();
   const dataTuple = useShelvingReducer();
   return CreationDialog<Shelving, ShelvingCreationInput, { createShelving: ShelvingFragment }>({
     typeName: "shelving",

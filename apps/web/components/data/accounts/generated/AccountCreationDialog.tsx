@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/account.fields";
 export type AccountCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function AccountCreationDialog(props: AccountCreationDialogProps) {
-  const [create,] = useCreateAccount();
+  const [create] = useCreateAccount();
   const dataTuple = useAccountReducer();
   return CreationDialog<Account, AccountCreationInput, { createAccount: AccountFragment }>({
     typeName: "account",

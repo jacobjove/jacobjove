@@ -491,7 +491,8 @@ input IdentityWhereUniqueInput {
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+scalar JSON
+  @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 type List {
   _id: ObjectId!
@@ -690,14 +691,26 @@ type Mutation {
   updateBooks(data: BookUpdateInput!, where: BookWhereInput!): [Book!]!
   updateBooksDistinctly(data: BookUpdateInput!, where: BookWhereInput!): [Book!]!
   updateCalendar(data: CalendarUpdateInput!, where: CalendarWhereUniqueInput!): Calendar!
-  updateCalendarEvent(data: CalendarEventUpdateInput!, where: CalendarEventWhereUniqueInput!): CalendarEvent!
-  updateCalendarEvents(data: CalendarEventUpdateInput!, where: CalendarEventWhereInput!): [CalendarEvent!]!
-  updateCalendarEventsDistinctly(data: CalendarEventUpdateInput!, where: CalendarEventWhereInput!): [CalendarEvent!]!
+  updateCalendarEvent(
+    data: CalendarEventUpdateInput!
+    where: CalendarEventWhereUniqueInput!
+  ): CalendarEvent!
+  updateCalendarEvents(
+    data: CalendarEventUpdateInput!
+    where: CalendarEventWhereInput!
+  ): [CalendarEvent!]!
+  updateCalendarEventsDistinctly(
+    data: CalendarEventUpdateInput!
+    where: CalendarEventWhereInput!
+  ): [CalendarEvent!]!
   updateCalendars(data: CalendarUpdateInput!, where: CalendarWhereInput!): [Calendar!]!
   updateCalendarsDistinctly(data: CalendarUpdateInput!, where: CalendarWhereInput!): [Calendar!]!
   updateDashboard(data: DashboardUpdateInput!, where: DashboardWhereUniqueInput!): Dashboard!
   updateDashboards(data: DashboardUpdateInput!, where: DashboardWhereInput!): [Dashboard!]!
-  updateDashboardsDistinctly(data: DashboardUpdateInput!, where: DashboardWhereInput!): [Dashboard!]!
+  updateDashboardsDistinctly(
+    data: DashboardUpdateInput!
+    where: DashboardWhereInput!
+  ): [Dashboard!]!
   updateGoal(data: GoalUpdateInput!, where: GoalWhereUniqueInput!): Goal!
   updateGoals(data: GoalUpdateInput!, where: GoalWhereInput!): [Goal!]!
   updateGoalsDistinctly(data: GoalUpdateInput!, where: GoalWhereInput!): [Goal!]!
@@ -738,7 +751,10 @@ type Mutation {
   upsertBelief(data: BeliefCreationInput!, where: BeliefWhereUniqueInput!): Belief!
   upsertBook(data: BookCreationInput!, where: BookWhereUniqueInput!): Book!
   upsertCalendar(data: CalendarCreationInput!, where: CalendarWhereUniqueInput!): Calendar!
-  upsertCalendarEvent(data: CalendarEventCreationInput!, where: CalendarEventWhereUniqueInput!): CalendarEvent!
+  upsertCalendarEvent(
+    data: CalendarEventCreationInput!
+    where: CalendarEventWhereUniqueInput!
+  ): CalendarEvent!
   upsertDashboard(data: DashboardCreationInput!, where: DashboardWhereUniqueInput!): Dashboard!
   upsertGoal(data: GoalCreationInput!, where: GoalWhereUniqueInput!): Goal!
   upsertHabit(data: HabitCreationInput!, where: HabitWhereUniqueInput!): Habit!
@@ -842,7 +858,9 @@ input NotebookWhereUniqueInput {
   id: ObjectId
 }
 
-"""Mongo object id scalar type"""
+"""
+Mongo object id scalar type
+"""
 scalar ObjectId
 
 type Query {
@@ -1001,13 +1019,13 @@ type User {
   habits: [Habit!]
   id: ObjectId!
   image: String
-  isAdmin: Boolean!
+  isAdmin: Boolean
   lastLogin: DateTimeISO
   mantras: [Mantra!]
   name: String
   notebooks: [Notebook!]
   password: String
-  settings: JSON!
+  settings: JSON
   tasks: [Task!]
   updatedAt: DateTimeISO!
 }
@@ -1017,10 +1035,10 @@ input UserCreationInput {
   email: String!
   emailVerified: Boolean
   image: String
-  isAdmin: Boolean!
+  isAdmin: Boolean
   lastLogin: DateTimeISO
   name: String
-  settings: JSON!
+  settings: JSON
 }
 
 input UserUpdateInput {

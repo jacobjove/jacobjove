@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/notebook.fields";
 export type NotebookCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function NotebookCreationDialog(props: NotebookCreationDialogProps) {
-  const [create,] = useCreateNotebook();
+  const [create] = useCreateNotebook();
   const dataTuple = useNotebookReducer();
   return CreationDialog<Notebook, NotebookCreationInput, { createNotebook: NotebookFragment }>({
     typeName: "notebook",

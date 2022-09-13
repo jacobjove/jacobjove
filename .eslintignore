@@ -4,3 +4,4 @@ coverage
 dist
 node_modules
 _
+graphql.config.ts

@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/mantra.fields";
 export type MantraCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function MantraCreationDialog(props: MantraCreationDialogProps) {
-  const [create,] = useCreateMantra();
+  const [create] = useCreateMantra();
   const dataTuple = useMantraReducer();
   return CreationDialog<Mantra, MantraCreationInput, { createMantra: MantraFragment }>({
     typeName: "mantra",

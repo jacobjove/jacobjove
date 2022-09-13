@@ -42,10 +42,11 @@ const definition: Definition<UserFields> = {
     email: { ...REQUIRED_STRING, unique: true },
     emailVerified: OPTIONAL_BOOLEAN,
     image: OPTIONAL_STRING,
-    isAdmin: { required: true, default: false, type: "Boolean" },
+    isAdmin: { ...OPTIONAL_BOOLEAN, default: false },
     settings: {
-      required: true,
+      required: false,
       default: {},
+      nullable: false,
       type: "Map",
       shape: {
         colorMode: { type: "String", required: false, choices: ["light", "dark"] },

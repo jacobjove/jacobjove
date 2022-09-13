@@ -6,30 +6,48 @@ import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
 
 @TypeGraphQL.InputType()
 export class BookCreationInput {
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   isbn?: string | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   isbn13?: string | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: false })
   title!: string;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: false })
   slug!: string;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: true })
   description?: string | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => [String], { nullable: false })
   authorNames!: string[];
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => [String], { nullable: false })
   authorNamesLf!: string[];
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => Int, { nullable: true })
   publicationYear?: number | null | undefined;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => Int, { nullable: true })
   originalPublicationYear?: number | null | undefined;
 

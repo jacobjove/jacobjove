@@ -6,9 +6,13 @@ import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
 
 @TypeGraphQL.InputType()
 export class MantraCreationInput {
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
   userId!: string;
 
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => String, { nullable: false })
   content!: string;
 

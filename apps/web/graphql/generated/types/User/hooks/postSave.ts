@@ -28,9 +28,7 @@ export const postSave = async (user: UserDocument) => {
     saveChanges = true;
   }
   if (!user.notebooks?.length) {
-    // _mongoose = await mongoosePromise;
     const NotebookModel = getModelForClass(Notebook);
-    // const NotebookModel = mongoose.model("Notebook");
     const defaultNotebook = await NotebookModel.create({
       userId: user.id,
       title: "Journal",
@@ -39,6 +37,5 @@ export const postSave = async (user: UserDocument) => {
     user.markModified("notebooks");
     saveChanges = true;
   }
-  console.error(`POST_SAVE USER: ${user}`);
   saveChanges && user.save();
 };

@@ -22,11 +22,11 @@ export const userCreationInputSchema: SchemaOf<UserCreationInput> = object({
   emailVerified: bool().nullable().notRequired(),
   image: string().nullable().notRequired(),
   isAdmin: bool()
-    .required()
+    .notRequired()
     .default(() => {
       return false;
     }),
-  settings: settingsSchema.default(() => {
+  settings: settingsSchema.notRequired().default(() => {
     return {};
   }),
   lastLogin: date().nullable().notRequired(),

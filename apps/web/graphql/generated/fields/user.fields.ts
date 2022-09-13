@@ -36,13 +36,13 @@ const fields: Record<FieldKey, Field> = {
   isAdmin: {
     label: "isAdmin",
     type: "Boolean",
-    required: true,
+    required: false,
     widget: {},
   },
   settings: {
     label: "settings",
     type: "Map",
-    required: true,
+    required: false,
     widget: {},
   },
   lastLogin: {

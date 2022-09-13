@@ -34,5 +34,5 @@
     "target": "esnext"
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "cypress", "_"]
+  "exclude": ["node_modules", "cypress", "_", "graphql.config.ts"]
 }

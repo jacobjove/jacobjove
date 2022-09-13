@@ -35,7 +35,9 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  // https://eslint.org/docs/user-guide/configuring/configuration-files#extending-configuration-files
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  // https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -43,7 +45,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "unused-imports", "@nrwl/nx"],
+  plugins: ["react", "unused-imports", "@nrwl/nx", "@typescript-eslint", "@graphql-eslint"],
   rules: sharedRules,
   // https://eslint.org/docs/user-guide/configuring/configuration-files#how-do-overrides-work
   overrides: [
@@ -52,29 +54,7 @@ module.exports = {
       rules: { "@typescript-eslint/no-non-null-assertion": "off" },
     },
     {
-      files: ["*.graphql", "*.gql"],
-      parser: "@graphql-eslint/eslint-plugin",
-      plugins: ["@graphql-eslint"],
-      // https://github.com/B2o5T/graphql-eslint/blob/master/docs/README.md
-      rules: { "@graphql-eslint/known-type-names": "error" },
-      parserOptions: {
-        schema: "graphql/schema.gql",
-      },
-    },
-    {
-      files: ["*.ts"],
-      processor: "@graphql-eslint/graphql",
-    },
-    {
       files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      extends: [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        // "next",
-      ],
-      // https://www.npmjs.com/package/@typescript-eslint/parser
-      parser: "@typescript-eslint/parser",
       plugins: ["react", "@typescript-eslint", "unused-imports"],
       // rules: sharedRules,
       rules: {
@@ -100,12 +80,10 @@ module.exports = {
     {
       files: ["*.ts", "*.tsx"],
       extends: ["plugin:@nrwl/nx/typescript"],
-      rules: {},
     },
     {
       files: ["*.js", "*.jsx"],
       extends: ["plugin:@nrwl/nx/javascript"],
-      rules: {},
     },
     {
       files: ["tsconfig.json"],

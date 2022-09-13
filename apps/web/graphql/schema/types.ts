@@ -5,7 +5,6 @@ import { ObjectId } from "mongodb";
 import { Field, InputType, ObjectType } from "type-graphql-v2-fork";
 
 export type ID = string;
-export type Map = Record<string, unknown>;
 
 export const DEFAULT_MODEL_OPTIONS: IModelOptions = {
   schemaOptions: {

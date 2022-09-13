@@ -9,7 +9,7 @@ import fields from "@web/graphql/generated/fields/user.fields";
 export type UserCreationDialogProps = ReturnType<typeof bindPopover>;
 
 export default function UserCreationDialog(props: UserCreationDialogProps) {
-  const [create,] = useCreateUser();
+  const [create] = useCreateUser();
   const dataTuple = useUserReducer();
   return CreationDialog<User, UserCreationInput, { createUser: UserFragment }>({
     typeName: "user",
