@@ -165,7 +165,7 @@
     "nginx-linter": "^0.6.3",
     "postcss": "^8.4.4",
     "prettier": "^2.4.1",
-    "prettier-plugin-organize-imports": "^2.3.3",
+    "prettier-plugin-organize-imports": "^3.1.1",
     "stylelint": "^14.11.0",
     "stylelint-config-standard": "^28.0.0",
     "ts-jest": "28.0.5",
