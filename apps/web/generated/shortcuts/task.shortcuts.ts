@@ -21,11 +21,8 @@ export const createTask = async ({ data }: TaskCreationArgs) => {
 };
 
 export const updateTask = async ({ where, data }: TaskUpdateArgs) => {
-  console.warn(">>> updateTask shortcut");
   const filter = convertFilterForMongo(where);
-  console.warn(">>> updateTask filter", filter);
   const task = await TaskModel.findOneAndUpdate(filter, data, { returnDocument: "after" });
-  console.warn(">>> updateTask result", task);
   // NOTE: This update fails if it's not awaited.
   task &&
     (await UserModel.findOneAndUpdate(

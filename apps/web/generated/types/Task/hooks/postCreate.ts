@@ -23,7 +23,6 @@ export const postCreate = async (task: Task) => {
     );
   }
   if (task.plannedStartDate) {
-    console.warn("Attempting to upsert calendar event");
     upsertCalendarEvent({
       where: { taskId },
       data: {

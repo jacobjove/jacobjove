@@ -81,7 +81,6 @@ export class TaskResolver {
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: TaskUpdateArgs
   ) {
-    console.warn(">>> updateTask resolver");
     return _updateTask(args);
   }
 

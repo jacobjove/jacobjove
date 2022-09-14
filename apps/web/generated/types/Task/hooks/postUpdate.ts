@@ -8,14 +8,12 @@ import { addMinutes } from "date-fns";
 import User from "../../User";
 
 export const postUpdate = async (task: DocumentType<Task>) => {
-  console.warn(">>> postUpdate task");
   if (task.plannedStartDate) {
     const mongoose = await mongoosePromise;
     const UserModel = mongoose.model("User");
     const taskId = task.id ?? task._id.toHexString();
     const user: User | null = await UserModel.findById(task.userId);
     if (!user) throw new Error(`Invalid user id: ${task.userId}`);
-    console.warn("Attempting to upsert calendar event");
     await upsertCalendarEvent({
       where: { taskId },
       data: {

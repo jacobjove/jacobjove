@@ -6,7 +6,6 @@ import CalendarEvent from "..";
 import { findUser } from "@web/generated/shortcuts/user.shortcuts";
 
 export const postCreate = async (calendarEvent: CalendarEvent) => {
-  console.warn("CalendarEvent.postCreate");
   const mongoose = await mongoosePromise;
   const UserModel = mongoose.model("User");
   const user = await findUser({ where: { id: calendarEvent.userId } });
