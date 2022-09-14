@@ -101,7 +101,6 @@
     "react-swipeable-views-utils": "^0.14.0",
     "redis": "^4.2.0",
     "reflect-metadata": "^0.1.13",
-    "regenerator-runtime": "0.13.7",
     "sass": "^1.52.2",
     "sharp": "*",
     "type-graphql-v2-fork": "^2.0.0-alpha2",
