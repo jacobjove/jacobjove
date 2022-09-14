@@ -30,9 +30,9 @@ import { useUser } from "@web/components/contexts/UserContext";
 import SearchDialog from "@web/components/search/SearchDialog";
 import { noteFragment } from "@web/graphql/generated/fragments/note.fragment";
 // import Select from "@web/components/Select";
-import { useCreateNotebook, useUpdateNotebook } from "@web/graphql/generated/hooks/notebook.hooks";
-import Note from "@web/graphql/generated/types/Note";
-import Notebook from "@web/graphql/generated/types/Notebook";
+import { useCreateNotebook, useUpdateNotebook } from "@web/generated/hooks/notebook.hooks";
+import Note from "@web/generated/types/Note";
+import Notebook from "@web/generated/types/Notebook";
 import { ID } from "@web/graphql/schema/types";
 import { format } from "date-fns";
 import partition from "lodash/partition";
@@ -226,13 +226,13 @@ export default function NotesMenu({
                   ml: 0,
                 },
               }}
-              // expanded={notebookTreeExpanded ? ["0"] : []}
-              defaultExpanded={["root"]}
+              // https://mui.com/material-ui/api/tree-view/#props
+              defaultExpanded={["root", ...notebooks.map((notebook) => notebook.id)]}
             >
               <TreeItem nodeId={"root"} label="Notebooks">
                 {notebooks.map((notebook, index) => {
                   return (
-                    <TreeItem key={index} nodeId={`${notebook.id}`} label={notebook.title} />
+                    <TreeItem key={index} nodeId={notebook.id} label={notebook.title} />
                     // <TreeItem nodeId="6" label="MUI">
                     //   <TreeItem nodeId="8" label="index.js" />
                     // </TreeItem>

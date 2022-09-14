@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import Autocomplete, { AutocompleteRenderOptionState } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import Note from "@web/graphql/generated/types/Note";
+import Note from "@web/generated/types/Note";
 import { DocumentNode } from "graphql";
 import debounce from "lodash/debounce";
 import { FC, HTMLAttributes, ReactNode, SyntheticEvent, useRef } from "react";

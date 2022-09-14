@@ -1,8 +1,8 @@
 import CreationDialog from "@web/components/data/CreationDialog";
-import { useCreateHabit, useHabitReducer } from "@web/graphql/generated/hooks/habit.hooks";
+import { useCreateHabit, useHabitReducer } from "@web/generated/hooks/habit.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { HabitCreationInput } from "@web/graphql/generated/inputs/habit.inputs";
-import Habit from "@web/graphql/generated/types/Habit";
+import Habit from "@web/generated/types/Habit";
 import { HabitFragment } from "@web/graphql/generated/fragments/habit.fragment";
 import fields from "@web/graphql/generated/fields/habit.fields";
 

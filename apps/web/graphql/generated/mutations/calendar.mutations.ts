@@ -10,6 +10,7 @@ import {
   CalendarCreationInput,
   CalendarUpdateInput,
 } from "@web/graphql/generated/inputs/calendar.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_CALENDAR = gql`
   mutation CreateCalendar($data: CalendarCreationInput!) {
@@ -27,7 +28,7 @@ export const getOptimisticResponseForCalendarCreation = (
   return {
     createCalendar: {
       __typename: "Calendar",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       color: null,
       provider: null,
       remoteId: null,

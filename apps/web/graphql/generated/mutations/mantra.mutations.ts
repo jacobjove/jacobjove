@@ -7,6 +7,7 @@ import {
   MantraCreationInput,
   MantraUpdateInput,
 } from "@web/graphql/generated/inputs/mantra.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_MANTRA = gql`
   mutation CreateMantra($data: MantraCreationInput!) {
@@ -24,7 +25,7 @@ export const getOptimisticResponseForMantraCreation = (
   return {
     createMantra: {
       __typename: "Mantra",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       archivedAt: null,
       ...data,
       createdAt: now,

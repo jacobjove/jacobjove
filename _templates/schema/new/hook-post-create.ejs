@@ -1,0 +1,13 @@
+---
+to: apps/web/generated/types/<%= Name %>/hooks/postCreate.ts
+unless_exists: true
+---
+/* Edit this file to add a non-default post-save hook for the <%= Name %> type. */
+
+import { DocumentType } from "@typegoose/typegoose";
+import { postCreate as _postCreate } from "@web/graphql/schema/helpers";
+import <%= Name %> from "@web/generated/types/<%= Name %>";
+
+export const postCreate = async (<%= name %>: DocumentType<<%= Name %>>) => {
+  return _postCreate(<%= name %>);
+}

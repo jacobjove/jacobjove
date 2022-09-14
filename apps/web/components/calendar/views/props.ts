@@ -1,4 +1,4 @@
-import { Calendar, CalendarEvent } from "@web/graphql/generated/types";
+import { Calendar, CalendarEvent } from "@web/generated/types";
 import { Dispatch } from "react";
 
 export type CalendarData = {

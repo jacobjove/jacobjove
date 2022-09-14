@@ -4,6 +4,7 @@ import { gql, MutationHookOptions } from "@apollo/client";
 import { noteFragment, NoteFragment } from "@web/graphql/generated/fragments/note.fragment";
 import { NoteCreationArgs } from "@web/graphql/generated/args/note.args";
 import { NoteCreationInput, NoteUpdateInput } from "@web/graphql/generated/inputs/note.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_NOTE = gql`
   mutation CreateNote($data: NoteCreationInput!) {
@@ -21,7 +22,7 @@ export const getOptimisticResponseForNoteCreation = (
   return {
     createNote: {
       __typename: "Note",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       body: "",
       public: null,
       archivedAt: null,

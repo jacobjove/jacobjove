@@ -1,8 +1,8 @@
 import CreationDialog from "@web/components/data/CreationDialog";
-import { useCreateNotebook, useNotebookReducer } from "@web/graphql/generated/hooks/notebook.hooks";
+import { useCreateNotebook, useNotebookReducer } from "@web/generated/hooks/notebook.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { NotebookCreationInput } from "@web/graphql/generated/inputs/notebook.inputs";
-import Notebook from "@web/graphql/generated/types/Notebook";
+import Notebook from "@web/generated/types/Notebook";
 import { NotebookFragment } from "@web/graphql/generated/fragments/notebook.fragment";
 import fields from "@web/graphql/generated/fields/notebook.fields";
 

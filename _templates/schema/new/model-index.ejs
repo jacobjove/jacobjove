@@ -1,6 +1,7 @@
 ---
 inject: true
-to: apps/web/graphql/generated/models/index.ts
+to: apps/web/generated/models/index.ts
 append: true
+skip_if: export { default as <%= Name %>Model } from "./<%= Name %>Model";
 ---
 export { default as <%= Name %>Model } from "./<%= Name %>Model";

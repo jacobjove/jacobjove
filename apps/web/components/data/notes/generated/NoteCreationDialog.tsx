@@ -1,8 +1,8 @@
 import CreationDialog from "@web/components/data/CreationDialog";
-import { useCreateNote, useNoteReducer } from "@web/graphql/generated/hooks/note.hooks";
+import { useCreateNote, useNoteReducer } from "@web/generated/hooks/note.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { NoteCreationInput } from "@web/graphql/generated/inputs/note.inputs";
-import Note from "@web/graphql/generated/types/Note";
+import Note from "@web/generated/types/Note";
 import { NoteFragment } from "@web/graphql/generated/fragments/note.fragment";
 import fields from "@web/graphql/generated/fields/note.fields";
 

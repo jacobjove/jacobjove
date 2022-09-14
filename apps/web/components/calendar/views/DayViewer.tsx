@@ -14,7 +14,7 @@ import TimeLabelsColumn from "@web/components/calendar/TimeLabelsColumn";
 import DateContext from "@web/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@web/components/contexts/UserContext";
-import { Calendar, CalendarEvent } from "@web/graphql/generated/types";
+import { Calendar, CalendarEvent } from "@web/generated/types";
 import { ID } from "@web/graphql/schema/types";
 import {
   addMinutes,

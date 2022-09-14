@@ -11,9 +11,23 @@ import { Model, Document } from "mongoose";
 import { getClassForDocument } from "@typegoose/typegoose";
 import * as resolvers from "@web/graphql/generated/resolvers";
 import { withSentry } from "@sentry/nextjs";
+import cors from "micro-cors";
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const IS_DEV = process.env.NODE_ENV === "development";
+
+const withCors = cors({
+  allowCredentials: true,
+  allowMethods: ["GET", "POST", "OPTIONS"],
+  allowHeaders: [
+    "Access-Control-Allow-Headers",
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+  ],
+  origin: "https://studio.apollographql.com",
+});
 
 export const TypegooseMiddleware: MiddlewareFn = async (_, next) => {
   const result = await next();
@@ -50,10 +64,6 @@ const getApolloServerHandler = async () => {
       debug: !IS_PROD,
       introspection: IS_DEV,
       cache: "bounded",
-      // TODO: https://www.apollographql.com/docs/apollo-server/security/cors/
-      // cors: {
-      //   origin: ["https://studio.apollographql.com"],
-      // }
     });
     await apolloServer.start();
     global.apolloServerHandler = apolloServer.createHandler({ path: "/api/graphql" });
@@ -63,15 +73,12 @@ const getApolloServerHandler = async () => {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const apolloServerHandlerPromise = getApolloServerHandler();
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Origin", "https://studio.apollographql.com");
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   if (req.method === "OPTIONS") {
     res.end();
     return false;
   }
   const apolloServerHandler = await apolloServerHandlerPromise;
-  return apolloServerHandler(req, res);
+  return withCors(apolloServerHandler)(req, res);
 };
 
 export default withSentry(handler);

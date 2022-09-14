@@ -26,7 +26,7 @@
     "generate": "npm run schema:generate && graphql-codegen --config codegen.yml; eslint . --fix",
     "generate:watch": "graphql-codegen --config codegen.yml --watch",
     "prepare": "npx husky install",
-    "schema:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in apps/web/graphql/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in apps/web/graphql/schema/definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen schema new --definition $(basename -- $filename); done"
+    "schema:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in **/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in apps/web/graphql/schema/definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen schema new --definition $(basename -- $filename); done"
   },
   "dependencies": {
     "@apollo/client": "^3.6.8",
@@ -53,6 +53,7 @@
     "apple-icloud": "^1.1.0",
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
+    "bson": "^4.7.0",
     "class-validator": "^0.13.2",
     "core-js": "^3.6.5",
     "cronstrue": "^2.11.0",

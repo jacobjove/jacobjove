@@ -1,7 +1,7 @@
 import { withSentry } from "@sentry/nextjs";
-import AccountModel from "@web/graphql/generated/models/AccountModel";
-import UserModel from "@web/graphql/generated/models/UserModel";
-import { upsertUser } from "@root/apps/web/graphql/generated/shortcuts/user.shortcuts";
+import AccountModel from "@web/generated/models/AccountModel";
+import UserModel from "@web/generated/models/UserModel";
+import { upsertUser } from "@root/apps/web/generated/shortcuts/user.shortcuts";
 import mongoosePromise from "@web/lib/mongodb";
 import { NoUndefinedField } from "@web/types/global";
 import { PageConfig } from "next";

@@ -11,6 +11,12 @@ export const taskCreationInputSchema: SchemaOf<TaskCreationInput> = object({
   userId: string().required(),
   parentId: string().nullable().notRequired(),
   habitId: string().nullable().notRequired(),
+  expectedDuration: number()
+    .nullable()
+    .notRequired()
+    .default(() => {
+      return 30;
+    }),
   rank: number().required(),
   completedAt: date().nullable().notRequired(),
   archivedAt: date().nullable().notRequired(),
@@ -24,6 +30,7 @@ export const taskUpdateInputSchema: SchemaOf<TaskUpdateInput> = object({
   userId: string().notRequired(),
   parentId: string().nullable().notRequired(),
   habitId: string().nullable().notRequired(),
+  expectedDuration: number().nullable().notRequired(),
   rank: number().notRequired(),
   completedAt: date().nullable().notRequired(),
   archivedAt: date().nullable().notRequired(),

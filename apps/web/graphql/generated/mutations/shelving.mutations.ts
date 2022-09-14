@@ -10,6 +10,7 @@ import {
   ShelvingCreationInput,
   ShelvingUpdateInput,
 } from "@web/graphql/generated/inputs/shelving.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_SHELVING = gql`
   mutation CreateShelving($data: ShelvingCreationInput!) {
@@ -27,7 +28,7 @@ export const getOptimisticResponseForShelvingCreation = (
   return {
     createShelving: {
       __typename: "Shelving",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       rationale: null,
       archivedAt: null,
       ...data,

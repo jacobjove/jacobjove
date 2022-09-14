@@ -10,6 +10,7 @@ import {
   IdentityCreationInput,
   IdentityUpdateInput,
 } from "@web/graphql/generated/inputs/identity.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_IDENTITY = gql`
   mutation CreateIdentity($data: IdentityCreationInput!) {
@@ -27,7 +28,7 @@ export const getOptimisticResponseForIdentityCreation = (
   return {
     createIdentity: {
       __typename: "Identity",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       description: null,
       archivedAt: null,
       ...data,

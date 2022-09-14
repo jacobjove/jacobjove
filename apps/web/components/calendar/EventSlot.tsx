@@ -5,12 +5,12 @@ import { DraggedTask } from "@web/components/data/tasks/TaskRow";
 import {
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
-} from "@web/graphql/generated/hooks/calendarEvent.hooks";
-import { useUpdateTask } from "@web/graphql/generated/hooks/task.hooks";
+} from "@web/generated/hooks/calendarEvent.hooks";
+import { useUpdateTask } from "@web/generated/hooks/task.hooks";
 import { CalendarEventCreationInput } from "@web/graphql/generated/inputs/calendarEvent.inputs";
 import { getOptimisticResponseForTaskUpdate } from "@web/graphql/generated/mutations/task.mutations";
 import { calendarEventCreationInputSchema } from "@web/graphql/generated/schemas/calendarEvent.schemas";
-import CalendarEvent from "@web/graphql/generated/types/CalendarEvent";
+import CalendarEvent from "@web/generated/types/CalendarEvent";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@web/utils/constants";
 import { addMinutes, differenceInMinutes } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";

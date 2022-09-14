@@ -4,6 +4,7 @@ import { gql, MutationHookOptions } from "@apollo/client";
 import { bookFragment, BookFragment } from "@web/graphql/generated/fragments/book.fragment";
 import { BookCreationArgs } from "@web/graphql/generated/args/book.args";
 import { BookCreationInput, BookUpdateInput } from "@web/graphql/generated/inputs/book.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_BOOK = gql`
   mutation CreateBook($data: BookCreationInput!) {
@@ -21,7 +22,7 @@ export const getOptimisticResponseForBookCreation = (
   return {
     createBook: {
       __typename: "Book",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       isbn: null,
       isbn13: null,
       description: null,

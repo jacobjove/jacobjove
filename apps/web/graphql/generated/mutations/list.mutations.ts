@@ -4,6 +4,7 @@ import { gql, MutationHookOptions } from "@apollo/client";
 import { listFragment, ListFragment } from "@web/graphql/generated/fragments/list.fragment";
 import { ListCreationArgs } from "@web/graphql/generated/args/list.args";
 import { ListCreationInput, ListUpdateInput } from "@web/graphql/generated/inputs/list.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_LIST = gql`
   mutation CreateList($data: ListCreationInput!) {
@@ -21,7 +22,7 @@ export const getOptimisticResponseForListCreation = (
   return {
     createList: {
       __typename: "List",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       description: null,
       archivedAt: null,
       ...data,

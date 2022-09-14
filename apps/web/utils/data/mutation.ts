@@ -41,13 +41,15 @@ export function useHandleMutation<MutationReturnType, MutationArgsType extends {
       ) => {
         const controller = new window.AbortController();
         abortController.current = controller;
+        let data = mutationOptions?.variables?.data;
         if (preMutationValidationSchema && !handlerOptions?.skipValidation) {
-          preMutationValidationSchema.validateSync(mutationOptions?.variables?.data);
+          const validationResult = preMutationValidationSchema.validateSync(data);
+          data = validationResult;
         }
         const modifiedMutationOptions = mutationOptions
           ? {
-              ...(!!(getOptimisticResponse && mutationOptions?.variables?.data) && {
-                optimisticResponse: getOptimisticResponse(mutationOptions?.variables?.data),
+              ...(!!(getOptimisticResponse && data) && {
+                optimisticResponse: getOptimisticResponse(data),
               }),
               ...mutationOptions,
               context: { fetchOptions: { signal: controller.signal } },

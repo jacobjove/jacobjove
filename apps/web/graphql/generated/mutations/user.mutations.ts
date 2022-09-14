@@ -4,6 +4,7 @@ import { gql, MutationHookOptions } from "@apollo/client";
 import { userFragment, UserFragment } from "@web/graphql/generated/fragments/user.fragment";
 import { UserCreationArgs } from "@web/graphql/generated/args/user.args";
 import { UserCreationInput, UserUpdateInput } from "@web/graphql/generated/inputs/user.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_USER = gql`
   mutation CreateUser($data: UserCreationInput!) {
@@ -21,7 +22,7 @@ export const getOptimisticResponseForUserCreation = (
   return {
     createUser: {
       __typename: "User",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       name: null,
       emailVerified: null,
       image: null,

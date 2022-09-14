@@ -10,6 +10,7 @@ import {
   AccountCreationInput,
   AccountUpdateInput,
 } from "@web/graphql/generated/inputs/account.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_ACCOUNT = gql`
   mutation CreateAccount($data: AccountCreationInput!) {
@@ -27,7 +28,7 @@ export const getOptimisticResponseForAccountCreation = (
   return {
     createAccount: {
       __typename: "Account",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       accessToken: null,
       refreshToken: null,
       accessTokenExpiry: null,

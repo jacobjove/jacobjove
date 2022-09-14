@@ -43,6 +43,11 @@ export class TaskCreationInput {
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
+  @TypeGraphQL.Field(() => Int, { nullable: true })
+  expectedDuration?: number | null | undefined;
+
+  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
+  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @TypeGraphQL.Field(() => Int, { nullable: false })
   rank!: number;
 
@@ -79,6 +84,9 @@ export class TaskUpdateInput {
   habitId?: string | null | undefined;
 
   @TypeGraphQL.Field(() => Int, { nullable: true })
+  expectedDuration?: number | null | undefined;
+
+  @TypeGraphQL.Field(() => Int, { nullable: true })
   rank?: number | undefined;
 
   @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
@@ -113,6 +121,9 @@ export class TaskWhereInput extends WhereInput {
 
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   habitId?: string | undefined;
+
+  @TypeGraphQL.Field(() => Int, { nullable: true })
+  expectedDuration?: number | undefined;
 
   @TypeGraphQL.Field(() => Int, { nullable: true })
   rank?: number | null | undefined;

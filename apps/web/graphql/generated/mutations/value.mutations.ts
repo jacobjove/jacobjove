@@ -4,6 +4,7 @@ import { gql, MutationHookOptions } from "@apollo/client";
 import { valueFragment, ValueFragment } from "@web/graphql/generated/fragments/value.fragment";
 import { ValueCreationArgs } from "@web/graphql/generated/args/value.args";
 import { ValueCreationInput, ValueUpdateInput } from "@web/graphql/generated/inputs/value.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_VALUE = gql`
   mutation CreateValue($data: ValueCreationInput!) {
@@ -21,7 +22,7 @@ export const getOptimisticResponseForValueCreation = (
   return {
     createValue: {
       __typename: "Value",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       description: null,
       archivedAt: null,
       ...data,

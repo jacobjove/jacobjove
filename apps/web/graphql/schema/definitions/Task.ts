@@ -13,6 +13,7 @@ const taskFields = [
   "parentId",
   "habitId",
   "rank",
+  "expectedDuration",
   "completedAt",
 ] as const;
 
@@ -26,6 +27,7 @@ const fields: Record<TaskFields, Field> = {
   userId: { required: true, type: "ID" },
   parentId: { required: false, type: "ID" },
   habitId: { required: false, type: "ID" },
+  expectedDuration: { required: false, type: "Int", default: 30 },
   rank: { required: true, type: "Int", initialize: true },
   completedAt: { required: false, type: "DateTime" },
 };

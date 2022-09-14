@@ -3,7 +3,7 @@ import { grey } from "@mui/material/colors";
 import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useUser } from "@web/components/contexts/UserContext";
-import { useUpdateUser } from "@web/graphql/generated/hooks/user.hooks";
+import { useUpdateUser } from "@web/generated/hooks/user.hooks";
 import { createContext, Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from "react";
 
 // NOTE: It's probably best to stick with "light" as the default color mode,

@@ -10,6 +10,7 @@ import {
   CalendarEventCreationInput,
   CalendarEventUpdateInput,
 } from "@web/graphql/generated/inputs/calendarEvent.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_CALENDAR_EVENT = gql`
   mutation CreateCalendarEvent($data: CalendarEventCreationInput!) {
@@ -27,7 +28,7 @@ export const getOptimisticResponseForCalendarEventCreation = (
   return {
     createCalendarEvent: {
       __typename: "CalendarEvent",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       remoteId: null,
       scheduleId: null,
       habitId: null,

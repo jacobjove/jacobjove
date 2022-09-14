@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import AppLayout from "@web/components/AppLayout";
 import NoteViewer from "@web/components/data/notes/NoteViewer";
 import { noteFragment } from "@web/graphql/generated/fragments/note.fragment";
-import Note from "@web/graphql/generated/types/Note";
+import Note from "@web/generated/types/Note";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";

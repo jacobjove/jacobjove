@@ -7,6 +7,7 @@ import {
   BeliefCreationInput,
   BeliefUpdateInput,
 } from "@web/graphql/generated/inputs/belief.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_BELIEF = gql`
   mutation CreateBelief($data: BeliefCreationInput!) {
@@ -24,7 +25,7 @@ export const getOptimisticResponseForBeliefCreation = (
   return {
     createBelief: {
       __typename: "Belief",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       description: null,
       archivedAt: null,
       ...data,

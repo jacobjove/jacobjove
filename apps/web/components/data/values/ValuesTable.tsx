@@ -8,7 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Onboarder from "@web/components/Onboarder";
-import Value from "@web/graphql/generated/types/Value";
+import Value from "@web/generated/types/Value";
 import Link from "next/link";
 import { FC } from "react";
 

@@ -9,7 +9,7 @@ import { DraggedTask } from "@web/components/data/tasks/TaskRow";
 import TasksTable from "@web/components/data/tasks/TasksTable";
 import { DistinctTasksUpdateArgs } from "@web/graphql/generated/args/task.args";
 import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import { useTasksReducer, useUpdateTask } from "@web/graphql/generated/hooks/task.hooks";
+import { useTasksReducer, useUpdateTask } from "@web/generated/hooks/task.hooks";
 import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
@@ -155,10 +155,10 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
   );
 
   const views: [TasksView, string][] = [
-    ["today", "To do"],
+    // ["today", "To do"],
     // TODO
     // ["next7", "Next 7 Days"],
-    // ["all", "All"],
+    ["all", "All"],
   ];
 
   useEffect(() => {
@@ -169,7 +169,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
     });
   }, [tasks, dispatchTasks]);
 
-  console.log("Rendering TasksAccordion");
+  console.log(tasksBySelection);
 
   return (
     <TableContainer

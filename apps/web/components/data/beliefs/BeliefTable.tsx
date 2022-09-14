@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Belief from "@web/graphql/generated/types/Belief";
+import Belief from "@web/generated/types/Belief";
 import { FC } from "react";
 
 interface BeliefTableProps {
