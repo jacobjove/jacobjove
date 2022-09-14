@@ -29,12 +29,12 @@ const FORMAT_A = "MMMM d, yyyy";
 const FORMAT_B = "MMM d, yyyy";
 const FORMAT_C = "yyyy-M-d";
 const FORMAT_D = "M/d";
-const FORMAT_CH_LENGTHS: Record<string, number> = {
-  [FORMAT_A]: 16,
-  [FORMAT_B]: 12,
-  [FORMAT_C]: 8,
-  [FORMAT_D]: 3,
-};
+// const FORMAT_CH_LENGTHS: Record<string, number> = {
+//   [FORMAT_A]: 16,
+//   [FORMAT_B]: 12,
+//   [FORMAT_C]: 8,
+//   [FORMAT_D]: 3,
+// };
 
 const DateSelector: FC<DateSelectorProps> = ({
   date: currentDate,
