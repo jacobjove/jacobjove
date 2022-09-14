@@ -10,6 +10,7 @@ import {
   NotebookCreationInput,
   NotebookUpdateInput,
 } from "@web/graphql/generated/inputs/notebook.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_NOTEBOOK = gql`
   mutation CreateNotebook($data: NotebookCreationInput!) {
@@ -27,7 +28,7 @@ export const getOptimisticResponseForNotebookCreation = (
   return {
     createNotebook: {
       __typename: "Notebook",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       description: null,
       public: null,
       archivedAt: null,

@@ -1,7 +1,8 @@
 ---
-to: apps/web/graphql/generated/types/<%= Name %>/hooks/index.ts
+to: apps/web/generated/types/<%= Name %>/hooks/index.ts
 force: true
 ---
 export { preSave } from "./preSave";
-export { postSave } from "./postSave";
+export { postCreate } from "./postCreate";
+export { postUpdate } from "./postUpdate";
 export { postUpsert } from "./postUpsert";

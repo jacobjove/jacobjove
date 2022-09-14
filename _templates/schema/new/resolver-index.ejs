@@ -2,5 +2,6 @@
 inject: true
 to: apps/web/graphql/generated/resolvers/index.ts
 append: true
+skip_if: export { <%= Name %>Resolver } from "./<%= name %>.resolver";
 ---
 export { <%= Name %>Resolver } from "./<%= name %>.resolver";

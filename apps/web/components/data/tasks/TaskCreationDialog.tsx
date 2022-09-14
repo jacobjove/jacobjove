@@ -7,13 +7,9 @@ import CreationDialog from "@web/components/data/CreationDialog";
 import TasksTable from "@web/components/data/tasks/TasksTable";
 import fields from "@web/graphql/generated/fields/task.fields";
 import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import {
-  useCreateTask,
-  useTaskReducer,
-  useTasksReducer,
-} from "@web/graphql/generated/hooks/task.hooks";
+import { useCreateTask, useTaskReducer, useTasksReducer } from "@web/generated/hooks/task.hooks";
 import { TaskCreationInput } from "@web/graphql/generated/inputs/task.inputs";
-import Task from "@web/graphql/generated/types/Task";
+import Task from "@web/generated/types/Task";
 import { ID } from "@web/graphql/schema/types";
 import { format } from "date-fns";
 import { bindPopover } from "material-ui-popup-state/hooks";

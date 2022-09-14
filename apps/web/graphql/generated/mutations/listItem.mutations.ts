@@ -10,6 +10,7 @@ import {
   ListItemCreationInput,
   ListItemUpdateInput,
 } from "@web/graphql/generated/inputs/listItem.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_LIST_ITEM = gql`
   mutation CreateListItem($data: ListItemCreationInput!) {
@@ -27,7 +28,7 @@ export const getOptimisticResponseForListItemCreation = (
   return {
     createListItem: {
       __typename: "ListItem",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       archivedAt: null,
       ...data,
       createdAt: now,

@@ -4,6 +4,7 @@ import { gql, MutationHookOptions } from "@apollo/client";
 import { habitFragment, HabitFragment } from "@web/graphql/generated/fragments/habit.fragment";
 import { HabitCreationArgs } from "@web/graphql/generated/args/habit.args";
 import { HabitCreationInput, HabitUpdateInput } from "@web/graphql/generated/inputs/habit.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_HABIT = gql`
   mutation CreateHabit($data: HabitCreationInput!) {
@@ -21,7 +22,7 @@ export const getOptimisticResponseForHabitCreation = (
   return {
     createHabit: {
       __typename: "Habit",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       description: null,
       public: false,
       cron: null,

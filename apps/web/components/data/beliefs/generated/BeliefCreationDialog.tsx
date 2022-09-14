@@ -1,8 +1,8 @@
 import CreationDialog from "@web/components/data/CreationDialog";
-import { useCreateBelief, useBeliefReducer } from "@web/graphql/generated/hooks/belief.hooks";
+import { useCreateBelief, useBeliefReducer } from "@web/generated/hooks/belief.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { BeliefCreationInput } from "@web/graphql/generated/inputs/belief.inputs";
-import Belief from "@web/graphql/generated/types/Belief";
+import Belief from "@web/generated/types/Belief";
 import { BeliefFragment } from "@web/graphql/generated/fragments/belief.fragment";
 import fields from "@web/graphql/generated/fields/belief.fields";
 

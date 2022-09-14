@@ -1,4 +1,4 @@
-import { createContext, FC, useEffect, useState } from "react";
+import { createContext, FC, useContext, useEffect, useState } from "react";
 
 const DateContext = createContext(new Date());
 
@@ -18,3 +18,7 @@ export const DateContextProvider: FC = ({ children }) => {
 };
 
 export default DateContext;
+
+export const useDate = () => {
+  return useContext(DateContext);
+};

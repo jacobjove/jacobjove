@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Checkbox, { CheckboxProps } from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import Calendar from "@web/graphql/generated/types/Calendar";
+import Calendar from "@web/generated/types/Calendar";
 import { ID } from "@web/graphql/schema/types";
 import { Dispatch, FC } from "react";
 

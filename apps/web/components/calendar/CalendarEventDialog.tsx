@@ -9,10 +9,10 @@ import {
   useCalendarEventReducer,
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
-} from "@web/graphql/generated/hooks/calendarEvent.hooks";
+} from "@web/generated/hooks/calendarEvent.hooks";
 import { CalendarEventCreationInput } from "@web/graphql/generated/inputs/calendarEvent.inputs";
 import { getOptimisticResponseForCalendarEventUpdate } from "@web/graphql/generated/mutations/calendarEvent.mutations";
-import { CalendarEventData } from "@web/graphql/generated/reducers/calendarEvent.reducer";
+import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
 import { calendarEventCreationInputSchema } from "@web/graphql/generated/schemas/calendarEvent.schemas";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { FC } from "react";

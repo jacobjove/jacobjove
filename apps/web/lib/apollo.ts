@@ -45,16 +45,15 @@ const scalarsLink = withScalars({
 
 const debounceLink = new DebounceLink(500);
 
-const customFetch = (uri: Parameters<typeof fetch>[0], options: Parameters<typeof fetch>[1]) => {
-  console.warn("customFetch", uri, options);
-  return fetch(uri, options);
-};
+// const customFetch = (uri: Parameters<typeof fetch>[0], options: Parameters<typeof fetch>[1]) => {
+//   console.warn("customFetch", uri, options);
+//   return fetch(uri, options);
+// };
 
 // https://github.com/jaydenseric/apollo-upload-client#function-createuploadlink
 const terminalLink = createUploadLink({
-  // uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
   uri: "/api/graphql",
-  fetch: customFetch,
+  // fetch: customFetch,
   // credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
   // fetchOptions: {
   //   credentials: "same-origin",

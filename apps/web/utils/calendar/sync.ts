@@ -1,8 +1,8 @@
-import AccountModel from "@web/graphql/generated/models/AccountModel";
+import AccountModel from "@web/generated/models/AccountModel";
 import { UPDATE_CALENDAR } from "@web/graphql/generated/mutations/calendar.mutations";
 import { UPSERT_CALENDAR_EVENT } from "@web/graphql/generated/mutations/calendarEvent.mutations";
 import { GET_CALENDAR } from "@web/graphql/generated/queries/calendar.queries";
-import Calendar from "@web/graphql/generated/types/Calendar";
+import Calendar from "@web/generated/types/Calendar";
 import { initializeApollo } from "@web/lib/apollo";
 import { CalendarClient } from "@web/utils/calendar/client";
 import rateLimiter from "@web/utils/rate-limit";

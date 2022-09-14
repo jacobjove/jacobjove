@@ -4,6 +4,7 @@ import { gql, MutationHookOptions } from "@apollo/client";
 import { goalFragment, GoalFragment } from "@web/graphql/generated/fragments/goal.fragment";
 import { GoalCreationArgs } from "@web/graphql/generated/args/goal.args";
 import { GoalCreationInput, GoalUpdateInput } from "@web/graphql/generated/inputs/goal.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_GOAL = gql`
   mutation CreateGoal($data: GoalCreationInput!) {
@@ -21,7 +22,7 @@ export const getOptimisticResponseForGoalCreation = (
   return {
     createGoal: {
       __typename: "Goal",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       habitId: null,
       parentId: null,
       archivedAt: null,

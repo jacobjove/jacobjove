@@ -23,8 +23,7 @@ import {
 import { goalFragment } from "@web/graphql/generated/fragments/goal.fragment";
 import { habitFragment } from "@web/graphql/generated/fragments/habit.fragment";
 import { TaskFragment, taskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import Goal from "@web/graphql/generated/types/Goal";
-import Habit from "@web/graphql/generated/types/Habit";
+import { Goal, Habit } from "@web/generated/types";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";
@@ -73,7 +72,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
   const displaySideBySide = isLandscape || isLessThan1000pxWide;
 
   const { calendars, calendarEvents } = user ?? {};
-  console.log(">>> Rendering planner page...");
+  console.log(">>> Rendering planner page...", calendarEvents);
   return (
     <AppLayout>
       <NextSeo

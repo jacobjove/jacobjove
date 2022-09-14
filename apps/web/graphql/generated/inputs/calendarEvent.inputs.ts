@@ -156,6 +156,6 @@ export class CalendarEventWhereInput extends WhereInput {
 
 @TypeGraphQL.InputType()
 export class CalendarEventWhereUniqueInput extends WhereUniqueInput {
-  // @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
-  // id!: ID;
+  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  taskId?: string | undefined;
 }

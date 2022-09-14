@@ -1,21 +1,41 @@
 ---
-to: apps/web/graphql/generated/shortcuts/<%= name %>.shortcuts.ts
+to: apps/web/generated/shortcuts/<%= name %>.shortcuts.ts
 force: true
 ---
 
-import { postSave } from "@web/graphql/generated/types/<%= Name %>/hooks";
-import <%= Name %>Model from "@web/graphql/generated/models/<%= Name %>Model";
-import { <%= Name %>CreationArgs, <%= Name %>UpsertionArgs } from "@web/graphql/generated/args/<%= name %>.args";
+import { postCreate, postUpdate } from "@web/generated/types/<%= Name %>/hooks";
+import <%= Name %>Model from "@web/generated/models/<%= Name %>Model";
+<% if (Object.keys(fields).includes("userId")) { -%>
+import UserModel from "@web/generated/models/UserModel";
+<% } -%>
+import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs, <%= Name %>UpsertionArgs, FindUnique<%= Name %>Args } from "@web/graphql/generated/args/<%= name %>.args";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 
-export const create<%= Name %> = async (args: <%= Name %>CreationArgs) => {
-  const <%= name %> = await <%= Name %>Model.create(args);
-  if (<%= name %>) postSave(<%= name %>);
+export const find<%= Name %> = async ({ where }: FindUnique<%= Name %>Args) => {
+  const filter = convertFilterForMongo(where);
+  return <%= Name %>Model.findOne(filter);
+}
+
+export const create<%= Name %> = async ({ data }: <%= Name %>CreationArgs) => {
+  const <%= name %> = await <%= Name %>Model.create(data);
+  if (<%= name %>) await postCreate(<%= name %>);
   return <%= name %>;
 }
 
-export const upsert<%= Name %> = async (args: <%= Name %>UpsertionArgs) => {
-  const { where, data } = args;
+export const update<%= Name %> = async ({ where, data }: <%= Name %>UpdateArgs) => {
+  const filter = convertFilterForMongo(where);
+  const <%= name %> = await <%= Name %>Model.findOneAndUpdate(filter, data, { returnDocument: "after" });
+<% if (Object.keys(fields).includes("userId")) { -%>
+  // NOTE: This update fails if it's not awaited.
+  <%= name %> && await UserModel.findOneAndUpdate({ _id: <%= name %>.userId, "<%= names %>._id": <%= name %>._id }, {
+    $set: { "<%= names %>.$": { ...<%= name %> } }
+  });
+<% } -%>
+  if (<%= name %>) await postUpdate(<%= name %>);
+  return <%= name %>;
+}
+
+export const upsert<%= Name %> = async ({ where, data }: <%= Name %>UpsertionArgs) => {
   const <%= name %>UpsertResult = await <%= Name %>Model.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -29,8 +49,12 @@ export const upsert<%= Name %> = async (args: <%= Name %>UpsertionArgs) => {
     }
   );
   const <%= name %> = <%= name %>UpsertResult.value;
-  if (<%= name %> && !<%= name %>UpsertResult.lastErrorObject?.updatedExisting) {
-    postSave(<%= name %>);
+  if (<%= name %>) {
+    if (!<%= name %>UpsertResult.lastErrorObject?.updatedExisting) {
+      await postCreate(<%= name %>);
+    } else {
+      await postUpdate(<%= name %>);
+    }
   }
   return <%= name %>;
 }

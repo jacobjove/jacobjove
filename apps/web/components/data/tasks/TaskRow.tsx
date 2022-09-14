@@ -12,7 +12,7 @@ import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useUser } from "@web/components/contexts/UserContext";
 import TaskDialog from "@web/components/data/tasks/TaskDialog";
 import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import { useUpdateTask } from "@web/graphql/generated/hooks/task.hooks";
+import { useUpdateTask } from "@web/generated/hooks/task.hooks";
 import { getOptimisticResponseForTaskUpdate } from "@web/graphql/generated/mutations/task.mutations";
 import cronstrue from "cronstrue";
 import { format, isPast, isSameDay, isSameYear, isToday } from "date-fns";
@@ -83,7 +83,6 @@ const TaskRowContent: FC<TaskRowContentProps> = (props) => {
   const scheduledDateTextElement = getDateTextElement(scheduledDate);
 
   const dialogTriggerProps = bindTrigger(dialogState);
-  console.error("IS MOBILE", isMobileWidth);
   return (
     <>
       <TableRow

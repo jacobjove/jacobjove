@@ -9,7 +9,7 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar, ObjectIdScalar, Int, JSONResolver } from "@web/graphql/schema/scalars";
 import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
 <% for (var [fieldName, field] of Object.entries(fields).filter(([,field]) => (field.type === "Map" && field.shape))) { -%>
-import { <%= h.changeCase.pascal(fieldName) %> } from "@web/graphql/generated/types/<%= Name %>";
+import { <%= h.changeCase.pascal(fieldName) %> } from "@web/generated/types/<%= Name %>";
 <% } -%>
 
 @TypeGraphQL.InputType()

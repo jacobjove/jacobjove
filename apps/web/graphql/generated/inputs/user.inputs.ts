@@ -3,7 +3,7 @@
 import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar, ObjectIdScalar, JSONResolver } from "@web/graphql/schema/scalars";
 import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
-import { Settings } from "@web/graphql/generated/types/User";
+import { Settings } from "@web/generated/types/User";
 
 @TypeGraphQL.InputType()
 export class UserCreationInput {

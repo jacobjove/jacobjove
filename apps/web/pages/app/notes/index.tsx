@@ -8,14 +8,15 @@ import { useUser } from "@web/components/contexts/UserContext";
 import NotesMenu from "@web/components/data/notes/NotesMenu";
 import NoteViewer from "@web/components/data/notes/NoteViewer";
 import { noteFragment } from "@web/graphql/generated/fragments/note.fragment";
-import { useCreateNote } from "@web/graphql/generated/hooks/note.hooks";
-import Note from "@web/graphql/generated/types/Note";
-import { ID } from "@web/graphql/schema/types";
+import { useCreateNote } from "@web/generated/hooks/note.hooks";
+import Note from "@web/generated/types/Note";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
 import { NextSeo } from "next-seo";
 import { useState } from "react";
+
+const INITIAL_NOTE_TITLE = "Untitled note";
 
 interface NotesPageProps {
   session: Session | null;
@@ -37,25 +38,31 @@ interface NotesPageData {
 const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
   const { user } = useUser();
   const { isMobile } = useDeviceData();
-  // const notebooks = user?.notebooks;
-  const { data, loading: loadingNotes, error } = useQuery<NotesPageData>(QUERY);
+
   const _notebooks = user?.notebooks ?? [];
-  const { notes: _notes } = data ?? {};
   const notebooks = _notebooks?.filter((notebook) => !notebook.archivedAt);
   const [selectedNotebookId, setSelectedNotebookId] = useState<string | null>(null);
   const selectedNotebook = notebooks?.find((nb) => nb.id === selectedNotebookId);
+
+  const { data, loading: loadingNotes, error } = useQuery<NotesPageData>(QUERY);
+  const { notes: _notes } = data ?? {};
   const notes = data?.notes?.filter((note) => note.notebookId === selectedNotebookId);
   const [_selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
   const [selectedNoteIds, setSelectedNoteIds] = useState<string[]>([]);
   const selectedNoteId = selectedNoteIds[0];
   const selectedNote = notes?.find((note) => note.id === selectedNoteId);
+
   const [createNote, { loading: loadingCreateNote }] = useCreateNote();
 
   const loading = loadingNotes || loadingCreateNote;
 
   const handleCreateNote = async () => {
-    const userId = user?.id as ID;
-    const title = "Untitled note";
+    if (!user?.id) {
+      console.error("No user id");
+      return;
+    }
+    const userId = user.id;
+    const title = INITIAL_NOTE_TITLE;
     const body = "";
     if (!notebooks?.[0]?.id) {
       console.error("No notebooks found.");
@@ -69,11 +76,12 @@ const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
       notebookId,
       userId,
     };
-    const fetchResult = createNote.current?.({
+    const fetchResultPromise = createNote.current?.({
       variables: { data },
     });
     setSelectedNoteIds([tmpId]);
-    const newNoteId = (await fetchResult)?.data?.createNote?.id;
+    const fetchResult = await fetchResultPromise;
+    const newNoteId = fetchResult.data?.createNote?.id;
     newNoteId && setSelectedNoteId(newNoteId);
   };
 

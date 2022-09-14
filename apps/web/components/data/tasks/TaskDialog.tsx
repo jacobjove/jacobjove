@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TodayIcon from "@mui/icons-material/Today";
-import { Button, ButtonProps } from "@mui/material";
+import { Button, ButtonProps, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 // import DialogActions from "@mui/material/DialogActions";
@@ -18,21 +18,17 @@ import CompletionCheckbox from "@web/components/actions/CompletionCheckbox";
 import Stopwatch from "@web/components/actions/Stopwatch";
 import { useUser } from "@web/components/contexts/UserContext";
 import TasksTable from "@web/components/data/tasks/TasksTable";
-import DateSelector from "@web/components/dates/DateSelector";
+// import DateSelector from "@web/components/dates/DateSelector";
 import { Cron } from "@web/components/fields/cron";
 import TitleAndDescriptionFields from "@web/components/fields/TitleAndDescriptionFields";
 import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import { useCreateHabit } from "@web/graphql/generated/hooks/habit.hooks";
-import {
-  useTaskReducer,
-  useTasksReducer,
-  useUpdateTask,
-} from "@web/graphql/generated/hooks/task.hooks";
+import { useCreateHabit } from "@web/generated/hooks/habit.hooks";
+import { useTaskReducer, useTasksReducer, useUpdateTask } from "@web/generated/hooks/task.hooks";
 import { getOptimisticResponseForTaskUpdate } from "@web/graphql/generated/mutations/task.mutations";
 import { habitCreationInputSchema } from "@web/graphql/generated/schemas/habit.schemas";
-import Habit from "@web/graphql/generated/types/Habit";
+import Habit from "@web/generated/types/Habit";
 import { ID } from "@web/graphql/schema/types";
-import { addDays, endOfDay, format } from "date-fns";
+import { addDays, addHours, endOfDay, format, parse, setHours, setMinutes } from "date-fns";
 import {
   bindMenu,
   bindPopover,
@@ -41,6 +37,9 @@ import {
   usePopupState,
 } from "material-ui-popup-state/hooks";
 import { FC, useEffect, useMemo, useState } from "react";
+
+// import Divider from '@mui/material/Divider';
+import { useDate } from "../../contexts/DateContext";
 
 interface TaskDialogProps extends ReturnType<typeof bindPopover> {
   data: TaskFragment;
@@ -287,13 +286,13 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               if (!event.currentTarget.contains(event.relatedTarget) && data.id) setEditing(false);
             }}
           >
-            <Box display="flex" alignItems="center" my={1}>
+            <Box display="flex" alignItems="center" my={1} py={"0.25rem"}>
               <CompletionCheckbox
                 sx={{
                   alignSelf: "start",
                   alignItems: "start",
                   minWidth: LEFT_SIDE_WIDTH,
-                  py: "0.47rem",
+                  py: "0.1rem",
                 }}
                 checked={completed}
                 disabled={!canUpdate}
@@ -334,7 +333,6 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
           </Box>
           <Box
             ml={2}
-            py={1}
             px={"0.75rem"}
             sx={{
               flexBasis: "40%",
@@ -366,6 +364,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   textTransform: "none",
                   display: "flex",
                   justifyContent: "space-between",
+                  lineHeight: 1,
                   ...(!!data.dueDate && { mb: -1 }),
                   color: (theme) =>
                     theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
@@ -377,7 +376,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 {!data.dueDate && <AddIcon sx={{ ml: 1 }} />}
               </Button>
               <DateMenu
-                date={data.dueDate ?? new Date()}
+                date={data.dueDate}
                 setDate={handleSetDueDate}
                 menuState={dueDateMenuState}
               />
@@ -405,7 +404,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                 {!data.plannedStartDate && <AddIcon sx={{ ml: 1 }} />}
               </Button>
               <DateMenu
-                date={data.plannedStartDate ?? new Date()}
+                date={data.plannedStartDate}
                 setDate={handleSetScheduledDate}
                 menuState={scheduledDateMenuState}
               />
@@ -414,17 +413,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
                   date={data.plannedStartDate}
                   {...bindTrigger(scheduledDateMenuState)}
                 />
-                // <Button sx={{ display: "flex", alignItems: "center", color: "inherit" }}>
-                //   <TodayIcon />{" "}
-                //   <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
-                //     {data.plannedStartDate
-                //       ? format(data.plannedStartDate, "M/d, h:mm a")
-                //       : "Unscheduled"}
-                //   </Typography>
-                // </Button>
               )}
             </Box>
-            <Box py={2}>
+            <Box py={"1rem"}>
               <Box px={1}>
                 {habit ? (
                   <>
@@ -534,15 +525,26 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
 export default TaskDialog;
 
 interface DateMenuProps {
-  date: Date | null;
+  date: Date | null | undefined;
   setDate: (date: Date | null) => void;
   menuState: PopupState;
 }
 export function DateMenu({ date, setDate, menuState }: DateMenuProps) {
-  const now = new Date();
+  const now = useDate();
+  const defaultDate = setMinutes(addHours(now, 1), 0);
+  const [dateInputValue, setDateInputValue] = useState(format(date || defaultDate, "M/d, h:mm a"));
   const today = endOfDay(now);
-  const tomorrow = addDays(today, 1);
+  const tomorrow = setMinutes(setHours(addDays(today, 1), 9), 0); // 9am tomorrow
   const menuProps = bindMenu(menuState);
+  const setDateFromInput = (inputValue: string) => {
+    let parsedDate = date;
+    try {
+      parsedDate = parse(inputValue, "M/d, h:mm a", date || now);
+      if (parsedDate) setDate(parsedDate);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <Menu
       {...menuProps}
@@ -563,36 +565,75 @@ export function DateMenu({ date, setDate, menuState }: DateMenuProps) {
       sx={{
         width: "100%",
       }}
-      // sx={{
-      //   display: { xs: "block", md: "none" },
-      // }}
     >
+      <MenuItem disableRipple>
+        <TextField
+          value={dateInputValue}
+          variant={"standard"}
+          onChange={(e) => {
+            setDateInputValue(e.target.value);
+          }}
+          InputProps={{
+            onKeyUp: (e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                setDateFromInput(dateInputValue);
+                const input = e.target as HTMLInputElement;
+                input.blur();
+                menuProps.onClose();
+              }
+            },
+          }}
+          onBlur={() => {
+            setDateFromInput(dateInputValue);
+          }}
+        />
+      </MenuItem>
       <MenuItem
         onClick={() => {
           setDate(today);
           menuProps.onClose();
         }}
+        sx={{ display: "flex", justifyContent: "space-between" }}
       >
-        {"Today"}
+        <Typography>{"Today"}</Typography>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "light" ? "rgba(0,0,0,0.4)" : "rgba(255,255,255,0.4)",
+          }}
+        >
+          {format(today, "M/d")}
+        </Typography>
       </MenuItem>
       <MenuItem
         onClick={() => {
           setDate(tomorrow);
           menuProps.onClose();
         }}
+        sx={{ display: "flex", justifyContent: "space-between" }}
       >
-        {"Tomorrow"}
+        <Typography>{"Tomorrow"}</Typography>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "light" ? "rgba(0,0,0,0.4)" : "rgba(255,255,255,0.4)",
+          }}
+        >
+          {format(tomorrow, "EEE")}
+        </Typography>
       </MenuItem>
-      <MenuItem>
-        <DateSelector date={date ?? new Date()} setDate={setDate} dateFormat={"M/d"} />
-      </MenuItem>
+      {/* <Divider /> */}
+      {/* <MenuItem sx={{ pt: 0 }}>
+        <DateSelector open={false} date={date ?? new Date()} setDate={setDate} dateFormat={"M/d"} sx={{ width: "100%" }} />
+      </MenuItem> */}
     </Menu>
   );
 }
 
 function SelectedDateButton({ date, sx, ...buttonProps }: { date: Date } & ButtonProps) {
   return (
-    <Button sx={{ color: "inherit", ...sx }} {...buttonProps}>
+    <Button sx={{ color: "inherit", mt: "0.33rem", py: "0.2rem", ...sx }} {...buttonProps}>
       <TodayIcon />{" "}
       <Typography component="span" fontSize={"0.9rem"} ml={"0.5rem"}>
         {date ? format(date, "M/d, h:mm a") : null}

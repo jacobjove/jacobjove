@@ -15,7 +15,7 @@ import {
   CalendarModel,
   AccountModel,
   UserModel,
-} from "@web/graphql/generated/models";
+} from "@web/generated/models";
 
 const START_FRESH = true;
 const SEED_RAW_USER_ONLY = false;

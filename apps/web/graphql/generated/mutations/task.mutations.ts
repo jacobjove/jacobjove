@@ -4,6 +4,7 @@ import { gql, MutationHookOptions } from "@apollo/client";
 import { taskFragment, TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
 import { TaskCreationArgs } from "@web/graphql/generated/args/task.args";
 import { TaskCreationInput, TaskUpdateInput } from "@web/graphql/generated/inputs/task.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_TASK = gql`
   mutation CreateTask($data: TaskCreationInput!) {
@@ -21,12 +22,13 @@ export const getOptimisticResponseForTaskCreation = (
   return {
     createTask: {
       __typename: "Task",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       description: null,
       plannedStartDate: null,
       dueDate: null,
       parentId: null,
       habitId: null,
+      expectedDuration: 30,
       completedAt: null,
       archivedAt: null,
       ...data,

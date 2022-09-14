@@ -1,6 +1,6 @@
 // import { Model } from "@web/graphql/schema/types";
 import { DocumentType } from "@typegoose/typegoose";
-import * as Types from "@web/graphql/generated/types";
+import * as Types from "@web/generated/types";
 import { camelize } from "inflection";
 import JSON5 from "json5";
 import { Model } from "./types";

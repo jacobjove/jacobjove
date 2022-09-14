@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Onboarder from "@web/components/Onboarder";
-import { Identity } from "@web/graphql/generated/types";
+import { Identity } from "@web/generated/types";
 import Link from "next/link";
 import { FC } from "react";
 

@@ -10,6 +10,7 @@ import {
   DashboardCreationInput,
   DashboardUpdateInput,
 } from "@web/graphql/generated/inputs/dashboard.inputs";
+import { ObjectID } from "bson";
 
 export const CREATE_DASHBOARD = gql`
   mutation CreateDashboard($data: DashboardCreationInput!) {
@@ -27,7 +28,7 @@ export const getOptimisticResponseForDashboardCreation = (
   return {
     createDashboard: {
       __typename: "Dashboard",
-      id: "tmp-id",
+      id: new ObjectID().toHexString(),
       description: null,
       isDefault: null,
       public: null,

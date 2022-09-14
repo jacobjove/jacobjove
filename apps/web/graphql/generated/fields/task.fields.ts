@@ -51,6 +51,12 @@ const fields: Record<FieldKey, Field> = {
     required: false,
     widget: {},
   },
+  expectedDuration: {
+    label: "expectedDuration",
+    type: "Int",
+    required: false,
+    widget: {},
+  },
   rank: {
     label: "rank",
     type: "Int",

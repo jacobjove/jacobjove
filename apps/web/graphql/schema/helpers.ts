@@ -8,7 +8,7 @@ export async function preSave(next: HookNextErrorFn) {
   return next();
 }
 
-export async function postSave(_instance: unknown) {
+export async function postCreate(_instance: unknown) {
   return;
 }
 
@@ -20,7 +20,7 @@ export async function postUpsert<T>(result: T) {
     };
   };
   if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
-  return postSave(rawResult.value);
+  return postCreate(rawResult.value);
 }
 
 // export async function postFindOneAndUpdate(result: unknown) {
@@ -31,7 +31,7 @@ export async function postUpsert<T>(result: T) {
 //     }
 //   };
 //   if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
-//   postSave(rawResult.value);
+//   postCreate(rawResult.value);
 // }
 
 type ModifiedFilter<T extends WhereUniqueInput> = Omit<T, "id"> & { _id?: ObjectId };

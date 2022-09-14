@@ -29,7 +29,7 @@ const definition: Definition<CalendarEventFields> = {
     remoteId: { required: false, type: "String" },
     scheduleId: { required: false, type: "ID" },
     habitId: { required: false, type: "ID" },
-    taskId: { required: false, type: "ID" },
+    taskId: { required: false, type: "ID", unique: true },
     title: REQUIRED_STRING,
     start: { required: true, type: "DateTime" },
     end: { required: false, type: "DateTime" },
