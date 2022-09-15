@@ -1,5 +1,14 @@
+x-default:
+  &default
+  deploy:
+    restart_policy:
+      condition: "${DOCKER_DEFAULT_RESTART_POLICY:-unless-stopped}"
+  env_file:
+    - .env
+
 services:
   nextjs:
+    <<: *default
     build:
       context: .
       dockerfile: apps/web/Dockerfile
@@ -7,20 +16,13 @@ services:
     depends_on:
       - mongo
     ports:
-      - ${NEXTJS_PORT}:${NEXTJS_PORT}
-    env_file:
-      - .env
+      - "127.0.0.1:${NEXTJS_PORT}:${NEXTJS_PORT}"
     environment:
       MONGODB_HOST: mongo
       NEXTAUTH_URL_INTERNAL: "http://nextjs:${NEXTJS_PORT}"
   mongo:
+    <<: *default
     image: mongo:4.2
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-    env_file:
-      - .env
     healthcheck:
       test: bash /healthcheck.sh
       interval: 10s
@@ -40,7 +42,7 @@ services:
     expose:
       - "6379"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 20s
       timeout: 10s
       retries: 3
