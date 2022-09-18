@@ -1,7 +1,9 @@
+import "@abraham/reflection";
+
 import { withSentry } from "@sentry/nextjs";
-import AccountModel from "@web/generated/models/AccountModel";
-import UserModel from "@web/generated/models/UserModel";
-import { upsertUser } from "@root/apps/web/generated/shortcuts/user.shortcuts";
+import AccountModel from "@web/generated/models/Account";
+import UserModel from "@web/generated/models/User";
+import { upsertUser } from "@web/generated/shortcuts/user.shortcuts";
 import mongoosePromise from "@web/lib/mongodb";
 import { NoUndefinedField } from "@web/types/global";
 import { PageConfig } from "next";

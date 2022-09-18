@@ -43,12 +43,12 @@ export interface SelectorsFromUserAgent extends ReturnType<typeof getSelectorsBy
   osVersion: string;
 }
 
-export interface DeviceContextData extends Partial<SelectorsFromUserAgent> {
+export interface DeviceContextData extends SelectorsFromUserAgent {
   isMobileWidth?: boolean;
   isLandscape?: boolean;
 }
 
-const DeviceContext = createContext<DeviceContextData>({});
+const DeviceContext = createContext<DeviceContextData>({} as DeviceContextData);
 
 export default DeviceContext;
 

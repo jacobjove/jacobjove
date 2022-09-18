@@ -54,7 +54,9 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps<PageP
 
   const isMobileWidth = useMediaQuery("(max-width: 600px)");
   const [isLandscape, setIsLandscape] = useState<boolean>();
-  const [deviceContextData, setDeviceContextData] = useState<DeviceContextData>({});
+  const [deviceContextData, setDeviceContextData] = useState<DeviceContextData>(
+    {} as DeviceContextData
+  );
 
   useEffect(() => {
     const handleOrientationChange = function (e: Event) {

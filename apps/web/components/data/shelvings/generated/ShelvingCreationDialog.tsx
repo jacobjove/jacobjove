@@ -1,10 +1,10 @@
 import CreationDialog from "@web/components/data/CreationDialog";
 import { useCreateShelving, useShelvingReducer } from "@web/generated/hooks/shelving.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
-import { ShelvingCreationInput } from "@web/graphql/generated/inputs/shelving.inputs";
-import Shelving from "@web/generated/types/Shelving";
-import { ShelvingFragment } from "@web/graphql/generated/fragments/shelving.fragment";
 import fields from "@web/graphql/generated/fields/shelving.fields";
+import { ShelvingFragment } from "@web/graphql/generated/fragments/shelving.fragment";
+import { ShelvingCreationInput } from "@web/graphql/generated/inputs/shelving.inputs";
+import Shelving from "@web/graphql/generated/types/Shelving";
+import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type ShelvingCreationDialogProps = ReturnType<typeof bindPopover>;
 

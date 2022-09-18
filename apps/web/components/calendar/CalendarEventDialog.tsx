@@ -4,15 +4,15 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import EventFormFields from "@web/components/calendar/EventFormFields";
-import { CalendarEventFragment } from "@web/graphql/generated/fragments/calendarEvent.fragment";
 import {
   useCalendarEventReducer,
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
 } from "@web/generated/hooks/calendarEvent.hooks";
+import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
+import { CalendarEventFragment } from "@web/graphql/generated/fragments/calendarEvent.fragment";
 import { CalendarEventCreationInput } from "@web/graphql/generated/inputs/calendarEvent.inputs";
 import { getOptimisticResponseForCalendarEventUpdate } from "@web/graphql/generated/mutations/calendarEvent.mutations";
-import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
 import { calendarEventCreationInputSchema } from "@web/graphql/generated/schemas/calendarEvent.schemas";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { FC } from "react";
@@ -63,7 +63,7 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
     }
     onClose();
   };
-  console.log("Rendering CalendarEventDialog!");
+  // console.log("Rendering CalendarEventDialog!");
   return (
     <Dialog
       fullWidth

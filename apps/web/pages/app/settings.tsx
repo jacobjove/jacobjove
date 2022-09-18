@@ -14,8 +14,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import AppLayout from "@web/components/AppLayout";
 import { useUser } from "@web/components/contexts/UserContext";
 import { useUpdateUser } from "@web/generated/hooks/user.hooks";
+import { Settings } from "@web/generated/models/User/types";
 import { getOptimisticResponseForUserUpdate } from "@web/graphql/generated/mutations/user.mutations";
-import { Settings } from "@web/generated/types/User";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth, Session } from "next-auth";
@@ -36,7 +36,7 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
   const { user } = useUser();
   const [updateUser, { loading: loadingUpdateSetting }] = useUpdateUser();
   const loading = loadingUpdateSetting;
-  const userSettings: Settings = user?.settings ?? {};
+  const userSettings: Settings | undefined = user?.settings;
   const settings: Record<keyof Settings, SettingOptions> = {
     colorMode: {
       label: "Color mode",
@@ -50,7 +50,7 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
     },
   };
   const handleSettingChange = (settingName: string, newValue: string) => {
-    if (!user) return;
+    if (!user || !userSettings) return;
     const newSettings = {
       ...userSettings,
       [settingName]: newValue,
@@ -65,6 +65,7 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
       optimisticResponse,
     });
   };
+  if (!user || !userSettings) return null;
   return (
     <AppLayout>
       <NextSeo

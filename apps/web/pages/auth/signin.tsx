@@ -10,7 +10,7 @@ import { GetServerSideProps } from "next";
 import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 interface SignInPageProps {
   providers: Awaited<ReturnType<typeof getProviders>>;

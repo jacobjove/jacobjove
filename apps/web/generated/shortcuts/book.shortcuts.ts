@@ -1,5 +1,5 @@
-import { postCreate, postUpdate } from "@web/generated/types/Book/hooks";
-import BookModel from "@web/generated/models/BookModel";
+import { Book } from "@web/generated/interfaces/Book";
+import BookModel from "@web/generated/models/Book";
 import {
   BookCreationArgs,
   BookUpdateArgs,
@@ -7,41 +7,36 @@ import {
   FindUniqueBookArgs,
 } from "@web/graphql/generated/args/book.args";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
+import { ModifyResult } from "mongoose";
 
 export const findBook = async ({ where }: FindUniqueBookArgs) => {
   const filter = convertFilterForMongo(where);
-  return BookModel.findOne(filter);
+  return BookModel.findOne(filter).lean({ virtuals: true });
 };
 
 export const createBook = async ({ data }: BookCreationArgs) => {
-  const book = await BookModel.create(data);
-  if (book) await postCreate(book);
-  return book;
+  return BookModel.create([data]).then((results) => results[0]);
 };
 
 export const updateBook = async ({ where, data }: BookUpdateArgs) => {
   const filter = convertFilterForMongo(where);
-  const book = await BookModel.findOneAndUpdate(filter, data, { returnDocument: "after" });
-  if (book) await postUpdate(book);
-  return book;
+  return await BookModel.findOneAndUpdate(filter, data, { returnDocument: "after" }).lean({
+    virtuals: true,
+  });
 };
 
 export const upsertBook = async ({ where, data }: BookUpsertionArgs) => {
-  const bookUpsertResult = await BookModel.findOneAndUpdate(convertFilterForMongo(where), data, {
-    upsert: true,
-    new: true,
-    returnDocument: "after",
-    runValidators: true,
-    setDefaultsOnInsert: true,
-    rawResult: true,
-  });
-  const book = bookUpsertResult.value;
-  if (book) {
-    if (!bookUpsertResult.lastErrorObject?.updatedExisting) {
-      await postCreate(book);
-    } else {
-      await postUpdate(book);
+  const result: ModifyResult<Book> = await BookModel.findOneAndUpdate(
+    convertFilterForMongo(where),
+    data,
+    {
+      upsert: true,
+      new: true,
+      returnDocument: "after",
+      runValidators: true,
+      setDefaultsOnInsert: true,
+      rawResult: true,
     }
-  }
-  return book;
+  ).lean({ virtuals: true });
+  return result.value;
 };

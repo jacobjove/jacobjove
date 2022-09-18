@@ -14,6 +14,9 @@ const fields: Record<FieldKey, Field> = {
   <%= fieldName %>: {
     label: "<%= field.label ?? fieldName %>",
     type: "<%= field.type %>",
+<% if (field.ref) { -%>
+    ref: "<%= field.ref %>",
+<% } -%>
 <% if (field.type === "Array") { -%>
     typeArg: "<%= field.typeArg %>",
 <% } -%>

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import CustomSelect from "../components/CustomSelect";
 import { UNITS } from "../constants";
 import { DEFAULT_LOCALE_EN } from "../locale";

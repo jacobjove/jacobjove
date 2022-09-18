@@ -1,9 +1,9 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import { useCreateValue, useValueReducer } from "@web/generated/hooks/value.hooks";
 import fields from "@web/graphql/generated/fields/value.fields";
 import { ValueFragment } from "@web/graphql/generated/fragments/value.fragment";
-import { useCreateValue, useValueReducer } from "@web/generated/hooks/value.hooks";
 import { ValueCreationInput } from "@web/graphql/generated/inputs/value.inputs";
-import Value from "@web/generated/types/Value";
+import Value from "@web/graphql/generated/types/Value";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 type ValueCreationDialogProps = ReturnType<typeof bindPopover>;

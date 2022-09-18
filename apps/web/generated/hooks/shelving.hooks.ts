@@ -2,29 +2,29 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import {
-  CREATE_SHELVING,
-  UPDATE_SHELVING,
-  updateCacheAfterCreatingShelving,
-} from "@web/graphql/generated/mutations/shelving.mutations";
-import { ShelvingFragment } from "@web/graphql/generated/fragments/shelving.fragment";
+  initializeShelvingData,
+  ShelvingData,
+  shelvingReducer,
+  shelvingsReducer,
+} from "@web/generated/reducers/shelving.reducer";
 import {
   ShelvingCreationArgs,
   ShelvingUpdateArgs,
 } from "@web/graphql/generated/args/shelving.args";
-import { useHandleMutation } from "@web/utils/data/mutation";
-import { Payload, ArrayAction } from "@web/utils/data/reduction";
-import { useReducer, Dispatch } from "react";
+import { ShelvingFragment } from "@web/graphql/generated/fragments/shelving.fragment";
 import {
-  shelvingReducer,
-  shelvingsReducer,
-  ShelvingData,
-  initializeShelvingData,
-} from "@web/generated/reducers/shelving.reducer";
+  CREATE_SHELVING,
+  getOptimisticResponseForShelvingCreation,
+  updateCacheAfterCreatingShelving,
+  UPDATE_SHELVING,
+} from "@web/graphql/generated/mutations/shelving.mutations";
 import {
   shelvingCreationInputSchema,
   shelvingUpdateInputSchema,
 } from "@web/graphql/generated/schemas/shelving.schemas";
-import { getOptimisticResponseForShelvingCreation } from "@web/graphql/generated/mutations/shelving.mutations";
+import { useHandleMutation } from "@web/utils/data/mutation";
+import { ArrayAction, Payload } from "@web/utils/data/reduction";
+import { Dispatch, useReducer } from "react";
 
 type ShelvingCreationMutationHookOptions = MutationHookOptions<
   { createShelving: ShelvingFragment },
@@ -48,7 +48,7 @@ type ShelvingUpdateMutationHookOptions = MutationHookOptions<
 export const useUpdateShelving = (options?: ShelvingUpdateMutationHookOptions) => {
   return useHandleMutation<{ updateShelving: ShelvingFragment }, ShelvingUpdateArgs>(
     UPDATE_SHELVING,
-    options,
+    { refetchQueries: ["GetUser"], ...(options ?? {}) },
     shelvingUpdateInputSchema
   );
 };

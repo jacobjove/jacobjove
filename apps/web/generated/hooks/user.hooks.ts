@@ -2,26 +2,26 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import {
-  CREATE_USER,
-  UPDATE_USER,
-  updateCacheAfterCreatingUser,
-} from "@web/graphql/generated/mutations/user.mutations";
-import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
-import { UserCreationArgs, UserUpdateArgs } from "@web/graphql/generated/args/user.args";
-import { useHandleMutation } from "@web/utils/data/mutation";
-import { Payload, ArrayAction } from "@web/utils/data/reduction";
-import { useReducer, Dispatch } from "react";
-import {
+  initializeUserData,
+  UserData,
   userReducer,
   usersReducer,
-  UserData,
-  initializeUserData,
 } from "@web/generated/reducers/user.reducer";
+import { UserCreationArgs, UserUpdateArgs } from "@web/graphql/generated/args/user.args";
+import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
+import {
+  CREATE_USER,
+  getOptimisticResponseForUserCreation,
+  updateCacheAfterCreatingUser,
+  UPDATE_USER,
+} from "@web/graphql/generated/mutations/user.mutations";
 import {
   userCreationInputSchema,
   userUpdateInputSchema,
 } from "@web/graphql/generated/schemas/user.schemas";
-import { getOptimisticResponseForUserCreation } from "@web/graphql/generated/mutations/user.mutations";
+import { useHandleMutation } from "@web/utils/data/mutation";
+import { ArrayAction, Payload } from "@web/utils/data/reduction";
+import { Dispatch, useReducer } from "react";
 
 type UserCreationMutationHookOptions = MutationHookOptions<
   { createUser: UserFragment },
@@ -45,7 +45,7 @@ type UserUpdateMutationHookOptions = MutationHookOptions<
 export const useUpdateUser = (options?: UserUpdateMutationHookOptions) => {
   return useHandleMutation<{ updateUser: UserFragment }, UserUpdateArgs>(
     UPDATE_USER,
-    options,
+    { refetchQueries: ["GetUser"], ...(options ?? {}) },
     userUpdateInputSchema
   );
 };

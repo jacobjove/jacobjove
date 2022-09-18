@@ -7,9 +7,9 @@ import Typography from "@mui/material/Typography";
 import { useUser } from "@web/components/contexts/UserContext";
 import { DraggedTask } from "@web/components/data/tasks/TaskRow";
 import TasksTable from "@web/components/data/tasks/TasksTable";
+import { useTasksReducer, useUpdateTask } from "@web/generated/hooks/task.hooks";
 import { DistinctTasksUpdateArgs } from "@web/graphql/generated/args/task.args";
 import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import { useTasksReducer, useUpdateTask } from "@web/generated/hooks/task.hooks";
 import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
@@ -162,14 +162,15 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
   ];
 
   useEffect(() => {
-    console.log("INITIALIZING TASKS");
-    dispatchTasks({
-      type: "init",
-      payload: tasks,
-    });
-  }, [tasks, dispatchTasks]);
+    if (user?.tasks) {
+      dispatchTasks({
+        type: "init",
+        payload: user.tasks,
+      });
+    }
+  }, [user?.tasks, dispatchTasks]);
 
-  console.log(tasksBySelection);
+  // console.log(tasksBySelection);
 
   return (
     <TableContainer

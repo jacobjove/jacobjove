@@ -11,7 +11,7 @@ interface CalendarEventDialogProps extends ReturnType<typeof bindPopover> {
 const CalendarEventCreationDialog: FC<CalendarEventDialogProps> = (
   props: CalendarEventDialogProps
 ) => {
-  console.log("Rendering CalendarEventCreationDialog");
+  // console.log("Rendering CalendarEventCreationDialog");
   return <CalendarEventDialog mutation={"create"} {...props} />;
 };
 

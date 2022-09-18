@@ -1,7 +1,7 @@
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { IconProps } from "@mui/material";
-import React, { FC } from "react";
+import { FC } from "react";
 
 interface SelectionToggleIconProps extends IconProps {
   positive: boolean;

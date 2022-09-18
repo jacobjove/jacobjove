@@ -2,26 +2,26 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import {
-  CREATE_BOOK,
-  UPDATE_BOOK,
-  updateCacheAfterCreatingBook,
-} from "@web/graphql/generated/mutations/book.mutations";
-import { BookFragment } from "@web/graphql/generated/fragments/book.fragment";
-import { BookCreationArgs, BookUpdateArgs } from "@web/graphql/generated/args/book.args";
-import { useHandleMutation } from "@web/utils/data/mutation";
-import { Payload, ArrayAction } from "@web/utils/data/reduction";
-import { useReducer, Dispatch } from "react";
-import {
+  BookData,
   bookReducer,
   booksReducer,
-  BookData,
   initializeBookData,
 } from "@web/generated/reducers/book.reducer";
+import { BookCreationArgs, BookUpdateArgs } from "@web/graphql/generated/args/book.args";
+import { BookFragment } from "@web/graphql/generated/fragments/book.fragment";
+import {
+  CREATE_BOOK,
+  getOptimisticResponseForBookCreation,
+  updateCacheAfterCreatingBook,
+  UPDATE_BOOK,
+} from "@web/graphql/generated/mutations/book.mutations";
 import {
   bookCreationInputSchema,
   bookUpdateInputSchema,
 } from "@web/graphql/generated/schemas/book.schemas";
-import { getOptimisticResponseForBookCreation } from "@web/graphql/generated/mutations/book.mutations";
+import { useHandleMutation } from "@web/utils/data/mutation";
+import { ArrayAction, Payload } from "@web/utils/data/reduction";
+import { Dispatch, useReducer } from "react";
 
 type BookCreationMutationHookOptions = MutationHookOptions<
   { createBook: BookFragment },
@@ -45,7 +45,7 @@ type BookUpdateMutationHookOptions = MutationHookOptions<
 export const useUpdateBook = (options?: BookUpdateMutationHookOptions) => {
   return useHandleMutation<{ updateBook: BookFragment }, BookUpdateArgs>(
     UPDATE_BOOK,
-    options,
+    { refetchQueries: ["GetUser"], ...(options ?? {}) },
     bookUpdateInputSchema
   );
 };

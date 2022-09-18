@@ -1,56 +1,42 @@
-import { postCreate, postUpdate } from "@web/generated/types/Goal/hooks";
-import GoalModel from "@web/generated/models/GoalModel";
-import UserModel from "@web/generated/models/UserModel";
+import { Goal } from "@web/generated/interfaces/Goal";
+import GoalModel from "@web/generated/models/Goal";
 import {
+  FindUniqueGoalArgs,
   GoalCreationArgs,
   GoalUpdateArgs,
   GoalUpsertionArgs,
-  FindUniqueGoalArgs,
 } from "@web/graphql/generated/args/goal.args";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
+import { ModifyResult } from "mongoose";
 
 export const findGoal = async ({ where }: FindUniqueGoalArgs) => {
   const filter = convertFilterForMongo(where);
-  return GoalModel.findOne(filter);
+  return GoalModel.findOne(filter).lean({ virtuals: true });
 };
 
 export const createGoal = async ({ data }: GoalCreationArgs) => {
-  const goal = await GoalModel.create(data);
-  if (goal) await postCreate(goal);
-  return goal;
+  return GoalModel.create([data]).then((results) => results[0]);
 };
 
 export const updateGoal = async ({ where, data }: GoalUpdateArgs) => {
   const filter = convertFilterForMongo(where);
-  const goal = await GoalModel.findOneAndUpdate(filter, data, { returnDocument: "after" });
-  // NOTE: This update fails if it's not awaited.
-  goal &&
-    (await UserModel.findOneAndUpdate(
-      { _id: goal.userId, "goals._id": goal._id },
-      {
-        $set: { "goals.$": { ...goal } },
-      }
-    ));
-  if (goal) await postUpdate(goal);
-  return goal;
+  return await GoalModel.findOneAndUpdate(filter, data, { returnDocument: "after" }).lean({
+    virtuals: true,
+  });
 };
 
 export const upsertGoal = async ({ where, data }: GoalUpsertionArgs) => {
-  const goalUpsertResult = await GoalModel.findOneAndUpdate(convertFilterForMongo(where), data, {
-    upsert: true,
-    new: true,
-    returnDocument: "after",
-    runValidators: true,
-    setDefaultsOnInsert: true,
-    rawResult: true,
-  });
-  const goal = goalUpsertResult.value;
-  if (goal) {
-    if (!goalUpsertResult.lastErrorObject?.updatedExisting) {
-      await postCreate(goal);
-    } else {
-      await postUpdate(goal);
+  const result: ModifyResult<Goal> = await GoalModel.findOneAndUpdate(
+    convertFilterForMongo(where),
+    data,
+    {
+      upsert: true,
+      new: true,
+      returnDocument: "after",
+      runValidators: true,
+      setDefaultsOnInsert: true,
+      rawResult: true,
     }
-  }
-  return goal;
+  ).lean({ virtuals: true });
+  return result.value;
 };

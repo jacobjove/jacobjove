@@ -30,7 +30,15 @@ export const getOptimisticResponseFor<%= Name %>Creation = (data: <%= Name %>Cre
       __typename: "<%= Name %>",
       id: new ObjectID().toHexString(),
 <% for (var [fieldName, field] of Object.entries(selectableFields).filter(([,field]) => !field.required)) { -%>
-      <%- fieldName %>: <%- typeof field.default !== "undefined" ? (typeof field.default === "string" ? field.default : JSON.stringify(field.default)) : "null" %>,
+<% if (field.shape && Object.values(field.shape).some((_) => _.required)) { -%>
+      <%= fieldName %>: {
+<% for (var [subfieldName, subfield] of Object.entries(field.shape).filter(([,_]) => _.required)) { -%>
+        <%= subfieldName %>: "" as unknown as <%= getType(subfield) %>,
+<% } -%>
+      },
+<% } else { -%>
+      <%- fieldName %>: <%- typeof field.default !== "undefined" ? JSON5.stringify(field.default) : "null" %>,
+<% } -%>
 <% } -%>
       archivedAt: null,
       ...data,

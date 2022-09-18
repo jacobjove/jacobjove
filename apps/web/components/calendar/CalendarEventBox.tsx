@@ -12,7 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CalendarEventDialog from "@web/components/calendar/CalendarEventDialog";
 import { useUpdateCalendarEvent } from "@web/generated/hooks/calendarEvent.hooks";
-import { CalendarEvent } from "@web/generated/types";
+import { CalendarEvent } from "@web/graphql/generated/types";
 import { format } from "date-fns";
 import { bindPopover, bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
 import { ComponentProps, FC, useState } from "react";

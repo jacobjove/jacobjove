@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
+import { useCalendarEventsReducer } from "@root/apps/web/generated/hooks/calendarEvent.hooks";
 import CalendarEventBox from "@web/components/calendar/CalendarEventBox";
 import {
   ALL_DAY_BOX_HEIGHT,
@@ -14,7 +15,7 @@ import TimeLabelsColumn from "@web/components/calendar/TimeLabelsColumn";
 import DateContext from "@web/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@web/components/contexts/UserContext";
-import { Calendar, CalendarEvent } from "@web/generated/types";
+import { CalendarEvent } from "@web/graphql/generated/types";
 import { ID } from "@web/graphql/schema/types";
 import {
   addMinutes,
@@ -26,7 +27,7 @@ import {
   setSeconds,
 } from "date-fns";
 import { bindTrigger, PopupState } from "material-ui-popup-state/hooks";
-import { Dispatch, FC, useContext, useEffect, useRef } from "react";
+import { Dispatch, FC, useContext, useEffect, useMemo, useRef } from "react";
 
 const Root = styled("div")(({ theme }) => {
   const dividerColor = theme.palette.divider;
@@ -83,16 +84,8 @@ type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
   end: Date;
 };
 
-export type CalendarData = {
-  calendars: Calendar[];
-  calendarEvents: CalendarEvent[];
-};
-
 export interface CalendarProps {
   collapseMenu?: boolean;
-  data: CalendarData;
-  loading?: boolean;
-  error?: Error;
   includeDateSelector?: boolean;
   eventEditingDialogState: PopupState;
 }
@@ -108,63 +101,76 @@ const DayViewer: FC<DayViewerProps> = ({
   selectedDate,
   viewedHourState,
   hidden,
-  data,
-  loading,
 }: DayViewerProps) => {
-  const { calendarEvents } = data;
   const date = useContext(DateContext);
-  const { user } = useUser();
+  const { user, loading } = useUser();
   const [viewedHour] = viewedHourState;
+
+  const { calendarEvents: initialCalendarEvents } = user ?? {};
+
+  const [calendarEvents, dispatchCalendarEvents] = useCalendarEventsReducer(
+    initialCalendarEvents ?? []
+  );
+  useEffect(() => {
+    if (user?.calendarEvents) {
+      dispatchCalendarEvents({ type: "init", payload: user.calendarEvents });
+    }
+  }, [user, dispatchCalendarEvents]);
+
+  const filteredEvents = useMemo(() => {
+    // console.log("FILTERING");
+    return calendarEvents
+      ?.filter((event) => {
+        // TODO: partition events to separate all-day events based on event.end presence
+        return (
+          isSameDay(event.start, selectedDate) && !event.archivedAt && !event.canceled && event.end
+        );
+      })
+      ?.sort((a, b) => {
+        return a.start > b.start ? 1 : -1;
+      }) as BoundCalendarEvent[];
+  }, [calendarEvents, selectedDate]);
+
+  // Group events to account for possible overlap.
+  const eventGroups = useMemo(() => {
+    const eventGroups: BoundCalendarEvent[][] = [];
+    let currentGroup: BoundCalendarEvent[];
+    let lastEnd = new Date(-8640000000000000);
+    filteredEvents.forEach((event) => {
+      const start = event.start;
+      const end = event.end;
+      if (!currentGroup || lastEnd < start) {
+        currentGroup = [];
+        eventGroups.push(currentGroup);
+      }
+      currentGroup.push(event);
+      lastEnd = end > lastEnd ? end : lastEnd;
+    });
+    return eventGroups;
+  }, [filteredEvents]);
 
   const { newCalendarEventDialogState, newCalendarEventDataTuple } = useNewCalendarEventDialog();
   const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple ?? [];
-
   const eventEditingDialogTriggerProps = newCalendarEventDialogState
     ? bindTrigger(newCalendarEventDialogState)
     : undefined;
 
   const scrollableDivRef = useRef<HTMLDivElement>(null);
-
   const dayStart = zeroToHour(selectedDate, START_HOUR);
   const currentTimeOffsetPx = getTimeOffsetPx(setHours(selectedDate, viewedHour));
   const scrollOffsetPx = currentTimeOffsetPx - HOUR_HEIGHT * 1.5;
-
   const isPast = isBefore(selectedDate, date) && !isSameDay(selectedDate, date);
-  const filteredEvents = calendarEvents
-    ?.filter((event) => {
-      // TODO: partition events to separate all-day events based on event.end presence
-      return (
-        isSameDay(event.start, selectedDate) && !event.archivedAt && !event.canceled && event.end
-      );
-    })
-    ?.sort((a, b) => {
-      return a.start > b.start ? 1 : -1;
-    }) as BoundCalendarEvent[];
-
-  // Group events to account for possible overlap.
-  const eventGroups: BoundCalendarEvent[][] = [];
-  let currentGroup: BoundCalendarEvent[];
-  let lastEnd = new Date(-8640000000000000);
-  filteredEvents.forEach((event) => {
-    const start = event.start;
-    const end = event.end;
-    if (!currentGroup || lastEnd < start) {
-      currentGroup = [];
-      eventGroups.push(currentGroup);
-    }
-    currentGroup.push(event);
-    lastEnd = end > lastEnd ? end : lastEnd;
-  });
 
   // Scroll to the current time whenever it changes.
   useEffect(() => {
     const scrollableDiv = scrollableDivRef.current;
-    const windowHeight = window.innerHeight;
-    console.log("scrollOffsetPx", scrollOffsetPx);
-    console.log("windowHeight", windowHeight);
+    // const windowHeight = window.innerHeight;
+    // console.log("scrollOffsetPx", scrollOffsetPx);
+    // console.log("windowHeight", windowHeight);
     if (scrollableDiv) scrollableDiv.scrollTo({ top: scrollOffsetPx, behavior: "smooth" });
   }, [scrollOffsetPx]);
-  console.log("Rendering DayViewer!");
+
+  // console.log("Rendering DayViewer!");
   return (
     <Root className={`${hidden ? "hidden" : ""}`}>
       {loading ? (

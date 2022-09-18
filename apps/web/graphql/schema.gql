@@ -492,7 +492,8 @@ input IdentityWhereUniqueInput {
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+scalar JSON
+  @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 type List {
   _id: ObjectId!
@@ -621,125 +622,41 @@ type Mutation {
   createList(data: ListCreationInput!): List!
   createListItem(data: ListItemCreationInput!): ListItem!
   createMantra(data: MantraCreationInput!): Mantra!
-  createManyAccount(data: AccountCreationInput!): [Account!]!
-  createManyBelief(data: BeliefCreationInput!): [Belief!]!
-  createManyBook(data: BookCreationInput!): [Book!]!
-  createManyCalendar(data: CalendarCreationInput!): [Calendar!]!
-  createManyCalendarEvent(data: CalendarEventCreationInput!): [CalendarEvent!]!
-  createManyDashboard(data: DashboardCreationInput!): [Dashboard!]!
-  createManyGoal(data: GoalCreationInput!): [Goal!]!
-  createManyHabit(data: HabitCreationInput!): [Habit!]!
-  createManyIdentity(data: IdentityCreationInput!): [Identity!]!
-  createManyList(data: ListCreationInput!): [List!]!
-  createManyListItem(data: ListItemCreationInput!): [ListItem!]!
-  createManyMantra(data: MantraCreationInput!): [Mantra!]!
-  createManyNote(data: NoteCreationInput!): [Note!]!
-  createManyNotebook(data: NotebookCreationInput!): [Notebook!]!
-  createManyShelving(data: ShelvingCreationInput!): [Shelving!]!
-  createManyTask(data: TaskCreationInput!): [Task!]!
-  createManyUser(data: UserCreationInput!): [User!]!
-  createManyValue(data: ValueCreationInput!): [Value!]!
   createNote(data: NoteCreationInput!): Note!
   createNotebook(data: NotebookCreationInput!): Notebook!
   createShelving(data: ShelvingCreationInput!): Shelving!
   createTask(data: TaskCreationInput!): Task!
   createUser(data: UserCreationInput!): User!
   createValue(data: ValueCreationInput!): Value!
-  deleteAccount(where: AccountWhereUniqueInput!): Account
-  deleteBelief(where: BeliefWhereUniqueInput!): Belief
-  deleteBook(where: BookWhereUniqueInput!): Book
-  deleteCalendar(where: CalendarWhereUniqueInput!): Calendar
-  deleteCalendarEvent(where: CalendarEventWhereUniqueInput!): CalendarEvent
-  deleteDashboard(where: DashboardWhereUniqueInput!): Dashboard
-  deleteGoal(where: GoalWhereUniqueInput!): Goal
-  deleteHabit(where: HabitWhereUniqueInput!): Habit
-  deleteIdentity(where: IdentityWhereUniqueInput!): Identity
-  deleteList(where: ListWhereUniqueInput!): List
-  deleteListItem(where: ListItemWhereUniqueInput!): ListItem
-  deleteMantra(where: MantraWhereUniqueInput!): Mantra
-  deleteManyAccount(where: AccountWhereInput!): [Account!]!
-  deleteManyBelief(where: BeliefWhereInput!): [Belief!]!
-  deleteManyBook(where: BookWhereInput!): [Book!]!
-  deleteManyCalendar(where: CalendarWhereInput!): [Calendar!]!
-  deleteManyCalendarEvent(where: CalendarEventWhereInput!): [CalendarEvent!]!
-  deleteManyDashboard(where: DashboardWhereInput!): [Dashboard!]!
-  deleteManyGoal(where: GoalWhereInput!): [Goal!]!
-  deleteManyHabit(where: HabitWhereInput!): [Habit!]!
-  deleteManyIdentity(where: IdentityWhereInput!): [Identity!]!
-  deleteManyList(where: ListWhereInput!): [List!]!
-  deleteManyListItem(where: ListItemWhereInput!): [ListItem!]!
-  deleteManyMantra(where: MantraWhereInput!): [Mantra!]!
-  deleteManyNote(where: NoteWhereInput!): [Note!]!
-  deleteManyNotebook(where: NotebookWhereInput!): [Notebook!]!
-  deleteManyShelving(where: ShelvingWhereInput!): [Shelving!]!
-  deleteManyTask(where: TaskWhereInput!): [Task!]!
-  deleteManyUser(where: UserWhereInput!): [User!]!
-  deleteManyValue(where: ValueWhereInput!): [Value!]!
-  deleteNote(where: NoteWhereUniqueInput!): Note
-  deleteNotebook(where: NotebookWhereUniqueInput!): Notebook
-  deleteShelving(where: ShelvingWhereUniqueInput!): Shelving
-  deleteTask(where: TaskWhereUniqueInput!): Task
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteValue(where: ValueWhereUniqueInput!): Value
   updateAccount(data: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account!
-  updateAccounts(data: AccountUpdateInput!, where: AccountWhereInput!): [Account!]!
-  updateAccountsDistinctly(data: AccountUpdateInput!, where: AccountWhereInput!): [Account!]!
   updateBelief(data: BeliefUpdateInput!, where: BeliefWhereUniqueInput!): Belief!
-  updateBeliefs(data: BeliefUpdateInput!, where: BeliefWhereInput!): [Belief!]!
-  updateBeliefsDistinctly(data: BeliefUpdateInput!, where: BeliefWhereInput!): [Belief!]!
   updateBook(data: BookUpdateInput!, where: BookWhereUniqueInput!): Book!
-  updateBooks(data: BookUpdateInput!, where: BookWhereInput!): [Book!]!
-  updateBooksDistinctly(data: BookUpdateInput!, where: BookWhereInput!): [Book!]!
   updateCalendar(data: CalendarUpdateInput!, where: CalendarWhereUniqueInput!): Calendar!
-  updateCalendarEvent(data: CalendarEventUpdateInput!, where: CalendarEventWhereUniqueInput!): CalendarEvent!
-  updateCalendarEvents(data: CalendarEventUpdateInput!, where: CalendarEventWhereInput!): [CalendarEvent!]!
-  updateCalendarEventsDistinctly(data: CalendarEventUpdateInput!, where: CalendarEventWhereInput!): [CalendarEvent!]!
-  updateCalendars(data: CalendarUpdateInput!, where: CalendarWhereInput!): [Calendar!]!
-  updateCalendarsDistinctly(data: CalendarUpdateInput!, where: CalendarWhereInput!): [Calendar!]!
+  updateCalendarEvent(
+    data: CalendarEventUpdateInput!
+    where: CalendarEventWhereUniqueInput!
+  ): CalendarEvent!
   updateDashboard(data: DashboardUpdateInput!, where: DashboardWhereUniqueInput!): Dashboard!
-  updateDashboards(data: DashboardUpdateInput!, where: DashboardWhereInput!): [Dashboard!]!
-  updateDashboardsDistinctly(data: DashboardUpdateInput!, where: DashboardWhereInput!): [Dashboard!]!
   updateGoal(data: GoalUpdateInput!, where: GoalWhereUniqueInput!): Goal!
-  updateGoals(data: GoalUpdateInput!, where: GoalWhereInput!): [Goal!]!
-  updateGoalsDistinctly(data: GoalUpdateInput!, where: GoalWhereInput!): [Goal!]!
   updateHabit(data: HabitUpdateInput!, where: HabitWhereUniqueInput!): Habit!
-  updateHabits(data: HabitUpdateInput!, where: HabitWhereInput!): [Habit!]!
-  updateHabitsDistinctly(data: HabitUpdateInput!, where: HabitWhereInput!): [Habit!]!
-  updateIdentities(data: IdentityUpdateInput!, where: IdentityWhereInput!): [Identity!]!
-  updateIdentitiesDistinctly(data: IdentityUpdateInput!, where: IdentityWhereInput!): [Identity!]!
   updateIdentity(data: IdentityUpdateInput!, where: IdentityWhereUniqueInput!): Identity!
   updateList(data: ListUpdateInput!, where: ListWhereUniqueInput!): List!
   updateListItem(data: ListItemUpdateInput!, where: ListItemWhereUniqueInput!): ListItem!
-  updateListItems(data: ListItemUpdateInput!, where: ListItemWhereInput!): [ListItem!]!
-  updateListItemsDistinctly(data: ListItemUpdateInput!, where: ListItemWhereInput!): [ListItem!]!
-  updateLists(data: ListUpdateInput!, where: ListWhereInput!): [List!]!
-  updateListsDistinctly(data: ListUpdateInput!, where: ListWhereInput!): [List!]!
   updateMantra(data: MantraUpdateInput!, where: MantraWhereUniqueInput!): Mantra!
-  updateMantras(data: MantraUpdateInput!, where: MantraWhereInput!): [Mantra!]!
-  updateMantrasDistinctly(data: MantraUpdateInput!, where: MantraWhereInput!): [Mantra!]!
   updateNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note!
   updateNotebook(data: NotebookUpdateInput!, where: NotebookWhereUniqueInput!): Notebook!
-  updateNotebooks(data: NotebookUpdateInput!, where: NotebookWhereInput!): [Notebook!]!
-  updateNotebooksDistinctly(data: NotebookUpdateInput!, where: NotebookWhereInput!): [Notebook!]!
-  updateNotes(data: NoteUpdateInput!, where: NoteWhereInput!): [Note!]!
-  updateNotesDistinctly(data: NoteUpdateInput!, where: NoteWhereInput!): [Note!]!
   updateShelving(data: ShelvingUpdateInput!, where: ShelvingWhereUniqueInput!): Shelving!
-  updateShelvings(data: ShelvingUpdateInput!, where: ShelvingWhereInput!): [Shelving!]!
-  updateShelvingsDistinctly(data: ShelvingUpdateInput!, where: ShelvingWhereInput!): [Shelving!]!
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
-  updateTasks(data: TaskUpdateInput!, where: TaskWhereInput!): [Task!]!
-  updateTasksDistinctly(data: TaskUpdateInput!, where: TaskWhereInput!): [Task!]!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
-  updateUsers(data: UserUpdateInput!, where: UserWhereInput!): [User!]!
-  updateUsersDistinctly(data: UserUpdateInput!, where: UserWhereInput!): [User!]!
   updateValue(data: ValueUpdateInput!, where: ValueWhereUniqueInput!): Value!
-  updateValues(data: ValueUpdateInput!, where: ValueWhereInput!): [Value!]!
-  updateValuesDistinctly(data: ValueUpdateInput!, where: ValueWhereInput!): [Value!]!
   upsertAccount(data: AccountCreationInput!, where: AccountWhereUniqueInput!): Account!
   upsertBelief(data: BeliefCreationInput!, where: BeliefWhereUniqueInput!): Belief!
   upsertBook(data: BookCreationInput!, where: BookWhereUniqueInput!): Book!
   upsertCalendar(data: CalendarCreationInput!, where: CalendarWhereUniqueInput!): Calendar!
-  upsertCalendarEvent(data: CalendarEventCreationInput!, where: CalendarEventWhereUniqueInput!): CalendarEvent!
+  upsertCalendarEvent(
+    data: CalendarEventCreationInput!
+    where: CalendarEventWhereUniqueInput!
+  ): CalendarEvent!
   upsertDashboard(data: DashboardCreationInput!, where: DashboardWhereUniqueInput!): Dashboard!
   upsertGoal(data: GoalCreationInput!, where: GoalWhereUniqueInput!): Goal!
   upsertHabit(data: HabitCreationInput!, where: HabitWhereUniqueInput!): Habit!
@@ -843,7 +760,9 @@ input NotebookWhereUniqueInput {
   id: ObjectId
 }
 
-"""Mongo object id scalar type"""
+"""
+Mongo object id scalar type
+"""
 scalar ObjectId
 
 type Query {

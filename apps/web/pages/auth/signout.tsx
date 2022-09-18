@@ -2,7 +2,7 @@ import { Box, Container, Typography } from "@mui/material";
 import Layout from "@web/components/Layout";
 import { signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import React, { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect } from "react";
 
 const SignOut: FunctionComponent = () => {
   const { data: session } = useSession();

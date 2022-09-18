@@ -21,7 +21,7 @@ import CalendarApiProviderDialog from "@web/components/calendar/CalendarApiProvi
 import { CalendarLegendItems } from "@web/components/calendar/CalendarLegend";
 import DayViewer from "@web/components/calendar/views/DayViewer";
 import MonthViewer from "@web/components/calendar/views/MonthViewer";
-import { CalendarData, CalendarProps } from "@web/components/calendar/views/props";
+import { CalendarProps } from "@web/components/calendar/views/props";
 import WeekViewer from "@web/components/calendar/views/WeekViewer";
 import DateContext from "@web/components/contexts/DateContext";
 import { useUser } from "@web/components/contexts/UserContext";
@@ -93,7 +93,6 @@ type ViewMode = "day" | "week" | "month";
 
 type CalendarViewerProps = Omit<CalendarProps, "data"> & {
   selectedDateState: [Date, Dispatch<Date>];
-  data: CalendarData;
   defaultView?: ViewMode;
 };
 
@@ -116,7 +115,7 @@ const selectedCalendarIdsReducer = (
 };
 
 const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => {
-  const { loading, data: _data, defaultView, ...rest } = props;
+  const { defaultView, ...rest } = props;
   const { user } = useUser();
   const date = useContext(DateContext);
   const [selectedDate, setSelectedDate] = props.selectedDateState;
@@ -135,13 +134,13 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const enabledCalendars = useMemo(() => {
     // prettier-ignore
     return user ? (
-      _data.calendars?.filter((calendar) => (
+      user.calendars?.filter((calendar) => (
         calendar.enabled &&
         !calendar.archivedAt &&
         (!calendar.provider || providerIsEnabledForUser(calendar.provider as CalendarProvider, user))
       ))
     ) : [];
-  }, [user, _data]);
+  }, [user]);
 
   const [selectedCalendarIds, dispatchCalendarIds] = useReducer(
     selectedCalendarIdsReducer,
@@ -156,25 +155,17 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const initialCalendarSelectionComplete = useRef(false);
 
   useEffect(() => {
-    if (!initialCalendarSelectionComplete.current && !loading && enabledCalendars?.length) {
+    if (!initialCalendarSelectionComplete.current && enabledCalendars?.length) {
       const calendarIdsToSelect = enabledCalendars.map((calendar) => calendar.id);
       dispatchCalendarIds({ type: "init", value: calendarIdsToSelect });
       initialCalendarSelectionComplete.current = true;
     }
-  }, [loading, enabledCalendars]);
+  }, [enabledCalendars]);
 
   if (!user) return null;
 
   const defaultCalendar = enabledCalendars[0]; // TODO
   if (!defaultCalendar) console.error("CalendarViewer: No default calendar!");
-
-  // TODO: refactor how data is passed between calendar components?
-  const data = {
-    ..._data,
-    calendarEvents: _data.calendarEvents?.filter((event) =>
-      selectedCalendarIds?.includes(event.calendarId)
-    ),
-  };
 
   const commonViewProps = {
     ...rest,
@@ -184,7 +175,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     // dispatchInitialEventFormData,
     defaultCalendar,
   };
-  console.log("Rendering calendar viewer!");
+  // console.log("Rendering calendar viewer!");
   return (
     <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
       <Box display="flex" flexDirection={"column"} height={"100%"} flexGrow={1} maxHeight={"100%"}>
@@ -287,8 +278,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
         <Box flex={"1 1 auto"} minHeight={0} position="relative">
           {view === "day" && (
             <DayViewer
-              loading={loading}
-              data={data}
               viewedHourState={viewedHourState}
               {...commonViewProps}
               hidden={view != "day"}
@@ -296,21 +285,12 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
           )}
           {view === "week" && (
             <WeekViewer
-              loading={loading}
-              data={data}
               viewedHourState={viewedHourState}
               {...commonViewProps}
               hidden={view != "week"}
             />
           )}
-          {view === "month" && (
-            <MonthViewer
-              loading={loading}
-              data={data}
-              {...commonViewProps}
-              hidden={view != "month"}
-            />
-          )}
+          {view === "month" && <MonthViewer {...commonViewProps} hidden={view != "month"} />}
           {/* TODO: After prettifying the legend, change `>= 1` to `> 1` so that the legend is only displayed if there are multiple calendars */}
           {/* {(enabledCalendars?.length ?? 0) >= 1 && (
           <Box position="absolute" bottom={1} right={1} zIndex={1e14}>

@@ -1,33 +1,32 @@
-import { postCreate, postUpdate } from "@web/generated/types/Shelving/hooks";
-import ShelvingModel from "@web/generated/models/ShelvingModel";
+import { Shelving } from "@web/generated/interfaces/Shelving";
+import ShelvingModel from "@web/generated/models/Shelving";
 import {
+  FindUniqueShelvingArgs,
   ShelvingCreationArgs,
   ShelvingUpdateArgs,
   ShelvingUpsertionArgs,
-  FindUniqueShelvingArgs,
 } from "@web/graphql/generated/args/shelving.args";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
+import { ModifyResult } from "mongoose";
 
 export const findShelving = async ({ where }: FindUniqueShelvingArgs) => {
   const filter = convertFilterForMongo(where);
-  return ShelvingModel.findOne(filter);
+  return ShelvingModel.findOne(filter).lean({ virtuals: true });
 };
 
 export const createShelving = async ({ data }: ShelvingCreationArgs) => {
-  const shelving = await ShelvingModel.create(data);
-  if (shelving) await postCreate(shelving);
-  return shelving;
+  return ShelvingModel.create([data]).then((results) => results[0]);
 };
 
 export const updateShelving = async ({ where, data }: ShelvingUpdateArgs) => {
   const filter = convertFilterForMongo(where);
-  const shelving = await ShelvingModel.findOneAndUpdate(filter, data, { returnDocument: "after" });
-  if (shelving) await postUpdate(shelving);
-  return shelving;
+  return await ShelvingModel.findOneAndUpdate(filter, data, { returnDocument: "after" }).lean({
+    virtuals: true,
+  });
 };
 
 export const upsertShelving = async ({ where, data }: ShelvingUpsertionArgs) => {
-  const shelvingUpsertResult = await ShelvingModel.findOneAndUpdate(
+  const result: ModifyResult<Shelving> = await ShelvingModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
     {
@@ -38,14 +37,6 @@ export const upsertShelving = async ({ where, data }: ShelvingUpsertionArgs) => 
       setDefaultsOnInsert: true,
       rawResult: true,
     }
-  );
-  const shelving = shelvingUpsertResult.value;
-  if (shelving) {
-    if (!shelvingUpsertResult.lastErrorObject?.updatedExisting) {
-      await postCreate(shelving);
-    } else {
-      await postUpdate(shelving);
-    }
-  }
-  return shelving;
+  ).lean({ virtuals: true });
+  return result.value;
 };

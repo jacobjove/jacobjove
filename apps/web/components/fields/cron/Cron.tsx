@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import styles from "@web/components/fields/cron/Cron.module.scss";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getCronStringFromValues, setValuesFromCronString } from "./converter";
 import Hours from "./fields/Hours";
 import Minutes from "./fields/Minutes";

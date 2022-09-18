@@ -60,7 +60,7 @@ export const useUpdate<%= Name %> = (options?: <%= Name %>UpdateMutationHookOpti
     <%= Name %>UpdateArgs
   >(
     UPDATE_<%= NAME %>,
-    options,
+    { refetchQueries: ["GetUser"], ...(options ?? {}) },
     <%= name %>UpdateInputSchema,
   );
 }

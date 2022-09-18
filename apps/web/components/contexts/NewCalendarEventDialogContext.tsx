@@ -1,6 +1,6 @@
-import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
 import { useCalendarEventReducer } from "@web/generated/hooks/calendarEvent.hooks";
 import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
+import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
 import { ID } from "@web/graphql/schema/types";
 import { Payload } from "@web/utils/data/reduction";
 import { PopupState, usePopupState } from "material-ui-popup-state/hooks";
@@ -44,7 +44,7 @@ const _NewCalendarEventDialogContextProvider: FC<_NewCalendarEventDialogContextP
     newCalendarEventDataTuple,
     newCalendarEventDialogState,
   };
-  console.log("Rendering NewCalendarEventDialogContextProvider");
+  // console.log("Rendering NewCalendarEventDialogContextProvider");
   return (
     <NewCalendarEventDialogContext.Provider value={value}>
       {children}
