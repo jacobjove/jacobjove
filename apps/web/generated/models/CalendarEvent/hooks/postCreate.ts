@@ -1,17 +1,11 @@
 /* Edit this file to add a non-default post-save hook for the CalendarEvent type. */
 
 import { CalendarEvent } from "@web/generated/interfaces/CalendarEvent";
-import CalendarEventModel from "@web/generated/models/CalendarEvent";
 import { findUser } from "@web/generated/shortcuts/user.shortcuts";
 import mongoosePromise from "@web/lib/mongodb";
 import { ObjectId } from "mongodb";
 
-function create() {
-  return CalendarEventModel.create<CalendarEvent>({} as CalendarEvent);
-}
-type Instance = Awaited<ReturnType<typeof create>>;
-
-export const postCreate = async (calendarEvent: Instance) => {
+export const postCreate = async (calendarEvent: CalendarEvent) => {
   const mongoose = await mongoosePromise;
   const UserModel = mongoose.model("User");
   const user = await findUser({ where: { id: calendarEvent.userId.toHexString() } });

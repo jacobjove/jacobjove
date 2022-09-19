@@ -5,12 +5,8 @@ unless_exists: true
 /* Edit this file to add a non-default post-save hook for the <%= Name %> type. */
 
 import { postCreate as _postCreate } from "@web/graphql/schema/helpers";
-import <%= Name %>Model from "@web/generated/models/<%= Name %>";
 import { <%= Name %> } from "@web/generated/interfaces/<%= Name %>";
 
-function create() { return <%= Name %>Model.create<<%= Name %>>({} as <%= Name %>) }
-type Instance = Awaited<ReturnType<typeof create>>;
-
-export const postCreate = async (<%= name %>: Instance) => {
+export const postCreate = async (<%= name %>: <%= Name %>) => {
   return _postCreate(<%= name %>);
 }
