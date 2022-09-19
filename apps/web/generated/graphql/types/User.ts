@@ -11,88 +11,88 @@ import Task from "@web/generated/graphql/types/Task";
 import { Settings } from "@web/generated/models/User/types";
 import { DateTimeScalar, JSONResolver } from "@web/graphql/schema/scalars";
 import { Model } from "@web/graphql/schema/types";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { Field, ObjectType } from "type-graphql-v2-fork";
 
-@TypeGraphQL.ObjectType()
+@ObjectType()
 export class User extends Model {
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   name?: string | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: false })
+  @Field(() => String, { nullable: false })
   email!: string;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   emailVerified?: boolean | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   image?: string | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   isAdmin?: boolean;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => JSONResolver, { nullable: true })
+  @Field(() => JSONResolver, { nullable: true })
   settings!: Settings;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   lastLogin?: Date | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   password?: string | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [Account], { nullable: true })
+  @Field(() => [Account], { nullable: true })
   accounts!: Account[];
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [Calendar], { nullable: true })
+  @Field(() => [Calendar], { nullable: true })
   calendars!: Calendar[];
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [CalendarEvent], { nullable: true })
+  @Field(() => [CalendarEvent], { nullable: true })
   calendarEvents!: CalendarEvent[];
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [Goal], { nullable: true })
+  @Field(() => [Goal], { nullable: true })
   goals!: Goal[];
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [Habit], { nullable: true })
+  @Field(() => [Habit], { nullable: true })
   habits!: Habit[];
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [Mantra], { nullable: true })
+  @Field(() => [Mantra], { nullable: true })
   mantras!: Mantra[];
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [Notebook], { nullable: true })
+  @Field(() => [Notebook], { nullable: true })
   notebooks!: Notebook[];
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [Task], { nullable: true })
+  @Field(() => [Task], { nullable: true })
   tasks!: Task[];
 }
 

@@ -2,28 +2,28 @@
 
 import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import { Model } from "@web/graphql/schema/types";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { Field, ObjectType } from "type-graphql-v2-fork";
 
-@TypeGraphQL.ObjectType()
+@ObjectType()
 export class Notebook extends Model {
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
+  @Field(() => ObjectIdScalar, { nullable: false })
   userId!: string;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: false })
+  @Field(() => String, { nullable: false })
   title!: string;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   description?: string | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   public?: boolean | null;
 }
 

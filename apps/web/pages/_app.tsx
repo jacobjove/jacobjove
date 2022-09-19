@@ -86,10 +86,6 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps<PageP
     }
   }, [isMobileWidth, isLandscape]);
 
-  // useEffect(() => {
-  //   TagManager.initialize(tagManagerArgs);
-  // }, []);
-
   return (
     <SessionProvider>
       <ApolloProvider client={apolloClient}>

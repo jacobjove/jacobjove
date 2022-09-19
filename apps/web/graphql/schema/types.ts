@@ -19,7 +19,7 @@ export class Model {
   readonly _id!: ObjectId;
 
   @Field(() => ObjectIdScalar, { nullable: false })
-  readonly id!: ID;
+  readonly id!: string;
 
   @Field(() => DateTimeScalar, { nullable: false })
   createdAt!: Date;
@@ -43,7 +43,7 @@ export class WhereInput {
 @InputType()
 export class WhereUniqueInput {
   @Field(() => ObjectIdScalar, { nullable: true })
-  id?: ID | undefined;
+  id?: string | undefined;
 }
 
 export type Fragment = Pick<Model, "__typename" | "id" | "createdAt" | "updatedAt" | "archivedAt"> &

@@ -30,7 +30,6 @@ import FullScreenExpandableComponent from "@web/components/fullscreen/FullScreen
 import FullScreenToggleButton from "@web/components/fullscreen/FullScreenToggleButton";
 import { calendarFragment } from "@web/generated/graphql/fragments/calendar.fragment";
 import { calendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
-import { ID } from "@web/graphql/schema/types";
 import { providerIsEnabledForUser } from "@web/utils/calendar/providers";
 import { getHours } from "date-fns";
 import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
@@ -96,11 +95,11 @@ type CalendarViewerProps = Omit<CalendarProps, "data"> & {
   defaultView?: ViewMode;
 };
 
-const initializeSelectedCalendarIds = (calendarIds: ID[]) => calendarIds;
+const initializeSelectedCalendarIds = (calendarIds: string[]) => calendarIds;
 
 const selectedCalendarIdsReducer = (
-  state: ID[],
-  action: { type: "add" | "remove" | "init"; value: ID[] }
+  state: string[],
+  action: { type: "add" | "remove" | "init"; value: string[] }
 ) => {
   switch (action.type) {
     case "add":

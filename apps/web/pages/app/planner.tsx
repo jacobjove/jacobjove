@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -16,13 +15,8 @@ import { useUser } from "@web/components/contexts/UserContext";
 import TasksBox from "@web/components/data/tasks/TasksBox";
 import FullScreenExpandableComponent from "@web/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggleToolbar";
-import {
-  CalendarEventFragment,
-  calendarEventFragment,
-} from "@web/generated/graphql/fragments/calendarEvent.fragment";
-import { goalFragment } from "@web/generated/graphql/fragments/goal.fragment";
-import { habitFragment } from "@web/generated/graphql/fragments/habit.fragment";
-import { TaskFragment, taskFragment } from "@web/generated/graphql/fragments/task.fragment";
+import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
+import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
 import { Goal, Habit } from "@web/generated/graphql/types";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import json2mq from "json2mq";
@@ -30,27 +24,6 @@ import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
 import { Dispatch, FC, useEffect, useState } from "react";
-
-const QUERY = gql`
-  query PlannerPage {
-    tasks {
-      ...TaskFragment
-    }
-    calendarEvents {
-      ...CalendarEventFragment
-    }
-    habits {
-      ...HabitFragment
-    }
-    goals {
-      ...GoalFragment
-    }
-  }
-  ${calendarEventFragment}
-  ${taskFragment}
-  ${habitFragment}
-  ${goalFragment}
-`;
 
 interface PlannerPageData {
   tasks: TaskFragment[];
@@ -138,9 +111,6 @@ export default PlannerPage;
 
 export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
   unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/planner`,
-  query: {
-    query: QUERY,
-  },
 });
 
 interface PlannerCompanionStuffProps {
