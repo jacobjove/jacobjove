@@ -15,7 +15,6 @@
   "scripts": {
     "analyze": "ANALYZE=true npm run build",
     "build": "next build",
-    "code:generate": "npm run schema:generate",
     "cypress:open": "cypress open",
     "db:seed": "ts-node -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
     "dev": "concurrently \"npm run generate:watch\" \"npm run start:dev\"",

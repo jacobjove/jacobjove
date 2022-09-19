@@ -20,13 +20,12 @@
     "//": "https://nx.dev/core-features/automate-updating-dependencies",
     "migrations:make": "nx migrate",
     "migrations:run": "nx migrate --run-migrations",
-    "code:generate": "npm run schema:generate && prettier -w . && eslint . --fix",
     "cypress:open": "cypress open",
     "db:seed": "ts-node --project tsconfig.base.json -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
-    "generate": "npm run schema:generate && graphql-codegen --config codegen.yml; eslint . --fix",
+    "generate": "npm run code:generate && graphql-codegen --config codegen.yml; prettier -w .; eslint . --fix",
     "generate:watch": "graphql-codegen --config codegen.yml --watch",
     "prepare": "npx husky install",
-    "schema:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in **/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in apps/web/_definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen schema new --definition $(basename -- $filename); done"
+    "code:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in **/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in apps/web/_definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen _ new --definition $(basename -- $filename); done"
   },
   "dependencies": {
     "@abraham/reflection": "^0.10.0",
