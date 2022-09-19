@@ -70,7 +70,7 @@ jobs:
           fi
           echo "Done."
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.5
+        uses: iacobfred/generate-dotenv@v0.2.6
         with:
           template-paths: |
             .config/_.env
