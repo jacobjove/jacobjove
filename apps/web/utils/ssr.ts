@@ -19,8 +19,6 @@ interface BuildServerSidePropsOptions {
   ) => Promise<Record<string, unknown>>;
 }
 
-const EXECUTE_SERVER_SIDE_QUERIES = true;
-
 export const buildGetServerSidePropsFunc = ({
   unauthedRedirectDestination,
   query,
@@ -39,7 +37,7 @@ export const buildGetServerSidePropsFunc = ({
     }
     const propsPromise = getProps ? getProps(context, session) : Promise.resolve({});
     const apolloClient = query ? initializeApollo() : null;
-    if (EXECUTE_SERVER_SIDE_QUERIES && query && apolloClient) {
+    if (query && apolloClient) {
       if (unauthedRedirectDestination && !session) {
         throw new Error(">>> Should have been redirected!!!!!");
       }

@@ -11,10 +11,7 @@ const schema = `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`;
 
 console.log(`Loading GraphQL schema from ${schema} ...`);
 
-const config: IGraphQLConfig = {
-  // schema: "graphql/schema.gql.json",
-  schema,
-};
+const config: IGraphQLConfig = { schema };
 
 console.log("Loaded GraphQL schema.");
 
