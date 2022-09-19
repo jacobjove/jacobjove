@@ -17,22 +17,91 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const userSchema = new mongoose.Schema<User>(
   {
-    name: { type: String, required: false, default: null },
-    email: { type: String, required: true, unique: true },
-    emailVerified: { type: Boolean, required: false, default: null },
-    image: { type: String, required: false, default: null },
-    isAdmin: { type: Boolean, required: false, default: false },
-    settings: { type: Object, required: false, default: {} },
-    lastLogin: { type: Date, required: false, default: null },
-    password: { type: String, required: false, select: false, default: null },
-    accounts: { type: [Account], required: false, default: [] },
-    calendars: { type: [Calendar], required: false, default: [] },
-    calendarEvents: { type: [CalendarEvent], required: false, default: [] },
-    goals: { type: [Goal], required: false, default: [] },
-    habits: { type: [Habit], required: false, default: [] },
-    mantras: { type: [Mantra], required: false, default: [] },
-    notebooks: { type: [Notebook], required: false, default: [] },
-    tasks: { type: [Task], required: false, default: [] },
+    name: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    email: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+    },
+    emailVerified: {
+      type: Boolean,
+      required: false,
+      default: null,
+    },
+    image: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    settings: {
+      type: Object,
+      required: false,
+      default: {},
+    },
+    lastLogin: {
+      type: Date,
+      required: false,
+      default: null,
+    },
+    password: {
+      type: String,
+      trim: true,
+      required: false,
+      select: false,
+      default: null,
+    },
+    accounts: {
+      type: [Account],
+      required: false,
+      default: [],
+    },
+    calendars: {
+      type: [Calendar],
+      required: false,
+      default: [],
+    },
+    calendarEvents: {
+      type: [CalendarEvent],
+      required: false,
+      default: [],
+    },
+    goals: {
+      type: [Goal],
+      required: false,
+      default: [],
+    },
+    habits: {
+      type: [Habit],
+      required: false,
+      default: [],
+    },
+    mantras: {
+      type: [Mantra],
+      required: false,
+      default: [],
+    },
+    notebooks: {
+      type: [Notebook],
+      required: false,
+      default: [],
+    },
+    tasks: {
+      type: [Task],
+      required: false,
+      default: [],
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

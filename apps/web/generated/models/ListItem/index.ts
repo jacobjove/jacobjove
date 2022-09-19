@@ -9,9 +9,20 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const listItemSchema = new mongoose.Schema<ListItem>(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    listId: { type: mongoose.Schema.Types.ObjectId, ref: "List", required: true },
-    data: { type: Object, required: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    listId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "List",
+      required: true,
+    },
+    data: {
+      type: Object,
+      required: true,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

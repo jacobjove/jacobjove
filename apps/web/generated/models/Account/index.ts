@@ -9,14 +9,49 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const accountSchema = new mongoose.Schema<Account>(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    provider: { type: String, required: true },
-    remoteId: { type: String, required: true, unique: true },
-    scopes: { type: [String], required: true },
-    accessToken: { type: String, required: false, default: null },
-    refreshToken: { type: String, required: false, default: null },
-    accessTokenExpiry: { type: Date, required: false, default: null },
-    syncToken: { type: String, required: false, default: null },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    provider: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    remoteId: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+    },
+    scopes: {
+      type: [String],
+      required: true,
+    },
+    accessToken: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    refreshToken: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    accessTokenExpiry: {
+      type: Date,
+      required: false,
+      default: null,
+    },
+    syncToken: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

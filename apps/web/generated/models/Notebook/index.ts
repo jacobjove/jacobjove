@@ -9,10 +9,27 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const notebookSchema = new mongoose.Schema<Notebook>(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    title: { type: String, required: true },
-    description: { type: String, required: false, default: null },
-    public: { type: Boolean, required: false, default: null },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    title: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    public: {
+      type: Boolean,
+      required: false,
+      default: null,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

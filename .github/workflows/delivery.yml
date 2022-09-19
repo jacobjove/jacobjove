@@ -48,7 +48,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v29.0.4
+        uses: tj-actions/changed-files@v29.0.7
   push-image:
     name: Push image
     environment: production
@@ -65,7 +65,7 @@ jobs:
           path: .env
           key: env-vars-${{ hashFiles('.env.*') }}
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.5
+        uses: iacobfred/generate-dotenv@v0.2.6
         with:
           template-paths: |
             .config/_.env
@@ -118,13 +118,13 @@ jobs:
         with:
           fetch-depth: 0
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.5
+        uses: iacobfred/generate-dotenv@v0.2.6
         with:
           template-paths: |
             .config/_.env
             .config/_.env.production
       - name: Deploy to server
-        uses: iacobfred/deploy-docker-ssh@v0.2.8
+        uses: iacobfred/deploy-docker-ssh@v0.3.1
         with:
           host: ${{ secrets.DOMAIN }}
           user: jacob

@@ -9,10 +9,26 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const shelvingSchema = new mongoose.Schema<Shelving>(
   {
-    bookId: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
-    shelfId: { type: mongoose.Schema.Types.ObjectId, ref: "Shelf", required: true },
-    position: { type: Number, required: true },
-    rationale: { type: String, required: false, default: null },
+    bookId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
+      required: true,
+    },
+    shelfId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Shelf",
+      required: true,
+    },
+    position: {
+      type: Number,
+      required: true,
+    },
+    rationale: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

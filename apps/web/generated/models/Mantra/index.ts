@@ -9,8 +9,16 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const mantraSchema = new mongoose.Schema<Mantra>(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    content: { type: String, required: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    content: {
+      type: String,
+      trim: true,
+      required: true,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

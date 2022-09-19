@@ -9,10 +9,28 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const goalSchema = new mongoose.Schema<Goal>(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    habitId: { type: mongoose.Schema.Types.ObjectId, ref: "Habit", required: false, default: null },
-    parentId: { type: mongoose.Schema.Types.ObjectId, ref: "Goal", required: false, default: null },
-    description: { type: String, required: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    habitId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Habit",
+      required: false,
+      default: null,
+    },
+    parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Goal",
+      required: false,
+      default: null,
+    },
+    description: {
+      type: String,
+      trim: true,
+      required: true,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS
