@@ -1,5 +1,5 @@
-import { GET_ACCOUNTS } from "@web/graphql/generated/queries/account.queries";
-import Account from "@web/graphql/generated/types/Account";
+import { GET_ACCOUNTS } from "@web/generated/graphql/queries/account.queries";
+import Account from "@web/generated/graphql/types/Account";
 import { initializeApollo } from "@web/lib/apollo";
 import { authOptions } from "@web/pages/api/auth/[...nextauth]";
 import { CalendarClient } from "@web/utils/calendar/client";

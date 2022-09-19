@@ -1,7 +1,7 @@
-import { UPDATE_CALENDAR } from "@web/graphql/generated/mutations/calendar.mutations";
-import { UPSERT_CALENDAR_EVENT } from "@web/graphql/generated/mutations/calendarEvent.mutations";
-import { GET_CALENDAR } from "@web/graphql/generated/queries/calendar.queries";
-import Calendar from "@web/graphql/generated/types/Calendar";
+import { UPDATE_CALENDAR } from "@web/generated/graphql/mutations/calendar.mutations";
+import { UPSERT_CALENDAR_EVENT } from "@web/generated/graphql/mutations/calendarEvent.mutations";
+import { GET_CALENDAR } from "@web/generated/graphql/queries/calendar.queries";
+import Calendar from "@web/generated/graphql/types/Calendar";
 import { initializeApollo } from "@web/lib/apollo";
 import { CalendarClient } from "@web/utils/calendar/client";
 import rateLimiter from "@web/utils/rate-limit";

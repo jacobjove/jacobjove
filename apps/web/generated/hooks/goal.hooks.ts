@@ -2,24 +2,24 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
+import { GoalCreationArgs, GoalUpdateArgs } from "@web/generated/graphql/args/goal.args";
+import { GoalFragment } from "@web/generated/graphql/fragments/goal.fragment";
+import {
+  CREATE_GOAL,
+  getOptimisticResponseForGoalCreation,
+  updateCacheAfterCreatingGoal,
+  UPDATE_GOAL,
+} from "@web/generated/graphql/mutations/goal.mutations";
+import {
+  goalCreationInputSchema,
+  goalUpdateInputSchema,
+} from "@web/generated/graphql/schemas/goal.schemas";
 import {
   GoalData,
   goalReducer,
   goalsReducer,
   initializeGoalData,
 } from "@web/generated/reducers/goal.reducer";
-import { GoalCreationArgs, GoalUpdateArgs } from "@web/graphql/generated/args/goal.args";
-import { GoalFragment } from "@web/graphql/generated/fragments/goal.fragment";
-import {
-  CREATE_GOAL,
-  getOptimisticResponseForGoalCreation,
-  updateCacheAfterCreatingGoal,
-  UPDATE_GOAL,
-} from "@web/graphql/generated/mutations/goal.mutations";
-import {
-  goalCreationInputSchema,
-  goalUpdateInputSchema,
-} from "@web/graphql/generated/schemas/goal.schemas";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

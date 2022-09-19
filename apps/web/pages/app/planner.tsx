@@ -19,11 +19,11 @@ import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggle
 import {
   CalendarEventFragment,
   calendarEventFragment,
-} from "@web/graphql/generated/fragments/calendarEvent.fragment";
-import { goalFragment } from "@web/graphql/generated/fragments/goal.fragment";
-import { habitFragment } from "@web/graphql/generated/fragments/habit.fragment";
-import { TaskFragment, taskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import { Goal, Habit } from "@web/graphql/generated/types";
+} from "@web/generated/graphql/fragments/calendarEvent.fragment";
+import { goalFragment } from "@web/generated/graphql/fragments/goal.fragment";
+import { habitFragment } from "@web/generated/graphql/fragments/habit.fragment";
+import { TaskFragment, taskFragment } from "@web/generated/graphql/fragments/task.fragment";
+import { Goal, Habit } from "@web/generated/graphql/types";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";

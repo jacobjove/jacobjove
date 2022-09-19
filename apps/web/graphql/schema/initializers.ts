@@ -1,4 +1,4 @@
-import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
+import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { MAX_TASK_RANK, MIN_TASK_RANK } from "@web/graphql/schema/constants";
 
 export const initializeTaskRank = (user: UserFragment): number => {

@@ -3,26 +3,26 @@
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
 import {
-  identitiesReducer,
-  IdentityData,
-  identityReducer,
-  initializeIdentityData,
-} from "@web/generated/reducers/identity.reducer";
-import {
   IdentityCreationArgs,
   IdentityUpdateArgs,
-} from "@web/graphql/generated/args/identity.args";
-import { IdentityFragment } from "@web/graphql/generated/fragments/identity.fragment";
+} from "@web/generated/graphql/args/identity.args";
+import { IdentityFragment } from "@web/generated/graphql/fragments/identity.fragment";
 import {
   CREATE_IDENTITY,
   getOptimisticResponseForIdentityCreation,
   updateCacheAfterCreatingIdentity,
   UPDATE_IDENTITY,
-} from "@web/graphql/generated/mutations/identity.mutations";
+} from "@web/generated/graphql/mutations/identity.mutations";
 import {
   identityCreationInputSchema,
   identityUpdateInputSchema,
-} from "@web/graphql/generated/schemas/identity.schemas";
+} from "@web/generated/graphql/schemas/identity.schemas";
+import {
+  identitiesReducer,
+  IdentityData,
+  identityReducer,
+  initializeIdentityData,
+} from "@web/generated/reducers/identity.reducer";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

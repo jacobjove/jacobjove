@@ -7,7 +7,7 @@ import <%= Name %>Model from "@web/generated/models/<%= Name %>";
 <% if (Object.keys(fields).includes("userId")) { -%>
 import UserModel from "@web/generated/models/User";
 <% } -%>
-import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs, <%= Name %>UpsertionArgs, FindUnique<%= Name %>Args } from "@web/graphql/generated/args/<%= name %>.args";
+import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs, <%= Name %>UpsertionArgs, FindUnique<%= Name %>Args } from "@web/generated/graphql/args/<%= name %>.args";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { <%= Name %> } from "@web/generated/interfaces/<%= Name %>";
 import { ModifyResult } from "mongoose";

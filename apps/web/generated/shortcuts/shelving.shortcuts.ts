@@ -1,11 +1,11 @@
-import { Shelving } from "@web/generated/interfaces/Shelving";
-import ShelvingModel from "@web/generated/models/Shelving";
 import {
   FindUniqueShelvingArgs,
   ShelvingCreationArgs,
   ShelvingUpdateArgs,
   ShelvingUpsertionArgs,
-} from "@web/graphql/generated/args/shelving.args";
+} from "@web/generated/graphql/args/shelving.args";
+import { Shelving } from "@web/generated/interfaces/Shelving";
+import ShelvingModel from "@web/generated/models/Shelving";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

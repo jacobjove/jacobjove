@@ -1,11 +1,11 @@
-import { Task } from "@web/generated/interfaces/Task";
-import TaskModel from "@web/generated/models/Task";
 import {
   FindUniqueTaskArgs,
   TaskCreationArgs,
   TaskUpdateArgs,
   TaskUpsertionArgs,
-} from "@web/graphql/generated/args/task.args";
+} from "@web/generated/graphql/args/task.args";
+import { Task } from "@web/generated/interfaces/Task";
+import TaskModel from "@web/generated/models/Task";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

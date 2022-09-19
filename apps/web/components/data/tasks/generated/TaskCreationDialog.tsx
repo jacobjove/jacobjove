@@ -1,9 +1,9 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/task.fields";
+import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
+import { TaskCreationInput } from "@web/generated/graphql/inputs/task.inputs";
+import Task from "@web/generated/graphql/types/Task";
 import { useCreateTask, useTaskReducer } from "@web/generated/hooks/task.hooks";
-import fields from "@web/graphql/generated/fields/task.fields";
-import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import { TaskCreationInput } from "@web/graphql/generated/inputs/task.inputs";
-import Task from "@web/graphql/generated/types/Task";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type TaskCreationDialogProps = ReturnType<typeof bindPopover>;

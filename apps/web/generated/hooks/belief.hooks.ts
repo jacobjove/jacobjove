@@ -2,24 +2,24 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
+import { BeliefCreationArgs, BeliefUpdateArgs } from "@web/generated/graphql/args/belief.args";
+import { BeliefFragment } from "@web/generated/graphql/fragments/belief.fragment";
+import {
+  CREATE_BELIEF,
+  getOptimisticResponseForBeliefCreation,
+  updateCacheAfterCreatingBelief,
+  UPDATE_BELIEF,
+} from "@web/generated/graphql/mutations/belief.mutations";
+import {
+  beliefCreationInputSchema,
+  beliefUpdateInputSchema,
+} from "@web/generated/graphql/schemas/belief.schemas";
 import {
   BeliefData,
   beliefReducer,
   beliefsReducer,
   initializeBeliefData,
 } from "@web/generated/reducers/belief.reducer";
-import { BeliefCreationArgs, BeliefUpdateArgs } from "@web/graphql/generated/args/belief.args";
-import { BeliefFragment } from "@web/graphql/generated/fragments/belief.fragment";
-import {
-  CREATE_BELIEF,
-  getOptimisticResponseForBeliefCreation,
-  updateCacheAfterCreatingBelief,
-  UPDATE_BELIEF,
-} from "@web/graphql/generated/mutations/belief.mutations";
-import {
-  beliefCreationInputSchema,
-  beliefUpdateInputSchema,
-} from "@web/graphql/generated/schemas/belief.schemas";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

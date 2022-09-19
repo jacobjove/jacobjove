@@ -3,26 +3,26 @@
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
 import {
-  initializeNotebookData,
-  NotebookData,
-  notebookReducer,
-  notebooksReducer,
-} from "@web/generated/reducers/notebook.reducer";
-import {
   NotebookCreationArgs,
   NotebookUpdateArgs,
-} from "@web/graphql/generated/args/notebook.args";
-import { NotebookFragment } from "@web/graphql/generated/fragments/notebook.fragment";
+} from "@web/generated/graphql/args/notebook.args";
+import { NotebookFragment } from "@web/generated/graphql/fragments/notebook.fragment";
 import {
   CREATE_NOTEBOOK,
   getOptimisticResponseForNotebookCreation,
   updateCacheAfterCreatingNotebook,
   UPDATE_NOTEBOOK,
-} from "@web/graphql/generated/mutations/notebook.mutations";
+} from "@web/generated/graphql/mutations/notebook.mutations";
 import {
   notebookCreationInputSchema,
   notebookUpdateInputSchema,
-} from "@web/graphql/generated/schemas/notebook.schemas";
+} from "@web/generated/graphql/schemas/notebook.schemas";
+import {
+  initializeNotebookData,
+  NotebookData,
+  notebookReducer,
+  notebooksReducer,
+} from "@web/generated/reducers/notebook.reducer";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

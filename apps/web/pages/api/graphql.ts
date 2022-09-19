@@ -8,7 +8,7 @@ import { NextApiRequest, NextApiResponse, PageConfig } from "next";
 import { buildSchema, NonEmptyArray, MiddlewareFn } from "type-graphql-v2-fork";
 import { Model } from "mongoose";
 import { ApolloServer } from "apollo-server-micro";
-import * as resolvers from "@web/graphql/generated/resolvers";
+import * as resolvers from "@web/generated/graphql/resolvers";
 import { withSentry } from "@sentry/nextjs";
 import cors from "micro-cors";
 

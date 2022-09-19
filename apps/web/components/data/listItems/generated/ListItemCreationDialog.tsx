@@ -1,9 +1,9 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/listItem.fields";
+import { ListItemFragment } from "@web/generated/graphql/fragments/listItem.fragment";
+import { ListItemCreationInput } from "@web/generated/graphql/inputs/listItem.inputs";
+import ListItem from "@web/generated/graphql/types/ListItem";
 import { useCreateListItem, useListItemReducer } from "@web/generated/hooks/listItem.hooks";
-import fields from "@web/graphql/generated/fields/listItem.fields";
-import { ListItemFragment } from "@web/graphql/generated/fragments/listItem.fragment";
-import { ListItemCreationInput } from "@web/graphql/generated/inputs/listItem.inputs";
-import ListItem from "@web/graphql/generated/types/ListItem";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type ListItemCreationDialogProps = ReturnType<typeof bindPopover>;

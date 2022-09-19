@@ -1,11 +1,11 @@
-import { Value } from "@web/generated/interfaces/Value";
-import ValueModel from "@web/generated/models/Value";
 import {
   FindUniqueValueArgs,
   ValueCreationArgs,
   ValueUpdateArgs,
   ValueUpsertionArgs,
-} from "@web/graphql/generated/args/value.args";
+} from "@web/generated/graphql/args/value.args";
+import { Value } from "@web/generated/interfaces/Value";
+import ValueModel from "@web/generated/models/Value";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

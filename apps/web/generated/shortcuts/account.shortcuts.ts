@@ -1,11 +1,11 @@
-import { Account } from "@web/generated/interfaces/Account";
-import AccountModel from "@web/generated/models/Account";
 import {
   AccountCreationArgs,
   AccountUpdateArgs,
   AccountUpsertionArgs,
   FindUniqueAccountArgs,
-} from "@web/graphql/generated/args/account.args";
+} from "@web/generated/graphql/args/account.args";
+import { Account } from "@web/generated/interfaces/Account";
+import AccountModel from "@web/generated/models/Account";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

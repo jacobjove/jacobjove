@@ -1,11 +1,11 @@
-import { Mantra } from "@web/generated/interfaces/Mantra";
-import MantraModel from "@web/generated/models/Mantra";
 import {
   FindUniqueMantraArgs,
   MantraCreationArgs,
   MantraUpdateArgs,
   MantraUpsertionArgs,
-} from "@web/graphql/generated/args/mantra.args";
+} from "@web/generated/graphql/args/mantra.args";
+import { Mantra } from "@web/generated/interfaces/Mantra";
+import MantraModel from "@web/generated/models/Mantra";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

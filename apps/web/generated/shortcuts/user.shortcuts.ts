@@ -1,11 +1,11 @@
-import { User } from "@web/generated/interfaces/User";
-import UserModel from "@web/generated/models/User";
 import {
   FindUniqueUserArgs,
   UserCreationArgs,
   UserUpdateArgs,
   UserUpsertionArgs,
-} from "@web/graphql/generated/args/user.args";
+} from "@web/generated/graphql/args/user.args";
+import { User } from "@web/generated/interfaces/User";
+import UserModel from "@web/generated/models/User";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

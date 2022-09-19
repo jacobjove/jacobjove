@@ -2,24 +2,24 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
+import { NoteCreationArgs, NoteUpdateArgs } from "@web/generated/graphql/args/note.args";
+import { NoteFragment } from "@web/generated/graphql/fragments/note.fragment";
+import {
+  CREATE_NOTE,
+  getOptimisticResponseForNoteCreation,
+  updateCacheAfterCreatingNote,
+  UPDATE_NOTE,
+} from "@web/generated/graphql/mutations/note.mutations";
+import {
+  noteCreationInputSchema,
+  noteUpdateInputSchema,
+} from "@web/generated/graphql/schemas/note.schemas";
 import {
   initializeNoteData,
   NoteData,
   noteReducer,
   notesReducer,
 } from "@web/generated/reducers/note.reducer";
-import { NoteCreationArgs, NoteUpdateArgs } from "@web/graphql/generated/args/note.args";
-import { NoteFragment } from "@web/graphql/generated/fragments/note.fragment";
-import {
-  CREATE_NOTE,
-  getOptimisticResponseForNoteCreation,
-  updateCacheAfterCreatingNote,
-  UPDATE_NOTE,
-} from "@web/graphql/generated/mutations/note.mutations";
-import {
-  noteCreationInputSchema,
-  noteUpdateInputSchema,
-} from "@web/graphql/generated/schemas/note.schemas";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

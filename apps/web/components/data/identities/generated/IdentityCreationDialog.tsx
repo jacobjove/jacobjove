@@ -1,9 +1,9 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/identity.fields";
+import { IdentityFragment } from "@web/generated/graphql/fragments/identity.fragment";
+import { IdentityCreationInput } from "@web/generated/graphql/inputs/identity.inputs";
+import Identity from "@web/generated/graphql/types/Identity";
 import { useCreateIdentity, useIdentityReducer } from "@web/generated/hooks/identity.hooks";
-import fields from "@web/graphql/generated/fields/identity.fields";
-import { IdentityFragment } from "@web/graphql/generated/fragments/identity.fragment";
-import { IdentityCreationInput } from "@web/graphql/generated/inputs/identity.inputs";
-import Identity from "@web/graphql/generated/types/Identity";
 import { bindPopover } from "material-ui-popup-state/hooks";
 
 export type IdentityCreationDialogProps = ReturnType<typeof bindPopover>;

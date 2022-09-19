@@ -8,9 +8,9 @@ import TableRow from "@mui/material/TableRow";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import TaskRow, { TaskRowProps } from "@web/components/data/tasks/TaskRow";
 import TitleAndDescriptionFields from "@web/components/fields/TitleAndDescriptionFields";
+import { getOptimisticResponseForTaskCreation } from "@web/generated/graphql/mutations/task.mutations";
+import { taskCreationInputSchema } from "@web/generated/graphql/schemas/task.schemas";
 import { useCreateTask, useTaskReducer, useTasksReducer } from "@web/generated/hooks/task.hooks";
-import { getOptimisticResponseForTaskCreation } from "@web/graphql/generated/mutations/task.mutations";
-import { taskCreationInputSchema } from "@web/graphql/generated/schemas/task.schemas";
 import { Dispatch, FC, useState } from "react";
 
 const PREFERRED_FONT_SIZE = "0.8rem";

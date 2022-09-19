@@ -2,24 +2,24 @@ import { styled } from "@mui/material/styles";
 import { DraggedCalendarEvent } from "@web/components/calendar/CalendarEventBox";
 import { useUser } from "@web/components/contexts/UserContext";
 import { DraggedTask } from "@web/components/data/tasks/TaskRow";
+import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
+import { CalendarEventCreationInput } from "@web/generated/graphql/inputs/calendarEvent.inputs";
+import { calendarEventCreationInputSchema } from "@web/generated/graphql/schemas/calendarEvent.schemas";
 import {
   useCreateCalendarEvent,
   useUpdateCalendarEvent,
 } from "@web/generated/hooks/calendarEvent.hooks";
 import { useUpdateTask } from "@web/generated/hooks/task.hooks";
-import { CalendarEventCreationInput } from "@web/graphql/generated/inputs/calendarEvent.inputs";
-import { getOptimisticResponseForTaskUpdate } from "@web/graphql/generated/mutations/task.mutations";
-import { calendarEventCreationInputSchema } from "@web/graphql/generated/schemas/calendarEvent.schemas";
-import CalendarEvent from "@web/graphql/generated/types/CalendarEvent";
 import { DEFAULT_EVENT_LENGTH_IN_MINUTES } from "@web/utils/constants";
 import { addMinutes, differenceInMinutes } from "date-fns";
 import { FC, MouseEventHandler, useState } from "react";
 import { useDrop } from "react-dnd";
+import { getOptimisticResponseForTaskUpdate } from "../../generated/graphql/mutations/task.mutations";
 
 interface EventSlotProps {
   date: Date;
   view: "day" | "week";
-  events?: CalendarEvent[];
+  events?: CalendarEventFragment[];
   onClick?: MouseEventHandler<HTMLDivElement>;
   past?: boolean;
 }

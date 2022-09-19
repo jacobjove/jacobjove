@@ -3,26 +3,26 @@
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
 import {
-  CalendarEventData,
-  calendarEventReducer,
-  calendarEventsReducer,
-  initializeCalendarEventData,
-} from "@web/generated/reducers/calendarEvent.reducer";
-import {
   CalendarEventCreationArgs,
   CalendarEventUpdateArgs,
-} from "@web/graphql/generated/args/calendarEvent.args";
-import { CalendarEventFragment } from "@web/graphql/generated/fragments/calendarEvent.fragment";
+} from "@web/generated/graphql/args/calendarEvent.args";
+import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
 import {
   CREATE_CALENDAR_EVENT,
   getOptimisticResponseForCalendarEventCreation,
   updateCacheAfterCreatingCalendarEvent,
   UPDATE_CALENDAR_EVENT,
-} from "@web/graphql/generated/mutations/calendarEvent.mutations";
+} from "@web/generated/graphql/mutations/calendarEvent.mutations";
 import {
   calendarEventCreationInputSchema,
   calendarEventUpdateInputSchema,
-} from "@web/graphql/generated/schemas/calendarEvent.schemas";
+} from "@web/generated/graphql/schemas/calendarEvent.schemas";
+import {
+  CalendarEventData,
+  calendarEventReducer,
+  calendarEventsReducer,
+  initializeCalendarEventData,
+} from "@web/generated/reducers/calendarEvent.reducer";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

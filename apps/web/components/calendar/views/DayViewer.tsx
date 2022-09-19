@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
-import { useCalendarEventsReducer } from "@root/apps/web/generated/hooks/calendarEvent.hooks";
 import CalendarEventBox from "@web/components/calendar/CalendarEventBox";
 import {
   ALL_DAY_BOX_HEIGHT,
@@ -15,7 +14,8 @@ import TimeLabelsColumn from "@web/components/calendar/TimeLabelsColumn";
 import DateContext from "@web/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@web/components/contexts/UserContext";
-import { CalendarEvent } from "@web/graphql/generated/types";
+import { CalendarEvent } from "@web/generated/graphql/types";
+import { useCalendarEventsReducer } from "@web/generated/hooks/calendarEvent.hooks";
 import { ID } from "@web/graphql/schema/types";
 import {
   addMinutes,

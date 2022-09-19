@@ -1,4 +1,4 @@
-import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
+import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
 import { XYCoord } from "dnd-core";
 import { FC, useEffect, useRef, useState } from "react";
 import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";

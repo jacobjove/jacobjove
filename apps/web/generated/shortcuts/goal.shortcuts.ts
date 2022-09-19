@@ -1,11 +1,11 @@
-import { Goal } from "@web/generated/interfaces/Goal";
-import GoalModel from "@web/generated/models/Goal";
 import {
   FindUniqueGoalArgs,
   GoalCreationArgs,
   GoalUpdateArgs,
   GoalUpsertionArgs,
-} from "@web/graphql/generated/args/goal.args";
+} from "@web/generated/graphql/args/goal.args";
+import { Goal } from "@web/generated/interfaces/Goal";
+import GoalModel from "@web/generated/models/Goal";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

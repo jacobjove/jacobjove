@@ -1,11 +1,11 @@
-import { Dashboard } from "@web/generated/interfaces/Dashboard";
-import DashboardModel from "@web/generated/models/Dashboard";
 import {
   DashboardCreationArgs,
   DashboardUpdateArgs,
   DashboardUpsertionArgs,
   FindUniqueDashboardArgs,
-} from "@web/graphql/generated/args/dashboard.args";
+} from "@web/generated/graphql/args/dashboard.args";
+import { Dashboard } from "@web/generated/interfaces/Dashboard";
+import DashboardModel from "@web/generated/models/Dashboard";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

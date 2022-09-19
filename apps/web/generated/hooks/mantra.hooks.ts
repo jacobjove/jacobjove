@@ -2,24 +2,24 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
+import { MantraCreationArgs, MantraUpdateArgs } from "@web/generated/graphql/args/mantra.args";
+import { MantraFragment } from "@web/generated/graphql/fragments/mantra.fragment";
+import {
+  CREATE_MANTRA,
+  getOptimisticResponseForMantraCreation,
+  updateCacheAfterCreatingMantra,
+  UPDATE_MANTRA,
+} from "@web/generated/graphql/mutations/mantra.mutations";
+import {
+  mantraCreationInputSchema,
+  mantraUpdateInputSchema,
+} from "@web/generated/graphql/schemas/mantra.schemas";
 import {
   initializeMantraData,
   MantraData,
   mantraReducer,
   mantrasReducer,
 } from "@web/generated/reducers/mantra.reducer";
-import { MantraCreationArgs, MantraUpdateArgs } from "@web/graphql/generated/args/mantra.args";
-import { MantraFragment } from "@web/graphql/generated/fragments/mantra.fragment";
-import {
-  CREATE_MANTRA,
-  getOptimisticResponseForMantraCreation,
-  updateCacheAfterCreatingMantra,
-  UPDATE_MANTRA,
-} from "@web/graphql/generated/mutations/mantra.mutations";
-import {
-  mantraCreationInputSchema,
-  mantraUpdateInputSchema,
-} from "@web/graphql/generated/schemas/mantra.schemas";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

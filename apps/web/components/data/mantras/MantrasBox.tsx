@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import DataBox, { DataBoxProps } from "@web/components/DataBox";
-import Mantra from "@web/graphql/generated/types/Mantra";
+import Mantra from "@web/generated/graphql/types/Mantra";
 import { FC } from "react";
 
 type MantrasBoxProps = Pick<DataBoxProps, "displayTitle"> & {

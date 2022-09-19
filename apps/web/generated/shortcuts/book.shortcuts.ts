@@ -1,11 +1,11 @@
-import { Book } from "@web/generated/interfaces/Book";
-import BookModel from "@web/generated/models/Book";
 import {
   BookCreationArgs,
   BookUpdateArgs,
   BookUpsertionArgs,
   FindUniqueBookArgs,
-} from "@web/graphql/generated/args/book.args";
+} from "@web/generated/graphql/args/book.args";
+import { Book } from "@web/generated/interfaces/Book";
+import BookModel from "@web/generated/models/Book";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

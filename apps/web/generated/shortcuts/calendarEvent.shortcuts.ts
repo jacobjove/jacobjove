@@ -1,11 +1,11 @@
-import { CalendarEvent } from "@web/generated/interfaces/CalendarEvent";
-import CalendarEventModel from "@web/generated/models/CalendarEvent";
 import {
   CalendarEventCreationArgs,
   CalendarEventUpdateArgs,
   CalendarEventUpsertionArgs,
   FindUniqueCalendarEventArgs,
-} from "@web/graphql/generated/args/calendarEvent.args";
+} from "@web/generated/graphql/args/calendarEvent.args";
+import { CalendarEvent } from "@web/generated/interfaces/CalendarEvent";
+import CalendarEventModel from "@web/generated/models/CalendarEvent";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

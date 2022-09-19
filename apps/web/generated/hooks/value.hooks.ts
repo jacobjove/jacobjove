@@ -2,24 +2,24 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
+import { ValueCreationArgs, ValueUpdateArgs } from "@web/generated/graphql/args/value.args";
+import { ValueFragment } from "@web/generated/graphql/fragments/value.fragment";
+import {
+  CREATE_VALUE,
+  getOptimisticResponseForValueCreation,
+  updateCacheAfterCreatingValue,
+  UPDATE_VALUE,
+} from "@web/generated/graphql/mutations/value.mutations";
+import {
+  valueCreationInputSchema,
+  valueUpdateInputSchema,
+} from "@web/generated/graphql/schemas/value.schemas";
 import {
   initializeValueData,
   ValueData,
   valueReducer,
   valuesReducer,
 } from "@web/generated/reducers/value.reducer";
-import { ValueCreationArgs, ValueUpdateArgs } from "@web/graphql/generated/args/value.args";
-import { ValueFragment } from "@web/graphql/generated/fragments/value.fragment";
-import {
-  CREATE_VALUE,
-  getOptimisticResponseForValueCreation,
-  updateCacheAfterCreatingValue,
-  UPDATE_VALUE,
-} from "@web/graphql/generated/mutations/value.mutations";
-import {
-  valueCreationInputSchema,
-  valueUpdateInputSchema,
-} from "@web/graphql/generated/schemas/value.schemas";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

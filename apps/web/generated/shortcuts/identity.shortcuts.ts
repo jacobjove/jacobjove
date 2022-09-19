@@ -1,11 +1,11 @@
-import { Identity } from "@web/generated/interfaces/Identity";
-import IdentityModel from "@web/generated/models/Identity";
 import {
   FindUniqueIdentityArgs,
   IdentityCreationArgs,
   IdentityUpdateArgs,
   IdentityUpsertionArgs,
-} from "@web/graphql/generated/args/identity.args";
+} from "@web/generated/graphql/args/identity.args";
+import { Identity } from "@web/generated/interfaces/Identity";
+import IdentityModel from "@web/generated/models/Identity";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

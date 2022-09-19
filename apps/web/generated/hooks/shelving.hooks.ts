@@ -2,26 +2,26 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import {
-  initializeShelvingData,
-  ShelvingData,
-  shelvingReducer,
-  shelvingsReducer,
-} from "@web/generated/reducers/shelving.reducer";
-import {
   ShelvingCreationArgs,
   ShelvingUpdateArgs,
-} from "@web/graphql/generated/args/shelving.args";
-import { ShelvingFragment } from "@web/graphql/generated/fragments/shelving.fragment";
+} from "@web/generated/graphql/args/shelving.args";
+import { ShelvingFragment } from "@web/generated/graphql/fragments/shelving.fragment";
 import {
   CREATE_SHELVING,
   getOptimisticResponseForShelvingCreation,
   updateCacheAfterCreatingShelving,
   UPDATE_SHELVING,
-} from "@web/graphql/generated/mutations/shelving.mutations";
+} from "@web/generated/graphql/mutations/shelving.mutations";
 import {
   shelvingCreationInputSchema,
   shelvingUpdateInputSchema,
-} from "@web/graphql/generated/schemas/shelving.schemas";
+} from "@web/generated/graphql/schemas/shelving.schemas";
+import {
+  initializeShelvingData,
+  ShelvingData,
+  shelvingReducer,
+  shelvingsReducer,
+} from "@web/generated/reducers/shelving.reducer";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useReducer } from "react";

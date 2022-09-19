@@ -1,11 +1,11 @@
-import { Note } from "@web/generated/interfaces/Note";
-import NoteModel from "@web/generated/models/Note";
 import {
   FindUniqueNoteArgs,
   NoteCreationArgs,
   NoteUpdateArgs,
   NoteUpsertionArgs,
-} from "@web/graphql/generated/args/note.args";
+} from "@web/generated/graphql/args/note.args";
+import { Note } from "@web/generated/interfaces/Note";
+import NoteModel from "@web/generated/models/Note";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

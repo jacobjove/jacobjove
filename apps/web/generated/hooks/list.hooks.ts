@@ -2,24 +2,24 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
+import { ListCreationArgs, ListUpdateArgs } from "@web/generated/graphql/args/list.args";
+import { ListFragment } from "@web/generated/graphql/fragments/list.fragment";
+import {
+  CREATE_LIST,
+  getOptimisticResponseForListCreation,
+  updateCacheAfterCreatingList,
+  UPDATE_LIST,
+} from "@web/generated/graphql/mutations/list.mutations";
+import {
+  listCreationInputSchema,
+  listUpdateInputSchema,
+} from "@web/generated/graphql/schemas/list.schemas";
 import {
   initializeListData,
   ListData,
   listReducer,
   listsReducer,
 } from "@web/generated/reducers/list.reducer";
-import { ListCreationArgs, ListUpdateArgs } from "@web/graphql/generated/args/list.args";
-import { ListFragment } from "@web/graphql/generated/fragments/list.fragment";
-import {
-  CREATE_LIST,
-  getOptimisticResponseForListCreation,
-  updateCacheAfterCreatingList,
-  UPDATE_LIST,
-} from "@web/graphql/generated/mutations/list.mutations";
-import {
-  listCreationInputSchema,
-  listUpdateInputSchema,
-} from "@web/graphql/generated/schemas/list.schemas";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

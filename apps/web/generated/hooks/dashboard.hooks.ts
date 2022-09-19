@@ -3,26 +3,26 @@
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
 import {
-  DashboardData,
-  dashboardReducer,
-  dashboardsReducer,
-  initializeDashboardData,
-} from "@web/generated/reducers/dashboard.reducer";
-import {
   DashboardCreationArgs,
   DashboardUpdateArgs,
-} from "@web/graphql/generated/args/dashboard.args";
-import { DashboardFragment } from "@web/graphql/generated/fragments/dashboard.fragment";
+} from "@web/generated/graphql/args/dashboard.args";
+import { DashboardFragment } from "@web/generated/graphql/fragments/dashboard.fragment";
 import {
   CREATE_DASHBOARD,
   getOptimisticResponseForDashboardCreation,
   updateCacheAfterCreatingDashboard,
   UPDATE_DASHBOARD,
-} from "@web/graphql/generated/mutations/dashboard.mutations";
+} from "@web/generated/graphql/mutations/dashboard.mutations";
 import {
   dashboardCreationInputSchema,
   dashboardUpdateInputSchema,
-} from "@web/graphql/generated/schemas/dashboard.schemas";
+} from "@web/generated/graphql/schemas/dashboard.schemas";
+import {
+  DashboardData,
+  dashboardReducer,
+  dashboardsReducer,
+  initializeDashboardData,
+} from "@web/generated/reducers/dashboard.reducer";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

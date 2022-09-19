@@ -1,6 +1,6 @@
 import { ApolloError, useQuery } from "@apollo/client";
-import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
-import { GET_USER } from "@web/graphql/generated/queries/user.queries";
+import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
+import { GET_USER } from "@web/generated/graphql/queries/user.queries";
 import { Session } from "next-auth";
 import { createContext, FC, ReactNode, useContext } from "react";
 

@@ -1,11 +1,11 @@
-import { List } from "@web/generated/interfaces/List";
-import ListModel from "@web/generated/models/List";
 import {
   FindUniqueListArgs,
   ListCreationArgs,
   ListUpdateArgs,
   ListUpsertionArgs,
-} from "@web/graphql/generated/args/list.args";
+} from "@web/generated/graphql/args/list.args";
+import { List } from "@web/generated/interfaces/List";
+import ListModel from "@web/generated/models/List";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

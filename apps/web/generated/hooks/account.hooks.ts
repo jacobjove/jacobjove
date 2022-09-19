@@ -2,24 +2,24 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
+import { AccountCreationArgs, AccountUpdateArgs } from "@web/generated/graphql/args/account.args";
+import { AccountFragment } from "@web/generated/graphql/fragments/account.fragment";
+import {
+  CREATE_ACCOUNT,
+  getOptimisticResponseForAccountCreation,
+  updateCacheAfterCreatingAccount,
+  UPDATE_ACCOUNT,
+} from "@web/generated/graphql/mutations/account.mutations";
+import {
+  accountCreationInputSchema,
+  accountUpdateInputSchema,
+} from "@web/generated/graphql/schemas/account.schemas";
 import {
   AccountData,
   accountReducer,
   accountsReducer,
   initializeAccountData,
 } from "@web/generated/reducers/account.reducer";
-import { AccountCreationArgs, AccountUpdateArgs } from "@web/graphql/generated/args/account.args";
-import { AccountFragment } from "@web/graphql/generated/fragments/account.fragment";
-import {
-  CREATE_ACCOUNT,
-  getOptimisticResponseForAccountCreation,
-  updateCacheAfterCreatingAccount,
-  UPDATE_ACCOUNT,
-} from "@web/graphql/generated/mutations/account.mutations";
-import {
-  accountCreationInputSchema,
-  accountUpdateInputSchema,
-} from "@web/graphql/generated/schemas/account.schemas";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

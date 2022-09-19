@@ -2,24 +2,24 @@
 
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
+import { HabitCreationArgs, HabitUpdateArgs } from "@web/generated/graphql/args/habit.args";
+import { HabitFragment } from "@web/generated/graphql/fragments/habit.fragment";
+import {
+  CREATE_HABIT,
+  getOptimisticResponseForHabitCreation,
+  updateCacheAfterCreatingHabit,
+  UPDATE_HABIT,
+} from "@web/generated/graphql/mutations/habit.mutations";
+import {
+  habitCreationInputSchema,
+  habitUpdateInputSchema,
+} from "@web/generated/graphql/schemas/habit.schemas";
 import {
   HabitData,
   habitReducer,
   habitsReducer,
   initializeHabitData,
 } from "@web/generated/reducers/habit.reducer";
-import { HabitCreationArgs, HabitUpdateArgs } from "@web/graphql/generated/args/habit.args";
-import { HabitFragment } from "@web/graphql/generated/fragments/habit.fragment";
-import {
-  CREATE_HABIT,
-  getOptimisticResponseForHabitCreation,
-  updateCacheAfterCreatingHabit,
-  UPDATE_HABIT,
-} from "@web/graphql/generated/mutations/habit.mutations";
-import {
-  habitCreationInputSchema,
-  habitUpdateInputSchema,
-} from "@web/graphql/generated/schemas/habit.schemas";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

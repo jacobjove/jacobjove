@@ -3,26 +3,26 @@
 import { MutationHookOptions } from "@apollo/client";
 import { useUser } from "@web/components/contexts/UserContext";
 import {
-  initializeListItemData,
-  ListItemData,
-  listItemReducer,
-  listItemsReducer,
-} from "@web/generated/reducers/listItem.reducer";
-import {
   ListItemCreationArgs,
   ListItemUpdateArgs,
-} from "@web/graphql/generated/args/listItem.args";
-import { ListItemFragment } from "@web/graphql/generated/fragments/listItem.fragment";
+} from "@web/generated/graphql/args/listItem.args";
+import { ListItemFragment } from "@web/generated/graphql/fragments/listItem.fragment";
 import {
   CREATE_LIST_ITEM,
   getOptimisticResponseForListItemCreation,
   updateCacheAfterCreatingListItem,
   UPDATE_LIST_ITEM,
-} from "@web/graphql/generated/mutations/listItem.mutations";
+} from "@web/generated/graphql/mutations/listItem.mutations";
 import {
   listItemCreationInputSchema,
   listItemUpdateInputSchema,
-} from "@web/graphql/generated/schemas/listItem.schemas";
+} from "@web/generated/graphql/schemas/listItem.schemas";
+import {
+  initializeListItemData,
+  ListItemData,
+  listItemReducer,
+  listItemsReducer,
+} from "@web/generated/reducers/listItem.reducer";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { ArrayAction, Payload } from "@web/utils/data/reduction";
 import { Dispatch, useEffect, useReducer } from "react";

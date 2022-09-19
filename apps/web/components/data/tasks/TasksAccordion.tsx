@@ -7,13 +7,13 @@ import Typography from "@mui/material/Typography";
 import { useUser } from "@web/components/contexts/UserContext";
 import { DraggedTask } from "@web/components/data/tasks/TaskRow";
 import TasksTable from "@web/components/data/tasks/TasksTable";
-import { useTasksReducer, useUpdateTask } from "@web/generated/hooks/task.hooks";
-import { DistinctTasksUpdateArgs } from "@web/graphql/generated/args/task.args";
-import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
+import { DistinctTasksUpdateArgs } from "@web/generated/graphql/args/task.args";
+import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
 import {
   getOptimisticResponseForTaskUpdate,
   UPDATE_TASKS_DISTINCTLY,
-} from "@web/graphql/generated/mutations/task.mutations";
+} from "@web/generated/graphql/mutations/task.mutations";
+import { useTasksReducer, useUpdateTask } from "@web/generated/hooks/task.hooks";
 import { MAX_TASK_RANK, MIN_TASK_RANK } from "@web/graphql/schema/constants";
 import { useHandleMutation } from "@web/utils/data/mutation";
 import { addDays, endOfDay, isSameDay } from "date-fns";

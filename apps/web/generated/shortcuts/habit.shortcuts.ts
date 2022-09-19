@@ -1,11 +1,11 @@
-import { Habit } from "@web/generated/interfaces/Habit";
-import HabitModel from "@web/generated/models/Habit";
 import {
   FindUniqueHabitArgs,
   HabitCreationArgs,
   HabitUpdateArgs,
   HabitUpsertionArgs,
-} from "@web/graphql/generated/args/habit.args";
+} from "@web/generated/graphql/args/habit.args";
+import { Habit } from "@web/generated/interfaces/Habit";
+import HabitModel from "@web/generated/models/Habit";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

@@ -1,11 +1,11 @@
-import { Belief } from "@web/generated/interfaces/Belief";
-import BeliefModel from "@web/generated/models/Belief";
 import {
   BeliefCreationArgs,
   BeliefUpdateArgs,
   BeliefUpsertionArgs,
   FindUniqueBeliefArgs,
-} from "@web/graphql/generated/args/belief.args";
+} from "@web/generated/graphql/args/belief.args";
+import { Belief } from "@web/generated/interfaces/Belief";
+import BeliefModel from "@web/generated/models/Belief";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

@@ -15,7 +15,7 @@ import { getTimeOffsetPx } from "@web/components/calendar/views/DayViewer";
 import DateContext from "@web/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@web/components/contexts/UserContext";
-import { Calendar, CalendarEvent } from "@web/graphql/generated/types";
+import { Calendar, CalendarEvent } from "@web/generated/graphql/types";
 import { ID } from "@web/graphql/schema/types";
 import {
   addMinutes,

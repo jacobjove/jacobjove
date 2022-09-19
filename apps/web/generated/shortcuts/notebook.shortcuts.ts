@@ -1,11 +1,11 @@
-import { Notebook } from "@web/generated/interfaces/Notebook";
-import NotebookModel from "@web/generated/models/Notebook";
 import {
   FindUniqueNotebookArgs,
   NotebookCreationArgs,
   NotebookUpdateArgs,
   NotebookUpsertionArgs,
-} from "@web/graphql/generated/args/notebook.args";
+} from "@web/generated/graphql/args/notebook.args";
+import { Notebook } from "@web/generated/interfaces/Notebook";
+import NotebookModel from "@web/generated/models/Notebook";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
 import { ModifyResult } from "mongoose";
 

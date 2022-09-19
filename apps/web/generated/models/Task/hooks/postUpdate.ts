@@ -1,12 +1,12 @@
 /* Edit this file to add a non-default post-save hook for the Task type. */
 
 import { Task } from "@web/generated/interfaces";
+import { User } from "@web/generated/interfaces/User";
 import TaskDocument from "@web/generated/models/Task/document";
 import { upsertCalendarEvent } from "@web/generated/shortcuts/calendarEvent.shortcuts";
 import mongoosePromise from "@web/lib/mongodb";
 import { addMinutes } from "date-fns";
 import { Model } from "mongoose";
-import User from "../../../../graphql/generated/types/User";
 
 export const postUpdate = async (_task: Task | TaskDocument, updatedFields: any) => {
   const task: Task = _task instanceof Model ? (_task as TaskDocument).toObject() : _task;
