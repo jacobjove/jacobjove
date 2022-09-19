@@ -88,6 +88,7 @@
     "default='.*'",
     "[A-Z_]+(=|: ).*",
     "import .+ as .+",
+    "export .+ as .+",
     "} from .+",
     " *path.+, include.+",
     "'.+?_.+?_.+?[^a-z].+'",

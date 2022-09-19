@@ -19,7 +19,7 @@ interface BuildServerSidePropsOptions {
   ) => Promise<Record<string, unknown>>;
 }
 
-const EXECUTE_SERVER_SIDE_QUERIES = false;
+const EXECUTE_SERVER_SIDE_QUERIES = true;
 
 export const buildGetServerSidePropsFunc = ({
   unauthedRedirectDestination,

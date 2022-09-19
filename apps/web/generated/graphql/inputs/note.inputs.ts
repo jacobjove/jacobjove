@@ -2,83 +2,83 @@
 
 import { DateTimeScalar, ObjectIdScalar } from "@web/graphql/schema/scalars";
 import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { Field, InputType } from "type-graphql-v2-fork";
 
-@TypeGraphQL.InputType()
+@InputType()
 export class NoteCreationInput {
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
+  @Field(() => ObjectIdScalar, { nullable: false })
   userId!: string;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
+  @Field(() => ObjectIdScalar, { nullable: false })
   notebookId!: string;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: false })
+  @Field(() => String, { nullable: false })
   title!: string;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   body?: string | null | undefined;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   public?: boolean | null | undefined;
 
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 }
 
-@TypeGraphQL.InputType()
+@InputType()
 export class NoteUpdateInput {
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  @Field(() => ObjectIdScalar, { nullable: true })
   userId?: string | undefined;
 
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  @Field(() => ObjectIdScalar, { nullable: true })
   notebookId?: string | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   title?: string | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   body?: string | null | undefined;
 
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   public?: boolean | null | undefined;
 
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 }
 
-@TypeGraphQL.InputType()
+@InputType()
 export class NoteWhereInput extends WhereInput {
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  @Field(() => ObjectIdScalar, { nullable: true })
   id?: ID | undefined;
 
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  @Field(() => ObjectIdScalar, { nullable: true })
   userId?: string | null | undefined;
 
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  @Field(() => ObjectIdScalar, { nullable: true })
   notebookId?: string | null | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   title?: string | null | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   body?: string | undefined;
 
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   public?: boolean | undefined;
 }
 
-@TypeGraphQL.InputType()
+@InputType()
 export class NoteWhereUniqueInput extends WhereUniqueInput {
-  // @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
+  // @Field(() => ObjectIdScalar, { nullable: false })
   // id!: ID;
 }

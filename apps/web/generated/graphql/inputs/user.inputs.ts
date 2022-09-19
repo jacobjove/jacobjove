@@ -3,105 +3,105 @@
 import { Settings } from "@web/generated/models/User/types";
 import { DateTimeScalar, JSONResolver, ObjectIdScalar } from "@web/graphql/schema/scalars";
 import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { Field, InputType } from "type-graphql-v2-fork";
 
-@TypeGraphQL.InputType()
+@InputType()
 export class UserCreationInput {
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   name?: string | null | undefined;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: false })
+  @Field(() => String, { nullable: false })
   email!: string;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   emailVerified?: boolean | null | undefined;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   image?: string | null | undefined;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   isAdmin?: boolean | undefined;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => JSONResolver, { nullable: true })
+  @Field(() => JSONResolver, { nullable: true })
   settings?: Settings | undefined;
 
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   lastLogin?: Date | null | undefined;
 
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 }
 
-@TypeGraphQL.InputType()
+@InputType()
 export class UserUpdateInput {
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   name?: string | null | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   email?: string | undefined;
 
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   emailVerified?: boolean | null | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   image?: string | null | undefined;
 
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   isAdmin?: boolean | undefined;
 
-  @TypeGraphQL.Field(() => JSONResolver, { nullable: true })
+  @Field(() => JSONResolver, { nullable: true })
   settings?: Settings | undefined;
 
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   lastLogin?: Date | null | undefined;
 
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   archivedAt?: Date | null | undefined;
 }
 
-@TypeGraphQL.InputType()
+@InputType()
 export class UserWhereInput extends WhereInput {
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
+  @Field(() => ObjectIdScalar, { nullable: true })
   id?: ID | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   name?: string | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   email?: string | null | undefined;
 
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   emailVerified?: boolean | undefined;
 
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   image?: string | undefined;
 
-  @TypeGraphQL.Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   isAdmin?: boolean | undefined;
 
-  @TypeGraphQL.Field(() => JSONResolver, { nullable: true })
+  @Field(() => JSONResolver, { nullable: true })
   settings?: Record<string, unknown> | undefined;
 
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   lastLogin?: Date | undefined;
 }
 
-@TypeGraphQL.InputType()
+@InputType()
 export class UserWhereUniqueInput extends WhereUniqueInput {
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   email?: string | null | undefined;
 }

@@ -1,7 +1,7 @@
 import { GraphQLScalarType, Kind } from "graphql";
 import { ObjectId } from "mongodb";
+export { GraphQLID as ID, GraphQLInt as Int } from "graphql";
 export { JSONResolver } from "graphql-scalars";
-export { Int } from "type-graphql-v2-fork";
 
 export const StringArray = [String];
 

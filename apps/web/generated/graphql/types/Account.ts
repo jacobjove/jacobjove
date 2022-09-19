@@ -2,48 +2,48 @@
 
 import { DateTimeScalar, ObjectIdScalar } from "@web/graphql/schema/scalars";
 import { Model } from "@web/graphql/schema/types";
-import * as TypeGraphQL from "type-graphql-v2-fork";
+import { Field, ObjectType } from "type-graphql-v2-fork";
 
-@TypeGraphQL.ObjectType()
+@ObjectType()
 export class Account extends Model {
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: false })
+  @Field(() => ObjectIdScalar, { nullable: false })
   userId!: string;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: false })
+  @Field(() => String, { nullable: false })
   provider!: string;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: false })
+  @Field(() => String, { nullable: false })
   remoteId!: string;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => [String], { nullable: false })
+  @Field(() => [String], { nullable: false })
   scopes!: string[];
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   accessToken?: string | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   refreshToken?: string | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => DateTimeScalar, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   accessTokenExpiry?: Date | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   syncToken?: string | null;
 }
 
