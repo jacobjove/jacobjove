@@ -115,7 +115,7 @@
     "@nrwl/cypress": "14.7.3",
     "@nrwl/detox": "14.7.5",
     "@nrwl/eslint-plugin-nx": "14.7.3",
-    "@nrwl/jest": "14.7.3",
+    "@nrwl/jest": "14.7.5",
     "@nrwl/linter": "14.7.3",
     "@nrwl/nx-cloud": "14.6.2",
     "@nrwl/react": "14.7.3",
