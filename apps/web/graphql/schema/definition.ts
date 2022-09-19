@@ -1,7 +1,8 @@
-import * as Types from "@web/generated/graphql/types";
+import * as Models from "@web/generated/graphql/types";
 import { camelize } from "inflection";
 import JSON5 from "json5";
 
+export type Model = keyof typeof Models;
 export type FieldType =
   | "Array"
   | "Boolean"
@@ -107,7 +108,6 @@ export function getConstructor(field: Field, options?: Options): string {
 }
 
 export function getYup(field: Field, mutation: Mutation = "create"): string {
-  // <%- (field.required ? ".required()" : (typeof field.default !== "undefined") ? "" : field.type === "Boolean" ? ".optional()" : ".nullable()" %><%- typeof field.default !== "undefined" ? `.default(() => { return ${typeof field.default === "string" ? field.default : JSON5.stringify(field.default)}; })` : ""%>,
   let ret = "";
   if (field.type === "Map" && field.shape) {
     ret = `${field.name}Schema`;
@@ -156,7 +156,7 @@ export type Field = {
     }
   | {
       type: "Array";
-      typeArg: FieldType | keyof typeof Types;
+      typeArg: FieldType | Model;
     }
   | {
       type: "Map";
@@ -170,7 +170,7 @@ export type Field = {
       type: Exclude<FieldType, "Array" | "Map" | "String" | "ID">;
     }
 ) & {
-    typeArg?: FieldType | keyof typeof Types;
+    typeArg?: FieldType | Model;
     typeCast?: string | CallableFunction | CallableFunction[];
     default?: unknown;
     select?: boolean;

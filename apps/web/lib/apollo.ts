@@ -19,16 +19,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-// const clientSchema = buildClientSchema(introspectionResult as unknown as IntrospectionQuery);
-
-// const scalarsLink = withScalars({
-//   schema: clientSchema,
-//   typesMap: {
-//     DateTimeISO: DateTimeResolver,
-//     // ObjectId: ObjectIdScalar,
-//   },
-// });
-
 const debounceLink = new DebounceLink(500);
 
 // const customFetch = (uri: Parameters<typeof fetch>[0], options: Parameters<typeof fetch>[1]) => {

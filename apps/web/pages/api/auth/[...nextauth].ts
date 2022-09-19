@@ -5,7 +5,6 @@ import AccountModel from "@web/generated/models/Account";
 import UserModel from "@web/generated/models/User";
 import { upsertUser } from "@web/generated/shortcuts/user.shortcuts";
 import mongoosePromise from "@web/lib/mongodb";
-import { NoUndefinedField } from "@web/types/global";
 import { PageConfig } from "next";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
