@@ -2,7 +2,7 @@
 .DS_Store
 .next
 
-_/
+/_
 service-account.json
 
 **/public/workbox-*.js
