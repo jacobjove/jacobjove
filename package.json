@@ -146,7 +146,6 @@
     "@types/react-swipeable-views": "^0.13.1",
     "@types/react-swipeable-views-utils": "^0.13.3",
     "@types/throttle-debounce": "^2.1.0",
-    "chevrotain": "^10.3.0",
     "concurrently": "^7.2.2",
     "cypress": "^9.2.1",
     "dotenv": "^16.0.1",
