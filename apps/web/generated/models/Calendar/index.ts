@@ -9,21 +9,61 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const calendarSchema = new mongoose.Schema<Calendar>(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    name: { type: String, required: true },
-    color: { type: String, required: false, default: null },
-    provider: { type: String, required: false, default: null },
-    remoteId: { type: String, required: false, default: null },
-    syncToken: { type: String, required: false, default: null },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    color: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    provider: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    remoteId: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    syncToken: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
     accountId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Account",
       required: false,
       default: null,
     },
-    primary: { type: Boolean, required: false, default: null },
-    public: { type: Boolean, required: false, default: null },
-    enabled: { type: Boolean, required: false, default: true },
+    primary: {
+      type: Boolean,
+      required: false,
+      default: null,
+    },
+    public: {
+      type: Boolean,
+      required: false,
+      default: null,
+    },
+    enabled: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

@@ -9,16 +9,58 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const taskSchema = new mongoose.Schema<Task>(
   {
-    title: { type: String, required: true },
-    description: { type: String, required: false, default: null },
-    plannedStartDate: { type: Date, required: false, default: null },
-    dueDate: { type: Date, required: false, default: null },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    parentId: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: false, default: null },
-    habitId: { type: mongoose.Schema.Types.ObjectId, ref: "Habit", required: false, default: null },
-    expectedDuration: { type: Number, required: false, default: 30 },
-    rank: { type: Number, required: true },
-    completedAt: { type: Date, required: false, default: null },
+    title: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    plannedStartDate: {
+      type: Date,
+      required: false,
+      default: null,
+    },
+    dueDate: {
+      type: Date,
+      required: false,
+      default: null,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
+      required: false,
+      default: null,
+    },
+    habitId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Habit",
+      required: false,
+      default: null,
+    },
+    expectedDuration: {
+      type: Number,
+      required: false,
+      default: 30,
+    },
+    rank: {
+      type: Number,
+      required: true,
+    },
+    completedAt: {
+      type: Date,
+      required: false,
+      default: null,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

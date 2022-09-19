@@ -20,7 +20,27 @@ import { ModifyResult, UpdateQuery } from "mongoose";
 
 const <%= name %>Schema = new mongoose.Schema<<%= Name %>>({
 <% for (var [fieldName, field] of Object.entries(fields)) { -%>
-  <%= fieldName %>: { type: <%- getConstructor(field, { ctx: "schema" }) %><%- field.ref ? `, ref: "${field.ref}"` : ""%>, required: <%- field.required %><%- field.unique ? ", unique: true" : "" %><%- field.select === false ? ", select: false" : "" %><%- typeof field.default !== "undefined" ? `, default: ${JSON5.stringify(field.default)}` : field.required ? "" : `, default: null` %> },
+  <%= fieldName %>: { 
+    type: <%- getConstructor(field, { ctx: "schema" }) %>,
+<% if (field.type === "String") { -%>
+    trim: true,
+<% } -%>
+<% if (field.ref) { -%>
+    ref: "<%= field.ref %>",
+<% } -%>
+    required: <%- field.required %>,
+<% if (field.unique) { -%>
+    unique: true,
+<% } -%>
+<% if (field.select === false) { -%>
+    select: false,
+<% } -%>
+<% if (typeof field.default !== "undefined") { -%>
+    default: <%- JSON5.stringify(field.default) %>,
+<% } else if (!field.required) { -%>
+    default: null,
+<% } -%>
+  },
 <% } -%>
   archivedAt: { type: Date, required: false, default: null },
 }, DEFAULT_SCHEMA_OPTIONS);

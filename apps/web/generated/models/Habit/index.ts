@@ -9,12 +9,38 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const habitSchema = new mongoose.Schema<Habit>(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    name: { type: String, required: true },
-    description: { type: String, required: false, default: null },
-    public: { type: Boolean, required: false, default: false },
-    cron: { type: String, required: false, default: null },
-    defaultDurationInMinutes: { type: Number, required: false, default: null },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    public: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    cron: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    defaultDurationInMinutes: {
+      type: Number,
+      required: false,
+      default: null,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS

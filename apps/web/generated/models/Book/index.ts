@@ -9,15 +9,52 @@ import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const bookSchema = new mongoose.Schema<Book>(
   {
-    isbn: { type: String, required: false, default: null },
-    isbn13: { type: String, required: false, default: null },
-    title: { type: String, required: true },
-    slug: { type: String, required: true },
-    description: { type: String, required: false, default: null },
-    authorNames: { type: [String], required: true },
-    authorNamesLf: { type: [String], required: true },
-    publicationYear: { type: Number, required: false, default: null },
-    originalPublicationYear: { type: Number, required: false, default: null },
+    isbn: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    isbn13: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    title: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    slug: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
+    authorNames: {
+      type: [String],
+      required: true,
+    },
+    authorNamesLf: {
+      type: [String],
+      required: true,
+    },
+    publicationYear: {
+      type: Number,
+      required: false,
+      default: null,
+    },
+    originalPublicationYear: {
+      type: Number,
+      required: false,
+      default: null,
+    },
     archivedAt: { type: Date, required: false, default: null },
   },
   DEFAULT_SCHEMA_OPTIONS
