@@ -1,44 +1,32 @@
-import { postCreate, postUpdate } from "@web/generated/types/CalendarEvent/hooks";
-import CalendarEventModel from "@web/generated/models/CalendarEventModel";
-import UserModel from "@web/generated/models/UserModel";
 import {
   CalendarEventCreationArgs,
   CalendarEventUpdateArgs,
   CalendarEventUpsertionArgs,
   FindUniqueCalendarEventArgs,
-} from "@web/graphql/generated/args/calendarEvent.args";
+} from "@web/generated/graphql/args/calendarEvent.args";
+import { CalendarEvent } from "@web/generated/interfaces/CalendarEvent";
+import CalendarEventModel from "@web/generated/models/CalendarEvent";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
+import { ModifyResult } from "mongoose";
 
 export const findCalendarEvent = async ({ where }: FindUniqueCalendarEventArgs) => {
   const filter = convertFilterForMongo(where);
-  return CalendarEventModel.findOne(filter);
+  return CalendarEventModel.findOne(filter).lean({ virtuals: true });
 };
 
 export const createCalendarEvent = async ({ data }: CalendarEventCreationArgs) => {
-  const calendarEvent = await CalendarEventModel.create(data);
-  if (calendarEvent) await postCreate(calendarEvent);
-  return calendarEvent;
+  return CalendarEventModel.create([data]).then((results) => results[0]);
 };
 
 export const updateCalendarEvent = async ({ where, data }: CalendarEventUpdateArgs) => {
   const filter = convertFilterForMongo(where);
-  const calendarEvent = await CalendarEventModel.findOneAndUpdate(filter, data, {
-    returnDocument: "after",
+  return await CalendarEventModel.findOneAndUpdate(filter, data, { returnDocument: "after" }).lean({
+    virtuals: true,
   });
-  // NOTE: This update fails if it's not awaited.
-  calendarEvent &&
-    (await UserModel.findOneAndUpdate(
-      { _id: calendarEvent.userId, "calendarEvents._id": calendarEvent._id },
-      {
-        $set: { "calendarEvents.$": { ...calendarEvent } },
-      }
-    ));
-  if (calendarEvent) await postUpdate(calendarEvent);
-  return calendarEvent;
 };
 
 export const upsertCalendarEvent = async ({ where, data }: CalendarEventUpsertionArgs) => {
-  const calendarEventUpsertResult = await CalendarEventModel.findOneAndUpdate(
+  const result: ModifyResult<CalendarEvent> = await CalendarEventModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
     {
@@ -49,14 +37,6 @@ export const upsertCalendarEvent = async ({ where, data }: CalendarEventUpsertio
       setDefaultsOnInsert: true,
       rawResult: true,
     }
-  );
-  const calendarEvent = calendarEventUpsertResult.value;
-  if (calendarEvent) {
-    if (!calendarEventUpsertResult.lastErrorObject?.updatedExisting) {
-      await postCreate(calendarEvent);
-    } else {
-      await postUpdate(calendarEvent);
-    }
-  }
-  return calendarEvent;
+  ).lean({ virtuals: true });
+  return result.value;
 };

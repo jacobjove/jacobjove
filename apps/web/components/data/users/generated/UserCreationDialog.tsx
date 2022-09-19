@@ -1,10 +1,10 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/user.fields";
+import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
+import { UserCreationInput } from "@web/generated/graphql/inputs/user.inputs";
+import User from "@web/generated/graphql/types/User";
 import { useCreateUser, useUserReducer } from "@web/generated/hooks/user.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { UserCreationInput } from "@web/graphql/generated/inputs/user.inputs";
-import User from "@web/generated/types/User";
-import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
-import fields from "@web/graphql/generated/fields/user.fields";
 
 export type UserCreationDialogProps = ReturnType<typeof bindPopover>;
 

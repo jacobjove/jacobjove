@@ -1,6 +1,6 @@
 // organize-imports-ignore
-// NOTE: reflect-metadata must be imported at the top.
-import "reflect-metadata";
+// NOTE: Reflection must be imported at the top.
+import "@abraham/reflection";
 
 import * as dotenv from "dotenv";
 dotenv.config();

@@ -1,13 +1,13 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/calendarEvent.fields";
+import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
+import { CalendarEventCreationInput } from "@web/generated/graphql/inputs/calendarEvent.inputs";
+import CalendarEvent from "@web/generated/graphql/types/CalendarEvent";
 import {
-  useCreateCalendarEvent,
   useCalendarEventReducer,
+  useCreateCalendarEvent,
 } from "@web/generated/hooks/calendarEvent.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { CalendarEventCreationInput } from "@web/graphql/generated/inputs/calendarEvent.inputs";
-import CalendarEvent from "@web/generated/types/CalendarEvent";
-import { CalendarEventFragment } from "@web/graphql/generated/fragments/calendarEvent.fragment";
-import fields from "@web/graphql/generated/fields/calendarEvent.fields";
 
 export type CalendarEventCreationDialogProps = ReturnType<typeof bindPopover>;
 

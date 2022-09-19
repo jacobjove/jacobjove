@@ -1,3 +1,4 @@
+import DragLayer from "@web/components/DragLayer";
 import Layout, { LayoutProps } from "@web/components/Layout";
 import { FC } from "react";
 
@@ -8,6 +9,7 @@ const AppLayout: FC<AppLayoutProps> = (props: AppLayoutProps) => {
   return (
     <Layout {...rest} inApp={true}>
       {children}
+      <DragLayer />
     </Layout>
   );
 };

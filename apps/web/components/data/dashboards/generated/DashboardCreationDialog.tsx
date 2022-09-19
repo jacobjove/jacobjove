@@ -1,10 +1,10 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/dashboard.fields";
+import { DashboardFragment } from "@web/generated/graphql/fragments/dashboard.fragment";
+import { DashboardCreationInput } from "@web/generated/graphql/inputs/dashboard.inputs";
+import Dashboard from "@web/generated/graphql/types/Dashboard";
 import { useCreateDashboard, useDashboardReducer } from "@web/generated/hooks/dashboard.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { DashboardCreationInput } from "@web/graphql/generated/inputs/dashboard.inputs";
-import Dashboard from "@web/generated/types/Dashboard";
-import { DashboardFragment } from "@web/graphql/generated/fragments/dashboard.fragment";
-import fields from "@web/graphql/generated/fields/dashboard.fields";
 
 export type DashboardCreationDialogProps = ReturnType<typeof bindPopover>;
 

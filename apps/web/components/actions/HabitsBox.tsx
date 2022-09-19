@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import HabitCreationDialog from "@web/components/data/habits/generated/HabitCreationDialog";
 import DataBox, { DataBoxProps } from "@web/components/DataBox";
-import Habit from "@web/generated/types/Habit";
+import Habit from "@web/generated/graphql/types/Habit";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC } from "react";
 

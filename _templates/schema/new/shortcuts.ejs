@@ -3,40 +3,35 @@ to: apps/web/generated/shortcuts/<%= name %>.shortcuts.ts
 force: true
 ---
 
-import { postCreate, postUpdate } from "@web/generated/types/<%= Name %>/hooks";
-import <%= Name %>Model from "@web/generated/models/<%= Name %>Model";
+import <%= Name %>Model from "@web/generated/models/<%= Name %>";
 <% if (Object.keys(fields).includes("userId")) { -%>
-import UserModel from "@web/generated/models/UserModel";
+import UserModel from "@web/generated/models/User";
 <% } -%>
-import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs, <%= Name %>UpsertionArgs, FindUnique<%= Name %>Args } from "@web/graphql/generated/args/<%= name %>.args";
+import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs, <%= Name %>UpsertionArgs, FindUnique<%= Name %>Args } from "@web/generated/graphql/args/<%= name %>.args";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
+import { <%= Name %> } from "@web/generated/interfaces/<%= Name %>";
+import { ModifyResult } from "mongoose";
 
 export const find<%= Name %> = async ({ where }: FindUnique<%= Name %>Args) => {
   const filter = convertFilterForMongo(where);
-  return <%= Name %>Model.findOne(filter);
+  return <%= Name %>Model.findOne(filter).lean({ virtuals: true });
 }
 
 export const create<%= Name %> = async ({ data }: <%= Name %>CreationArgs) => {
-  const <%= name %> = await <%= Name %>Model.create(data);
-  if (<%= name %>) await postCreate(<%= name %>);
-  return <%= name %>;
+  return <%= Name %>Model.create([ data ]).then((results) => results[0]);
 }
 
 export const update<%= Name %> = async ({ where, data }: <%= Name %>UpdateArgs) => {
   const filter = convertFilterForMongo(where);
-  const <%= name %> = await <%= Name %>Model.findOneAndUpdate(filter, data, { returnDocument: "after" });
-<% if (Object.keys(fields).includes("userId")) { -%>
-  // NOTE: This update fails if it's not awaited.
-  <%= name %> && await UserModel.findOneAndUpdate({ _id: <%= name %>.userId, "<%= names %>._id": <%= name %>._id }, {
-    $set: { "<%= names %>.$": { ...<%= name %> } }
-  });
-<% } -%>
-  if (<%= name %>) await postUpdate(<%= name %>);
-  return <%= name %>;
+  return await <%= Name %>Model.findOneAndUpdate(
+    filter,
+    data,
+    { returnDocument: "after" }
+  ).lean({ virtuals: true });
 }
 
 export const upsert<%= Name %> = async ({ where, data }: <%= Name %>UpsertionArgs) => {
-  const <%= name %>UpsertResult = await <%= Name %>Model.findOneAndUpdate(
+  const result: ModifyResult<<%= Name %>> = await <%= Name %>Model.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
     {
@@ -47,14 +42,6 @@ export const upsert<%= Name %> = async ({ where, data }: <%= Name %>UpsertionArg
       setDefaultsOnInsert: true,
       rawResult: true,
     }
-  );
-  const <%= name %> = <%= name %>UpsertResult.value;
-  if (<%= name %>) {
-    if (!<%= name %>UpsertResult.lastErrorObject?.updatedExisting) {
-      await postCreate(<%= name %>);
-    } else {
-      await postUpdate(<%= name %>);
-    }
-  }
-  return <%= name %>;
+  ).lean({ virtuals: true });
+  return result.value;
 }

@@ -1,12 +1,11 @@
 ---
-to: apps/web/generated/types/<%= Name %>/hooks/postUpdate.ts
+to: apps/web/generated/models/<%= Name %>/hooks/postUpdate.ts
 unless_exists: true
 ---
 /* Edit this file to add a non-default post-save hook for the <%= Name %> type. */
 
-import { DocumentType } from "@typegoose/typegoose";
-import <%= Name %> from "@web/generated/types/<%= Name %>";
+import <%= Name %>Document from "@web/generated/models/<%= Name %>/document";
 
-export const postUpdate = async (<%= name %>: DocumentType<<%= Name %>>) => {
+export const postUpdate = async (<%= name %>: <%= Name %>Document, updatedFields: any) => {
   return <%= name %>;
 }

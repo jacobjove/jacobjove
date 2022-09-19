@@ -1,4 +1,4 @@
-import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
+import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { useCalendarEventReducer } from "@web/generated/hooks/calendarEvent.hooks";
 import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
 import { ID } from "@web/graphql/schema/types";
@@ -44,7 +44,7 @@ const _NewCalendarEventDialogContextProvider: FC<_NewCalendarEventDialogContextP
     newCalendarEventDataTuple,
     newCalendarEventDialogState,
   };
-  console.log("Rendering NewCalendarEventDialogContextProvider");
+  // console.log("Rendering NewCalendarEventDialogContextProvider");
   return (
     <NewCalendarEventDialogContext.Provider value={value}>
       {children}

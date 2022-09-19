@@ -19,11 +19,11 @@ import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggle
 import {
   CalendarEventFragment,
   calendarEventFragment,
-} from "@web/graphql/generated/fragments/calendarEvent.fragment";
-import { goalFragment } from "@web/graphql/generated/fragments/goal.fragment";
-import { habitFragment } from "@web/graphql/generated/fragments/habit.fragment";
-import { TaskFragment, taskFragment } from "@web/graphql/generated/fragments/task.fragment";
-import { Goal, Habit } from "@web/generated/types";
+} from "@web/generated/graphql/fragments/calendarEvent.fragment";
+import { goalFragment } from "@web/generated/graphql/fragments/goal.fragment";
+import { habitFragment } from "@web/generated/graphql/fragments/habit.fragment";
+import { TaskFragment, taskFragment } from "@web/generated/graphql/fragments/task.fragment";
+import { Goal, Habit } from "@web/generated/graphql/types";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";
@@ -64,15 +64,11 @@ interface PlannerPageProps {
 }
 
 const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
-  const { user } = useUser();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-
-  const isLessThan1000pxWide = useMediaQuery(json2mq({ minWidth: "1000px" }));
   const { isLandscape } = useDeviceData();
+  const isLessThan1000pxWide = useMediaQuery(json2mq({ minWidth: "1000px" }));
   const displaySideBySide = isLandscape || isLessThan1000pxWide;
 
-  const { calendars, calendarEvents } = user ?? {};
-  console.log(">>> Rendering planner page...", calendarEvents);
   return (
     <AppLayout>
       <NextSeo
@@ -110,10 +106,7 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
           }}
         >
           <Box sx={{ padding: "0 0.2rem 0.2rem 0.2rem", height: "100%", maxHeight: "100%" }}>
-            <CalendarViewer
-              data={{ calendarEvents: calendarEvents ?? [], calendars: calendars ?? [] }}
-              selectedDateState={[selectedDate, setSelectedDate]}
-            />
+            <CalendarViewer selectedDateState={[selectedDate, setSelectedDate]} />
           </Box>
         </Card>
         <Box

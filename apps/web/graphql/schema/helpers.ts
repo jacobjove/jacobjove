@@ -1,15 +1,12 @@
 import { WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
 import { ObjectId } from "mongodb";
 
-declare type ReturnVoid = void | Promise<void>;
-export type HookNextErrorFn = (err?: Error) => ReturnVoid;
-
-export async function preSave(next: HookNextErrorFn) {
-  return next();
+export async function preSave(_instance: unknown) {
+  return;
 }
 
 export async function postCreate(_instance: unknown) {
-  return;
+  return _instance;
 }
 
 export async function postUpsert<T>(result: T) {

@@ -1,5 +1,5 @@
 ---
-to: apps/web/graphql/generated/inputs/<%= name %>.inputs.ts
+to: apps/web/generated/graphql/inputs/<%= name %>.inputs.ts
 force: true
 ---
 <% var filteredFields = Object.fromEntries(Object.entries(selectableFields).filter(([fieldName, field]) => !modelImports.includes(h.changeCase.pascal(h.inflection.singularize(fieldName))))); -%>
@@ -9,7 +9,7 @@ import * as TypeGraphQL from "type-graphql-v2-fork";
 import { DateTimeScalar, ObjectIdScalar, Int, JSONResolver } from "@web/graphql/schema/scalars";
 import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
 <% for (var [fieldName, field] of Object.entries(fields).filter(([,field]) => (field.type === "Map" && field.shape))) { -%>
-import { <%= h.changeCase.pascal(fieldName) %> } from "@web/generated/types/<%= Name %>";
+import { <%= h.changeCase.pascal(fieldName) %> } from "@web/generated/models/<%= Name %>/types";
 <% } -%>
 
 @TypeGraphQL.InputType()
@@ -17,7 +17,7 @@ export class <%= Name %>CreationInput {
 <% for (var [fieldName, field] of Object.entries(filteredFields)) { -%>
   // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @TypeGraphQL.Field(() => <%- getConstructor(field) %>, { nullable: <%- field.required ? "false" : "true" %> })
+  @TypeGraphQL.Field(() => <%- getConstructor(field, { ctx: "gql" }) %>, { nullable: <%- field.required ? "false" : "true" %> })
   <%= fieldName %><%- field.required ? "!" : "?" %>: <%- (field.type === "Map" && field.shape) ? h.changeCase.pascal(fieldName) : getType(field) %><%- (field.nullable === false || field.required || (field.type === "Boolean" && typeof field.default !== "undefined")) ? "" : " | null" %><%- !field.required ? " | undefined" : "" %>;
 
 <% } -%>
@@ -28,7 +28,7 @@ export class <%= Name %>CreationInput {
 @TypeGraphQL.InputType()
 export class <%= Name %>UpdateInput {
 <% for (var [fieldName, field] of Object.entries(filteredFields)) { -%>
-  @TypeGraphQL.Field(() => <%- getConstructor(field) %>, { nullable: true })
+  @TypeGraphQL.Field(() => <%- getConstructor(field, { ctx: "gql" }) %>, { nullable: true })
   <%- fieldName %>?: <%- (field.type === "Map" && field.shape) ? h.changeCase.pascal(fieldName) : getType(field) %><%- (field.nullable === false || field.required || (field.type === "Boolean" && typeof field.default !== "undefined")) ? "" : " | null" %> | undefined;
 
 <% } -%>
@@ -41,7 +41,7 @@ export class <%= Name %>WhereInput extends WhereInput {
   @TypeGraphQL.Field(() => ObjectIdScalar, { nullable: true })
   id?: ID | undefined;
 <% for (var [fieldName, field] of Object.entries(filteredFields)) { %>
-  @TypeGraphQL.Field(() => <%- getConstructor(field) %>, { nullable: true })
+  @TypeGraphQL.Field(() => <%- getConstructor(field, { ctx: "gql" }) %>, { nullable: true })
   <%- fieldName %>?: <%- getType(field) %><%- !field.required ? "" : " | null" %> | undefined;
 <% } -%>
 }
@@ -50,7 +50,7 @@ export class <%= Name %>WhereInput extends WhereInput {
 export class <%= Name %>WhereUniqueInput extends WhereUniqueInput {
 <% if (Object.entries(filteredFields).filter(([, field]) => !!field.unique).length) { -%>
 <% for (var [fieldName, field] of Object.entries(filteredFields).filter(([, field]) => !!field.unique)) { -%>
-  @TypeGraphQL.Field(() => <%- getConstructor(field) %>, { nullable: true })
+  @TypeGraphQL.Field(() => <%- getConstructor(field, { ctx: "gql" }) %>, { nullable: true })
   <%- fieldName %>?: <%- getType(field) %><%- !field.required ? "" : " | null" %> | undefined;
 <% } -%>
 <% } else { -%>

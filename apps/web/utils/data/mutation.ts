@@ -8,7 +8,7 @@ import {
 } from "@apollo/client";
 import pDebounce from "p-debounce";
 import { MutableRefObject, useRef } from "react";
-import { SchemaOf } from "yup";
+import { Schema } from "yup";
 
 const DEFAULT_MUTATION_DEBOUNCE_DELAY = 600; // 0.6 seconds
 
@@ -20,7 +20,7 @@ type MutationFunction<MutationReturnType, MutationArgsType> = (
 export function useHandleMutation<MutationReturnType, MutationArgsType extends { data: unknown }>(
   mutation: DocumentNode,
   mutationHookOptions?: MutationHookOptions<MutationReturnType, MutationArgsType>,
-  preMutationValidationSchema?: SchemaOf<MutationArgsType["data"]>,
+  preMutationValidationSchema?: Schema<MutationArgsType["data"]>,
   getOptimisticResponse?: (data: MutationArgsType["data"]) => MutationReturnType,
   debounceDelay = DEFAULT_MUTATION_DEBOUNCE_DELAY
 ): [

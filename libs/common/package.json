@@ -1,0 +1,22 @@
+{
+  "name": "common",
+  "version": "0.0.1",
+  "keywords": [],
+  "author": "Jacob Fredericksen <jacob.t.fredericksen@gmail.com>",
+  "engines": {
+    "node": "16.x",
+    "npm": ">=8.0"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "private": true,
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {
+    "@swc/cli": "*",
+    "@swc/core": "*",
+    "@swc/helpers": "*"
+  }
+}

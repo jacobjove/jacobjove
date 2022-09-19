@@ -1,6 +1,6 @@
 import { MenuItem } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { DEFAULT_LOCALE_EN } from "../locale";
 import { PeriodProps, PeriodType } from "../types";
 import { classNames } from "../utils";

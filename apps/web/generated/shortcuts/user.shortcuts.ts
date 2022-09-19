@@ -1,47 +1,42 @@
-import { postCreate, postUpdate } from "@web/generated/types/User/hooks";
-import UserModel from "@web/generated/models/UserModel";
 import {
+  FindUniqueUserArgs,
   UserCreationArgs,
   UserUpdateArgs,
   UserUpsertionArgs,
-  FindUniqueUserArgs,
-} from "@web/graphql/generated/args/user.args";
+} from "@web/generated/graphql/args/user.args";
+import { User } from "@web/generated/interfaces/User";
+import UserModel from "@web/generated/models/User";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
+import { ModifyResult } from "mongoose";
 
 export const findUser = async ({ where }: FindUniqueUserArgs) => {
   const filter = convertFilterForMongo(where);
-  return UserModel.findOne(filter);
+  return UserModel.findOne(filter).lean({ virtuals: true });
 };
 
 export const createUser = async ({ data }: UserCreationArgs) => {
-  const user = await UserModel.create(data);
-  if (user) await postCreate(user);
-  return user;
+  return UserModel.create([data]).then((results) => results[0]);
 };
 
 export const updateUser = async ({ where, data }: UserUpdateArgs) => {
   const filter = convertFilterForMongo(where);
-  const user = await UserModel.findOneAndUpdate(filter, data, { returnDocument: "after" });
-  if (user) await postUpdate(user);
-  return user;
+  return await UserModel.findOneAndUpdate(filter, data, { returnDocument: "after" }).lean({
+    virtuals: true,
+  });
 };
 
 export const upsertUser = async ({ where, data }: UserUpsertionArgs) => {
-  const userUpsertResult = await UserModel.findOneAndUpdate(convertFilterForMongo(where), data, {
-    upsert: true,
-    new: true,
-    returnDocument: "after",
-    runValidators: true,
-    setDefaultsOnInsert: true,
-    rawResult: true,
-  });
-  const user = userUpsertResult.value;
-  if (user) {
-    if (!userUpsertResult.lastErrorObject?.updatedExisting) {
-      await postCreate(user);
-    } else {
-      await postUpdate(user);
+  const result: ModifyResult<User> = await UserModel.findOneAndUpdate(
+    convertFilterForMongo(where),
+    data,
+    {
+      upsert: true,
+      new: true,
+      returnDocument: "after",
+      runValidators: true,
+      setDefaultsOnInsert: true,
+      rawResult: true,
     }
-  }
-  return user;
+  ).lean({ virtuals: true });
+  return result.value;
 };

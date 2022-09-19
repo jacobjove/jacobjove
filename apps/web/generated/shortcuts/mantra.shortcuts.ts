@@ -1,42 +1,32 @@
-import { postCreate, postUpdate } from "@web/generated/types/Mantra/hooks";
-import MantraModel from "@web/generated/models/MantraModel";
-import UserModel from "@web/generated/models/UserModel";
 import {
+  FindUniqueMantraArgs,
   MantraCreationArgs,
   MantraUpdateArgs,
   MantraUpsertionArgs,
-  FindUniqueMantraArgs,
-} from "@web/graphql/generated/args/mantra.args";
+} from "@web/generated/graphql/args/mantra.args";
+import { Mantra } from "@web/generated/interfaces/Mantra";
+import MantraModel from "@web/generated/models/Mantra";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
+import { ModifyResult } from "mongoose";
 
 export const findMantra = async ({ where }: FindUniqueMantraArgs) => {
   const filter = convertFilterForMongo(where);
-  return MantraModel.findOne(filter);
+  return MantraModel.findOne(filter).lean({ virtuals: true });
 };
 
 export const createMantra = async ({ data }: MantraCreationArgs) => {
-  const mantra = await MantraModel.create(data);
-  if (mantra) await postCreate(mantra);
-  return mantra;
+  return MantraModel.create([data]).then((results) => results[0]);
 };
 
 export const updateMantra = async ({ where, data }: MantraUpdateArgs) => {
   const filter = convertFilterForMongo(where);
-  const mantra = await MantraModel.findOneAndUpdate(filter, data, { returnDocument: "after" });
-  // NOTE: This update fails if it's not awaited.
-  mantra &&
-    (await UserModel.findOneAndUpdate(
-      { _id: mantra.userId, "mantras._id": mantra._id },
-      {
-        $set: { "mantras.$": { ...mantra } },
-      }
-    ));
-  if (mantra) await postUpdate(mantra);
-  return mantra;
+  return await MantraModel.findOneAndUpdate(filter, data, { returnDocument: "after" }).lean({
+    virtuals: true,
+  });
 };
 
 export const upsertMantra = async ({ where, data }: MantraUpsertionArgs) => {
-  const mantraUpsertResult = await MantraModel.findOneAndUpdate(
+  const result: ModifyResult<Mantra> = await MantraModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
     {
@@ -47,14 +37,6 @@ export const upsertMantra = async ({ where, data }: MantraUpsertionArgs) => {
       setDefaultsOnInsert: true,
       rawResult: true,
     }
-  );
-  const mantra = mantraUpsertResult.value;
-  if (mantra) {
-    if (!mantraUpsertResult.lastErrorObject?.updatedExisting) {
-      await postCreate(mantra);
-    } else {
-      await postUpdate(mantra);
-    }
-  }
-  return mantra;
+  ).lean({ virtuals: true });
+  return result.value;
 };

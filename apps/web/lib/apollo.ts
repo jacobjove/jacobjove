@@ -3,12 +3,12 @@ import { onError } from "@apollo/client/link/error";
 import introspectionResult from "@web/graphql/schema.gql.json";
 import DebounceLink from "apollo-link-debounce";
 import { withScalars } from "apollo-link-scalars";
+import { createUploadLink } from "apollo-upload-client";
 import merge from "deepmerge";
 import { buildClientSchema, IntrospectionQuery } from "graphql";
 import { DateTimeResolver } from "graphql-scalars";
 import isEqual from "lodash/isEqual";
 import { useMemo } from "react";
-import { createUploadLink } from "apollo-upload-client";
 
 if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error("NEXT_PUBLIC_BASE_URL is not defined");
 

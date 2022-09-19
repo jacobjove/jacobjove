@@ -1,4 +1,4 @@
-import { Calendar, CalendarEvent } from "@web/generated/types";
+import { Calendar, CalendarEvent } from "@web/generated/graphql/types";
 import { Dispatch } from "react";
 
 export type CalendarData = {
@@ -8,9 +8,6 @@ export type CalendarData = {
 
 export interface CalendarProps {
   collapseMenu?: boolean;
-  data: CalendarData;
-  loading?: boolean;
-  error?: Error;
   includeDateSelector?: boolean;
 }
 

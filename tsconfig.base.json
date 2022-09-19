@@ -20,7 +20,6 @@
     "paths": {
       "@common/*": ["libs/common/src/*"],
       "@native/*": ["apps/native/*"],
-      "@root/*": ["./*"],
       "@web/*": ["apps/web/*"],
       "react-swipeable-views": ["react-swipeable-views-react-18-fix"]
     },

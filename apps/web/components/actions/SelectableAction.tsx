@@ -2,7 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import SelectionToggleIcon from "@web/components/icons/SelectionToggleIcon";
-import Habit from "@web/generated/types/Habit";
+import Habit from "@web/generated/graphql/types/Habit";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";

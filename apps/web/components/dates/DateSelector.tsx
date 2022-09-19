@@ -4,12 +4,12 @@ import { SxProps } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
+import { Theme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { addDays, subDays } from "date-fns";
 import json2mq from "json2mq";
 import { Dispatch, FC, useState } from "react";
-import { Theme } from "@mui/material/styles";
 
 interface DateSelectorProps {
   date: Date;
@@ -105,7 +105,7 @@ const DateSelector: FC<DateSelectorProps> = ({
               ...inputProps.style,
               minWidth: "3rem",
               width: "100%",
-              height: "100%",
+              // height: "100%",
               border: "none",
               textAlign: "center",
             };

@@ -1,10 +1,10 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/mantra.fields";
+import { MantraFragment } from "@web/generated/graphql/fragments/mantra.fragment";
+import { MantraCreationInput } from "@web/generated/graphql/inputs/mantra.inputs";
+import Mantra from "@web/generated/graphql/types/Mantra";
 import { useCreateMantra, useMantraReducer } from "@web/generated/hooks/mantra.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { MantraCreationInput } from "@web/graphql/generated/inputs/mantra.inputs";
-import Mantra from "@web/generated/types/Mantra";
-import { MantraFragment } from "@web/graphql/generated/fragments/mantra.fragment";
-import fields from "@web/graphql/generated/fields/mantra.fields";
 
 export type MantraCreationDialogProps = ReturnType<typeof bindPopover>;
 

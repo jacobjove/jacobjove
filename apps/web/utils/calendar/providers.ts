@@ -1,4 +1,4 @@
-import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
+import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 
 const ENABLED_PROVIDERS: CalendarProvider[] = ["google"];
 

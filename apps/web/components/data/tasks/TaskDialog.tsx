@@ -21,12 +21,12 @@ import TasksTable from "@web/components/data/tasks/TasksTable";
 // import DateSelector from "@web/components/dates/DateSelector";
 import { Cron } from "@web/components/fields/cron";
 import TitleAndDescriptionFields from "@web/components/fields/TitleAndDescriptionFields";
-import { TaskFragment } from "@web/graphql/generated/fragments/task.fragment";
+import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
+import { getOptimisticResponseForTaskUpdate } from "@web/generated/graphql/mutations/task.mutations";
+import { habitCreationInputSchema } from "@web/generated/graphql/schemas/habit.schemas";
+import Habit from "@web/generated/graphql/types/Habit";
 import { useCreateHabit } from "@web/generated/hooks/habit.hooks";
 import { useTaskReducer, useTasksReducer, useUpdateTask } from "@web/generated/hooks/task.hooks";
-import { getOptimisticResponseForTaskUpdate } from "@web/graphql/generated/mutations/task.mutations";
-import { habitCreationInputSchema } from "@web/graphql/generated/schemas/habit.schemas";
-import Habit from "@web/generated/types/Habit";
 import { ID } from "@web/graphql/schema/types";
 import { addDays, addHours, endOfDay, format, parse, setHours, setMinutes } from "date-fns";
 import {
@@ -48,7 +48,14 @@ interface TaskDialogProps extends ReturnType<typeof bindPopover> {
 const LEFT_SIDE_WIDTH = "3.3rem";
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
-  const { data: _data, onClose: initialOnClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const {
+    data: _data,
+    onClose: initialOnClose,
+    anchorEl: _,
+    anchorReference: __,
+    anchorPosition: ___,
+    ...dialogProps
+  } = props;
   const { user } = useUser();
   const [data, dispatchData] = useTaskReducer(_data);
   const [time, setTime] = useState(0);

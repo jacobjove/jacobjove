@@ -3,8 +3,8 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import FullScreenExpandableComponent from "@web/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggleToolbar";
+import Note from "@web/generated/graphql/types/Note";
 import { useNoteReducer, useUpdateNote } from "@web/generated/hooks/note.hooks";
-import Note from "@web/generated/types/Note";
 // import Toolbar from "@mui/material/Toolbar";
 import { FC, useEffect, useState } from "react";
 
@@ -23,7 +23,7 @@ const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {
     note && dispatchNoteData({ field: "init", value: note });
   }, [note, dispatchNoteData]);
 
-  console.log("Rendering note viewer...");
+  // console.log("Rendering note viewer...");
 
   return (
     <FullScreenExpandableComponent

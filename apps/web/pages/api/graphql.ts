@@ -1,20 +1,21 @@
 /* eslint-disable import/order */
 // organize-imports-ignore
-// NOTE: reflect-metadata must be imported at the top!
-import "reflect-metadata";
+// NOTE: Reflection must be imported at the top!
+import "@abraham/reflection";
 
 import { createGqlContext } from "@web/graphql/context";
 import { NextApiRequest, NextApiResponse, PageConfig } from "next";
-import { buildSchema, MiddlewareFn, NonEmptyArray } from "type-graphql-v2-fork";
+import { buildSchema, NonEmptyArray, MiddlewareFn } from "type-graphql-v2-fork";
+import { Model } from "mongoose";
 import { ApolloServer } from "apollo-server-micro";
-import { Model, Document } from "mongoose";
-import { getClassForDocument } from "@typegoose/typegoose";
-import * as resolvers from "@web/graphql/generated/resolvers";
+import * as resolvers from "@web/generated/graphql/resolvers";
 import { withSentry } from "@sentry/nextjs";
 import cors from "micro-cors";
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const IS_DEV = process.env.NODE_ENV === "development";
+
+const USE_SENTRY_FOR_GRAPHQL = false;
 
 const withCors = cors({
   allowCredentials: true,
@@ -29,23 +30,15 @@ const withCors = cors({
   origin: "https://studio.apollographql.com",
 });
 
-export const TypegooseMiddleware: MiddlewareFn = async (_, next) => {
+const MongooseMiddlware: MiddlewareFn = async (_, next) => {
   const result = await next();
-  if (Array.isArray(result)) {
-    return result.map((item) => (item instanceof Model ? convertDocument(item) : item));
-  }
   if (result instanceof Model) {
-    return convertDocument(result);
+    return result.toObject();
+  } else if (Array.isArray(result)) {
+    return result.map((item) => (item instanceof Model ? item.toObject() : item));
   }
   return result;
 };
-
-function convertDocument(doc: Document) {
-  const convertedDocument = doc.toObject();
-  const DocumentClass = getClassForDocument(doc)!;
-  Object.setPrototypeOf(convertedDocument, DocumentClass.prototype);
-  return convertedDocument;
-}
 
 declare const global: NodeJS.Global & {
   apolloServerHandler?: ReturnType<ApolloServer["createHandler"]>;
@@ -58,8 +51,8 @@ const getApolloServerHandler = async () => {
       schema: await buildSchema({
         resolvers: Object.values(resolvers) as unknown as NonEmptyArray<CallableFunction>,
         emitSchemaFile: IS_DEV ? { path: `${process.env.BASE_DIR}/graphql/schema.gql` } : false,
-        globalMiddlewares: [TypegooseMiddleware],
         validate: false, // TODO: investigate
+        globalMiddlewares: [MongooseMiddlware],
       }),
       debug: !IS_PROD,
       introspection: IS_DEV,
@@ -81,7 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return withCors(apolloServerHandler)(req, res);
 };
 
-export default withSentry(handler);
+export default USE_SENTRY_FOR_GRAPHQL ? withSentry(handler) : handler;
 
 export const config: PageConfig = {
   api: {
@@ -89,6 +82,6 @@ export const config: PageConfig = {
     bodyParser: false,
     // https://github.com/getsentry/sentry-javascript/issues/3852
     // https://nextjs.org/docs/api-routes/api-middlewares#custom-config
-    externalResolver: true,
+    ...(USE_SENTRY_FOR_GRAPHQL ? { externalResolver: true } : {}),
   },
 };

@@ -1,5 +1,5 @@
 import { useUser } from "@web/components/contexts/UserContext";
-import { UserFragment } from "@web/graphql/generated/fragments/user.fragment";
+import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { useTaskReducer } from "@web/generated/hooks/task.hooks";
 import { TaskData } from "@web/generated/reducers/task.reducer";
 import { ID } from "@web/graphql/schema/types";

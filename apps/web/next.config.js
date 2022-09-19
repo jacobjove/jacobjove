@@ -69,6 +69,7 @@ const nextConfig = {
   // https://nextjs.org/docs/api-reference/next.config.js/compression
   compress: process.env.NODE_ENV != "production", // TODO
   experimental: {
+    esmExternals: false,
     modularizeImports: {
       lodash: {
         transform: "lodash/{{member}}",

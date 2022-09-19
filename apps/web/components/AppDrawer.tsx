@@ -1,16 +1,16 @@
-// import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-// import BentoIcon from "@mui/icons-material/Bento";
-// import BookIcon from "@mui/icons-material/Book";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import BentoIcon from "@mui/icons-material/Bento";
+import BookIcon from "@mui/icons-material/Book";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-// import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import HomeIcon from "@mui/icons-material/Home";
 // import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import NotesIcon from "@mui/icons-material/Notes";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 // import PsychologyIcon from "@mui/icons-material/Psychology";
-// import ScienceIcon from "@mui/icons-material/Science";
+import ScienceIcon from "@mui/icons-material/Science";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
 import Box from "@mui/material/Box";
@@ -35,16 +35,16 @@ const MENU_ITEMS: MenuItem[][] = [
     ["Planner", "/app/planner", TodayIcon, true],
     ["Notes", "/app/notes", NotesIcon, true],
   ],
-  // [
-  //   ["Dashboard", "/app/dashboard", DashboardIcon, false],
-  //   ["Psychology", "/app/psychology", PsychologyIcon, false],
-  //   ["Nutrition", "/app/nutrition", BentoIcon, false],
-  //   ["Fitness", "/app/fitness", FitnessCenterIcon, false],
-  //   ["Finances", "/app/finances", AccountBalanceIcon, false],
-  //   ["Book list", "/app/booklist", BookIcon, false],
-  //   ["Music", "/app/music", MusicNoteIcon, false],
-  //   ["Experiments", "/app/experiments", ScienceIcon, false],
-  // ],
+  [
+    //   ["Dashboard", "/app/dashboard", DashboardIcon, false],
+    //   ["Psychology", "/app/psychology", PsychologyIcon, false],
+    ["Nutrition", "/app/nutrition", BentoIcon, false],
+    ["Fitness", "/app/fitness", FitnessCenterIcon, false],
+    ["Finances", "/app/finances", AccountBalanceIcon, false],
+    ["Book list", "/app/booklist", BookIcon, false],
+    //   ["Music", "/app/music", MusicNoteIcon, false],
+    ["Experiments", "/app/experiments", ScienceIcon, false],
+  ],
   [
     ["Settings", "/app/settings", SettingsIcon, true],
     ["Notifications", "/app/notifications", NotificationsIcon, false],

@@ -1,13 +1,13 @@
-import AccountModel from "@web/generated/models/AccountModel";
-import { UPDATE_CALENDAR } from "@web/graphql/generated/mutations/calendar.mutations";
-import { UPSERT_CALENDAR_EVENT } from "@web/graphql/generated/mutations/calendarEvent.mutations";
-import { GET_CALENDAR } from "@web/graphql/generated/queries/calendar.queries";
-import Calendar from "@web/generated/types/Calendar";
+import { UPDATE_CALENDAR } from "@web/generated/graphql/mutations/calendar.mutations";
+import { UPSERT_CALENDAR_EVENT } from "@web/generated/graphql/mutations/calendarEvent.mutations";
+import { GET_CALENDAR } from "@web/generated/graphql/queries/calendar.queries";
+import Calendar from "@web/generated/graphql/types/Calendar";
 import { initializeApollo } from "@web/lib/apollo";
 import { CalendarClient } from "@web/utils/calendar/client";
 import rateLimiter from "@web/utils/rate-limit";
 import { addYears } from "date-fns";
 import { Session } from "next-auth";
+import { findAccount } from "../../generated/shortcuts/account.shortcuts";
 
 const limiter = rateLimiter({
   ttl: 60 * 1000, // 60 seconds
@@ -29,7 +29,8 @@ export const syncCalendar = async (calendarId: string, session: Session) => {
   if (!calendar || !(calendar.provider && calendar.remoteId)) {
     throw new Error("Calendar not found");
   }
-  const account = await AccountModel.findById(calendar.accountId); // TODO: use GraphQL
+  if (!calendar.accountId) throw new Error("Calendar is not associated with an account");
+  const account = await findAccount({ where: { id: calendar.accountId } });
   if (!account || !(calendar.provider && calendar.remoteId)) {
     throw new Error("Calendar provider account not found");
   }
@@ -74,8 +75,8 @@ export const syncCalendar = async (calendarId: string, session: Session) => {
       return data.data.items
         ?.filter((item) => Boolean(item.start))
         .forEach((item) => {
-          /* Example: 
-              { 
+          /* Example:
+              {
                 kind: 'calendar#event',
                 etag: '"303275348453600"',
                 id: '3vmncqhm2cttva76vqbr8tb6k',

@@ -1,13 +1,6 @@
-// import { Model } from "@web/graphql/schema/types";
-import { DocumentType } from "@typegoose/typegoose";
-import * as Types from "@web/generated/types";
+import * as Types from "@web/generated/graphql/types";
 import { camelize } from "inflection";
 import JSON5 from "json5";
-import { Model } from "./types";
-
-declare type ReturnVoid = void | Promise<void>;
-declare type HookNextErrorFn = (err?: Error) => ReturnVoid;
-type PreFnWithDocumentType<T> = (this: DocumentType<T>, next: HookNextErrorFn) => ReturnVoid;
 
 export type FieldType =
   | "Array"
@@ -21,21 +14,33 @@ export type FieldType =
 
 type Mutation = "create" | "update";
 
+interface Options {
+  arg?: string;
+  ctx?: "gql" | "mongo" | "interface" | "schema";
+  mutation?: Mutation;
+}
+
 export const TYPE_MAP: Record<
   FieldType,
   {
-    type: string | ((arg: string, mutation?: Mutation) => string);
-    caster: string | ((arg: string, mutation?: Mutation) => string);
+    type: string | ((options?: Options) => string);
+    caster: string | ((options?: Options) => string);
     yup: string | ((arg: string, mutation: Mutation) => string);
   }
 > = {
   Array: {
-    type: (arg) => `${arg in TYPE_MAP ? TYPE_MAP[arg as keyof typeof TYPE_MAP].type : arg}[]`,
-    caster: (arg) => `[${arg in TYPE_MAP ? TYPE_MAP[arg as keyof typeof TYPE_MAP].caster : arg}]`,
+    type: ({ arg } = {}) =>
+      `${
+        arg ? (arg in TYPE_MAP ? TYPE_MAP[arg as keyof typeof TYPE_MAP].type : arg) : "unknown"
+      }[]`,
+    caster: ({ arg } = {}) =>
+      `[${
+        arg ? (arg in TYPE_MAP ? TYPE_MAP[arg as keyof typeof TYPE_MAP].caster : arg) : "Object"
+      }]`,
     yup: (arg, mutation) =>
       `array().of(${
         arg in TYPE_MAP
-          ? TYPE_MAP[arg as keyof typeof TYPE_MAP].yup
+          ? TYPE_MAP[arg as keyof typeof TYPE_MAP].yup + ".defined()"
           : camelize(arg, true) + "CreationInputSchema"
       }${mutation === "create" ? ".required()" : ""})`,
   },
@@ -46,22 +51,32 @@ export const TYPE_MAP: Record<
   },
   DateTime: {
     type: "Date",
-    caster: "DateTimeScalar",
+    caster: ({ ctx } = {}) => (ctx === "gql" ? "DateTimeScalar" : "Date"),
     yup: "date()",
   },
   ID: {
-    type: "string",
-    caster: "ObjectIdScalar",
+    type: ({ ctx } = {}) =>
+      ctx === "interface"
+        ? "mongoose.Types.ObjectId"
+        : ctx === "schema"
+        ? "mongoose.Schema.Types.ObjectId"
+        : "string",
+    caster: ({ ctx } = {}) =>
+      ctx === "gql"
+        ? "ObjectIdScalar"
+        : ctx === "schema"
+        ? `mongoose.Schema.Types.ObjectId`
+        : "ObjectId",
     yup: "string()",
   },
   Int: {
     type: "number",
-    caster: "Int",
+    caster: ({ ctx } = {}) => (ctx === "gql" ? "Int" : "Number"),
     yup: "number()",
   },
   Map: {
     type: "Record<string, unknown>",
-    caster: "JSONResolver",
+    caster: ({ ctx } = {}) => (ctx === "gql" ? "JSONResolver" : "Object"),
     yup: "object()",
   },
   Number: {
@@ -76,23 +91,23 @@ export const TYPE_MAP: Record<
   },
 };
 
-export function getType(field: Field): string {
+export function getType(field: Field, options?: Options): string {
   const fieldType = TYPE_MAP[field.type].type;
-  if (typeof fieldType === "function" && field.typeArg) return fieldType(field.typeArg);
+  if (typeof fieldType === "function") return fieldType({ arg: field.typeArg, ...options });
   // if (field.type === "Map" && field.shape) return h.changeCase.pascal(field.name)
-  if (typeof fieldType == "string") return fieldType;
-  return field.type;
+  return `${fieldType}`;
 }
 
-export function getConstructor(field: Field): string {
+export function getConstructor(field: Field, options?: Options): string {
   const fieldTypeCaster = TYPE_MAP[field.type].caster;
-  if (typeof fieldTypeCaster === "function" && field.typeArg) return fieldTypeCaster(field.typeArg);
+  if (typeof fieldTypeCaster === "function")
+    return fieldTypeCaster({ arg: field.typeArg, ...options });
   if (typeof fieldTypeCaster == "string") return fieldTypeCaster;
-  return field.type;
+  return `${fieldTypeCaster}`;
 }
 
 export function getYup(field: Field, mutation: Mutation = "create"): string {
-  // <%- (field.required ? ".required()" : (typeof field.default !== "undefined") ? "" : field.type === "Boolean" ? ".notRequired()" : ".nullable()" %><%- typeof field.default !== "undefined" ? `.default(() => { return ${typeof field.default === "string" ? field.default : JSON5.stringify(field.default)}; })` : ""%>,
+  // <%- (field.required ? ".required()" : (typeof field.default !== "undefined") ? "" : field.type === "Boolean" ? ".optional()" : ".nullable()" %><%- typeof field.default !== "undefined" ? `.default(() => { return ${typeof field.default === "string" ? field.default : JSON5.stringify(field.default)}; })` : ""%>,
   let ret = "";
   if (field.type === "Map" && field.shape) {
     ret = `${field.name}Schema`;
@@ -107,22 +122,22 @@ export function getYup(field: Field, mutation: Mutation = "create"): string {
   }
   if (field.required) {
     if (mutation === "update") {
-      ret += ".notRequired()";
+      if (!field.nullable) ret += ".nonNullable()";
+      ret += ".optional()";
     } else if (field.type !== "Map") {
       ret += ".required()";
     }
   } else {
-    if (
-      field.nullable !== false &&
-      !(field.type === "Boolean" && typeof field.default !== "undefined")
-    ) {
+    if (field.type === "Boolean" && field.nullable !== true) {
+      ret += ".nonNullable()";
+    } else if (field.nullable !== false) {
       ret += ".nullable()";
     }
-    ret += ".notRequired()";
+    ret += ".optional()";
   }
   if (typeof field.default !== "undefined" && mutation === "create") {
     ret += `.default(() => { return ${
-      typeof field.default === "string" ? field.default : JSON5.stringify(field.default)
+      typeof field.default === "string" ? `"${field.default}"` : JSON5.stringify(field.default)
     }; })`;
   }
   return ret;
@@ -136,6 +151,10 @@ export type Field = {
   unique?: boolean;
 } & (
   | {
+      type: "ID";
+      ref: string;
+    }
+  | {
       type: "Array";
       typeArg: FieldType | keyof typeof Types;
     }
@@ -148,7 +167,7 @@ export type Field = {
       choices?: string[];
     }
   | {
-      type: Exclude<FieldType, "Array" | "Map" | "String">;
+      type: Exclude<FieldType, "Array" | "Map" | "String" | "ID">;
     }
 ) & {
     typeArg?: FieldType | keyof typeof Types;
@@ -167,12 +186,6 @@ export default interface Definition<T extends string = string> {
   name: string;
   modelImports?: string[];
   fields: Record<T, Field>;
-  hooks?: {
-    save: {
-      pre?: PreFnWithDocumentType<Partial<Model> & { [key in T]?: unknown }>;
-      post?: (instance: DocumentType<Partial<Model> & { [key in T]?: unknown }>) => void;
-    };
-  };
 }
 
 export const REQUIRED_STRING: Field = { required: true, type: "String" };

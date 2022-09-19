@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import GoalCreationDialog from "@web/components/data/goals/generated/GoalCreationDialog";
 import DataBox, { DataBoxProps } from "@web/components/DataBox";
-import Goal from "@web/generated/types/Goal";
+import Goal from "@web/generated/graphql/types/Goal";
 import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC } from "react";
 

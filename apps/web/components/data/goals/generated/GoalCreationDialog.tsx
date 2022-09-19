@@ -1,10 +1,10 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/goal.fields";
+import { GoalFragment } from "@web/generated/graphql/fragments/goal.fragment";
+import { GoalCreationInput } from "@web/generated/graphql/inputs/goal.inputs";
+import Goal from "@web/generated/graphql/types/Goal";
 import { useCreateGoal, useGoalReducer } from "@web/generated/hooks/goal.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { GoalCreationInput } from "@web/graphql/generated/inputs/goal.inputs";
-import Goal from "@web/generated/types/Goal";
-import { GoalFragment } from "@web/graphql/generated/fragments/goal.fragment";
-import fields from "@web/graphql/generated/fields/goal.fields";
 
 export type GoalCreationDialogProps = ReturnType<typeof bindPopover>;
 

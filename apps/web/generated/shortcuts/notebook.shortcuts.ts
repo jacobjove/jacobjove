@@ -1,42 +1,32 @@
-import { postCreate, postUpdate } from "@web/generated/types/Notebook/hooks";
-import NotebookModel from "@web/generated/models/NotebookModel";
-import UserModel from "@web/generated/models/UserModel";
 import {
+  FindUniqueNotebookArgs,
   NotebookCreationArgs,
   NotebookUpdateArgs,
   NotebookUpsertionArgs,
-  FindUniqueNotebookArgs,
-} from "@web/graphql/generated/args/notebook.args";
+} from "@web/generated/graphql/args/notebook.args";
+import { Notebook } from "@web/generated/interfaces/Notebook";
+import NotebookModel from "@web/generated/models/Notebook";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
+import { ModifyResult } from "mongoose";
 
 export const findNotebook = async ({ where }: FindUniqueNotebookArgs) => {
   const filter = convertFilterForMongo(where);
-  return NotebookModel.findOne(filter);
+  return NotebookModel.findOne(filter).lean({ virtuals: true });
 };
 
 export const createNotebook = async ({ data }: NotebookCreationArgs) => {
-  const notebook = await NotebookModel.create(data);
-  if (notebook) await postCreate(notebook);
-  return notebook;
+  return NotebookModel.create([data]).then((results) => results[0]);
 };
 
 export const updateNotebook = async ({ where, data }: NotebookUpdateArgs) => {
   const filter = convertFilterForMongo(where);
-  const notebook = await NotebookModel.findOneAndUpdate(filter, data, { returnDocument: "after" });
-  // NOTE: This update fails if it's not awaited.
-  notebook &&
-    (await UserModel.findOneAndUpdate(
-      { _id: notebook.userId, "notebooks._id": notebook._id },
-      {
-        $set: { "notebooks.$": { ...notebook } },
-      }
-    ));
-  if (notebook) await postUpdate(notebook);
-  return notebook;
+  return await NotebookModel.findOneAndUpdate(filter, data, { returnDocument: "after" }).lean({
+    virtuals: true,
+  });
 };
 
 export const upsertNotebook = async ({ where, data }: NotebookUpsertionArgs) => {
-  const notebookUpsertResult = await NotebookModel.findOneAndUpdate(
+  const result: ModifyResult<Notebook> = await NotebookModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
     {
@@ -47,14 +37,6 @@ export const upsertNotebook = async ({ where, data }: NotebookUpsertionArgs) => 
       setDefaultsOnInsert: true,
       rawResult: true,
     }
-  );
-  const notebook = notebookUpsertResult.value;
-  if (notebook) {
-    if (!notebookUpsertResult.lastErrorObject?.updatedExisting) {
-      await postCreate(notebook);
-    } else {
-      await postUpdate(notebook);
-    }
-  }
-  return notebook;
+  ).lean({ virtuals: true });
+  return result.value;
 };

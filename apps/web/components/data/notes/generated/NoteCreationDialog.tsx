@@ -1,10 +1,10 @@
 import CreationDialog from "@web/components/data/CreationDialog";
+import fields from "@web/generated/graphql/fields/note.fields";
+import { NoteFragment } from "@web/generated/graphql/fragments/note.fragment";
+import { NoteCreationInput } from "@web/generated/graphql/inputs/note.inputs";
+import Note from "@web/generated/graphql/types/Note";
 import { useCreateNote, useNoteReducer } from "@web/generated/hooks/note.hooks";
 import { bindPopover } from "material-ui-popup-state/hooks";
-import { NoteCreationInput } from "@web/graphql/generated/inputs/note.inputs";
-import Note from "@web/generated/types/Note";
-import { NoteFragment } from "@web/graphql/generated/fragments/note.fragment";
-import fields from "@web/graphql/generated/fields/note.fields";
 
 export type NoteCreationDialogProps = ReturnType<typeof bindPopover>;
 

@@ -15,7 +15,7 @@ import { getTimeOffsetPx } from "@web/components/calendar/views/DayViewer";
 import DateContext from "@web/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@web/components/contexts/UserContext";
-import { Calendar, CalendarEvent } from "@web/generated/types";
+import { Calendar, CalendarEvent } from "@web/generated/graphql/types";
 import { ID } from "@web/graphql/schema/types";
 import {
   addMinutes,
@@ -70,16 +70,8 @@ const Root = styled("div")(({ theme }) => {
   };
 });
 
-export type CalendarData = {
-  calendars: Calendar[];
-  calendarEvents: CalendarEvent[];
-};
-
 export interface CalendarProps {
   collapseMenu?: boolean;
-  data: CalendarData;
-  loading?: boolean;
-  error?: Error;
   includeDateSelector?: boolean;
 }
 
@@ -95,14 +87,12 @@ const WeekViewer: FC<WeekViewerProps> = ({
   selectedDate,
   viewedHourState,
   hidden,
-  data,
-}: // loading,
-WeekViewerProps) => {
-  const { calendarEvents } = data;
+}: WeekViewerProps) => {
+  const { user } = useUser();
+  const { calendarEvents } = user ?? {};
   const date = useContext(DateContext);
   const [viewedHour, _] = viewedHourState;
   const scrollableDivRef = useRef<HTMLDivElement>(null);
-  const { user } = useUser();
 
   const { newCalendarEventDialogState, newCalendarEventDataTuple } = useNewCalendarEventDialog();
   const [, dispatchNewCalendarEventData] = newCalendarEventDataTuple ?? [];
@@ -233,7 +223,7 @@ WeekViewerProps) => {
                           setHours(setMinutes(setSeconds(selectedDate, 0), j * 30), START_HOUR + i),
                           selectedDate.getDay() + dayIndex - selectedDayIndex
                         );
-                        const eventSlotEvents = calendarEvents.filter((event: CalendarEvent) => {
+                        const eventSlotEvents = calendarEvents?.filter((event: CalendarEvent) => {
                           const diff = differenceInMinutes(
                             event.start,
                             eventSlotDate,

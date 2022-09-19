@@ -8,9 +8,9 @@ import TableRow from "@mui/material/TableRow";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import TaskRow, { TaskRowProps } from "@web/components/data/tasks/TaskRow";
 import TitleAndDescriptionFields from "@web/components/fields/TitleAndDescriptionFields";
+import { getOptimisticResponseForTaskCreation } from "@web/generated/graphql/mutations/task.mutations";
+import { taskCreationInputSchema } from "@web/generated/graphql/schemas/task.schemas";
 import { useCreateTask, useTaskReducer, useTasksReducer } from "@web/generated/hooks/task.hooks";
-import { getOptimisticResponseForTaskCreation } from "@web/graphql/generated/mutations/task.mutations";
-import { taskCreationInputSchema } from "@web/graphql/generated/schemas/task.schemas";
 import { Dispatch, FC, useState } from "react";
 
 const PREFERRED_FONT_SIZE = "0.8rem";
@@ -53,7 +53,6 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     <Table
       sx={{
         mt: 1,
-        minWidth: 100,
         "& th": { px: "0.25rem", pb: "2px", fontSize: "0.75rem", lineHeight: "0.9rem" },
         "& td": { px: "0.25rem", fontSize: PREFERRED_FONT_SIZE },
       }}
@@ -62,12 +61,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     >
       <TableHead>
         <TableRow>
-          <TableCell component={"th"} sx={{ minWidth: "3.3rem" }}>
-            {"Done?"}
-          </TableCell>
-          <TableCell component={"th"} sx={{ width: "90%" }}>
-            {"Task"}
-          </TableCell>
+          <TableCell component={"th"}>{"Done?"}</TableCell>
+          <TableCell component={"th"}>{"Task"}</TableCell>
           {!isMobileWidth && (
             <>
               <TableCell component={"th"} sx={{ textAlign: "center", minWidth: "3.5rem" }}>
@@ -83,12 +78,10 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
       </TableHead>
       <TableBody>
         {tasks.map((task, index) => {
-          const subtasks = tasks.filter((_) => _.parentId === task.id);
           return (
             <TaskRow
               key={task.id}
               task={task}
-              subtasks={subtasks}
               index={index}
               move={moveTaskRow}
               onDrop={updateTaskRank}

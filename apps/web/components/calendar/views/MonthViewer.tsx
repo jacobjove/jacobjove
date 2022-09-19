@@ -4,6 +4,7 @@ import { ViewerProps } from "@web/components/calendar/views/props";
 import DateContext from "@web/components/contexts/DateContext";
 import { addDays, getDay, getWeeksInMonth, isSameDay } from "date-fns";
 import { FC, useContext } from "react";
+import { useUser } from "../../contexts/UserContext";
 
 const grey = {
   50: "#F3F6F9",
@@ -60,9 +61,10 @@ const Root = styled("div")(({ theme }) => ({
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const MonthViewer: FC<ViewerProps> = ({ selectedDate, hidden, data: _data }: ViewerProps) => {
+const MonthViewer: FC<ViewerProps> = ({ selectedDate, hidden }: ViewerProps) => {
+  const { user } = useUser();
+  const { calendarEvents: _calendarEvents } = user ?? {};
   const date = useContext(DateContext);
-  // const { calendarEvents } = data;
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayIndex = getDay(firstDayOfMonth);
   return (
