@@ -5,8 +5,8 @@
 /_
 service-account.json
 
-**/public/workbox-*.js
-**/public/sw.js
+**/public/workbox-*.js*
+**/public/sw.js*
 **/public/worker-*.js
 
 # compiled output
