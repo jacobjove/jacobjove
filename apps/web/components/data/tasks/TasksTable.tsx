@@ -61,12 +61,8 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     >
       <TableHead>
         <TableRow>
-          <TableCell component={"th"} sx={{ minWidth: "3.3rem" }}>
-            {"Done?"}
-          </TableCell>
-          <TableCell component={"th"} sx={{ width: "90%" }}>
-            {"Task"}
-          </TableCell>
+          <TableCell component={"th"}>{"Done?"}</TableCell>
+          <TableCell component={"th"}>{"Task"}</TableCell>
           {!isMobileWidth && (
             <>
               <TableCell component={"th"} sx={{ textAlign: "center", minWidth: "3.5rem" }}>

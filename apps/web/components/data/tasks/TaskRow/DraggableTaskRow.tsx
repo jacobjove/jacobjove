@@ -15,8 +15,7 @@ export interface DraggableTaskRowProps
 export interface DraggedTask extends TaskFragment {
   type: "task";
   index: number;
-  width?: number;
-  height?: number;
+  size: { width?: number; height?: number };
 }
 
 const DraggableTaskRow: FC<DraggableTaskRowProps> = ({
@@ -52,7 +51,7 @@ const DraggableTaskRow: FC<DraggableTaskRowProps> = ({
         type: "task",
         ...task,
         index,
-        ...size,
+        size,
       },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),

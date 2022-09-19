@@ -12,12 +12,6 @@ const Root = styled("table", { shouldForwardProp: () => true })(({ theme }) => {
     maxWidth: "100%",
     height: "100%",
     maxHeight: "100%",
-    "& td": {
-      padding: "6px 0.25rem",
-      "&:nth-of-type(2)": {
-        width: "90%",
-      },
-    },
     borderTop: `1px solid ${dividerColor}`,
     borderBottom: `1px solid ${dividerColor}`,
     backgroundColor:

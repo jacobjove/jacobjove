@@ -16,13 +16,10 @@ const layerStyles: CSSProperties = {
 function getContainerStyles(
   initialOffset: XYCoord | null,
   currentOffset: XYCoord | null,
-  width?: number,
-  height?: number
+  { width, height }: { width?: number; height?: number }
 ) {
   if (!initialOffset || !currentOffset) {
-    return {
-      display: "none",
-    };
+    return { display: "none" };
   }
   const { x, y } = currentOffset;
   const transform = `translate(${x}px, ${y}px)`;
@@ -51,7 +48,7 @@ export const CustomDragLayer: FC = () => {
     currentOffset: monitor.getSourceClientOffset(),
     isDragging: monitor.isDragging(),
   }));
-  const { width, height, ...item } = _item ?? {};
+  const { size, ...item } = _item ?? {};
 
   if (!isDragging) return null;
 
@@ -66,7 +63,7 @@ export const CustomDragLayer: FC = () => {
 
   return (
     <div style={layerStyles}>
-      <div style={getContainerStyles(initialOffset, currentOffset, width, height)}>
+      <div style={getContainerStyles(initialOffset, currentOffset, size)}>
         {renderInnerComponent()}
       </div>
     </div>

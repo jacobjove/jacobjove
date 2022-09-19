@@ -274,7 +274,7 @@ function getDateTextElement(date: Date | null) {
         {!!timeString && ", "}
       </Typography>
       {!!timeString && (
-        <Typography component="small" variant="inherit">
+        <Typography component="small" variant="inherit" noWrap>
           {timeString}
         </Typography>
       )}
@@ -282,9 +282,9 @@ function getDateTextElement(date: Date | null) {
   ) : null;
 }
 
-type StyledTableRowProps = Pick<TaskRowProps, "isDragging" | "collapsed" | "asSubtask"> & {
+interface StyledTableRowProps extends Pick<TaskRowProps, "isDragging" | "collapsed" | "asSubtask"> {
   isMobile: boolean;
-};
+}
 
 const StyledTableRow = styled(TableRow, {
   shouldForwardProp: (prop) =>
@@ -313,8 +313,17 @@ const StyledTableRow = styled(TableRow, {
       },
       "& .actions-menu-icon": { visibility: "visible" },
     },
-    "& td, th": {
-      py: 0,
+    "& td, & th": {
+      minWidth: "3.3rem",
+      "&:nth-of-type(2)": {
+        width: "90%",
+      },
+      "&:last-of-type": {
+        minWidth: "initial",
+      },
+    },
+    "& td": {
+      padding: "6px 0.25rem",
       "& svg": {
         fontSize: "1.33rem",
         color: "#808080",
@@ -325,6 +334,9 @@ const StyledTableRow = styled(TableRow, {
       "& button:hover svg": {
         color: theme.palette.mode === "light" ? "#666666" : "#ffffff",
       },
+    },
+    "& th": {
+      py: 0,
     },
     "&:last-child td, &:last-child th": { border: 0 },
   };
