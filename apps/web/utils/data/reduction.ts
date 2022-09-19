@@ -1,5 +1,4 @@
 import { ID, Model } from "@web/graphql/schema/types";
-import { RequiredKeys } from "@web/types/global";
 import { Dispatch, useReducer } from "react";
 
 const ID_FIELDS = ["_id", "id"] as const;

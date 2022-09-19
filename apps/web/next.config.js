@@ -94,32 +94,34 @@ const nextConfig = {
     ];
   },
   sentry: {
-    // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
-    // for client-side builds. (This will be the default starting in
-    // `@sentry/nextjs` version 8.0.0.) See
-    // https://webpack.js.org/configuration/devtool/ and
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
-    // for more information.
     hideSourceMaps: true,
   },
   swcMinify: true,
   // https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
-  webpack: (config) => {
+  webpack: (config, { webpack }) => {
+    // For production builds, tree-shake all code in the Sentry SDK related to debug logging,
+    // since the debug code is only useful in development environments.
+    // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/tree-shaking/#tree-shaking-optional-code
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __SENTRY_DEBUG__: process.env.NODE_ENV === "development",
+      })
+    );
+    // Add necessary aliases/fallbacks.
     const defaultResolve = config.resolve ?? {};
-    return {
-      ...config,
-      resolve: {
-        ...defaultResolve,
-        fallback: {
-          ...(defaultResolve.fallback ?? {}),
-          // https://github.com/react-dnd/react-dnd/issues/3423
-          // https://github.com/react-dnd/react-dnd/issues/3423#issuecomment-1092621793
-          "react/jsx-runtime": "react/jsx-runtime.js",
-          "react-swipeable-views": "react-swipeable-views-react-18-fix",
-          // 'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
-        },
+    config.resolve = {
+      ...defaultResolve,
+      fallback: {
+        ...(defaultResolve.fallback ?? {}),
+        // https://github.com/react-dnd/react-dnd/issues/3423
+        // https://github.com/react-dnd/react-dnd/issues/3423#issuecomment-1092621793
+        "react/jsx-runtime": "react/jsx-runtime.js",
+        "react-swipeable-views": "react-swipeable-views-react-18-fix",
+        // 'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
       },
     };
+    return config;
   },
 };
 
