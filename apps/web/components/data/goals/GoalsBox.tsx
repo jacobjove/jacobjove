@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import GoalCreationDialog from "@web/components/data/goals/generated/GoalCreationDialog";
 import DataBox, { DataBoxProps } from "@web/components/DataBox";
+import GoalCreationDialog from "@web/generated/components/goals/GoalCreationDialog";
 import Goal from "@web/generated/graphql/types/Goal";
 import { bindDialog, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC } from "react";
