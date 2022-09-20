@@ -10,8 +10,6 @@ import AppDrawer from "@web/components/AppDrawer";
 import CalendarEventDialog from "@web/components/calendar/CalendarEventDialog";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
-import { useNewTaskDialog } from "@web/components/contexts/NewTaskDialogContext";
-import TaskCreationDialog from "@web/components/data/tasks/TaskCreationDialog";
 import Footer from "@web/components/Footer";
 import Header from "@web/components/Header";
 import { bindPopover } from "material-ui-popup-state/hooks";
@@ -42,8 +40,6 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
   const [appDrawerOpen, _setAppDrawerOpen] = useState(drawerExpanded);
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
 
-  const { newTaskDialogState, newTaskDialogTriggerProps } = useNewTaskDialog();
-
   const { newCalendarEventDialogState } = useNewCalendarEventDialog();
 
   const setAppDrawerOpen = (open: boolean) => {
@@ -63,7 +59,9 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
     {
       icon: <TaskAltIcon />,
       name: "Task",
-      onClick: newTaskDialogTriggerProps?.onClick,
+      onClick: () => {
+        alert("This functionality is not yet implemented.");
+      },
     },
     {
       icon: <TodayIcon />,
@@ -151,7 +149,6 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
                 ))}
               </SpeedDial>
             )}
-            {newTaskDialogState && <TaskCreationDialog {...bindPopover(newTaskDialogState)} />}
             {newCalendarEventDialogState && (
               <CalendarEventDialog
                 mutation={"create"}

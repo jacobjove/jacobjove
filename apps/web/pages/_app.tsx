@@ -8,7 +8,6 @@ import { ColorModeContextProvider } from "@web/components/contexts/ColorModeCont
 import { DateContextProvider } from "@web/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@web/components/contexts/DeviceContext";
 import { NewCalendarEventDialogContextProvider } from "@web/components/contexts/NewCalendarEventDialogContext";
-import { NewTaskDialogContextProvider } from "@web/components/contexts/NewTaskDialogContext";
 import { PageTransitionContextProvider } from "@web/components/contexts/PageTransitionContext";
 import { UserContextProvider } from "@web/components/contexts/UserContext";
 import { useApollo } from "@web/lib/apollo";
@@ -103,46 +102,44 @@ function App({
     <SessionProvider>
       <ApolloProvider client={apolloClient}>
         <UserContextProvider session={session}>
-          <NewTaskDialogContextProvider>
-            <NewCalendarEventDialogContextProvider>
-              <DeviceContext.Provider value={deviceContextData}>
-                <CacheProvider value={emotionCache}>
-                  <ColorModeContextProvider>
-                    <PageTransitionContextProvider>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DndProvider
-                          backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}
-                          options={deviceContextData.isMobile ? { delayTouchStart: 200 } : {}}
-                        >
-                          <DateContextProvider>
-                            <CssBaseline />
-                            <Head>
-                              {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
-                              <meta
-                                name="viewport"
-                                content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
-                              />
-                            </Head>
-                            <DefaultSeo {...SEO} />
-                            <Script id="google-tag-manager" strategy="afterInteractive">
-                              {GOOGLE_TAG_MANAGER_SCRIPT}
-                            </Script>
-                            {(Component as PageWithAuth).auth ? (
-                              <Auth>
-                                <Component {...pageProps} />
-                              </Auth>
-                            ) : (
+          <NewCalendarEventDialogContextProvider>
+            <DeviceContext.Provider value={deviceContextData}>
+              <CacheProvider value={emotionCache}>
+                <ColorModeContextProvider>
+                  <PageTransitionContextProvider>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DndProvider
+                        backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}
+                        options={deviceContextData.isMobile ? { delayTouchStart: 200 } : {}}
+                      >
+                        <DateContextProvider>
+                          <CssBaseline />
+                          <Head>
+                            {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
+                            <meta
+                              name="viewport"
+                              content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
+                            />
+                          </Head>
+                          <DefaultSeo {...SEO} />
+                          <Script id="google-tag-manager" strategy="afterInteractive">
+                            {GOOGLE_TAG_MANAGER_SCRIPT}
+                          </Script>
+                          {(Component as PageWithAuth).auth ? (
+                            <Auth>
                               <Component {...pageProps} />
-                            )}
-                          </DateContextProvider>
-                        </DndProvider>
-                      </LocalizationProvider>
-                    </PageTransitionContextProvider>
-                  </ColorModeContextProvider>
-                </CacheProvider>
-              </DeviceContext.Provider>
-            </NewCalendarEventDialogContextProvider>
-          </NewTaskDialogContextProvider>
+                            </Auth>
+                          ) : (
+                            <Component {...pageProps} />
+                          )}
+                        </DateContextProvider>
+                      </DndProvider>
+                    </LocalizationProvider>
+                  </PageTransitionContextProvider>
+                </ColorModeContextProvider>
+              </CacheProvider>
+            </DeviceContext.Provider>
+          </NewCalendarEventDialogContextProvider>
         </UserContextProvider>
       </ApolloProvider>
     </SessionProvider>

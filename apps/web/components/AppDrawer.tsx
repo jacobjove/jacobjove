@@ -31,8 +31,10 @@ type MenuItem = [string, string, typeof DashboardIcon, boolean];
 
 const MENU_ITEMS: MenuItem[][] = [
   [["Home", "/app/home", HomeIcon, true]],
-  [["Planner", "/app/planner", TodayIcon, true]],
-  [["Notes", "/app/notes", NotesIcon, true]],
+  [
+    ["Planner", "/app/planner", TodayIcon, true],
+    ["Notes", "/app/notes", NotesIcon, true],
+  ],
   [
     //   ["Dashboard", "/app/dashboard", DashboardIcon, false],
     //   ["Psychology", "/app/psychology", PsychologyIcon, false],
