@@ -22,8 +22,8 @@ import {
   shelvingReducer,
   shelvingsReducer,
 } from "@web/generated/reducers/shelving.reducer";
-import { useHandleMutation } from "@web/utils/data/mutation";
-import { ArrayAction, Payload } from "@web/utils/data/reduction";
+import { useHandleMutation } from "@web/hooks/mutation";
+import { ArrayAction, Payload } from "@web/hooks/reduction";
 import { Dispatch, useReducer } from "react";
 
 type ShelvingCreationMutationHookOptions = MutationHookOptions<

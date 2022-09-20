@@ -1,5 +1,5 @@
 import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
-import { Payload } from "@web/utils/data/reduction";
+import { Payload } from "@web/hooks/reduction";
 import { bindPopover } from "material-ui-popup-state/hooks";
 import { Dispatch, FC } from "react";
 import CalendarEventDialog from "./CalendarEventDialog";

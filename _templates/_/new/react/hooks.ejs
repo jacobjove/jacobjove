@@ -14,8 +14,8 @@ import {
 } from "@web/generated/graphql/mutations/<%= name %>.mutations";
 import { <%= Name %>Fragment } from "@web/generated/graphql/fragments/<%= name %>.fragment";
 import { <%= Name %>CreationArgs, <%= Name %>UpdateArgs } from "@web/generated/graphql/args/<%= name %>.args";
-import { useHandleMutation } from "@web/utils/data/mutation";
-import { Payload, ArrayAction } from "@web/utils/data/reduction";
+import { useHandleMutation } from "@web/hooks/mutation";
+import { Payload, ArrayAction } from "@web/hooks/reduction";
 import { useEffect, useReducer, Dispatch } from "react";
 import {
   <%= name %>Reducer,

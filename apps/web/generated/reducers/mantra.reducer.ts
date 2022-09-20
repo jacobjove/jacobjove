@@ -4,7 +4,7 @@ import { MantraFragment } from "@web/generated/graphql/fragments/mantra.fragment
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { MantraCreationInput } from "@web/generated/graphql/inputs/mantra.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface MantraData extends Partial<MantraCreationInput> {
   id?: ID;

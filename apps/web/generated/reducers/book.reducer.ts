@@ -4,7 +4,7 @@ import { BookFragment } from "@web/generated/graphql/fragments/book.fragment";
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { BookCreationInput } from "@web/generated/graphql/inputs/book.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface BookData extends Partial<BookCreationInput> {
   id?: ID;

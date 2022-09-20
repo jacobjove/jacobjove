@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import GoalsBox from "@web/components/actions/GoalsBox";
-import HabitsBox from "@web/components/actions/HabitsBox";
 import AppLayout from "@web/components/AppLayout";
 import CalendarViewer from "@web/components/calendar";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useUser } from "@web/components/contexts/UserContext";
+import GoalsBox from "@web/components/data/goals/GoalsBox";
+import HabitsBox from "@web/components/data/habits/HabitsBox";
 // import MantrasBox from "@web/components/data/mantras/MantrasBox";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";

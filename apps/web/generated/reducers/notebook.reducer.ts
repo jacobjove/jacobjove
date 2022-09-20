@@ -4,7 +4,7 @@ import { NotebookFragment } from "@web/generated/graphql/fragments/notebook.frag
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { NotebookCreationInput } from "@web/generated/graphql/inputs/notebook.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface NotebookData extends Partial<NotebookCreationInput> {
   id?: ID;

@@ -2,7 +2,7 @@ import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { useCalendarEventReducer } from "@web/generated/hooks/calendarEvent.hooks";
 import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
 import { ID } from "@web/graphql/schema/types";
-import { Payload } from "@web/utils/data/reduction";
+import { Payload } from "@web/hooks/reduction";
 import { PopupState, usePopupState } from "material-ui-popup-state/hooks";
 import { createContext, Dispatch, FC, ReactElement, useContext } from "react";
 import { useUser } from "./UserContext";

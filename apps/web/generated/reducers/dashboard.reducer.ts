@@ -4,7 +4,7 @@ import { DashboardFragment } from "@web/generated/graphql/fragments/dashboard.fr
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { DashboardCreationInput } from "@web/generated/graphql/inputs/dashboard.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface DashboardData extends Partial<DashboardCreationInput> {
   id?: ID;

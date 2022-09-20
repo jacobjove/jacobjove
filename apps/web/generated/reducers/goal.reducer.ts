@@ -4,7 +4,7 @@ import { GoalFragment } from "@web/generated/graphql/fragments/goal.fragment";
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { GoalCreationInput } from "@web/generated/graphql/inputs/goal.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface GoalData extends Partial<GoalCreationInput> {
   id?: ID;

@@ -4,7 +4,7 @@ import { NoteFragment } from "@web/generated/graphql/fragments/note.fragment";
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { NoteCreationInput } from "@web/generated/graphql/inputs/note.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface NoteData extends Partial<NoteCreationInput> {
   id?: ID;

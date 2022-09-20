@@ -4,7 +4,7 @@ import { IdentityFragment } from "@web/generated/graphql/fragments/identity.frag
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { IdentityCreationInput } from "@web/generated/graphql/inputs/identity.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface IdentityData extends Partial<IdentityCreationInput> {
   id?: ID;

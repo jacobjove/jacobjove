@@ -10,7 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import { Field } from "@web/graphql/schema/definition";
 import { Fragment, Model } from "@web/graphql/schema/types";
-import { Payload } from "@web/utils/data/reduction";
+import { Payload } from "@web/hooks/reduction";
 import { bindMenu, bindPopover, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, MutableRefObject } from "react";
 
