@@ -4,9 +4,11 @@ import { DashboardFragment } from "@web/generated/graphql/fragments/dashboard.fr
 import { DashboardCreationInput } from "@web/generated/graphql/inputs/dashboard.inputs";
 import Dashboard from "@web/generated/graphql/types/Dashboard";
 import { useCreateDashboard, useDashboardReducer } from "@web/generated/hooks/dashboard.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type DashboardCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface DashboardCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function DashboardCreationDialog(props: DashboardCreationDialogProps) {
   const [create] = useCreateDashboard();

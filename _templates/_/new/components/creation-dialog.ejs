@@ -5,13 +5,15 @@ force: true
 
 import CreationDialog from "@web/components/data/CreationDialog";
 import { useCreate<%= Name %>, use<%= Name %>Reducer } from "@web/generated/hooks/<%= name %>.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 import { <%= Name %>CreationInput } from "@web/generated/graphql/inputs/<%= name %>.inputs";
 import <%= Name %> from "@web/generated/graphql/types/<%= Name %>";
 import { <%= Name %>Fragment } from "@web/generated/graphql/fragments/<%= name %>.fragment";
 import fields from "@web/generated/graphql/fields/<%= name %>.fields";
 
-export type <%= Name %>CreationDialogProps = ReturnType<typeof bindPopover>;
+export interface <%= Name %>CreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function <%= Name %>CreationDialog(props: <%= Name %>CreationDialogProps) {
   const [create,] = useCreate<%= Name %>();

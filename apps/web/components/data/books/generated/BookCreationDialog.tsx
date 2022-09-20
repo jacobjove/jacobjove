@@ -4,9 +4,11 @@ import { BookFragment } from "@web/generated/graphql/fragments/book.fragment";
 import { BookCreationInput } from "@web/generated/graphql/inputs/book.inputs";
 import Book from "@web/generated/graphql/types/Book";
 import { useBookReducer, useCreateBook } from "@web/generated/hooks/book.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type BookCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface BookCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function BookCreationDialog(props: BookCreationDialogProps) {
   const [create] = useCreateBook();

@@ -4,9 +4,11 @@ import { ValueFragment } from "@web/generated/graphql/fragments/value.fragment";
 import { ValueCreationInput } from "@web/generated/graphql/inputs/value.inputs";
 import Value from "@web/generated/graphql/types/Value";
 import { useCreateValue, useValueReducer } from "@web/generated/hooks/value.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type ValueCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface ValueCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function ValueCreationDialog(props: ValueCreationDialogProps) {
   const [create] = useCreateValue();

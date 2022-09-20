@@ -4,9 +4,11 @@ import { NoteFragment } from "@web/generated/graphql/fragments/note.fragment";
 import { NoteCreationInput } from "@web/generated/graphql/inputs/note.inputs";
 import Note from "@web/generated/graphql/types/Note";
 import { useCreateNote, useNoteReducer } from "@web/generated/hooks/note.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type NoteCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface NoteCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function NoteCreationDialog(props: NoteCreationDialogProps) {
   const [create] = useCreateNote();

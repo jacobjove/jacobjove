@@ -4,9 +4,11 @@ import { ListItemFragment } from "@web/generated/graphql/fragments/listItem.frag
 import { ListItemCreationInput } from "@web/generated/graphql/inputs/listItem.inputs";
 import ListItem from "@web/generated/graphql/types/ListItem";
 import { useCreateListItem, useListItemReducer } from "@web/generated/hooks/listItem.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type ListItemCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface ListItemCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function ListItemCreationDialog(props: ListItemCreationDialogProps) {
   const [create] = useCreateListItem();

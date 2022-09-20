@@ -4,9 +4,11 @@ import { IdentityFragment } from "@web/generated/graphql/fragments/identity.frag
 import { IdentityCreationInput } from "@web/generated/graphql/inputs/identity.inputs";
 import Identity from "@web/generated/graphql/types/Identity";
 import { useCreateIdentity, useIdentityReducer } from "@web/generated/hooks/identity.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type IdentityCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface IdentityCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function IdentityCreationDialog(props: IdentityCreationDialogProps) {
   const [create] = useCreateIdentity();

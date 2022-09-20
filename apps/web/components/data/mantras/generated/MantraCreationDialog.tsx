@@ -4,9 +4,11 @@ import { MantraFragment } from "@web/generated/graphql/fragments/mantra.fragment
 import { MantraCreationInput } from "@web/generated/graphql/inputs/mantra.inputs";
 import Mantra from "@web/generated/graphql/types/Mantra";
 import { useCreateMantra, useMantraReducer } from "@web/generated/hooks/mantra.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type MantraCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface MantraCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function MantraCreationDialog(props: MantraCreationDialogProps) {
   const [create] = useCreateMantra();

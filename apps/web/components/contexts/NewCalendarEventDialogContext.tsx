@@ -37,7 +37,7 @@ const _NewCalendarEventDialogContextProvider: FC<_NewCalendarEventDialogContextP
     userId,
   });
   const newCalendarEventDialogState = usePopupState({
-    variant: "popover",
+    variant: "dialog",
     popupId: `new-calendarEvent-dialog`,
   });
   const value = {

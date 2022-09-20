@@ -17,7 +17,7 @@ import { getOptimisticResponseForTaskUpdate } from "@web/generated/graphql/mutat
 import { useUpdateTask } from "@web/generated/hooks/task.hooks";
 import cronstrue from "cronstrue";
 import { format, isPast, isSameDay, isSameYear, isToday } from "date-fns";
-import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindDialog, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC, RefObject, useMemo, useState } from "react";
 import CompletionTallyChart from "../../habits/CompletionTallyChart";
 import DraggableTaskRow from "./DraggableTaskRow";
@@ -55,7 +55,7 @@ export const TaskRow: FC<TaskRowProps> = ({
   const [completed, setCompleted] = useState(!!task.completedAt);
   const { isMobile, isMobileWidth } = useDeviceData();
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
-  const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
+  const dialogState = usePopupState({ variant: "dialog", popupId: `task-${task.id}-dialog` });
 
   const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
 
@@ -245,7 +245,7 @@ export const TaskRow: FC<TaskRowProps> = ({
             index={index}
           />
         ))}
-      <TaskDialog data={task} {...bindPopover(dialogState)} />
+      <TaskDialog data={task} {...bindDialog(dialogState)} />
     </>
   );
 };

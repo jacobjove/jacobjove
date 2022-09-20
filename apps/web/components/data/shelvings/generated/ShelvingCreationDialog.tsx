@@ -4,9 +4,11 @@ import { ShelvingFragment } from "@web/generated/graphql/fragments/shelving.frag
 import { ShelvingCreationInput } from "@web/generated/graphql/inputs/shelving.inputs";
 import Shelving from "@web/generated/graphql/types/Shelving";
 import { useCreateShelving, useShelvingReducer } from "@web/generated/hooks/shelving.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type ShelvingCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface ShelvingCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function ShelvingCreationDialog(props: ShelvingCreationDialogProps) {
   const [create] = useCreateShelving();

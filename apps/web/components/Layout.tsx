@@ -12,7 +12,7 @@ import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import Footer from "@web/components/Footer";
 import Header from "@web/components/Header";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 import { parseCookies, setCookie } from "nookies";
 import { FC, ReactNode, useState } from "react";
 
@@ -152,7 +152,8 @@ const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) =
             {newCalendarEventDialogState && (
               <CalendarEventDialog
                 mutation={"create"}
-                {...bindPopover(newCalendarEventDialogState)}
+                {...bindDialog(newCalendarEventDialogState)}
+                close={newCalendarEventDialogState.close}
               />
             )}
           </>

@@ -4,9 +4,11 @@ import { NotebookFragment } from "@web/generated/graphql/fragments/notebook.frag
 import { NotebookCreationInput } from "@web/generated/graphql/inputs/notebook.inputs";
 import Notebook from "@web/generated/graphql/types/Notebook";
 import { useCreateNotebook, useNotebookReducer } from "@web/generated/hooks/notebook.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type NotebookCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface NotebookCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function NotebookCreationDialog(props: NotebookCreationDialogProps) {
   const [create] = useCreateNotebook();

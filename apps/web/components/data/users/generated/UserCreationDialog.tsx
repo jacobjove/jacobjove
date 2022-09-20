@@ -4,9 +4,11 @@ import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { UserCreationInput } from "@web/generated/graphql/inputs/user.inputs";
 import User from "@web/generated/graphql/types/User";
 import { useCreateUser, useUserReducer } from "@web/generated/hooks/user.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type UserCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface UserCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function UserCreationDialog(props: UserCreationDialogProps) {
   const [create] = useCreateUser();

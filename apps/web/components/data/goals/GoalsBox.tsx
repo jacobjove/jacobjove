@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import GoalCreationDialog from "@web/components/data/goals/generated/GoalCreationDialog";
 import DataBox, { DataBoxProps } from "@web/components/DataBox";
 import Goal from "@web/generated/graphql/types/Goal";
-import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindDialog, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC } from "react";
 
 type GoalsBoxProps = Pick<DataBoxProps, "displayTitle"> & {
@@ -14,7 +14,7 @@ type GoalsBoxProps = Pick<DataBoxProps, "displayTitle"> & {
 const GoalsBox: FC<GoalsBoxProps> = (props: GoalsBoxProps) => {
   const { goals, displayTitle } = props;
   const newGoalDialogState = usePopupState({
-    variant: "popover",
+    variant: "dialog",
     popupId: `new-goal-dialog`,
   });
   return (
@@ -40,7 +40,10 @@ const GoalsBox: FC<GoalsBoxProps> = (props: GoalsBoxProps) => {
           <Button variant={"contained"} {...bindTrigger(newGoalDialogState)}>
             {"Create a goal"}
           </Button>
-          <GoalCreationDialog {...bindPopover(newGoalDialogState)} />
+          <GoalCreationDialog
+            {...bindDialog(newGoalDialogState)}
+            close={newGoalDialogState.close}
+          />
         </Box>
       )}
     </DataBox>

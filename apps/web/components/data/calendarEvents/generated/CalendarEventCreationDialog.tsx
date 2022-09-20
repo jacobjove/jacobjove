@@ -7,9 +7,11 @@ import {
   useCalendarEventReducer,
   useCreateCalendarEvent,
 } from "@web/generated/hooks/calendarEvent.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type CalendarEventCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface CalendarEventCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function CalendarEventCreationDialog(props: CalendarEventCreationDialogProps) {
   const [create] = useCreateCalendarEvent();

@@ -30,8 +30,8 @@ import { useTaskReducer, useTasksReducer, useUpdateTask } from "@web/generated/h
 import { ID } from "@web/graphql/schema/types";
 import { addDays, addHours, endOfDay, format, parse, setHours, setMinutes } from "date-fns";
 import {
+  bindDialog,
   bindMenu,
-  bindPopover,
   bindTrigger,
   PopupState,
   usePopupState,
@@ -41,21 +41,14 @@ import { FC, useEffect, useMemo, useState } from "react";
 // import Divider from '@mui/material/Divider';
 import { useDate } from "../../contexts/DateContext";
 
-interface TaskDialogProps extends ReturnType<typeof bindPopover> {
+interface TaskDialogProps extends ReturnType<typeof bindDialog> {
   data: TaskFragment;
 }
 
 const LEFT_SIDE_WIDTH = "3.3rem";
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
-  const {
-    data: _data,
-    onClose: initialOnClose,
-    anchorEl: _,
-    anchorReference: __,
-    anchorPosition: ___,
-    ...dialogProps
-  } = props;
+  const { data: _data, onClose: initialOnClose, ...dialogProps } = props;
   const { user } = useUser();
   const [data, dispatchData] = useTaskReducer(_data);
   const [time, setTime] = useState(0);
@@ -123,18 +116,18 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
 
   const canUpdate = !!data.id;
 
-  const onClose = () => {
-    initialOnClose();
+  const onClose = (event: any) => {
+    initialOnClose(event);
     canUpdate && setEditing(false);
   };
 
-  const handleClose = () => {
+  const handleClose = (event: any) => {
     if (stopwatchIsRunning) {
       // TODO: ask for confirmation
       setStopwatchIsRunning(false);
     }
     console.log("calling onClose");
-    onClose();
+    onClose(event);
   };
 
   const menuTriggerProps = bindTrigger(menuState);
@@ -178,9 +171,9 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
     setEditing(false);
   };
 
-  const saveAndExit = () => {
+  const saveAndExit = (event: any) => {
     saveChanges();
-    handleClose();
+    handleClose(event);
   };
 
   const handleNewHabitCreation = async () => {
@@ -286,7 +279,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
               if (event.key === "Enter") {
                 event.preventDefault();
                 if (editing) return saveChanges();
-                return saveAndExit();
+                return saveAndExit(event);
               }
             }}
             onBlur={(event) => {

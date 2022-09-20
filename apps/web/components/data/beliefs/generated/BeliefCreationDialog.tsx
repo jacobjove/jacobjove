@@ -4,9 +4,11 @@ import { BeliefFragment } from "@web/generated/graphql/fragments/belief.fragment
 import { BeliefCreationInput } from "@web/generated/graphql/inputs/belief.inputs";
 import Belief from "@web/generated/graphql/types/Belief";
 import { useBeliefReducer, useCreateBelief } from "@web/generated/hooks/belief.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type BeliefCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface BeliefCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function BeliefCreationDialog(props: BeliefCreationDialogProps) {
   const [create] = useCreateBelief();

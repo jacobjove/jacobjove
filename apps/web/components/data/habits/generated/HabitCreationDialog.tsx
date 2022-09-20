@@ -4,9 +4,11 @@ import { HabitFragment } from "@web/generated/graphql/fragments/habit.fragment";
 import { HabitCreationInput } from "@web/generated/graphql/inputs/habit.inputs";
 import Habit from "@web/generated/graphql/types/Habit";
 import { useCreateHabit, useHabitReducer } from "@web/generated/hooks/habit.hooks";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type HabitCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface HabitCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function HabitCreationDialog(props: HabitCreationDialogProps) {
   const [create] = useCreateHabit();
