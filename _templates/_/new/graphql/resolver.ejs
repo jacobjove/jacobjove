@@ -34,7 +34,7 @@ import {
 import UserModel from "@web/generated/models/User";
 <% } -%>
 
-@TypeGraphQL.Resolver(() => <%= Name %>)
+@TypeGraphQL.Resolver(() => <%= Name %>, { isAbstract: true })
 export class <%= Name %>Resolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() <%= name %>: <%= Name %>) {

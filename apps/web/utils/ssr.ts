@@ -63,15 +63,11 @@ export const buildGetServerSidePropsFunc = ({
     const propsPromise = getProps ? getProps(context, session) : Promise.resolve({});
     const apolloClient = query ? initializeApollo() : null;
     if (query && apolloClient) {
-      if (unauthedRedirectDestination && !session) {
-        throw new Error(">>> Should have been redirected!!!!!");
-      }
-      console.log(">>> Attempting server-side query...");
       const queryOptions = {
         ...query,
-        context: { session },
+        context: { cookie: req.headers.cookie },
       };
-      await apolloClient.query(queryOptions);
+      await apolloClient.query(queryOptions).then(console.log);
     }
     const result = {
       props: {

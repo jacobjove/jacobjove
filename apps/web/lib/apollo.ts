@@ -1,4 +1,5 @@
 import { ApolloClient, from, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { scalarTypePolicies } from "@web/generated/graphql/scalarTypePolicies";
 import DebounceLink from "apollo-link-debounce";
@@ -11,6 +12,7 @@ if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error("NEXT_PUBLIC_BASE_URL is 
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
+// https://www.apollographql.com/docs/react/api/link/apollo-link-error
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) =>
@@ -19,26 +21,26 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
+// https://github.com/helfer/apollo-link-debounce
 const debounceLink = new DebounceLink(500);
 
-// const customFetch = (uri: Parameters<typeof fetch>[0], options: Parameters<typeof fetch>[1]) => {
-//   console.warn("customFetch", uri, options);
-//   return fetch(uri, options);
-// };
+// https://www.apollographql.com/docs/react/api/link/apollo-link-context
+const authorizationLink = setContext((_, previousContext) => {
+  return { headers: { cookie: previousContext.cookie } };
+});
+
+const enhancedFetch = (...args: Parameters<typeof fetch>) => {
+  return fetch(...args);
+};
 
 // https://github.com/jaydenseric/apollo-upload-client#function-createuploadlink
 const terminalLink = createUploadLink({
   // To support server-side rendering, use the absolute URL.
   uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/graphql`,
-  // uri: "/api/graphql",
-  // fetch: customFetch,
-  // credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
-  // fetchOptions: {
-  //   credentials: "same-origin",
-  // }
-  // fetchOptions: {
-  //   mode: 'cors',
-  // },
+  fetch: enhancedFetch,
+  // https://www.apollographql.com/docs/react/networking/authentication/#cookie
+  credentials: "same-origin",
+  // credentials: "include",
 });
 
 function createApolloClient() {
@@ -46,7 +48,7 @@ function createApolloClient() {
   // See https://github.com/jaydenseric/apollo-upload-client
   return new ApolloClient({
     // https://www.apollographql.com/docs/react/api/link/introduction/#additive-composition
-    link: from([errorLink, debounceLink, terminalLink]),
+    link: from([errorLink, debounceLink, authorizationLink, terminalLink]),
     // TODO: https://www.apollographql.com/docs/apollo-server/performance/cache-backends/#configuring-external-caching
     cache: new InMemoryCache({ typePolicies: scalarTypePolicies }),
     ssrMode: typeof window === "undefined",

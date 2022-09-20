@@ -16,6 +16,7 @@ import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggle
 import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
 import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
 import { Goal, Habit } from "@web/generated/graphql/types";
+import { GET_CURRENT_USER } from "@web/graphql/queries";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";
@@ -106,6 +107,9 @@ export default PlannerPage;
 
 export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
   unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/planner`,
+  query: {
+    query: GET_CURRENT_USER,
+  },
 });
 
 type ViewMode = "tasks" | "habits" | "goals";

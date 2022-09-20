@@ -8,9 +8,10 @@ import { NextApiRequest, NextApiResponse, PageConfig } from "next";
 import { buildSchema, NonEmptyArray, MiddlewareFn } from "type-graphql-v2-fork";
 import { Model } from "mongoose";
 import { ApolloServer } from "apollo-server-micro";
-import * as resolvers from "@web/generated/graphql/resolvers";
+import * as resolvers from "@web/graphql/schema/resolvers";
 import { withSentry } from "@sentry/nextjs";
 import cors from "micro-cors";
+import { send } from "micro";
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const IS_DEV = process.env.NODE_ENV === "development";
@@ -26,6 +27,7 @@ const withCors = cors({
     "X-Requested-With",
     "Content-Type",
     "Accept",
+    "Authorization",
   ],
   origin: "https://studio.apollographql.com",
 });
@@ -67,6 +69,7 @@ const getApolloServerHandler = async () => {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const apolloServerHandlerPromise = getApolloServerHandler();
   if (req.method === "OPTIONS") {
+    send(res, 200, "OK");
     res.end();
     return false;
   }
