@@ -79,6 +79,7 @@ const DateSelector: FC<DateSelectorProps> = ({
       {canIncludeSteppers && (
         <IconButton
           disabled={!currentDate || !canStepBack}
+          sx={{ py: 0 }}
           onClick={() => {
             if (currentDate) {
               setDate(subDays(currentDate, 1));
@@ -105,7 +106,6 @@ const DateSelector: FC<DateSelectorProps> = ({
               ...inputProps.style,
               minWidth: "3rem",
               width: "100%",
-              // height: "100%",
               border: "none",
               textAlign: "center",
             };
@@ -115,7 +115,7 @@ const DateSelector: FC<DateSelectorProps> = ({
               className="DateSelector-input"
               inputRef={inputRef}
               inputProps={inputProps}
-              sx={{ px: "0.25rem", fontSize: "inherit" }}
+              sx={{ px: "0.25rem", py: 0, fontSize: "inherit", "& input": { py: 0.5 } }}
               onClick={() => {
                 setOpen(true);
               }}
@@ -127,6 +127,7 @@ const DateSelector: FC<DateSelectorProps> = ({
       {canIncludeSteppers && (
         <IconButton
           disabled={!currentDate || !canStepForward}
+          sx={{ py: 0 }}
           onClick={() => {
             if (currentDate) {
               setDate(addDays(currentDate, 1));

@@ -171,7 +171,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     selectedDate: selectedDate || date,
     setSelectedDate,
     eventEditingDialogState,
-    // dispatchInitialEventFormData,
     defaultCalendar,
   };
   // console.log("Rendering calendar viewer!");
@@ -215,7 +214,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               </ToggleButtonGroup>
             </Box>
             {view === "day" && (
-              <Box display="flex" justifyContent={"center"} alignItems={"center"}>
+              <Box display="flex" justifyContent={"center"} alignItems={"center"} px={2}>
                 <DateSelector date={selectedDate} setDate={setSelectedDate} />
               </Box>
             )}

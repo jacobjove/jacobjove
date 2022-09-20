@@ -1,9 +1,5 @@
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import Tab from "@mui/material/Tab";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import GoalsBox from "@web/components/actions/GoalsBox";
 import HabitsBox from "@web/components/actions/HabitsBox";
@@ -12,6 +8,8 @@ import CalendarViewer from "@web/components/calendar";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useUser } from "@web/components/contexts/UserContext";
 // import MantrasBox from "@web/components/data/mantras/MantrasBox";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import TasksBox from "@web/components/data/tasks/TasksBox";
 import FullScreenExpandableComponent from "@web/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggleToolbar";
@@ -51,9 +49,6 @@ const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
         noindex
         nofollow
       />
-      {/* <Box>
-        <DateSelector date={selectedDate} setDate={setSelectedDate} />
-      </Box> */}
       <Box
         display="flex"
         flexDirection={displaySideBySide ? "row" : "column"}
@@ -113,6 +108,8 @@ export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFun
   unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/planner`,
 });
 
+type ViewMode = "tasks" | "habits" | "goals";
+
 interface PlannerCompanionStuffProps {
   selectedDateState: [Date, Dispatch<Date>];
 }
@@ -123,10 +120,7 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
   const { user } = useUser();
   const { goals, mantras, habits } = user ?? {};
   const [fullScreen, setFullScreen] = useState(false);
-  const [value, setValue] = useState("1");
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
+  const [view, setView] = useState<ViewMode>("tasks");
   useEffect(() => {
     !!mantras?.length && alert(mantras.join("\n\n"));
   }, [mantras]);
@@ -143,41 +137,38 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
           display: "flex",
           flexDirection: "column",
           typography: "body1",
-          "& .MuiTabPanel-root": { p: 0, flexGrow: 1 },
-          "& .MuiTabs-flexContainer": {
-            justifyContent: "space-between",
-          },
         }}
       >
-        <FullScreenToggleToolbar fullScreenState={[fullScreen, setFullScreen]} />
-        <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList
-              sx={{ "& .MuiTab-root": { flexGrow: 1 } }}
-              onChange={handleChange}
-              aria-label="lab API tabs example"
-            >
-              <Tab label="Tasks" value="1" />
-              <Tab label="Habits" value="2" disabled={!user?.isAdmin} />
-              <Tab label="Goals" value="3" disabled={!user?.isAdmin} />
-              {/* <Tab label="Mantras" value="4" /> */}
-            </TabList>
-          </Box>
-          <TabPanel value="1">
+        <FullScreenToggleToolbar fullScreenState={[fullScreen, setFullScreen]}>
+          <ToggleButtonGroup
+            exclusive
+            value={view}
+            onChange={(_, value: ViewMode) => setView(value)}
+            size="small"
+            color="primary"
+            aria-label="text alignment"
+            sx={{ "& button": { px: "1rem", py: "3px" } }}
+          >
+            <ToggleButton value="tasks" aria-label="Tasks">
+              {"Tasks"}
+            </ToggleButton>
+            <ToggleButton value="habits" aria-label="Habits">
+              {"Habits"}
+            </ToggleButton>
+            <ToggleButton value="goals" aria-label="Goals">
+              {"Goals"}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </FullScreenToggleToolbar>
+        <Box flexGrow={1}>
+          {view === "tasks" ? (
             <TasksBox selectedDateState={selectedDateState} displayTitle={false} />
-          </TabPanel>
-          <TabPanel value="2">
-            <p style={{ textAlign: "center" }}>TODO: Enable this tab for non-admins.</p>
+          ) : view === "habits" ? (
             <HabitsBox habits={habits ?? []} displayTitle={false} />
-          </TabPanel>
-          <TabPanel value="3">
-            <p style={{ textAlign: "center" }}>TODO: Enable this tab for non-admins.</p>
+          ) : (
             <GoalsBox goals={goals ?? []} displayTitle={false} />
-          </TabPanel>
-          {/* <TabPanel value="4">
-            <MantrasBox mantras={mantras ?? []} displayTitle={false} />
-          </TabPanel> */}
-        </TabContext>
+          )}
+        </Box>
       </Box>
     </FullScreenExpandableComponent>
   );

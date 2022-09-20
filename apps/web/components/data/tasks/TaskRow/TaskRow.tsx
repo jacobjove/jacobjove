@@ -323,7 +323,7 @@ const StyledTableRow = styled(TableRow, {
       },
     },
     "& td": {
-      padding: "6px 0.25rem",
+      padding: "2px 0.25rem",
       "& svg": {
         fontSize: "1.33rem",
         color: "#808080",
