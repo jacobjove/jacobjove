@@ -192,7 +192,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               display: props.collapseMenu ? "none" : "flex",
             }}
           >
-            <Box display="flex" justifyContent={"center"} alignItems={"end"}>
+            <Box display="flex" justifyContent={"center"} alignItems={"end"} px={"1px"}>
               <ToggleButtonGroup
                 exclusive
                 value={view}

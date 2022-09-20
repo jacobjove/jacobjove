@@ -147,7 +147,7 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
             size="small"
             color="primary"
             aria-label="text alignment"
-            sx={{ "& button": { px: "1rem", py: "3px" } }}
+            sx={{ mx: "2px", "& button": { px: "1rem", py: "3px" } }}
           >
             <ToggleButton value="tasks" aria-label="Tasks">
               {"Tasks"}
