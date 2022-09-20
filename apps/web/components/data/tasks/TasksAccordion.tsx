@@ -1,4 +1,5 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -15,7 +16,7 @@ import {
 } from "@web/generated/graphql/mutations/task.mutations";
 import { useTasksReducer, useUpdateTask } from "@web/generated/hooks/task.hooks";
 import { MAX_TASK_RANK, MIN_TASK_RANK } from "@web/graphql/schema/constants";
-import { useHandleMutation } from "@web/utils/data/mutation";
+import { useHandleMutation } from "@web/hooks/mutation";
 import { addDays, endOfDay, isSameDay } from "date-fns";
 import partition from "lodash/partition";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -230,7 +231,8 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
           }}
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandLessIcon />}
+            // collapseIcon={<ExpandLessIcon />}
             aria-controls="panel1bh-content"
             id="panel1bh-header"
           >

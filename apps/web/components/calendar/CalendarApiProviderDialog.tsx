@@ -31,7 +31,7 @@ import { useUpdateAccount } from "@web/generated/hooks/account.hooks";
 import { useUpdateCalendar } from "@web/generated/hooks/calendar.hooks";
 import axios from "axios";
 import isEqual from "lodash/isEqual";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 import { signIn, signOut } from "next-auth/react";
 import { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useThrottledCallback } from "use-debounce";
@@ -73,7 +73,7 @@ const CALENDAR_PROVIDERS: Record<CalendarProvider, CalendarProviderProps> = {
   },
 };
 
-type CalendarApiProviderDialogProps = ReturnType<typeof bindPopover> & {
+type CalendarApiProviderDialogProps = ReturnType<typeof bindDialog> & {
   provider: CalendarProvider;
 };
 
@@ -93,7 +93,7 @@ const CalendarSelectionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 };
 
 export default function CalendarApiProviderDialog(props: CalendarApiProviderDialogProps) {
-  const { provider, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const { provider, onClose, ...dialogProps } = props;
   const { user } = useUser();
   const [updateAccount, { loading: loadingUpdateAccount }] = useUpdateAccount();
   const [updateCalendar, { loading: loadingUpdateCalendar }] = useUpdateCalendar();
@@ -456,9 +456,9 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
           {applyingChanges ? "Applying changes..." : "Apply changes"}
         </Button>
         <Button
-          onClick={() => {
+          onClick={(event) => {
             applyChanges();
-            onClose();
+            onClose(event);
           }}
         >
           {"Done"}

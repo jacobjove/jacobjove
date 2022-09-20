@@ -4,7 +4,7 @@ import { ListFragment } from "@web/generated/graphql/fragments/list.fragment";
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { ListCreationInput } from "@web/generated/graphql/inputs/list.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface ListData extends Partial<ListCreationInput> {
   id?: ID;

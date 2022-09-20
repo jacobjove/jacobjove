@@ -1,4 +1,5 @@
 import { ApolloProvider, NormalizedCacheObject } from "@apollo/client";
+import { CacheProvider, EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -7,12 +8,12 @@ import { ColorModeContextProvider } from "@web/components/contexts/ColorModeCont
 import { DateContextProvider } from "@web/components/contexts/DateContext";
 import DeviceContext, { DeviceContextData } from "@web/components/contexts/DeviceContext";
 import { NewCalendarEventDialogContextProvider } from "@web/components/contexts/NewCalendarEventDialogContext";
-import { NewTaskDialogContextProvider } from "@web/components/contexts/NewTaskDialogContext";
 import { PageTransitionContextProvider } from "@web/components/contexts/PageTransitionContext";
 import { UserContextProvider } from "@web/components/contexts/UserContext";
 import { useApollo } from "@web/lib/apollo";
 import SEO from "@web/next-seo.config";
 import "@web/public/styles/global.css";
+import { createEmotionCache } from "@web/utils/emotion";
 import { NextPage } from "next";
 import { Session } from "next-auth";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
@@ -40,16 +41,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
 `;
 
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
 export type PageWithAuth = NextPage & {
   auth?: boolean;
 };
 
-interface PageProps {
+interface CustomPageProps {
   session?: Session | null;
   __APOLLO_STATE__?: NormalizedCacheObject;
 }
 
-function App({ Component, pageProps: { session, ...pageProps } }: AppProps<PageProps>) {
+interface CustomAppProps extends AppProps<CustomPageProps> {
+  emotionCache?: EmotionCache;
+}
+
+function App({
+  Component,
+  emotionCache = clientSideEmotionCache,
+  pageProps: { session, ...pageProps },
+}: CustomAppProps) {
   const apolloClient = useApollo(pageProps);
 
   const isMobileWidth = useMediaQuery("(max-width: 600px)");
@@ -90,46 +102,44 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps<PageP
     <SessionProvider>
       <ApolloProvider client={apolloClient}>
         <UserContextProvider session={session}>
-          <NewTaskDialogContextProvider>
-            <NewCalendarEventDialogContextProvider>
-              <DeviceContext.Provider value={deviceContextData}>
+          <NewCalendarEventDialogContextProvider>
+            <DeviceContext.Provider value={deviceContextData}>
+              <CacheProvider value={emotionCache}>
                 <ColorModeContextProvider>
                   <PageTransitionContextProvider>
-                    <CssBaseline />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DndProvider
                         backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}
                         options={deviceContextData.isMobile ? { delayTouchStart: 200 } : {}}
                       >
                         <DateContextProvider>
-                          <>
-                            <Head>
-                              {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
-                              <meta
-                                name="viewport"
-                                content="width=device-width, initial-scale=1, maximum-scale=1"
-                              />
-                            </Head>
-                            <DefaultSeo {...SEO} />
-                            <Script id="google-tag-manager" strategy="afterInteractive">
-                              {GOOGLE_TAG_MANAGER_SCRIPT}
-                            </Script>
-                            {(Component as PageWithAuth).auth ? (
-                              <Auth>
-                                <Component {...pageProps} />
-                              </Auth>
-                            ) : (
+                          <CssBaseline />
+                          <Head>
+                            {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
+                            <meta
+                              name="viewport"
+                              content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
+                            />
+                          </Head>
+                          <DefaultSeo {...SEO} />
+                          <Script id="google-tag-manager" strategy="afterInteractive">
+                            {GOOGLE_TAG_MANAGER_SCRIPT}
+                          </Script>
+                          {(Component as PageWithAuth).auth ? (
+                            <Auth>
                               <Component {...pageProps} />
-                            )}
-                          </>
+                            </Auth>
+                          ) : (
+                            <Component {...pageProps} />
+                          )}
                         </DateContextProvider>
                       </DndProvider>
                     </LocalizationProvider>
                   </PageTransitionContextProvider>
                 </ColorModeContextProvider>
-              </DeviceContext.Provider>
-            </NewCalendarEventDialogContextProvider>
-          </NewTaskDialogContextProvider>
+              </CacheProvider>
+            </DeviceContext.Provider>
+          </NewCalendarEventDialogContextProvider>
         </UserContextProvider>
       </ApolloProvider>
     </SessionProvider>

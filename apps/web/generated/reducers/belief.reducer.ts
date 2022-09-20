@@ -4,7 +4,7 @@ import { BeliefFragment } from "@web/generated/graphql/fragments/belief.fragment
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { BeliefCreationInput } from "@web/generated/graphql/inputs/belief.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface BeliefData extends Partial<BeliefCreationInput> {
   id?: ID;

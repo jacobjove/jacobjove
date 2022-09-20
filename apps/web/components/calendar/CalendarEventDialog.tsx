@@ -14,16 +14,17 @@ import {
   useUpdateCalendarEvent,
 } from "@web/generated/hooks/calendarEvent.hooks";
 import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 import { FC } from "react";
 
-type CalendarEventDialogProps = ReturnType<typeof bindPopover> & {
+interface CalendarEventDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
   mutation: "create" | "update";
   data?: CalendarEventData;
-};
+}
 
 const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventDialogProps) => {
-  const { onClose, data, anchorEl: _anchorEl, mutation, ...dialogProps } = props;
+  const { close, onClose, data, mutation, ...dialogProps } = props;
   const calendarEventDataTuple = useCalendarEventReducer(data ?? { start: new Date() });
   const [calendarEventData] = calendarEventDataTuple;
   const [create, { loading: createLoading }] = useCreateCalendarEvent();
@@ -61,7 +62,7 @@ const CalendarEventDialog: FC<CalendarEventDialogProps> = (props: CalendarEventD
         ),
       });
     }
-    onClose();
+    close();
   };
   // console.log("Rendering CalendarEventDialog!");
   return (

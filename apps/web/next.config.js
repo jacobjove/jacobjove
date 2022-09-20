@@ -1,54 +1,26 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withNx = require("@nrwl/next/plugins/with-nx");
-const withPWA = require("next-pwa");
+const nextPWA = require("next-pwa");
 const { withSentryConfig } = require("@sentry/nextjs");
-
-// const path = require("path");
-
-const REQUIRED_ENV_VARS = ["NEXT_PUBLIC_DOMAIN"];
 
 process.env.BASE_DIR = __dirname;
 
+const REQUIRED_ENV_VARS = ["NEXT_PUBLIC_DOMAIN"];
 for (const envVar of REQUIRED_ENV_VARS) {
   if (!process.env[envVar]) {
     throw new Error(`Environment variable ${envVar} is required.`);
   }
 }
 
+const withPWA = nextPWA({
+  disable: process.env.NODE_ENV === "development",
+  dest: "public",
+});
+
 const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options
   silent: true,
 };
-
-const plugins = [
-  // TODO
-  // https://github.com/shadowwalker/next-pwa/issues/371
-  withPWA({
-    pwa: {
-      disable: process.env.NODE_ENV === "development",
-      dest: "public",
-    },
-  }),
-];
-
-if (process.env.NODE_ENV !== "development") {
-  // https://flaviocopes.com/nextjs-analyze-app-bundle/
-  const withBundleAnalyzer = require("@next/bundle-analyzer")({
-    enabled: process.env.ANALYZE === "true",
-  });
-  plugins.push(withBundleAnalyzer);
-}
-
-const modulesToTranspile = [
-  // 'react-datasheet-grid'
-  "date-fns",
-];
-
-if (modulesToTranspile.length) {
-  // https://github.com/martpie/next-transpile-modules
-  const withTM = require("next-transpile-modules")(modulesToTranspile);
-  plugins.push(withTM);
-}
 
 /**
  * @type {import('next').NextConfig}
@@ -126,15 +98,14 @@ const nextConfig = {
 };
 
 module.exports = async () => {
-  const configWithNx = withNx({
+  let composedConfig = withPWA(nextConfig);
+  composedConfig = withNx({
     nx: {
       // Set this to true if you would like to to use SVGR
       // See: https://github.com/gregberge/svgr
       svgr: false,
     },
-    ...plugins.reduce((acc, plugin) => {
-      return plugin(acc), { ...nextConfig };
-    }),
+    ...composedConfig,
   });
-  return withSentryConfig(configWithNx, sentryWebpackPluginOptions);
+  return withSentryConfig(composedConfig, sentryWebpackPluginOptions);
 };

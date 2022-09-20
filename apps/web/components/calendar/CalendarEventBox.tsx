@@ -14,7 +14,7 @@ import CalendarEventDialog from "@web/components/calendar/CalendarEventDialog";
 import { CalendarEvent } from "@web/generated/graphql/types";
 import { useUpdateCalendarEvent } from "@web/generated/hooks/calendarEvent.hooks";
 import { format } from "date-fns";
-import { bindPopover, bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
+import { bindDialog, bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
 import { ComponentProps, FC, useState } from "react";
 import { useDrag } from "react-dnd";
 
@@ -27,27 +27,27 @@ export interface DraggedCalendarEvent extends CalendarEvent {
 }
 
 const CalendarEventBox: FC<CalendarEventBoxProps> = (props: CalendarEventBoxProps) => {
-  const { event, ...rest } = props;
+  const { event: calendarEvent, ...rest } = props;
   const [hovered, setHovered] = useState(false);
   const detailDialogState = usePopupState({
-    variant: "popover",
-    popupId: `event-${event.id}-detail-dialog`,
+    variant: "dialog",
+    popupId: `event-${calendarEvent.id}-detail-dialog`,
   });
   const editingDialogState = usePopupState({
-    variant: "popover",
-    popupId: `event-${event.id}-editing-dialog`,
+    variant: "dialog",
+    popupId: `event-${calendarEvent.id}-editing-dialog`,
   });
   const [{ opacity }, dragRef] = useDrag<DraggedCalendarEvent, unknown, { opacity: number }>(
     () => ({
       type: "event",
-      item: { type: "event", ...event },
+      item: { type: "event", ...calendarEvent },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1,
       }),
     })
   );
-  const startTime = event.start;
-  const endTime = event.end ?? null;
+  const startTime = calendarEvent.start;
+  const endTime = calendarEvent.end ?? null;
   // TODO
   if (!endTime) return null;
   const detailDialogTriggerProps = bindTrigger(detailDialogState);
@@ -107,7 +107,7 @@ const CalendarEventBox: FC<CalendarEventBoxProps> = (props: CalendarEventBoxProp
             lineHeight={"0.7rem"}
             mx="0.1rem"
           >
-            {event.title}
+            {calendarEvent.title}
           </Typography>
           <Typography component="div" fontSize={"0.6rem"} lineHeight={"0.6rem"} mx="0.1rem">
             {format(startTime, "h:mm aa")} &ndash; {format(endTime, "h:mm aa")}
@@ -118,29 +118,36 @@ const CalendarEventBox: FC<CalendarEventBoxProps> = (props: CalendarEventBoxProp
         </div>
       </Box>
       <CalendarEventDetailDialog
-        {...bindPopover(detailDialogState)}
-        event={event}
+        {...bindDialog(detailDialogState)}
+        event={calendarEvent}
         editingDialogState={editingDialogState}
+        close={detailDialogState.close}
       />
-      <CalendarEventDialog mutation={"update"} data={event} {...bindPopover(editingDialogState)} />
+      <CalendarEventDialog
+        mutation={"update"}
+        data={calendarEvent}
+        {...bindDialog(editingDialogState)}
+        close={editingDialogState.close}
+      />
     </>
   );
 };
 
 export default CalendarEventBox;
 
-interface CalendarEventDetailDialogProps extends ReturnType<typeof bindPopover> {
+interface CalendarEventDetailDialogProps extends ReturnType<typeof bindDialog> {
   event: CalendarEvent;
   editingDialogState: PopupState;
+  close: () => void;
 }
 
 const CalendarEventDetailDialog: FC<CalendarEventDetailDialogProps> = (
   props: CalendarEventDetailDialogProps
 ) => {
-  const { event, editingDialogState, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const { event: calendarEvent, editingDialogState, close, onClose, ...dialogProps } = props;
   const deletionDialogState = usePopupState({
-    variant: "popover",
-    popupId: `event-${event.id}-deletion-dialog`,
+    variant: "dialog",
+    popupId: `event-${calendarEvent.id}-deletion-dialog`,
   });
 
   return (
@@ -162,16 +169,17 @@ const CalendarEventDetailDialog: FC<CalendarEventDetailDialogProps> = (
             <EditIcon />
           </IconButton>
         </Toolbar>
-        <DialogTitle>{event.title}</DialogTitle>
+        <DialogTitle>{calendarEvent.title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {event.end && (
+            {calendarEvent.end && (
               <span>
-                {format(event.start, "h:mm aa")} &ndash; {format(event.end, "h:mm aa")}
+                {format(calendarEvent.start, "h:mm aa")} &ndash;{" "}
+                {format(calendarEvent.end, "h:mm aa")}
               </span>
             )}
           </DialogContentText>
-          <DialogContentText>{event.notes}</DialogContentText>
+          <DialogContentText>{calendarEvent.notes}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={onClose}>
@@ -180,41 +188,43 @@ const CalendarEventDetailDialog: FC<CalendarEventDetailDialogProps> = (
         </DialogActions>
       </Dialog>
       <EventDeletionConfirmationDialog
-        {...bindPopover(deletionDialogState)}
-        event={event}
-        closeDetailDialog={onClose}
+        {...bindDialog(deletionDialogState)}
+        event={calendarEvent}
+        closeDetailDialog={close}
+        close={deletionDialogState.close}
       />
     </>
   );
 };
 
-interface EventDeletionConfirmationDialogProps extends ReturnType<typeof bindPopover> {
+interface EventDeletionConfirmationDialogProps extends ReturnType<typeof bindDialog> {
   event: CalendarEvent;
   closeDetailDialog: () => void;
+  close: () => void;
 }
 
 const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> = (
   props: EventDeletionConfirmationDialogProps
 ) => {
-  const { event, closeDetailDialog, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const { event: calendarEvent, closeDetailDialog, close, onClose, ...dialogProps } = props;
 
   const [updateCalendarEvent, { loading }] = useUpdateCalendarEvent();
   const handleDeletion = () => {
     const archivedAt = new Date();
     updateCalendarEvent.current?.({
       variables: {
-        where: { id: event.id },
+        where: { id: calendarEvent.id },
         data: { archivedAt: archivedAt },
       },
       optimisticResponse: {
         updateCalendarEvent: {
           __typename: "CalendarEvent",
-          ...(event as CalendarEvent),
+          ...(calendarEvent as CalendarEvent),
           archivedAt,
         },
       },
     });
-    onClose();
+    close();
     closeDetailDialog();
   };
   return (

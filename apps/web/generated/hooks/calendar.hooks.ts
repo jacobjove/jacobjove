@@ -23,8 +23,8 @@ import {
   calendarsReducer,
   initializeCalendarData,
 } from "@web/generated/reducers/calendar.reducer";
-import { useHandleMutation } from "@web/utils/data/mutation";
-import { ArrayAction, Payload } from "@web/utils/data/reduction";
+import { useHandleMutation } from "@web/hooks/mutation";
+import { ArrayAction, Payload } from "@web/hooks/reduction";
 import { Dispatch, useEffect, useReducer } from "react";
 
 type CalendarCreationMutationHookOptions = MutationHookOptions<

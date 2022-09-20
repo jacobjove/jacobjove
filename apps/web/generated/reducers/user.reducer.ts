@@ -3,7 +3,7 @@
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { UserCreationInput } from "@web/generated/graphql/inputs/user.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface UserData extends Partial<UserCreationInput> {
   id?: ID;

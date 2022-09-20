@@ -36,7 +36,7 @@ import { useCreateNotebook, useUpdateNotebook } from "@web/generated/hooks/noteb
 import { ID } from "@web/graphql/schema/types";
 import { format } from "date-fns";
 import partition from "lodash/partition";
-import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindDialog, bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Dispatch, useEffect, useMemo, useState } from "react";
@@ -93,7 +93,7 @@ export default function NotesMenu({
   const [addingNewNotebook, setAddingNewNotebook] = useState(false);
   const [newNotebookName, setNewNotebookName] = useState("");
 
-  const searchDialogState = usePopupState({ variant: "popover", popupId: `notes-search-dialog` });
+  const searchDialogState = usePopupState({ variant: "dialog", popupId: `notes-search-dialog` });
   const notebookMenuState = usePopupState({
     variant: "popper",
     popupId: `notebook-${selectedNotebook?.id}-menu`,
@@ -167,7 +167,7 @@ export default function NotesMenu({
       setSelectedNotebookId(mutationResult.data.createNotebook.id);
   };
 
-  const searchDialogProps = bindPopover(searchDialogState);
+  const searchDialogProps = bindDialog(searchDialogState);
   const notebookMenuProps = bindMenu(notebookMenuState);
 
   return (
@@ -472,7 +472,7 @@ export default function NotesMenu({
             } else {
               setSelectedNoteIds([]);
             }
-            searchDialogProps.onClose();
+            searchDialogState.close();
           },
           throttleDelay: 500,
         }}

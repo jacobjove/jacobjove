@@ -4,7 +4,7 @@ import FormGroup from "@mui/material/FormGroup";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { CalendarEventData } from "@web/generated/reducers/calendarEvent.reducer";
-import { Payload } from "@web/utils/data/reduction";
+import { Payload } from "@web/hooks/reduction";
 import { Dispatch, FC } from "react";
 
 interface EventFormFieldsProps {

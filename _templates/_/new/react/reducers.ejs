@@ -11,7 +11,7 @@ force: true
 // import <%= Name %> from "@web/generated/graphql/types/<%= Name %>";
 import { <%= Name %>CreationInput } from "@web/generated/graphql/inputs/<%= name %>.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { Payload, ArrayAction, arrayReducer } from "@web/utils/data/reduction";
+import { Payload, ArrayAction, arrayReducer } from "@web/hooks/reduction";
 import { <%= Name %>Fragment } from "@web/generated/graphql/fragments/<%= name %>.fragment";
 <% if (Name !== "User") { -%>
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";

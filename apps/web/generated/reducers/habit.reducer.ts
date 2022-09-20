@@ -4,7 +4,7 @@ import { HabitFragment } from "@web/generated/graphql/fragments/habit.fragment";
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { HabitCreationInput } from "@web/generated/graphql/inputs/habit.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface HabitData extends Partial<HabitCreationInput> {
   id?: ID;

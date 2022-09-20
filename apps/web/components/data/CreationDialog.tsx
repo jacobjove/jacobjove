@@ -10,15 +10,16 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import { Field } from "@web/graphql/schema/definition";
 import { Fragment, Model } from "@web/graphql/schema/types";
-import { Payload } from "@web/utils/data/reduction";
-import { bindMenu, bindPopover, usePopupState } from "material-ui-popup-state/hooks";
+import { Payload } from "@web/hooks/reduction";
+import { bindDialog, bindMenu, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, MutableRefObject } from "react";
 
 export interface CreationDialogProps<
   T extends Model,
   CreationInput extends Partial<T>,
   CreationMutationData extends { [key: string]: Fragment }
-> extends ReturnType<typeof bindPopover> {
+> extends ReturnType<typeof bindDialog> {
+  close: () => void;
   children?: React.ReactNode;
   typeName: string;
   dataTuple: [Partial<CreationInput>, Dispatch<Payload<Partial<CreationInput>>>];
@@ -38,24 +39,16 @@ export default function CreationDialog<
   dataTuple,
   create,
   produceInitialData,
-  onClose: initialOnClose,
-  anchorEl: _anchorEl,
+  close,
+  onClose,
   ...dialogProps
 }: CreationDialogProps<T, CreationInput, CreationMutationData>) {
   const [data, dispatchData] = dataTuple;
-
-  const onClose = () => {
-    initialOnClose();
-  };
 
   const menuState = usePopupState({
     variant: "popper",
     popupId: data.id ? `${typeName}-${data.id}-menu` : `new-${typeName}-menu`,
   });
-
-  const handleClose = () => {
-    onClose();
-  };
 
   const menuProps = bindMenu(menuState);
 
@@ -69,7 +62,7 @@ export default function CreationDialog<
       field: "init",
       value: produceInitialData ? produceInitialData() : {},
     }); // TODO...
-    handleClose();
+    close();
   };
 
   return (
@@ -91,7 +84,7 @@ export default function CreationDialog<
               "aria-labelledby": "calendar-menu-button-x",
             }}
           ></Menu>
-          <IconButton aria-label="close" onClick={handleClose}>
+          <IconButton aria-label="close" onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </Box>

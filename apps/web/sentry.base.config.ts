@@ -10,7 +10,9 @@ type Config = Parameters<typeof init>[0];
 
 export const baseConfig: Config = {
   autoSessionTracking: false,
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.SENTRY_DEBUG
+    ? process.env.SENTRY_DEBUG === "true"
+    : process.env.NODE_ENV === "development",
   dsn: SENTRY_DSN || "https://c635d2ccc5de430b93f35b861d2d65ca@glitchtip.orega.org/1",
   enabled: process.env.NODE_ENV === "production",
   environment: SENTRY_ENVIRONMENT,
@@ -22,4 +24,5 @@ export const baseConfig: Config = {
     // Facebook borked
     "fb_xd_fragment",
   ],
+  tracesSampleRate: process.env.NODE_ENV === "production" ? 0.2 : 1.0,
 };

@@ -4,7 +4,7 @@ import { ShelvingFragment } from "@web/generated/graphql/fragments/shelving.frag
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { ShelvingCreationInput } from "@web/generated/graphql/inputs/shelving.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface ShelvingData extends Partial<ShelvingCreationInput> {
   id?: ID;

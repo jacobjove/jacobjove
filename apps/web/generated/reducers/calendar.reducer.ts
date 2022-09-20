@@ -4,7 +4,7 @@ import { CalendarFragment } from "@web/generated/graphql/fragments/calendar.frag
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { CalendarCreationInput } from "@web/generated/graphql/inputs/calendar.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface CalendarData extends Partial<CalendarCreationInput> {
   id?: ID;

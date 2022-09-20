@@ -90,7 +90,6 @@ module.exports = {
     },
     {
       files: ["tsconfig*.json"],
-      // TODO: https://ota-meshi.github.io/eslint-plugin-jsonc/rules/sort-keys.html
       rules: {
         "jsonc/sort-keys": [
           "warn",

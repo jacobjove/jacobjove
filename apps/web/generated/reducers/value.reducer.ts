@@ -4,7 +4,7 @@ import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { ValueFragment } from "@web/generated/graphql/fragments/value.fragment";
 import { ValueCreationInput } from "@web/generated/graphql/inputs/value.inputs";
 import { ID } from "@web/graphql/schema/types";
-import { ArrayAction, arrayReducer, Payload } from "@web/utils/data/reduction";
+import { ArrayAction, arrayReducer, Payload } from "@web/hooks/reduction";
 
 export interface ValueData extends Partial<ValueCreationInput> {
   id?: ID;

@@ -8,16 +8,16 @@ import { styled } from "@mui/material/styles";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import CompletionCheckbox from "@web/components/actions/CompletionCheckbox";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useUser } from "@web/components/contexts/UserContext";
 import TaskDialog from "@web/components/data/tasks/TaskDialog";
+import CompletionCheckbox from "@web/components/fields/CompletionCheckbox";
 import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
 import { getOptimisticResponseForTaskUpdate } from "@web/generated/graphql/mutations/task.mutations";
 import { useUpdateTask } from "@web/generated/hooks/task.hooks";
 import cronstrue from "cronstrue";
 import { format, isPast, isSameDay, isSameYear, isToday } from "date-fns";
-import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindDialog, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC, RefObject, useMemo, useState } from "react";
 import CompletionTallyChart from "../../habits/CompletionTallyChart";
 import DraggableTaskRow from "./DraggableTaskRow";
@@ -55,7 +55,7 @@ export const TaskRow: FC<TaskRowProps> = ({
   const [completed, setCompleted] = useState(!!task.completedAt);
   const { isMobile, isMobileWidth } = useDeviceData();
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
-  const dialogState = usePopupState({ variant: "popover", popupId: `task-${task.id}-dialog` });
+  const dialogState = usePopupState({ variant: "dialog", popupId: `task-${task.id}-dialog` });
 
   const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
 
@@ -245,7 +245,7 @@ export const TaskRow: FC<TaskRowProps> = ({
             index={index}
           />
         ))}
-      <TaskDialog data={task} {...bindPopover(dialogState)} />
+      <TaskDialog data={task} {...bindDialog(dialogState)} />
     </>
   );
 };
@@ -323,7 +323,7 @@ const StyledTableRow = styled(TableRow, {
       },
     },
     "& td": {
-      padding: "6px 0.25rem",
+      padding: "2px 0.25rem",
       "& svg": {
         fontSize: "1.33rem",
         color: "#808080",

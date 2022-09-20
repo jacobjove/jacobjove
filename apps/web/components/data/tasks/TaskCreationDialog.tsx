@@ -12,9 +12,11 @@ import Task from "@web/generated/graphql/types/Task";
 import { useCreateTask, useTaskReducer, useTasksReducer } from "@web/generated/hooks/task.hooks";
 import { ID } from "@web/graphql/schema/types";
 import { format } from "date-fns";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 
-export type TaskCreationDialogProps = ReturnType<typeof bindPopover>;
+export interface TaskCreationDialogProps extends ReturnType<typeof bindDialog> {
+  close: () => void;
+}
 
 export default function TaskCreationDialog(props: TaskCreationDialogProps) {
   const { user } = useUser();
@@ -22,7 +24,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
   const dataTuple = useTaskReducer();
   const [data, dispatchData] = dataTuple;
   const [subtasks, dispatchSubtasks] = useTasksReducer([]);
-  const saveAndExit = () => {
+  const saveAndExit = (_: any) => {
     const dataIsValid = !!data.title;
     // TODO: run validator!
     const validatedData = data as TaskCreationInput;
@@ -35,7 +37,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
         value: { userId: user?.id as ID, rank: validatedData.rank + 1 },
       });
     }
-    props.onClose();
+    props.onClose(_);
   };
   return CreationDialog<Task, TaskCreationInput, { createTask: TaskFragment }>({
     typeName: "task",
@@ -52,7 +54,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
             onKeyUp={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
-                saveAndExit();
+                saveAndExit(event);
               }
             }}
           >

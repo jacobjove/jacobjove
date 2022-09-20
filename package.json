@@ -22,8 +22,7 @@
     "migrations:run": "nx migrate --run-migrations",
     "cypress:open": "cypress open",
     "db:seed": "ts-node --project tsconfig.base.json -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
-    "generate": "npm run code:generate && graphql-codegen --config codegen.yml",
-    "generate:watch": "graphql-codegen --config codegen.yml --watch",
+    "generate": "npm run code:generate",
     "prepare": "npx husky install",
     "code:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in **/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in apps/web/_definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen _ new --definition $(basename -- $filename); done; prettier -w .; eslint . --fix"
   },
@@ -103,9 +102,6 @@
     "yup": "^1.0.0-beta.7"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^2.11.0",
-    "@graphql-codegen/fragment-matcher": "^3.3.1",
-    "@graphql-codegen/introspection": "^2.2.1",
     "@graphql-eslint/eslint-plugin": "^3.10.7",
     "@nrwl/cli": "14.7.3",
     "@nrwl/cypress": "14.7.3",

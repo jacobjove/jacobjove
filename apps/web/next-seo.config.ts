@@ -103,7 +103,6 @@ const NextSeoConfig: DefaultSeoProps = {
     // <link rel='apple-touch-startup-image' href='/images/apple_splash_1242.png' sizes='1242x2208' />
     // <link rel='apple-touch-startup-image' href='/images/apple_splash_750.png' sizes='750x1334' />
     // <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
-    // <link rel='manifest' href='/manifest.json' />
     // <link rel='mask-icon' href='/icons/safari-pinned-tab.svg' color='#5bbad5' />
     // <link rel='shortcut icon' href='/favicon.ico' />
   ],

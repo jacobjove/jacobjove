@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import { Field } from "@web/graphql/schema/definition";
 import { Model } from "@web/graphql/schema/types";
-import { Payload } from "@web/utils/data/reduction";
+import { Payload } from "@web/hooks/reduction";
 import { Dispatch } from "react";
 
 export interface CreationFieldsProps<T extends Model, CreationInput extends Partial<T>> {

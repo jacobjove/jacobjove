@@ -32,7 +32,7 @@ import { calendarFragment } from "@web/generated/graphql/fragments/calendar.frag
 import { calendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
 import { providerIsEnabledForUser } from "@web/utils/calendar/providers";
 import { getHours } from "date-fns";
-import { bindMenu, bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import { bindDialog, bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, FC, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
 
 const ICON_MAP = {
@@ -60,7 +60,7 @@ interface CalendarApiMenuItemProps extends MenuItemProps {
 const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children, ...props }) => {
   const { user } = useUser();
   const dialogState = usePopupState({
-    variant: "popover",
+    variant: "dialog",
     popupId: `${provider}-calendar-api-dialog`,
   });
   const Icon = ICON_MAP[provider];
@@ -83,7 +83,7 @@ const CalendarApiMenuItem: FC<CalendarApiMenuItemProps> = ({ provider, children,
         {iconElement}
         {children}
       </MenuItem>
-      <CalendarApiProviderDialog provider={provider} {...bindPopover(dialogState)} />
+      <CalendarApiProviderDialog provider={provider} {...bindDialog(dialogState)} />
     </>
   );
 };
@@ -123,7 +123,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
   const [view, setView] = useState<ViewMode>(defaultView ?? "day");
 
   const eventEditingDialogState = usePopupState({
-    variant: "popover",
+    variant: "dialog",
     popupId: `event-editing-dialog`,
   });
 
@@ -171,7 +171,6 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
     selectedDate: selectedDate || date,
     setSelectedDate,
     eventEditingDialogState,
-    // dispatchInitialEventFormData,
     defaultCalendar,
   };
   // console.log("Rendering calendar viewer!");
@@ -193,7 +192,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               display: props.collapseMenu ? "none" : "flex",
             }}
           >
-            <Box display="flex" justifyContent={"center"} alignItems={"end"}>
+            <Box display="flex" justifyContent={"center"} alignItems={"end"} px={"1px"}>
               <ToggleButtonGroup
                 exclusive
                 value={view}
@@ -215,7 +214,7 @@ const CalendarViewer: FC<CalendarViewerProps> = (props: CalendarViewerProps) => 
               </ToggleButtonGroup>
             </Box>
             {view === "day" && (
-              <Box display="flex" justifyContent={"center"} alignItems={"center"}>
+              <Box display="flex" justifyContent={"center"} alignItems={"center"} px={2}>
                 <DateSelector date={selectedDate} setDate={setSelectedDate} />
               </Box>
             )}

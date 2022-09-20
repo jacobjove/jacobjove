@@ -4,16 +4,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import InstantSearch, { InstantSearchProps } from "@web/components/search/InstantSearch";
-import { bindPopover } from "material-ui-popup-state/hooks";
+import { bindDialog } from "material-ui-popup-state/hooks";
 import { FC, ReactElement } from "react";
 
-export interface SearchDialogProps extends ReturnType<typeof bindPopover> {
+export interface SearchDialogProps extends ReturnType<typeof bindDialog> {
   header: string | ReactElement;
   searchProps: InstantSearchProps;
 }
 
 const SearchDialog: FC<SearchDialogProps> = (props: SearchDialogProps) => {
-  const { header, searchProps, onClose, anchorEl: _anchorEl, ...dialogProps } = props;
+  const { header, searchProps, onClose, ...dialogProps } = props;
   return (
     <Dialog {...dialogProps} fullWidth onClose={onClose}>
       <DialogTitle
