@@ -5,7 +5,7 @@ const { withSentryConfig } = require("@sentry/nextjs");
 
 process.env.BASE_DIR = __dirname;
 
-const REQUIRED_ENV_VARS = ["NEXT_PUBLIC_DOMAIN"];
+const REQUIRED_ENV_VARS = ["NEXT_PUBLIC_BASE_URL", "NEXT_PUBLIC_DOMAIN"];
 for (const envVar of REQUIRED_ENV_VARS) {
   if (!process.env[envVar]) {
     throw new Error(`Environment variable ${envVar} is required.`);
@@ -54,6 +54,11 @@ const nextConfig = {
   images: {
     domains: [process.env.NEXT_PUBLIC_DOMAIN],
   },
+  nx: {
+    // Set this to true if you would like to to use SVGR
+    // See: https://github.com/gregberge/svgr
+    svgr: false,
+  },
   output: "standalone",
   reactStrictMode: true,
   redirects: async () => {
@@ -97,15 +102,4 @@ const nextConfig = {
   },
 };
 
-module.exports = async () => {
-  let composedConfig = withPWA(nextConfig);
-  composedConfig = withNx({
-    nx: {
-      // Set this to true if you would like to to use SVGR
-      // See: https://github.com/gregberge/svgr
-      svgr: false,
-    },
-    ...composedConfig,
-  });
-  return withSentryConfig(composedConfig, sentryWebpackPluginOptions);
-};
+module.exports = withSentryConfig(withNx(withPWA(nextConfig)), sentryWebpackPluginOptions);
