@@ -1,5 +1,4 @@
-x-default:
-  &default
+x-default: &default
   deploy:
     restart_policy:
       condition: "${DOCKER_DEFAULT_RESTART_POLICY:-unless-stopped}"
@@ -43,7 +42,7 @@ services:
     expose:
       - "6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 20s
       timeout: 10s
       retries: 3
