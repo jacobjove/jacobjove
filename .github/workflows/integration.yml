@@ -92,8 +92,8 @@ jobs:
           AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
           AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
           AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          BASE_URL: ${{ secrets.BASE_URL }}
           DOMAIN: ${{ secrets.DOMAIN }}
-          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
           NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
           NEXTJS_PORT: ${{ secrets.NEXTJS_PORT }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
