@@ -385,7 +385,6 @@ export default function NotesMenu({
                             event.preventDefault();
                             if (event.shiftKey) {
                               if (!selectedNote) return;
-                              console.log(">>>", event.shiftKey);
                               const firstSelectedNoteIndex = notes.findIndex(
                                 (_) => _.id === selectedNote?.id
                               );

@@ -18,7 +18,6 @@ import { PageProps } from "@web/types/page";
 import { createEmotionCache } from "@web/utils/emotion";
 import { setCookie } from "cookies-next";
 import { NextPage } from "next";
-import { Session } from "next-auth";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
@@ -115,9 +114,9 @@ function App({
   }, [xl, lg, md, sm, xs]);
 
   return (
-    <SessionProvider>
+    <SessionProvider {...(session && { session })}>
       <ApolloProvider client={apolloClient}>
-        <UserContextProvider session={session}>
+        <UserContextProvider>
           <NewCalendarEventDialogContextProvider>
             <DeviceContext.Provider value={deviceData}>
               <CacheProvider value={emotionCache}>
@@ -142,7 +141,7 @@ function App({
                             {GOOGLE_TAG_MANAGER_SCRIPT}
                           </Script>
                           {(Page as PageWithAuth).auth ? (
-                            <Auth session={session}>
+                            <Auth>
                               <Page {...pageProps} />
                             </Auth>
                           ) : (
@@ -166,12 +165,11 @@ export default App;
 
 interface AuthProps {
   children: ReactElement;
-  session: Session | null | undefined;
 }
 
-const Auth: FC<AuthProps> = ({ children, session: sessionFromProps }: AuthProps) => {
+const Auth: FC<AuthProps> = ({ children }: AuthProps) => {
   const { data: session, status } = useSession({ required: true });
-  const authenticated = sessionFromProps || status === "authenticated";
+  const authenticated = status === "authenticated";
   const loading = status === "loading";
   const hasError = !!session?.error;
 

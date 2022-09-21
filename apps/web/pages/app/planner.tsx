@@ -12,33 +12,18 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import TasksBox from "@web/components/data/tasks/TasksBox";
 import FullScreenExpandableComponent from "@web/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggleToolbar";
-import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
-import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
 import { GET_USER } from "@web/generated/graphql/queries/user.queries";
-import { Goal, Habit } from "@web/generated/graphql/types";
+import { PageProps } from "@web/types/page";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
 import { Dispatch, FC, useEffect, useState } from "react";
 
-interface PlannerPageData {
-  tasks: TaskFragment[];
-  calendarEvents: CalendarEventFragment[];
-  habits: Habit[];
-  goals: Goal[];
-}
-
-interface PlannerPageProps {
-  data: PlannerPageData;
-}
-
-const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
+const PlannerPage: NextPage<PageProps> = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const { isLandscape, width } = useDeviceData();
   const displaySideBySide = isLandscape || (width !== "xs" && width !== "sm");
-
-  console.log(">>> displaySideBySide", displaySideBySide);
 
   return (
     <AppLayout>

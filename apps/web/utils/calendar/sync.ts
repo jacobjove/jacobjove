@@ -2,7 +2,7 @@ import { UPDATE_CALENDAR } from "@web/generated/graphql/mutations/calendar.mutat
 import { UPSERT_CALENDAR_EVENT } from "@web/generated/graphql/mutations/calendarEvent.mutations";
 import { GET_CALENDAR } from "@web/generated/graphql/queries/calendar.queries";
 import Calendar from "@web/generated/graphql/types/Calendar";
-import { initializeApolloOnClient } from "@web/lib/apollo";
+import { initializeApolloForClient } from "@web/lib/apollo";
 import { CalendarClient } from "@web/utils/calendar/client";
 import rateLimiter from "@web/utils/rate-limit";
 import { addYears } from "date-fns";
@@ -14,7 +14,7 @@ const limiter = rateLimiter({
 });
 
 export const syncCalendar = async (calendarId: string, session: Session) => {
-  const apolloClient = initializeApolloOnClient(); // TODO
+  const apolloClient = initializeApolloForClient(); // TODO
   const key = `SyncCalendars_${session.user.id}`;
   if (await limiter.check(key).catch(() => false)) {
     throw new Error("Rate limit exceeded");

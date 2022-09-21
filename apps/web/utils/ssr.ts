@@ -1,5 +1,5 @@
 import { QueryOptions } from "@apollo/client";
-import { addApolloState, initializeApolloOnServer } from "@web/lib/apollo/ssr";
+import { addApolloState, initializeApolloForServer } from "@web/lib/apollo/ssr";
 import { authOptions } from "@web/pages/api/auth/[...nextauth]";
 import { PageProps } from "@web/types/page";
 import { getCookies } from "cookies-next";
@@ -9,8 +9,6 @@ import { unstable_getServerSession } from "next-auth/next";
 
 const ssrMode = typeof window === "undefined";
 if (!ssrMode) throw new Error("SSR utils are not available in the browser.");
-
-type GetServerSidePropsResult = ReturnType<GetServerSideProps>;
 
 interface CacheOptions {
   maxAge?: number;
@@ -65,7 +63,7 @@ export const buildGetServerSidePropsFunc = ({
       };
     }
     const propsPromise = getProps ? getProps(context, session) : Promise.resolve({});
-    const apolloClient = getQueryOptions ? await initializeApolloOnServer(session) : null;
+    const apolloClient = getQueryOptions ? await initializeApolloForServer(session) : null;
     if (apolloClient && getQueryOptions) {
       const queryOptions = getQueryOptions(session);
       await apolloClient.query(queryOptions).then(console.log);

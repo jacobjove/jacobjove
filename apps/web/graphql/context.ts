@@ -15,7 +15,6 @@ interface FromContext {
 }
 
 export async function createGqlContext({ req, res }: FromContext): Promise<GqlContext> {
-  console.log(">>>> createGqlContext", new Date().toISOString());
   const session = await unstable_getServerSession(req, res, authOptions);
   // const mongoClient = await mongoosePromise;
   return {

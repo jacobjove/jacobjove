@@ -1,4 +1,5 @@
-x-default: &default
+x-default:
+  &default
   deploy:
     restart_policy:
       condition: "${DOCKER_DEFAULT_RESTART_POLICY:-unless-stopped}"
@@ -21,7 +22,7 @@ services:
       NEXTAUTH_URL_INTERNAL: "http://nextjs:${NEXTJS_PORT}"
   mongo:
     <<: *default
-    image: mongo:4.2
+    image: mongo:6
     healthcheck:
       test: bash /healthcheck.sh
       interval: 10s
@@ -33,6 +34,7 @@ services:
     volumes:
       - data:/data
       - .config/healthchecks/mongo-healthcheck.sh:/healthcheck.sh
+      - .config/scripts/entrypoints/mongo:/docker-entrypoint-initdb.d
   redis:
     image: redis
     deploy:
@@ -41,7 +43,7 @@ services:
     expose:
       - "6379"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 20s
       timeout: 10s
       retries: 3

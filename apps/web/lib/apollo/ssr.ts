@@ -9,7 +9,7 @@ import { Session } from "next-auth";
 const ssrMode = typeof window === "undefined";
 if (!ssrMode) throw new Error("SSR utils are not available in the browser.");
 
-export async function initializeApolloOnServer(session: Session | null = null) {
+export async function initializeApolloForServer(session: Session | null = null) {
   // For SSG and SSR, always create a new Apollo Client.
   return new ApolloClient({
     // https://www.apollographql.com/docs/react/api/link/introduction/#additive-composition
