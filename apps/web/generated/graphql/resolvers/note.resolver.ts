@@ -22,7 +22,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Note)
+@TypeGraphQL.Resolver(() => Note, { isAbstract: true })
 export class NoteResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() note: Note) {

@@ -1,7 +1,7 @@
 import { ApolloError, useQuery } from "@apollo/client";
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { GET_USER } from "@web/generated/graphql/queries/user.queries";
-import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { createContext, FC, ReactNode, useContext } from "react";
 
 interface UserContextData {
@@ -18,15 +18,15 @@ const UserContext = createContext<UserContextData>({
 export default UserContext;
 
 interface UserContextProviderProps {
-  session?: Session | null;
   children: ReactNode;
 }
 
-export const UserContextProvider: FC<UserContextProviderProps> = ({ session, children }) => {
-  const email = session?.user?.email;
+export const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
+  const { data: session } = useSession();
+  const email = session?.user.email;
   const { data, loading, error } = useQuery<{ user: UserFragment }>(GET_USER, {
     variables: { where: { email } },
-    skip: !email,
+    skip: !session,
   });
   const contextData = { user: data?.user, loading, error };
   return <UserContext.Provider value={contextData}>{children}</UserContext.Provider>;

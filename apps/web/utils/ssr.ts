@@ -1,12 +1,14 @@
 import { QueryOptions } from "@apollo/client";
-import { addApolloState, initializeApollo } from "@web/lib/apollo";
+import { addApolloState, initializeApolloForServer } from "@web/lib/apollo/ssr";
 import { authOptions } from "@web/pages/api/auth/[...nextauth]";
+import { PageProps } from "@web/types/page";
+import { getCookies } from "cookies-next";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
 import { unstable_getServerSession } from "next-auth/next";
-import nookies from "nookies";
 
-type GetServerSidePropsResult = ReturnType<GetServerSideProps>;
+const ssrMode = typeof window === "undefined";
+if (!ssrMode) throw new Error("SSR utils are not available in the browser.");
 
 interface CacheOptions {
   maxAge?: number;
@@ -17,7 +19,7 @@ interface BuildServerSidePropsOptions {
   unauthedRedirectDestination?: string;
   readCookies?: boolean;
   cache?: CacheOptions;
-  query?: QueryOptions;
+  query?: (session: Session | null) => QueryOptions;
   props?: (
     context: GetServerSidePropsContext,
     session: Session | null
@@ -44,10 +46,10 @@ const setCachingHeaders = (
 
 export const buildGetServerSidePropsFunc = ({
   unauthedRedirectDestination,
-  query,
+  query: getQueryOptions,
   cache: cacheOptions,
   props: getProps,
-}: BuildServerSidePropsOptions): GetServerSideProps => {
+}: BuildServerSidePropsOptions): GetServerSideProps<PageProps> => {
   return async (context: GetServerSidePropsContext) => {
     const { req, res } = context;
     setCachingHeaders(res, cacheOptions ?? {});
@@ -61,27 +63,18 @@ export const buildGetServerSidePropsFunc = ({
       };
     }
     const propsPromise = getProps ? getProps(context, session) : Promise.resolve({});
-    const apolloClient = query ? initializeApollo() : null;
-    if (query && apolloClient) {
-      if (unauthedRedirectDestination && !session) {
-        throw new Error(">>> Should have been redirected!!!!!");
-      }
-      console.log(">>> Attempting server-side query...");
-      const queryOptions = {
-        ...query,
-        context: { session },
-      };
-      await apolloClient.query(queryOptions);
+    const apolloClient = getQueryOptions ? await initializeApolloForServer(session) : null;
+    if (apolloClient && getQueryOptions) {
+      const queryOptions = getQueryOptions(session);
+      await apolloClient.query(queryOptions).then(console.log);
     }
     const result = {
       props: {
         ...(await propsPromise),
         session,
-        cookies: nookies.get(context),
+        cookies: getCookies(context),
       },
     };
-    return (
-      apolloClient ? addApolloState(apolloClient, result) : result
-    ) as GetServerSidePropsResult;
+    return apolloClient ? addApolloState(apolloClient, result) : result;
   };
 };

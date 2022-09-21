@@ -53,9 +53,11 @@ export const TaskRow: FC<TaskRowProps> = ({
   }, [user, task]);
 
   const [completed, setCompleted] = useState(!!task.completedAt);
-  const { isMobile, isMobileWidth } = useDeviceData();
+  const { isMobile, width } = useDeviceData();
   const [subtasksExpanded, setSubtasksExpanded] = useState(isMobile ? false : false);
   const dialogState = usePopupState({ variant: "dialog", popupId: `task-${task.id}-dialog` });
+
+  const isMobileWidth = width === "xs";
 
   const habit = task.habitId ? user?.habits?.find((habit) => habit.id === task.habitId) : null;
 

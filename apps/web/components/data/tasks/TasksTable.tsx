@@ -28,7 +28,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
   const [createTask] = useCreateTask();
   const [addingTask, setAddingTask] = useState(false);
   const [newTaskData, dispatchNewTaskData] = useTaskReducer();
-  const { isMobileWidth } = useDeviceData();
+  const { width } = useDeviceData();
 
   const onSaveNewTask = async () => {
     const data = await taskCreationInputSchema.validate(newTaskData);
@@ -48,6 +48,7 @@ const TasksTable: FC<TasksTableProps> = (props: TasksTableProps) => {
     });
   };
 
+  const isMobileWidth = width === "xs";
   const nTotalColumns = isMobileWidth ? 3 : 5;
   return (
     <Table

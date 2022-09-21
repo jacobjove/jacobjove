@@ -1,3 +1,4 @@
+import { Breakpoint } from "@mui/material";
 import { createContext, useContext } from "react";
 import { getSelectorsByUserAgent } from "react-device-detect";
 
@@ -44,8 +45,8 @@ export interface SelectorsFromUserAgent extends ReturnType<typeof getSelectorsBy
 }
 
 export interface DeviceContextData extends SelectorsFromUserAgent {
-  isMobileWidth?: boolean;
   isLandscape?: boolean;
+  width?: Breakpoint;
 }
 
 const DeviceContext = createContext<DeviceContextData>({} as DeviceContextData);

@@ -178,7 +178,7 @@ export default NotesPage;
 
 export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
   unauthedRedirectDestination: "/auth/signin?callbackUrl=/app/notes",
-  query: {
+  query: () => ({
     query: QUERY,
-  },
+  }),
 });

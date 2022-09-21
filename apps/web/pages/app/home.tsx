@@ -2,17 +2,14 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import AppLayout from "@web/components/AppLayout";
+import { PageProps } from "@web/types/page";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth, Session } from "next-auth";
+import { PageWithAuth } from "next-auth";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 
-interface HomePageProps {
-  session: Session;
-}
-
-const HomePage: NextPage<HomePageProps> = () => {
+const HomePage: NextPage<PageProps> = () => {
   const { data: session } = useSession();
   return (
     <AppLayout>

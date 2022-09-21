@@ -21,7 +21,7 @@ services:
       NEXTAUTH_URL_INTERNAL: "http://nextjs:${NEXTJS_PORT}"
   mongo:
     <<: *default
-    image: mongo:4.2
+    image: mongo:6
     healthcheck:
       test: bash /healthcheck.sh
       interval: 10s
@@ -33,6 +33,7 @@ services:
     volumes:
       - data:/data
       - .config/healthchecks/mongo-healthcheck.sh:/healthcheck.sh
+      - .config/scripts/entrypoints/mongo:/docker-entrypoint-initdb.d
   redis:
     image: redis
     deploy:

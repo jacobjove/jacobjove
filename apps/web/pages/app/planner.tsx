@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import AppLayout from "@web/components/AppLayout";
 import CalendarViewer from "@web/components/calendar";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
@@ -13,32 +12,18 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import TasksBox from "@web/components/data/tasks/TasksBox";
 import FullScreenExpandableComponent from "@web/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggleToolbar";
-import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
-import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
-import { Goal, Habit } from "@web/generated/graphql/types";
+import { GET_USER } from "@web/generated/graphql/queries/user.queries";
+import { PageProps } from "@web/types/page";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
-import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
 import { Dispatch, FC, useEffect, useState } from "react";
 
-interface PlannerPageData {
-  tasks: TaskFragment[];
-  calendarEvents: CalendarEventFragment[];
-  habits: Habit[];
-  goals: Goal[];
-}
-
-interface PlannerPageProps {
-  data: PlannerPageData;
-}
-
-const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
+const PlannerPage: NextPage<PageProps> = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const { isLandscape } = useDeviceData();
-  const isLessThan1000pxWide = useMediaQuery(json2mq({ minWidth: "1000px" }));
-  const displaySideBySide = isLandscape || isLessThan1000pxWide;
+  const { isLandscape, width } = useDeviceData();
+  const displaySideBySide = isLandscape || (width !== "xs" && width !== "sm");
 
   return (
     <AppLayout>
@@ -106,6 +91,11 @@ export default PlannerPage;
 
 export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
   unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/planner`,
+  query: (session) => ({
+    query: GET_USER,
+    variables: { where: { email: session?.user.email } },
+    skip: !session,
+  }),
 });
 
 type ViewMode = "tasks" | "habits" | "goals";

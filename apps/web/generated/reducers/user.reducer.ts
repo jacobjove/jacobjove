@@ -11,10 +11,7 @@ export interface UserData extends Partial<UserCreationInput> {
 // export type UserData = InputData<User>;
 // export type InitialUserData = InitialData<User, "rank" | "userId">;
 
-export function initializeUserData(
-  data: Partial<UserData>,
-  user?: UserFragment | null | undefined
-): Partial<UserData> {
+export function initializeUserData(data: Partial<UserData>): Partial<UserData> {
   return {
     email: "",
     ...Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)), // TODO: make this unnecessary

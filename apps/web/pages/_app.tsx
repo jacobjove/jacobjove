@@ -1,6 +1,7 @@
-import { ApolloProvider, NormalizedCacheObject } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
+import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -13,21 +14,22 @@ import { UserContextProvider } from "@web/components/contexts/UserContext";
 import { useApollo } from "@web/lib/apollo";
 import SEO from "@web/next-seo.config";
 import "@web/public/styles/global.css";
+import { PageProps } from "@web/types/page";
 import { createEmotionCache } from "@web/utils/emotion";
+import { setCookie } from "cookies-next";
 import { NextPage } from "next";
-import { Session } from "next-auth";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
-import { FC, ReactElement, useEffect, useState } from "react";
+import { FC, ReactElement, useEffect, useReducer } from "react";
 import { getSelectorsByUserAgent } from "react-device-detect";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
-import "react-grid-layout/css/styles.css";
-import "react-resizable/css/styles.css";
+import "react-grid-layout/css/styles.css"; // TODO
+import "react-resizable/css/styles.css"; // TODO
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
 // TODO: https://morganfeeney.com/how-to/integrate-google-tag-manager-with-next-js
@@ -48,33 +50,45 @@ export type PageWithAuth = NextPage & {
   auth?: boolean;
 };
 
-interface CustomPageProps {
-  session?: Session | null;
-  __APOLLO_STATE__?: NormalizedCacheObject;
-}
-
-interface CustomAppProps extends AppProps<CustomPageProps> {
+interface CustomAppProps extends AppProps<PageProps> {
   emotionCache?: EmotionCache;
 }
 
+const DEVICE_CONTEXT_COOKIE_NAME = "device-context";
+
+export function deviceDataReducer(state: DeviceContextData, payload: Partial<DeviceContextData>) {
+  if (payload.field === "init") return payload as DeviceContextData;
+  return { ...state, ...payload };
+}
+
 function App({
-  Component,
+  Component: Page,
   emotionCache = clientSideEmotionCache,
   pageProps: { session, ...pageProps },
 }: CustomAppProps) {
   const apolloClient = useApollo(pageProps);
 
-  const isMobileWidth = useMediaQuery("(max-width: 600px)");
-  const [isLandscape, setIsLandscape] = useState<boolean>();
-  const [deviceContextData, setDeviceContextData] = useState<DeviceContextData>(
-    {} as DeviceContextData
+  const serverSideCookies = pageProps.cookies ?? {};
+
+  const theme = useTheme();
+  const xs = useMediaQuery(theme.breakpoints.down("sm"));
+  const sm = useMediaQuery(theme.breakpoints.up("sm"));
+  const md = useMediaQuery(theme.breakpoints.up("md"));
+  const lg = useMediaQuery(theme.breakpoints.up("lg"));
+  const xl = useMediaQuery(theme.breakpoints.up("xl"));
+
+  const [deviceData, dispatchDeviceData] = useReducer(
+    deviceDataReducer,
+    serverSideCookies[DEVICE_CONTEXT_COOKIE_NAME]
+      ? JSON.parse(serverSideCookies[DEVICE_CONTEXT_COOKIE_NAME])
+      : ({} as DeviceContextData)
   );
 
   useEffect(() => {
     const handleOrientationChange = function (e: Event) {
       const newOrientation = window.screen.orientation?.type;
       if (newOrientation) {
-        setIsLandscape(newOrientation.toString().includes("landscape"));
+        dispatchDeviceData({ isLandscape: newOrientation.toString().includes("landscape") });
       } else {
         console.error("Could not determine orientation:", newOrientation, e);
       }
@@ -90,27 +104,28 @@ function App({
   useEffect(() => {
     if (typeof window !== "undefined" && navigator.userAgent) {
       const selectorsFromUserAgent = getSelectorsByUserAgent(navigator.userAgent);
-      setDeviceContextData({
+      const deviceContextData = {
         ...selectorsFromUserAgent,
-        isMobileWidth,
-        isLandscape,
-      });
+        width: xl ? "xl" : lg ? "lg" : md ? "md" : sm ? "sm" : "xs",
+      };
+      dispatchDeviceData(deviceContextData);
+      setCookie(DEVICE_CONTEXT_COOKIE_NAME, JSON.stringify(deviceContextData));
     }
-  }, [isMobileWidth, isLandscape]);
+  }, [xl, lg, md, sm, xs]);
 
   return (
-    <SessionProvider>
+    <SessionProvider {...(session && { session })}>
       <ApolloProvider client={apolloClient}>
-        <UserContextProvider session={session}>
+        <UserContextProvider>
           <NewCalendarEventDialogContextProvider>
-            <DeviceContext.Provider value={deviceContextData}>
+            <DeviceContext.Provider value={deviceData}>
               <CacheProvider value={emotionCache}>
                 <ColorModeContextProvider>
                   <PageTransitionContextProvider>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DndProvider
-                        backend={deviceContextData.isMobile ? TouchBackend : HTML5Backend}
-                        options={deviceContextData.isMobile ? { delayTouchStart: 200 } : {}}
+                        backend={deviceData.isMobile ? TouchBackend : HTML5Backend}
+                        options={deviceData.isMobile ? { delayTouchStart: 200 } : {}}
                       >
                         <DateContextProvider>
                           <CssBaseline />
@@ -125,12 +140,12 @@ function App({
                           <Script id="google-tag-manager" strategy="afterInteractive">
                             {GOOGLE_TAG_MANAGER_SCRIPT}
                           </Script>
-                          {(Component as PageWithAuth).auth ? (
+                          {(Page as PageWithAuth).auth ? (
                             <Auth>
-                              <Component {...pageProps} />
+                              <Page {...pageProps} />
                             </Auth>
                           ) : (
-                            <Component {...pageProps} />
+                            <Page {...pageProps} />
                           )}
                         </DateContextProvider>
                       </DndProvider>

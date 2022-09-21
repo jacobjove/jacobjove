@@ -54,7 +54,7 @@
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "bson": "*",
-    "class-validator": "^0.13.2",
+    "cookies-next": "*",
     "cronstrue": "^2.11.0",
     "cross-fetch": "^3.0.5",
     "date-fns": "^2.27.0",

@@ -11,4 +11,4 @@ services:
 
   mongo:
     ports:
-      - 27017:27017
+      - ${MONGO_PORT:-27017}:27017
