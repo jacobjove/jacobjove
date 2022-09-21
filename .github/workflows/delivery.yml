@@ -25,6 +25,8 @@ env:
   BASE_URL: ${{ secrets.BASE_URL }}
   DOMAIN: ${{ secrets.DOMAIN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
   NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
   NEXTJS_PORT: ${{ secrets.NEXTJS_PORT }}
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
