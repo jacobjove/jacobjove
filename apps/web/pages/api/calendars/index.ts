@@ -1,6 +1,6 @@
 import { GET_ACCOUNTS } from "@web/generated/graphql/queries/account.queries";
 import Account from "@web/generated/graphql/types/Account";
-import { initializeApollo } from "@web/lib/apollo";
+import { initializeApolloOnClient } from "@web/lib/apollo";
 import { authOptions } from "@web/pages/api/auth/[...nextauth]";
 import { CalendarClient } from "@web/utils/calendar/client";
 import { isValidProvider } from "@web/utils/calendar/providers";
@@ -25,7 +25,7 @@ const GetCalendars: NextApiHandler = async (req, res) => {
     return res.status(429).json({ error: "Rate limit exceeded" });
   }
 
-  const apolloClient = initializeApollo(); // TODO
+  const apolloClient = initializeApolloOnClient(); // TODO
   // TODO
   let accounts: Account[] = await apolloClient
     .query({

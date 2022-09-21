@@ -5,13 +5,11 @@ import "@abraham/reflection";
 
 import { createGqlContext } from "@web/graphql/context";
 import { NextApiRequest, NextApiResponse, PageConfig } from "next";
-import { buildSchema, NonEmptyArray, MiddlewareFn } from "type-graphql-v2-fork";
-import { Model } from "mongoose";
 import { ApolloServer } from "apollo-server-micro";
-import * as resolvers from "@web/graphql/schema/resolvers";
 import { withSentry } from "@sentry/nextjs";
 import cors from "micro-cors";
 import { send } from "micro";
+import { schemaPromise } from "@web/graphql/schema";
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const IS_DEV = process.env.NODE_ENV === "development";
@@ -32,16 +30,6 @@ const withCors = cors({
   origin: "https://studio.apollographql.com",
 });
 
-const MongooseMiddlware: MiddlewareFn = async (_, next) => {
-  const result = await next();
-  if (result instanceof Model) {
-    return result.toObject();
-  } else if (Array.isArray(result)) {
-    return result.map((item) => (item instanceof Model ? item.toObject() : item));
-  }
-  return result;
-};
-
 declare const global: NodeJS.Global & {
   apolloServerHandler?: ReturnType<ApolloServer["createHandler"]>;
 };
@@ -50,12 +38,7 @@ const getApolloServerHandler = async () => {
   if (!global.apolloServerHandler) {
     const apolloServer = new ApolloServer({
       context: createGqlContext,
-      schema: await buildSchema({
-        resolvers: Object.values(resolvers) as unknown as NonEmptyArray<CallableFunction>,
-        emitSchemaFile: IS_DEV ? { path: `${process.env.BASE_DIR}/graphql/schema.gql` } : false,
-        validate: false, // TODO: investigate
-        globalMiddlewares: [MongooseMiddlware],
-      }),
+      schema: await schemaPromise,
       debug: !IS_PROD,
       introspection: IS_DEV,
       cache: "bounded",

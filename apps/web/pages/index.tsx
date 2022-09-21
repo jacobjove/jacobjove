@@ -6,16 +6,11 @@ import Typography from "@mui/material/Typography";
 import Layout from "@web/components/Layout";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { NextPage } from "next";
-import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 
-interface DefaultPageProps {
-  session: Session | null;
-}
-
-const DefaultPage: NextPage<DefaultPageProps> = (_props: DefaultPageProps) => {
+const DefaultPage: NextPage = () => {
   const { data: session } = useSession();
   return (
     <Layout>

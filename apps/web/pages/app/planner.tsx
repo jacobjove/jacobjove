@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import AppLayout from "@web/components/AppLayout";
 import CalendarViewer from "@web/components/calendar";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
@@ -15,10 +14,9 @@ import FullScreenExpandableComponent from "@web/components/fullscreen/FullScreen
 import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggleToolbar";
 import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
 import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
+import { GET_USER } from "@web/generated/graphql/queries/user.queries";
 import { Goal, Habit } from "@web/generated/graphql/types";
-import { GET_CURRENT_USER } from "@web/graphql/queries";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
-import json2mq from "json2mq";
 import { GetServerSideProps, NextPage } from "next";
 import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
@@ -37,9 +35,10 @@ interface PlannerPageProps {
 
 const PlannerPage: NextPage<PlannerPageProps> = (_props: PlannerPageProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const { isLandscape } = useDeviceData();
-  const isLessThan1000pxWide = useMediaQuery(json2mq({ minWidth: "1000px" }));
-  const displaySideBySide = isLandscape || isLessThan1000pxWide;
+  const { isLandscape, width } = useDeviceData();
+  const displaySideBySide = isLandscape || (width !== "xs" && width !== "sm");
+
+  console.log(">>> displaySideBySide", displaySideBySide);
 
   return (
     <AppLayout>
@@ -107,9 +106,11 @@ export default PlannerPage;
 
 export const getServerSideProps: GetServerSideProps = buildGetServerSidePropsFunc({
   unauthedRedirectDestination: `/auth/signin?callbackUrl=/app/planner`,
-  query: {
-    query: GET_CURRENT_USER,
-  },
+  query: (session) => ({
+    query: GET_USER,
+    variables: { where: { email: session?.user.email } },
+    skip: !session,
+  }),
 });
 
 type ViewMode = "tasks" | "habits" | "goals";
