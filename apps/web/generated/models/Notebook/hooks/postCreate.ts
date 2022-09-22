@@ -10,6 +10,10 @@ export const postCreate = async (notebook: Notebook) => {
   const UserModel = mongoose.model("User") as Model<User>;
   if (!notebook?.archivedAt) {
     // TODO
-    await UserModel.updateOne({ _id: notebook.userId }, { $push: { notebooks: notebook } });
+    const conditionsForUserUpdate = {
+      _id: notebook.userId,
+      "notebooks._id": { $ne: notebook._id },
+    };
+    await UserModel.updateOne(conditionsForUserUpdate, { $push: { notebooks: notebook } });
   }
 };
