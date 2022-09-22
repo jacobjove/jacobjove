@@ -26,10 +26,7 @@ SECURITY.md
 node_modules/
 **/node_modules/
 *.suo
-*.ntvs*
-*.njsproj
 *.sln
-*.sw?
 .npm
 
 # PyCharm / IntelliJ / Visual Studio Code
