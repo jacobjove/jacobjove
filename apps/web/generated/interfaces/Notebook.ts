@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Notebook {
   _id: mongoose.Types.ObjectId;
+  id: string;
   userId: mongoose.Types.ObjectId;
   title: string;
   description?: string | null;

@@ -9,7 +9,6 @@ import { habitSchema as Habit } from "@web/generated/models/Habit";
 import { mantraSchema as Mantra } from "@web/generated/models/Mantra";
 import { notebookSchema as Notebook } from "@web/generated/models/Notebook";
 import { taskSchema as Task } from "@web/generated/models/Task";
-import { UserDocument } from "@web/generated/models/User/document";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/User/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
 import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
@@ -109,42 +108,38 @@ const userSchema = new mongoose.Schema<User>(
 
 userSchema.plugin(mongooseLeanVirtuals);
 
-userSchema.pre<UserDocument>("save", async function () {
-  console.log("Saving User", this);
-  await preSave(this);
+userSchema.pre<User>("save", async function () {
+  return Promise.resolve(preSave(this));
 });
 
-userSchema.post<UserDocument>("save", async function (document) {
-  console.log("Saved User", document);
+userSchema.post<User>("save", async function (document) {
   await postCreate(document);
 });
 
-userSchema.post<UserDocument>(
-  "findOneAndUpdate",
-  async function (_result: UserDocument | ModifyResult<UserDocument>) {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const query = this as unknown as UpdateQuery<UserDocument>;
-    const updatedFields = query.getUpdate().$set;
-    if ((_result as ModifyResult<UserDocument>).value) {
-      const result = _result as ModifyResult<UserDocument>;
-      const user = result.value;
-      if (user) {
-        if (!result.lastErrorObject?.updatedExisting) {
-          await postCreate(user);
-        } else {
-          await postUpdate(user, updatedFields);
-        }
+userSchema.post<User>("findOneAndUpdate", async function (_result: User | ModifyResult<User>) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const query = this as unknown as UpdateQuery<User>;
+  const updatedFields = query.getUpdate().$set;
+  if ((_result as ModifyResult<User>).value) {
+    const result = _result as ModifyResult<User>;
+    const user = result.value;
+    if (user) {
+      if (!result.lastErrorObject?.updatedExisting) {
+        await postCreate(user);
+      } else {
+        await postUpdate(user, updatedFields);
       }
-    } else {
-      const result = _result as UserDocument;
-      await postUpdate(result, updatedFields);
     }
+  } else {
+    const result = _result as User;
+    await postUpdate(result, updatedFields);
   }
-);
+});
 
 export { userSchema };
 
 // https://stackoverflow.com/questions/19051041/cannot-overwrite-model-once-compiled-mongoose
-export const UserModel = mongoose.models.User || mongoose.model<User>("User", userSchema);
+export const UserModel: mongoose.Model<User> =
+  mongoose.models.User || mongoose.model<User>("User", userSchema);
 
 export default UserModel;

@@ -4,10 +4,8 @@ import {
   NoteUpdateArgs,
   NoteUpsertionArgs,
 } from "@web/generated/graphql/args/note.args";
-import { Note } from "@web/generated/interfaces/Note";
 import NoteModel from "@web/generated/models/Note";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findNote = async ({ where }: FindUniqueNoteArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateNote = async ({ where, data }: NoteUpdateArgs) => {
 };
 
 export const upsertNote = async ({ where, data }: NoteUpsertionArgs) => {
+  const exists = await NoteModel.exists(where);
+  return exists ? updateNote({ where, data }) : createNote({ data });
+  /*
   const result: ModifyResult<Note> = await NoteModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertNote = async ({ where, data }: NoteUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

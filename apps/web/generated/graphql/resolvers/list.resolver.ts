@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/list.args";
 import List from "@web/generated/graphql/types/List";
 import ListModel from "@web/generated/models/List";
-import UserModel from "@web/generated/models/User";
 import {
   createList as _createList,
   findList as _findList,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => List, { isAbstract: true })
+@TypeGraphQL.Resolver(() => List)
 export class ListResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() list: List) {
@@ -54,12 +53,7 @@ export class ListResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: ListCreationArgs
   ) {
-    const list = await _createList(args);
-    if (list) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate({ _id: list.userId }, { $push: { lists: { ...list } } });
-    }
-    return list;
+    return await _createList(args);
   }
 
   /*

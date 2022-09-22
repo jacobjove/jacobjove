@@ -4,10 +4,8 @@ import {
   HabitUpdateArgs,
   HabitUpsertionArgs,
 } from "@web/generated/graphql/args/habit.args";
-import { Habit } from "@web/generated/interfaces/Habit";
 import HabitModel from "@web/generated/models/Habit";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findHabit = async ({ where }: FindUniqueHabitArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateHabit = async ({ where, data }: HabitUpdateArgs) => {
 };
 
 export const upsertHabit = async ({ where, data }: HabitUpsertionArgs) => {
+  const exists = await HabitModel.exists(where);
+  return exists ? updateHabit({ where, data }) : createHabit({ data });
+  /*
   const result: ModifyResult<Habit> = await HabitModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertHabit = async ({ where, data }: HabitUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

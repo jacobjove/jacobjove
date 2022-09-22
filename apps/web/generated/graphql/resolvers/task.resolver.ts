@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/task.args";
 import Task from "@web/generated/graphql/types/Task";
 import TaskModel from "@web/generated/models/Task";
-import UserModel from "@web/generated/models/User";
 import {
   createTask as _createTask,
   findTask as _findTask,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Task, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Task)
 export class TaskResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() task: Task) {
@@ -54,12 +53,7 @@ export class TaskResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: TaskCreationArgs
   ) {
-    const task = await _createTask(args);
-    if (task) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate({ _id: task.userId }, { $push: { tasks: { ...task } } });
-    }
-    return task;
+    return await _createTask(args);
   }
 
   /*

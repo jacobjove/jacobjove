@@ -11,7 +11,7 @@ export const DEFAULT_SCHEMA_OPTIONS = {
   minimize: false, // https://mongoosejs.com/docs/guide.html#minimize
 } as const;
 
-@ObjectType({ isAbstract: true })
+@ObjectType()
 export class Model {
   readonly __typename?: string;
 

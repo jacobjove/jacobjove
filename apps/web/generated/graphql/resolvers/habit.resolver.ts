@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/habit.args";
 import Habit from "@web/generated/graphql/types/Habit";
 import HabitModel from "@web/generated/models/Habit";
-import UserModel from "@web/generated/models/User";
 import {
   createHabit as _createHabit,
   findHabit as _findHabit,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Habit, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Habit)
 export class HabitResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() habit: Habit) {
@@ -54,12 +53,7 @@ export class HabitResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: HabitCreationArgs
   ) {
-    const habit = await _createHabit(args);
-    if (habit) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate({ _id: habit.userId }, { $push: { habits: { ...habit } } });
-    }
-    return habit;
+    return await _createHabit(args);
   }
 
   /*

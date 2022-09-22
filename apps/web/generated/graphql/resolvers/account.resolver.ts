@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/account.args";
 import Account from "@web/generated/graphql/types/Account";
 import AccountModel from "@web/generated/models/Account";
-import UserModel from "@web/generated/models/User";
 import {
   createAccount as _createAccount,
   findAccount as _findAccount,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Account, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Account)
 export class AccountResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() account: Account) {
@@ -54,15 +53,7 @@ export class AccountResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: AccountCreationArgs
   ) {
-    const account = await _createAccount(args);
-    if (account) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate(
-        { _id: account.userId },
-        { $push: { accounts: { ...account } } }
-      );
-    }
-    return account;
+    return await _createAccount(args);
   }
 
   /*

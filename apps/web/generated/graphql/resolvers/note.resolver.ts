@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/note.args";
 import Note from "@web/generated/graphql/types/Note";
 import NoteModel from "@web/generated/models/Note";
-import UserModel from "@web/generated/models/User";
 import {
   createNote as _createNote,
   findNote as _findNote,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Note, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Note)
 export class NoteResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() note: Note) {
@@ -54,12 +53,7 @@ export class NoteResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: NoteCreationArgs
   ) {
-    const note = await _createNote(args);
-    if (note) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate({ _id: note.userId }, { $push: { notes: { ...note } } });
-    }
-    return note;
+    return await _createNote(args);
   }
 
   /*

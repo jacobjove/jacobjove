@@ -9,28 +9,6 @@ export async function postCreate(_instance: unknown) {
   return _instance;
 }
 
-export async function postUpsert<T>(result: T) {
-  const rawResult = result as unknown as {
-    value: typeof result;
-    lastErrorObject: {
-      updatedExisting: boolean;
-    };
-  };
-  if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
-  return postCreate(rawResult.value);
-}
-
-// export async function postFindOneAndUpdate(result: unknown) {
-//   const rawResult = result as unknown as {
-//     value: typeof result;
-//     lastErrorObject: {
-//       updatedExisting: boolean;
-//     }
-//   };
-//   if (!rawResult.lastErrorObject || rawResult.lastErrorObject?.updatedExisting) return;
-//   postCreate(rawResult.value);
-// }
-
 type ModifiedFilter<T extends WhereUniqueInput> = Omit<T, "id"> & { _id?: ObjectId };
 
 export function convertFilterForMongo(filter: undefined): undefined;

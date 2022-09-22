@@ -4,10 +4,8 @@ import {
   ShelvingUpdateArgs,
   ShelvingUpsertionArgs,
 } from "@web/generated/graphql/args/shelving.args";
-import { Shelving } from "@web/generated/interfaces/Shelving";
 import ShelvingModel from "@web/generated/models/Shelving";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findShelving = async ({ where }: FindUniqueShelvingArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateShelving = async ({ where, data }: ShelvingUpdateArgs) => {
 };
 
 export const upsertShelving = async ({ where, data }: ShelvingUpsertionArgs) => {
+  const exists = await ShelvingModel.exists(where);
+  return exists ? updateShelving({ where, data }) : createShelving({ data });
+  /*
   const result: ModifyResult<Shelving> = await ShelvingModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertShelving = async ({ where, data }: ShelvingUpsertionArgs) => 
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

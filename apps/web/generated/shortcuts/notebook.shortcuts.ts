@@ -4,10 +4,8 @@ import {
   NotebookUpdateArgs,
   NotebookUpsertionArgs,
 } from "@web/generated/graphql/args/notebook.args";
-import { Notebook } from "@web/generated/interfaces/Notebook";
 import NotebookModel from "@web/generated/models/Notebook";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findNotebook = async ({ where }: FindUniqueNotebookArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateNotebook = async ({ where, data }: NotebookUpdateArgs) => {
 };
 
 export const upsertNotebook = async ({ where, data }: NotebookUpsertionArgs) => {
+  const exists = await NotebookModel.exists(where);
+  return exists ? updateNotebook({ where, data }) : createNotebook({ data });
+  /*
   const result: ModifyResult<Notebook> = await NotebookModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertNotebook = async ({ where, data }: NotebookUpsertionArgs) => 
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

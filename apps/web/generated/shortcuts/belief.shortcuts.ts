@@ -4,10 +4,8 @@ import {
   BeliefUpsertionArgs,
   FindUniqueBeliefArgs,
 } from "@web/generated/graphql/args/belief.args";
-import { Belief } from "@web/generated/interfaces/Belief";
 import BeliefModel from "@web/generated/models/Belief";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findBelief = async ({ where }: FindUniqueBeliefArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateBelief = async ({ where, data }: BeliefUpdateArgs) => {
 };
 
 export const upsertBelief = async ({ where, data }: BeliefUpsertionArgs) => {
+  const exists = await BeliefModel.exists(where);
+  return exists ? updateBelief({ where, data }) : createBelief({ data });
+  /*
   const result: ModifyResult<Belief> = await BeliefModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertBelief = async ({ where, data }: BeliefUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

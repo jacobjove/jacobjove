@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/identity.args";
 import Identity from "@web/generated/graphql/types/Identity";
 import IdentityModel from "@web/generated/models/Identity";
-import UserModel from "@web/generated/models/User";
 import {
   createIdentity as _createIdentity,
   findIdentity as _findIdentity,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Identity, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Identity)
 export class IdentityResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() identity: Identity) {
@@ -54,15 +53,7 @@ export class IdentityResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: IdentityCreationArgs
   ) {
-    const identity = await _createIdentity(args);
-    if (identity) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate(
-        { _id: identity.userId },
-        { $push: { identities: { ...identity } } }
-      );
-    }
-    return identity;
+    return await _createIdentity(args);
   }
 
   /*

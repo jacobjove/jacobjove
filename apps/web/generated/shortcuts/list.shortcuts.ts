@@ -4,10 +4,8 @@ import {
   ListUpdateArgs,
   ListUpsertionArgs,
 } from "@web/generated/graphql/args/list.args";
-import { List } from "@web/generated/interfaces/List";
 import ListModel from "@web/generated/models/List";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findList = async ({ where }: FindUniqueListArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateList = async ({ where, data }: ListUpdateArgs) => {
 };
 
 export const upsertList = async ({ where, data }: ListUpsertionArgs) => {
+  const exists = await ListModel.exists(where);
+  return exists ? updateList({ where, data }) : createList({ data });
+  /*
   const result: ModifyResult<List> = await ListModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertList = async ({ where, data }: ListUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

@@ -4,10 +4,8 @@ import {
   DashboardUpsertionArgs,
   FindUniqueDashboardArgs,
 } from "@web/generated/graphql/args/dashboard.args";
-import { Dashboard } from "@web/generated/interfaces/Dashboard";
 import DashboardModel from "@web/generated/models/Dashboard";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findDashboard = async ({ where }: FindUniqueDashboardArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateDashboard = async ({ where, data }: DashboardUpdateArgs) => {
 };
 
 export const upsertDashboard = async ({ where, data }: DashboardUpsertionArgs) => {
+  const exists = await DashboardModel.exists(where);
+  return exists ? updateDashboard({ where, data }) : createDashboard({ data });
+  /*
   const result: ModifyResult<Dashboard> = await DashboardModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertDashboard = async ({ where, data }: DashboardUpsertionArgs) =
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

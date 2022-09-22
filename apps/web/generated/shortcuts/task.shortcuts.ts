@@ -4,10 +4,8 @@ import {
   TaskUpdateArgs,
   TaskUpsertionArgs,
 } from "@web/generated/graphql/args/task.args";
-import { Task } from "@web/generated/interfaces/Task";
 import TaskModel from "@web/generated/models/Task";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findTask = async ({ where }: FindUniqueTaskArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateTask = async ({ where, data }: TaskUpdateArgs) => {
 };
 
 export const upsertTask = async ({ where, data }: TaskUpsertionArgs) => {
+  const exists = await TaskModel.exists(where);
+  return exists ? updateTask({ where, data }) : createTask({ data });
+  /*
   const result: ModifyResult<Task> = await TaskModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertTask = async ({ where, data }: TaskUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

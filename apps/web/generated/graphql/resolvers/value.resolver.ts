@@ -8,7 +8,6 @@ import {
   ValueUpsertionArgs,
 } from "@web/generated/graphql/args/value.args";
 import Value from "@web/generated/graphql/types/Value";
-import UserModel from "@web/generated/models/User";
 import ValueModel from "@web/generated/models/Value";
 import {
   createValue as _createValue,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Value, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Value)
 export class ValueResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() value: Value) {
@@ -54,12 +53,7 @@ export class ValueResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: ValueCreationArgs
   ) {
-    const value = await _createValue(args);
-    if (value) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate({ _id: value.userId }, { $push: { values: { ...value } } });
-    }
-    return value;
+    return await _createValue(args);
   }
 
   /*

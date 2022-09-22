@@ -4,10 +4,8 @@ import {
   IdentityUpdateArgs,
   IdentityUpsertionArgs,
 } from "@web/generated/graphql/args/identity.args";
-import { Identity } from "@web/generated/interfaces/Identity";
 import IdentityModel from "@web/generated/models/Identity";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findIdentity = async ({ where }: FindUniqueIdentityArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateIdentity = async ({ where, data }: IdentityUpdateArgs) => {
 };
 
 export const upsertIdentity = async ({ where, data }: IdentityUpsertionArgs) => {
+  const exists = await IdentityModel.exists(where);
+  return exists ? updateIdentity({ where, data }) : createIdentity({ data });
+  /*
   const result: ModifyResult<Identity> = await IdentityModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertIdentity = async ({ where, data }: IdentityUpsertionArgs) => 
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

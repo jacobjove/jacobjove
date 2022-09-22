@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/mantra.args";
 import Mantra from "@web/generated/graphql/types/Mantra";
 import MantraModel from "@web/generated/models/Mantra";
-import UserModel from "@web/generated/models/User";
 import {
   createMantra as _createMantra,
   findMantra as _findMantra,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Mantra, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Mantra)
 export class MantraResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() mantra: Mantra) {
@@ -54,15 +53,7 @@ export class MantraResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: MantraCreationArgs
   ) {
-    const mantra = await _createMantra(args);
-    if (mantra) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate(
-        { _id: mantra.userId },
-        { $push: { mantras: { ...mantra } } }
-      );
-    }
-    return mantra;
+    return await _createMantra(args);
   }
 
   /*

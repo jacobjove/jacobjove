@@ -4,7 +4,7 @@ unless_exists: true
 ---
 /* Edit this file to add a non-default post-save hook for the <%= Name %> type. */
 
-import <%= Name %>Document from "@web/generated/models/<%= Name %>/document";
+import <%= Name %>Document from "@web/generated/interfaces/<%= Name %>";
 
 export const postUpdate = async (<%= name %>: <%= Name %>Document, updatedFields: any) => {
   return <%= name %>;
