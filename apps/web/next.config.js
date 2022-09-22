@@ -95,7 +95,6 @@ const nextConfig = {
         // https://github.com/react-dnd/react-dnd/issues/3423
         // https://github.com/react-dnd/react-dnd/issues/3423#issuecomment-1092621793
         "react/jsx-runtime": "react/jsx-runtime.js",
-        "react-swipeable-views": "react-swipeable-views-react-18-fix",
         // 'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
       },
     };
