@@ -153,6 +153,7 @@
     "json5": "^2.2.1",
     "lint-staged": "^13.0.3",
     "nginx-linter": "^0.6.3",
+    "nginxbeautifier": "^1.0.19",
     "postcss": "^8.4.4",
     "prettier": "^2.4.1",
     "prettier-plugin-organize-imports": "^3.1.1",
@@ -180,6 +181,7 @@
       "prettier --write"
     ],
     "*.conf": [
+      "nginxbeautifier -s 4",
       "nginx-linter --include"
     ]
   },
