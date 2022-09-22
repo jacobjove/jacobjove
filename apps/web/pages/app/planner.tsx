@@ -67,6 +67,7 @@ const PlannerPage: NextPage<PageProps> = () => {
             width: "100%",
             maxWidth: "40rem",
             maxHeight: "100%",
+            flexBasis: "33%",
             ...(displaySideBySide
               ? {
                   flexBasis: "50%",

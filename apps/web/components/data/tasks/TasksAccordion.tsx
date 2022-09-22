@@ -184,6 +184,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
         flexDirection: "column",
         "& .MuiPaper-root": {
           margin: 0,
+          flexGrow: 1,
         },
       }}
     >
