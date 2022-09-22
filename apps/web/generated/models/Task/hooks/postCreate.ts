@@ -8,17 +8,11 @@ import { addMinutes } from "date-fns";
 import { HydratedDocument, Model } from "mongoose";
 
 export const postCreate = async (task: HydratedDocument<Task> | Task) => {
-  console.error("postCreate", task);
   const mongoose = await mongoosePromise;
   const UserModel = mongoose.model("User") as Model<User>;
   if (!task?.archivedAt) {
-    const user = await UserModel.findOneAndUpdate(
-      {
-        _id: task.userId,
-        "tasks._id": task._id,
-      },
-      { $set: { "users.$": { ...task } } }
-    );
+    // TODO
+    const user = await UserModel.findOneAndUpdate({ _id: task.userId }, { $push: { tasks: task } });
     if (user && task.plannedStartDate) {
       // const CalendarEventModel = mongoose.model("CalendarEvent") as Model<CalendarEvent>;
       const taskId = task._id.toHexString();
