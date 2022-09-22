@@ -11,7 +11,7 @@ import { notebookSchema as Notebook } from "@web/generated/models/Notebook";
 import { taskSchema as Task } from "@web/generated/models/Task";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/User/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const userSchema = new mongoose.Schema<User>(
@@ -108,7 +108,7 @@ const userSchema = new mongoose.Schema<User>(
 
 userSchema.plugin(mongooseLeanVirtuals);
 
-userSchema.pre<User>("save", async function () {
+userSchema.pre<HydratedDocument<User>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

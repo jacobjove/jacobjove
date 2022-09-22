@@ -3,7 +3,7 @@
 import { Value } from "@web/generated/interfaces/Value";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Value/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const valueSchema = new mongoose.Schema<Value>(
@@ -31,7 +31,7 @@ const valueSchema = new mongoose.Schema<Value>(
 
 valueSchema.plugin(mongooseLeanVirtuals);
 
-valueSchema.pre<Value>("save", async function () {
+valueSchema.pre<HydratedDocument<Value>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

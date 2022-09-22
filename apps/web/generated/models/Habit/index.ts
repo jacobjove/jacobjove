@@ -3,7 +3,7 @@
 import { Habit } from "@web/generated/interfaces/Habit";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Habit/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const habitSchema = new mongoose.Schema<Habit>(
@@ -47,7 +47,7 @@ const habitSchema = new mongoose.Schema<Habit>(
 
 habitSchema.plugin(mongooseLeanVirtuals);
 
-habitSchema.pre<Habit>("save", async function () {
+habitSchema.pre<HydratedDocument<Habit>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

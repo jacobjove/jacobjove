@@ -15,7 +15,7 @@ import { <%= h.changeCase.camel(model) %>Schema as <%= h.changeCase.pascal(model
 import { <%= h.changeCase.pascal(fieldName) %> } from './types';
 <% } -%>
 import { preSave, postCreate, postUpdate } from "@web/generated/models/<%= Name %>/hooks";
-import { ModifyResult, UpdateQuery } from "mongoose";
+import { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 
 const <%= name %>Schema = new mongoose.Schema<<%= Name %>>({
 <% for (var [fieldName, field] of Object.entries(fields)) { -%>
@@ -46,7 +46,7 @@ const <%= name %>Schema = new mongoose.Schema<<%= Name %>>({
 
 <%- name %>Schema.plugin(mongooseLeanVirtuals);
 
-<%= name %>Schema.pre<<%= Name %>>("save", async function () {
+<%= name %>Schema.pre<HydratedDocument<<%= Name %>>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

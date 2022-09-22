@@ -3,7 +3,7 @@
 import { Notebook } from "@web/generated/interfaces/Notebook";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Notebook/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const notebookSchema = new mongoose.Schema<Notebook>(
@@ -36,7 +36,7 @@ const notebookSchema = new mongoose.Schema<Notebook>(
 
 notebookSchema.plugin(mongooseLeanVirtuals);
 
-notebookSchema.pre<Notebook>("save", async function () {
+notebookSchema.pre<HydratedDocument<Notebook>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

@@ -3,7 +3,7 @@
 import { List } from "@web/generated/interfaces/List";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/List/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const listSchema = new mongoose.Schema<List>(
@@ -35,7 +35,7 @@ const listSchema = new mongoose.Schema<List>(
 
 listSchema.plugin(mongooseLeanVirtuals);
 
-listSchema.pre<List>("save", async function () {
+listSchema.pre<HydratedDocument<List>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

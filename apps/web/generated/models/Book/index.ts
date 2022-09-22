@@ -3,7 +3,7 @@
 import { Book } from "@web/generated/interfaces/Book";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Book/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const bookSchema = new mongoose.Schema<Book>(
@@ -61,7 +61,7 @@ const bookSchema = new mongoose.Schema<Book>(
 
 bookSchema.plugin(mongooseLeanVirtuals);
 
-bookSchema.pre<Book>("save", async function () {
+bookSchema.pre<HydratedDocument<Book>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

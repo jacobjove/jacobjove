@@ -3,7 +3,7 @@
 import { CalendarEvent } from "@web/generated/interfaces/CalendarEvent";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/CalendarEvent/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const calendarEventSchema = new mongoose.Schema<CalendarEvent>(
@@ -80,7 +80,7 @@ const calendarEventSchema = new mongoose.Schema<CalendarEvent>(
 
 calendarEventSchema.plugin(mongooseLeanVirtuals);
 
-calendarEventSchema.pre<CalendarEvent>("save", async function () {
+calendarEventSchema.pre<HydratedDocument<CalendarEvent>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

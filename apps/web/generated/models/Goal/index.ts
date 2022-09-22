@@ -3,7 +3,7 @@
 import { Goal } from "@web/generated/interfaces/Goal";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Goal/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const goalSchema = new mongoose.Schema<Goal>(
@@ -37,7 +37,7 @@ const goalSchema = new mongoose.Schema<Goal>(
 
 goalSchema.plugin(mongooseLeanVirtuals);
 
-goalSchema.pre<Goal>("save", async function () {
+goalSchema.pre<HydratedDocument<Goal>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

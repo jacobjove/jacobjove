@@ -3,7 +3,7 @@
 import { Account } from "@web/generated/interfaces/Account";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Account/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const accountSchema = new mongoose.Schema<Account>(
@@ -58,7 +58,7 @@ const accountSchema = new mongoose.Schema<Account>(
 
 accountSchema.plugin(mongooseLeanVirtuals);
 
-accountSchema.pre<Account>("save", async function () {
+accountSchema.pre<HydratedDocument<Account>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

@@ -3,7 +3,7 @@
 import { Calendar } from "@web/generated/interfaces/Calendar";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Calendar/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const calendarSchema = new mongoose.Schema<Calendar>(
@@ -70,7 +70,7 @@ const calendarSchema = new mongoose.Schema<Calendar>(
 
 calendarSchema.plugin(mongooseLeanVirtuals);
 
-calendarSchema.pre<Calendar>("save", async function () {
+calendarSchema.pre<HydratedDocument<Calendar>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

@@ -3,7 +3,7 @@
 import { Note } from "@web/generated/interfaces/Note";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Note/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const noteSchema = new mongoose.Schema<Note>(
@@ -41,7 +41,7 @@ const noteSchema = new mongoose.Schema<Note>(
 
 noteSchema.plugin(mongooseLeanVirtuals);
 
-noteSchema.pre<Note>("save", async function () {
+noteSchema.pre<HydratedDocument<Note>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

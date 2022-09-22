@@ -3,7 +3,7 @@
 import { Mantra } from "@web/generated/interfaces/Mantra";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Mantra/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const mantraSchema = new mongoose.Schema<Mantra>(
@@ -25,7 +25,7 @@ const mantraSchema = new mongoose.Schema<Mantra>(
 
 mantraSchema.plugin(mongooseLeanVirtuals);
 
-mantraSchema.pre<Mantra>("save", async function () {
+mantraSchema.pre<HydratedDocument<Mantra>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

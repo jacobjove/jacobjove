@@ -3,7 +3,7 @@
 import { Task } from "@web/generated/interfaces/Task";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Task/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const taskSchema = new mongoose.Schema<Task>(
@@ -67,7 +67,7 @@ const taskSchema = new mongoose.Schema<Task>(
 
 taskSchema.plugin(mongooseLeanVirtuals);
 
-taskSchema.pre<Task>("save", async function () {
+taskSchema.pre<HydratedDocument<Task>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

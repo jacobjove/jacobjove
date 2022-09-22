@@ -3,7 +3,7 @@
 import { Dashboard } from "@web/generated/interfaces/Dashboard";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Dashboard/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const dashboardSchema = new mongoose.Schema<Dashboard>(
@@ -41,7 +41,7 @@ const dashboardSchema = new mongoose.Schema<Dashboard>(
 
 dashboardSchema.plugin(mongooseLeanVirtuals);
 
-dashboardSchema.pre<Dashboard>("save", async function () {
+dashboardSchema.pre<HydratedDocument<Dashboard>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

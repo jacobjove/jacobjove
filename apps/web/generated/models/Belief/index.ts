@@ -3,7 +3,7 @@
 import { Belief } from "@web/generated/interfaces/Belief";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Belief/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const beliefSchema = new mongoose.Schema<Belief>(
@@ -31,7 +31,7 @@ const beliefSchema = new mongoose.Schema<Belief>(
 
 beliefSchema.plugin(mongooseLeanVirtuals);
 
-beliefSchema.pre<Belief>("save", async function () {
+beliefSchema.pre<HydratedDocument<Belief>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

@@ -3,7 +3,7 @@
 import { Identity } from "@web/generated/interfaces/Identity";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Identity/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const identitySchema = new mongoose.Schema<Identity>(
@@ -31,7 +31,7 @@ const identitySchema = new mongoose.Schema<Identity>(
 
 identitySchema.plugin(mongooseLeanVirtuals);
 
-identitySchema.pre<Identity>("save", async function () {
+identitySchema.pre<HydratedDocument<Identity>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 

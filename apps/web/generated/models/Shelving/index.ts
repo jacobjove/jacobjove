@@ -3,7 +3,7 @@
 import { Shelving } from "@web/generated/interfaces/Shelving";
 import { postCreate, postUpdate, preSave } from "@web/generated/models/Shelving/hooks";
 import { DEFAULT_SCHEMA_OPTIONS } from "@web/graphql/schema/types";
-import mongoose, { ModifyResult, UpdateQuery } from "mongoose";
+import mongoose, { HydratedDocument, ModifyResult, UpdateQuery } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 const shelvingSchema = new mongoose.Schema<Shelving>(
@@ -35,7 +35,7 @@ const shelvingSchema = new mongoose.Schema<Shelving>(
 
 shelvingSchema.plugin(mongooseLeanVirtuals);
 
-shelvingSchema.pre<Shelving>("save", async function () {
+shelvingSchema.pre<HydratedDocument<Shelving>>("save", async function () {
   return Promise.resolve(preSave(this));
 });
 
