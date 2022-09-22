@@ -5,9 +5,11 @@
 /_
 service-account.json
 
+# workbox
 **/public/workbox-*.js*
 **/public/sw.js*
 **/public/worker-*.js
+**/public/fallback-*.js
 
 # compiled output
 /dist
