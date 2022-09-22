@@ -13,6 +13,7 @@ import fields from "@web/generated/graphql/fields/<%= name %>.fields";
 
 export interface <%= Name %>CreationDialogProps extends ReturnType<typeof bindDialog> {
   close: () => void;
+  children?: React.ReactNode;
 }
 
 export default function <%= Name %>CreationDialog(props: <%= Name %>CreationDialogProps) {
