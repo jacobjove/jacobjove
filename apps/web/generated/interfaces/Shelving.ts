@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Shelving {
   _id: mongoose.Types.ObjectId;
+  id: string;
   bookId: mongoose.Types.ObjectId;
   shelfId: mongoose.Types.ObjectId;
   position: number;

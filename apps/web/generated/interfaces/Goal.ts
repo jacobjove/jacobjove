@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Goal {
   _id: mongoose.Types.ObjectId;
+  id: string;
   userId: mongoose.Types.ObjectId;
   habitId?: mongoose.Types.ObjectId | null;
   parentId?: mongoose.Types.ObjectId | null;

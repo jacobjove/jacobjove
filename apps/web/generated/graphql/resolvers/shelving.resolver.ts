@@ -21,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Shelving, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Shelving)
 export class ShelvingResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() shelving: Shelving) {
@@ -53,8 +53,7 @@ export class ShelvingResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: ShelvingCreationArgs
   ) {
-    const shelving = await _createShelving(args);
-    return shelving;
+    return await _createShelving(args);
   }
 
   /*

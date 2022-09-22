@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface CalendarEvent {
   _id: mongoose.Types.ObjectId;
+  id: string;
   userId: mongoose.Types.ObjectId;
   calendarId: mongoose.Types.ObjectId;
   remoteId?: string | null;

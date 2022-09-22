@@ -4,10 +4,8 @@ import {
   AccountUpsertionArgs,
   FindUniqueAccountArgs,
 } from "@web/generated/graphql/args/account.args";
-import { Account } from "@web/generated/interfaces/Account";
 import AccountModel from "@web/generated/models/Account";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findAccount = async ({ where }: FindUniqueAccountArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateAccount = async ({ where, data }: AccountUpdateArgs) => {
 };
 
 export const upsertAccount = async ({ where, data }: AccountUpsertionArgs) => {
+  const exists = await AccountModel.exists(where);
+  return exists ? updateAccount({ where, data }) : createAccount({ data });
+  /*
   const result: ModifyResult<Account> = await AccountModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertAccount = async ({ where, data }: AccountUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

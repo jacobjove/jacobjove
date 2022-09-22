@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Account {
   _id: mongoose.Types.ObjectId;
+  id: string;
   userId: mongoose.Types.ObjectId;
   provider: string;
   remoteId: string;

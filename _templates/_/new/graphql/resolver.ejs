@@ -34,7 +34,7 @@ import {
 import UserModel from "@web/generated/models/User";
 <% } -%>
 
-@TypeGraphQL.Resolver(() => <%= Name %>, { isAbstract: true })
+@TypeGraphQL.Resolver(() => <%= Name %>, )
 export class <%= Name %>Resolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() <%= name %>: <%= Name %>) {
@@ -66,17 +66,7 @@ export class <%= Name %>Resolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: <%= Name %>CreationArgs
   ) {
-    const <%= name %> = await _create<%= Name %>(args);
-<% if (Object.keys(fields).includes("userId")) { -%>
-    if (<%= name %>) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate(
-        { _id: <%= name %>.userId },
-        { $push: { <%= names %>: { ...<%= name %> } } },
-      );
-    }
-<% } -%>
-    return <%= name %>;
+    return await _create<%= Name %>(args);
   }
 
   /*

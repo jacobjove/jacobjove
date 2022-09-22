@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/calendarEvent.args";
 import CalendarEvent from "@web/generated/graphql/types/CalendarEvent";
 import CalendarEventModel from "@web/generated/models/CalendarEvent";
-import UserModel from "@web/generated/models/User";
 import {
   createCalendarEvent as _createCalendarEvent,
   findCalendarEvent as _findCalendarEvent,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => CalendarEvent, { isAbstract: true })
+@TypeGraphQL.Resolver(() => CalendarEvent)
 export class CalendarEventResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() calendarEvent: CalendarEvent) {
@@ -54,15 +53,7 @@ export class CalendarEventResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: CalendarEventCreationArgs
   ) {
-    const calendarEvent = await _createCalendarEvent(args);
-    if (calendarEvent) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate(
-        { _id: calendarEvent.userId },
-        { $push: { calendarEvents: { ...calendarEvent } } }
-      );
-    }
-    return calendarEvent;
+    return await _createCalendarEvent(args);
   }
 
   /*

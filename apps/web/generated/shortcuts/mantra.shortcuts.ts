@@ -4,10 +4,8 @@ import {
   MantraUpdateArgs,
   MantraUpsertionArgs,
 } from "@web/generated/graphql/args/mantra.args";
-import { Mantra } from "@web/generated/interfaces/Mantra";
 import MantraModel from "@web/generated/models/Mantra";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findMantra = async ({ where }: FindUniqueMantraArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateMantra = async ({ where, data }: MantraUpdateArgs) => {
 };
 
 export const upsertMantra = async ({ where, data }: MantraUpsertionArgs) => {
+  const exists = await MantraModel.exists(where);
+  return exists ? updateMantra({ where, data }) : createMantra({ data });
+  /*
   const result: ModifyResult<Mantra> = await MantraModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertMantra = async ({ where, data }: MantraUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

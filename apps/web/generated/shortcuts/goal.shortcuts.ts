@@ -4,10 +4,8 @@ import {
   GoalUpdateArgs,
   GoalUpsertionArgs,
 } from "@web/generated/graphql/args/goal.args";
-import { Goal } from "@web/generated/interfaces/Goal";
 import GoalModel from "@web/generated/models/Goal";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findGoal = async ({ where }: FindUniqueGoalArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateGoal = async ({ where, data }: GoalUpdateArgs) => {
 };
 
 export const upsertGoal = async ({ where, data }: GoalUpsertionArgs) => {
+  const exists = await GoalModel.exists(where);
+  return exists ? updateGoal({ where, data }) : createGoal({ data });
+  /*
   const result: ModifyResult<Goal> = await GoalModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertGoal = async ({ where, data }: GoalUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

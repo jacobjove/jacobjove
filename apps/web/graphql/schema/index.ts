@@ -5,7 +5,7 @@ import "@abraham/reflection";
 
 import { buildSchema, NonEmptyArray, MiddlewareFn } from "type-graphql-v2-fork";
 import { Model } from "mongoose";
-import * as resolvers from "@web/graphql/schema/resolvers";
+import * as resolvers from "@web/generated/graphql/resolvers";
 
 const IS_DEV = process.env.NODE_ENV === "development";
 

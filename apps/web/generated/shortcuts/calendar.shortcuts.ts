@@ -4,10 +4,8 @@ import {
   CalendarUpsertionArgs,
   FindUniqueCalendarArgs,
 } from "@web/generated/graphql/args/calendar.args";
-import { Calendar } from "@web/generated/interfaces/Calendar";
 import CalendarModel from "@web/generated/models/Calendar";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findCalendar = async ({ where }: FindUniqueCalendarArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateCalendar = async ({ where, data }: CalendarUpdateArgs) => {
 };
 
 export const upsertCalendar = async ({ where, data }: CalendarUpsertionArgs) => {
+  const exists = await CalendarModel.exists(where);
+  return exists ? updateCalendar({ where, data }) : createCalendar({ data });
+  /*
   const result: ModifyResult<Calendar> = await CalendarModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertCalendar = async ({ where, data }: CalendarUpsertionArgs) => 
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

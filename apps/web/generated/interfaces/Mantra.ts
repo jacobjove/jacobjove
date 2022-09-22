@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Mantra {
   _id: mongoose.Types.ObjectId;
+  id: string;
   userId: mongoose.Types.ObjectId;
   content: string;
   createdAt: Date;

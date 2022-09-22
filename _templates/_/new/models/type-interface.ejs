@@ -16,6 +16,7 @@ import { <%= h.changeCase.pascal(fieldName) %> } from '@web/generated/models/<%=
 
 export interface <%= Name %> {
   _id: mongoose.Types.ObjectId;
+  id: string;
 <% for (var [fieldName, field] of Object.entries(fields)) { -%>
 <% var useModelType = modelImports.includes(`${field.type}`) || modelImports.includes(`${field.typeArg}`); -%>
 <% var nonNullable = field.required || (typeof field.default !== "undefined" && field.nullable === false); -%>

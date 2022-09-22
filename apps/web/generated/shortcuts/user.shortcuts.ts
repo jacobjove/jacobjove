@@ -4,10 +4,8 @@ import {
   UserUpdateArgs,
   UserUpsertionArgs,
 } from "@web/generated/graphql/args/user.args";
-import { User } from "@web/generated/interfaces/User";
 import UserModel from "@web/generated/models/User";
 import { convertFilterForMongo } from "@web/graphql/schema/helpers";
-import { ModifyResult } from "mongoose";
 
 export const findUser = async ({ where }: FindUniqueUserArgs) => {
   const filter = convertFilterForMongo(where);
@@ -26,6 +24,9 @@ export const updateUser = async ({ where, data }: UserUpdateArgs) => {
 };
 
 export const upsertUser = async ({ where, data }: UserUpsertionArgs) => {
+  const exists = await UserModel.exists(where);
+  return exists ? updateUser({ where, data }) : createUser({ data });
+  /*
   const result: ModifyResult<User> = await UserModel.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -39,4 +40,5 @@ export const upsertUser = async ({ where, data }: UserUpsertionArgs) => {
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 };

@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/goal.args";
 import Goal from "@web/generated/graphql/types/Goal";
 import GoalModel from "@web/generated/models/Goal";
-import UserModel from "@web/generated/models/User";
 import {
   createGoal as _createGoal,
   findGoal as _findGoal,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Goal, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Goal)
 export class GoalResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() goal: Goal) {
@@ -54,12 +53,7 @@ export class GoalResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: GoalCreationArgs
   ) {
-    const goal = await _createGoal(args);
-    if (goal) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate({ _id: goal.userId }, { $push: { goals: { ...goal } } });
-    }
-    return goal;
+    return await _createGoal(args);
   }
 
   /*

@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Note {
   _id: mongoose.Types.ObjectId;
+  id: string;
   userId: mongoose.Types.ObjectId;
   notebookId: mongoose.Types.ObjectId;
   title: string;

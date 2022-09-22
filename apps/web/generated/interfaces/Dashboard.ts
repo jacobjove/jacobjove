@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Dashboard {
   _id: mongoose.Types.ObjectId;
+  id: string;
   userId: mongoose.Types.ObjectId;
   name: string;
   description?: string | null;

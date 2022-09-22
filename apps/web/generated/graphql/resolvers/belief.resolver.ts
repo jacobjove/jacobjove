@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/belief.args";
 import Belief from "@web/generated/graphql/types/Belief";
 import BeliefModel from "@web/generated/models/Belief";
-import UserModel from "@web/generated/models/User";
 import {
   createBelief as _createBelief,
   findBelief as _findBelief,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Belief, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Belief)
 export class BeliefResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() belief: Belief) {
@@ -54,15 +53,7 @@ export class BeliefResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: BeliefCreationArgs
   ) {
-    const belief = await _createBelief(args);
-    if (belief) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate(
-        { _id: belief.userId },
-        { $push: { beliefs: { ...belief } } }
-      );
-    }
-    return belief;
+    return await _createBelief(args);
   }
 
   /*

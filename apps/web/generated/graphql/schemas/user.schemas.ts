@@ -16,7 +16,7 @@ export const settingsSchema = object({
   defaultCalendarId: string()
     .required()
     .default(() => {
-      return "632b7a3d7fa5e5e6b0e21d33";
+      return "632bf3598425d5c4ca10f457";
     }),
 });
 

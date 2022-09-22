@@ -31,6 +31,9 @@ export const update<%= Name %> = async ({ where, data }: <%= Name %>UpdateArgs) 
 }
 
 export const upsert<%= Name %> = async ({ where, data }: <%= Name %>UpsertionArgs) => {
+  const exists = await <%= Name %>Model.exists(where);
+  return exists ? update<%= Name %>({ where, data }) : create<%= Name %>({ data });
+  /*
   const result: ModifyResult<<%= Name %>> = await <%= Name %>Model.findOneAndUpdate(
     convertFilterForMongo(where),
     data,
@@ -44,4 +47,5 @@ export const upsert<%= Name %> = async ({ where, data }: <%= Name %>UpsertionArg
     }
   ).lean({ virtuals: true });
   return result.value;
+  */
 }

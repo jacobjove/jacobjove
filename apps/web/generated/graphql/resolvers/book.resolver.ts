@@ -21,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Book, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Book)
 export class BookResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() book: Book) {
@@ -53,8 +53,7 @@ export class BookResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: BookCreationArgs
   ) {
-    const book = await _createBook(args);
-    return book;
+    return await _createBook(args);
   }
 
   /*

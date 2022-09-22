@@ -15,6 +15,7 @@ import mongoose from "mongoose";
 
 export interface User {
   _id: mongoose.Types.ObjectId;
+  id: string;
   name?: string | null;
   email: string;
   emailVerified?: boolean | null;

@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Book {
   _id: mongoose.Types.ObjectId;
+  id: string;
   isbn?: string | null;
   isbn13?: string | null;
   title: string;

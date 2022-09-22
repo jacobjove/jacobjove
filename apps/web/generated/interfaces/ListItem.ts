@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface ListItem {
   _id: mongoose.Types.ObjectId;
+  id: string;
   userId: mongoose.Types.ObjectId;
   listId: mongoose.Types.ObjectId;
   data: Record<string, unknown>;

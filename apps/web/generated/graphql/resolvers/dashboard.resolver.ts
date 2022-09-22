@@ -9,7 +9,6 @@ import {
 } from "@web/generated/graphql/args/dashboard.args";
 import Dashboard from "@web/generated/graphql/types/Dashboard";
 import DashboardModel from "@web/generated/models/Dashboard";
-import UserModel from "@web/generated/models/User";
 import {
   createDashboard as _createDashboard,
   findDashboard as _findDashboard,
@@ -22,7 +21,7 @@ import { ObjectIdScalar } from "@web/graphql/schema/scalars";
 import type { GraphQLResolveInfo } from "graphql";
 import * as TypeGraphQL from "type-graphql-v2-fork";
 
-@TypeGraphQL.Resolver(() => Dashboard, { isAbstract: true })
+@TypeGraphQL.Resolver(() => Dashboard)
 export class DashboardResolver {
   @TypeGraphQL.FieldResolver(() => ObjectIdScalar)
   id(@TypeGraphQL.Root() dashboard: Dashboard) {
@@ -54,15 +53,7 @@ export class DashboardResolver {
     @TypeGraphQL.Info() _info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: DashboardCreationArgs
   ) {
-    const dashboard = await _createDashboard(args);
-    if (dashboard) {
-      // NOTE: This update fails if it's not awaited.
-      await UserModel.findOneAndUpdate(
-        { _id: dashboard.userId },
-        { $push: { dashboards: { ...dashboard } } }
-      );
-    }
-    return dashboard;
+    return await _createDashboard(args);
   }
 
   /*

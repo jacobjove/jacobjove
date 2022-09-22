@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export interface Task {
   _id: mongoose.Types.ObjectId;
+  id: string;
   title: string;
   description?: string | null;
   plannedStartDate?: Date | null;
