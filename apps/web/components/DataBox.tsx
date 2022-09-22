@@ -9,7 +9,7 @@ export interface DataBoxProps {
   title: string;
   displayTitle?: boolean;
   includeAddButton?: boolean;
-  onClickAddItem?: (event: MouseEvent<any, any>) => void;
+  onClickAddItem?: (event: MouseEvent<unknown>) => void;
   children: ReactNode;
 }
 
