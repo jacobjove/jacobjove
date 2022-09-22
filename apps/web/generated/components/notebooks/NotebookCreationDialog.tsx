@@ -8,6 +8,7 @@ import { bindDialog } from "material-ui-popup-state/hooks";
 
 export interface NotebookCreationDialogProps extends ReturnType<typeof bindDialog> {
   close: () => void;
+  children?: React.ReactNode;
 }
 
 export default function NotebookCreationDialog(props: NotebookCreationDialogProps) {

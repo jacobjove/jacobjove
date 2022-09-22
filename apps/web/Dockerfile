@@ -75,7 +75,9 @@ WORKDIR /app
 
 COPY --from=builder --chown=www-data:www-data /root/apps/web/.next/standalone .
 COPY --from=builder --chown=www-data:www-data /root/apps/web/.next/static /app/.next/static
-COPY --chown=www-data:www-data apps/web/public /app/public
+# Note: The public dir also must be copied from the builder rather than from the host,
+# since the service worker files from next-pwa are generated during the build.
+COPY --from=builder --chown=www-data:www-data /root/apps/web/public /app/public
 
 # Remove dotenv file from image.
 RUN rm .env
