@@ -1,8 +1,11 @@
+import { PaletteMode } from "@mui/material";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
 import Paper from "@mui/material/Paper";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,36 +15,45 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppLayout from "@web/components/AppLayout";
+import ColorModeContext from "@web/components/contexts/ColorModeContext";
 import { useUser } from "@web/components/contexts/UserContext";
 import { getOptimisticResponseForUserUpdate } from "@web/generated/graphql/mutations/user.mutations";
 import { useUpdateUser } from "@web/generated/hooks/user.hooks";
 import { Settings } from "@web/generated/models/User/types";
+import { PageProps } from "@web/types/page";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth, Session } from "next-auth";
+import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
-
-interface SettingsPageProps {
-  session: Session | null;
-}
+import { ChangeEvent, useContext, useEffect, useReducer } from "react";
 
 interface SettingOptions {
   label: string;
   defaultValue: string;
   choices?: string[];
+  onChange?: (value: string) => void;
 }
 
-const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) => {
+export function settingsReducer(state: Settings, payload: Partial<Settings>) {
+  return { ...state, ...payload };
+}
+
+const SettingsPage: NextPage<PageProps> = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const { user } = useUser();
+  const { user, loading: loadingUser } = useUser();
+  const [, setColorMode] = useContext(ColorModeContext);
   const [updateUser, { loading: loadingUpdateSetting }] = useUpdateUser();
   const loading = loadingUpdateSetting;
-  const userSettings: Settings | undefined = user?.settings;
+  const [userSettings, dispatchUserSettings] = useReducer(
+    settingsReducer,
+    user?.settings ?? ({} as Settings)
+  );
   const settings: Record<keyof Settings, SettingOptions> = {
     colorMode: {
       label: "Color mode",
       defaultValue: "light",
       choices: ["light", "dark"],
+      onChange: (value) => setColorMode(value as PaletteMode), // TODO
     },
     defaultCalendarId: {
       label: "Default calendar",
@@ -51,12 +63,10 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
   };
   const handleSettingChange = (settingName: string, newValue: string) => {
     if (!user || !userSettings) return;
-    const newSettings = {
-      ...userSettings,
-      [settingName]: newValue,
-    };
+    const newSettings = { ...userSettings, [settingName]: newValue };
     const data = { settings: newSettings };
     const optimisticResponse = getOptimisticResponseForUserUpdate(user, data);
+    dispatchUserSettings({ [settingName]: newValue });
     updateUser.current?.({
       variables: {
         where: { id: user.id },
@@ -65,7 +75,10 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
       optimisticResponse,
     });
   };
-  if (!user || !userSettings) return null;
+  useEffect(() => {
+    if (!user) return;
+    dispatchUserSettings(user.settings);
+  }, [user]);
   return (
     <AppLayout>
       <NextSeo
@@ -93,72 +106,91 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
             maxHeight: "100%",
           }}
         >
-          <form>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell component="th" scope="column" sx={{ width: "10rem" }}>
-                    <Typography variant="h4">{"Setting"}</Typography>
-                  </TableCell>
-                  <TableCell component="th" scope="column">
-                    <Typography variant="h4">{"Value"}</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Object.keys(settings).map((key) => {
-                  const fieldName = key as keyof Settings;
-                  const { label, defaultValue, choices } = settings[fieldName];
-                  const currentValue = userSettings[fieldName] ?? defaultValue;
-                  return (
-                    <TableRow key={fieldName}>
-                      <TableCell component="th" scope="row">
-                        {label}
-                      </TableCell>
-                      <TableCell>
-                        {choices ? (
-                          isMobile ? (
-                            <NativeSelect
-                              defaultValue={currentValue}
-                              disabled={loading}
-                              inputProps={{
-                                name: "dashboard",
-                                id: "uncontrolled-dashboard",
-                              }}
-                              onChange={(e) => handleSettingChange(fieldName, e.target.value)}
-                            >
-                              {choices.map((choice) => (
-                                <option key={choice} value={choice}>
-                                  {choice}
-                                </option>
-                              ))}
-                            </NativeSelect>
+          {loadingUser ? (
+            <Stack spacing={1} paddingTop={1}>
+              {Array.from({ length: Object.keys(settings).length + 1 }, (_, i) => i).map((_, i) => (
+                <Skeleton key={i} variant="rectangular" height={"3.3rem"} />
+              ))}
+            </Stack>
+          ) : (
+            <form>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell component="th" scope="column" sx={{ width: "10rem" }}>
+                      <Typography variant="h4">{"Setting"}</Typography>
+                    </TableCell>
+                    <TableCell component="th" scope="column">
+                      <Typography variant="h4">{"Value"}</Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {Object.keys(settings).map((key) => {
+                    const fieldName = key as keyof Settings;
+                    const {
+                      label,
+                      defaultValue,
+                      choices,
+                      onChange: _onChange,
+                    } = settings[fieldName];
+                    const currentValue = userSettings[fieldName] ?? defaultValue;
+                    const onChange = (
+                      e: ChangeEvent<HTMLSelectElement> | SelectChangeEvent<string>
+                    ) => {
+                      _onChange?.(e.target.value);
+                      handleSettingChange(fieldName, e.target.value);
+                    };
+                    return (
+                      <TableRow key={fieldName}>
+                        <TableCell component="th" scope="row">
+                          {label}
+                        </TableCell>
+                        <TableCell>
+                          {choices ? (
+                            isMobile ? (
+                              <NativeSelect
+                                defaultValue={currentValue}
+                                disabled={loading}
+                                inputProps={{
+                                  name: "dashboard",
+                                  id: "uncontrolled-dashboard",
+                                }}
+                                onChange={onChange}
+                              >
+                                {choices.map((choice) => (
+                                  <option key={choice} value={choice}>
+                                    {choice}
+                                  </option>
+                                ))}
+                              </NativeSelect>
+                            ) : (
+                              <Select
+                                value={currentValue}
+                                disabled={loading}
+                                SelectDisplayProps={{
+                                  style: { paddingTop: "0.4rem", paddingBottom: "0.4rem" },
+                                }}
+                                onChange={onChange}
+                              >
+                                {choices.map((choice) => (
+                                  <MenuItem key={choice} value={choice}>
+                                    {choice}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            )
                           ) : (
-                            <Select
-                              value={currentValue}
-                              disabled={loading}
-                              SelectDisplayProps={{
-                                style: { paddingTop: "0.4rem", paddingBottom: "0.4rem" },
-                              }}
-                              onChange={(e) => handleSettingChange(fieldName, e.target.value)}
-                            >
-                              {choices.map((choice) => (
-                                <MenuItem key={choice} value={choice}>
-                                  {choice}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          )
-                        ) : (
-                          userSettings[fieldName] ?? defaultValue
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </form>
+                            userSettings[fieldName] ?? defaultValue
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </form>
+          )}
         </TableContainer>
       </Container>
     </AppLayout>

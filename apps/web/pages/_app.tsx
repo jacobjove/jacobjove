@@ -1,14 +1,13 @@
 import { ApolloProvider } from "@apollo/client";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ColorModeContextProvider } from "@web/components/contexts/ColorModeContext";
+import { CookieContextProvider } from "@web/components/contexts/CookieContext";
 import { DateContextProvider } from "@web/components/contexts/DateContext";
-import DeviceContext, { DeviceContextData } from "@web/components/contexts/DeviceContext";
-import { NewCalendarEventDialogContextProvider } from "@web/components/contexts/NewCalendarEventDialogContext";
+import { DeviceContextProvider } from "@web/components/contexts/DeviceContext";
+import { DndProvider } from "@web/components/contexts/DndContext";
 import { PageTransitionContextProvider } from "@web/components/contexts/PageTransitionContext";
 import { UserContextProvider } from "@web/components/contexts/UserContext";
 import { useApollo } from "@web/lib/apollo";
@@ -16,18 +15,13 @@ import SEO from "@web/next-seo.config";
 import "@web/public/styles/global.css";
 import { PageProps } from "@web/types/page";
 import { createEmotionCache } from "@web/utils/emotion";
-import { setCookie } from "cookies-next";
 import { NextPage } from "next";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
-import { FC, ReactElement, useEffect, useReducer } from "react";
-import { getSelectorsByUserAgent } from "react-device-detect";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { TouchBackend } from "react-dnd-touch-backend";
+import { FC, ReactElement, useEffect } from "react";
 import "react-grid-layout/css/styles.css"; // TODO
 import "react-resizable/css/styles.css"; // TODO
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
@@ -54,79 +48,24 @@ interface CustomAppProps extends AppProps<PageProps> {
   emotionCache?: EmotionCache;
 }
 
-const DEVICE_CONTEXT_COOKIE_NAME = "device-context";
-
-export function deviceDataReducer(state: DeviceContextData, payload: Partial<DeviceContextData>) {
-  if (payload.field === "init") return payload as DeviceContextData;
-  return { ...state, ...payload };
-}
-
 function App({
   Component: Page,
   emotionCache = clientSideEmotionCache,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, cookies = {}, ...pageProps },
 }: CustomAppProps) {
   const apolloClient = useApollo(pageProps);
-
-  const serverSideCookies = pageProps.cookies ?? {};
-
-  const theme = useTheme();
-  const xs = useMediaQuery(theme.breakpoints.down("sm"));
-  const sm = useMediaQuery(theme.breakpoints.up("sm"));
-  const md = useMediaQuery(theme.breakpoints.up("md"));
-  const lg = useMediaQuery(theme.breakpoints.up("lg"));
-  const xl = useMediaQuery(theme.breakpoints.up("xl"));
-
-  const [deviceData, dispatchDeviceData] = useReducer(
-    deviceDataReducer,
-    serverSideCookies[DEVICE_CONTEXT_COOKIE_NAME]
-      ? JSON.parse(serverSideCookies[DEVICE_CONTEXT_COOKIE_NAME])
-      : ({} as DeviceContextData)
-  );
-
-  useEffect(() => {
-    const handleOrientationChange = function (e: Event) {
-      const newOrientation = window.screen.orientation?.type;
-      if (newOrientation) {
-        dispatchDeviceData({ isLandscape: newOrientation.toString().includes("landscape") });
-      } else {
-        console.error("Could not determine orientation:", newOrientation, e);
-      }
-    };
-    if (typeof window !== "undefined") {
-      window.addEventListener("orientationchange", handleOrientationChange);
-    }
-    return function cleanup() {
-      window?.removeEventListener("orientationchange", handleOrientationChange);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && navigator.userAgent) {
-      const selectorsFromUserAgent = getSelectorsByUserAgent(navigator.userAgent);
-      const deviceContextData = {
-        ...selectorsFromUserAgent,
-        width: xl ? "xl" : lg ? "lg" : md ? "md" : sm ? "sm" : "xs",
-      };
-      dispatchDeviceData(deviceContextData);
-      setCookie(DEVICE_CONTEXT_COOKIE_NAME, JSON.stringify(deviceContextData));
-    }
-  }, [xl, lg, md, sm, xs]);
 
   return (
     <SessionProvider {...(session && { session })}>
       <ApolloProvider client={apolloClient}>
         <UserContextProvider>
-          <NewCalendarEventDialogContextProvider>
-            <DeviceContext.Provider value={deviceData}>
+          <CookieContextProvider value={cookies}>
+            <DeviceContextProvider>
               <CacheProvider value={emotionCache}>
                 <ColorModeContextProvider>
                   <PageTransitionContextProvider>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <DndProvider
-                        backend={deviceData.isMobile ? TouchBackend : HTML5Backend}
-                        options={deviceData.isMobile ? { delayTouchStart: 200 } : {}}
-                      >
+                      <DndProvider>
                         <DateContextProvider>
                           <CssBaseline />
                           <Head>
@@ -153,8 +92,8 @@ function App({
                   </PageTransitionContextProvider>
                 </ColorModeContextProvider>
               </CacheProvider>
-            </DeviceContext.Provider>
-          </NewCalendarEventDialogContextProvider>
+            </DeviceContextProvider>
+          </CookieContextProvider>
         </UserContextProvider>
       </ApolloProvider>
     </SessionProvider>

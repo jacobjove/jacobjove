@@ -4,7 +4,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useUser } from "@web/components/contexts/UserContext";
 import { useUpdateUser } from "@web/generated/hooks/user.hooks";
+import { setCookie } from "cookies-next";
 import { createContext, Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useCookieData } from "./CookieContext";
+
+const COLOR_MODE_COOKIE_NAME = "colorMode";
 
 // NOTE: It's probably best to stick with "light" as the default color mode,
 // to match the prefers-color-scheme default:
@@ -94,28 +98,60 @@ const getDesignTokens = (mode: PaletteMode) => {
 
 export const ColorModeContextProvider: FC = ({ children }) => {
   const { user } = useUser();
-  const [updateUser] = useUpdateUser();
 
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const prefersLightMode = useMediaQuery("(prefers-color-scheme: light)");
+  // Read color mode from cookie.
+  const { [COLOR_MODE_COOKIE_NAME]: _colorModeFromCookie } = useCookieData();
+  let colorModeFromCookie: PaletteMode | undefined;
+  if (_colorModeFromCookie && _colorModeFromCookie !== "light" && _colorModeFromCookie !== "dark") {
+    console.error(`Invalid color mode from cookie: ${_colorModeFromCookie}`);
+    colorModeFromCookie = undefined;
+  } else {
+    colorModeFromCookie = _colorModeFromCookie as PaletteMode | undefined;
+  }
 
-  const selectedColorMode = user?.settings?.colorMode as PaletteMode | undefined;
-  const preferredColorMode: PaletteMode = prefersDarkMode
+  // Read color mode from browser preferences.
+  // NOTE: These values are false during SSR.
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", { noSsr: true });
+  const prefersLightMode = useMediaQuery("(prefers-color-scheme: light)", { noSsr: true });
+  const colorModeFromBrowserSettings: PaletteMode | undefined = prefersDarkMode
     ? "dark"
     : prefersLightMode
     ? "light"
-    : DEFAULT_COLOR_MODE;
+    : undefined;
 
-  const colorModeState = useState<PaletteMode>(selectedColorMode ?? preferredColorMode);
+  // Read color mode from user settings.
+  const colorModeFromUserSettings = user?.settings?.colorMode as PaletteMode | undefined;
 
-  const [mode, setMode] = colorModeState;
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  // Initialize state.
+  const initialColorMode =
+    colorModeFromUserSettings ??
+    colorModeFromCookie ??
+    colorModeFromBrowserSettings ??
+    DEFAULT_COLOR_MODE;
+  const colorModeState = useState<PaletteMode>(initialColorMode);
+  const [colorMode, setColorMode] = colorModeState;
 
+  // Initialize theme.
+  // TODO: Move theme to its own context provider?
+  const theme = useMemo(() => createTheme(getDesignTokens(colorMode)), [colorMode]);
+
+  const [updateUser] = useUpdateUser();
+
+  // Keep the color mode state and cookie in sync with the user's color-mode setting.
   useEffect(() => {
-    if (selectedColorMode) {
-      setMode(selectedColorMode);
-    } else {
-      setMode(preferredColorMode);
+    if (colorModeFromUserSettings) {
+      // Update the color mode state whenever the user's color-mode setting changes.
+      setColorMode(colorModeFromUserSettings);
+      // Update the cookie whenever the user's color-mode setting changes.
+      if (colorModeFromCookie !== colorModeFromUserSettings) {
+        setCookie(COLOR_MODE_COOKIE_NAME, colorModeFromUserSettings);
+      }
+    } else if (colorModeFromCookie) {
+      setColorMode(colorModeFromCookie);
+    } else if (colorModeFromBrowserSettings) {
+      setColorMode(colorModeFromBrowserSettings);
+      // If the user's settings have loaded but do not include a color-mode setting,
+      // then add a color-mode setting based on browser preferences.
       if (user && !user.settings.colorMode) {
         updateUser.current?.({
           variables: {
@@ -123,14 +159,25 @@ export const ColorModeContextProvider: FC = ({ children }) => {
             data: {
               settings: {
                 ...user.settings,
-                colorMode: preferredColorMode,
+                colorMode: colorModeFromBrowserSettings,
               },
             },
           },
         });
       }
     }
-  }, [selectedColorMode, preferredColorMode, setMode, user, updateUser]);
+  }, [
+    // Note: Don't include `colorMode` in the dependency list.
+    // If `colorMode` is included as a dependency, any direct changes to the color mode
+    // state (e.g., through the `onChange` handler for the color mode selector on the
+    // settings page) will be immediately overwritten by this effect.
+    setColorMode,
+    colorModeFromUserSettings,
+    colorModeFromCookie,
+    colorModeFromBrowserSettings,
+    user,
+    updateUser,
+  ]);
 
   return (
     <ColorModeContext.Provider value={colorModeState}>

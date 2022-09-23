@@ -2,9 +2,9 @@ import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { ViewerProps } from "@web/components/calendar/views/props";
 import DateContext from "@web/components/contexts/DateContext";
+import { useUser } from "@web/components/contexts/UserContext";
 import { addDays, getDay, getWeeksInMonth, isSameDay } from "date-fns";
 import { FC, useContext } from "react";
-import { useUser } from "../../contexts/UserContext";
 
 const grey = {
   50: "#F3F6F9",

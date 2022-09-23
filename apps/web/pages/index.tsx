@@ -24,7 +24,7 @@ const DefaultPage: NextPage<PageProps> = () => {
           alignItems="center"
           justifyContent={"center"}
         >
-          <Box maxWidth={"26rem"} px={2}>
+          <Box maxWidth={"30rem"} px={"2rem"}>
             {INTRODUCTORY_PARAGRAPHS.map((paragraph, index) => (
               <Typography key={index} component="p" my={2}>
                 {paragraph}
