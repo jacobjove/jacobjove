@@ -4,6 +4,8 @@ import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
 import Paper from "@mui/material/Paper";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -18,15 +20,12 @@ import { useUser } from "@web/components/contexts/UserContext";
 import { getOptimisticResponseForUserUpdate } from "@web/generated/graphql/mutations/user.mutations";
 import { useUpdateUser } from "@web/generated/hooks/user.hooks";
 import { Settings } from "@web/generated/models/User/types";
+import { PageProps } from "@web/types/page";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth, Session } from "next-auth";
+import { PageWithAuth } from "next-auth";
 import { NextSeo } from "next-seo";
 import { ChangeEvent, useContext, useEffect, useReducer } from "react";
-
-interface SettingsPageProps {
-  session: Session | null;
-}
 
 interface SettingOptions {
   label: string;
@@ -36,13 +35,12 @@ interface SettingOptions {
 }
 
 export function settingsReducer(state: Settings, payload: Partial<Settings>) {
-  // Return a new object with the updated values.
   return { ...state, ...payload };
 }
 
-const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) => {
+const SettingsPage: NextPage<PageProps> = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
-  const { user } = useUser();
+  const { user, loading: loadingUser } = useUser();
   const [, setColorMode] = useContext(ColorModeContext);
   const [updateUser, { loading: loadingUpdateSetting }] = useUpdateUser();
   const loading = loadingUpdateSetting;
@@ -108,78 +106,91 @@ const SettingsPage: NextPage<SettingsPageProps> = (_props: SettingsPageProps) =>
             maxHeight: "100%",
           }}
         >
-          <form>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell component="th" scope="column" sx={{ width: "10rem" }}>
-                    <Typography variant="h4">{"Setting"}</Typography>
-                  </TableCell>
-                  <TableCell component="th" scope="column">
-                    <Typography variant="h4">{"Value"}</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Object.keys(settings).map((key) => {
-                  const fieldName = key as keyof Settings;
-                  const { label, defaultValue, choices, onChange: _onChange } = settings[fieldName];
-                  const currentValue = userSettings[fieldName] ?? defaultValue;
-                  const onChange = (
-                    e: ChangeEvent<HTMLSelectElement> | SelectChangeEvent<string>
-                  ) => {
-                    _onChange?.(e.target.value);
-                    handleSettingChange(fieldName, e.target.value);
-                  };
-                  return (
-                    <TableRow key={fieldName}>
-                      <TableCell component="th" scope="row">
-                        {label}
-                      </TableCell>
-                      <TableCell>
-                        {choices ? (
-                          isMobile ? (
-                            <NativeSelect
-                              defaultValue={currentValue}
-                              disabled={loading}
-                              inputProps={{
-                                name: "dashboard",
-                                id: "uncontrolled-dashboard",
-                              }}
-                              onChange={onChange}
-                            >
-                              {choices.map((choice) => (
-                                <option key={choice} value={choice}>
-                                  {choice}
-                                </option>
-                              ))}
-                            </NativeSelect>
+          {loadingUser ? (
+            <Stack spacing={1} paddingTop={1}>
+              {Array.from({ length: Object.keys(settings).length + 1 }, (_, i) => i).map((_, i) => (
+                <Skeleton key={i} variant="rectangular" height={"3.3rem"} />
+              ))}
+            </Stack>
+          ) : (
+            <form>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell component="th" scope="column" sx={{ width: "10rem" }}>
+                      <Typography variant="h4">{"Setting"}</Typography>
+                    </TableCell>
+                    <TableCell component="th" scope="column">
+                      <Typography variant="h4">{"Value"}</Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {Object.keys(settings).map((key) => {
+                    const fieldName = key as keyof Settings;
+                    const {
+                      label,
+                      defaultValue,
+                      choices,
+                      onChange: _onChange,
+                    } = settings[fieldName];
+                    const currentValue = userSettings[fieldName] ?? defaultValue;
+                    const onChange = (
+                      e: ChangeEvent<HTMLSelectElement> | SelectChangeEvent<string>
+                    ) => {
+                      _onChange?.(e.target.value);
+                      handleSettingChange(fieldName, e.target.value);
+                    };
+                    return (
+                      <TableRow key={fieldName}>
+                        <TableCell component="th" scope="row">
+                          {label}
+                        </TableCell>
+                        <TableCell>
+                          {choices ? (
+                            isMobile ? (
+                              <NativeSelect
+                                defaultValue={currentValue}
+                                disabled={loading}
+                                inputProps={{
+                                  name: "dashboard",
+                                  id: "uncontrolled-dashboard",
+                                }}
+                                onChange={onChange}
+                              >
+                                {choices.map((choice) => (
+                                  <option key={choice} value={choice}>
+                                    {choice}
+                                  </option>
+                                ))}
+                              </NativeSelect>
+                            ) : (
+                              <Select
+                                value={currentValue}
+                                disabled={loading}
+                                SelectDisplayProps={{
+                                  style: { paddingTop: "0.4rem", paddingBottom: "0.4rem" },
+                                }}
+                                onChange={onChange}
+                              >
+                                {choices.map((choice) => (
+                                  <MenuItem key={choice} value={choice}>
+                                    {choice}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            )
                           ) : (
-                            <Select
-                              value={currentValue}
-                              disabled={loading}
-                              SelectDisplayProps={{
-                                style: { paddingTop: "0.4rem", paddingBottom: "0.4rem" },
-                              }}
-                              onChange={onChange}
-                            >
-                              {choices.map((choice) => (
-                                <MenuItem key={choice} value={choice}>
-                                  {choice}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          )
-                        ) : (
-                          userSettings[fieldName] ?? defaultValue
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </form>
+                            userSettings[fieldName] ?? defaultValue
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </form>
+          )}
         </TableContainer>
       </Container>
     </AppLayout>

@@ -15,8 +15,8 @@ import Header from "@web/components/Header";
 import { setCookie } from "cookies-next";
 import { bindDialog } from "material-ui-popup-state/hooks";
 
+import { useCookieData } from "@web/components/contexts/CookieContext";
 import { FC, ReactNode, useState } from "react";
-import { useCookieData } from "./contexts/CookieContext";
 
 export interface LayoutProps {
   children: ReactNode;
