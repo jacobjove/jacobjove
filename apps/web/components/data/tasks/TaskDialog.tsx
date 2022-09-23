@@ -36,7 +36,7 @@ import {
   PopupState,
   usePopupState,
 } from "material-ui-popup-state/hooks";
-import { FC, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 
 // import Divider from '@mui/material/Divider';
 import { useDate } from "../../contexts/DateContext";
@@ -116,12 +116,12 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
 
   const canUpdate = !!data.id;
 
-  const onClose = (event: SyntheticEvent<unknown>) => {
+  const onClose = (event: any) => {
     initialOnClose(event);
     canUpdate && setEditing(false);
   };
 
-  const handleClose = (event: SyntheticEvent<unknown>) => {
+  const handleClose = (event: any) => {
     if (stopwatchIsRunning) {
       // TODO: ask for confirmation
       setStopwatchIsRunning(false);

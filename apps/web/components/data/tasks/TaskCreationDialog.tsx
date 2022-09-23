@@ -24,7 +24,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
   const dataTuple = useTaskReducer();
   const [data, dispatchData] = dataTuple;
   const [subtasks, dispatchSubtasks] = useTasksReducer([]);
-  const saveAndExit = () => {
+  const saveAndExit = (_: any) => {
     const dataIsValid = !!data.title;
     // TODO: run validator!
     const validatedData = data as TaskCreationInput;
@@ -37,7 +37,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
         value: { userId: user?.id as ID, rank: validatedData.rank + 1 },
       });
     }
-    props.close();
+    props.onClose(_);
   };
   return CreationDialog<Task, TaskCreationInput, { createTask: TaskFragment }>({
     typeName: "task",
@@ -54,7 +54,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
             onKeyUp={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
-                saveAndExit();
+                saveAndExit(event);
               }
             }}
           >
