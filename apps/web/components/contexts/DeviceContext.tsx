@@ -106,7 +106,6 @@ export const DeviceContextProvider: FC = ({ children }) => {
         width,
       };
       dispatchDeviceData(deviceContextData);
-      console.log("Setting device data cookie:", deviceContextData);
       setCookie(DEVICE_CONTEXT_COOKIE_NAME, JSON.stringify(deviceContextData));
     }
   }, [width]);

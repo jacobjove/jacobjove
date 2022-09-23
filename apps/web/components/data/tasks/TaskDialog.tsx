@@ -37,7 +37,7 @@ import {
   PopupState,
   usePopupState,
 } from "material-ui-popup-state/hooks";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, SyntheticEvent, useEffect, useMemo, useState } from "react";
 
 interface TaskDialogProps extends ReturnType<typeof bindDialog> {
   data: TaskFragment;
@@ -114,12 +114,12 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
 
   const canUpdate = !!data.id;
 
-  const onClose = (event: any) => {
+  const onClose = (event: SyntheticEvent<unknown>) => {
     initialOnClose(event);
     canUpdate && setEditing(false);
   };
 
-  const handleClose = (event: any) => {
+  const handleClose = (event: SyntheticEvent<unknown>) => {
     if (stopwatchIsRunning) {
       // TODO: ask for confirmation
       setStopwatchIsRunning(false);
