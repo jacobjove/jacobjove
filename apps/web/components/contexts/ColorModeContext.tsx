@@ -98,9 +98,8 @@ const getDesignTokens = (mode: PaletteMode) => {
 
 export const ColorModeContextProvider: FC = ({ children }) => {
   const { user } = useUser();
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const prefersLightMode = useMediaQuery("(prefers-color-scheme: light)");
 
+  // Read color mode from cookie.
   const { [COLOR_MODE_COOKIE_NAME]: _colorModeFromCookie } = useCookieData();
   let colorModeFromCookie: PaletteMode | undefined;
   if (_colorModeFromCookie && _colorModeFromCookie !== "light" && _colorModeFromCookie !== "dark") {
@@ -110,30 +109,49 @@ export const ColorModeContextProvider: FC = ({ children }) => {
     colorModeFromCookie = _colorModeFromCookie as PaletteMode | undefined;
   }
 
-  const colorModeFromUserSettings = user?.settings?.colorMode as PaletteMode | undefined;
-  const colorModeFromBrowserSettings: PaletteMode = prefersDarkMode
+  // Read color mode from browser preferences.
+  // NOTE: These values are false during SSR.
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)", { noSsr: true });
+  const prefersLightMode = useMediaQuery("(prefers-color-scheme: light)", { noSsr: true });
+  const colorModeFromBrowserSettings: PaletteMode | undefined = prefersDarkMode
     ? "dark"
     : prefersLightMode
     ? "light"
-    : DEFAULT_COLOR_MODE;
+    : undefined;
 
-  const colorModeState = useState<PaletteMode>(
-    colorModeFromUserSettings ?? colorModeFromCookie ?? colorModeFromBrowserSettings
-  );
-  const [mode, setMode] = colorModeState;
+  // Read color mode from user settings.
+  const colorModeFromUserSettings = user?.settings?.colorMode as PaletteMode | undefined;
+
+  // Initialize state.
+  const initialColorMode =
+    colorModeFromUserSettings ??
+    colorModeFromCookie ??
+    colorModeFromBrowserSettings ??
+    DEFAULT_COLOR_MODE;
+  const colorModeState = useState<PaletteMode>(initialColorMode);
+  const [colorMode, setColorMode] = colorModeState;
+
+  // Initialize theme.
+  // TODO: Move theme to its own context provider?
+  const theme = useMemo(() => createTheme(getDesignTokens(colorMode)), [colorMode]);
 
   const [updateUser] = useUpdateUser();
 
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-
+  // Keep the color mode state and cookie in sync with the user's color-mode setting.
   useEffect(() => {
     if (colorModeFromUserSettings) {
-      setMode(colorModeFromUserSettings);
-      if (typeof window !== "undefined") {
+      // Update the color mode state whenever the user's color-mode setting changes.
+      setColorMode(colorModeFromUserSettings);
+      // Update the cookie whenever the user's color-mode setting changes.
+      if (colorModeFromCookie !== colorModeFromUserSettings) {
         setCookie(COLOR_MODE_COOKIE_NAME, colorModeFromUserSettings);
       }
-    } else {
-      setMode(colorModeFromBrowserSettings);
+    } else if (colorModeFromCookie) {
+      setColorMode(colorModeFromCookie);
+    } else if (colorModeFromBrowserSettings) {
+      setColorMode(colorModeFromBrowserSettings);
+      // If the user's settings have loaded but do not include a color-mode setting,
+      // then add a color-mode setting based on browser preferences.
       if (user && !user.settings.colorMode) {
         updateUser.current?.({
           variables: {
@@ -148,7 +166,18 @@ export const ColorModeContextProvider: FC = ({ children }) => {
         });
       }
     }
-  }, [colorModeFromUserSettings, colorModeFromBrowserSettings, setMode, user, updateUser]);
+  }, [
+    // Note: Don't include `colorMode` in the dependency list.
+    // If `colorMode` is included as a dependency, any direct changes to the color mode
+    // state (e.g., through the `onChange` handler for the color mode selector on the
+    // settings page) will be immediately overwritten by this effect.
+    setColorMode,
+    colorModeFromUserSettings,
+    colorModeFromCookie,
+    colorModeFromBrowserSettings,
+    user,
+    updateUser,
+  ]);
 
   return (
     <ColorModeContext.Provider value={colorModeState}>

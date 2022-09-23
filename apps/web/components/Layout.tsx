@@ -12,10 +12,11 @@ import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import Footer from "@web/components/Footer";
 import Header from "@web/components/Header";
-import { getCookie, setCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import { bindDialog } from "material-ui-popup-state/hooks";
 
 import { FC, ReactNode, useState } from "react";
+import { useCookieData } from "./contexts/CookieContext";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -30,7 +31,7 @@ const DRAWER_EXPANDED_COOKIE_NAME = "drawerExpanded";
 
 const Layout: FC<LayoutProps> = ({ scrollable, children, inApp }: LayoutProps) => {
   const { isDesktop } = useDeviceData();
-  const drawerExpandedCookieValue = getCookie(DRAWER_EXPANDED_COOKIE_NAME);
+  const { [DRAWER_EXPANDED_COOKIE_NAME]: drawerExpandedCookieValue } = useCookieData();
   const drawerExpanded = drawerExpandedCookieValue
     ? drawerExpandedCookieValue === "true"
     : !!isDesktop;

@@ -56,30 +56,29 @@ const DeviceContext = createContext<DeviceContextData>({} as DeviceContextData);
 
 export default DeviceContext;
 
-const DEVICE_CONTEXT_COOKIE_NAME = "device-context";
+const DEVICE_CONTEXT_COOKIE_NAME = "deviceContext";
 
 export function deviceDataReducer(state: DeviceContextData, payload: Partial<DeviceContextData>) {
-  if (payload.field === "init") return payload as DeviceContextData;
+  // Return a new object with the updated values.
   return { ...state, ...payload };
 }
 
 export const DeviceContextProvider: FC = ({ children }) => {
   const theme = useTheme();
 
-  const cookies = useCookieData();
+  const { [DEVICE_CONTEXT_COOKIE_NAME]: deviceJsonData } = useCookieData();
+  const deviceDataFromCookie = deviceJsonData ? JSON.parse(deviceJsonData) : {};
 
-  const xs = useMediaQuery(theme.breakpoints.down("sm"));
-  const sm = useMediaQuery(theme.breakpoints.up("sm"));
-  const md = useMediaQuery(theme.breakpoints.up("md"));
-  const lg = useMediaQuery(theme.breakpoints.up("lg"));
-  const xl = useMediaQuery(theme.breakpoints.up("xl"));
+  // Note: These are all false during SSR.
+  // https://mui.com/material-ui/react-use-media-query/
+  const xs = useMediaQuery(theme.breakpoints.down("sm"), { noSsr: true });
+  const sm = useMediaQuery(theme.breakpoints.up("sm"), { noSsr: true });
+  const md = useMediaQuery(theme.breakpoints.up("md"), { noSsr: true });
+  const lg = useMediaQuery(theme.breakpoints.up("lg"), { noSsr: true });
+  const xl = useMediaQuery(theme.breakpoints.up("xl"), { noSsr: true });
+  const width = xl ? "xl" : lg ? "lg" : md ? "md" : sm ? "sm" : xs ? "xs" : undefined;
 
-  const [deviceData, dispatchDeviceData] = useReducer(
-    deviceDataReducer,
-    cookies[DEVICE_CONTEXT_COOKIE_NAME]
-      ? JSON.parse(cookies[DEVICE_CONTEXT_COOKIE_NAME])
-      : ({} as DeviceContextData)
-  );
+  const [deviceData, dispatchDeviceData] = useReducer(deviceDataReducer, deviceDataFromCookie);
 
   useEffect(() => {
     const handleOrientationChange = function (e: Event) {
@@ -99,16 +98,18 @@ export const DeviceContextProvider: FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && navigator.userAgent) {
+    if (typeof window === "undefined") return;
+    if (navigator.userAgent && width) {
       const selectorsFromUserAgent = getSelectorsByUserAgent(navigator.userAgent);
       const deviceContextData = {
         ...selectorsFromUserAgent,
-        width: xl ? "xl" : lg ? "lg" : md ? "md" : sm ? "sm" : "xs",
+        width,
       };
       dispatchDeviceData(deviceContextData);
+      console.log("Setting device data cookie:", deviceContextData);
       setCookie(DEVICE_CONTEXT_COOKIE_NAME, JSON.stringify(deviceContextData));
     }
-  }, [xl, lg, md, sm, xs]);
+  }, [width]);
 
   return <DeviceContext.Provider value={deviceData}>{children}</DeviceContext.Provider>;
 };

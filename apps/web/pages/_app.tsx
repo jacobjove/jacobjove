@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ColorModeContextProvider } from "@web/components/contexts/ColorModeContext";
-import CookieContext from "@web/components/contexts/CookieContext";
+import { CookieContextProvider } from "@web/components/contexts/CookieContext";
 import { DateContextProvider } from "@web/components/contexts/DateContext";
 import { DeviceContextProvider } from "@web/components/contexts/DeviceContext";
 import { DndProvider } from "@web/components/contexts/DndContext";
@@ -59,7 +59,7 @@ function App({
     <SessionProvider {...(session && { session })}>
       <ApolloProvider client={apolloClient}>
         <UserContextProvider>
-          <CookieContext.Provider value={cookies}>
+          <CookieContextProvider value={cookies}>
             <DeviceContextProvider>
               <CacheProvider value={emotionCache}>
                 <ColorModeContextProvider>
@@ -93,7 +93,7 @@ function App({
                 </ColorModeContextProvider>
               </CacheProvider>
             </DeviceContextProvider>
-          </CookieContext.Provider>
+          </CookieContextProvider>
         </UserContextProvider>
       </ApolloProvider>
     </SessionProvider>

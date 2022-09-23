@@ -61,7 +61,7 @@ const nextConfig = {
     svgr: false,
   },
   output: "standalone",
-  reactStrictMode: true,
+  reactStrictMode: false,
   redirects: async () => {
     return [
       {
