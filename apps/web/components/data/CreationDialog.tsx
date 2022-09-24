@@ -35,7 +35,6 @@ export default function CreationDialog<
 >({
   children,
   typeName,
-  fields: _fields,
   dataTuple,
   create,
   produceInitialData,
@@ -52,7 +51,7 @@ export default function CreationDialog<
 
   const menuProps = bindMenu(menuState);
 
-  const saveAndExit = () => {
+  const saveAndExit = (): void => {
     // TODO: run validator!
     const validatedData = data as CreationInput;
     create.current?.({
@@ -67,7 +66,14 @@ export default function CreationDialog<
 
   return (
     <Dialog fullWidth onClose={onClose} {...dialogProps}>
-      <DialogTitle sx={{ borderBottom: "1px solid gray", display: "flex" }}>
+      <DialogTitle
+        sx={{
+          borderBottom: "1px solid gray",
+          display: "flex",
+          py: 1,
+          alignItems: "center",
+        }}
+      >
         {`Create new ${typeName}`}
         <Box ml={"auto"}>
           <Menu
@@ -89,16 +95,9 @@ export default function CreationDialog<
           </IconButton>
         </Box>
       </DialogTitle>
-      <DialogContent>
-        {children}
-        {/* <Box>
-          <CreationFields dataTuple={dataTuple} fields={fields} />
-        </Box> */}
-      </DialogContent>
+      <DialogContent>{children}</DialogContent>
       <DialogActions>
-        <Button disabled={true} onClick={saveAndExit}>
-          {"Save"}
-        </Button>
+        <Button onClick={saveAndExit}>{"Save"}</Button>
       </DialogActions>
     </Dialog>
   );

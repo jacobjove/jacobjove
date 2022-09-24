@@ -1,4 +1,4 @@
-import { IconButton, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useCallback, useMemo, useRef } from "react";
 import { formatValue } from "../converter";
@@ -215,15 +215,13 @@ export default function CustomSelect(props: CustomSelectProps) {
       open={readOnly ? false : undefined}
       value={stringValue}
       // onClear={onClear}
-      endAdornment={
-        !!onClear && (
-          <IconButton {...(!stringValue ? { sx: { display: "none" } } : {})} onClick={onClear} />
-        )
-      }
+      // endAdornment={
+      //   !!onClear && (
+      //     <IconButton {...(!stringValue ? { sx: { display: "none" } } : {})} onClick={onClear} />
+      //   )
+      // }
       // tagRender={renderTag}
-      className={"react-js-cron-select react-js-cron-custom-select"}
       // showSearch={false}
-      // showArrow={!readOnly}
       // menuItemSelectedIcon={null}
       // dropdownMatchSelectWidth={false}
       onChange={onOptionClick}

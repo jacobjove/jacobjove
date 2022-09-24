@@ -224,11 +224,14 @@ export default function Cron(props: CronProps) {
         display: "flex",
         alignItems: "flex-start",
         flexWrap: "wrap",
+        // columnGap: 2,
         mt: 2,
-        "& .MuiSelect-select": { p: 1 },
+        "& .MuiSelect-select": {
+          p: 1,
+        },
         "& .react-js-cron-field": {
           "& > span": {
-            mr: 1,
+            mx: 1,
           },
           alignItems: "center",
           display: "flex",
