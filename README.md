@@ -1,3 +1,3 @@
 # selfbuilder
 
-An app for implementing habits
+A self-development app
