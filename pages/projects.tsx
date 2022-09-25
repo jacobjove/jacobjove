@@ -1,8 +1,13 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
-import { getSortedPostsData } from "../lib/posts";
-import Link from "next/link";
 import { GetStaticProps } from "next";
+import { Typography } from "@mui/material";
+
+const PROJECTS: [string, string][] = [
+  ["SelfBuilder", "https://selfbuilder.orega.org/"],
+  ["ModularHistory", "https://modularhistory.orega.org/"],
+  ["KW Striping", "https://kwstriping.com/"],
+];
 
 export default function Projects() {
   return (
@@ -11,23 +16,15 @@ export default function Projects() {
         <title>{siteTitle}</title>
       </Head>
       <div>
-        <p>{"Here are a few apps I've built:"}</p>
+        <Typography>{"Here are a few apps I've built:"}</Typography>
         <ul>
-          <li>
-            <Link href={`https://selfbuilder.orega.org/`}>
-              <a>{"SelfBuilder"}</a>
-            </Link>
-          </li>
-          <li>
-            <Link href={`https://modularhistory.orega.org/`}>
-              <a>{"ModularHistory"}</a>
-            </Link>
-          </li>
-          <li>
-            <Link href={`https://www.kwstriping.com/`}>
-              <a>{"KW Striping"}</a>
-            </Link>
-          </li>
+          {PROJECTS.map(([name, url]) => (
+            <li key={name}>
+              <Typography component="a" href={url}>
+                {name}
+              </Typography>
+            </li>
+          ))}
         </ul>
       </div>
     </Layout>
@@ -35,10 +32,7 @@ export default function Projects() {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData();
   return {
-    props: {
-      allPostsData,
-    },
+    props: {},
   };
 };
