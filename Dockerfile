@@ -5,11 +5,11 @@
 FROM node:16.14.2 AS base
 
 ARG PORT=3000
-ARG NODE_ENV=production
-
-ENV PORT ${PORT}
 
 LABEL org.opencontainers.image.source https://github.com/iacobfred/portfolio
+
+ENV PORT ${PORT}
+ENV NODE_ENV production
 
 ##################################
 # BUILDER
@@ -17,10 +17,7 @@ LABEL org.opencontainers.image.source https://github.com/iacobfred/portfolio
 
 FROM base AS builder
 
-ARG NODE_ENV
-
 ENV NODE_OPTIONS --max_old_space_size=4096
-ENV PORT 3000
 
 # Define the working directory of the container.
 WORKDIR /app
@@ -43,9 +40,6 @@ RUN NODE_ENV=${NODE_ENV} npm run build
 
 FROM base as runner
 
-ARG NODE_ENV
-ENV NODE_ENV ${NODE_ENV}
-
 # Define the working directory of the container.
 WORKDIR /app
 
@@ -58,7 +52,7 @@ COPY next.config.js ./
 # https://joshtronic.com/2022/07/10/husky-command-not-found-with-npm-install-production/
 RUN npm set-script prepare ''
 
-RUN npm ci
+RUN npm ci --production
 
 ENV PATH /app/node_modules/.bin:$PATH
 

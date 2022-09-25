@@ -2,23 +2,74 @@ import "../styles/global.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { DefaultSeo } from "next-seo";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
 const SITE_NAME = "Orega";
+const DESCRIPTION = "Jacob's personal website";
 
-function App({ Component, pageProps }: AppProps) {
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#546e7a",
+      light: "#819ca9",
+      dark: "#29434e",
+      contrastText: "#ffffff",
+    },
+    secondary: {
+      main: "#979797",
+      light: "#c8c8c8",
+      dark: "#696969",
+    },
+    action: {
+      selectedOpacity: 0.33,
+    },
+  },
+  typography: {
+    fontFamily: ["Open Sans", "sans-serif"].join(","),
+    h1: {
+      fontSize: "2rem",
+    },
+    h2: {
+      fontSize: "1.4rem",
+    },
+    h3: {
+      fontSize: "1.2rem",
+    },
+    h4: {
+      fontSize: "1.1rem",
+      fontWeight: 600,
+    },
+    h5: {
+      fontSize: "1.0rem",
+      fontWeight: 500,
+      fontStyle: "italic",
+    },
+    body1: {
+      fontStyle: "normal",
+      fontWeight: 400,
+    },
+    body2: {
+      fontStyle: "normal",
+    },
+  },
+});
+
+function App({ Component: Page, pageProps }: AppProps) {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </Head>
       <DefaultSeo
-        description={"Jacob's portfolio"}
+        description={DESCRIPTION}
         openGraph={{
           type: "website",
           url: "https://orega.org/",
           site_name: SITE_NAME,
-          // description: "History, modularized.",
+          description: DESCRIPTION,
           // images: [
           //   {
           //     url: 'https://www.example.ie/og-image.jpg',
@@ -59,8 +110,8 @@ function App({ Component, pageProps }: AppProps) {
           ]
         }
       />
-      <Component {...pageProps} />;
-    </>
+      <Page {...pageProps} />;
+    </ThemeProvider>
   );
 }
 
