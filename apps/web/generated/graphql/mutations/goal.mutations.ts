@@ -37,6 +37,7 @@ export const updateCacheAfterCreatingGoal: MutationHookOptions<
   { createGoal: GoalFragment },
   GoalCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createGoal } = data || {};
     if (createGoal) {

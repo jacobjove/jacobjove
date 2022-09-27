@@ -41,6 +41,7 @@ export const updateCacheAfterCreatingListItem: MutationHookOptions<
   { createListItem: ListItemFragment },
   ListItemCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createListItem } = data || {};
     if (createListItem) {

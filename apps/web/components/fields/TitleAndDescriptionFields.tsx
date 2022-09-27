@@ -63,13 +63,15 @@ export default function TitleAndDescriptionFields<
         setEditing(false);
       }
     });
+  console.log("descriptionFocused", descriptionFocused);
   return (
     <Box sx={{ ...(sx ?? {}) }}>
       <Box>
         {editing ? (
           <TextField
+            required
             autoFocus={!descriptionFocused}
-            id="title"
+            // id="title"
             name={titleName ?? "title"}
             placeholder={titleLabel ?? "Title"}
             value={data[titleName] ?? ""}

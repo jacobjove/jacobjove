@@ -40,6 +40,7 @@ export const updateCacheAfterCreatingBook: MutationHookOptions<
   { createBook: BookFragment },
   BookCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createBook } = data || {};
     if (createBook) {

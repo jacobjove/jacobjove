@@ -56,6 +56,7 @@
     "bson": "*",
     "cookies-next": "*",
     "cron-parser": "*",
+    "cron-validator": "*",
     "cronstrue": "^2.11.0",
     "cross-fetch": "^3.0.5",
     "date-fns": "^2.27.0",

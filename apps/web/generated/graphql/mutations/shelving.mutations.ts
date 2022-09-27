@@ -42,6 +42,7 @@ export const updateCacheAfterCreatingShelving: MutationHookOptions<
   { createShelving: ShelvingFragment },
   ShelvingCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createShelving } = data || {};
     if (createShelving) {

@@ -39,6 +39,7 @@ export const updateCacheAfterCreatingHabit: MutationHookOptions<
   { createHabit: HabitFragment },
   HabitCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createHabit } = data || {};
     if (createHabit) {

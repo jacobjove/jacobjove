@@ -13,8 +13,7 @@ on:
       - "**.md"
       - "**.rst"
       - "**.txt"
-      - tests.py
-      - setup.sh
+      - package*.json
 
 env:
   ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}

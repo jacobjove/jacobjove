@@ -1,9 +1,8 @@
-import { useMemo } from "react";
+import { Typography } from "@mui/material";
 import CustomSelect from "../components/CustomSelect";
 import { UNITS } from "../constants";
 import { DEFAULT_LOCALE_EN } from "../locale";
 import { MonthsProps } from "../types";
-import { classNames } from "../utils";
 
 export default function Months(props: MonthsProps) {
   const {
@@ -20,27 +19,15 @@ export default function Months(props: MonthsProps) {
   } = props;
   const optionsList = locale.months || DEFAULT_LOCALE_EN.months;
 
-  const internalClassName = useMemo(
-    () =>
-      classNames({
-        "react-js-cron-field": true,
-        "react-js-cron-months": true,
-        [`${className}-field`]: !!className,
-        [`${className}-months`]: !!className,
-      }),
-    [className]
-  );
-
   return (
-    <div className={internalClassName}>
+    <div>
       {locale.prefixMonths !== "" && (
-        <span>{locale.prefixMonths || DEFAULT_LOCALE_EN.prefixMonths}</span>
+        <Typography mx={1}>{locale.prefixMonths || DEFAULT_LOCALE_EN.prefixMonths}</Typography>
       )}
 
       <CustomSelect
         placeholder={locale.emptyMonths || DEFAULT_LOCALE_EN.emptyMonths}
         optionsList={optionsList}
-        grid={false}
         value={value}
         unit={{
           ...UNITS[3],

@@ -36,6 +36,7 @@ export const updateCacheAfterCreatingList: MutationHookOptions<
   { createList: ListFragment },
   ListCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createList } = data || {};
     if (createList) {

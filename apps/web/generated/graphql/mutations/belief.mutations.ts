@@ -39,6 +39,7 @@ export const updateCacheAfterCreatingBelief: MutationHookOptions<
   { createBelief: BeliefFragment },
   BeliefCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createBelief } = data || {};
     if (createBelief) {

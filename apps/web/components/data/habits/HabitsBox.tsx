@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useUser } from "@web/components/contexts/UserContext";
 import DataBox, { DataBoxProps } from "@web/components/DataBox";
 import HabitCreationDialog from "@web/generated/components/habits/HabitCreationDialog";
 import Habit from "@web/generated/graphql/types/Habit";
@@ -13,6 +14,7 @@ type HabitsBoxProps = Pick<DataBoxProps, "displayTitle"> & {
 };
 
 const HabitsBox: FC<HabitsBoxProps> = (props: HabitsBoxProps) => {
+  const { user } = useUser();
   const { habits, displayTitle } = props;
   const newHabitDialogState = usePopupState({
     variant: "dialog",
@@ -38,15 +40,17 @@ const HabitsBox: FC<HabitsBoxProps> = (props: HabitsBoxProps) => {
           >
             {"You don't have any habits yet."}
           </Typography>
-          <Button variant={"contained"} {...bindTrigger(newHabitDialogState)}>
-            {"Create a habit"}
-          </Button>
-          <HabitCreationDialog
-            {...bindDialog(newHabitDialogState)}
-            close={newHabitDialogState.close}
-          />
         </Box>
       )}
+      <Box p={4} textAlign={"center"}>
+        <Button variant={"contained"} {...bindTrigger(newHabitDialogState)}>
+          {"Create a habit"}
+        </Button>
+        <HabitCreationDialog
+          {...bindDialog(newHabitDialogState)}
+          close={newHabitDialogState.close}
+        />
+      </Box>
     </DataBox>
   );
 };

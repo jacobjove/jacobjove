@@ -37,7 +37,7 @@ const GoalsBox: FC<GoalsBoxProps> = (props: GoalsBoxProps) => {
           >
             {"You don't have any goals yet."}
           </Typography>
-          <Button variant={"contained"} {...bindTrigger(newGoalDialogState)}>
+          <Button disabled variant={"contained"} {...bindTrigger(newGoalDialogState)}>
             {"Create a goal"}
           </Button>
           <GoalCreationDialog

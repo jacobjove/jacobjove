@@ -36,6 +36,7 @@ export const updateCacheAfterCreatingValue: MutationHookOptions<
   { createValue: ValueFragment },
   ValueCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createValue } = data || {};
     if (createValue) {

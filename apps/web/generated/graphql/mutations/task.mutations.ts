@@ -42,6 +42,7 @@ export const updateCacheAfterCreatingTask: MutationHookOptions<
   { createTask: TaskFragment },
   TaskCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createTask } = data || {};
     if (createTask) {

@@ -38,6 +38,7 @@ export const updateCacheAfterCreatingMantra: MutationHookOptions<
   { createMantra: MantraFragment },
   MantraCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createMantra } = data || {};
     if (createMantra) {

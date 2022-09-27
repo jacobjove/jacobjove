@@ -42,6 +42,7 @@ export const updateCacheAfterCreatingIdentity: MutationHookOptions<
   { createIdentity: IdentityFragment },
   IdentityCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createIdentity } = data || {};
     if (createIdentity) {
