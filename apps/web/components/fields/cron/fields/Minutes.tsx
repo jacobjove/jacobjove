@@ -1,71 +1,46 @@
-import { useMemo } from "react";
-import CustomSelect from "../components/CustomSelect";
-import { UNITS } from "../constants";
+import { Autocomplete, TextField, Typography } from "@mui/material";
 import { DEFAULT_LOCALE_EN } from "../locale";
 import { MinutesProps } from "../types";
-import { classNames } from "../utils";
 
-export default function Minutes(props: MinutesProps) {
-  const {
-    value,
-    setValue,
-    locale,
-    className,
-    disabled,
-    readOnly,
-    leadingZero,
-    clockFormat,
-    period,
-    periodicityOnDoubleClick,
-    mode,
-  } = props;
-  const internalClassName = useMemo(
-    () =>
-      classNames({
-        "react-js-cron-field": true,
-        "react-js-cron-minutes": true,
-        [`${className}-field`]: !!className,
-        [`${className}-minutes`]: !!className,
-      }),
-    [className]
-  );
-
+export default function Minutes({ value, setValue, locale, period, mode }: MinutesProps) {
   return (
-    <div className={internalClassName}>
+    <div style={{ display: "flex", alignItems: "center" }}>
       {period === "hour"
         ? locale.prefixMinutesForHourPeriod !== "" && (
-            <span>
+            <Typography mx={2}>
               {locale.prefixMinutesForHourPeriod || DEFAULT_LOCALE_EN.prefixMinutesForHourPeriod}
-            </span>
+            </Typography>
           )
         : locale.prefixMinutes !== "" && (
-            <span>{locale.prefixMinutes || DEFAULT_LOCALE_EN.prefixMinutes}</span>
+            <Typography mx={1}>
+              {locale.prefixMinutes || DEFAULT_LOCALE_EN.prefixMinutes}
+            </Typography>
           )}
-
-      <CustomSelect
-        placeholder={
-          period === "hour"
-            ? locale.emptyMinutesForHourPeriod || DEFAULT_LOCALE_EN.emptyMinutesForHourPeriod
-            : locale.emptyMinutes || DEFAULT_LOCALE_EN.emptyMinutes
-        }
-        value={value}
-        unit={UNITS[0]}
-        setValue={setValue}
-        locale={locale}
-        className={className}
-        disabled={disabled}
-        readOnly={readOnly}
-        leadingZero={leadingZero}
-        clockFormat={clockFormat}
-        period={period}
-        periodicityOnDoubleClick={periodicityOnDoubleClick}
-        mode={mode}
+      <Autocomplete
+        value={value?.length ? value.map((v) => v.toString().padStart(2, "0")) : []}
+        options={Array.from(Array(60), (x, i) => String(i).padStart(2, "0"))}
+        onChange={(e, v) => setValue(v?.map((v) => Number(v)))}
+        {...(mode === "multiple" && { multiple: true })}
+        sx={{ display: "inline-block" }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="standard"
+            // onKeyDown={(e) => {
+            //   if (
+            //     e.key === "Enter" &&
+            //     options.findIndex((o) => o.title === inputValue) === -1
+            //   ) {
+            //     setOptions((o) => o.concat({ title: inputValue }));
+            //   }
+            // }}
+          />
+        )}
       />
-
       {period === "hour" && locale.suffixMinutesForHourPeriod !== "" && (
-        <span>
+        <Typography mx={1}>
           {locale.suffixMinutesForHourPeriod || DEFAULT_LOCALE_EN.suffixMinutesForHourPeriod}
-        </span>
+        </Typography>
       )}
     </div>
   );

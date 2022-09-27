@@ -1,9 +1,8 @@
-import { MenuItem } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { DEFAULT_LOCALE_EN } from "../locale";
 import { PeriodProps, PeriodType } from "../types";
-import { classNames } from "../utils";
 
 type PeriodOption = {
   value: PeriodType;
@@ -76,19 +75,10 @@ export default function Period(props: PeriodProps) {
     [setValue, readOnly]
   );
 
-  const selectClassName = useMemo(
-    () =>
-      classNames({
-        "react-js-cron-select": true,
-        "react-js-cron-select-no-prefix": locale.prefixPeriod === "",
-      }),
-    [locale.prefixPeriod]
-  );
-
   return (
     <div className={"react-js-cron-field react-js-cron-period"}>
       {locale.prefixPeriod !== "" && (
-        <span>{locale.prefixPeriod || DEFAULT_LOCALE_EN.prefixPeriod}</span>
+        <Typography mx={1}>{locale.prefixPeriod || DEFAULT_LOCALE_EN.prefixPeriod}</Typography>
       )}
       <Select<PeriodType>
         key={JSON.stringify(locale)}
@@ -96,7 +86,6 @@ export default function Period(props: PeriodProps) {
         defaultValue={value}
         value={value}
         onChange={handleChange}
-        className={selectClassName}
         disabled={disabled}
         open={readOnly ? false : undefined}
       >

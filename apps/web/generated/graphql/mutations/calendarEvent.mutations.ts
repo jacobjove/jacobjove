@@ -49,6 +49,7 @@ export const updateCacheAfterCreatingCalendarEvent: MutationHookOptions<
   { createCalendarEvent: CalendarEventFragment },
   CalendarEventCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createCalendarEvent } = data || {};
     if (createCalendarEvent) {

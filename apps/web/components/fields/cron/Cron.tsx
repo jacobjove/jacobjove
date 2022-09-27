@@ -1,7 +1,9 @@
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import styles from "@web/components/fields/cron/Cron.module.scss";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { isValidCron } from "cron-validator";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getCronStringFromValues, setValuesFromCronString } from "./converter";
 import Hours from "./fields/Hours";
 import Minutes from "./fields/Minutes";
@@ -11,17 +13,23 @@ import Period from "./fields/Period";
 import WeekDays from "./fields/WeekDays";
 import { DEFAULT_LOCALE_EN } from "./locale";
 import { CronProps, PeriodType } from "./types";
-import { classNames, setError, usePrevious } from "./utils";
+import { usePrevious } from "./utils";
+
+// const cronReducer = (state: CronProps, action: { field: string; value: any }) => {
+//   const { field, value } = action;
+//   return {
+//     ...state,
+//     [field]: value,
+//   };
+// };
 
 export default function Cron(props: CronProps) {
   const {
-    clearButton = true,
     clearButtonProps = {},
     clearButtonAction = "fill-with-every",
     locale = DEFAULT_LOCALE_EN,
     value = "",
     setValue,
-    displayError = true,
     onError,
     defaultPeriod = "day",
     allowEmpty = "for-default-value",
@@ -29,7 +37,6 @@ export default function Cron(props: CronProps) {
     humanizeValue = false,
     disabled = false,
     readOnly = false,
-    leadingZero = true,
     shortcuts = ["@yearly", "@annually", "@monthly", "@weekly", "@daily", "@midnight", "@hourly"],
     clockFormat,
     periodicityOnDoubleClick = true,
@@ -37,42 +44,23 @@ export default function Cron(props: CronProps) {
     allowedDropdowns = ["period", "months", "month-days", "week-days", "hours", "minutes"],
     allowedPeriods = ["year", "month", "week", "day", "hour", "minute", "reboot"],
   } = props;
-  // const date = new Date();
   const internalValueRef = useRef<string>(value);
   const defaultPeriodRef = useRef<PeriodType>(defaultPeriod);
+
   const [period, setPeriod] = useState<PeriodType>("day");
+
   const [monthDays, setMonthDays] = useState<number[] | undefined>();
   const [months, setMonths] = useState<number[] | undefined>();
   const [weekDays, setWeekDays] = useState<number[] | undefined>();
   const [hours, setHours] = useState<number[] | undefined>([12]);
   const [minutes, setMinutes] = useState<number[] | undefined>([0]);
+
   const [error, setInternalError] = useState<boolean>(false);
   const [valueCleared, setValueCleared] = useState<boolean>(false);
-  const previousValueCleared = usePrevious(valueCleared);
-  const localeJSON = JSON.stringify(locale);
 
-  useEffect(
-    () => {
-      setValuesFromCronString(
-        value,
-        setInternalError,
-        onError,
-        allowEmpty,
-        internalValueRef,
-        true,
-        locale,
-        shortcuts,
-        setMinutes,
-        setHours,
-        setMonthDays,
-        setMonths,
-        setWeekDays,
-        setPeriod
-      );
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const previousValueCleared = usePrevious(valueCleared);
+
+  const localeJSON = JSON.stringify(locale);
 
   useEffect(
     () => {
@@ -119,11 +107,9 @@ export default function Cron(props: CronProps) {
           humanizeValue
         );
 
+        if (!isValidCron(cron)) throw new Error("Invalid cron string");
         setValue(cron, { selectedPeriod });
         internalValueRef.current = cron;
-
-        onError && onError(undefined);
-        setInternalError(false);
       } else if (valueCleared) {
         setValueCleared(false);
       }
@@ -167,75 +153,50 @@ export default function Cron(props: CronProps) {
       internalValueRef.current = newValue;
 
       setValueCleared(true);
-
-      if (allowEmpty === "never" && clearButtonAction === "empty") {
-        setInternalError(true);
-        setError(onError, locale);
-      } else {
-        onError && onError(undefined);
-        setInternalError(false);
-      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [period, setValue, onError, clearButtonAction]
   );
 
-  const internalClassName = useMemo(
-    () =>
-      classNames({
-        "react-js-cron": true,
-        "react-js-cron-error": error && displayError,
-        "react-js-cron-disabled": disabled,
-        "react-js-cron-read-only": readOnly,
-      }),
-    [error, displayError, disabled, readOnly]
-  );
-
-  const clearButtonPropsJSON = JSON.stringify(clearButtonProps);
-  const clearButtonNode = useMemo(
-    () => {
-      if (clearButton && !readOnly) {
-        return (
-          <Button
-            className={"react-js-cron-clear-button"}
-            variant={"text"}
-            // color={"warning"}
-            disabled={disabled}
-            {...clearButtonProps}
-            onClick={handleClear}
-          >
-            {locale.clearButtonText || DEFAULT_LOCALE_EN.clearButtonText}
-          </Button>
-        );
-      }
-
-      return null;
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [clearButton, readOnly, localeJSON, disabled, clearButtonPropsJSON, handleClear]
+  const clearButtonNode = (
+    <Button
+      className={"react-js-cron-clear-button"}
+      variant={"text"}
+      disabled={disabled}
+      {...clearButtonProps}
+      onClick={handleClear}
+    >
+      {locale.clearButtonText || DEFAULT_LOCALE_EN.clearButtonText}
+    </Button>
   );
 
   const periodForRender = period || defaultPeriodRef.current;
 
   return (
     <Box
-      className={`${styles.root} ${internalClassName}`}
+      className={styles.root}
       sx={{
         display: "flex",
-        alignItems: "flex-start",
+        alignItems: "center",
         flexWrap: "wrap",
         mt: 2,
-        "& .MuiSelect-select": { p: 1 },
+        "& .MuiSelect-select": {
+          p: 1,
+        },
         "& .react-js-cron-field": {
           "& > span": {
-            mr: 1,
+            mx: 1,
           },
           alignItems: "center",
           display: "flex",
-          mb: "10px",
         },
       }}
     >
+      {!!error && (
+        <Typography color={"error"} flexBasis={"100%"} flexShrink={0}>
+          {error}
+        </Typography>
+      )}
       {allowedDropdowns.includes("period") && (
         <Period
           value={periodForRender}
@@ -265,7 +226,6 @@ export default function Cron(props: CronProps) {
               mode={mode}
             />
           )}
-
           {(periodForRender === "year" || periodForRender === "month") &&
             allowedDropdowns.includes("month-days") && (
               <MonthDays
@@ -275,7 +235,6 @@ export default function Cron(props: CronProps) {
                 weekDays={weekDays}
                 disabled={disabled}
                 readOnly={readOnly}
-                leadingZero={leadingZero}
                 period={periodForRender}
                 periodicityOnDoubleClick={periodicityOnDoubleClick}
                 mode={mode}
@@ -310,14 +269,12 @@ export default function Cron(props: CronProps) {
                   locale={locale}
                   disabled={disabled}
                   readOnly={readOnly}
-                  leadingZero={leadingZero}
                   clockFormat={clockFormat}
                   period={periodForRender}
                   periodicityOnDoubleClick={periodicityOnDoubleClick}
                   mode={mode}
                 />
               )}
-
             {periodForRender !== "minute" && allowedDropdowns.includes("minutes") && (
               <Minutes
                 value={minutes}
@@ -326,13 +283,11 @@ export default function Cron(props: CronProps) {
                 period={periodForRender}
                 disabled={disabled}
                 readOnly={readOnly}
-                leadingZero={leadingZero}
                 clockFormat={clockFormat}
                 periodicityOnDoubleClick={periodicityOnDoubleClick}
                 mode={mode}
               />
             )}
-
             {clearButtonNode}
           </div>
         </>

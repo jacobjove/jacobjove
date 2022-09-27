@@ -44,6 +44,7 @@ export const updateCacheAfterCreatingDashboard: MutationHookOptions<
   { createDashboard: DashboardFragment },
   DashboardCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createDashboard } = data || {};
     if (createDashboard) {

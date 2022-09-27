@@ -15,7 +15,7 @@ export default function CreationFields<T extends Model, CreationInput extends Pa
 ) {
   const { dataTuple, fields } = props;
   const [data, dispatchData] = dataTuple;
-
+  console.log("fields", fields);
   return (
     <>
       {Object.entries(fields).map(([_fieldName, _field]) => {

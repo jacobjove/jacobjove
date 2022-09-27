@@ -2,6 +2,8 @@
 .next
 coverage
 dist
+public
 node_modules
 _
 graphql.config.ts
+

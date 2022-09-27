@@ -43,6 +43,8 @@ interface TaskDialogProps extends ReturnType<typeof bindDialog> {
   data: TaskFragment;
 }
 
+const USE_STOPWATCH = false;
+
 const LEFT_SIDE_WIDTH = "3.3rem";
 
 const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
@@ -467,7 +469,7 @@ const TaskDialog: FC<TaskDialogProps> = (props: TaskDialogProps) => {
             </Box>
           </Box>
         </Box>
-        {!subtasks?.length && !!habit && (
+        {!subtasks?.length && !!habit && USE_STOPWATCH && (
           <Stopwatch
             time={time}
             setTime={setTime}

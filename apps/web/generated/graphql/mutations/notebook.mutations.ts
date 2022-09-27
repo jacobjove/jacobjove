@@ -43,6 +43,7 @@ export const updateCacheAfterCreatingNotebook: MutationHookOptions<
   { createNotebook: NotebookFragment },
   NotebookCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createNotebook } = data || {};
     if (createNotebook) {

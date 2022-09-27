@@ -28,18 +28,6 @@ interface TitleAndDescriptionFieldsProps<
   sx?: SxProps<Theme>;
 }
 
-// const TitleAndDescriptionStateProvider: FC = ({ children }) => {
-//   return children;
-// };
-
-// const TitleAndDescriptionEditingStateProvider: FC = ({ children }) => {
-//   return children;
-// };
-
-// const TitleAndDescriptionDataStateProvider: FC = ({ children }) => {
-//   return children;
-// };
-
 export default function TitleAndDescriptionFields<
   TitlePropName extends string,
   DescriptionPropName extends string
@@ -75,17 +63,19 @@ export default function TitleAndDescriptionFields<
         setEditing(false);
       }
     });
+  console.log("descriptionFocused", descriptionFocused);
   return (
     <Box sx={{ ...(sx ?? {}) }}>
       <Box>
         {editing ? (
           <TextField
+            required
             autoFocus={!descriptionFocused}
-            id="title"
+            // id="title"
             name={titleName ?? "title"}
             placeholder={titleLabel ?? "Title"}
             value={data[titleName] ?? ""}
-            onChange={(event) => dispatchData({ field: "title", value: event.target.value })}
+            onChange={(event) => dispatchData({ field: titleName, value: event.target.value })}
             onKeyUp={onKeyUp}
             variant="standard"
             InputProps={{ disableUnderline: true }}
@@ -134,7 +124,9 @@ export default function TitleAndDescriptionFields<
             value={data[descriptionName] ?? ""}
             onFocus={() => setDescriptionFocused(true)}
             onBlur={() => setDescriptionFocused(false)}
-            onChange={(event) => dispatchData({ field: "description", value: event.target.value })}
+            onChange={(event) =>
+              dispatchData({ field: descriptionName, value: event.target.value })
+            }
             onKeyUp={onKeyUp}
           />
         ) : (

@@ -1,9 +1,9 @@
+import { Typography } from "@mui/material";
 import { useMemo } from "react";
 import CustomSelect from "../components/CustomSelect";
 import { UNITS } from "../constants";
 import { DEFAULT_LOCALE_EN } from "../locale";
 import { MonthDaysProps } from "../types";
-import { classNames } from "../utils";
 
 export default function MonthDays(props: MonthDaysProps) {
   const {
@@ -14,24 +14,11 @@ export default function MonthDays(props: MonthDaysProps) {
     weekDays,
     disabled,
     readOnly,
-    leadingZero,
     period,
     periodicityOnDoubleClick,
     mode,
   } = props;
   const noWeekDays = !weekDays || weekDays.length === 0;
-
-  const internalClassName = useMemo(
-    () =>
-      classNames({
-        "react-js-cron-field": true,
-        "react-js-cron-month-days": true,
-        "react-js-cron-month-days-placeholder": !noWeekDays,
-        [`${className}-field`]: !!className,
-        [`${className}-month-days`]: !!className,
-      }),
-    [className, noWeekDays]
-  );
 
   const localeJSON = JSON.stringify(locale);
   const placeholder = useMemo(
@@ -52,9 +39,11 @@ export default function MonthDays(props: MonthDaysProps) {
     ((!value || value.length === 0) && (!weekDays || weekDays.length === 0));
 
   return displayMonthDays ? (
-    <div className={internalClassName}>
+    <div>
       {locale.prefixMonthDays !== "" && (
-        <span>{locale.prefixMonthDays || DEFAULT_LOCALE_EN.prefixMonthDays}</span>
+        <Typography mx={1}>
+          {locale.prefixMonthDays || DEFAULT_LOCALE_EN.prefixMonthDays}
+        </Typography>
       )}
 
       <CustomSelect
@@ -66,7 +55,6 @@ export default function MonthDays(props: MonthDaysProps) {
         className={className}
         disabled={disabled}
         readOnly={readOnly}
-        leadingZero={leadingZero}
         period={period}
         periodicityOnDoubleClick={periodicityOnDoubleClick}
         mode={mode}

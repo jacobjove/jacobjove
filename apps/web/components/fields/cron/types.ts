@@ -260,18 +260,15 @@ export interface MonthsProps extends FieldProps {
 }
 export interface MonthDaysProps extends FieldProps {
   weekDays?: number[];
-  leadingZero: LeadingZero;
 }
 export interface WeekDaysProps extends FieldProps {
   humanizeLabels: boolean;
   monthDays?: number[];
 }
 export interface HoursProps extends FieldProps {
-  leadingZero: LeadingZero;
   clockFormat?: ClockFormat;
 }
 export interface MinutesProps extends FieldProps {
-  leadingZero: LeadingZero;
   clockFormat?: ClockFormat;
 }
 export interface CustomSelectProps
@@ -293,7 +290,6 @@ export interface CustomSelectProps
     | "onSelect"
     | "onDeselect"
   > {
-  grid?: boolean;
   setValue: SetValueNumbersOrUndefined;
   optionsList?: string[];
   locale: Locale;

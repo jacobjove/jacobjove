@@ -51,6 +51,7 @@ export const updateCacheAfterCreatingUser: MutationHookOptions<
   { createUser: UserFragment },
   UserCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createUser } = data || {};
     if (createUser) {

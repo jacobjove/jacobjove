@@ -49,6 +49,7 @@ export const getOptimisticResponseFor<%= Name %>Creation = (data: <%= Name %>Cre
 };
 
 export const updateCacheAfterCreating<%= Name %>: MutationHookOptions<{ create<%= Name %>: <%= Name %>Fragment }, <%= Name %>CreationArgs> = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { create<%= Name %> } = data || {};
     if (create<%= Name %>) {

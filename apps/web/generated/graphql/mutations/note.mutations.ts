@@ -37,6 +37,7 @@ export const updateCacheAfterCreatingNote: MutationHookOptions<
   { createNote: NoteFragment },
   NoteCreationArgs
 > = {
+  refetchQueries: ["GetUser"],
   update(cache, { data }) {
     const { createNote } = data || {};
     if (createNote) {

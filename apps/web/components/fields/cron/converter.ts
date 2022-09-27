@@ -440,7 +440,7 @@ function applyInterval(values: number[], step?: number) {
   if (step) {
     const minVal = values[0];
 
-    values = values.filter((value) => {
+    values = values?.filter((value) => {
       return value % step === minVal % step || value === minVal;
     });
   }

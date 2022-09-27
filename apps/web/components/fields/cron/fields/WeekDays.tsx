@@ -1,38 +1,12 @@
+import { Autocomplete, TextField, Typography } from "@mui/material";
 import { useMemo } from "react";
-import CustomSelect from "../components/CustomSelect";
-import { UNITS } from "../constants";
 import { DEFAULT_LOCALE_EN } from "../locale";
 import { WeekDaysProps } from "../types";
-import { classNames } from "../utils";
 
 export default function WeekDays(props: WeekDaysProps) {
-  const {
-    value,
-    setValue,
-    locale,
-    className,
-    humanizeLabels,
-    monthDays,
-    disabled,
-    readOnly,
-    period,
-    periodicityOnDoubleClick,
-    mode,
-  } = props;
+  const { value, setValue, locale, monthDays, readOnly, period, mode } = props;
   const optionsList = locale.weekDays || DEFAULT_LOCALE_EN.weekDays;
   const noMonthDays = period === "week" || !monthDays || monthDays.length === 0;
-
-  const internalClassName = useMemo(
-    () =>
-      classNames({
-        "react-js-cron-field": true,
-        "react-js-cron-week-days": true,
-        "react-js-cron-week-days-placeholder": !noMonthDays,
-        [`${className}-field`]: !!className,
-        [`${className}-week-days`]: !!className,
-      }),
-    [className, noMonthDays]
-  );
 
   const localeJSON = JSON.stringify(locale);
   const placeholder = useMemo(
@@ -59,40 +33,39 @@ export default function WeekDays(props: WeekDaysProps) {
     ((!monthDays || monthDays.length === 0) && (!value || value.length === 0));
 
   return displayWeekDays ? (
-    <div className={internalClassName}>
+    <div>
       {locale.prefixWeekDays !== "" && (period === "week" || !monthDaysIsDisplayed) && (
-        <span>{locale.prefixWeekDays || DEFAULT_LOCALE_EN.prefixWeekDays}</span>
+        <Typography mx={1}>{locale.prefixWeekDays || DEFAULT_LOCALE_EN.prefixWeekDays}</Typography>
       )}
 
       {locale.prefixWeekDaysForMonthAndYearPeriod !== "" &&
         period !== "week" &&
         monthDaysIsDisplayed && (
-          <span>
+          <Typography mx={1}>
             {locale.prefixWeekDaysForMonthAndYearPeriod ||
               DEFAULT_LOCALE_EN.prefixWeekDaysForMonthAndYearPeriod}
-          </span>
+          </Typography>
         )}
-
-      <CustomSelect
-        placeholder={placeholder}
-        optionsList={optionsList}
-        grid={false}
-        value={value}
-        unit={{
-          ...UNITS[4],
-          // Allow translation of alternative labels when using "humanizeLabels"
-          // Issue #3
-          alt: locale.altWeekDays || DEFAULT_LOCALE_EN.altWeekDays,
-        }}
-        setValue={setValue}
-        locale={locale}
-        className={className}
-        humanizeLabels={humanizeLabels}
-        disabled={disabled}
-        readOnly={readOnly}
-        period={period}
-        periodicityOnDoubleClick={periodicityOnDoubleClick}
-        mode={mode}
+      <Autocomplete
+        value={value?.map((v) => optionsList[v])}
+        options={optionsList}
+        onChange={(e, v) => setValue(v?.map((v) => optionsList.indexOf(v)))}
+        {...(mode === "multiple" && { multiple: true })}
+        sx={{ display: "inline-block" }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="standard"
+            // onKeyDown={(e) => {
+            //   if (
+            //     e.key === "Enter" &&
+            //     options.findIndex((o) => o.title === inputValue) === -1
+            //   ) {
+            //     setOptions((o) => o.concat({ title: inputValue }));
+            //   }
+            // }}
+          />
+        )}
       />
     </div>
   ) : null;

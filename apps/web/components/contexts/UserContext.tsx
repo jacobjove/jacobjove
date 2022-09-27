@@ -1,8 +1,8 @@
 import { ApolloError, useQuery } from "@apollo/client";
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { GET_USER } from "@web/generated/graphql/queries/user.queries";
-import { useSession } from "next-auth/react";
-import { createContext, FC, ReactNode, useContext } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { createContext, FC, ReactNode, useContext, useEffect } from "react";
 
 interface UserContextData {
   user: UserFragment | undefined;
@@ -29,6 +29,12 @@ export const UserContextProvider: FC<UserContextProviderProps> = ({ children }) 
     skip: !session,
   });
   const contextData = { user: data?.user, loading, error };
+
+  // If there's a session but no user, something has gone wrong. Sign out.
+  useEffect(() => {
+    if (session && !loading && !data?.user) signOut();
+  }, [session, loading, data?.user]);
+
   return <UserContext.Provider value={contextData}>{children}</UserContext.Provider>;
 };
 
