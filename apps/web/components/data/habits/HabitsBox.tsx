@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useUser } from "@web/components/contexts/UserContext";
 import HabitCreationDialog from "@web/components/data/habits/HabitDialog";
 import DataBox, { DataBoxProps } from "@web/components/DataBox";
 import Habit from "@web/generated/graphql/types/Habit";
@@ -15,7 +14,6 @@ type HabitsBoxProps = Pick<DataBoxProps, "displayTitle"> & {
 };
 
 const HabitsBox: FC<HabitsBoxProps> = (props: HabitsBoxProps) => {
-  const { user } = useUser();
   const { habits, displayTitle } = props;
   const newHabitDialogState = usePopupState({
     variant: "dialog",
