@@ -1,5 +1,6 @@
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import styles from "@web/components/fields/cron/Cron.module.scss";
 import { isValidCron } from "cron-validator";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -29,7 +30,6 @@ export default function Cron(props: CronProps) {
     locale = DEFAULT_LOCALE_EN,
     value = "",
     setValue,
-    // displayError = true,
     onError,
     defaultPeriod = "day",
     allowEmpty = "for-default-value",
@@ -44,17 +44,17 @@ export default function Cron(props: CronProps) {
     allowedDropdowns = ["period", "months", "month-days", "week-days", "hours", "minutes"],
     allowedPeriods = ["year", "month", "week", "day", "hour", "minute", "reboot"],
   } = props;
-  // const date = new Date();
-
   const internalValueRef = useRef<string>(value);
   const defaultPeriodRef = useRef<PeriodType>(defaultPeriod);
 
   const [period, setPeriod] = useState<PeriodType>("day");
+
   const [monthDays, setMonthDays] = useState<number[] | undefined>();
   const [months, setMonths] = useState<number[] | undefined>();
   const [weekDays, setWeekDays] = useState<number[] | undefined>();
   const [hours, setHours] = useState<number[] | undefined>([12]);
   const [minutes, setMinutes] = useState<number[] | undefined>([0]);
+
   const [error, setInternalError] = useState<boolean>(false);
   const [valueCleared, setValueCleared] = useState<boolean>(false);
 
@@ -192,6 +192,11 @@ export default function Cron(props: CronProps) {
         },
       }}
     >
+      {!!error && (
+        <Typography color={"error"} flexBasis={"100%"} flexShrink={0}>
+          {error}
+        </Typography>
+      )}
       {allowedDropdowns.includes("period") && (
         <Period
           value={periodForRender}
