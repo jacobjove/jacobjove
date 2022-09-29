@@ -186,6 +186,9 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
           margin: 0,
           flexGrow: 1,
         },
+        "& .recentlyCompletedTasks": {
+          flexGrow: 0,
+        },
       }}
     >
       {views.map(([key]) => (
@@ -222,6 +225,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
       ))}
       {!!recentlyCompletedTasks.length && (
         <Accordion
+          className="recentlyCompletedTasks"
           expanded={recentlyCompletedTasksExpanded}
           onChange={() => {
             setRecentlyCompletedTasksExpanded(!recentlyCompletedTasksExpanded);
