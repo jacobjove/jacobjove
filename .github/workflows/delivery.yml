@@ -58,12 +58,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Cache dotenv
-        id: cache-dotenv
-        uses: actions/cache@v3
-        with:
-          path: .env
-          key: env-vars-${{ hashFiles('.env.*') }}
       - name: Generate .env file
         uses: iacobfred/generate-dotenv@v0.2.6
         with:

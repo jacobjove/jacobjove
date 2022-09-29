@@ -15,7 +15,7 @@ const DefaultPage: NextPage<PageProps> = () => {
   const { data: session } = useSession();
   return (
     <Layout>
-      <NextSeo title={"SelfBuilder"} canonical={"/"} description={"Be your best self."} />
+      <NextSeo canonical={"/"} description={"Build habits and accomplish your personal goals."} />
       <Container maxWidth={"lg"} sx={{ height: "100%" }}>
         <Box
           height="100%"
