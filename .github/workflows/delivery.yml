@@ -104,13 +104,11 @@ jobs:
           host: ${{ secrets.DOMAIN }}
           user: jacob
           target: /var/www/${{ secrets.DOMAIN }}
-          files: '.env.next docker-compose.yml .config/nginx.conf'
+          files: '.env docker-compose.yml .config/nginx.conf'
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           command: |
             cd /var/www/${DOMAIN} && 
-            if test -f .env; then mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.next .env.tmp > .env; fi;
-            rm .env.next; rm .env.tmp;
             set -a && source .env && set +a && 
             docker compose pull && docker compose up -d &&
             if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi;
