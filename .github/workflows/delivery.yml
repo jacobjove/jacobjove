@@ -13,8 +13,6 @@ on:
       - "**.md"
       - "**.rst"
       - "**.txt"
-      - tests.py
-      - setup.sh
 
 env:
   DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
