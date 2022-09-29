@@ -1,17 +1,18 @@
 import JSON5 from "json5";
+import partition from "lodash/partition";
 import path from "path";
 import Definition, {
   getConstructor,
   getType,
   getYup,
   TYPE_MAP,
-} from "../../../apps/web/graphql/schema/definition";
+} from "../../../libs/common/src/definition";
 
 module.exports = {
   params: async ({ args }: { args: { definition: string } }) => {
     const projectRoot = path.dirname(path.dirname(path.dirname(__dirname)));
     if (!args.definition) throw new Error("Must specify definition.");
-    const definitionPath = `${projectRoot}/apps/web/_definitions/${args.definition}`;
+    const definitionPath = `${projectRoot}/libs/common/src/_definitions/_/${args.definition}`;
     const definition = (await import(definitionPath)).default as Definition;
     if (!definition) throw new Error(`Failed to load definition from ${definitionPath}`);
     const modifiedDefinition = {
@@ -31,6 +32,7 @@ module.exports = {
       ),
       ...args,
       JSON5,
+      partition,
       typeMap: TYPE_MAP,
       getType,
       getConstructor,

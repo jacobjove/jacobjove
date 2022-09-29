@@ -5,7 +5,6 @@ import TitleAndDescriptionFields from "@web/components/fields/TitleAndDescriptio
 import fields from "@web/generated/graphql/fields/habit.fields";
 import { HabitFragment } from "@web/generated/graphql/fragments/habit.fragment";
 import { HabitCreationInput } from "@web/generated/graphql/inputs/habit.inputs";
-import Habit from "@web/generated/graphql/types/Habit";
 import { useCreateHabit, useHabitReducer } from "@web/generated/hooks/habit.hooks";
 import cronstrue from "cronstrue";
 import { bindDialog } from "material-ui-popup-state/hooks";
@@ -24,7 +23,7 @@ export default function HabitCreationDialog(props: HabitCreationDialogProps) {
   const editingState = useState(true);
   // console.log("fields", fields);
   return (
-    <CreationDialog<Habit, HabitCreationInput, { createHabit: HabitFragment }>
+    <CreationDialog<HabitFragment, HabitCreationInput, { createHabit: HabitFragment }>
       typeName="habit"
       dataTuple={dataTuple}
       create={create}
@@ -32,7 +31,7 @@ export default function HabitCreationDialog(props: HabitCreationDialogProps) {
       {...props}
     >
       <Box pt={2}>
-        <TitleAndDescriptionFields
+        <TitleAndDescriptionFields<"name", "description">
           titleConfig={{ name: "name", label: "Habit name" }}
           descriptionConfig={{ name: "description", label: "Description" }}
           dataTuple={dataTuple}

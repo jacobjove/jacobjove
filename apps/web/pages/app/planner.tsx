@@ -7,6 +7,7 @@ import { useUser } from "@web/components/contexts/UserContext";
 import GoalsBox from "@web/components/data/goals/GoalsBox";
 import HabitsBox from "@web/components/data/habits/HabitsBox";
 // import MantrasBox from "@web/components/data/mantras/MantrasBox";
+import Paper from "@mui/material/Paper";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import TasksBox from "@web/components/data/tasks/TasksBox";
@@ -109,7 +110,7 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
   selectedDateState,
 }: PlannerCompanionStuffProps) => {
   const { user } = useUser();
-  const { goals, mantras, habits } = user ?? {};
+  const { mantras } = user ?? {};
   const [fullScreen, setFullScreen] = useState(false);
   const [view, setView] = useState<ViewMode>("tasks");
   useEffect(() => {
@@ -117,11 +118,9 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
   }, [mantras]);
   return (
     <FullScreenExpandableComponent fullScreenState={[fullScreen, setFullScreen]}>
-      <Box
+      <Paper
         sx={{
           borderRadius: "4px",
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
           width: "100%",
           height: "100%",
           flexGrow: 1,
@@ -151,16 +150,16 @@ const PlannerCompanionStuff: FC<PlannerCompanionStuffProps> = ({
             </ToggleButton>
           </ToggleButtonGroup>
         </FullScreenToggleToolbar>
-        <Box flexGrow={1}>
+        <Box flexGrow={1} px={"0.66rem"}>
           {view === "tasks" ? (
             <TasksBox selectedDateState={selectedDateState} displayTitle={false} />
           ) : view === "habits" ? (
-            <HabitsBox habits={habits ?? []} displayTitle={false} />
+            <HabitsBox displayTitle={false} />
           ) : (
-            <GoalsBox goals={goals ?? []} displayTitle={false} />
+            <GoalsBox displayTitle={false} />
           )}
         </Box>
-      </Box>
+      </Paper>
     </FullScreenExpandableComponent>
   );
 };

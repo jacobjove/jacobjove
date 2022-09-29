@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Goal from "@web/generated/graphql/types/Goal";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const goalFragment = gql`
   fragment GoalFragment on Goal {
@@ -17,15 +18,17 @@ export const goalFragment = gql`
   }
 `;
 
-export type GoalFragment = Pick<
-  Goal,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "userId"
-  | "habitId"
-  | "parentId"
-  | "description"
+export type GoalFragment = NoUndefinedField<
+  Pick<
+    Fragment<Goal>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "habitId"
+    | "parentId"
+    | "description"
+  >
 >;

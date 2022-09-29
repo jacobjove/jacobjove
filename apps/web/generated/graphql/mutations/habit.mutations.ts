@@ -88,7 +88,6 @@ export const getOptimisticResponseForHabitUpdate = (
   const now = new Date();
   return {
     updateHabit: {
-      __typename: "Habit",
       ...fragment,
       ...data,
       updatedAt: now,

@@ -6,53 +6,33 @@ import { Field, InputType } from "type-graphql-v2-fork";
 
 @InputType()
 export class CalendarCreationInput {
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: false })
   userId!: string;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: false })
   name!: string;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: true })
   color?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: true })
   provider?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: true })
   remoteId?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: true })
   syncToken?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: true })
   accountId?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => Boolean, { nullable: true })
   primary?: boolean | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => Boolean, { nullable: true })
   public?: boolean | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => Boolean, { nullable: true })
   enabled?: boolean | undefined;
 

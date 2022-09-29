@@ -98,7 +98,6 @@ export const getOptimisticResponseForCalendarUpdate = (
   const now = new Date();
   return {
     updateCalendar: {
-      __typename: "Calendar",
       ...fragment,
       ...data,
       updatedAt: now,

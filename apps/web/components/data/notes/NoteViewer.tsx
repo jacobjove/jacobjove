@@ -3,13 +3,12 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import FullScreenExpandableComponent from "@web/components/fullscreen/FullScreenExpandableComponent";
 import FullScreenToggleToolbar from "@web/components/fullscreen/FullScreenToggleToolbar";
-import Note from "@web/generated/graphql/types/Note";
+import { NoteFragment } from "@web/generated/graphql/fragments/note.fragment";
 import { useNoteReducer, useUpdateNote } from "@web/generated/hooks/note.hooks";
-// import Toolbar from "@mui/material/Toolbar";
 import { FC, useEffect, useState } from "react";
 
 interface NoteViewerProps {
-  note: Note;
+  note: NoteFragment;
 }
 
 const NoteViewer: FC<NoteViewerProps> = ({ note }: NoteViewerProps) => {

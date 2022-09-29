@@ -6,23 +6,15 @@ import { Field, InputType } from "type-graphql-v2-fork";
 
 @InputType()
 export class GoalCreationInput {
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: false })
   userId!: string;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: true })
   habitId?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: true })
   parentId?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: false })
   description!: string;
 

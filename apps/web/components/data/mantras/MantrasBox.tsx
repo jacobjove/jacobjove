@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import DataBox, { DataBoxProps } from "@web/components/DataBox";
+import DataBox, { DataBoxProps } from "@web/components/data/DataBox";
 import Mantra from "@web/generated/graphql/types/Mantra";
 import { FC } from "react";
 

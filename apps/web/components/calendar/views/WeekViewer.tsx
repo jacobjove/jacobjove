@@ -15,7 +15,7 @@ import { getTimeOffsetPx } from "@web/components/calendar/views/DayViewer";
 import DateContext from "@web/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@web/components/contexts/UserContext";
-import { Calendar, CalendarEvent } from "@web/generated/graphql/types";
+import { CalendarFragment } from "@web/generated/graphql/fragments/calendar.fragment";
 import { ID } from "@web/graphql/schema/types";
 import {
   addMinutes,
@@ -79,7 +79,7 @@ export interface WeekViewerProps extends CalendarProps {
   selectedDate: Date;
   setSelectedDate: Dispatch<Date>;
   viewedHourState: [number, Dispatch<number>];
-  defaultCalendar: Calendar;
+  defaultCalendar: CalendarFragment;
   hidden: boolean;
 }
 
@@ -223,9 +223,9 @@ const WeekViewer: FC<WeekViewerProps> = ({
                           setHours(setMinutes(setSeconds(selectedDate, 0), j * 30), START_HOUR + i),
                           selectedDate.getDay() + dayIndex - selectedDayIndex
                         );
-                        const eventSlotEvents = calendarEvents?.filter((event: CalendarEvent) => {
+                        const eventSlotEvents = calendarEvents?.filter((calendarEvent) => {
                           const diff = differenceInMinutes(
-                            event.start,
+                            calendarEvent.start,
                             eventSlotDate,
                             // Rounding method options are round, ceil, floor, and trunc (default).
                             // The default rounding method results in diffs that are 1 smaller

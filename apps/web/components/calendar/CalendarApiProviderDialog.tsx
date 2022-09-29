@@ -24,6 +24,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { useUser } from "@web/components/contexts/UserContext";
+import { CalendarFragment } from "@web/generated/graphql/fragments/calendar.fragment";
 import { UserFragment } from "@web/generated/graphql/fragments/user.fragment";
 import { GET_USER } from "@web/generated/graphql/queries/user.queries";
 import Calendar from "@web/generated/graphql/types/Calendar";
@@ -98,7 +99,7 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   const [updateAccount, { loading: loadingUpdateAccount }] = useUpdateAccount();
   const [updateCalendar, { loading: loadingUpdateCalendar }] = useUpdateCalendar();
   const [addCalendars, { loading: loadingAddCalendars }] = useMutation<{
-    addCalendars: Calendar[];
+    addCalendars: CalendarFragment[];
   }>(CREATE_CALENDARS, {
     // TODO
     refetchQueries: [GET_USER, "GetUser"],
@@ -181,7 +182,11 @@ export default function CalendarApiProviderDialog(props: CalendarApiProviderDial
   }, 2000);
 
   const refreshCalendarList = useThrottledCallback(
-    async (user: UserFragment, provider: CalendarProvider, calendars: Calendar[] | undefined) => {
+    async (
+      user: UserFragment,
+      provider: CalendarProvider,
+      calendars: CalendarFragment[] | undefined
+    ) => {
       setRefreshing(true);
       return await axios
         .get(`/api/calendars?provider=${provider}`)

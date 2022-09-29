@@ -24,11 +24,6 @@ export class CalendarEvent extends Model {
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.
   // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: true })
-  scheduleId?: string | null;
-
-  // `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
-  @Field(() => ObjectIdScalar, { nullable: true })
   habitId?: string | null;
 
   // `nullable` in TypeGraphQL actually refers to whether the input is optional.

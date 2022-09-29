@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Dashboard from "@web/generated/graphql/types/Dashboard";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const dashboardFragment = gql`
   fragment DashboardFragment on Dashboard {
@@ -18,16 +19,18 @@ export const dashboardFragment = gql`
   }
 `;
 
-export type DashboardFragment = Pick<
-  Dashboard,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "userId"
-  | "name"
-  | "description"
-  | "isDefault"
-  | "public"
+export type DashboardFragment = NoUndefinedField<
+  Pick<
+    Fragment<Dashboard>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "name"
+    | "description"
+    | "isDefault"
+    | "public"
+  >
 >;

@@ -12,6 +12,7 @@ export { default as ListItemModel } from "./ListItem";
 export { default as MantraModel } from "./Mantra";
 export { default as NoteModel } from "./Note";
 export { default as NotebookModel } from "./Notebook";
+export { default as ShelfModel } from "./Shelf";
 export { default as ShelvingModel } from "./Shelving";
 export { default as TaskModel } from "./Task";
 export { default as UserModel } from "./User";

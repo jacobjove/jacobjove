@@ -88,7 +88,6 @@ export const getOptimisticResponseForBeliefUpdate = (
   const now = new Date();
   return {
     updateBelief: {
-      __typename: "Belief",
       ...fragment,
       ...data,
       updatedAt: now,

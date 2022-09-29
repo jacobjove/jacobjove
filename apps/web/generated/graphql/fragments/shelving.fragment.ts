@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Shelving from "@web/generated/graphql/types/Shelving";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const shelvingFragment = gql`
   fragment ShelvingFragment on Shelving {
@@ -17,15 +18,17 @@ export const shelvingFragment = gql`
   }
 `;
 
-export type ShelvingFragment = Pick<
-  Shelving,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "bookId"
-  | "shelfId"
-  | "position"
-  | "rationale"
+export type ShelvingFragment = NoUndefinedField<
+  Pick<
+    Fragment<Shelving>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "bookId"
+    | "shelfId"
+    | "position"
+    | "rationale"
+  >
 >;

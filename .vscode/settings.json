@@ -29,7 +29,7 @@
     "**/*.pyc": true,
     "**/__pycache__": true,
     "**/.next": true,
-    "**/node_modules": false
+    "**/node_modules": true
   },
   "gitlens.currentLine.scrollable": false,
   "php.suggest.basic": false,

@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import List from "@web/generated/graphql/types/List";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const listFragment = gql`
   fragment ListFragment on List {
@@ -17,15 +18,17 @@ export const listFragment = gql`
   }
 `;
 
-export type ListFragment = Pick<
-  List,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "userId"
-  | "name"
-  | "description"
-  | "fields"
+export type ListFragment = NoUndefinedField<
+  Pick<
+    Fragment<List>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "name"
+    | "description"
+    | "fields"
+  >
 >;

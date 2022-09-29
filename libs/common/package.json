@@ -13,10 +13,13 @@
   ],
   "private": true,
   "scripts": {},
-  "dependencies": {},
+  "dependencies": {
+    "react-grid-layout": "*"
+  },
   "devDependencies": {
     "@swc/cli": "*",
     "@swc/core": "*",
-    "@swc/helpers": "*"
+    "@swc/helpers": "*",
+    "@types/react-grid-layout": "*"
   }
 }

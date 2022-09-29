@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Note from "@web/generated/graphql/types/Note";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const noteFragment = gql`
   fragment NoteFragment on Note {
@@ -18,16 +19,18 @@ export const noteFragment = gql`
   }
 `;
 
-export type NoteFragment = Pick<
-  Note,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "userId"
-  | "notebookId"
-  | "title"
-  | "body"
-  | "public"
+export type NoteFragment = NoUndefinedField<
+  Pick<
+    Fragment<Note>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "notebookId"
+    | "title"
+    | "body"
+    | "public"
+  >
 >;

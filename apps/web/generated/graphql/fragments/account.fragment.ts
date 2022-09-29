@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Account from "@web/generated/graphql/types/Account";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const accountFragment = gql`
   fragment AccountFragment on Account {
@@ -21,19 +22,21 @@ export const accountFragment = gql`
   }
 `;
 
-export type AccountFragment = Pick<
-  Account,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "userId"
-  | "provider"
-  | "remoteId"
-  | "scopes"
-  | "accessToken"
-  | "refreshToken"
-  | "accessTokenExpiry"
-  | "syncToken"
+export type AccountFragment = NoUndefinedField<
+  Pick<
+    Fragment<Account>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "provider"
+    | "remoteId"
+    | "scopes"
+    | "accessToken"
+    | "refreshToken"
+    | "accessTokenExpiry"
+    | "syncToken"
+  >
 >;

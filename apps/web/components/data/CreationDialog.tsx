@@ -1,4 +1,5 @@
 import { MutationFunction } from "@apollo/client";
+import { Field } from "@common/definition";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,16 +9,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import { Field } from "@web/graphql/schema/definition";
-import { Fragment, Model } from "@web/graphql/schema/types";
+import { FragmentBase } from "@web/graphql/schema/types";
 import { Payload } from "@web/hooks/reduction";
 import { bindDialog, bindMenu, usePopupState } from "material-ui-popup-state/hooks";
 import { Dispatch, MutableRefObject } from "react";
 
 export interface CreationDialogProps<
-  T extends Model,
-  CreationInput extends Partial<T>,
-  CreationMutationData extends { [key: string]: Fragment }
+  FragmentType extends FragmentBase,
+  CreationInput extends Partial<FragmentType>,
+  CreationMutationData extends { [key: string]: FragmentType }
 > extends ReturnType<typeof bindDialog> {
   close: () => void;
   children?: React.ReactNode;
@@ -29,9 +29,9 @@ export interface CreationDialogProps<
 }
 
 export default function CreationDialog<
-  T extends Model,
-  CreationInput extends Partial<T>,
-  CreationMutationData extends { [key: string]: Fragment }
+  FragmentType extends FragmentBase,
+  CreationInput extends Partial<FragmentType>,
+  CreationMutationData extends { [key: string]: FragmentType }
 >({
   children,
   typeName,
@@ -41,7 +41,7 @@ export default function CreationDialog<
   close,
   onClose,
   ...dialogProps
-}: CreationDialogProps<T, CreationInput, CreationMutationData>) {
+}: CreationDialogProps<FragmentType, CreationInput, CreationMutationData>) {
   const [data, dispatchData] = dataTuple;
 
   const menuState = usePopupState({

@@ -86,7 +86,6 @@ export const getOptimisticResponseForNoteUpdate = (
   const now = new Date();
   return {
     updateNote: {
-      __typename: "Note",
       ...fragment,
       ...data,
       updatedAt: now,

@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Mantra from "@web/generated/graphql/types/Mantra";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const mantraFragment = gql`
   fragment MantraFragment on Mantra {
@@ -15,7 +16,9 @@ export const mantraFragment = gql`
   }
 `;
 
-export type MantraFragment = Pick<
-  Mantra,
-  "__typename" | "id" | "createdAt" | "updatedAt" | "archivedAt" | "userId" | "content"
+export type MantraFragment = NoUndefinedField<
+  Pick<
+    Fragment<Mantra>,
+    "__typename" | "id" | "createdAt" | "updatedAt" | "archivedAt" | "userId" | "content"
+  >
 >;

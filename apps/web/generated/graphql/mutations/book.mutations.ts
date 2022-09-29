@@ -81,7 +81,6 @@ export const getOptimisticResponseForBookUpdate = (
   const now = new Date();
   return {
     updateBook: {
-      __typename: "Book",
       ...fragment,
       ...data,
       updatedAt: now,

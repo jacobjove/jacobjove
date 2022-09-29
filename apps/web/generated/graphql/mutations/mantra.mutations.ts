@@ -87,7 +87,6 @@ export const getOptimisticResponseForMantraUpdate = (
   const now = new Date();
   return {
     updateMantra: {
-      __typename: "Mantra",
       ...fragment,
       ...data,
       updatedAt: now,

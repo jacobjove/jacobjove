@@ -1,9 +1,10 @@
-import { Calendar, CalendarEvent } from "@web/generated/graphql/types";
+import { CalendarFragment } from "@web/generated/graphql/fragments/calendar.fragment";
+import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
 import { Dispatch } from "react";
 
 export type CalendarData = {
-  calendars: Calendar[];
-  calendarEvents: CalendarEvent[];
+  calendars: CalendarFragment[];
+  calendarEvents: CalendarEventFragment[];
 };
 
 export interface CalendarProps {
@@ -14,6 +15,6 @@ export interface CalendarProps {
 export interface ViewerProps extends CalendarProps {
   selectedDate: Date;
   setSelectedDate: Dispatch<Date>;
-  defaultCalendar: Calendar;
+  defaultCalendar: CalendarFragment;
   hidden: boolean;
 }

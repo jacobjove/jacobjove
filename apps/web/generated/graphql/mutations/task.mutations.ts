@@ -91,7 +91,6 @@ export const getOptimisticResponseForTaskUpdate = (
   const now = new Date();
   return {
     updateTask: {
-      __typename: "Task",
       ...fragment,
       ...data,
       updatedAt: now,

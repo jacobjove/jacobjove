@@ -211,7 +211,6 @@ type CalendarEvent {
   id: ObjectId!
   notes: String
   remoteId: String
-  scheduleId: ObjectId
   start: DateTimeISO!
   taskId: ObjectId
   title: String!
@@ -228,7 +227,6 @@ input CalendarEventCreationInput {
   habitId: ObjectId
   notes: String
   remoteId: String
-  scheduleId: ObjectId
   start: DateTimeISO!
   taskId: ObjectId
   title: String!
@@ -244,7 +242,6 @@ input CalendarEventUpdateInput {
   habitId: ObjectId
   notes: String
   remoteId: String
-  scheduleId: ObjectId
   start: DateTimeISO
   taskId: ObjectId
   title: String
@@ -261,7 +258,6 @@ input CalendarEventWhereInput {
   id: ObjectId
   notes: String
   remoteId: String
-  scheduleId: ObjectId
   start: DateTimeISO
   taskId: ObjectId
   title: String
@@ -623,6 +619,7 @@ type Mutation {
   createMantra(data: MantraCreationInput!): Mantra!
   createNote(data: NoteCreationInput!): Note!
   createNotebook(data: NotebookCreationInput!): Notebook!
+  createShelf(data: ShelfCreationInput!): Shelf!
   createShelving(data: ShelvingCreationInput!): Shelving!
   createTask(data: TaskCreationInput!): Task!
   createUser(data: UserCreationInput!): User!
@@ -641,6 +638,7 @@ type Mutation {
   updateMantra(data: MantraUpdateInput!, where: MantraWhereUniqueInput!): Mantra!
   updateNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note!
   updateNotebook(data: NotebookUpdateInput!, where: NotebookWhereUniqueInput!): Notebook!
+  updateShelf(data: ShelfUpdateInput!, where: ShelfWhereUniqueInput!): Shelf!
   updateShelving(data: ShelvingUpdateInput!, where: ShelvingWhereUniqueInput!): Shelving!
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
@@ -659,6 +657,7 @@ type Mutation {
   upsertMantra(data: MantraCreationInput!, where: MantraWhereUniqueInput!): Mantra!
   upsertNote(data: NoteCreationInput!, where: NoteWhereUniqueInput!): Note!
   upsertNotebook(data: NotebookCreationInput!, where: NotebookWhereUniqueInput!): Notebook!
+  upsertShelf(data: ShelfCreationInput!, where: ShelfWhereUniqueInput!): Shelf!
   upsertShelving(data: ShelvingCreationInput!, where: ShelvingWhereUniqueInput!): Shelving!
   upsertTask(data: TaskCreationInput!, where: TaskWhereUniqueInput!): Task!
   upsertUser(data: UserCreationInput!, where: UserWhereUniqueInput!): User!
@@ -785,6 +784,8 @@ type Query {
   notebook(where: NotebookWhereUniqueInput!): Notebook
   notebooks(where: NotebookWhereInput): [Notebook!]!
   notes(where: NoteWhereInput): [Note!]!
+  shelf(where: ShelfWhereUniqueInput!): Shelf
+  shelves(where: ShelfWhereInput): [Shelf!]!
   shelving(where: ShelvingWhereUniqueInput!): Shelving
   shelvings(where: ShelvingWhereInput): [Shelving!]!
   task(where: TaskWhereUniqueInput!): Task
@@ -793,6 +794,36 @@ type Query {
   users(where: UserWhereInput): [User!]!
   value(where: ValueWhereUniqueInput!): Value
   values(where: ValueWhereInput): [Value!]!
+}
+
+type Shelf {
+  _id: ObjectId!
+  archivedAt: DateTimeISO
+  createdAt: DateTimeISO!
+  id: ObjectId!
+  ownerId: ObjectId!
+  updatedAt: DateTimeISO!
+}
+
+input ShelfCreationInput {
+  archivedAt: DateTimeISO
+  ownerId: ObjectId!
+}
+
+input ShelfUpdateInput {
+  archivedAt: DateTimeISO
+  ownerId: ObjectId
+}
+
+input ShelfWhereInput {
+  createdAt: DateTimeISO
+  id: ObjectId
+  ownerId: ObjectId
+  updatedAt: DateTimeISO
+}
+
+input ShelfWhereUniqueInput {
+  id: ObjectId
 }
 
 type Shelving {

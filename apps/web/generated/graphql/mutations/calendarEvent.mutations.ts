@@ -30,7 +30,6 @@ export const getOptimisticResponseForCalendarEventCreation = (
       __typename: "CalendarEvent",
       id: new ObjectID().toHexString(),
       remoteId: null,
-      scheduleId: null,
       habitId: null,
       taskId: null,
       end: null,
@@ -101,7 +100,6 @@ export const getOptimisticResponseForCalendarEventUpdate = (
   const now = new Date();
   return {
     updateCalendarEvent: {
-      __typename: "CalendarEvent",
       ...fragment,
       ...data,
       updatedAt: now,

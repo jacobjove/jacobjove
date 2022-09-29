@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Identity from "@web/generated/graphql/types/Identity";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const identityFragment = gql`
   fragment IdentityFragment on Identity {
@@ -16,7 +17,16 @@ export const identityFragment = gql`
   }
 `;
 
-export type IdentityFragment = Pick<
-  Identity,
-  "__typename" | "id" | "createdAt" | "updatedAt" | "archivedAt" | "userId" | "name" | "description"
+export type IdentityFragment = NoUndefinedField<
+  Pick<
+    Fragment<Identity>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "name"
+    | "description"
+  >
 >;

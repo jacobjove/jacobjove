@@ -12,6 +12,7 @@ export type { ListItem } from "./ListItem";
 export type { Mantra } from "./Mantra";
 export type { Note } from "./Note";
 export type { Notebook } from "./Notebook";
+export type { Shelf } from "./Shelf";
 export type { Shelving } from "./Shelving";
 export type { Task } from "./Task";
 export type { User } from "./User";

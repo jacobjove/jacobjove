@@ -85,7 +85,6 @@ export const getOptimisticResponseForValueUpdate = (
   const now = new Date();
   return {
     updateValue: {
-      __typename: "Value",
       ...fragment,
       ...data,
       updatedAt: now,

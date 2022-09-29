@@ -1,26 +1,24 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import DataBox, { DataBoxProps } from "@web/components/DataBox";
+import { useUser } from "@web/components/contexts/UserContext";
+import DataBox, { DataBoxProps } from "@web/components/data/DataBox";
 import GoalCreationDialog from "@web/generated/components/goals/GoalCreationDialog";
-import Goal from "@web/generated/graphql/types/Goal";
 import { bindDialog, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { FC } from "react";
 
-type GoalsBoxProps = Pick<DataBoxProps, "displayTitle"> & {
-  goals: Goal[];
-};
+type GoalsBoxProps = Pick<DataBoxProps, "displayTitle">;
 
-const GoalsBox: FC<GoalsBoxProps> = (props: GoalsBoxProps) => {
-  const { goals, displayTitle } = props;
+const GoalsBox: FC<GoalsBoxProps> = ({ displayTitle }: GoalsBoxProps) => {
+  const { user } = useUser();
   const newGoalDialogState = usePopupState({
     variant: "dialog",
     popupId: `new-goal-dialog`,
   });
   return (
     <DataBox title={"Goals"} displayTitle={displayTitle}>
-      {goals?.length ? (
-        goals.map((goal, _index) => {
+      {user?.goals.length ? (
+        user.goals.map((goal, _index) => {
           return (
             <Box p={"1rem"} key={goal.id}>
               <Typography>{goal.id}</Typography>

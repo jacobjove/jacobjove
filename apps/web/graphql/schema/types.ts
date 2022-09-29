@@ -13,8 +13,6 @@ export const DEFAULT_SCHEMA_OPTIONS = {
 
 @ObjectType()
 export class Model {
-  readonly __typename?: string;
-
   @Field(() => ObjectIdScalar, { nullable: false })
   readonly _id!: ObjectId;
 
@@ -46,5 +44,11 @@ export class WhereUniqueInput {
   id?: string | undefined;
 }
 
-export type Fragment = Pick<Model, "__typename" | "id" | "createdAt" | "updatedAt" | "archivedAt"> &
-  Record<string, unknown>;
+export type FragmentBase = {
+  __typename: string;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type Fragment<T extends Model> = FragmentBase & Partial<Omit<T, "_id" | "id">>;

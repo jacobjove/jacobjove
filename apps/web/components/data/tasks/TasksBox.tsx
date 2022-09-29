@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
+import DataBox, { DataBoxProps } from "@web/components/data/DataBox";
 import TasksAccordion, { TasksAccordionProps } from "@web/components/data/tasks/TasksAccordion";
-import DataBox, { DataBoxProps } from "@web/components/DataBox";
 import { Dispatch, FC, useState } from "react";
 
 type ViewMode = "list" | "board";

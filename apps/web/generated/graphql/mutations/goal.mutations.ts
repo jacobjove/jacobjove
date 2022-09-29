@@ -86,7 +86,6 @@ export const getOptimisticResponseForGoalUpdate = (
   const now = new Date();
   return {
     updateGoal: {
-      __typename: "Goal",
       ...fragment,
       ...data,
       updatedAt: now,

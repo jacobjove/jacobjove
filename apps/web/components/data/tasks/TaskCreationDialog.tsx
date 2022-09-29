@@ -8,7 +8,6 @@ import TasksTable from "@web/components/data/tasks/TasksTable";
 import fields from "@web/generated/graphql/fields/task.fields";
 import { TaskFragment } from "@web/generated/graphql/fragments/task.fragment";
 import { TaskCreationInput } from "@web/generated/graphql/inputs/task.inputs";
-import Task from "@web/generated/graphql/types/Task";
 import { useCreateTask, useTaskReducer, useTasksReducer } from "@web/generated/hooks/task.hooks";
 import { ID } from "@web/graphql/schema/types";
 import { format } from "date-fns";
@@ -39,7 +38,7 @@ export default function TaskCreationDialog(props: TaskCreationDialogProps) {
     }
     props.close();
   };
-  return CreationDialog<Task, TaskCreationInput, { createTask: TaskFragment }>({
+  return CreationDialog<TaskFragment, TaskCreationInput, { createTask: TaskFragment }>({
     typeName: "task",
     dataTuple,
     create,

@@ -21,7 +21,9 @@ interface TitleAndDescriptionFieldsProps<
   editingState: [boolean, Dispatch<boolean>];
   includeIcon?: boolean;
   dataTuple: [
-    { [key in TitlePropName]?: string | null } & { [key in DescriptionPropName]?: string | null },
+    { [key in TitlePropName]?: string | null | undefined } & {
+      [key in DescriptionPropName]?: string | null | undefined;
+    },
     Dispatch<any>
   ];
   onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;

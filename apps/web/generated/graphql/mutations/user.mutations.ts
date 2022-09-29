@@ -92,7 +92,6 @@ export const getOptimisticResponseForUserUpdate = (
   const now = new Date();
   return {
     updateUser: {
-      __typename: "User",
       ...fragment,
       ...data,
       updatedAt: now,

@@ -12,6 +12,7 @@ export { default as ListItem } from "./ListItem";
 export { default as Mantra } from "./Mantra";
 export { default as Note } from "./Note";
 export { default as Notebook } from "./Notebook";
+export { default as Shelf } from "./Shelf";
 export { default as Shelving } from "./Shelving";
 export { default as Task } from "./Task";
 export { default as User } from "./User";

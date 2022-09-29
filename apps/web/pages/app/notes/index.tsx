@@ -7,8 +7,7 @@ import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useUser } from "@web/components/contexts/UserContext";
 import NotesMenu from "@web/components/data/notes/NotesMenu";
 import NoteViewer from "@web/components/data/notes/NoteViewer";
-import { noteFragment } from "@web/generated/graphql/fragments/note.fragment";
-import Note from "@web/generated/graphql/types/Note";
+import { NoteFragment, noteFragment } from "@web/generated/graphql/fragments/note.fragment";
 import { useCreateNote } from "@web/generated/hooks/note.hooks";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
@@ -32,7 +31,7 @@ const QUERY = gql`
 `;
 
 interface NotesPageData {
-  notes: Note[];
+  notes: NoteFragment[];
 }
 
 const NotesPage: NextPage<NotesPageProps> = (_props: NotesPageProps) => {
