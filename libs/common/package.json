@@ -14,12 +14,14 @@
   "private": true,
   "scripts": {},
   "dependencies": {
-    "react-grid-layout": "*"
+    "bson": "*",
+    "inflection": "*",
+    "json5": "*"
   },
   "devDependencies": {
     "@swc/cli": "*",
     "@swc/core": "*",
     "@swc/helpers": "*",
-    "@types/react-grid-layout": "*"
+    "@types/inflection": "*"
   }
 }

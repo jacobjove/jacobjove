@@ -193,6 +193,7 @@
     "extends": "stylelint-config-standard"
   },
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "libs/*"
   ]
 }
