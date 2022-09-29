@@ -110,7 +110,7 @@
     "@nrwl/linter": "14.7.3",
     "@nrwl/nx-cloud": "14.6.2",
     "@nrwl/react": "14.7.3",
-    "@nrwl/web": "14.7.3",
+    "@nrwl/web": "14.7.17",
     "@nrwl/workspace": "14.7.3",
     "@simbathesailor/use-what-changed": "^2.0.0",
     "@swc/cli": "^0.1.52",
