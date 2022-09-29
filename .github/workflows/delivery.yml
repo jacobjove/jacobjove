@@ -18,6 +18,7 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PORT: 3000
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SHA: ${{ github.sha }}
 
@@ -45,35 +46,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Cache dotenv
-        id: cache-dotenv
-        uses: actions/cache@v3
+      - name: Generate .env file
+        uses: iacobfred/generate-dotenv@v0.2.6
         with:
-          path: .env
-          key: env-vars-${{ hashFiles('.env.*') }}
-      - name: Write dotenv file
-        if: steps.cache-dotenv.outputs.cache-hit != 'true'
-        # https://github.com/iamsauravsharma/create-dotenv
-        uses: iamsauravsharma/create-dotenv@v1.2.1
-        with:
-          env-prefix: "_" # Optional (default: '')
-          _PORT: 3000
-        # env: # env available for only this steps
-        #   _SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      - name: Finalize dotenv file
-        # Make sure to test: https://sed.js.org/
-        run: |
-          echo "Merging production env vars into dotenv file..."
-          mv .env .env.tmp
-          sort -u -t '=' -k 1,1 .env.production .env.tmp > .env
-          echo "Removing leading underscores..."
-          sed -i -r 's/^_//g' .env
-          echo "Replacing hyphens with underscores in var names..."
-          sed -i -r 's/(^[^=-]+)\-/\1_/g' .env
-          echo "Making further fancy adjustments..."
-          sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
-          sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
-          echo "Finished preparing dotenv file."
+          template-paths: |
+            .config/_.env
+            .config/_.env.production
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -93,7 +71,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          # no-cache: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secret-files: ENV_FILE=./.env
