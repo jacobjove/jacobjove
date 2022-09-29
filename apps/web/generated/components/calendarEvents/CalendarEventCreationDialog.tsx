@@ -2,7 +2,6 @@ import CreationDialog from "@web/components/data/CreationDialog";
 import fields from "@web/generated/graphql/fields/calendarEvent.fields";
 import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
 import { CalendarEventCreationInput } from "@web/generated/graphql/inputs/calendarEvent.inputs";
-import CalendarEvent from "@web/generated/graphql/types/CalendarEvent";
 import {
   useCalendarEventReducer,
   useCreateCalendarEvent,
@@ -18,7 +17,7 @@ export default function CalendarEventCreationDialog(props: CalendarEventCreation
   const [create] = useCreateCalendarEvent();
   const dataTuple = useCalendarEventReducer();
   return CreationDialog<
-    CalendarEvent,
+    CalendarEventFragment,
     CalendarEventCreationInput,
     { createCalendarEvent: CalendarEventFragment }
   >({

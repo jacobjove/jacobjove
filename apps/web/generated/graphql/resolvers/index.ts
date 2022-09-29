@@ -12,6 +12,7 @@ export { ListItemResolver } from "./listItem.resolver";
 export { MantraResolver } from "./mantra.resolver";
 export { NoteResolver } from "./note.resolver";
 export { NotebookResolver } from "./notebook.resolver";
+export { ShelfResolver } from "./shelf.resolver";
 export { ShelvingResolver } from "./shelving.resolver";
 export { TaskResolver } from "./task.resolver";
 export { UserResolver } from "./user.resolver";

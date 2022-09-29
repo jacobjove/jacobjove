@@ -1,6 +1,6 @@
+import { Field } from "@common/definition";
 import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Field } from "@web/graphql/schema/definition";
 import { Model } from "@web/graphql/schema/types";
 import { Payload } from "@web/hooks/reduction";
 import { Dispatch } from "react";
@@ -14,7 +14,7 @@ export default function CreationFields<T extends Model, CreationInput extends Pa
   props: CreationFieldsProps<T, CreationInput>
 ) {
   const { dataTuple, fields } = props;
-  const [data, dispatchData] = dataTuple;
+  const [data, _dispatchData] = dataTuple;
   console.log("fields", fields);
   return (
     <>
@@ -30,12 +30,13 @@ export default function CreationFields<T extends Model, CreationInput extends Pa
                 multiline={field.widget?.multiline ?? false}
                 placeholder={field.widget?.placeholder ?? field.label}
                 value={data[fieldName] ?? ""}
-                onChange={(event) =>
-                  dispatchData({
-                    field: fieldName,
-                    value: event.target.value as unknown as CreationInput[keyof CreationInput],
-                  })
-                }
+                onChange={(event) => {
+                  alert(`To do: dispatch ${fieldName} = ${event.target.value}`);
+                  // dispatchData({
+                  //   field: fieldName,
+                  //   value: event.target.value,
+                  // })
+                }}
               />
             ) : (
               <div>{field.label ?? fieldName}</div>

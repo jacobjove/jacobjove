@@ -83,7 +83,6 @@ export const getOptimisticResponseForShelvingUpdate = (
   const now = new Date();
   return {
     updateShelving: {
-      __typename: "Shelving",
       ...fragment,
       ...data,
       updatedAt: now,

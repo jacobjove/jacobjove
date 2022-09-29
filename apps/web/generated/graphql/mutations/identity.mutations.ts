@@ -91,7 +91,6 @@ export const getOptimisticResponseForIdentityUpdate = (
   const now = new Date();
   return {
     updateIdentity: {
-      __typename: "Identity",
       ...fragment,
       ...data,
       updatedAt: now,

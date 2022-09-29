@@ -6,23 +6,15 @@ import { Field, InputType } from "type-graphql-v2-fork";
 
 @InputType()
 export class ShelvingCreationInput {
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: false })
   bookId!: string;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: false })
   shelfId!: string;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => Int, { nullable: false })
   position!: number;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: true })
   rationale?: string | null | undefined;
 

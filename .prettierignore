@@ -2,3 +2,4 @@
 .npm/
 .venv/
 node_modules/
+dist/

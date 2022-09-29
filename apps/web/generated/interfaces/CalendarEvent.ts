@@ -10,7 +10,6 @@ export interface CalendarEvent {
   userId: mongoose.Types.ObjectId;
   calendarId: mongoose.Types.ObjectId;
   remoteId?: string | null;
-  scheduleId?: mongoose.Types.ObjectId | null;
   habitId?: mongoose.Types.ObjectId | null;
   taskId?: mongoose.Types.ObjectId | null;
   title: string;

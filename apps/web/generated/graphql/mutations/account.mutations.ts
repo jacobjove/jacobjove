@@ -94,7 +94,6 @@ export const getOptimisticResponseForAccountUpdate = (
   const now = new Date();
   return {
     updateAccount: {
-      __typename: "Account",
       ...fragment,
       ...data,
       updatedAt: now,

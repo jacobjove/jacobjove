@@ -90,7 +90,6 @@ export const getOptimisticResponseForListItemUpdate = (
   const now = new Date();
   return {
     updateListItem: {
-      __typename: "ListItem",
       ...fragment,
       ...data,
       updatedAt: now,

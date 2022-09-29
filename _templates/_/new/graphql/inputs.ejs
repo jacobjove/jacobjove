@@ -8,6 +8,8 @@ force: true
 import { InputType, Field } from "type-graphql-v2-fork";
 import { DateTimeScalar, ObjectIdScalar, JSONResolver, Int } from "@web/graphql/schema/scalars";
 import { ID, WhereInput, WhereUniqueInput } from "@web/graphql/schema/types";
+import { CreationInput } from "@web/types/data";
+import { <%= Name %> } from "@web/generated/graphql/types";
 <% for (var [fieldName, field] of Object.entries(fields).filter(([,field]) => (field.type === "Map" && field.shape))) { -%>
 import { <%= h.changeCase.pascal(fieldName) %> } from "@web/generated/models/<%= Name %>/types";
 <% } -%>
@@ -15,8 +17,6 @@ import { <%= h.changeCase.pascal(fieldName) %> } from "@web/generated/models/<%=
 @InputType()
 export class <%= Name %>CreationInput {
 <% for (var [fieldName, field] of Object.entries(filteredFields)) { -%>
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => <%- getConstructor(field, { ctx: "gql" }) %>, { nullable: <%- field.required ? "false" : "true" %> })
   <%= fieldName %><%- field.required ? "!" : "?" %>: <%- (field.type === "Map" && field.shape) ? h.changeCase.pascal(fieldName) : getType(field) %><%- (field.nullable === false || field.required || (field.type === "Boolean" && typeof field.default !== "undefined")) ? "" : " | null" %><%- !field.required ? " | undefined" : "" %>;
 

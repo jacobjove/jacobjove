@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Habit from "@web/generated/graphql/types/Habit";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const habitFragment = gql`
   fragment HabitFragment on Habit {
@@ -19,17 +20,19 @@ export const habitFragment = gql`
   }
 `;
 
-export type HabitFragment = Pick<
-  Habit,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "userId"
-  | "name"
-  | "description"
-  | "public"
-  | "cron"
-  | "defaultDurationInMinutes"
+export type HabitFragment = NoUndefinedField<
+  Pick<
+    Fragment<Habit>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "name"
+    | "description"
+    | "public"
+    | "cron"
+    | "defaultDurationInMinutes"
+  >
 >;

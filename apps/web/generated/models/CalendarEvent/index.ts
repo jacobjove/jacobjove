@@ -24,12 +24,6 @@ const calendarEventSchema = new mongoose.Schema<CalendarEvent>(
       required: false,
       default: null,
     },
-    scheduleId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Schedule",
-      required: false,
-      default: null,
-    },
     habitId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Habit",

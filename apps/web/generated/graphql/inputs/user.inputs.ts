@@ -7,38 +7,24 @@ import { Field, InputType } from "type-graphql-v2-fork";
 
 @InputType()
 export class UserCreationInput {
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: true })
   name?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: false })
   email!: string;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => Boolean, { nullable: true })
   emailVerified?: boolean | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => String, { nullable: true })
   image?: string | null | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => Boolean, { nullable: true })
   isAdmin?: boolean | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => JSONResolver, { nullable: true })
   settings?: Settings | undefined;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => DateTimeScalar, { nullable: true })
   lastLogin?: Date | null | undefined;
 

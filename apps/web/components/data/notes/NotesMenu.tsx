@@ -28,10 +28,9 @@ import Typography from "@mui/material/Typography";
 import { useDeviceData } from "@web/components/contexts/DeviceContext";
 import { useUser } from "@web/components/contexts/UserContext";
 import SearchDialog from "@web/components/search/SearchDialog";
-import { noteFragment } from "@web/generated/graphql/fragments/note.fragment";
-// import Select from "@web/components/Select";
+import { NoteFragment, noteFragment } from "@web/generated/graphql/fragments/note.fragment";
+import { NotebookFragment } from "@web/generated/graphql/fragments/notebook.fragment";
 import Note from "@web/generated/graphql/types/Note";
-import Notebook from "@web/generated/graphql/types/Notebook";
 import { useCreateNotebook, useUpdateNotebook } from "@web/generated/hooks/notebook.hooks";
 import { ID } from "@web/graphql/schema/types";
 import { format } from "date-fns";
@@ -54,14 +53,14 @@ const drawerWidth = 240;
 
 interface NotesMenuProps {
   data: {
-    notes: Note[];
-    notebooks: Notebook[];
+    notes: NoteFragment[];
+    notebooks: NotebookFragment[];
   };
   loading: boolean;
   error?: Error;
-  selectedNotebook?: Notebook | null;
+  selectedNotebook?: NotebookFragment | null;
   setSelectedNotebookId: (id: string | null) => void;
-  selectedNote?: Note | null;
+  selectedNote?: NoteFragment | null;
   selectedNoteIdsState: [string[], Dispatch<string[]>];
   handleCreateNote: () => void;
 }
@@ -324,7 +323,6 @@ export default function NotesMenu({
                               },
                               optimisticResponse: {
                                 updateNotebook: {
-                                  __typename: "Notebook",
                                   ...selectedNotebook,
                                   archivedAt,
                                 },

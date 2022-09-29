@@ -24,7 +24,7 @@
     "db:seed": "ts-node --project tsconfig.base.json -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
     "generate": "npm run code:generate",
     "prepare": "npx husky install",
-    "code:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in **/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in apps/web/_definitions/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen _ new --definition $(basename -- $filename); done; prettier -w .; eslint . --fix"
+    "code:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in **/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in libs/common/src/_definitions/_/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen _ new --definition $(basename -- $filename); done; prettier -w .; eslint . --fix"
   },
   "dependencies": {
     "@abraham/reflection": "^0.10.0",
@@ -38,7 +38,6 @@
     "@mui/icons-material": "^5.2.0",
     "@mui/lab": "^5.0.0-alpha.97",
     "@mui/material": "^5.2.1",
-    "@mui/x-data-grid": "^5.15.2",
     "@mui/x-date-pickers": "^5.0.2",
     "@next/bundle-analyzer": "^12.3.1",
     "@nrwl/next": "14.7.3",
@@ -194,6 +193,7 @@
     "extends": "stylelint-config-standard"
   },
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "libs/*"
   ]
 }

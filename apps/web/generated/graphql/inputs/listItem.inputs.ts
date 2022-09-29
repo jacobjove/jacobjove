@@ -6,18 +6,12 @@ import { Field, InputType } from "type-graphql-v2-fork";
 
 @InputType()
 export class ListItemCreationInput {
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: false })
   userId!: string;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => ObjectIdScalar, { nullable: false })
   listId!: string;
 
-  // Note: `nullable` in TypeGraphQL actually refers to whether the input is optional.
-  // https://typegraphql.com/docs/0.17.2/types-and-fields.html
   @Field(() => JSONResolver, { nullable: false })
   data!: Record<string, unknown>;
 

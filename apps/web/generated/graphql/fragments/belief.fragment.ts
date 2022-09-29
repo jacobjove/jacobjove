@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Belief from "@web/generated/graphql/types/Belief";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const beliefFragment = gql`
   fragment BeliefFragment on Belief {
@@ -16,7 +17,16 @@ export const beliefFragment = gql`
   }
 `;
 
-export type BeliefFragment = Pick<
-  Belief,
-  "__typename" | "id" | "createdAt" | "updatedAt" | "archivedAt" | "userId" | "name" | "description"
+export type BeliefFragment = NoUndefinedField<
+  Pick<
+    Fragment<Belief>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "name"
+    | "description"
+  >
 >;

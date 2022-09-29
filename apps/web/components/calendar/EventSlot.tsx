@@ -73,7 +73,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
               },
               optimisticResponse: {
                 updateCalendarEvent: {
-                  __typename: "CalendarEvent",
                   ...draggedEvent,
                 },
               },
@@ -84,7 +83,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
           const end = addMinutes(date, DEFAULT_EVENT_LENGTH_IN_MINUTES);
           const { type: _type, index: _index, ...draggedTask } = item;
           const calendarId = user.settings.defaultCalendarId;
-          const scheduleId = null;
           const userId = user.id;
           const data = {
             title: draggedTask.title,
@@ -92,7 +90,6 @@ const EventSlot: FC<EventSlotProps> = (props: EventSlotProps) => {
             end,
             allDay: false,
             calendarId,
-            scheduleId,
             userId,
             taskId: draggedTask.id,
           };

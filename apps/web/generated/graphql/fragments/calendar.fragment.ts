@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Calendar from "@web/generated/graphql/types/Calendar";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const calendarFragment = gql`
   fragment CalendarFragment on Calendar {
@@ -23,21 +24,23 @@ export const calendarFragment = gql`
   }
 `;
 
-export type CalendarFragment = Pick<
-  Calendar,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "userId"
-  | "name"
-  | "color"
-  | "provider"
-  | "remoteId"
-  | "syncToken"
-  | "accountId"
-  | "primary"
-  | "public"
-  | "enabled"
+export type CalendarFragment = NoUndefinedField<
+  Pick<
+    Fragment<Calendar>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "name"
+    | "color"
+    | "provider"
+    | "remoteId"
+    | "syncToken"
+    | "accountId"
+    | "primary"
+    | "public"
+    | "enabled"
+  >
 >;

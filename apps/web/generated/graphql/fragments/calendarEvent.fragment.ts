@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import CalendarEvent from "@web/generated/graphql/types/CalendarEvent";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const calendarEventFragment = gql`
   fragment CalendarEventFragment on CalendarEvent {
@@ -10,7 +11,6 @@ export const calendarEventFragment = gql`
     userId
     calendarId
     remoteId
-    scheduleId
     habitId
     taskId
     title
@@ -25,23 +25,24 @@ export const calendarEventFragment = gql`
   }
 `;
 
-export type CalendarEventFragment = Pick<
-  CalendarEvent,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "userId"
-  | "calendarId"
-  | "remoteId"
-  | "scheduleId"
-  | "habitId"
-  | "taskId"
-  | "title"
-  | "start"
-  | "end"
-  | "allDay"
-  | "notes"
-  | "canceled"
+export type CalendarEventFragment = NoUndefinedField<
+  Pick<
+    Fragment<CalendarEvent>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "calendarId"
+    | "remoteId"
+    | "habitId"
+    | "taskId"
+    | "title"
+    | "start"
+    | "end"
+    | "allDay"
+    | "notes"
+    | "canceled"
+  >
 >;

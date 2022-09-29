@@ -93,7 +93,6 @@ export const getOptimisticResponseForDashboardUpdate = (
   const now = new Date();
   return {
     updateDashboard: {
-      __typename: "Dashboard",
       ...fragment,
       ...data,
       updatedAt: now,

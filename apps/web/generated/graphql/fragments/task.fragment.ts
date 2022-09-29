@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Task from "@web/generated/graphql/types/Task";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const taskFragment = gql`
   fragment TaskFragment on Task {
@@ -23,21 +24,23 @@ export const taskFragment = gql`
   }
 `;
 
-export type TaskFragment = Pick<
-  Task,
-  | "__typename"
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "archivedAt"
-  | "title"
-  | "description"
-  | "plannedStartDate"
-  | "dueDate"
-  | "userId"
-  | "parentId"
-  | "habitId"
-  | "expectedDuration"
-  | "rank"
-  | "completedAt"
+export type TaskFragment = NoUndefinedField<
+  Pick<
+    Fragment<Task>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "title"
+    | "description"
+    | "plannedStartDate"
+    | "dueDate"
+    | "userId"
+    | "parentId"
+    | "habitId"
+    | "expectedDuration"
+    | "rank"
+    | "completedAt"
+  >
 >;

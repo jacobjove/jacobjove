@@ -25,6 +25,11 @@ COPY apps/web/package.json .
 # Install dependencies including dev dependencies so the project can be built.
 RUN NODE_ENV=development npm ci
 
+# TODO: refactor
+COPY libs/common/package.json /root/libs/common/
+COPY package-lock.json /root/libs/common/
+RUN cd /root/libs/common && NODE_ENV=development npm ci
+
 # Add installed node_modules to the PATH.
 ENV PATH /root/apps/web/node_modules/.bin:$PATH
 

@@ -97,7 +97,6 @@ export const getOptimisticResponseFor<%= Name %>Update = (fragment: <%= Name %>F
   const now = new Date();
   return {
     update<%= Name %>: {
-      __typename: "<%= Name %>",
       ...fragment,
       ...data,
       updatedAt: now,

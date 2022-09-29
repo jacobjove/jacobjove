@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Checkbox, { CheckboxProps } from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import Calendar from "@web/generated/graphql/types/Calendar";
+import { CalendarFragment } from "@web/generated/graphql/fragments/calendar.fragment";
 import { Dispatch, FC } from "react";
 
 const CalendarInclusionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
@@ -12,7 +12,7 @@ const CalendarInclusionCheckbox: FC<CheckboxProps> = (props: CheckboxProps) => {
 };
 
 interface CalendarLegendProps {
-  calendars: Calendar[];
+  calendars: CalendarFragment[];
   selectedCalendarIds: string[];
   dispatchCalendarIds: Dispatch<{ type: "add" | "remove"; value: string[] }>;
 }

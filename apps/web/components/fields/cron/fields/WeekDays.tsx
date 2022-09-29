@@ -1,25 +1,10 @@
 import { Autocomplete, TextField, Typography } from "@mui/material";
-import { useMemo } from "react";
 import { DEFAULT_LOCALE_EN } from "../locale";
 import { WeekDaysProps } from "../types";
 
 export default function WeekDays(props: WeekDaysProps) {
   const { value, setValue, locale, monthDays, readOnly, period, mode } = props;
   const optionsList = locale.weekDays || DEFAULT_LOCALE_EN.weekDays;
-  const noMonthDays = period === "week" || !monthDays || monthDays.length === 0;
-
-  const localeJSON = JSON.stringify(locale);
-  const placeholder = useMemo(
-    () => {
-      if (noMonthDays) {
-        return locale.emptyWeekDays || DEFAULT_LOCALE_EN.emptyWeekDays;
-      }
-
-      return locale.emptyWeekDaysShort || DEFAULT_LOCALE_EN.emptyWeekDaysShort;
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [noMonthDays, localeJSON]
-  );
 
   const displayWeekDays =
     period === "week" ||

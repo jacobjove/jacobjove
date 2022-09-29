@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import Value from "@web/generated/graphql/types/Value";
+import { Fragment } from "@web/graphql/schema/types";
 
 export const valueFragment = gql`
   fragment ValueFragment on Value {
@@ -16,7 +17,16 @@ export const valueFragment = gql`
   }
 `;
 
-export type ValueFragment = Pick<
-  Value,
-  "__typename" | "id" | "createdAt" | "updatedAt" | "archivedAt" | "userId" | "name" | "description"
+export type ValueFragment = NoUndefinedField<
+  Pick<
+    Fragment<Value>,
+    | "__typename"
+    | "id"
+    | "createdAt"
+    | "updatedAt"
+    | "archivedAt"
+    | "userId"
+    | "name"
+    | "description"
+  >
 >;

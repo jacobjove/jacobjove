@@ -24,6 +24,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useContext } from "react";
 
+const SHOW_COLOR_MODE_TOGGLE = process.env.NODE_ENV === "development";
+
 const DynamicPageTransitionProgressBar = dynamic(
   () => import("@web/components/PageTransitionProgressBar")
 );
@@ -151,7 +153,7 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
                 </Link>
               </Box>
             ))}
-            {user?.isAdmin && (
+            {SHOW_COLOR_MODE_TOGGLE && (
               <IconButton
                 sx={{ ml: 1 }}
                 onClick={() => setColorMode(colorMode === "light" ? "dark" : "light")}

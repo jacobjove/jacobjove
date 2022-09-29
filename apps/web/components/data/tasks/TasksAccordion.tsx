@@ -186,6 +186,9 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
           margin: 0,
           flexGrow: 1,
         },
+        "& .recentlyCompletedTasks": {
+          flexGrow: 0,
+        },
       }}
     >
       {views.map(([key]) => (
@@ -196,6 +199,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
             key === selectedView ? setSelectedView(null) : setSelectedView(key);
           }}
           sx={{
+            padding: 0,
             backgroundImage: "none",
             backgroundColor: "transparent",
             "& .MuiAccordionSummary-root.Mui-expanded": { minHeight: 0 },
@@ -209,7 +213,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
           >
             <Typography sx={{ width: "33%", flexShrink: 0 }}>{label}</Typography>
           </AccordionSummary> */}
-          <AccordionDetails>
+          <AccordionDetails sx={{ p: 0 }}>
             <TasksTable
               tasksDataTuple={[tasksBySelection[key], dispatchTasks]}
               moveTaskRow={moveTaskRow}
@@ -221,6 +225,7 @@ const TasksAccordion: FC<TasksAccordionProps> = () => {
       ))}
       {!!recentlyCompletedTasks.length && (
         <Accordion
+          className="recentlyCompletedTasks"
           expanded={recentlyCompletedTasksExpanded}
           onChange={() => {
             setRecentlyCompletedTasksExpanded(!recentlyCompletedTasksExpanded);

@@ -106,4 +106,9 @@ export const scalarTypePolicies = {
       ...commonFields,
     },
   },
+  Shelf: {
+    fields: {
+      ...commonFields,
+    },
+  },
 }; // end

@@ -2,17 +2,15 @@ import { gql, useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import AppLayout from "@web/components/AppLayout";
 import NoteViewer from "@web/components/data/notes/NoteViewer";
-import { noteFragment } from "@web/generated/graphql/fragments/note.fragment";
-import Note from "@web/generated/graphql/types/Note";
+import { NoteFragment, noteFragment } from "@web/generated/graphql/fragments/note.fragment";
 import { buildGetServerSidePropsFunc } from "@web/utils/ssr";
 import { GetServerSideProps, NextPage } from "next";
-import { PageWithAuth, Session } from "next-auth";
+import { PageWithAuth } from "next-auth";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 
 interface NotePageProps {
   noteId: string;
-  session: Session | null;
 }
 
 const QUERY = gql`
@@ -25,11 +23,10 @@ const QUERY = gql`
 `;
 
 interface NotePageData {
-  note: Note;
+  note: NoteFragment;
 }
 
-const NotePage: NextPage<NotePageProps> = (props: NotePageProps) => {
-  const { noteId } = props;
+const NotePage: NextPage<NotePageProps> = ({ noteId }: NotePageProps) => {
   const { data: session } = useSession({ required: true });
   const {
     data,

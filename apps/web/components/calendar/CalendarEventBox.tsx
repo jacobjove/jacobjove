@@ -11,7 +11,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CalendarEventDialog from "@web/components/calendar/CalendarEventDialog";
-import { CalendarEvent } from "@web/generated/graphql/types";
+import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
 import { useUpdateCalendarEvent } from "@web/generated/hooks/calendarEvent.hooks";
 import { format } from "date-fns";
 import { bindDialog, bindTrigger, PopupState, usePopupState } from "material-ui-popup-state/hooks";
@@ -19,10 +19,10 @@ import { ComponentProps, FC, useState } from "react";
 import { useDrag } from "react-dnd";
 
 interface CalendarEventBoxProps extends ComponentProps<typeof Box> {
-  event: CalendarEvent;
+  event: CalendarEventFragment;
 }
 
-export interface DraggedCalendarEvent extends CalendarEvent {
+export interface DraggedCalendarEvent extends CalendarEventFragment {
   type: "event";
 }
 
@@ -136,7 +136,7 @@ const CalendarEventBox: FC<CalendarEventBoxProps> = (props: CalendarEventBoxProp
 export default CalendarEventBox;
 
 interface CalendarEventDetailDialogProps extends ReturnType<typeof bindDialog> {
-  event: CalendarEvent;
+  event: CalendarEventFragment;
   editingDialogState: PopupState;
   close: () => void;
 }
@@ -198,7 +198,7 @@ const CalendarEventDetailDialog: FC<CalendarEventDetailDialogProps> = (
 };
 
 interface EventDeletionConfirmationDialogProps extends ReturnType<typeof bindDialog> {
-  event: CalendarEvent;
+  event: CalendarEventFragment;
   closeDetailDialog: () => void;
   close: () => void;
 }
@@ -218,8 +218,7 @@ const EventDeletionConfirmationDialog: FC<EventDeletionConfirmationDialogProps> 
       },
       optimisticResponse: {
         updateCalendarEvent: {
-          __typename: "CalendarEvent",
-          ...(calendarEvent as CalendarEvent),
+          ...calendarEvent,
           archivedAt,
         },
       },

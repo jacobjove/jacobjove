@@ -14,7 +14,7 @@ import TimeLabelsColumn from "@web/components/calendar/TimeLabelsColumn";
 import DateContext from "@web/components/contexts/DateContext";
 import { useNewCalendarEventDialog } from "@web/components/contexts/NewCalendarEventDialogContext";
 import { useUser } from "@web/components/contexts/UserContext";
-import { CalendarEvent } from "@web/generated/graphql/types";
+import { CalendarEventFragment } from "@web/generated/graphql/fragments/calendarEvent.fragment";
 import { useCalendarEventsReducer } from "@web/generated/hooks/calendarEvent.hooks";
 import { ID } from "@web/graphql/schema/types";
 import {
@@ -80,7 +80,7 @@ const Root = styled("div")(({ theme }) => {
   };
 });
 
-type BoundCalendarEvent = Omit<CalendarEvent, "end"> & {
+type BoundCalendarEvent = Omit<CalendarEventFragment, "end"> & {
   end: Date;
 };
 
