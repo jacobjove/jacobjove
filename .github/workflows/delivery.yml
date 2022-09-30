@@ -7,17 +7,17 @@ on:
     paths-ignore:
       - .gitignore
       - .github/**
-      - '!.github/workflows/delivery.yml'
+      - "!.github/workflows/delivery.yml"
       - .idea/**
       - .vscode/**
       - "**.md"
       - "**.rst"
       - "**.txt"
-      - tests.py
-      - setup.sh
+      - "package*.json"
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PORT: 3000
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SHA: ${{ github.sha }}
 
@@ -36,44 +36,18 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v29.0.3
+        uses: tj-actions/changed-files@v31.0.1
   push-image:
     environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
+      - name: Generate .env file
+        uses: iacobfred/generate-dotenv@v0.2.9
         with:
-          fetch-depth: 0
-      - name: Cache dotenv
-        id: cache-dotenv
-        uses: actions/cache@v3
-        with:
-          path: .env
-          key: env-vars-${{ hashFiles('.env.*') }}
-      - name: Write dotenv file
-        if: steps.cache-dotenv.outputs.cache-hit != 'true'
-        # https://github.com/iamsauravsharma/create-dotenv
-        uses: iamsauravsharma/create-dotenv@v1.2.1
-        with:
-          env-prefix: "_" # Optional (default: '')
-          _PORT: 3000
-        # env: # env available for only this steps
-        #   _SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      - name: Finalize dotenv file
-        # Make sure to test: https://sed.js.org/
-        run: |
-          echo "Merging production env vars into dotenv file..."
-          mv .env .env.tmp
-          sort -u -t '=' -k 1,1 .env.production .env.tmp > .env
-          echo "Removing leading underscores..."
-          sed -i -r 's/^_//g' .env
-          echo "Replacing hyphens with underscores in var names..."
-          sed -i -r 's/(^[^=-]+)\-/\1_/g' .env
-          echo "Making further fancy adjustments..."
-          sed -i -r 's/(^[A-Z_]+?=)([^\n\"]+?[\ ][^\n\"]+)/\1"\2"/g' .env
-          sed -i -r "s/(^[A-Z_]+?=)([\{][\"\ ]+?[^.]+[\}])/\1'\2'/g" .env
-          echo "Finished preparing dotenv file."
+          template-paths: |
+            .config/.env.production
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -93,7 +67,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          # no-cache: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secret-files: ENV_FILE=./.env
@@ -120,23 +93,22 @@ jobs:
         with:
           fetch-depth: 0
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.3
+        uses: iacobfred/generate-dotenv@v0.2.9
         with:
           template-paths: .config/.env.production
       - name: Deploy to server
-        uses: iacobfred/deploy-docker-ssh@v0.2.8
+        uses: iacobfred/deploy-docker-ssh@v0.3.1
         with:
           host: ${{ secrets.DOMAIN }}
           user: jacob
           target: /var/www/${{ secrets.DOMAIN }}
-          files: '.env.next docker-compose.yml .config/nginx.conf'
+          files: '.env docker-compose.yml .config/nginx.conf'
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           command: |
             cd /var/www/${DOMAIN} && 
-            if test -f .env; then mv .env .env.tmp; sort -u -t '=' -k 1,1 .env.next .env.tmp > .env; fi;
-            rm .env.next; rm .env.tmp;
             set -a && source .env && set +a && 
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin && 
             docker compose pull && docker compose up -d &&
             if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi;
             docker system prune -f
