@@ -25,13 +25,8 @@ export const postUpdate = async (task: Task, updatedFields: Partial<Task>) => {
       (event) => `${event.taskId}` === `${task._id}`
     )?._id;
     if (calendarEventId) {
-      console.error(">>> Updating", calendarEventId);
       const CalendarEventModel = mongoose.model("CalendarEvent") as Model<CalendarEvent>;
-      const calendarEvent = await CalendarEventModel.findOneAndUpdate(
-        { _id: calendarEventId },
-        { canceled: true }
-      );
-      console.error(">>>", calendarEvent);
+      await CalendarEventModel.findOneAndUpdate({ _id: calendarEventId }, { canceled: true });
     }
     // Add the next task occurrence, if applicable.
     if (task.habitId) {
