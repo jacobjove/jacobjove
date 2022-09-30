@@ -53,8 +53,12 @@ jobs:
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
+      - name: Generate .env file
+        uses: iacobfred/generate-dotenv@v0.3.0
         with:
-          fetch-depth: 0
+          template-paths: |
+            .config/_.env
+            .config/_.env.production
       - name: Specify Docker Compose version
         run: |
           echo ""
@@ -97,8 +101,6 @@ jobs:
       - name: Build image without cache
         uses: docker/build-push-action@v3
         with:
-          build-args: |
-            NODE_ENV=production
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
