@@ -17,7 +17,7 @@ export default function Projects() {
         <ul>
           {PROJECTS.map(([name, url]) => (
             <li key={name}>
-              <Typography component="a" href={url}>
+              <Typography component="a" href={url} target={"_blank"}>
                 {name}
               </Typography>
             </li>
