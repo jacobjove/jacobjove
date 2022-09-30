@@ -2,7 +2,11 @@ import Layout from "../components/layout";
 import Card from "@mui/material/Card";
 import Image from "next/image";
 import { GetStaticProps } from "next";
-import { Box, Button, CardContent, Paper, TextField, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CardContent from "@mui/material/CardContent";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { FormEvent, useState } from "react";
 
 const NAME = "Jacob T. Fredericksen";
@@ -43,22 +47,27 @@ export default function Contact() {
     setSubmitted(true);
   };
   return (
-    <Layout>
+    <Layout fluid>
       <Box
         sx={{
           width: "100%",
+          px: { sm: 4 },
           height: "100%",
           textAlign: "center",
           flexWrap: "wrap",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          "& > *": {
-            m: 1,
+          flexDirection: { xs: "column" },
+          alignItems: { xs: "stretch", md: "center" },
+          justifyContent: "center",
+          "& > div": {
+            m: 2,
+            p: 2,
+            minWidth: { md: "32rem" },
+            maxWidth: { md: "44rem" },
           },
         }}
       >
-        <Card sx={{ p: 4, minWidth: "22rem" }}>
+        <Card>
           <CardContent sx={{ textAlign: "center" }}>
             <Image
               priority
@@ -79,7 +88,7 @@ export default function Contact() {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{ minWidth: "22rem" }}>
+        <Card>
           <CardContent>
             {submitted ? (
               <Typography>

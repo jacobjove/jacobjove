@@ -47,7 +47,8 @@ jobs:
         uses: iacobfred/generate-dotenv@v0.2.9
         with:
           template-paths: |
-            .config/.env.production
+            .config/_.env
+            .config/_.env.production
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -95,14 +96,16 @@ jobs:
       - name: Generate .env file
         uses: iacobfred/generate-dotenv@v0.2.9
         with:
-          template-paths: .config/.env.production
+          template-paths: |
+            .config/_.env
+            .config/_.env.production
       - name: Deploy to server
         uses: iacobfred/deploy-docker-ssh@v0.3.1
         with:
           host: ${{ secrets.DOMAIN }}
           user: jacob
           target: /var/www/${{ secrets.DOMAIN }}
-          files: '.env docker-compose.yml .config/nginx.conf'
+          files: ".env docker-compose.yml .config/nginx.conf"
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           command: |

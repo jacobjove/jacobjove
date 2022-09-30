@@ -2,7 +2,8 @@ import Head from "next/head";
 import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import { GetStaticProps } from "next";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
 
 const name = "Jacob T. Fredericksen";
@@ -10,7 +11,7 @@ export const siteTitle = "Jacob's portfolio";
 
 export default function Home() {
   return (
-    <Layout home>
+    <Layout>
       <Head>
         <title>{siteTitle}</title>
       </Head>

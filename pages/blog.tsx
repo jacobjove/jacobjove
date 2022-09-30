@@ -3,9 +3,28 @@ import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
 import { GetStaticProps } from "next";
 import Date from "../components/date";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
-export default function Blog({ allPostsData }) {
+interface Post {
+  id: string;
+  date: string;
+  title: string;
+}
+
+interface BlogProps {
+  allPostsData: Post[];
+}
+
+export const getStaticProps: GetStaticProps<BlogProps> = async () => {
+  const allPostsData: Post[] = [];
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+};
+
+export default function Blog({ allPostsData }: BlogProps) {
   return (
     <Layout>
       <Typography variant="h1">{"Blog"}</Typography>
@@ -27,12 +46,3 @@ export default function Blog({ allPostsData }) {
     </Layout>
   );
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = [];
-  return {
-    props: {
-      allPostsData,
-    },
-  };
-};

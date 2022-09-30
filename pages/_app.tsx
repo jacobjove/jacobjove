@@ -2,14 +2,23 @@ import "../styles/global.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { DefaultSeo } from "next-seo";
-import { createTheme } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
-const SITE_NAME = "Orega";
+const SITE_NAME = "俺が";
 const DESCRIPTION = "Jacob's personal website";
 
 const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 720,
+      md: 1000,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   palette: {
     primary: {
       main: "#546e7a",
@@ -63,6 +72,7 @@ function App({ Component: Page, pageProps }: AppProps) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </Head>
+      <CssBaseline />
       <DefaultSeo
         description={DESCRIPTION}
         openGraph={{

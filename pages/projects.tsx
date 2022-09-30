@@ -1,6 +1,6 @@
 import Layout from "../components/layout";
 import { GetStaticProps } from "next";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const PROJECTS: [string, string][] = [
   ["SelfBuilder", "https://selfbuilder.orega.org/"],

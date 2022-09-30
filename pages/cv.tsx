@@ -1,7 +1,7 @@
 import Layout from "../components/layout";
 import Link from "next/link";
 import { GetStaticProps } from "next";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobfredericksen/";
 
