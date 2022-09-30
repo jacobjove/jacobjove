@@ -118,13 +118,10 @@ const DayViewer: FC<DayViewerProps> = ({
   }, [user, dispatchCalendarEvents]);
 
   const filteredEvents = useMemo(() => {
-    // console.log("FILTERING");
     return calendarEvents
       ?.filter((event) => {
         // TODO: partition events to separate all-day events based on event.end presence
-        return (
-          isSameDay(event.start, selectedDate) && !event.archivedAt && !event.canceled && event.end
-        );
+        return isSameDay(event.start, selectedDate) && !event.archivedAt && event.end;
       })
       ?.sort((a, b) => {
         return a.start > b.start ? 1 : -1;
