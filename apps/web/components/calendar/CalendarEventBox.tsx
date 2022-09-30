@@ -58,11 +58,15 @@ const CalendarEventBox: FC<CalendarEventBoxProps> = (props: CalendarEventBoxProp
         {...rest}
         sx={{
           opacity,
-          filter: hovered ? "brightness(1.05)" : null,
+          filter: hovered ? "brightness(1.05)" : null, // TODO: not working
           bgcolor: (theme) =>
-            theme.palette.mode === "light"
+            calendarEvent.canceled
+              ? theme.palette.mode === "light"
+                ? theme.palette.secondary.light
+                : theme.palette.secondary.dark
+              : theme.palette.mode === "light"
               ? theme.palette.primary.main
-              : theme.palette.primary.dark, // or calendar.color
+              : theme.palette.primary.dark,
           color: (theme) => `${theme.palette.primary.contrastText}`,
           border: (theme) =>
             `1px solid ${
