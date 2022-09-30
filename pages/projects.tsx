@@ -1,5 +1,4 @@
-import Head from "next/head";
-import Layout, { siteTitle } from "../components/layout";
+import Layout from "../components/layout";
 import { GetStaticProps } from "next";
 import { Typography } from "@mui/material";
 
@@ -12,9 +11,7 @@ const PROJECTS: [string, string][] = [
 export default function Projects() {
   return (
     <Layout>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
+      <Typography variant="h1">{"Projects"}</Typography>
       <div>
         <Typography>{"Here are a few apps I've built:"}</Typography>
         <ul>

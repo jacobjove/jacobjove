@@ -14,7 +14,17 @@ export default function Home() {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <Box textAlign="center">
+      <Box
+        sx={{
+          height: "95%",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          rowGap: "1rem",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Image
           priority
           src="/images/profile.jpg"

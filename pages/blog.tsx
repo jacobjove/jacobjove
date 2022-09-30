@@ -1,16 +1,14 @@
-import Head from "next/head";
-import Layout, { siteTitle } from "../components/layout";
+import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
 import { GetStaticProps } from "next";
 import Date from "../components/date";
+import { Typography } from "@mui/material";
 
 export default function Blog({ allPostsData }) {
   return (
     <Layout>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
+      <Typography variant="h1">{"Blog"}</Typography>
       <div>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (

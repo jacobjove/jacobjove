@@ -1,14 +1,11 @@
-import Head from "next/head";
-import Layout, { siteTitle } from "../components/layout";
+import Layout from "../components/layout";
 import { GetStaticProps } from "next";
 import { Typography } from "@mui/material";
 
-export default function Projects() {
+export default function About() {
   return (
     <Layout>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
+      <Typography variant="h1">{"About"}</Typography>
       <Typography>{"I'm broken... But I'll fix this soon."}</Typography>
     </Layout>
   );

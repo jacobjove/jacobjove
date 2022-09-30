@@ -1,7 +1,7 @@
 import styles from "./layout.module.css";
 import Link from "next/link";
 import Box from "@mui/material/Box";
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Container, Toolbar, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import Footer from "../components/Footer";
 
@@ -18,7 +18,7 @@ const MENU_ITEMS: MenuItem[] = [
   ["Contact", "/contact"],
 ];
 
-export default function Layout({ children, home }: { children: React.ReactNode; home?: boolean }) {
+export default function Layout({ children }: { children: React.ReactNode; home?: boolean }) {
   const router = useRouter();
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -50,16 +50,9 @@ export default function Layout({ children, home }: { children: React.ReactNode; 
           </Box>
         </Toolbar>
       </AppBar>
-      <div className={styles.container} style={{ flexGrow: 1 }}>
-        <main>{children}</main>
-        {!home && (
-          <div className={styles.backToHome}>
-            <Link href="/">
-              <a>← Back to home</a>
-            </Link>
-          </div>
-        )}
-      </div>
+      <Container component={"main"} maxWidth={"md"} sx={{ flexGrow: 1, py: 2 }}>
+        {children}
+      </Container>
       <Footer height={"2rem"} />
     </div>
   );
