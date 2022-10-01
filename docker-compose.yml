@@ -1,5 +1,13 @@
+x-default: &default
+  deploy:
+    restart_policy:
+      condition: "${DOCKER_DEFAULT_RESTART_POLICY:-unless-stopped}"
+  env_file:
+    - .env
+
 services:
   nextjs:
+    <<: *default
     build:
       context: .
       dockerfile: Dockerfile
@@ -7,20 +15,32 @@ services:
       args:
         - PORT=${PORT}
     image: ghcr.io/iacobfred/portfolio:latest
-    # depends_on:
-    #   - mongo
+    depends_on:
+      - mongo
     ports:
       - ${PORT}:${PORT}
-    env_file:
-      - ./.env
     environment:
-      MONGODB_HOST: mongo
+      MONGO_HOST: mongo
       NEXTAUTH_URL_INTERNAL: "http://nextjs:${PORT}"
       NEXTAUTH_URL: "https://orega.org"
       NODE_ENV: production
     volumes:
       - ./.env:/app/.env
+  mongo:
+    <<: *default
+    image: mongo:6
+    healthcheck:
+      test: bash /healthcheck.sh
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    expose:
+      - "27017"
+    volumes:
+      - data:/data
+      - .config/scripts/healthchecks/mongo.sh:/healthcheck.sh
+      - .config/scripts/entrypoints/mongo:/docker-entrypoint-initdb.d
 
 volumes:
   data: null
-  postgres_data: null

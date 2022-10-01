@@ -17,7 +17,13 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MONGO_DB: ${{ secrets.MONGO_DB }}
+  MONGO_HOST: mongo
+  MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
   PORT: 3000
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SHA: ${{ github.sha }}
 
@@ -44,10 +50,11 @@ jobs:
       - name: Check out main branch
         uses: actions/checkout@v3
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.9
+        uses: iacobfred/generate-dotenv@v0.3.0
         with:
           template-paths: |
-            .config/.env.production
+            .config/_.env
+            .config/_.env.production
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -76,8 +83,6 @@ jobs:
         # https://github.com/docker/build-push-action
         uses: docker/build-push-action@v3
         with:
-          build-args: |
-            NODE_ENV=production
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
@@ -92,19 +97,19 @@ jobs:
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.9
+        uses: iacobfred/generate-dotenv@v0.3.0
         with:
-          template-paths: .config/.env.production
+          template-paths: |
+            .config/_.env
+            .config/_.env.production
       - name: Deploy to server
         uses: iacobfred/deploy-docker-ssh@v0.3.1
         with:
           host: ${{ secrets.DOMAIN }}
           user: jacob
           target: /var/www/${{ secrets.DOMAIN }}
-          files: '.env docker-compose.yml .config/nginx.conf'
+          files: ".env docker-compose.yml .config/nginx.conf"
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           command: |

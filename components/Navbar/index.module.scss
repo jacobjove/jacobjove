@@ -1,0 +1,11 @@
+.language-selector-container {
+  * {
+    color: inherit !important;
+    font-size: 0.75rem !important;
+    border: none !important;
+
+    &:hover {
+      border: "none" !important;
+    }
+  }
+}

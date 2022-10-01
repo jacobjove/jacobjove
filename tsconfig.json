@@ -4,13 +4,20 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@messages/*": ["messages/*"],
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"]
+    },
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve"
