@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import utilStyles from "../styles/utils.module.css";
 import { GetStaticProps } from "next";
 import Box from "@mui/material/Box";

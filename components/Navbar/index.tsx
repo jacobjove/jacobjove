@@ -9,9 +9,17 @@ import MobileDrawer from "./MobileDrawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import { SITE_TITLE, MENU_ITEMS } from "./constants";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { setCookie } from "cookies-next";
+import FormControl from "@mui/material/FormControl";
+import styles from "./index.module.scss";
+
+const LANGUAGE_SELECTOR_WIDTH = "110px";
 
 export default function Navbar() {
   const router = useRouter();
+  const { pathname, asPath, query, locale } = router;
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <>
@@ -40,6 +48,7 @@ export default function Navbar() {
                 variant="h3"
                 component="a"
                 sx={{
+                  width: LANGUAGE_SELECTOR_WIDTH,
                   color: "inherit",
                   "&:hover": {
                     textDecoration: "none",
@@ -80,7 +89,32 @@ export default function Navbar() {
                 </Link>
               ))}
             </Box>
-            <Box>{"EN"}</Box>
+            <Box
+              className={styles["language-selector-container"]}
+              sx={{
+                // width: LANGUAGE_SELECTOR_WIDTH,
+                color: (theme) => theme.palette.primary.contrastText,
+              }}
+            >
+              <FormControl
+                size="small"
+                sx={{
+                  width: LANGUAGE_SELECTOR_WIDTH,
+                }}
+              >
+                <Select
+                  className={styles.languageSelector}
+                  value={locale ?? "en-US"}
+                  onChange={(event) => {
+                    router.push({ pathname, query }, asPath, { locale: event.target.value });
+                    setCookie("NEXT_LOCALE", event.target.value);
+                  }}
+                >
+                  <MenuItem value="en-US">🇺🇸 English (US)</MenuItem>
+                  <MenuItem value="jp">🇯🇵 日本語</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>

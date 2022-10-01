@@ -1,6 +1,7 @@
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import { GetStaticProps } from "next";
 import Typography from "@mui/material/Typography";
+import PageHeader from "@components/PageHeader";
 
 const PROJECTS: [string, string][] = [
   ["SelfBuilder", "https://selfbuilder.orega.org/"],
@@ -10,8 +11,8 @@ const PROJECTS: [string, string][] = [
 
 export default function Projects() {
   return (
-    <Layout>
-      <Typography variant="h1">{"Projects"}</Typography>
+    <Layout maxWidth="sm">
+      <PageHeader>{"Projects"}</PageHeader>
       <div>
         <Typography>{"Here are a few apps I've built:"}</Typography>
         <ul>

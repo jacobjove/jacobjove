@@ -5,16 +5,21 @@ import { DefaultSeo } from "next-seo";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
+import { NextIntlProvider } from "next-intl";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import { createEmotionCache } from "@utils/emotion";
+import SEO from "../next-seo.config";
+import { SessionProvider } from "next-auth/react";
 
-const SITE_NAME = "俺が";
-const DESCRIPTION = "Jacob's personal website";
+// Create the client-side emotion cache to be used for the user's whole browser session.
+const clientSideEmotionCache = createEmotionCache();
 
 const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
       sm: 720,
-      md: 1000,
+      md: 960,
       lg: 1280,
       xl: 1920,
     },
@@ -65,63 +70,39 @@ const theme = createTheme({
   },
 });
 
-function App({ Component: Page, pageProps }: AppProps) {
+interface PageProps {
+  messages: Record<string, string>;
+}
+
+interface CustomAppProps extends AppProps<PageProps> {
+  emotionCache?: EmotionCache;
+}
+
+function App({
+  Component: Page,
+  emotionCache = clientSideEmotionCache,
+  pageProps: { session, ...pageProps },
+}: CustomAppProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <Head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-      </Head>
-      <CssBaseline />
-      <DefaultSeo
-        description={DESCRIPTION}
-        openGraph={{
-          type: "website",
-          url: "https://orega.org/",
-          site_name: SITE_NAME,
-          description: DESCRIPTION,
-          // images: [
-          //   {
-          //     url: 'https://www.example.ie/og-image.jpg',
-          //     width: 800,
-          //     height: 600,
-          //     alt: 'Og Image Alt',
-          //   },
-          //   {
-          //     url: 'https://www.example.ie/og-image-2.jpg',
-          //     width: 800,
-          //     height: 600,
-          //     alt: 'Og Image Alt 2',
-          //   },
-          // ],
-        }}
-        twitter={{ handle: "@iacobfred" }}
-        // facebook={{
-        //   appId: `${process.env.FACEBOOK_APP_ID}`,
-        // }}
-        titleTemplate={`%s | ${SITE_NAME}`} // https://github.com/garmeeh/next-seo#title-template
-        defaultTitle={SITE_NAME} // https://github.com/garmeeh/next-seo#default-title
-        additionalMetaTags={[
-          {
-            httpEquiv: "content-type",
-            content: "text/html; charset=utf-8",
-          },
-          {
-            name: "application-name",
-            content: SITE_NAME,
-          },
-        ]}
-        additionalLinkTags={
-          [
-            // {
-            //   rel: 'icon',
-            //   href: '/static/favicon.ico',
-            // }
-          ]
-        }
-      />
-      <Page {...pageProps} />;
-    </ThemeProvider>
+    <SessionProvider session={session}>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Head>
+            <meta charSet="UTF-8" />
+            {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
+            <meta
+              name="viewport"
+              content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
+            />
+          </Head>
+          <DefaultSeo {...SEO} />
+          <NextIntlProvider messages={pageProps.messages}>
+            <Page {...pageProps} />
+          </NextIntlProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </SessionProvider>
   );
 }
 

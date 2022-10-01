@@ -32,7 +32,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # Build app.
 COPY . .
-RUN export $(cat .env | grep SENTRY) && NODE_ENV=${NODE_ENV} npm run build
+RUN NODE_ENV=${NODE_ENV} npm run build
 
 ##################################
 # RUNNER

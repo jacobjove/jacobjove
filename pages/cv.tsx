@@ -1,14 +1,15 @@
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import Link from "next/link";
 import { GetStaticProps } from "next";
 import Typography from "@mui/material/Typography";
+import PageHeader from "@components/PageHeader";
 
 const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobfredericksen/";
 
 export default function CV() {
   return (
     <Layout>
-      <Typography variant="h1">{"CV"}</Typography>
+      <PageHeader>{"CV"}</PageHeader>
       <div>
         <Typography>{"I'll add a copy of my resume here soon."}</Typography>
         <Typography>{"In the meantime, take a look at my LinkedIn profile:"}</Typography>

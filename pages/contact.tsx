@@ -1,4 +1,4 @@
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import Card from "@mui/material/Card";
 import Image from "next/image";
 import { GetStaticProps } from "next";
@@ -8,12 +8,15 @@ import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { FormEvent, useState } from "react";
+import PageHeader from "@components/PageHeader";
+import { useTranslations } from "next-intl";
 
 const NAME = "Jacob T. Fredericksen";
 const EMAIL = "jacob.t.fredericksen@gmail.com";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const t = useTranslations("Contact");
 
   const handleSubmit = async (event: FormEvent) => {
     // Stop the form from submitting and refreshing the page.
@@ -43,32 +46,36 @@ export default function Contact() {
     // Get the response data from server as JSON.
     // If server returns the name submitted, that means the form works.
     const result = await response.json();
-    alert(`Is this your full name: ${result.data}`);
     setSubmitted(true);
   };
   return (
     <Layout fluid>
+      <PageHeader>{t("title")}</PageHeader>
+      <Box display="flex" justifyContent="center">
+        <Typography maxWidth={"sm"} mb={2}>
+          {t("lead")}
+        </Typography>
+      </Box>
       <Box
         sx={{
           width: "100%",
           px: { sm: 4 },
-          height: "100%",
           textAlign: "center",
           flexWrap: "wrap",
           display: "flex",
-          flexDirection: { xs: "column" },
-          alignItems: { xs: "stretch", md: "center" },
+          flexDirection: { xs: "column", lg: "row" },
+          alignItems: { xs: "center", lg: "start" },
           justifyContent: "center",
           "& > div": {
             m: 2,
             p: 2,
-            minWidth: { md: "32rem" },
-            maxWidth: { md: "44rem" },
+            minWidth: { md: "30rem" },
+            maxWidth: { md: "40rem" },
           },
         }}
       >
         <Card>
-          <CardContent sx={{ textAlign: "center" }}>
+          <CardContent sx={{ textAlign: "center", px: 4 }}>
             <Image
               priority
               src="/images/profile.jpg"
@@ -127,8 +134,10 @@ export default function Contact() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
-    props: {},
+    props: {
+      messages: (await import(`../messages/contact/${locale}.json`)).default,
+    },
   };
 };

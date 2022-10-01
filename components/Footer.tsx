@@ -11,9 +11,9 @@ interface FooterProps {
 const StyledFooter = styled("footer", {
   shouldForwardProp: (prop) => prop !== "height",
 })<FooterProps>(({ theme, height }) => ({
+  flexShrink: 0,
   width: "100%",
   height,
-  marginBottom: `calc(-${height} - 0.5rem)`,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

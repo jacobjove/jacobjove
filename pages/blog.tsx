@@ -1,9 +1,9 @@
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
 import { GetStaticProps } from "next";
 import Date from "../components/date";
-import Typography from "@mui/material/Typography";
+import PageHeader from "@components/PageHeader";
 
 interface Post {
   id: string;
@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps<BlogProps> = async () => {
 export default function Blog({ allPostsData }: BlogProps) {
   return (
     <Layout>
-      <Typography variant="h1">{"Blog"}</Typography>
+      <PageHeader>{"Blog"}</PageHeader>
       <div>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (

@@ -3,13 +3,10 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from "@sentry/nextjs";
-
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
+import { baseConfig } from "./sentry.base.config";
 
 Sentry.init({
-  dsn: SENTRY_DSN || "https://38ff82f62df641d3bf39cb4d884a57da@glitchtip.orega.org/4",
-  // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 1.0,
+  ...baseConfig,
   // ...
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
