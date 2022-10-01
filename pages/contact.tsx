@@ -97,46 +97,48 @@ export default function Contact() {
             </Typography>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent>
-            {submitted ? (
-              <Typography>
-                {
-                  "Your message was sent successfully. I will get back to you at my convenience. Thanks!"
-                }
-              </Typography>
-            ) : (
-              <form onSubmit={handleSubmit} style={{ width: "100%", position: "relative" }}>
-                <TextField label={"Name"} name={"name"} fullWidth required margin={"normal"} />
-                <TextField
-                  label={"Email address"}
-                  name={"email"}
-                  fullWidth
-                  required
-                  margin={"normal"}
-                />
-                <TextField
-                  label={"Message"}
-                  name={"message"}
-                  fullWidth
-                  multiline
-                  required
-                  margin={"normal"}
-                  rows={4}
-                />
-                <Button
-                  type="submit"
-                  variant={"outlined"}
-                  size={"large"}
-                  sx={{ my: 2 }}
-                  disabled={!ENABLE_CONTACT_FORM}
-                >
-                  {"Submit"}
-                </Button>
-              </form>
-            )}
-          </CardContent>
-        </Card>
+        {ENABLE_CONTACT_FORM && (
+          <Card>
+            <CardContent>
+              {submitted ? (
+                <Typography>
+                  {
+                    "Your message was sent successfully. I will get back to you at my convenience. Thanks!"
+                  }
+                </Typography>
+              ) : (
+                <form onSubmit={handleSubmit} style={{ width: "100%", position: "relative" }}>
+                  <TextField label={"Name"} name={"name"} fullWidth required margin={"normal"} />
+                  <TextField
+                    label={"Email address"}
+                    name={"email"}
+                    fullWidth
+                    required
+                    margin={"normal"}
+                  />
+                  <TextField
+                    label={"Message"}
+                    name={"message"}
+                    fullWidth
+                    multiline
+                    required
+                    margin={"normal"}
+                    rows={4}
+                  />
+                  <Button
+                    type="submit"
+                    variant={"outlined"}
+                    size={"large"}
+                    sx={{ my: 2 }}
+                    disabled={!ENABLE_CONTACT_FORM}
+                  >
+                    {"Submit"}
+                  </Button>
+                </form>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </Box>
     </Layout>
   );
