@@ -4,7 +4,6 @@ import { PageConfig } from "next";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { AppProviders } from "next-auth/providers";
-// import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
@@ -66,11 +65,6 @@ if (useMockProviders) {
   );
 } else {
   providers.push(
-    // TODO
-    // AppleProvider({
-    //   clientId: process.env.AUTH_APPLE_ID ?? "",
-    //   clientSecret: process.env.AUTH_APPLE_SECRET ?? "",
-    // }),
     GoogleProvider({
       clientId: process.env.AUTH_GOOGLE_ID ?? "",
       clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
@@ -80,6 +74,30 @@ if (useMockProviders) {
     GitHubProvider({
       clientId: process.env.AUTH_GITHUB_ID ?? "",
       clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
+    }),
+    // https://next-auth.js.org/providers/credentials
+    CredentialsProvider({
+      id: "credentials",
+      name: "Credentials", // name to display on the sign-in form ('Sign in with ____')
+      credentials: {
+        // Specify the fields expected to be submitted in the sign-in form.
+        username: { label: "Username", type: "text", placeholder: "" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.username || !credentials?.password) return null;
+        const usernameIsValid =
+          credentials.username === process.env.ADMIN_USERNAME ||
+          credentials.username === process.env.ADMIN_EMAIL;
+        if (usernameIsValid && credentials.password === process.env.ADMIN_PASSWORD) {
+          return {
+            id: "admin",
+            name: "Admin",
+            email: process.env.ADMIN_EMAIL,
+          };
+        }
+        return null;
+      },
     })
   );
 }

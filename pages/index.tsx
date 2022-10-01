@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { getMessages } from "@utils/i18n";
 
 export const siteTitle = "Jacob's portfolio";
 
@@ -45,7 +46,7 @@ export default function Home() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messages = (await import(`../messages/${locale}.json`)).default;
+  const messages = await getMessages(locale);
   return {
     props: { messages },
   };

@@ -1,7 +1,6 @@
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import SocialLogin from "@components/auth/SocialLogin";
 import Layout from "@components/Layout";
@@ -10,6 +9,10 @@ import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { FunctionComponent, useEffect, useState } from "react";
+import { getMessages } from "@utils/i18n";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import TextField from "@mui/material/TextField";
 
 interface SignInPageProps {
   providers: Awaited<ReturnType<typeof getProviders>>;
@@ -18,7 +21,9 @@ interface SignInPageProps {
 const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
   const router = useRouter();
   const { data: session } = useSession();
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const callbackUrl = Array.isArray(router.query?.callbackUrl)
     ? router.query.callbackUrl[0]
     : router.query?.callbackUrl;
@@ -34,7 +39,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
         scope ? { scope } : {}
       );
     } else if (router.query.error) {
-      setErrors({ _: [`${router.query?.error}`] });
+      setError(`${router.query?.error}`);
     }
   }, [router.query, callbackUrl]);
   useEffect(() => {
@@ -43,6 +48,17 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
     }
   }, [session, router, callbackUrl]);
   if (router.query.provider) return <div>{"Redirecting..."}</div>;
+  const handleCredentialsSubmission = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const response = await signIn("credentials", {
+      username,
+      password,
+    });
+    setError(null);
+    if (response?.error) {
+      setError(response.error);
+    }
+  };
   return (
     <Layout>
       <NextSeo
@@ -50,54 +66,83 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
         canonical={"/auth/signin"}
         description={"Sign in to your SelfBuilder account."}
       />
-      <Container>
-        <Box m={"auto"} p={4} maxWidth={"40rem"}>
-          {!!Object.keys(errors).length && (
-            <>
-              <Alert severity="error" sx={{ alignItems: "center" }}>
-                {/* {Array.isArray(errors) ? errors.map((error) => <p key={error}>{error}</p>) : <p>{errors}</p>} */}
-                {Object.entries(errors || {}).map(([prop, value]) => {
-                  return (
-                    <p className="error-message" key={prop}>
-                      {"Error:"} {value}
-                    </p>
-                  );
-                })}
-              </Alert>
-              <br />
-            </>
-          )}
-          {(session?.user && (
-            <Box
-              height="100%"
-              display="flex"
-              flexDirection={"column"}
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <Typography variant="h5" component="p" sx={{ width: "100%" }} textAlign={"center"}>
-                You are logged in as <strong>{session.user.email}</strong>.
-              </Typography>
-              <Box textAlign={"center"} my={2}>
-                <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>
-                  {"Sign out"}
-                </Button>
-              </Box>
+      <Box m={"auto"} p={4} maxWidth={"30rem"}>
+        {!!error && (
+          <>
+            <Alert severity="error" sx={{ alignItems: "center" }}>
+              <p className="error-message">
+                {"Error:"} {error}
+              </p>
+            </Alert>
+            <br />
+          </>
+        )}
+        {(session?.user && (
+          <Box
+            height="100%"
+            display="flex"
+            flexDirection={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Typography variant="h5" component="p" sx={{ width: "100%" }} textAlign={"center"}>
+              You are logged in as <strong>{session.user.email}</strong>.
+            </Typography>
+            <Box textAlign={"center"} my={2}>
+              <Button variant="outlined" color="primary" size="large" onClick={() => signOut()}>
+                {"Sign out"}
+              </Button>
             </Box>
-          )) || (
-            <div id="sign-in">
-              <Typography variant="h1" textAlign={"center"} my={2}>
-                {"Sign in"}
-              </Typography>
-              <SocialLogin
-                providers={providers}
-                callbackUrl={callbackUrl ?? "/"}
-                onError={setErrors}
-              />
-            </div>
-          )}
-        </Box>
-      </Container>
+          </Box>
+        )) || (
+          <div id="sign-in">
+            <Typography variant="h1" textAlign={"center"} my={2}>
+              {"Sign in"}
+            </Typography>
+            <SocialLogin
+              providers={providers}
+              callbackUrl={callbackUrl ?? "/"}
+              onError={setError}
+            />
+            {providers?.credentials && (
+              <Card sx={{ textAlign: "center", my: 2 }}>
+                <CardContent>
+                  <form onSubmit={handleCredentialsSubmission}>
+                    <TextField
+                      name={"username"}
+                      label="Username"
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      variant="outlined"
+                      fullWidth
+                      margin="dense"
+                    />
+                    <TextField
+                      name={"password"}
+                      type={"password"}
+                      label="Password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      variant="outlined"
+                      fullWidth
+                      margin="dense"
+                    />
+                    <Button
+                      type="submit"
+                      variant="outlined"
+                      color="primary"
+                      size="large"
+                      sx={{ mt: 2 }}
+                    >
+                      {"Sign in"}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
+      </Box>
     </Layout>
   );
 };
@@ -105,9 +150,10 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
 export default SignInPage;
 
 // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
     props: {
+      messages: await getMessages(locale),
       providers: await getProviders(),
     },
   };

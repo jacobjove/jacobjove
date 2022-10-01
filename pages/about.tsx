@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import { GetStaticProps } from "next";
 import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
+import { getMessages } from "@utils/i18n";
 
 export default function About() {
   return (
@@ -13,7 +14,7 @@ export default function About() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messages = (await import(`../messages/${locale}.json`)).default;
+  const messages = await getMessages(locale);
   return {
     props: { messages },
   };

@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import { FormEvent, useState } from "react";
 import PageHeader from "@components/PageHeader";
 import { useTranslations } from "next-intl";
+import { getMessages } from "@utils/i18n";
 
 const NAME = "Jacob T. Fredericksen";
 const EMAIL = "jacob.t.fredericksen@gmail.com";
@@ -145,7 +146,7 @@ export default function Contact() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messages = (await import(`../messages/${locale}.json`)).default;
+  const messages = await getMessages(locale);
   return {
     props: { messages },
   };

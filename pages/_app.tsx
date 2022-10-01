@@ -1,4 +1,4 @@
-import "../styles/global.css";
+import "../styles/global.scss";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { DefaultSeo } from "next-seo";
