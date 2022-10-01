@@ -13,9 +13,10 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@utils/*": ["utils/*"],
       "@components/*": ["components/*"],
-      "@types/*": ["types/*"]
+      "@messages/*": ["messages/*"],
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"]
     },
     "resolveJsonModule": true,
     "isolatedModules": true,

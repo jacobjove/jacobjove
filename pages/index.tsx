@@ -5,11 +5,12 @@ import { GetStaticProps } from "next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
-const name = "Jacob T. Fredericksen";
 export const siteTitle = "Jacob's portfolio";
 
 export default function Home() {
+  const t = useTranslations("Home");
   return (
     <Layout>
       <Head>
@@ -32,20 +33,20 @@ export default function Home() {
           className={utilStyles.borderCircle}
           height={144}
           width={144}
-          alt={name}
+          alt={t("name")}
         />
-        <Typography variant={"h1"}>{name}</Typography>
+        <Typography variant={"h1"}>{t("name")}</Typography>
         <Box mt={2}>
-          <Typography>{"Hi, I'm Jacob."}</Typography>
-          <Typography>{"This is my portfolio."}</Typography>
+          <Typography>{t("greeting")}</Typography>
         </Box>
       </Box>
     </Layout>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const messages = (await import(`../messages/${locale}.json`)).default;
   return {
-    props: {},
+    props: { messages },
   };
 };

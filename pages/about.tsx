@@ -12,8 +12,9 @@ export default function About() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const messages = (await import(`../messages/${locale}.json`)).default;
   return {
-    props: {},
+    props: { messages },
   };
 };

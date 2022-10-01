@@ -15,15 +15,6 @@ interface BlogProps {
   allPostsData: Post[];
 }
 
-export const getStaticProps: GetStaticProps<BlogProps> = async () => {
-  const allPostsData: Post[] = [];
-  return {
-    props: {
-      allPostsData,
-    },
-  };
-};
-
 export default function Blog({ allPostsData }: BlogProps) {
   return (
     <Layout>
@@ -46,3 +37,14 @@ export default function Blog({ allPostsData }: BlogProps) {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps<BlogProps> = async ({ locale }) => {
+  const messages = (await import(`../messages/${locale}.json`)).default;
+  const allPostsData: Post[] = [];
+  return {
+    props: {
+      messages,
+      allPostsData,
+    },
+  };
+};

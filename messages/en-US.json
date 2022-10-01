@@ -1,0 +1,20 @@
+{
+  "common": {
+    "Navbar": {
+      "Home": "Home",
+      "About": "About",
+      "CV": "CV",
+      "Projects": "Projects",
+      "Blog": "Blog",
+      "Contact": "Contact"
+    }
+  },
+  "Home": {
+    "name": "Jacob T. Fredericksen",
+    "greeting": "Hi, I'm Jacob. This is my portfolio."
+  },
+  "Contact": {
+    "title": "Contact me",
+    "lead": "If you have any questions or propositions, please feel free to contact me."
+  }
+}

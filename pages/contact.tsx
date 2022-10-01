@@ -14,6 +14,8 @@ import { useTranslations } from "next-intl";
 const NAME = "Jacob T. Fredericksen";
 const EMAIL = "jacob.t.fredericksen@gmail.com";
 
+const ENABLE_CONTACT_FORM = process.env.NODE_ENV === "development";
+
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const t = useTranslations("Contact");
@@ -122,7 +124,13 @@ export default function Contact() {
                   margin={"normal"}
                   rows={4}
                 />
-                <Button type="submit" variant={"outlined"} size={"large"} sx={{ my: 2 }}>
+                <Button
+                  type="submit"
+                  variant={"outlined"}
+                  size={"large"}
+                  sx={{ my: 2 }}
+                  disabled={!ENABLE_CONTACT_FORM}
+                >
                   {"Submit"}
                 </Button>
               </form>
@@ -135,9 +143,8 @@ export default function Contact() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const messages = (await import(`../messages/${locale}.json`)).default;
   return {
-    props: {
-      messages: (await import(`../messages/contact/${locale}.json`)).default,
-    },
+    props: { messages },
   };
 };

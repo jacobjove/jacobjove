@@ -14,6 +14,7 @@ import Select from "@mui/material/Select";
 import { setCookie } from "cookies-next";
 import FormControl from "@mui/material/FormControl";
 import styles from "./index.module.scss";
+import { useTranslations } from "next-intl";
 
 const LANGUAGE_SELECTOR_WIDTH = "110px";
 
@@ -21,6 +22,7 @@ export default function Navbar() {
   const router = useRouter();
   const { pathname, asPath, query, locale } = router;
   const [mobileOpen, setMobileOpen] = useState(false);
+  const t = useTranslations("common.Navbar");
   return (
     <>
       <AppBar component={"nav"} position="static">
@@ -84,7 +86,7 @@ export default function Navbar() {
                       },
                     }}
                   >
-                    {name}
+                    {t(name)}
                   </Typography>
                 </Link>
               ))}
