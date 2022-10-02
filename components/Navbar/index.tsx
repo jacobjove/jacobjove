@@ -15,8 +15,22 @@ import { setCookie } from "cookies-next";
 import FormControl from "@mui/material/FormControl";
 import styles from "./index.module.scss";
 import { useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
 
-const LANGUAGE_SELECTOR_WIDTH = "110px";
+const DynamicPageTransitionProgressBar = dynamic(() => import("./PageTransitionProgressBar"));
+
+const LANGUAGE_SELECTOR_WIDTH = "55px";
+
+const LOCALES: Record<string, { flag: string; name: string }> = {
+  "en-US": {
+    flag: "🇺🇸",
+    name: "English (US)",
+  },
+  jp: {
+    flag: "🇯🇵",
+    name: "日本語",
+  },
+};
 
 export default function Navbar() {
   const router = useRouter();
@@ -94,31 +108,30 @@ export default function Navbar() {
             <Box
               className={styles["language-selector-container"]}
               sx={{
-                // width: LANGUAGE_SELECTOR_WIDTH,
                 color: (theme) => theme.palette.primary.contrastText,
               }}
             >
-              <FormControl
-                size="small"
-                sx={{
-                  width: LANGUAGE_SELECTOR_WIDTH,
-                }}
-              >
+              <FormControl size="small" sx={{ width: LANGUAGE_SELECTOR_WIDTH }}>
                 <Select
-                  className={styles.languageSelector}
+                  className={styles["language-selector"]}
                   value={locale ?? "en-US"}
+                  renderValue={(value) => LOCALES[value].flag}
                   onChange={(event) => {
                     router.push({ pathname, query }, asPath, { locale: event.target.value });
                     setCookie("NEXT_LOCALE", event.target.value);
                   }}
                 >
-                  <MenuItem value="en-US">🇺🇸 English (US)</MenuItem>
-                  <MenuItem value="jp">🇯🇵 日本語</MenuItem>
+                  {Object.entries(LOCALES).map(([locale, { flag, name }]) => (
+                    <MenuItem key={locale} value={locale}>
+                      {flag} {name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Box>
           </Box>
         </Toolbar>
+        <DynamicPageTransitionProgressBar />
       </AppBar>
       <MobileDrawer open={mobileOpen} setOpen={setMobileOpen} />
     </>

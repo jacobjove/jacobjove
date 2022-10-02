@@ -1,7 +1,15 @@
 .language-selector-container {
+  .language-selector {
+    padding-right: 0;
+
+    > div {
+      padding-right: 0 !important;
+    }
+  }
+
   * {
     color: inherit !important;
-    font-size: 0.75rem !important;
+    font-size: 1rem !important;
     border: none !important;
 
     &:hover {
