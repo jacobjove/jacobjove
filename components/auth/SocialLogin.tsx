@@ -24,7 +24,7 @@ const EMAIL_KEY = "email";
 interface SocialLoginProps {
   providers: Awaited<ReturnType<typeof getProviders>>;
   callbackUrl: string;
-  onError: CallableFunction;
+  onError: (error: string) => void;
 }
 
 const SocialLogin: FC<SocialLoginProps> = ({
@@ -32,7 +32,7 @@ const SocialLogin: FC<SocialLoginProps> = ({
   callbackUrl,
   onError,
 }: SocialLoginProps) => {
-  if (!providers) throw new Error("No providers are configured!");
+  if (!providers) throw new Error("No providers are configured.");
   const socialAuthLoginComponents: ReactElement[] = [];
   const handleSocialLogin = async (provider_id: string) => {
     try {
@@ -43,9 +43,7 @@ const SocialLogin: FC<SocialLoginProps> = ({
   };
   let SocialLoginButton;
   Object.entries(providers).forEach(([, provider]) => {
-    if (provider.id in [CREDENTIALS_KEY, EMAIL_KEY]) {
-      return;
-    }
+    if ([CREDENTIALS_KEY, EMAIL_KEY].includes(provider.id)) return;
     SocialLoginButton = SOCIAL_LOGIN_BUTTONS[provider.id as keyof typeof SOCIAL_LOGIN_BUTTONS];
     if (!SocialLoginButton)
       throw new Error(`No social login button is configured for ${provider.id}.`);

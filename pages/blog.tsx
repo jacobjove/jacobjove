@@ -4,6 +4,7 @@ import Link from "next/link";
 import { GetStaticProps } from "next";
 import Date from "../components/date";
 import PageHeader from "@components/PageHeader";
+import { getMessages } from "@utils/i18n";
 
 interface Post {
   id: string;
@@ -39,7 +40,7 @@ export default function Blog({ allPostsData }: BlogProps) {
 }
 
 export const getStaticProps: GetStaticProps<BlogProps> = async ({ locale }) => {
-  const messages = (await import(`../messages/${locale}.json`)).default;
+  const messages = await getMessages(locale);
   const allPostsData: Post[] = [];
   return {
     props: {

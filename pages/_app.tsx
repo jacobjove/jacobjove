@@ -1,4 +1,4 @@
-import "../styles/global.css";
+import "../styles/global.scss";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { DefaultSeo } from "next-seo";
@@ -10,6 +10,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import { createEmotionCache } from "@utils/emotion";
 import SEO from "../next-seo.config";
 import { SessionProvider } from "next-auth/react";
+import { PageTransitionContextProvider } from "@components/PageTransitionContext";
 
 // Create the client-side emotion cache to be used for the user's whole browser session.
 const clientSideEmotionCache = createEmotionCache();
@@ -87,19 +88,21 @@ function App({
     <SessionProvider session={session}>
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Head>
-            <meta charSet="UTF-8" />
-            {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
-            <meta
-              name="viewport"
-              content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
-            />
-          </Head>
-          <DefaultSeo {...SEO} />
-          <NextIntlProvider messages={pageProps.messages}>
-            <Page {...pageProps} />
-          </NextIntlProvider>
+          <PageTransitionContextProvider>
+            <CssBaseline />
+            <Head>
+              <meta charSet="UTF-8" />
+              {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
+              <meta
+                name="viewport"
+                content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
+              />
+            </Head>
+            <DefaultSeo {...SEO} />
+            <NextIntlProvider messages={pageProps.messages}>
+              <Page {...pageProps} />
+            </NextIntlProvider>
+          </PageTransitionContextProvider>
         </ThemeProvider>
       </CacheProvider>
     </SessionProvider>
