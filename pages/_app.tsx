@@ -11,6 +11,7 @@ import { createEmotionCache } from "@utils/emotion";
 import SEO from "../next-seo.config";
 import { SessionProvider } from "next-auth/react";
 import { PageTransitionContextProvider } from "@components/PageTransitionContext";
+import { Session } from "next-auth";
 
 // Create the client-side emotion cache to be used for the user's whole browser session.
 const clientSideEmotionCache = createEmotionCache();
@@ -72,10 +73,11 @@ const theme = createTheme({
 });
 
 interface PageProps {
+  session?: Session | null;
   messages: Record<string, string>;
 }
 
-interface CustomAppProps extends AppProps<PageProps> {
+export interface CustomAppProps extends AppProps<PageProps> {
   emotionCache?: EmotionCache;
 }
 
