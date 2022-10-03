@@ -14,7 +14,7 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
     "@next-auth/mongodb-adapter": "^1.1.0",
-    "@sentry/nextjs": "^7.14.0",
+    "@sentry/nextjs": "^7.14.1",
     "cookies-next": "^2.1.1",
     "date-fns": "^2.29.3",
     "material-ui-popup-state": "^4.1.0",
