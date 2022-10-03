@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
 import Box from "@mui/material/Box";
 import { getMessages } from "@utils/i18n";
+import { useTranslations } from "next-intl";
 
 const PROJECTS: [string, string, string, string[]][] = [
   [
@@ -27,12 +28,13 @@ const PROJECTS: [string, string, string, string[]][] = [
 ];
 
 export default function Projects() {
+  const t = useTranslations("Projects");
   return (
     <Layout maxWidth="sm">
-      <PageHeader>{"Projects"}</PageHeader>
+      <PageHeader>{t("title")}</PageHeader>
       <Box display="flex" justifyContent="center" flexWrap="wrap">
         <Typography textAlign={"center"} flexBasis={"100%"}>
-          {"Here are a few apps I've built and/or am in the process of building:"}
+          {t("lead")}
         </Typography>
         <div>
           {PROJECTS.map(([name, url, description, technologies]) => (

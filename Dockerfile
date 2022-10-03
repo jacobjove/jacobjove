@@ -32,7 +32,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # Build app.
 COPY . .
-RUN NODE_ENV=${NODE_ENV} npm run build
+RUN export $(cat .env | grep SENTRY) && NODE_ENV=${NODE_ENV} npm run build
 
 ##################################
 # RUNNER
@@ -44,7 +44,7 @@ FROM base as runner
 WORKDIR /app
 
 # Copy compiled JavaScript from the builder stage.
-COPY --from=builder /app/.next ./.next
+COPY --from=builder --chown=www-data:www-data /app/.next ./.next
 COPY public ./public
 COPY package*.json ./
 COPY next.config.js ./
@@ -55,9 +55,6 @@ RUN npm set-script prepare ''
 RUN npm ci --production
 
 ENV PATH /app/node_modules/.bin:$PATH
-
-RUN chown -R www-data:www-data ./.next
-# chmod g+w -R ./.next
 
 # Expose Next.js web application port.
 EXPOSE ${PORT}

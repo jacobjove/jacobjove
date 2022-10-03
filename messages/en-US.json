@@ -15,6 +15,16 @@
   },
   "Contact": {
     "title": "Contact me",
-    "lead": "If you have any questions or propositions, please feel free to contact me."
+    "lead": "If you have any questions or propositions, please feel free to contact me.",
+    "name": "Jacob T. Fredericksen",
+    "error": "Something went wrong. Please try again later.",
+    "success": "Your message was delivered to me successfully. Thanks!",
+    "nameFieldLabel": "Name",
+    "emailFieldLabel": "Email address",
+    "messageFieldLabel": "Message"
+  },
+  "Projects": {
+    "title": "Projects",
+    "lead": "Here are a few apps I've built and/or am in the process of building:"
   }
 }
