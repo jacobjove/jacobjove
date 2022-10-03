@@ -16,6 +16,8 @@ on:
       - "package*.json"
 
 env:
+  ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MONGO_DB: ${{ secrets.MONGO_DB }}
   MONGO_HOST: mongo
