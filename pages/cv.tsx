@@ -5,8 +5,6 @@ import PageHeader from "@components/PageHeader";
 import Box from "@mui/material/Box";
 import { getMessages } from "@utils/i18n";
 import React from "react";
-// import fs from "fs";
-// import https from "https";
 import { DownloaderHelper } from "node-downloader-helper";
 import { renameSync } from "fs";
 

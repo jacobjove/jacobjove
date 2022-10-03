@@ -77,7 +77,7 @@ export default function Contact() {
     <Layout fluid>
       <PageHeader>{t("title")}</PageHeader>
       <Box display="flex" justifyContent="center">
-        <Typography sx={{ maxWidth: "sm", mb: 2, px: 2, display: "none" }}>{t("lead")}</Typography>
+        <Typography sx={{ maxWidth: "sm", mb: 2, px: 2 }}>{t("lead")}</Typography>
       </Box>
       <Box
         sx={{

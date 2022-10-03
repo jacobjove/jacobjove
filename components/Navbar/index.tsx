@@ -25,7 +25,9 @@ import Divider from "@mui/material/Divider";
 
 const DynamicPageTransitionProgressBar = dynamic(() => import("./PageTransitionProgressBar"));
 
-const LOCALES: Record<string, { flag: string; name: string }> = {
+type Locale = "en-US" | "jp";
+
+const LOCALES: Record<Locale, { flag: string; name: string }> = {
   "en-US": {
     flag: "🇺🇸",
     name: "English (US)",
@@ -134,7 +136,7 @@ export default function Navbar() {
                 <Select
                   className={styles["language-selector"]}
                   value={locale ?? "en-US"}
-                  renderValue={(value) => LOCALES[value].flag}
+                  renderValue={(value) => LOCALES[value as Locale].flag}
                   onChange={(event) => {
                     router.push({ pathname, query }, asPath, { locale: event.target.value });
                     setCookie("NEXT_LOCALE", event.target.value);
