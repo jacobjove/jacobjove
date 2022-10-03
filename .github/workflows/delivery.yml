@@ -22,10 +22,13 @@ env:
   MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
   MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
   PORT: 3000
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SHA: ${{ github.sha }}
+  SMTP_USER: ${{ secrets.SMTP_USER }}
+  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
 jobs:
   changed-files:
@@ -68,8 +71,6 @@ jobs:
         # https://github.com/docker/build-push-action
         uses: docker/build-push-action@v3
         with:
-          build-args: |
-            NODE_ENV=production
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile

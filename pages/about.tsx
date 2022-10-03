@@ -3,12 +3,14 @@ import { GetStaticProps } from "next";
 import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
 import { getMessages } from "@utils/i18n";
+import { useTranslations } from "next-intl";
 
 export default function About() {
+  const t = useTranslations("About");
   return (
     <Layout maxWidth="sm">
-      <PageHeader>{"About"}</PageHeader>
-      <Typography>{"I'm broken... But I'll fix this soon."}</Typography>
+      <PageHeader>{t("title")}</PageHeader>
+      <Typography textAlign="center">{"Coming soon."}</Typography>
     </Layout>
   );
 }

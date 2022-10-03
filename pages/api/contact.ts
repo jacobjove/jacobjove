@@ -1,22 +1,28 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { sendMail } from "@utils/email";
 
-const contact = (req: NextApiRequest, res: NextApiResponse) => {
+const contact = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = req.body;
 
-  // Optional logging to see the responses
-  // in the command line where next.js app is running.
-  console.log("body: ", body);
-
-  // Guard clause checks for first and last name,
-  // and returns early if they are not found
-  if (!body.first || !body.last) {
+  // Returns early if required fields are missing.
+  if (!body.email || !body.message) {
     // Sends a HTTP bad request error code
-    return res.status(400).json({ data: "First or last name not found" });
+    return res.status(400).json({ data: "Email address and message are required." });
   }
 
-  // Found the name.
-  // Sends a HTTP success code
-  res.status(200).json({ data: `${body.first} ${body.last}` });
+  // Send an email containing the message body to the admin's email address.
+  await sendMail({
+    to: process.env.ADMIN_EMAIL as string,
+    from: body.email,
+    subject: `Message from ${body.name ?? body.email}`,
+    text: body.message,
+  }).catch((error) => {
+    console.error(error);
+    return res.status(500).json({ data: "Something went wrong." });
+  });
+
+  // Send an HTTP success code.
+  res.status(200).json({ ok: true });
 };
 
 export default contact;

@@ -7,37 +7,54 @@ import Button from "@mui/material/Button";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { FormEvent, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import PageHeader from "@components/PageHeader";
 import { useTranslations } from "next-intl";
 import { getMessages } from "@utils/i18n";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { useReducer } from "react";
 
 const NAME = "Jacob T. Fredericksen";
 const EMAIL = "jacob.t.fredericksen@gmail.com";
 
-const ENABLE_CONTACT_FORM = process.env.NODE_ENV === "development";
+const CONTACT_FORM_ENABLED = true;
+
+type Status = "idle" | "sending" | "sent" | "error";
+
+interface ContactFormData {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
+type ContactFormAction = { type: "reset" } | { type: "update"; payload: Partial<ContactFormData> };
+
+const contactFormDataReducer = (state: Partial<ContactFormData>, action: ContactFormAction) => {
+  switch (action.type) {
+    case "reset":
+      return {};
+    case "update":
+      return { ...state, ...action.payload };
+  }
+};
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
   const t = useTranslations("Contact");
+  const [status, setStatus] = useState<Status>("idle");
+  const [contactFormData, dispatchContactFormData] = useReducer(contactFormDataReducer, {});
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleChange = (field: keyof ContactFormData, value: string) =>
+    dispatchContactFormData({ type: "update", payload: { [field]: value } });
+
+  const handleSubmit = async (event: SyntheticEvent) => {
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
-
-    // Cast the event target to an html form
-    const form = event.target as HTMLFormElement;
-
-    // Get data from the form.
-    const data = {
-      first: form.first.value as string,
-      last: form.last.value as string,
-    };
+    setStatus("sending");
 
     // Send the form data to our API and get a response.
     const response = await fetch("/api/contact", {
       // Body of the request is the JSON data we created above.
-      body: JSON.stringify(data),
+      body: JSON.stringify(contactFormData),
       // Tell the server we're sending JSON.
       headers: {
         "Content-Type": "application/json",
@@ -49,31 +66,35 @@ export default function Contact() {
     // Get the response data from server as JSON.
     // If server returns the name submitted, that means the form works.
     const result = await response.json();
-    setSubmitted(true);
+    if (result.ok) {
+      setStatus("sent");
+    } else if (result.error) {
+      console.error(result.error);
+      setStatus("error");
+    }
   };
   return (
     <Layout fluid>
       <PageHeader>{t("title")}</PageHeader>
       <Box display="flex" justifyContent="center">
-        <Typography maxWidth={"sm"} mb={2}>
-          {t("lead")}
-        </Typography>
+        <Typography sx={{ maxWidth: "sm", mb: 2, px: 2 }}>{t("lead")}</Typography>
       </Box>
       <Box
         sx={{
           width: "100%",
+          my: { sm: 2 },
           px: { sm: 4 },
-          textAlign: "center",
           flexWrap: "wrap",
           display: "flex",
           flexDirection: { xs: "column", lg: "row" },
-          alignItems: { xs: "center", lg: "start" },
+          alignItems: { xs: "stretch", sm: "center", lg: "start" },
           justifyContent: "center",
           "& > div": {
-            m: 2,
-            p: 2,
-            minWidth: { md: "30rem" },
-            maxWidth: { md: "40rem" },
+            mb: 2,
+            mx: { sm: 2 },
+            pt: 1,
+            minWidth: { sm: "30rem" },
+            maxWidth: "40rem",
           },
         }}
       >
@@ -88,9 +109,12 @@ export default function Contact() {
               alt={NAME}
             />
             <Typography variant={"h2"} sx={{ my: 2 }}>
-              {NAME}
+              {t("name")}
             </Typography>
-            <Typography my={1}>{"100 DuPont St., Brooklyn, NY 11222"}</Typography>
+            <Box my={1}>
+              <Typography>{"100 DuPont St."}</Typography>
+              <Typography>{"Brooklyn, NY 11222"}</Typography>
+            </Box>
             <Typography my={1}>
               <a href={`mailto:${EMAIL}`} target="_blank" rel="noreferrer">
                 {EMAIL}
@@ -98,45 +122,98 @@ export default function Contact() {
             </Typography>
           </CardContent>
         </Card>
-        {ENABLE_CONTACT_FORM && (
+        {CONTACT_FORM_ENABLED && (
           <Card>
-            <CardContent>
-              {submitted ? (
-                <Typography>
-                  {
-                    "Your message was sent successfully. I will get back to you at my convenience. Thanks!"
-                  }
-                </Typography>
-              ) : (
+            <CardContent sx={{ position: "relative" }}>
+              <Box
+                sx={{
+                  ...(["sent", "error"].includes(status) && {
+                    position: { sm: "absolute" },
+                    top: { sm: 0 },
+                    left: { sm: 0 },
+                    width: "100%",
+                    height: "100%",
+                  }),
+                  display: ["sent", "error"].includes(status) ? "flex" : "none",
+                  alignItems: { xs: "start", sm: "center" },
+                  justifyContent: "center",
+                  p: { xs: 3, sm: 10 },
+                }}
+              >
+                {status === "error" ? (
+                  <Typography color="error" sx={{ mb: 2 }}>
+                    {t("error")}
+                  </Typography>
+                ) : status === "sent" ? (
+                  <Box>
+                    <Typography>{t("success")}</Typography>
+                    <Box mt={3} display={"flex"} justifyContent={"center"}>
+                      <Button
+                        variant={"outlined"}
+                        onClick={() => {
+                          dispatchContactFormData({ type: "reset" });
+                          setStatus("idle");
+                        }}
+                      >
+                        <RefreshIcon sx={{ mr: 1 }} /> {"Refresh form"}
+                      </Button>
+                    </Box>
+                  </Box>
+                ) : null}
+              </Box>
+              <Box
+                sx={{
+                  my: -2,
+                  visibility: ["idle", "sending"].includes(status) ? "visible" : "hidden",
+                  display: {
+                    xs: ["sent", "error"].includes(status) ? "none" : "block",
+                    sm: "block",
+                  },
+                }}
+              >
                 <form onSubmit={handleSubmit} style={{ width: "100%", position: "relative" }}>
-                  <TextField label={"Name"} name={"name"} fullWidth required margin={"normal"} />
                   <TextField
-                    label={"Email address"}
-                    name={"email"}
+                    label={t("nameFieldLabel")}
+                    name={"name"}
+                    value={contactFormData.name ?? ""}
+                    onChange={(event) => handleChange("name", event.target.value)}
                     fullWidth
                     required
-                    margin={"normal"}
+                    margin={"dense"}
                   />
                   <TextField
-                    label={"Message"}
+                    label={t("emailFieldLabel")}
+                    name={"email"}
+                    value={contactFormData.email ?? ""}
+                    onChange={(event) => handleChange("email", event.target.value)}
+                    fullWidth
+                    required
+                    margin={"dense"}
+                  />
+                  <TextField
+                    label={t("messageFieldLabel")}
                     name={"message"}
+                    value={contactFormData.message ?? ""}
+                    onChange={(event) => handleChange("message", event.target.value)}
                     fullWidth
                     multiline
                     required
                     margin={"normal"}
                     rows={4}
                   />
-                  <Button
-                    type="submit"
-                    variant={"outlined"}
-                    size={"large"}
-                    sx={{ my: 2 }}
-                    disabled={!ENABLE_CONTACT_FORM}
-                  >
-                    {"Submit"}
-                  </Button>
+                  <Box textAlign="center">
+                    <Button
+                      type="submit"
+                      variant={"outlined"}
+                      size={"large"}
+                      sx={{ my: 2, mx: "auto" }}
+                      disabled={!CONTACT_FORM_ENABLED}
+                    >
+                      {status === "sending" ? "Submitting..." : "Submit"}
+                    </Button>
+                  </Box>
                 </form>
-              )}
+              </Box>
             </CardContent>
           </Card>
         )}

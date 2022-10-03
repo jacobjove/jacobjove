@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import MobileDrawer from "./MobileDrawer";
 import MenuIcon from "@mui/icons-material/Menu";
-import IconButton from "@mui/material/IconButton";
 import { SITE_TITLE, MENU_ITEMS } from "./constants";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -16,12 +15,19 @@ import FormControl from "@mui/material/FormControl";
 import styles from "./index.module.scss";
 import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { signOut, useSession } from "next-auth/react";
+import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import Avatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
 
 const DynamicPageTransitionProgressBar = dynamic(() => import("./PageTransitionProgressBar"));
 
-const LANGUAGE_SELECTOR_WIDTH = "55px";
+type Locale = "en-US" | "jp";
 
-const LOCALES: Record<string, { flag: string; name: string }> = {
+const LOCALES: Record<Locale, { flag: string; name: string }> = {
   "en-US": {
     flag: "🇺🇸",
     name: "English (US)",
@@ -35,8 +41,10 @@ const LOCALES: Record<string, { flag: string; name: string }> = {
 export default function Navbar() {
   const router = useRouter();
   const { pathname, asPath, query, locale } = router;
+  const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const t = useTranslations("common.Navbar");
+  const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
   return (
     <>
       <AppBar component={"nav"} position="static">
@@ -55,32 +63,42 @@ export default function Navbar() {
               aria-label="open drawer"
               edge="start"
               onClick={() => setMobileOpen(!mobileOpen)}
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{
+                mr: 2,
+                display: { sm: "none" },
+                flexBasis: "20%",
+                justifyContent: "flex-start",
+              }}
             >
               <MenuIcon />
             </IconButton>
-            <Link href="/" passHref>
-              <Typography
-                variant="h3"
-                component="a"
-                sx={{
-                  width: LANGUAGE_SELECTOR_WIDTH,
-                  color: "inherit",
-                  "&:hover": {
-                    textDecoration: "none",
-                  },
-                  display: {
-                    // xs: "none",
-                    sm: "inherit",
-                  },
-                }}
-              >
-                {SITE_TITLE}
-              </Typography>
-            </Link>
+            <Box flexBasis={"20%"}>
+              <Link href="/" passHref>
+                <Typography
+                  variant="h3"
+                  component="a"
+                  sx={{
+                    color: "inherit",
+                    "&:hover": {
+                      textDecoration: "none",
+                    },
+                    display: {
+                      // xs: "none",
+                      xs: "block",
+                      sm: "flex",
+                    },
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    textAlign: "center",
+                  }}
+                >
+                  {SITE_TITLE}
+                </Typography>
+              </Link>
+            </Box>
             <Box
               sx={{
-                flexGrow: 0.5,
+                flexGrow: 1,
                 display: { xs: "none", sm: "flex" },
                 justifyContent: "space-evenly",
                 columnGap: 2,
@@ -108,14 +126,17 @@ export default function Navbar() {
             <Box
               className={styles["language-selector-container"]}
               sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                flexBasis: "20%",
                 color: (theme) => theme.palette.primary.contrastText,
               }}
             >
-              <FormControl size="small" sx={{ width: LANGUAGE_SELECTOR_WIDTH }}>
+              <FormControl size="small" sx={{ width: "55px" }}>
                 <Select
                   className={styles["language-selector"]}
                   value={locale ?? "en-US"}
-                  renderValue={(value) => LOCALES[value].flag}
+                  renderValue={(value) => LOCALES[value as Locale].flag}
                   onChange={(event) => {
                     router.push({ pathname, query }, asPath, { locale: event.target.value });
                     setCookie("NEXT_LOCALE", event.target.value);
@@ -128,6 +149,40 @@ export default function Navbar() {
                   ))}
                 </Select>
               </FormControl>
+              {session?.user && (
+                <Box>
+                  <IconButton {...bindTrigger(accountMenuState)} sx={{ p: 0 }}>
+                    <Avatar alt={`${session.user.name}`} src={`${session.user.image}`} />
+                  </IconButton>
+                  <Menu
+                    sx={{
+                      mt: "45px",
+                      "& a": { color: "text.primary" },
+                    }}
+                    {...bindMenu(accountMenuState)}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                  >
+                    <Link href={"/admin"} passHref>
+                      <MenuItem component="a" sx={{ textAlign: "center" }}>
+                        {"Admin"}
+                      </MenuItem>
+                    </Link>
+
+                    <Divider />
+                    <MenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+                      Sign out <LogoutIcon sx={{ marginLeft: "0.5rem" }} />
+                    </MenuItem>
+                  </Menu>
+                </Box>
+              )}
             </Box>
           </Box>
         </Toolbar>

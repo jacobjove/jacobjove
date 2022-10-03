@@ -13,8 +13,21 @@
     "name": "Jacob T. Fredericksen",
     "greeting": "Hi, I'm Jacob. This is my portfolio."
   },
+  "About": {
+    "title": "About me"
+  },
   "Contact": {
     "title": "Contact me",
-    "lead": "If you have any questions or propositions, please feel free to contact me."
+    "lead": "If you have any questions or feedback regarding the content of this portfolio, feel free to contact me. I will respond at my convenience.",
+    "name": "Jacob T. Fredericksen",
+    "error": "Something went wrong. Please try again later.",
+    "success": "Your message was delivered to me successfully. Thanks!",
+    "nameFieldLabel": "Name",
+    "emailFieldLabel": "Email address",
+    "messageFieldLabel": "Message"
+  },
+  "Projects": {
+    "title": "Projects",
+    "lead": "Here are a few apps I've built and/or am in the process of building:"
   }
 }
