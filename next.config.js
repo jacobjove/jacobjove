@@ -31,6 +31,11 @@ const nextConfig = {
       // },
     ],
   },
+  images: {
+    domains: ["orega.org"],
+  },
+  // https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files
+  output: "standalone",
   sentry: {
     // https://webpack.js.org/configuration/devtool/
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map

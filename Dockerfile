@@ -44,17 +44,14 @@ FROM base as runner
 WORKDIR /app
 
 # Copy compiled JavaScript from the builder stage.
-COPY --from=builder --chown=www-data:www-data /app/.next ./.next
-COPY public ./public
-COPY package*.json ./
-COPY next.config.js ./
+COPY --from=builder --chown=www-data:www-data /app/.next/standalone .
+COPY --from=builder --chown=www-data:www-data /app/.next/static /app/.next/static
+# Note: The public dir also must be copied from the builder rather than from the host,
+# since the service worker files from next-pwa are generated during the build.
+COPY --from=builder --chown=www-data:www-data /app/public /app/public
 
-# https://joshtronic.com/2022/07/10/husky-command-not-found-with-npm-install-production/
-RUN npm set-script prepare ''
-
-RUN npm ci --production
-
-ENV PATH /app/node_modules/.bin:$PATH
+# Remove dotenv file from image.
+RUN rm .env
 
 # Expose Next.js web application port.
 EXPOSE ${PORT}
@@ -67,4 +64,4 @@ HEALTHCHECK --interval=30s --timeout=7s --start-period=60s --retries=3 \
   CMD curl --fail http://localhost:${PORT}/ || exit 1
 
 # Start the app.
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]
