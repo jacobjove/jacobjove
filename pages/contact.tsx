@@ -22,9 +22,9 @@ const CONTACT_FORM_ENABLED = true;
 type Status = "idle" | "sending" | "sent" | "error";
 
 interface ContactFormData {
-  name: string;
-  email: string;
-  message: string;
+  name?: string;
+  email?: string;
+  message?: string;
 }
 
 type ContactFormAction = { type: "reset" } | { type: "update"; payload: Partial<ContactFormData> };
@@ -175,7 +175,7 @@ export default function Contact() {
                   <TextField
                     label={t("nameFieldLabel")}
                     name={"name"}
-                    value={contactFormData.name}
+                    value={contactFormData.name ?? ""}
                     onChange={(event) => handleChange("name", event.target.value)}
                     fullWidth
                     required
@@ -184,7 +184,7 @@ export default function Contact() {
                   <TextField
                     label={t("emailFieldLabel")}
                     name={"email"}
-                    value={contactFormData.email}
+                    value={contactFormData.email ?? ""}
                     onChange={(event) => handleChange("email", event.target.value)}
                     fullWidth
                     required
@@ -193,7 +193,7 @@ export default function Contact() {
                   <TextField
                     label={t("messageFieldLabel")}
                     name={"message"}
-                    value={contactFormData.message}
+                    value={contactFormData.message ?? ""}
                     onChange={(event) => handleChange("message", event.target.value)}
                     fullWidth
                     multiline
