@@ -47,7 +47,7 @@ jobs:
       - name: Check out main branch
         uses: actions/checkout@v3
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.6
+        uses: iacobfred/generate-dotenv@v0.3.0
         with:
           template-paths: |
             .config/_.env
