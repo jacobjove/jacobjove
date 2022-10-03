@@ -4,10 +4,13 @@ const { withSentryConfig } = require("@sentry/nextjs");
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === "production";
+
 /**
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
+  compress: !NGINX_COMPRESSION_ENABLED,
   // https://nextjs.org/docs/advanced-features/i18n-routing
   i18n: {
     // List all the locales to support.
@@ -36,11 +39,15 @@ const nextConfig = {
   },
   // https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files
   output: "standalone",
+  // https://nextjs.org/docs/api-reference/next.config.js/disabling-x-powered-by
+  poweredByHeader: false,
   sentry: {
     // https://webpack.js.org/configuration/devtool/
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
     hideSourceMaps: true,
   },
+  // https://nextjs.org/docs/api-reference/next.config.js/react-strict-mode
+  reactStrictMode: true,
   swcMinify: true,
   // https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
   webpack: (config, { webpack }) => {

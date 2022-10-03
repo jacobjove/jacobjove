@@ -112,7 +112,11 @@ jobs:
           host: ${{ secrets.DOMAIN }}
           user: jacob
           target: /var/www/${{ secrets.DOMAIN }}
-          files: ".env docker-compose.yml .config/nginx.conf .config/scripts"
+          files: |
+            .env
+            docker-compose.yml
+            .config/nginx.conf
+            .config/scripts
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           command: |
