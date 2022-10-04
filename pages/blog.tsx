@@ -5,32 +5,30 @@ import { GetStaticProps } from "next";
 import Date from "../components/date";
 import PageHeader from "@components/PageHeader";
 import { getMessages } from "@utils/i18n";
-
-interface Post {
-  id: string;
-  date: string;
-  title: string;
-}
+import { BlogPost } from "@components/admin/blog/BlogAdmin";
+import { getDb, serialize } from "@utils/mongo";
 
 interface BlogProps {
-  allPostsData: Post[];
+  posts: BlogPost[];
 }
 
-export default function Blog({ allPostsData }: BlogProps) {
+export default function Blog({ posts }: BlogProps) {
   return (
     <Layout>
       <PageHeader>{"Blog"}</PageHeader>
       <div>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
-            <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>
+          {posts.map(({ _id, createdAt, title }) => (
+            <li className={utilStyles.listItem} key={_id}>
+              <Link href={`/posts/${_id}`}>
                 <a>{title}</a>
               </Link>
               <br />
-              <small className={utilStyles.lightText}>
-                <Date dateString={date} />
-              </small>
+              {createdAt && (
+                <small className={utilStyles.lightText}>
+                  <Date dateString={createdAt} />
+                </small>
+              )}
             </li>
           ))}
         </ul>
@@ -41,11 +39,12 @@ export default function Blog({ allPostsData }: BlogProps) {
 
 export const getStaticProps: GetStaticProps<BlogProps> = async ({ locale }) => {
   const messages = await getMessages(locale);
-  const allPostsData: Post[] = [];
+  const db = await getDb();
+  const posts = (await db.collection("posts").find().toArray().then(serialize)) as BlogPost[];
   return {
     props: {
       messages,
-      allPostsData,
+      posts,
     },
   };
 };

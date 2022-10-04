@@ -7,6 +7,6 @@ export const MENU_ITEMS: MenuItem[] = [
   ["About", "/about"],
   ["CV", "/cv"],
   ["Projects", "/projects"],
-  // ["Blog", "/blog"],
+  ["Blog", "/blog"],
   ["Contact", "/contact"],
 ];

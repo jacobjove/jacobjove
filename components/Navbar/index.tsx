@@ -67,12 +67,13 @@ export default function Navbar() {
                 mr: 2,
                 display: { sm: "none" },
                 flexBasis: "20%",
+                flexShrink: 1,
                 justifyContent: "flex-start",
               }}
             >
               <MenuIcon />
             </IconButton>
-            <Box flexBasis={"20%"}>
+            <Box flexBasis={"20%"} flexShrink={1}>
               <Link href="/" passHref>
                 <Typography
                   variant="h3"
@@ -116,6 +117,7 @@ export default function Navbar() {
                       "&:hover": {
                         textDecoration: "none",
                       },
+                      px: "0.25rem",
                     }}
                   >
                     {t(name)}
@@ -129,6 +131,7 @@ export default function Navbar() {
                 display: "flex",
                 justifyContent: "flex-end",
                 flexBasis: "20%",
+                flexShrink: 1,
                 color: (theme) => theme.palette.primary.contrastText,
               }}
             >
