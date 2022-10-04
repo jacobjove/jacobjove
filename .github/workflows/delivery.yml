@@ -11,6 +11,7 @@ on:
       - .idea/**
       - .vscode/**
       - "**.md"
+      - "!_posts/**/*.md"
       - "**.rst"
       - "**.txt"
       - "package*.json"

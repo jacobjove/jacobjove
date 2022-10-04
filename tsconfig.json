@@ -15,6 +15,7 @@
     "paths": {
       "@components/*": ["components/*"],
       "@messages/*": ["messages/*"],
+      "@interfaces/*": ["interfaces/*"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"]
     },

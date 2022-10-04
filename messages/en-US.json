@@ -16,6 +16,9 @@
   "About": {
     "title": "About me"
   },
+  "Blog": {
+    "title": "Blog"
+  },
   "Contact": {
     "title": "Contact me",
     "lead": "If you have any questions or feedback regarding the content of this portfolio, feel free to contact me. I will respond at my convenience.",
@@ -25,6 +28,10 @@
     "nameFieldLabel": "Name",
     "emailFieldLabel": "Email address",
     "messageFieldLabel": "Message"
+  },
+  "CV": {
+    "title": "CV",
+    "linkedInProfileIntro": "See also my LinkedIn profile:"
   },
   "Projects": {
     "title": "Projects",

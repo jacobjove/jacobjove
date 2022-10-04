@@ -1,51 +1,43 @@
 import Layout from "../components/Layout";
-import utilStyles from "../styles/utils.module.css";
-import Link from "next/link";
 import { GetStaticProps } from "next";
-import Date from "../components/date";
 import PageHeader from "@components/PageHeader";
 import { getMessages } from "@utils/i18n";
-
-interface Post {
-  id: string;
-  date: string;
-  title: string;
-}
+import { BlogPost } from "@interfaces/Post";
+import Typography from "@mui/material/Typography";
+import { useTranslations } from "next-intl";
+import { getBlogPostSlugs, getPostBySlug } from "@utils/blog";
+import PostPreview from "@components/blog/PostPreview";
 
 interface BlogProps {
-  allPostsData: Post[];
+  posts: BlogPost[];
 }
 
-export default function Blog({ allPostsData }: BlogProps) {
+export default function Blog({ posts }: BlogProps) {
+  const t = useTranslations("Blog");
   return (
     <Layout>
-      <PageHeader>{"Blog"}</PageHeader>
-      <div>
-        <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
-            <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>
-                <a>{title}</a>
-              </Link>
-              <br />
-              <small className={utilStyles.lightText}>
-                <Date dateString={date} />
-              </small>
-            </li>
+      <PageHeader>{t("title")}</PageHeader>
+      {posts.length ? (
+        <div>
+          {posts.map(({ createdAt, title, slug }) => (
+            <PostPreview key={slug} title={title} createdAt={createdAt} excerpt={""} slug={slug} />
           ))}
-        </ul>
-      </div>
+        </div>
+      ) : (
+        <Typography textAlign="center">{"Coming soon."}</Typography>
+      )}
     </Layout>
   );
 }
 
 export const getStaticProps: GetStaticProps<BlogProps> = async ({ locale }) => {
   const messages = await getMessages(locale);
-  const allPostsData: Post[] = [];
+  const slugs = await getBlogPostSlugs();
+  const posts = await Promise.all(slugs.map((slug) => getPostBySlug(slug)));
   return {
     props: {
       messages,
-      allPostsData,
+      posts,
     },
   };
 };

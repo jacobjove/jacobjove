@@ -51,8 +51,8 @@ const nextConfig = {
   swcMinify: true,
   // https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
   webpack: (config, { webpack }) => {
-    // For production builds, tree-shake all code in the Sentry SDK related to debug logging,
-    // since the debug code is only useful in development environments.
+    // For production builds, tree-shake all code in the Sentry SDK related to debug logging.
+    // The debug code is only useful in development environments.
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/tree-shaking/#tree-shaking-optional-code
     config.plugins.push(
       new webpack.DefinePlugin({
