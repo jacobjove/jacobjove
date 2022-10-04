@@ -1,13 +1,11 @@
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { FC } from "react";
-import AddIcon from "@mui/icons-material/Add";
 import { BlogPost } from "@interfaces/Post";
 
 const columns: GridColDef<BlogPost>[] = [
-  { field: "_id", headerName: "ID", width: 90 },
+  { field: "slug", headerName: "Slug", width: 90 },
   {
     field: "title",
     headerName: "Title",
@@ -16,7 +14,7 @@ const columns: GridColDef<BlogPost>[] = [
     // editable: true,
     renderCell: ({ row, value }) => {
       return (
-        <Link href={`/admin/posts/${row._id}`}>
+        <Link href={`/posts/${row.slug}`}>
           <a>{value}</a>
         </Link>
       );
@@ -56,15 +54,8 @@ interface BlogAdminProps {
 const BlogAdmin: FC<BlogAdminProps> = ({ rows }: BlogAdminProps) => {
   return (
     <Box sx={{ height: 400, width: "100%" }}>
-      <Box display="flex" justifyContent="flex-end" my={1}>
-        <Link href="/admin/posts/new" passHref>
-          <Button component={"a"}>
-            <AddIcon /> Add
-          </Button>
-        </Link>
-      </Box>
       <DataGrid
-        getRowId={(row) => row._id}
+        getRowId={(row) => row.slug}
         rows={rows}
         columns={columns}
         pageSize={5}
