@@ -124,7 +124,7 @@ const callbacks: CallbacksOptions = {
   async jwt({ token, account }) {
     // The account is only passed the first time this callback is called on a new session.
     // In subsequent calls, only the token is available.
-    console.log("🔑 jwt", { token, account });
+    // console.log("🔑 jwt", { token, account });
     if (account) {
       // Persist necessary data to the token.
       token.provider = account.provider;

@@ -8,7 +8,6 @@ import { BlogPost } from "@interfaces/Post";
 import { getBlogPostSlugs, getPostBySlug } from "@utils/blog";
 
 const BlogPostPage: NextPage<{ data: BlogPost }> = ({ data }) => {
-  console.log(">>>>>Rendering post page......");
   const router = useRouter();
   if (!router.isFallback && !data?.slug) {
     return <ErrorPage statusCode={404} />;
@@ -17,9 +16,7 @@ const BlogPostPage: NextPage<{ data: BlogPost }> = ({ data }) => {
     <Layout maxWidth="sm">
       <article>
         <PageHeader>{data.title}</PageHeader>
-        <div>
-          <div dangerouslySetInnerHTML={{ __html: data.content }} />
-        </div>
+        <div dangerouslySetInnerHTML={{ __html: data.content }} />
       </article>
     </Layout>
   );
@@ -30,7 +27,6 @@ export default BlogPostPage;
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   const slug = params?.slug as string;
   const data = await getPostBySlug(slug);
-  console.log(data);
   return {
     props: {
       messages: await getMessages(locale),
