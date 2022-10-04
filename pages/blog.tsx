@@ -7,6 +7,7 @@ import PageHeader from "@components/PageHeader";
 import { getMessages } from "@utils/i18n";
 import { BlogPost } from "@components/admin/blog/BlogAdmin";
 import { getDb, serialize } from "@utils/mongo";
+import Typography from "@mui/material/Typography";
 
 interface BlogProps {
   posts: BlogPost[];
@@ -16,23 +17,27 @@ export default function Blog({ posts }: BlogProps) {
   return (
     <Layout>
       <PageHeader>{"Blog"}</PageHeader>
-      <div>
-        <ul className={utilStyles.list}>
-          {posts.map(({ _id, createdAt, title }) => (
-            <li className={utilStyles.listItem} key={_id}>
-              <Link href={`/posts/${_id}`}>
-                <a>{title}</a>
-              </Link>
-              <br />
-              {createdAt && (
-                <small className={utilStyles.lightText}>
-                  <Date dateString={createdAt} />
-                </small>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {posts.length ? (
+        <div>
+          <ul className={utilStyles.list}>
+            {posts.map(({ _id, createdAt, title }) => (
+              <li className={utilStyles.listItem} key={_id}>
+                <Link href={`/posts/${_id}`}>
+                  <a>{title}</a>
+                </Link>
+                <br />
+                {createdAt && (
+                  <small className={utilStyles.lightText}>
+                    <Date dateString={createdAt} />
+                  </small>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <Typography textAlign="center">{"Coming soon."}</Typography>
+      )}
     </Layout>
   );
 }
