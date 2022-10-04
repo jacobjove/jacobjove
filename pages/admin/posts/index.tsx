@@ -1,4 +1,5 @@
-import BlogAdmin, { BlogPost } from "@components/admin/blog/BlogAdmin";
+import BlogAdmin from "@components/blog/BlogAdmin";
+import { BlogPost } from "@interfaces/Post";
 import { GetServerSideProps } from "next";
 import { getMessages } from "@utils/i18n";
 import AdminLayout from "@components/admin/AdminLayout";
