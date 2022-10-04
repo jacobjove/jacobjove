@@ -124,25 +124,29 @@ const callbacks: CallbacksOptions = {
   async jwt({ token, account }) {
     // The account is only passed the first time this callback is called on a new session.
     // In subsequent calls, only the token is available.
-    // console.log("🔑 jwt", { token, account });
+    console.log("🔑 jwt", { token, account });
     if (account) {
       // Persist necessary data to the token.
       token.provider = account.provider;
       token.providerAccountId = account.providerAccountId;
       token.scopes = account.scope?.split(" ");
       token.accessToken = account.access_token;
-      token.accessTokenExpiry = account.expires_at ? account.expires_at * 1000 : undefined;
-      token.refreshToken = account.refresh_token;
+      if (account.expires_at) {
+        token.accessTokenExpiry = account.expires_at * 1000;
+        token.refreshToken = account.refresh_token;
+      }
     }
     // Return the previous token if the access token has not expired yet.
-    if (token.accessTokenExpiry && Date.now() < token.accessTokenExpiry) {
-      return token;
-    } else if (token) {
-      // Attempt to update the token.
-      console.log(
-        `🔑 Attempting to update token because ${Date.now()} > ${token.accessTokenExpiry}`
-      );
-      return refreshAccessToken(token);
+    if (token.accessTokenExpiry) {
+      if (Date.now() < token.accessTokenExpiry) {
+        return token;
+      } else {
+        // Attempt to update the token.
+        console.log(
+          `🔑 Attempting to update token because ${Date.now()} > ${token.accessTokenExpiry}`
+        );
+        return refreshAccessToken(token);
+      }
     }
     return token;
   },

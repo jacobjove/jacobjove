@@ -16,6 +16,9 @@
   "About": {
     "title": "私について"
   },
+  "Blog": {
+    "title": "ブログ"
+  },
   "Contact": {
     "title": "連絡先",
     "lead": "このポートフォリオについて質問やフィードバックがありましたら、ご自由にご連絡してください。",
@@ -25,6 +28,10 @@
     "nameFieldLabel": "お名前",
     "emailFieldLabel": "メールアドレス",
     "messageFieldLabel": "メッセージ"
+  },
+  "CV": {
+    "title": "履歴書",
+    "linkedInProfileIntro": "リンクトインプロフィールもご覧になれます。"
   },
   "Projects": {
     "title": "プロジェクト",

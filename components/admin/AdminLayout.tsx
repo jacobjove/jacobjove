@@ -12,22 +12,23 @@ interface AdminLayoutProps {
   children: ReactNode;
 }
 
-interface BreadcrumbItem {
-  name: string;
-  url: string;
-}
-
 const AdminLayout: FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
   const router = useRouter();
-  const { pathname } = router;
+  const { pathname, asPath, query } = router;
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push(`/auth/signin?callbackUrl=${pathname}`);
+      router.push(`/auth/signin?callbackUrl=${asPath}`);
     },
   });
   const breadcrumbs = useMemo(() => {
     const pathnames = pathname.split("/").filter((x) => x);
+    // In the case of pathnames with query params, display the params in the breadcrumb
+    // rather than displaying the parameter key(s). For example, display the object ID
+    // as the last breadcrumb rather than the string `[id]`.
+    if (Object.keys(query).length) {
+      pathnames[pathnames.length - 1] = Object.values(query).join(" ");
+    }
     return pathnames.map((pathname, index) => {
       return {
         name: pathname.charAt(0).toUpperCase() + pathname.slice(1),
@@ -39,7 +40,7 @@ const AdminLayout: FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
         })}`,
       };
     });
-  }, [pathname]);
+  }, [pathname, query]);
   if (!session) return null;
   return (
     <Layout>

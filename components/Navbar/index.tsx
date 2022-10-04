@@ -55,7 +55,6 @@ export default function Navbar() {
               alignItems: "center",
               justifyContent: "space-between",
               width: "100%",
-              px: { xs: 1, sm: 2 },
             }}
           >
             <IconButton
@@ -100,6 +99,7 @@ export default function Navbar() {
             <Box
               sx={{
                 flexGrow: 1,
+                flexShrink: 0,
                 display: { xs: "none", sm: "flex" },
                 justifyContent: "space-evenly",
                 columnGap: 2,

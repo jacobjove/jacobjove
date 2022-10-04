@@ -4,15 +4,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Link from "next/link";
 import { FC } from "react";
 import AddIcon from "@mui/icons-material/Add";
-
-export interface BlogPost {
-  _id: string;
-  title: string;
-  slug?: string;
-  published: boolean;
-  createdAt: string;
-  updatedAt?: string;
-}
+import { BlogPost } from "@interfaces/Post";
 
 const columns: GridColDef<BlogPost>[] = [
   { field: "_id", headerName: "ID", width: 90 },

@@ -27,10 +27,12 @@
     "Patreon",
     "prefetch",
     "referer",
+    "remirror",
     "shasum",
     "shopt",
     "signin",
     "stylelint",
+    "tiptap",
     "webserver"
   ],
   "flagWords": ["hte"],

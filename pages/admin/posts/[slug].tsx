@@ -2,9 +2,9 @@ import { GetServerSideProps, NextPage } from "next";
 import { getMessages } from "@utils/i18n";
 import AdminLayout from "@components/admin/AdminLayout";
 import { getDb, serialize } from "@utils/mongo";
-import BlogPostForm from "@components/admin/blog/BlogPostForm";
+import BlogPostForm from "@components/blog/BlogPostForm";
 import { ObjectId } from "mongodb";
-import { BlogPost } from "@components/admin/blog/BlogAdmin";
+import { BlogPost } from "@interfaces/Post";
 
 interface EditBlogPostPageProps {
   data: BlogPost;
