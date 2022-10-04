@@ -7,7 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { BlogPost } from "@interfaces/Post";
 
 const columns: GridColDef<BlogPost>[] = [
-  { field: "_id", headerName: "ID", width: 90 },
+  { field: "slug", headerName: "Slug", width: 90 },
   {
     field: "title",
     headerName: "Title",
@@ -16,7 +16,7 @@ const columns: GridColDef<BlogPost>[] = [
     // editable: true,
     renderCell: ({ row, value }) => {
       return (
-        <Link href={`/admin/posts/${row._id}`}>
+        <Link href={`/admin/posts/${row.slug}`}>
           <a>{value}</a>
         </Link>
       );
@@ -64,7 +64,7 @@ const BlogAdmin: FC<BlogAdminProps> = ({ rows }: BlogAdminProps) => {
         </Link>
       </Box>
       <DataGrid
-        getRowId={(row) => row._id}
+        getRowId={(row) => row.slug}
         rows={rows}
         columns={columns}
         pageSize={5}
