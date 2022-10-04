@@ -34,9 +34,9 @@ const SocialLogin: FC<SocialLoginProps> = ({
 }: SocialLoginProps) => {
   if (!providers) throw new Error("No providers are configured.");
   const socialAuthLoginComponents: ReactElement[] = [];
-  const handleSocialLogin = async (provider_id: string) => {
+  const handleSocialLogin = async (providerId: string) => {
     try {
-      signIn(provider_id, { callbackUrl });
+      signIn(providerId, { callbackUrl });
     } catch (error) {
       onError(`${error}`);
     }

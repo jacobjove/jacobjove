@@ -41,7 +41,7 @@ export const getDb = async (_client?: MongoClient) => {
 };
 
 const serializeDocument = (document: Document) => {
-  document._id = document._id.toString();
+  document.slug = document.slug.toString();
   return document;
 };
 

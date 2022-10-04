@@ -11,15 +11,15 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   const data = req.body;
 
   // Returns early if required fields are missing.
-  if (!data._id || !data.title || !data.body) {
+  if (!data.slug || !data.title || !data.body) {
     // Sends a HTTP bad request error code
     return res.status(400).json({ data: "Title and body are required." });
   }
 
   const db = await getDb();
-  const { _id, ...rest } = data;
+  const { slug, ...rest } = data;
   const result = await db.collection("posts").updateOne(
-    { _id },
+    { slug },
     {
       ...rest,
       updatedAt: new Date(),
