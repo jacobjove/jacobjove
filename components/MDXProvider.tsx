@@ -1,5 +1,5 @@
 import { MDXProvider as _MDXProvider } from "@mdx-js/react";
-import DateString from "@components/Date";
+import DateString from "@components/date";
 import PageHeader from "@components/PageHeader";
 import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
