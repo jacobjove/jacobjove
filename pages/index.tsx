@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
 import { getMessages } from "@utils/i18n";
-import { getPostSlugs } from "@utils/blog";
+import { getAllPostSlugs } from "@utils/blog";
 
 export const siteTitle = "Jacob's portfolio";
 
@@ -58,7 +58,7 @@ export default function Home({ posts }: HomePageProps) {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const messages = await getMessages(locale, ["home"]);
-  const posts = await getPostSlugs();
+  const posts = await getAllPostSlugs();
   return {
     props: {
       ...messages,

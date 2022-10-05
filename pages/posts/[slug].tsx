@@ -5,7 +5,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Layout from "@components/Layout";
 import PageHeader from "@components/PageHeader";
 import { BlogPost } from "@interfaces/Post";
-import { getPostSlugs, getPostBySlug } from "@utils/blog";
+import { getAllPostSlugs, getPostBySlug } from "@utils/blog";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 
@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await getPostSlugs();
+  const slugs = await getAllPostSlugs();
   const paths = slugs.map((slug) => `/posts/${slug}`);
   return {
     paths,
