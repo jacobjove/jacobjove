@@ -4,6 +4,7 @@
         "buildx",
         "dotenv",
         "glitchtip",
+        "iacobfred",
         "webserver"
     ],
     "flagWords": [

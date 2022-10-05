@@ -28,6 +28,7 @@ env:
   DOMAIN: ${{ secrets.DOMAIN }}
   EMAIL_URL: ${{ secrets.EMAIL_URL }}
   GLITCHTIP_BASE_URL: ${{ secrets.GLITCHTIP_BASE_URL }}
+  PORT: ${{ secrets.PORT }}
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
   SHA: ${{ github.sha }}
 
