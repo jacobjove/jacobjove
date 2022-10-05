@@ -1,0 +1,92 @@
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+name: integration
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - .gitignore
+      - .github/**
+      - "!.github/integration.yml"
+      - .idea/**
+      - .vscode/**
+      - "**.md"
+      - "**.rst"
+      - config/hooks/**
+  # schedule:
+  #   - cron: 0 9 * * *
+  workflow_dispatch:
+    inputs:
+      jobs:
+        description: Comma-separated list of names of jobs to trigger
+        required: false
+        default: build,test-deploy
+
+env:
+  ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MONGO_DB: ${{ secrets.MONGO_DB }}
+  MONGO_HOST: mongo
+  MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+  SERVER_HOST: ${{ secrets.SERVER_HOST }}
+  SHA: ${{ github.sha }}
+  SMTP_USER: ${{ secrets.SMTP_USER }}
+  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+
+jobs:
+  changed-files:
+    name: Get changed files
+    runs-on: ubuntu-latest
+    outputs:
+      added-files: ${{ steps.changed-files.outputs.added_files }}
+      deleted-files: ${{ steps.changed-files.outputs.deleted_files }}
+      modified-files: ${{ steps.changed-files.outputs.modified_files }}
+      all-changed-files: ${{ steps.changed-files.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v31.0.3
+  build:
+    name: Build image
+    needs: changed-files
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+      - name: Generate .env file
+        uses: iacobfred/generate-dotenv@v0.3.0
+        with:
+          template-paths: |
+            .config/_.env
+            .config/_.env.production
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build image without cache
+        uses: docker/build-push-action@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          secret-files: ENV_FILE=./.env
+          tags: ghcr.io/iacobfred/portfolio:${{ github.sha }}
