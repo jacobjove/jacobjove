@@ -3,6 +3,8 @@ import DateString from "@components/Date";
 import PageHeader from "@components/PageHeader";
 import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 
 interface UniversalProps {
   children?: ReactNode;
@@ -12,11 +14,12 @@ interface UniversalProps {
 const components = {
   DateString,
   PageHeader,
+  h1: (props: UniversalProps) => <Typography variant="h1" {...props} />,
   h2: (props: UniversalProps) => <Typography variant="h2" {...props} />,
+  p: (props: UniversalProps) => <Typography component="p" variant="body1" {...props} />,
+  ul: (props: UniversalProps) => <List {...props} />,
+  li: (props: UniversalProps) => <ListItem {...props} />,
   // img: ResponsiveImage,
-  // h1: Heading.H1,
-  // h2: Heading.H2,
-  // p: Text,
   // pre: Pre,
   // code: InlineCode,
 };
