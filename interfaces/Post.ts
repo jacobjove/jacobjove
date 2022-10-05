@@ -1,8 +1,9 @@
 export interface BlogPost {
   title: string;
-  content: string;
   slug: string;
-  createdAt: string;
+  content: string;
+  excerpt?: string;
+  publishedAt: string;
   updatedAt?: string;
   published: boolean;
 }

@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "next-i18next";
 import { getMessages } from "@utils/i18n";
 import ContactForm from "@components/contact/ContactForm";
 
@@ -16,7 +16,7 @@ const EMAIL = "jacob.t.fredericksen@gmail.com";
 const CONTACT_FORM_ENABLED = true;
 
 export default function Contact() {
-  const t = useTranslations("Contact");
+  const { t } = useTranslation("contact");
   return (
     <Layout fluid>
       <PageHeader>{t("title")}</PageHeader>
@@ -38,7 +38,7 @@ export default function Contact() {
             mx: { sm: 2 },
             pt: 1,
             minWidth: { sm: "30rem" },
-            maxWidth: "40rem",
+            maxWidth: { xs: "40rem", sm: "33rem" },
           },
         }}
       >
@@ -79,8 +79,8 @@ export default function Contact() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messages = await getMessages(locale);
+  const messages = await getMessages(locale, ["contact"]);
   return {
-    props: { messages },
+    props: { ...messages },
   };
 };

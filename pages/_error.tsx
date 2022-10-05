@@ -15,9 +15,11 @@ import * as Sentry from "@sentry/nextjs";
 import NextErrorComponent, { ErrorProps } from "next/error";
 import Layout from "@components/Layout";
 import { NextPage } from "next";
-import { getMessages } from "@utils/i18n";
+import { useTranslation } from "next-i18next";
 
 const CustomErrorComponent: NextPage<ErrorProps> = (props) => {
+  const { i18n } = useTranslation();
+  i18n.reloadResources();
   return (
     <Layout>
       <NextErrorComponent statusCode={props.statusCode} />
@@ -28,7 +30,6 @@ const CustomErrorComponent: NextPage<ErrorProps> = (props) => {
 CustomErrorComponent.getInitialProps = async (contextData) => {
   await Sentry.captureUnderscoreErrorException(contextData);
   return {
-    messages: await getMessages(contextData.locale),
     // Note: This includes the status code.
     ...NextErrorComponent.getInitialProps(contextData),
   };

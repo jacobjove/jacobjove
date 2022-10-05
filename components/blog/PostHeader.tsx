@@ -5,14 +5,14 @@ import PostTitle from "./PostTitle";
 
 type Props = {
   title: string;
-  createdAt: string;
+  publishedAt: string;
   updatedAt?: string;
 };
 
 const AUTHOR_NAME = "Jacob Fredericksen";
 const IMAGE = "/images/profile.jpg";
 
-const PostHeader = ({ title, createdAt }: Props) => {
+const PostHeader = ({ title, publishedAt }: Props) => {
   return (
     <>
       <PostTitle>{title}</PostTitle>
@@ -27,7 +27,7 @@ const PostHeader = ({ title, createdAt }: Props) => {
           <Avatar alt={AUTHOR_NAME} src={IMAGE} />
         </div>
         <div className="mb-6 text-lg">
-          <DateFormatter dateString={createdAt} />
+          <DateFormatter dateString={publishedAt} />
         </div>
       </div>
     </>

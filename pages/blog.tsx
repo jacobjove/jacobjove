@@ -4,8 +4,8 @@ import PageHeader from "@components/PageHeader";
 import { getMessages } from "@utils/i18n";
 import { BlogPost } from "@interfaces/Post";
 import Typography from "@mui/material/Typography";
-import { useTranslations } from "next-intl";
-import { getBlogPostSlugs, getPostBySlug } from "@utils/blog";
+import { useTranslation } from "next-i18next";
+import { getPublishedPosts } from "@utils/blog";
 import PostPreview from "@components/blog/PostPreview";
 
 interface BlogProps {
@@ -13,14 +13,20 @@ interface BlogProps {
 }
 
 export default function Blog({ posts }: BlogProps) {
-  const t = useTranslations("Blog");
+  const { t } = useTranslation("blog");
   return (
     <Layout>
       <PageHeader>{t("title")}</PageHeader>
       {posts.length ? (
         <div>
-          {posts.map(({ createdAt, title, slug }) => (
-            <PostPreview key={slug} title={title} createdAt={createdAt} excerpt={""} slug={slug} />
+          {posts.map(({ publishedAt, title, slug }) => (
+            <PostPreview
+              key={slug}
+              title={title}
+              publishedAt={publishedAt}
+              excerpt={""}
+              slug={slug}
+            />
           ))}
         </div>
       ) : (
@@ -31,12 +37,11 @@ export default function Blog({ posts }: BlogProps) {
 }
 
 export const getStaticProps: GetStaticProps<BlogProps> = async ({ locale }) => {
-  const messages = await getMessages(locale);
-  const slugs = await getBlogPostSlugs();
-  const posts = await Promise.all(slugs.map((slug) => getPostBySlug(slug)));
+  const messages = await getMessages(locale, ["blog"]);
+  const posts = await getPublishedPosts();
   return {
     props: {
-      messages,
+      ...messages,
       posts,
     },
   };

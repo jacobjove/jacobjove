@@ -5,13 +5,21 @@ import { GetStaticProps } from "next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "next-i18next";
 import { getMessages } from "@utils/i18n";
+import { getPublishedPosts } from "@utils/blog";
+import PostPreview from "@components/blog/PostPreview";
+import { BlogPost } from "@interfaces/Post";
 
 export const siteTitle = "Jacob's portfolio";
 
-export default function Home() {
-  const t = useTranslations("Home");
+interface HomePageProps {
+  posts: BlogPost[];
+}
+
+export default function Home({ posts }: HomePageProps) {
+  const { t } = useTranslation("home");
+  const name = t("name");
   return (
     <Layout>
       <Head>
@@ -34,11 +42,16 @@ export default function Home() {
           className={utilStyles.borderCircle}
           height={144}
           width={144}
-          alt={t("name")}
+          alt={name}
         />
-        <Typography variant={"h1"}>{t("name")}</Typography>
+        <Typography variant={"h1"}>{name}</Typography>
         <Box mt={2}>
           <Typography>{t("greeting")}</Typography>
+        </Box>
+        <Box>
+          {posts.map((post) => (
+            <PostPreview key={post.slug} {...post} />
+          ))}
         </Box>
       </Box>
     </Layout>
@@ -46,8 +59,12 @@ export default function Home() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messages = await getMessages(locale);
+  const messages = await getMessages(locale, ["home"]);
+  const posts = await getPublishedPosts();
   return {
-    props: { messages },
+    props: {
+      ...messages,
+      posts,
+    },
   };
 };

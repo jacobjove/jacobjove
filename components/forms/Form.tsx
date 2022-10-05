@@ -19,7 +19,7 @@ export default function Form<FormData extends FormDataBase>({
   children,
   onSubmit,
 }: FormProps<FormData>) {
-  //   const t = useTranslations(translationsKey);
+  //   const { t } = useTranslation(translationsKey);
   const [status, setStatus] = useState<FormStatus>("idle");
   const handleSubmit = async (event: SyntheticEvent) => {
     // Stop the form from submitting and refreshing the page.

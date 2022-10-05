@@ -1,8 +1,19 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { withSentryConfig } = require("@sentry/nextjs");
+import { withSentryConfig } from "@sentry/nextjs";
+import mdx from "@next/mdx";
+import { i18n } from "./next-i18next.config.js";
 
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
+
+const withMDX = mdx({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+    // If you use `MDXProvider`, uncomment the following line.
+    providerImportSource: "@mdx-js/react",
+  },
+});
 
 const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === "production";
 
@@ -12,33 +23,14 @@ const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === "production";
 const nextConfig = {
   compress: !NGINX_COMPRESSION_ENABLED,
   // https://nextjs.org/docs/advanced-features/i18n-routing
-  i18n: {
-    // List all the locales to support.
-    locales: ["en-US", "jp"],
-    // Specify the default locale to use when a non-locale-prefixed path is visited.
-    defaultLocale: "en-US",
-    // This is a list of locale domains and the default locale they
-    // should handle (these are only required when setting up domain routing)
-    // Note: subdomains must be included in the domain value to be matched e.g. "fr.example.com".
-    domains: [
-      {
-        domain: "orega.org",
-        defaultLocale: "en-US",
-      },
-      // {
-      //   domain: 'example.fr',
-      //   defaultLocale: 'fr',
-      //   // an optional http field can also be used to test
-      //   // locale domains locally with http instead of https
-      //   http: true,
-      // },
-    ],
-  },
+  i18n,
   images: {
     domains: ["orega.org"],
   },
   // https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files
   output: "standalone",
+  // https://nextjs.org/docs/advanced-features/using-mdx
+  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   // https://nextjs.org/docs/api-reference/next.config.js/disabling-x-powered-by
   poweredByHeader: false,
   sentry: {
@@ -70,4 +62,4 @@ const sentryWebpackPluginOptions = {
   silent: true,
 };
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+export default withSentryConfig(withMDX(nextConfig), sentryWebpackPluginOptions);

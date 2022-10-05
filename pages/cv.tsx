@@ -7,7 +7,7 @@ import { getMessages } from "@utils/i18n";
 import React from "react";
 import { DownloaderHelper } from "node-downloader-helper";
 import { renameSync } from "fs";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "next-i18next";
 
 const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobfredericksen/";
 
@@ -22,7 +22,7 @@ const RESUME_FILEPATH = `${RESUME_DIR}/${RESUME_FILENAME}`;
 const RESUME_URL = "/resume.pdf#toolbar=0&navpanes=0&scrollbar=0";
 
 export default function CV() {
-  const t = useTranslations("CV");
+  const { t } = useTranslation("cv");
   return (
     <Layout>
       <PageHeader>{t("title")}</PageHeader>
@@ -54,7 +54,7 @@ export default function CV() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messagesPromise = getMessages(locale, ["CV", "common"]);
+  const messagesPromise = getMessages(locale, ["cv"]);
   const id = Date.now(); // e.g., 1664775602649
   const tempFilename = `${RESUME_FILENAME_WITHOUT_EXTENSION}-${id}.pdf`;
   const dl = new DownloaderHelper(GOOGLE_DOC_PDF_DL_URL, RESUME_DIR, {
@@ -66,6 +66,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const tempFilepath = `${RESUME_DIR}/${tempFilename}`;
   renameSync(tempFilepath, RESUME_FILEPATH);
   return {
-    props: { messages: await messagesPromise },
+    props: { ...(await messagesPromise) },
   };
 };

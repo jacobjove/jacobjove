@@ -3,17 +3,13 @@ import Link from "next/link";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-
-interface Props {
-  title: string;
-  createdAt: string;
-  excerpt: string;
-  slug: string;
-}
+import { BlogPost } from "@interfaces/Post";
 
 const DEFAULT_EXCERPT = "This post has no excerpt.";
 
-const PostPreview = ({ title, createdAt, excerpt, slug }: Props) => {
+type PostPreviewProps = Pick<BlogPost, "title" | "publishedAt" | "excerpt" | "slug">;
+
+const PostPreview = ({ title, publishedAt, excerpt, slug }: PostPreviewProps) => {
   return (
     <Box
       sx={{
@@ -38,7 +34,7 @@ const PostPreview = ({ title, createdAt, excerpt, slug }: Props) => {
           </Link>
         </Typography>
         <Typography component={"small"} fontSize={"0.85rem"}>
-          <DateFormatter dateString={createdAt} />
+          <DateFormatter dateString={publishedAt} />
         </Typography>
         <Typography>{excerpt || DEFAULT_EXCERPT}</Typography>
       </Box>

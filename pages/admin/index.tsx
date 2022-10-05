@@ -23,7 +23,7 @@ export default AdminPage;
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
     props: {
-      messages: await getMessages(locale),
+      ...(await getMessages(locale)),
     },
   };
 };

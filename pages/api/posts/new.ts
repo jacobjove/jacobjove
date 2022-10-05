@@ -19,7 +19,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await getDb();
   const result = await db.collection("posts").insertOne({
     ...data,
-    createdAt: new Date(),
+    publishedAt: new Date(),
   });
 
   if (!result.insertedId) {
