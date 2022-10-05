@@ -1,0 +1,100 @@
+_
+
+# User scripts
+clean_data.py
+clean.py
+scratch.py
+
+# Volumes (media, static files, etc.)
+_volumes/
+
+# Environment & credentials
+.env
+*credentials.json
+.credentials
+.password
+.pat
+.secrets/
+.devcontainer/
+
+# Virtual Python environment
+.venv
+
+# Artifacts
+*.zip
+*.prior
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+
+# Python
+*.py[cod]
+*$py.class
+
+# Ctags
+.vscode/.tags
+
+# Legacy requirements
+# Note: Python packages should be managed through pyproject.toml
+requirements.txt
+
+# PyCharm / IntelliJ
+.idea
+.idea/
+
+# MacOS
+.DS_Store
+
+# Backup files
+*.bak
+
+# Testing / linting / coverage reports
+.cache/
+.coverage_html/
+.hypothesis/
+.nox/
+.pytype/
+.selenium/
+.tox/
+.coverage
+.coverage.*
+monkeytype.sqlite3
+coverage.xml
+**/cypress/screenshots/
+**/cypress/videos/
+
+# Celery
+celerybeat-schedule.*
+celerybeat.pid
+
+# Distribution / packaging
+*.egg-info/
+.eggs/
+eggs/
+wheels/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+
+# Node JS
+node_modules
+.npm
+/dist
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary files
+*.tmp

@@ -1,0 +1,108 @@
+##################################
+# Base
+##################################
+
+FROM python:3.9-buster AS base
+
+ARG PORT="8000"
+
+LABEL org.opencontainers.image.source https://github.com/ModularHistory/
+
+# Set environment vars.
+ENV \
+  PYTHONUNBUFFERED=1 \
+  PYTHONFAULTHANDLER=1 \
+  PYTHONHASHSEED=random \
+  PIP_NO_CACHE_DIR=off \
+  PIP_DISABLE_PIP_VERSION_CHECK=on \
+  PIP_DEFAULT_TIMEOUT=100 \
+  DJANGO_PORT=${PORT}
+
+# Add PostgreSQL repo.
+RUN wget --quiet https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
+  apt-key add ACCC4CF8.asc && \
+  echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
+
+# Install packages.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  dnsutils \
+  # Include fdupes for removing duplicate files.
+  fdupes \
+  # Include gettext-base for envsubst.
+  gettext-base \
+  gnupg2 \
+  graphviz graphviz-dev \
+  libenchant-dev \
+  libmagic1 \
+  postgresql-client-common postgresql-client-14 \
+  vim \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN pip install nltk
+
+# Install rclone (for media backup/sync).
+RUN curl https://rclone.org/install.sh | bash
+
+# Create required directories.
+RUN mkdir -p -- \
+  /static \
+  /_volumes/static \
+  /_volumes/media \
+  /_volumes/db/backups \
+  /_volumes/db/init \
+  /opt/atlas \
+  /var/www/nltk_data/corpora
+
+RUN chmod g+w -R /_volumes
+
+WORKDIR /app
+
+##################################
+# Builder
+##################################
+
+FROM base AS builder
+
+ARG PORT
+
+RUN pip install poetry
+
+RUN poetry config virtualenvs.create false
+
+COPY poetry.lock pyproject.toml /app/
+
+RUN poetry install --no-interaction --no-ansi --no-root --no-dev || ( \
+  poetry export -f requirements.txt --without-hashes -o requirements.txt && \
+  pip install --upgrade pip && pip install -r requirements.txt )
+
+##################################
+# Runner
+##################################
+
+# FROM base AS runner
+
+# Download required files.
+RUN python -c "import nltk; nltk.download('punkt')" && \
+  NLTK_DATA=var/www/nltk_data python -m textblob.download_corpora
+# cp -avr nltk_data/ /var/www/
+
+# Add source code.
+COPY --chown=www-data:www-data backend .
+COPY static /static
+COPY .config/scripts/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+COPY .config/invoke.yaml /etc/invoke.yaml
+
+# Collect static files.
+RUN python manage.py collectstatic --no-input
+
+# Grant necessary permissions to non-root user.
+RUN chmod +x /usr/local/bin/wait-for-it.sh && \
+  chown -R www-data:www-data /var/www/nltk_data && chmod g+w -R /var/www/nltk_data
+
+# Switch from root to non-root user.
+USER www-data
+
+EXPOSE ${PORT}
+
+# Specify the default command to run when the container is started.
+CMD ["gunicorn", "core.asgi:application", "--user", "www-data", "--bind", "0.0.0.0:${PORT}", "-k", "uvicorn.workers.UvicornWorker", "--workers", "9", "--max-requests", "100, "--max-requests-jitter", "50"]

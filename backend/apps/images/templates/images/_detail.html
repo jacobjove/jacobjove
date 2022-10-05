@@ -1,0 +1,33 @@
+{% extends "_card.html" %}
+{% load static %}
+{% load media %}
+
+{% block edit %}
+    {% with object=image request=request %}
+        {{block.super}}
+    {% endwith %}
+{% endblock %}
+
+{% block top %}
+    <div class="view overlay">
+        <img class="card-img-top lazy"
+             src="{% media image.src_url %}"
+             alt="{{ image.alt_text }}" 
+             loading="lazy" />
+        <a href="#!">
+            <div class="mask rgba-white-slight"></div>
+        </a>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {% if image.description %}
+        <p class="card-text">
+            {{ image.description }}
+        </p>
+    {% elif image.caption %}
+        <p class="card-text">
+            {{ image.caption_html }}
+        </p>
+    {% endif %}
+{% endblock %}

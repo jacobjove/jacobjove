@@ -1,0 +1,15 @@
+{% extends "_card.html" %}
+{% load model_urls %}
+
+{% block edit %}
+    {% with object=source request=request %}
+        {{block.super}}
+    {% endwith %}
+{% endblock %}
+
+{% block body %}
+    <!--Text-->
+    <div class="card-text">
+        {{ source }}
+    </div>
+{% endblock %}

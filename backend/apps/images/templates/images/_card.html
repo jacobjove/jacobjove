@@ -1,0 +1,44 @@
+{% extends "_card.html" %}
+{% load model_urls %}
+{% load cropping %}
+{% load static %}
+{% load media %}
+
+{% block card_class %}image-card{% endblock %}
+
+{% block card_styles %}max-width: {{ image.width }}px{% endblock %}
+
+{% block edit %}
+    {% with object=image request=request %}
+        {{block.super}}
+    {% endwith %}
+{% endblock %}
+
+{% block top %}
+    <div class="view overlay" style="max-width: {{ image.width }}px; max-height: {{ image.height }}px;">
+        <img class="card-img-top lazy"
+             src="{% media image.src_url %}"
+             alt="{{ image.alt_text }}"
+             loading="lazy" />
+        <a href="#" onclick="return false">
+            <div class="mask rgba-white-slight"></div>
+        </a>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {% if image.caption_html %}
+        <div class="card-text">
+            {{ image.caption_html|safe }}
+            {% if image.provider_string %}
+                <div class="image-credit float-right">
+                    <p>
+                        {{ image.provider_string }}
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block tags %}{% endblock %}
