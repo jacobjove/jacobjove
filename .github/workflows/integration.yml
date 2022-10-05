@@ -23,6 +23,14 @@ on:
         required: false
         default: build
 
+env:
+  DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
+  DOMAIN: ${{ secrets.DOMAIN }}
+  EMAIL_URL: ${{ secrets.EMAIL_URL }}
+  GLITCHTIP_BASE_URL: ${{ secrets.GLITCHTIP_BASE_URL }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  SHA: ${{ github.sha }}
+
 jobs:
   changed-files:
     name: Get changed files
