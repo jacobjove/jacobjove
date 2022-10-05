@@ -7,12 +7,14 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
 import { getMessages } from "@utils/i18n";
-import { getAllPostSlugs } from "@utils/blog";
+import { getPublishedPosts } from "@utils/blog";
+import PostPreview from "@components/blog/PostPreview";
+import { BlogPost } from "@interfaces/Post";
 
 export const siteTitle = "Jacob's portfolio";
 
 interface HomePageProps {
-  posts: string[];
+  posts: BlogPost[];
 }
 
 export default function Home({ posts }: HomePageProps) {
@@ -48,7 +50,7 @@ export default function Home({ posts }: HomePageProps) {
         </Box>
         <Box>
           {posts.map((post) => (
-            <Typography key={post}>{post}</Typography>
+            <PostPreview key={post.slug} {...post} />
           ))}
         </Box>
       </Box>
@@ -58,7 +60,7 @@ export default function Home({ posts }: HomePageProps) {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const messages = await getMessages(locale, ["home"]);
-  const posts = await getAllPostSlugs();
+  const posts = await getPublishedPosts();
   return {
     props: {
       ...messages,
