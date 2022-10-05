@@ -1,0 +1,48 @@
+/* These height rules are essential for app pages. */
+html {
+  height: 100%;
+  max-height: 100%;
+}
+
+body {
+  height: 100%;
+  max-height: 100%;
+}
+
+/* stylelint-disable */
+#__next {
+  height: 100%;
+  max-height: 100%;
+}
+
+#__next > div {
+  height: 100%;
+  max-height: 100%;
+}
+/* stylelint-enable */
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.no-scrollbar {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}

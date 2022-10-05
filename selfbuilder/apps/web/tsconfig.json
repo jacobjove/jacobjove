@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "incremental": true
+  },
+  "exclude": ["node_modules", "jest.config.ts"],
+  "extends": "../../tsconfig.base.json",
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "sentry.*.config.ts", "next-env.d.ts"]
+}

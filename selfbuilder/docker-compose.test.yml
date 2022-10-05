@@ -1,0 +1,5 @@
+services:
+  nextjs:
+    environment:
+      NEXTAUTH_URL: "http://localhost"
+      NODE_ENV: production

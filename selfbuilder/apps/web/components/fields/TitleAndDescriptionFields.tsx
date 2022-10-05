@@ -1,0 +1,142 @@
+import NotesIcon from "@mui/icons-material/Notes";
+import Box from "@mui/material/Box";
+import { Theme } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { SxProps } from "@mui/system";
+import { Dispatch, useState } from "react";
+
+interface FieldConfig<Name extends string> {
+  name: Name;
+  label: string;
+  fontSizeRem?: number;
+}
+
+interface TitleAndDescriptionFieldsProps<
+  TitlePropName extends string,
+  DescriptionPropName extends string
+> {
+  titleConfig: FieldConfig<TitlePropName>;
+  descriptionConfig: FieldConfig<DescriptionPropName>;
+  editingState: [boolean, Dispatch<boolean>];
+  includeIcon?: boolean;
+  dataTuple: [
+    { [key in TitlePropName]?: string | null | undefined } & {
+      [key in DescriptionPropName]?: string | null | undefined;
+    },
+    Dispatch<any>
+  ];
+  onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  sx?: SxProps<Theme>;
+}
+
+export default function TitleAndDescriptionFields<
+  TitlePropName extends string,
+  DescriptionPropName extends string
+>({
+  titleConfig,
+  descriptionConfig,
+  editingState,
+  dataTuple,
+  includeIcon: _includeIcon,
+  onKeyUp: _onKeyUp,
+  sx,
+}: TitleAndDescriptionFieldsProps<TitlePropName, DescriptionPropName>) {
+  const [editing, setEditing] = editingState;
+  const [data, dispatchData] = dataTuple;
+  const [descriptionFocused, setDescriptionFocused] = useState(false);
+  const { name: titleName, label: titleLabel, fontSizeRem: _titleFontSizeRem } = titleConfig;
+  const {
+    name: descriptionName,
+    label: descriptionLabel,
+    fontSizeRem: _descriptionFontSizeRem,
+  } = descriptionConfig;
+  const includeIcon = _includeIcon ?? true;
+  const titleFontSizeRem = _titleFontSizeRem || 1.25;
+  const titleFontSize = `${titleFontSizeRem}rem`;
+  const descriptionFontSize = `${_descriptionFontSizeRem ?? titleFontSizeRem * 0.75}rem`;
+  const onKeyUp =
+    _onKeyUp ??
+    ((event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter") {
+        alert("Handler for Enter key is not implemented");
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        setEditing(false);
+      }
+    });
+  console.log("descriptionFocused", descriptionFocused);
+  return (
+    <Box sx={{ ...(sx ?? {}) }}>
+      <Box>
+        {editing ? (
+          <TextField
+            required
+            autoFocus={!descriptionFocused}
+            // id="title"
+            name={titleName ?? "title"}
+            placeholder={titleLabel ?? "Title"}
+            value={data[titleName] ?? ""}
+            onChange={(event) => dispatchData({ field: titleName, value: event.target.value })}
+            onKeyUp={onKeyUp}
+            variant="standard"
+            InputProps={{ disableUnderline: true }}
+            sx={{ width: "100%", "& *": { p: 0, fontSize: titleFontSize } }}
+          />
+        ) : (
+          <Typography
+            component={"h1"}
+            sx={{ fontSize: titleFontSize, lineHeight: 1 }}
+            onClick={() => {
+              setDescriptionFocused(false);
+              setEditing(true);
+            }}
+          >
+            {data[titleName] ?? ""}
+          </Typography>
+        )}
+      </Box>
+      <Box
+        display="flex"
+        sx={{
+          alignItems: "center",
+          fontSize: descriptionFontSize,
+          color: (theme) =>
+            theme.palette.mode === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
+        }}
+        onClick={() => {
+          setDescriptionFocused(true);
+          setEditing(true);
+        }}
+      >
+        {includeIcon && !data[descriptionName] && !descriptionFocused && (
+          <NotesIcon sx={{ mr: 1, ml: "-2px" }} />
+        )}
+        {editing ? (
+          <TextField
+            autoFocus={descriptionFocused}
+            id="description"
+            name={descriptionName ?? "description"}
+            placeholder={descriptionLabel ?? "Description"}
+            multiline
+            fullWidth
+            variant="standard"
+            InputProps={{ disableUnderline: true }}
+            sx={{ "& .MuiInput-root": { p: 0, mt: "0.05rem", fontSize: descriptionFontSize } }}
+            value={data[descriptionName] ?? ""}
+            onFocus={() => setDescriptionFocused(true)}
+            onBlur={() => setDescriptionFocused(false)}
+            onChange={(event) =>
+              dispatchData({ field: descriptionName, value: event.target.value })
+            }
+            onKeyUp={onKeyUp}
+          />
+        ) : (
+          <Typography fontSize={descriptionFontSize}>
+            {data[descriptionName] || "Description"}
+          </Typography>
+        )}
+      </Box>
+    </Box>
+  );
+}

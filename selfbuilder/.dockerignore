@@ -1,0 +1,36 @@
+.gcloudignore
+.git
+.gitignore
+
+_templates
+_
+
+cypress/
+
+# Docker
+Dockerfile
+Dockerfile.*
+docker-compose.*
+
+# GitHub
+.github/
+README.md
+LICENSE.txt
+SECURITY.md
+
+# Secrets
+.env.local
+.env.*.local
+
+# Node JS
+node_modules/
+**/node_modules/
+*.suo
+*.sln
+.npm
+
+# PyCharm / IntelliJ / Visual Studio Code
+.idea
+.idea/
+.DS_Store
+.vscode

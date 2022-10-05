@@ -1,0 +1,7 @@
+---
+inject: true
+to: apps/web/generated/graphql/types/index.ts
+append: true
+skip_if: export { default as <%= Name %> } from "./<%= Name %>";
+---
+export { default as <%= Name %> } from "./<%= Name %>";

@@ -1,0 +1,12 @@
+---
+to: apps/web/generated/models/<%= Name %>/hooks/postCreate.ts
+unless_exists: true
+---
+/* Edit this file to add a non-default post-save hook for the <%= Name %> type. */
+
+import { postCreate as _postCreate } from "@web/graphql/schema/helpers";
+import { <%= Name %> } from "@web/generated/interfaces/<%= Name %>";
+
+export const postCreate = async (<%= name %>: <%= Name %>) => {
+  return _postCreate(<%= name %>);
+}

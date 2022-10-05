@@ -1,0 +1,15 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "main" ]; then
+  # shellcheck disable=SC2059
+  printf "\n${RED}Don't commit directly to the main branch.${NC}\n\n"
+  exit 1
+fi
+
+npx lint-staged
