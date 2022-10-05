@@ -1,0 +1,66 @@
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+name: delivery
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - .gitignore
+      - .github/**
+      - "!.github/workflows/delivery.yml"
+      - .idea/**
+      - .vscode/**
+      - "**.md"
+      - "**.rst"
+      - "**.txt"
+
+env:
+  DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
+  DOMAIN: ${{ secrets.DOMAIN }}
+  EMAIL_URL: ${{ secrets.EMAIL_URL }}
+  GLITCHTIP_BASE_URL: ${{ secrets.GLITCHTIP_BASE_URL }}
+  PORT: ${{ secrets.PORT }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  SHA: ${{ github.sha }}
+
+jobs:
+  changed-files:
+    name: Get changed files
+    runs-on: ubuntu-latest
+    outputs:
+      added-files: ${{ steps.changed-files.outputs.added_files }}
+      deleted-files: ${{ steps.changed-files.outputs.deleted_files }}
+      modified-files: ${{ steps.changed-files.outputs.modified_files }}
+      all-changed-files: ${{ steps.changed-files.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v29.0.7
+  deploy:
+    name: Deploy
+    needs: [changed-files]
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+      - name: Generate .env file
+        uses: iacobfred/generate-dotenv@v0.3.0
+        with:
+          template-paths: |
+            .config/_.env
+      - name: Deploy to server
+        uses: iacobfred/deploy-docker-ssh@v0.3.1
+        with:
+          host: ${{ secrets.DOMAIN }}
+          user: jacob
+          target: /var/www/${{ secrets.DOMAIN }}
+          files: ".env docker-compose.yml .config"
+          ssh-port: ${{ secrets.SSH_PORT }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: "docker compose pull && docker compose up -d --force-recreate && if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi; docker system prune -f"
+        env:
+          RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'routes.conf') }}
