@@ -2,7 +2,7 @@ export interface BlogPost {
   title: string;
   content: string;
   slug: string;
-  createdAt: string;
+  publishedAt: string;
   updatedAt?: string;
   published: boolean;
 }

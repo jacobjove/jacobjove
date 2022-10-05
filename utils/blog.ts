@@ -4,18 +4,26 @@ import matter from "gray-matter";
 import { join } from "path";
 import { readFileSync } from "fs";
 
-const POSTS_DIR = `${process.cwd()}/_posts`;
-const MD_EXTENSION_LENGTH = ".md".length;
+const POSTS_DIR = `${process.cwd()}/posts`;
+const POSTS_GLOB_PATTERN = `${POSTS_DIR}/**/*.mdx`;
 
-export const getBlogPostSlugs = async () => {
-  return glob
-    .sync(`${POSTS_DIR}/**/*.md`)
-    .map((filename) =>
-      filename.split("/").slice(-1)[0].replace(/ /g, "-").slice(0, -MD_EXTENSION_LENGTH).trim()
-    );
+export const getPostSlugs = async () => {
+  return glob.sync(POSTS_GLOB_PATTERN).map((filename) => {
+    return filename
+      .split("/")
+      .slice(-1)[0]
+      .replace(/ /g, "-")
+      .replace(/\.mdx?$/, "")
+      .trim();
+  });
 };
 
-export const slugToPath = (slug: string): string => join(POSTS_DIR, `${slug}.md`);
+export const slugToPath = (slug: string): string => join(POSTS_DIR, `${slug}.mdx`);
+
+export const getPosts = async (): Promise<BlogPost[]> => {
+  const slugs = await getPostSlugs();
+  return Promise.all(slugs.map((slug) => getPostBySlug(slug)));
+};
 
 export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
   const modulePath = slugToPath(slug);

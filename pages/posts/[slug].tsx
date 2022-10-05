@@ -5,18 +5,25 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Layout from "@components/Layout";
 import PageHeader from "@components/PageHeader";
 import { BlogPost } from "@interfaces/Post";
-import { getBlogPostSlugs, getPostBySlug } from "@utils/blog";
+import { getPostSlugs, getPostBySlug } from "@utils/blog";
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 
-const BlogPostPage: NextPage<{ data: BlogPost }> = ({ data }) => {
+interface BlogPostPageProps {
+  metadata: BlogPost;
+  source: MDXRemoteSerializeResult;
+}
+
+const BlogPostPage: NextPage<BlogPostPageProps> = ({ metadata, source }) => {
   const router = useRouter();
-  if (!router.isFallback && !data?.slug) {
+  if (!router.isFallback && !metadata?.slug) {
     return <ErrorPage statusCode={404} />;
   }
   return (
     <Layout maxWidth="sm">
       <article>
-        <PageHeader>{data.title}</PageHeader>
-        <div dangerouslySetInnerHTML={{ __html: data.content }} />
+        <PageHeader>{metadata.title}</PageHeader>
+        <MDXRemote {...source} lazy />
       </article>
     </Layout>
   );
@@ -26,17 +33,20 @@ export default BlogPostPage;
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   const slug = params?.slug as string;
-  const data = await getPostBySlug(slug);
+  console.log(">>> slug", slug);
+  const { content, ...metadata } = await getPostBySlug(slug);
+  const source = await serialize(content);
   return {
     props: {
-      messages: await getMessages(locale),
-      data,
+      ...(await getMessages(locale)),
+      source,
+      metadata,
     },
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await getBlogPostSlugs();
+  const slugs = await getPostSlugs();
   const paths = slugs.map((slug) => `/posts/${slug}`);
   return {
     paths,

@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
 import Box from "@mui/material/Box";
 import { getMessages } from "@utils/i18n";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "next-i18next";
 
 const PROJECTS: [string, string, string, string[]][] = [
   [
@@ -28,7 +28,7 @@ const PROJECTS: [string, string, string, string[]][] = [
 ];
 
 export default function Projects() {
-  const t = useTranslations("Projects");
+  const { t } = useTranslation("projects");
   return (
     <Layout maxWidth="sm">
       <PageHeader>{t("title")}</PageHeader>
@@ -59,8 +59,8 @@ export default function Projects() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messages = await getMessages(locale);
+  const messages = await getMessages(locale, ["projects"]);
   return {
-    props: { messages },
+    props: { ...messages },
   };
 };

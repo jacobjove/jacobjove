@@ -2,13 +2,15 @@ import createEmotionServer from "@emotion/server/create-instance";
 import { createEmotionCache } from "@utils/emotion";
 import BaseDocument, { DocumentContext, Head, Html, Main, NextScript } from "next/document";
 import React from "react";
+import i18nextConfig from "../next-i18next.config";
 
 // https://nextjs.org/docs/advanced-features/custom-document
 
 class Document extends BaseDocument {
   render() {
+    const currentLocale = this.props.__NEXT_DATA__.locale || i18nextConfig.i18n.defaultLocale;
     return (
-      <Html lang="en">
+      <Html lang={currentLocale}>
         <Head>
           {/* Note: See next-seo.config.ts for additional head tags. */}
           <link rel="icon" href="/favicon.ico" type="image/x-icon" />

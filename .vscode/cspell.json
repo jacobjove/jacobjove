@@ -26,6 +26,7 @@
     "noqa",
     "Patreon",
     "prefetch",
+    "rehype",
     "shasum",
     "signin",
     "stylelint",

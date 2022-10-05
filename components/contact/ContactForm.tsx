@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { SyntheticEvent, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "next-i18next";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useFormDataReducer, FormStatus } from "@utils/forms";
 
@@ -16,7 +16,7 @@ interface ContactFormData {
 }
 
 export default function ContactForm() {
-  const t = useTranslations("Contact");
+  const { t } = useTranslation("contact");
   const [status, setStatus] = useState<FormStatus>("idle");
   const [contactFormData, dispatchContactFormData] = useFormDataReducer<ContactFormData>({});
 

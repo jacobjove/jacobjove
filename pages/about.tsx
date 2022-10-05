@@ -2,11 +2,11 @@ import Layout from "../components/Layout";
 import { GetStaticProps } from "next";
 import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
+import { useTranslation } from "next-i18next";
 import { getMessages } from "@utils/i18n";
-import { useTranslations } from "next-intl";
 
 export default function About() {
-  const t = useTranslations("About");
+  const { t } = useTranslation("about");
   return (
     <Layout maxWidth="sm">
       <PageHeader>{t("title")}</PageHeader>
@@ -16,8 +16,9 @@ export default function About() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messages = await getMessages(locale);
   return {
-    props: { messages },
+    props: {
+      ...(await getMessages(locale, ["about"])),
+    },
   };
 };

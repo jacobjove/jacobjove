@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   const posts = await db.collection("posts").find().toArray();
   return {
     props: {
-      messages: await getMessages(locale),
+      ...(await getMessages(locale)),
       data: serialize(posts),
     },
   };

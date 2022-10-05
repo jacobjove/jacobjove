@@ -5,13 +5,15 @@ import { DefaultSeo } from "next-seo";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
-import { NextIntlProvider } from "next-intl";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { createEmotionCache } from "@utils/emotion";
 import SEO from "../next-seo.config";
 import { SessionProvider } from "next-auth/react";
 import { PageTransitionContextProvider } from "@components/PageTransitionContext";
 import { Session } from "next-auth";
+import { SSRConfig, appWithTranslation as withI18n } from "next-i18next";
+import nextI18NextConfig from "../next-i18next.config.js";
+import MDXProvider from "@components/MDXProvider";
 
 // Create the client-side emotion cache to be used for the user's whole browser session.
 const clientSideEmotionCache = createEmotionCache();
@@ -72,9 +74,8 @@ const theme = createTheme({
   },
 });
 
-interface PageProps {
+interface PageProps extends SSRConfig {
   session?: Session | null;
-  messages: Record<string, string>;
 }
 
 export interface CustomAppProps extends AppProps<PageProps> {
@@ -91,19 +92,19 @@ function App({
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
           <PageTransitionContextProvider>
-            <CssBaseline />
-            <Head>
-              <meta charSet="UTF-8" />
-              {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
-              <meta
-                name="viewport"
-                content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
-              />
-            </Head>
-            <DefaultSeo {...SEO} />
-            <NextIntlProvider messages={pageProps.messages}>
+            <MDXProvider>
+              <CssBaseline />
+              <Head>
+                <meta charSet="UTF-8" />
+                {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
+                <meta
+                  name="viewport"
+                  content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
+                />
+              </Head>
+              <DefaultSeo {...SEO} />
               <Page {...pageProps} />
-            </NextIntlProvider>
+            </MDXProvider>
           </PageTransitionContextProvider>
         </ThemeProvider>
       </CacheProvider>
@@ -111,4 +112,4 @@ function App({
   );
 }
 
-export default App;
+export default withI18n<CustomAppProps>(App, nextI18NextConfig);

@@ -13,7 +13,7 @@ import Select from "@mui/material/Select";
 import { setCookie } from "cookies-next";
 import FormControl from "@mui/material/FormControl";
 import styles from "./index.module.scss";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -42,8 +42,8 @@ export default function Navbar() {
   const router = useRouter();
   const { pathname, asPath, query, locale } = router;
   const { data: session } = useSession();
+  const { t } = useTranslation("common", { keyPrefix: "Navbar" });
   const [mobileOpen, setMobileOpen] = useState(false);
-  const t = useTranslations("common.Navbar");
   const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
   return (
     <>

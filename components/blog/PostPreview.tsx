@@ -6,14 +6,14 @@ import Typography from "@mui/material/Typography";
 
 interface Props {
   title: string;
-  createdAt: string;
+  publishedAt: string;
   excerpt: string;
   slug: string;
 }
 
 const DEFAULT_EXCERPT = "This post has no excerpt.";
 
-const PostPreview = ({ title, createdAt, excerpt, slug }: Props) => {
+const PostPreview = ({ title, publishedAt, excerpt, slug }: Props) => {
   return (
     <Box
       sx={{
@@ -38,7 +38,7 @@ const PostPreview = ({ title, createdAt, excerpt, slug }: Props) => {
           </Link>
         </Typography>
         <Typography component={"small"} fontSize={"0.85rem"}>
-          <DateFormatter dateString={createdAt} />
+          <DateFormatter dateString={publishedAt} />
         </Typography>
         <Typography>{excerpt || DEFAULT_EXCERPT}</Typography>
       </Box>
