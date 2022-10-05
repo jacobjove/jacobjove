@@ -60,8 +60,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const dl = new DownloaderHelper(GOOGLE_DOC_PDF_DL_URL, RESUME_DIR, {
     fileName: tempFilename,
   });
-  dl.on("end", () => console.log("Download completed."));
-  dl.on("error", (err: unknown) => console.log("Download Failed", err));
+  dl.on("error", (err: unknown) => console.log("Download failed:", err));
+  // dl.on("end", () => console.log("Download completed."));
   await dl.start().catch((err: unknown) => console.error(err));
   const tempFilepath = `${RESUME_DIR}/${tempFilename}`;
   renameSync(tempFilepath, RESUME_FILEPATH);
