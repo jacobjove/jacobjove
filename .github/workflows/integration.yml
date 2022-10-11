@@ -4,6 +4,15 @@ name: integration
 on:
   pull_request:
     branches: [main]
+    paths-ignore:
+      - .gitignore
+      - .github/**
+      - "!.github/workflows/integration.yml"
+      - .husky/**
+      - .idea/**
+      - .vscode/**
+      - "**.md"
+      - "**.rst"
   push:
     branches: [main]
     paths-ignore:
