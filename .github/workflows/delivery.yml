@@ -23,7 +23,6 @@ env:
   AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
   AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
   AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
-  BASE_URL: ${{ secrets.BASE_URL }}
   DOMAIN: ${{ secrets.DOMAIN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MONGO_DB: ${{ secrets.MONGO_DB }}
