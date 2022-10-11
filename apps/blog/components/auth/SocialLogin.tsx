@@ -1,21 +1,17 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { getProviders, signIn } from "next-auth/react";
 import { FC, ReactElement } from "react";
-import {
-  DiscordLoginButton,
-  FacebookLoginButton,
-  GithubLoginButton,
-  GoogleLoginButton,
-  TwitterLoginButton,
-} from "react-social-login-buttons";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import GoogleIcon from "@mui/icons-material/Google";
 
-// https://www.npmjs.com/package/react-social-login-buttons
-export const SOCIAL_LOGIN_BUTTONS = {
-  facebook: FacebookLoginButton,
-  discord: DiscordLoginButton,
-  google: GoogleLoginButton,
-  twitter: TwitterLoginButton,
-  github: GithubLoginButton,
+export const SOCIAL_ICONS = {
+  facebook: FacebookIcon,
+  google: GoogleIcon,
+  twitter: TwitterIcon,
+  github: GitHubIcon,
 };
 
 const CREDENTIALS_KEY = "credentials";
@@ -41,19 +37,18 @@ const SocialLogin: FC<SocialLoginProps> = ({
       onError(`${error}`);
     }
   };
-  let SocialLoginButton;
   Object.entries(providers).forEach(([, provider]) => {
     if ([CREDENTIALS_KEY, EMAIL_KEY].includes(provider.id)) return;
-    SocialLoginButton = SOCIAL_LOGIN_BUTTONS[provider.id as keyof typeof SOCIAL_LOGIN_BUTTONS];
-    if (!SocialLoginButton)
-      throw new Error(`No social login button is configured for ${provider.id}.`);
+    const Icon = SOCIAL_ICONS[provider.id as keyof typeof SOCIAL_ICONS];
+    if (!Icon) throw new Error(`No social icon is configured for ${provider.id}.`);
     socialAuthLoginComponents.push(
-      <SocialLoginButton
+      <Button
         key={provider.name}
         style={{ minWidth: "245px", maxWidth: "245px" }}
         onClick={() => handleSocialLogin(provider.id)}
-        text={`Sign in with ${provider.name}`}
-      />
+      >
+        <Icon /> {`Sign in with ${provider.name}`}
+      </Button>
     );
   });
   return (

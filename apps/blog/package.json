@@ -40,7 +40,6 @@
     "nodemailer": "^6.8.0",
     "react": "*",
     "react-dom": "*",
-    "react-social-login-buttons": "*",
     "rehype-highlight": "^5.0.2",
     "remark": "^14.0.1",
     "remark-frontmatter": "^4.0.1",

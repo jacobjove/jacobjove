@@ -89,7 +89,6 @@ importers:
       prettier-plugin-organize-imports: ^3.1.1
       react: ^18.2.0
       react-dom: ^18.2.0
-      react-social-login-buttons: ^3.6.1
       react-test-renderer: ^18.2.0
       sass: ^1.55.0
       sharp: ^0.31.0
@@ -123,7 +122,6 @@ importers:
       next-seo: 5.5.0_azq6kxkn3od7qdylwkyksrwopy
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-social-login-buttons: 3.6.1_react@18.2.0
       sharp: 0.31.1
     devDependencies:
       '@babel/core': 7.19.3
@@ -253,7 +251,6 @@ importers:
       prettier-eslint: '*'
       react: '*'
       react-dom: '*'
-      react-social-login-buttons: '*'
       rehype-highlight: ^5.0.2
       remark: ^14.0.1
       remark-frontmatter: ^4.0.1
@@ -298,7 +295,6 @@ importers:
       nodemailer: 6.8.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-social-login-buttons: 3.6.1_react@18.2.0
       rehype-highlight: 5.0.2
       remark: 14.0.2
       remark-frontmatter: 4.0.1
@@ -379,7 +375,6 @@ importers:
       prettier-eslint: '*'
       react: '*'
       react-dom: '*'
-      react-social-login-buttons: '*'
       rehype-highlight: ^5.0.2
       remark: ^14.0.1
       remark-frontmatter: ^4.0.1
@@ -425,7 +420,6 @@ importers:
       nodemailer: 6.8.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-social-login-buttons: 3.6.1_react@18.2.0
       rehype-highlight: 5.0.2
       remark: 14.0.2
       remark-frontmatter: 4.0.1
@@ -463,7 +457,6 @@ importers:
       next-auth: '*'
       react: '*'
       react-dom: '*'
-      react-social-login-buttons: '*'
       typescript: '*'
     dependencies:
       '@sentry/nextjs': 7.14.2_next@12.3.1+react@18.2.0
@@ -471,7 +464,6 @@ importers:
       next-auth: 4.12.3_azq6kxkn3od7qdylwkyksrwopy
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-social-login-buttons: 3.6.1_react@18.2.0
     devDependencies:
       '@types/react': 18.0.21
       typescript: 4.8.4
@@ -9650,14 +9642,6 @@ packages:
       react: 18.2.0
       react-is: 18.2.0
     dev: true
-
-  /react-social-login-buttons/3.6.1_react@18.2.0:
-    resolution: {integrity: sha512-DIz30W+C147s7wxwt8zgwjx5pE+gTJwtUzTNKpKZO3bEY06eLjcY1zvZ8h35hQd1Yjd7b4rLkeuZBwlLURYIfg==}
-    peerDependencies:
-      react: ^15.0.0 || ^16.0.0 || ^17.x || ^18.x
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /react-test-renderer/18.2.0_react@18.2.0:
     resolution: {integrity: sha512-JWD+aQ0lh2gvh4NM3bBM42Kx+XybOxCpgYK7F8ugAlpaTSnWsX+39Z4XkOykGZAHrjwwTZT3x3KxswVWxHPUqA==}

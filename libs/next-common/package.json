@@ -8,8 +8,7 @@
     "react": "*",
     "react-dom": "*",
     "next": "*",
-    "next-auth": "*",
-    "react-social-login-buttons": "*"
+    "next-auth": "*"
   },
   "devDependencies": {
     "@types/react": "*",
