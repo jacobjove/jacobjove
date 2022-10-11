@@ -1,3 +1,3 @@
 # orega
 
-This is a monorepo containing all of my Next.js projects.
+This is a monorepo containing my personal Next.js projects.
