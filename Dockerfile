@@ -2,7 +2,7 @@
 # BASE
 ##################################
 
-FROM node:16.14.2 AS base
+FROM node:18.10.0 AS base
 
 ARG PNPM_VERSION=7.13.2
 ARG APP_NAME
