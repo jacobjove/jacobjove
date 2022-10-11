@@ -1,13 +1,13 @@
 import { DefaultSeoProps } from "next-seo";
 
 const SITE_NAME = "俺が";
-const DESCRIPTION = "Jacob's personal website";
+const DESCRIPTION = "Jacob's personal blog";
 
 const NextSeoConfig: DefaultSeoProps = {
   description: DESCRIPTION,
   openGraph: {
     type: "website",
-    url: "https://orega.org/",
+    url: "https://blog.orega.org/",
     site_name: SITE_NAME,
     title: SITE_NAME,
     description: DESCRIPTION,
@@ -26,7 +26,7 @@ const NextSeoConfig: DefaultSeoProps = {
     //   },
     // ],
   },
-  titleTemplate: "%s | Jacob's portfolio", // https://github.com/garmeeh/next-seo#title-template
+  titleTemplate: "%s | Jacob's blog", // https://github.com/garmeeh/next-seo#title-template
   defaultTitle: SITE_NAME, // https://github.com/garmeeh/next-seo#default-title
   additionalMetaTags: [
     {

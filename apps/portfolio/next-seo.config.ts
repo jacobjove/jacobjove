@@ -1,7 +1,7 @@
 import { DefaultSeoProps } from "next-seo";
 
 const SITE_NAME = "俺が";
-const DESCRIPTION = "Jacob's personal website";
+const DESCRIPTION = "Jacob's portfolio";
 
 const NextSeoConfig: DefaultSeoProps = {
   description: DESCRIPTION,
