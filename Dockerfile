@@ -35,7 +35,7 @@ COPY . .
 RUN NODE_ENV=development pnpm install -r --prefer-offline --frozen-lockfile --filter ${APP_NAME}
 
 # https://pnpm.io/cli/deploy
-RUN pnpm --filter ${APP_NAME} deploy ${APP_TMP_DIR}
+RUN NODE_ENV=development pnpm --filter ${APP_NAME} deploy ${APP_TMP_DIR}
 
 WORKDIR ${APP_TMP_DIR}
 

@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
 import Box from "@mui/material/Box";
 import { getMessages } from "@utils/i18n";
-import React from "react";
 import { DownloaderHelper } from "node-downloader-helper";
 import { renameSync } from "fs";
 import { useTranslation } from "next-i18next";

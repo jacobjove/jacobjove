@@ -1,8 +1,8 @@
 import createEmotionServer from "@emotion/server/create-instance";
 import { createEmotionCache } from "@utils/emotion";
 import BaseDocument, { DocumentContext, Head, Html, Main, NextScript } from "next/document";
-import React from "react";
 import i18nextConfig from "../next-i18next.config";
+import { Children } from "react";
 
 // https://nextjs.org/docs/advanced-features/custom-document
 
@@ -63,7 +63,7 @@ Document.getInitialProps = async (ctx: DocumentContext) => {
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: [...React.Children.toArray(initialProps.styles), ...emotionStyleTags],
+    styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags],
   };
 };
 
