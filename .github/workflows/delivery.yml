@@ -1,0 +1,159 @@
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+name: delivery
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - .gitignore
+      - .github/**
+      - "!.github/workflows/delivery.yml"
+      - .husky/**
+      - .idea/**
+      - .vscode/**
+      - "**.md"
+      - "**.rst"
+      - "**.txt"
+      - package*.json
+
+env:
+  ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+  AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+  AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
+  AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+  AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+  BASE_URL: ${{ secrets.BASE_URL }}
+  DOMAIN: ${{ secrets.DOMAIN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MONGO_DB: ${{ secrets.MONGO_DB }}
+  MONGO_HOST: mongo
+  MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+  NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
+  NEXTJS_PORT: ${{ secrets.NEXTJS_PORT }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+  SERVER_HOST: ${{ secrets.SERVER_HOST }}
+  SHA: ${{ github.sha }}
+  SMTP_USER: ${{ secrets.SMTP_USER }}
+  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+
+jobs:
+  changed-files:
+    name: Get changed files
+    outputs:
+      added-files: ${{ steps.changed-files.outputs.added_files }}
+      deleted-files: ${{ steps.changed-files.outputs.deleted_files }}
+      modified-files: ${{ steps.changed-files.outputs.modified_files }}
+      all-changed-files: ${{ steps.changed-files.outputs.all_changed_files }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v31.0.1
+  push-image:
+    environment: production
+    name: Push image
+    needs: [changed-files]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [blog, portfolio]
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+      - id: generate-dotenv-file
+        uses: iacobfred/generate-dotenv@v0.3.0
+        with:
+          output-path: apps/${{ matrix.app }}/.env
+          template-paths: |
+            apps/${{ matrix.app }}/.config/_.env
+            apps/${{ matrix.app }}/.config/_.env.production
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build image with cache
+        id: build_with_cache
+        # https://github.com/docker/build-push-action
+        uses: docker/build-push-action@v3
+        with:
+          build-args: |
+            APP_NAME=${{ matrix.app }}
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          context: .
+          file: Dockerfile
+          push: true
+          secret-files: ENV_FILE=./.env
+          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
+      - name: Build image without cache
+        if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
+        # https://github.com/docker/build-push-action
+        uses: docker/build-push-action@v3
+        with:
+          build-args: |
+            APP_NAME=${{ matrix.app }}
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: Dockerfile
+          no-cache: true
+          push: true
+          secret-files: ENV_FILE=./.env
+          tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
+  deploy:
+    environment: production
+    name: Deploy
+    needs: [changed-files, push-image]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [blog, portfolio]
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+      - id: generate-dotenv-file
+        uses: iacobfred/generate-dotenv@v0.3.0
+        with:
+          output-path: apps/${{ matrix.app }}/.env
+          template-paths: |
+            apps/${{ matrix.app }}/.config/_.env
+            apps/${{ matrix.app }}/.config/_.env.production
+      - name: Deploy to server
+        uses: iacobfred/deploy-docker-ssh@v0.3.2
+        with:
+          host: ${{ secrets.DOMAIN }}
+          user: jacob
+          source-dir: apps/${{ matrix.app }}
+          target-dir: /var/www/${{ secrets.DOMAIN }}
+          files: |
+            .env
+            docker-compose.yml
+            .config
+          ssh-port: ${{ secrets.SSH_PORT }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: |
+            set -a && source .env && set +a &&
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin &&
+            docker compose pull && docker compose up -d &&
+            if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi;
+            docker system prune -f
+        env:
+          DOMAIN: ${{ secrets.DOMAIN }}
+          RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
+          SERVER_HOST: ${{ secrets.DOMAIN }}
+          SERVER_TARGET: /var/www/${{ secrets.DOMAIN }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

@@ -1,0 +1,15 @@
+{
+  "name": "next-common",
+  "version": "0.0.1",
+  "keywords": [],
+  "private": true,
+  "dependencies": {
+    "@sentry/nextjs": "*",
+    "react": "*",
+    "react-dom": "*",
+    "next": "*"
+  },
+  "exports": {
+    "./sentry": "./src/sentry"
+  }
+}

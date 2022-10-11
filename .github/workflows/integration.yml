@@ -1,0 +1,116 @@
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+name: integration
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - .gitignore
+      - .github/**
+      - "!.github/workflows/integration.yml"
+      - .husky/**
+      - .idea/**
+      - .vscode/**
+      - "**.md"
+      - "**.rst"
+  workflow_dispatch:
+    inputs:
+      jobs:
+        description: Comma-separated list of names of jobs to trigger
+        required: false
+        default: build
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SERVER_HOST: ${{ secrets.SERVER_HOST }}
+  SHA: ${{ github.sha }}
+
+jobs:
+  install:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [16, 18]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+  changed-files:
+    name: Get changed files
+    runs-on: ubuntu-latest
+    outputs:
+      added-files: ${{ steps.changed-files.outputs.added_files }}
+      deleted-files: ${{ steps.changed-files.outputs.deleted_files }}
+      modified-files: ${{ steps.changed-files.outputs.modified_files }}
+      all-changed-files: ${{ steps.changed-files.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v31.0.1
+  build:
+    name: Build image
+    needs: changed-files
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: ["blog", "portfolio"]
+    environment: test
+    if: github.actor != 'depbot'
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Generate .env file
+        uses: iacobfred/generate-dotenv@v0.2.6
+        with:
+          template-paths: |
+            apps/${{ matrix.app }}/.config/_.env
+            apps/${{ matrix.app }}/.config/_.env.production
+        env:
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+          AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
+          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
+          NEXTJS_PORT: ${{ secrets.NEXTJS_PORT }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build image without cache
+        uses: docker/build-push-action@v3
+        with:
+          build-args: |
+            APP_NAME=${{ matrix.app }}
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          secret-files: ENV_FILE=./.env
+          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }}

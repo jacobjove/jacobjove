@@ -1,1 +1,0 @@
-export const DEFAULT_EVENT_LENGTH_IN_MINUTES = 29;
