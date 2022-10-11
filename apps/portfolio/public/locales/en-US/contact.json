@@ -1,0 +1,10 @@
+{
+  "title": "Contact me",
+  "lead": "If you have any questions or feedback regarding the content of this portfolio, feel free to contact me.",
+  "name": "Jacob T. Fredericksen",
+  "error": "Something went wrong. Please try again later.",
+  "success": "Your message was delivered to me successfully. Thanks!",
+  "nameFieldLabel": "Name",
+  "emailFieldLabel": "Email address",
+  "messageFieldLabel": "Message"
+}

@@ -1,0 +1,6 @@
+.next/
+.npm/
+.venv/
+node_modules/
+dist/
+*lock.yaml
