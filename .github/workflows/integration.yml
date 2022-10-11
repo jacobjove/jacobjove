@@ -29,6 +29,7 @@ env:
 
 jobs:
   install:
+    name: Install dependencies
     runs-on: ubuntu-20.04
     strategy:
       matrix:

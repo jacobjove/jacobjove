@@ -57,7 +57,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v31.0.1
   push-image:
-    environment: production
+    environment: ${{ matrix.app }}
     name: Push image
     needs: [changed-files]
     runs-on: ubuntu-latest
@@ -113,7 +113,7 @@ jobs:
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
   deploy:
-    environment: production
+    environment: ${{ matrix.app }}
     name: Deploy
     needs: [changed-files, push-image]
     runs-on: ubuntu-latest
