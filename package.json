@@ -16,10 +16,7 @@
     "migrations:make": "nx migrate",
     "migrations:run": "nx migrate --run-migrations",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi",
-    "db:seed": "ts-node --project tsconfig.base.json -r tsconfig-paths/register --type-check --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} .config/scripts/seed.ts",
-    "generate": "yarn run code:generate",
-    "code:generate": "export TS_NODE_PROJECT=tsconfig.base.json; for filename in **/generated/**/index.ts; do rm $filename; touch $filename; done; for filename in libs/common/src/_definitions/_/*.ts; do node -r tsconfig-paths/register ./node_modules/.bin/hygen selfbuilder new --definition $(basename -- $filename); done; prettier -w .; eslint . --fix"
+    "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi"
   },
   "dependencies": {
     "@date-io/date-fns": "^2.11.0",

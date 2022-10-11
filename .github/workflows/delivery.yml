@@ -107,7 +107,7 @@ jobs:
           no-cache: true
           push: true
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/selfbuilder:${{ github.sha }},ghcr.io/iacobfred/selfbuilder:latest
+          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
   deploy:
     environment: ${{ matrix.app }}
     name: Deploy
