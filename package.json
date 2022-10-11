@@ -52,7 +52,7 @@
     "@simbathesailor/use-what-changed": "^2.0.0",
     "@swc/cli": "^0.1.52",
     "@swc/core": "^1.2.239",
-    "@swc/helpers": "~0.3.3",
+    "@swc/helpers": "~0.4.12",
     "@testing-library/dom": "^8.18.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
