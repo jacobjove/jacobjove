@@ -105,7 +105,7 @@
     "next-router-mock": "^0.7.4",
     "nginx-linter": "^0.6.3",
     "nginxbeautifier": "^1.0.19",
-    "nx": "14.8.3",
+    "nx": "14.8.4",
     "postcss": "^8.4.4",
     "prettier": "^2.7.1",
     "prettier-eslint": "^15.0.1",
