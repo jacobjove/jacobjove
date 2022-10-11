@@ -76,8 +76,9 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v2
       - name: Generate .env file
-        uses: iacobfred/generate-dotenv@v0.2.6
+        uses: iacobfred/generate-dotenv@v0.3.0
         with:
+          output-path: apps/${{ matrix.app }}/.env
           template-paths: |
             apps/${{ matrix.app }}/.config/_.env
             apps/${{ matrix.app }}/.config/_.env.production
