@@ -1,7 +1,7 @@
 import Layout from "@components/Layout";
 import { getMessages } from "@utils/i18n";
 import { GetStaticProps } from "next";
-import Error from "next/error";
+import NextErrorComponent from "next/error";
 import { FC } from "react";
 import { useTranslation } from "next-i18next";
 
@@ -11,7 +11,7 @@ const NotFound: FC = () => {
   const { t } = useTranslation("404");
   return (
     <Layout>
-      <Error statusCode={404} title={t("message")} />
+      <NextErrorComponent statusCode={404} title={t("message")} />
     </Layout>
   );
 };
