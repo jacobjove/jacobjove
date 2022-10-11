@@ -120,6 +120,7 @@ jobs:
       - name: Check out main branch
         uses: actions/checkout@v3
       - id: generate-dotenv-file
+        name: Generate dotenv file
         uses: iacobfred/generate-dotenv@v0.3.0
         with:
           output-path: apps/${{ matrix.app }}/.env
@@ -134,10 +135,10 @@ jobs:
       - name: Deploy to server
         uses: iacobfred/deploy-docker-ssh@v0.3.2
         with:
-          host: ${{ env.DOMAIN }}
+          host: ${{ steps.dotenv.outputs.domain }}
           user: jacob
           source-dir: apps/${{ matrix.app }}
-          target-dir: /var/www/${{ env.DOMAIN }}
+          target-dir: /var/www/${{ steps.dotenv.outputs.domain }}
           files: |
             .env
             docker-compose.yml
