@@ -7,9 +7,16 @@
     "@sentry/nextjs": "*",
     "react": "*",
     "react-dom": "*",
-    "next": "*"
+    "next": "*",
+    "next-auth": "*",
+    "react-social-login-buttons": "*"
+  },
+  "devDependencies": {
+    "@types/react": "*",
+    "typescript": "*"
   },
   "exports": {
-    "./sentry": "./src/sentry"
+    "./utils": "./src/utils",
+    "./components": "./src/components"
   }
 }
