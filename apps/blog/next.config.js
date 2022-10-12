@@ -25,7 +25,7 @@ const nextConfig = {
   // https://nextjs.org/docs/advanced-features/i18n-routing
   experimental: {
     // Prefer loading of ES Modules over CommonJS.
-    experimental: { esmExternals: true }, // default in Next.js 12+
+    esmExternals: true, // default in Next.js 12+
   },
   i18n,
   images: {

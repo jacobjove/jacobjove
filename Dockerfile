@@ -63,9 +63,6 @@ COPY --from=builder --chown=www-data:www-data ${APP_TMP_DIR}/public ${APP_DIR}/p
 # TODO: Remove this line once the issue is fixed.
 # COPY --from=builder --chown=www-data:www-data ${APP_TMP_DIR}/node_modules ./node_modules/
 
-# Allow package.json to specify {"type": "module"}.
-RUN mv server.js server.cjs
-
 # Expose Next.js web application port.
 EXPOSE ${PORT}
 
@@ -77,4 +74,4 @@ HEALTHCHECK --interval=30s --timeout=7s --start-period=60s --retries=3 \
   CMD curl --fail http://localhost:${PORT}/ || exit 1
 
 # Start the app.
-CMD ["node", "server.cjs"]
+CMD ["node", "server.js"]
