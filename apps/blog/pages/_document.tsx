@@ -3,6 +3,8 @@ import { createEmotionCache } from "@utils/emotion";
 import BaseDocument, { DocumentContext, Head, Html, Main, NextScript } from "next/document";
 import i18nextConfig from "../next-i18next.config";
 import { Children } from "react";
+import { AppType } from 'next/dist/shared/lib/utils';
+import { EmotionCache } from '@emotion/cache'
 
 // https://nextjs.org/docs/advanced-features/custom-document
 
@@ -38,9 +40,7 @@ Document.getInitialProps = async (ctx: DocumentContext) => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      // TODO: add app type
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      enhanceApp: (App: any) =>
+      enhanceApp: (App: AppType | React.ComponentType<{ emotionCache: EmotionCache }>) =>
         function EnhanceApp(props) {
           return <App emotionCache={cache} {...props} />;
         },

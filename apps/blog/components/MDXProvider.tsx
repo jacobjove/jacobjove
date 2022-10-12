@@ -10,7 +10,7 @@ interface UniversalProps {
   children?: ReactNode;
 }
 
-// TODO: https://nextjs.org/docs/advanced-features/using-mdx#custom-elements
+// https://nextjs.org/docs/advanced-features/using-mdx#custom-elements
 const components = {
   DateString,
   PageHeader,
