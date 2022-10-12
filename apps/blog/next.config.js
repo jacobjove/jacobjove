@@ -1,9 +1,6 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import mdx from "@next/mdx";
-// import { i18n } from "./next-i18next.config.js";
-import i18nConfig from "./next-i18next.config.js";
-
-const { i18n } = i18nConfig;
+import { i18n } from "./next-i18next.config.js";
 
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
@@ -26,6 +23,10 @@ const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === "production";
 const nextConfig = {
   compress: !NGINX_COMPRESSION_ENABLED,
   // https://nextjs.org/docs/advanced-features/i18n-routing
+  experimental: {
+    // Prefer loading of ES Modules over CommonJS.
+    experimental: { esmExternals: true }, // default in Next.js 12+
+  },
   i18n,
   images: {
     domains: ["orega.org"],

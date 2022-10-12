@@ -60,6 +60,9 @@ COPY --from=builder --chown=www-data:www-data ${APP_TMP_DIR}/.next/static ${APP_
 # since the service worker files from next-pwa are generated during the build.
 COPY --from=builder --chown=www-data:www-data ${APP_TMP_DIR}/public ${APP_DIR}/public
 
+# TODO: Remove this line once the issue is fixed.
+# COPY --from=builder --chown=www-data:www-data ${APP_TMP_DIR}/node_modules ./node_modules/
+
 # Allow package.json to specify {"type": "module"}.
 RUN mv server.js server.cjs
 

@@ -1,8 +1,15 @@
+.git
+.gitattributes
+.gitignore
+
 _templates
+
+.editorconfig
+
 .github
 .husky
+.hygen.js
+.next
 .vscode
 node_modules
-.editorconfig
-.hygen.js
 README.md

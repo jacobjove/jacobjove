@@ -22,6 +22,10 @@ const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === "production";
  */
 const nextConfig = {
   compress: !NGINX_COMPRESSION_ENABLED,
+  experimental: {
+    // Prefer loading of ES Modules over CommonJS.
+    experimental: { esmExternals: true }, // default in Next.js 12+
+  },
   // https://nextjs.org/docs/advanced-features/i18n-routing
   i18n,
   images: {

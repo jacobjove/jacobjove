@@ -125,7 +125,23 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Build image with cache
+      #   id: build_with_cache
+      #   # https://github.com/docker/build-push-action
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     build-args: |
+      #       APP_NAME=${{ matrix.app }}
+      #     builder: ${{ steps.buildx.outputs.name }}
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      #     context: .
+      #     file: Dockerfile
+      #     push: true
+      #     secret-files: ENV_FILE=./.env
+      #     tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
       - name: Build image without cache
+        # if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
         uses: docker/build-push-action@v3
         with:
           build-args: |
@@ -138,3 +154,8 @@ jobs:
           cache-to: type=gha,mode=max
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }}
+      - name: Run containers
+        run: |
+          docker compose up -d --wait
+          docker compose logs
+          docker compose ps

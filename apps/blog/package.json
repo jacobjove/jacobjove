@@ -33,7 +33,7 @@
     "mongodb": "^4.8.1",
     "next": "*",
     "next-auth": "*",
-    "next-i18next": "^12.1.0",
+    "next-i18next": "*",
     "next-mdx-remote": "^4.1.0",
     "next-seo": "*",
     "node-downloader-helper": "^2.1.4",
