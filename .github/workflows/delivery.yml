@@ -114,6 +114,7 @@ jobs:
     needs: [changed-files, push-image]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         app: [blog, portfolio]
     steps:
