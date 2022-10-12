@@ -137,7 +137,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy to server
-        uses: iacobfred/deploy-docker-ssh@v0.3.3
+        uses: iacobfred/deploy-docker-ssh@v0.3.4
         with:
           host: ${{ steps.dotenv.outputs.domain }}
           user: jacob
