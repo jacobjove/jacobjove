@@ -60,6 +60,9 @@ COPY --from=builder --chown=www-data:www-data ${APP_TMP_DIR}/.next/static ${APP_
 # since the service worker files from next-pwa are generated during the build.
 COPY --from=builder --chown=www-data:www-data ${APP_TMP_DIR}/public ${APP_DIR}/public
 
+# Allow package.json to specify {"type": "module"}.
+RUN mv server.js server.cjs
+
 # Expose Next.js web application port.
 EXPOSE ${PORT}
 
@@ -71,4 +74,4 @@ HEALTHCHECK --interval=30s --timeout=7s --start-period=60s --retries=3 \
   CMD curl --fail http://localhost:${PORT}/ || exit 1
 
 # Start the app.
-CMD ["node", "server.js"]
+CMD ["node", "server.cjs"]
