@@ -1,5 +1,4 @@
-x-default:
-  &default
+x-default: &default
   deploy:
     restart_policy:
       condition: "${DOCKER_DEFAULT_RESTART_POLICY:-unless-stopped}"

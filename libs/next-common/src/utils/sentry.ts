@@ -26,5 +26,5 @@ export const generateSentryConfig = (): Config => {
       "fb_xd_fragment",
     ],
     tracesSampleRate: process.env.NODE_ENV === "production" ? 0.2 : 1.0,
-  }
+  };
 };

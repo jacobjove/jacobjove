@@ -1,12 +1,15 @@
-import { withSentryConfig } from "@sentry/nextjs";
 import mdx from "@next/mdx";
-// import { i18n } from "./next-i18next.config.js";
-import i18nConfig from "./next-i18next.config.js";
-
-const { i18n } = i18nConfig;
+import { withSentryConfig } from "@sentry/nextjs";
+import path from "path";
+import url from "url";
+import { i18n } from "./next-i18next.config.js";
 
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
+
+const _filename = url.fileURLToPath(import.meta.url);
+const _dirname = path.dirname(_filename);
+const ROOT_DIR = path.resolve(_dirname, "..", "..");
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -25,6 +28,19 @@ const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === "production";
  */
 const nextConfig = {
   compress: !NGINX_COMPRESSION_ENABLED,
+  experimental: {
+    // Prefer loading of ES Modules over CommonJS.
+    esmExternals: true, // default in Next.js 12+
+    externalDir: true,
+    modularizeImports: {
+      lodash: {
+        transform: "lodash/{{member}}",
+      },
+    },
+    // For tracing, include files from the monorepo base (two directories up).
+    // https://nextjs.org/docs/advanced-features/output-file-tracing#caveats
+    outputFileTracingRoot: ROOT_DIR,
+  },
   // https://nextjs.org/docs/advanced-features/i18n-routing
   i18n,
   images: {

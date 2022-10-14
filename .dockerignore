@@ -1,8 +1,68 @@
-_templates
-.github
-.husky
-.vscode
+cypress/
+
+# All node_modules directories
 node_modules
-.editorconfig
-.hygen.js
+**/node_modules
+
+# Docker
+.dockerignore
+Dockerfile
+Dockerfile.*
+docker-compose.*
+docker
+
+# Git
+.git
+.gitattributes
+.gitignore
+.husky
+
+# GitHub
+.github
 README.md
+LICENSE.txt
+SECURITY.md
+
+# IDE
+.idea
+.vscode
+.editorconfig
+
+# Log files
+logs
+*.log
+
+# Next.js
+.next
+
+# Node JS
+*.suo
+*.sln
+.npm
+
+# npm
+!.npmrc
+
+# Secrets
+**/.env.local
+**/.env.*.local
+
+# Temp files
+tmp
+*.tmp
+
+# Tools caches
+.cache/*
+tsconfig.tsbuildinfo
+.eslintcache
+
+# Used when building with nextjs (next-eslint)
+!.eslintrc.base.json
+!.prettierignore
+!.prettierrc.js
+!.eslintignore
+
+# Yarn
+!.yarnrc.yml
+!.yarn/plugins
+!.yarn/releases

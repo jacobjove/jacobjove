@@ -1,14 +1,10 @@
 {
-  "name": "next-common",
-  "version": "0.0.1",
-  "keywords": [],
-  "private": true,
   "dependencies": {
     "@sentry/nextjs": "*",
-    "react": "*",
-    "react-dom": "*",
     "next": "*",
-    "next-auth": "*"
+    "next-auth": "*",
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@types/react": "*",
@@ -17,5 +13,9 @@
   "exports": {
     "./utils": "./src/utils",
     "./components": "./src/components"
-  }
+  },
+  "keywords": [],
+  "name": "@orega/next-common",
+  "private": true,
+  "version": "0.0.1"
 }

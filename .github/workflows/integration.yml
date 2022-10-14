@@ -53,24 +53,6 @@ env:
   SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
 jobs:
-  install:
-    name: Install dependencies
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node-version: [16]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.3
-        with:
-          version: 7
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install
   changed-files:
     name: Get changed files
     runs-on: ubuntu-latest
@@ -92,7 +74,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: ["blog", "portfolio"]
+        include:
+          - app: portfolio
+            port: 3000
+          - app: blog
+            port: 3003
+        # app: ["blog", "portfolio"]
     environment: ${{ matrix.app }}
     if: github.actor != 'depbot'
     steps:
@@ -117,6 +104,7 @@ jobs:
           MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
           MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
           NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
+          PORT: ${{ matrix.port }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Login to GitHub Container Registry
@@ -125,16 +113,41 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image without cache
+      - name: Build image with cache
+        id: build_with_cache
+        # https://github.com/docker/build-push-action
         uses: docker/build-push-action@v3
         with:
           build-args: |
             APP_NAME=${{ matrix.app }}
+            PORT=${{ matrix.port }}
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=gha
+          cache-to: type=gha,scope=${{ matrix.app }},mode=max
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
+      - name: Build image without cache
+        if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
+        uses: docker/build-push-action@v3
+        with:
+          build-args: |
+            APP_NAME=${{ matrix.app }}
+            PORT=${{ matrix.port }}
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: Dockerfile
-          push: false
+          push: true
           cache-from: type=gha
-          cache-to: type=gha,mode=max
-          secret-files: ENV_FILE=./.env
+          cache-to: type=gha,scope=${{ matrix.app }},mode=max
           tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }}
+      - name: Run containers
+        run: |
+          cd apps/${{ matrix.app }}
+          docker compose pull;
+          docker compose up -d --no-build --wait || {
+            docker compose logs nextjs;
+            docker compose ps;
+            exit 1;
+          }

@@ -7,9 +7,10 @@
       "@messages/*": ["messages/*"],
       "@interfaces/*": ["interfaces/*"],
       "@types/*": ["types/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@orega/next-common/*": ["../../libs/next-common/src/*"],
+      "@orega/next-common": ["../../libs/next-common/src/index.ts"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

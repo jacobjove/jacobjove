@@ -48,7 +48,6 @@ module.exports = {
   },
   plugins: [
     "@typescript-eslint",
-    "@graphql-eslint",
     // https://github.com/kajirikajiri/eslint-plugin-mui-path-imports
     "mui-path-imports",
     "react",
