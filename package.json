@@ -6,7 +6,7 @@
   "author": "Jacob Fredericksen <jacob.t.fredericksen@gmail.com>",
   "engines": {
     "node": "16.x",
-    "yarn": ">=1.22.0",
+    "yarn": ">=3.0.0",
     "npm": "please-use-yarn"
   },
   "license": "ISC",

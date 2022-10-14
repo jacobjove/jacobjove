@@ -27,5 +27,5 @@
     "target": "esnext"
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "cypress", "dist"]
+  "exclude": ["**/node_modules", "cypress", "dist", "**/.*/"]
 }
