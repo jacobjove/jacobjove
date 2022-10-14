@@ -1,10 +1,10 @@
+import { EmotionCache } from "@emotion/cache";
 import createEmotionServer from "@emotion/server/create-instance";
 import { createEmotionCache } from "@utils/emotion";
+import { AppType } from "next/dist/shared/lib/utils";
 import BaseDocument, { DocumentContext, Head, Html, Main, NextScript } from "next/document";
-import i18nextConfig from "../next-i18next.config";
 import { Children } from "react";
-import { AppType } from 'next/dist/shared/lib/utils';
-import { EmotionCache } from '@emotion/cache'
+import i18nextConfig from "../next-i18next.config";
 
 // https://nextjs.org/docs/advanced-features/custom-document
 

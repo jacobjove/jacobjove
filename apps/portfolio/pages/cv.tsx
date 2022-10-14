@@ -1,12 +1,12 @@
-import Layout from "../components/Layout";
-import { GetStaticProps } from "next";
-import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { getMessages } from "@utils/i18n";
-import { DownloaderHelper } from "node-downloader-helper";
-import { renameSync } from "fs";
+import { existsSync, renameSync } from "fs";
+import { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
+import { DownloaderHelper } from "node-downloader-helper";
+import Layout from "../components/Layout";
 
 const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobfredericksen/";
 
@@ -60,10 +60,15 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     fileName: tempFilename,
   });
   dl.on("error", (err: unknown) => console.log("Download failed:", err));
-  // dl.on("end", () => console.log("Download completed."));
+  dl.on("end", () => {
+    const tempFilepath = `${RESUME_DIR}/${tempFilename}`;
+    if (existsSync(tempFilepath)) {
+      renameSync(tempFilepath, RESUME_FILEPATH);
+    } else {
+      console.error(`File not found: ${tempFilepath}`);
+    }
+  });
   await dl.start().catch((err: unknown) => console.error(err));
-  const tempFilepath = `${RESUME_DIR}/${tempFilename}`;
-  renameSync(tempFilepath, RESUME_FILEPATH);
   return {
     props: { ...(await messagesPromise) },
   };

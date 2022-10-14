@@ -1,23 +1,5 @@
 {
-  "name": "orega",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
   "author": "Jacob Fredericksen <jacob.t.fredericksen@gmail.com>",
-  "engines": {
-    "node": "16.x",
-    "yarn": ">=3.0.0",
-    "npm": "please-use-yarn"
-  },
-  "license": "ISC",
-  "private": true,
-  "main": "index.js",
-  "scripts": {
-    "dev": "nx serve",
-    "docker:build": "cd apps/portfolio && docker compose build",
-    "preinstall": "npx only-allow yarn",
-    "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi"
-  },
   "dependencies": {
     "@date-io/date-fns": "^2.11.0",
     "@emotion/cache": "^11.10.3",
@@ -52,6 +34,7 @@
     "react-dom": "^18.2.0",
     "sharp": "^0.31.0"
   },
+  "description": "",
   "devDependencies": {
     "@babel/core": "^7.19.3",
     "@commitlint/cli": "17.1.2",
@@ -127,25 +110,42 @@
     "typescript": "^4.8.4",
     "webpack": "^5.74.0"
   },
+  "engines": {
+    "node": "16.x",
+    "yarn": ">=3.0.0",
+    "npm": "please-use-yarn"
+  },
+  "keywords": [],
+  "license": "ISC",
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
+    "*.conf": [
+      "nginxbeautifier -s 4",
+      "nginx-linter --include"
     ],
     "*.{css,scss}": [
       "prettier --write",
       "stylelint --fix"
     ],
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
     "*.{json,md}": [
       "prettier --write"
-    ],
-    "*.conf": [
-      "nginxbeautifier -s 4",
-      "nginx-linter --include"
     ]
   },
+  "main": "index.js",
+  "name": "orega",
   "prettier": {
     "printWidth": 100
+  },
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nx serve",
+    "docker:build": "cd apps/portfolio && docker compose build",
+    "preinstall": "npx only-allow yarn",
+    "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi"
   },
   "stylelint": {
     "extends": "stylelint-config-standard"

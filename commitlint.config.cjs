@@ -4,7 +4,7 @@
 /**
  * @type {import('@commitlint/types').UserConfig}
  */
- const configuration = {
+const configuration = {
   /*
    * Resolve and load @commitlint/config-conventional from node_modules.
    * Referenced packages must be installed

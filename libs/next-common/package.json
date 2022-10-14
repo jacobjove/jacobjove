@@ -1,8 +1,4 @@
 {
-  "name": "@orega/next-common",
-  "version": "0.0.1",
-  "keywords": [],
-  "private": true,
   "dependencies": {
     "@sentry/nextjs": "*",
     "next": "*",
@@ -17,5 +13,9 @@
   "exports": {
     "./utils": "./src/utils",
     "./components": "./src/components"
-  }
+  },
+  "keywords": [],
+  "name": "@orega/next-common",
+  "private": true,
+  "version": "0.0.1"
 }

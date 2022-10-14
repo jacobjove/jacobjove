@@ -27,7 +27,7 @@
     "**/Thumbs.db": true,
     "**/*.pyc": true,
     "**/__pycache__": true,
-    "**/.next": true,
+    "**/.next": false,
     "**/node_modules": false,
     "dist": true
   },
