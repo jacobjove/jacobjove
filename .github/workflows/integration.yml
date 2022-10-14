@@ -144,6 +144,7 @@ jobs:
           tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }}
       - name: Run containers
         run: |
+          cd apps/${{ matrix.app }}
           docker compose pull;
           docker compose up -d --no-build --wait || {
             docker compose logs nextjs;
