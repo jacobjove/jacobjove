@@ -26,6 +26,7 @@
     "@mui/x-data-grid": "^5.17.5",
     "@next-auth/mongodb-adapter": "^1.1.0",
     "@next/mdx": "^12.3.1",
+    "@orega/next-common": "workspace:^",
     "@sentry/nextjs": "*",
     "cookies-next": "^2.1.1",
     "date-fns": "^2.29.3",

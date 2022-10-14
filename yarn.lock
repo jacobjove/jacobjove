@@ -1859,6 +1859,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@orega/next-common@workspace:^, @orega/next-common@workspace:libs/next-common":
+  version: 0.0.0-use.local
+  resolution: "@orega/next-common@workspace:libs/next-common"
+  dependencies:
+    "@sentry/nextjs": "*"
+    "@types/react": "*"
+    next: "*"
+    next-auth: "*"
+    react: "*"
+    react-dom: "*"
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
+
 "@panva/hkdf@npm:^1.0.1":
   version: 1.0.2
   resolution: "@panva/hkdf@npm:1.0.2"
@@ -4085,6 +4099,7 @@ __metadata:
     "@mui/x-data-grid": ^5.17.5
     "@next-auth/mongodb-adapter": ^1.1.0
     "@next/mdx": ^12.3.1
+    "@orega/next-common": "workspace:^"
     "@sentry/nextjs": "*"
     "@types/glob": "*"
     "@types/lodash": "*"
@@ -10284,20 +10299,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-common@workspace:libs/next-common":
-  version: 0.0.0-use.local
-  resolution: "next-common@workspace:libs/next-common"
-  dependencies:
-    "@sentry/nextjs": "*"
-    "@types/react": "*"
-    next: "*"
-    next-auth: "*"
-    react: "*"
-    react-dom: "*"
-    typescript: "*"
-  languageName: unknown
-  linkType: soft
-
 "next-i18next@npm:*, next-i18next@npm:^12.1.0":
   version: 12.1.0
   resolution: "next-i18next@npm:12.1.0"
@@ -11394,6 +11395,7 @@ __metadata:
     "@mui/x-data-grid": ^5.17.5
     "@next-auth/mongodb-adapter": ^1.1.0
     "@next/mdx": ^12.3.1
+    "@orega/next-common": "workspace:^"
     "@sentry/nextjs": "*"
     "@types/lodash": "*"
     "@types/node": "*"
