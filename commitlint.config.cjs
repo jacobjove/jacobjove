@@ -1,8 +1,10 @@
-import type { UserConfig } from "@commitlint/types";
-
+// import type { UserConfig } from "@commitlint/types";
 // https://commitlint.js.org/#/reference-configuration
 
-const configuration: UserConfig = {
+/**
+ * @type {import('@commitlint/types').UserConfig}
+ */
+ const configuration = {
   /*
    * Resolve and load @commitlint/config-conventional from node_modules.
    * Referenced packages must be installed
@@ -10,4 +12,5 @@ const configuration: UserConfig = {
   extends: ["@commitlint/config-conventional"],
 };
 
-export default configuration;
+module.exports = configuration;
+// export default configuration;
