@@ -115,7 +115,7 @@ jobs:
         with:
           path: apps/${{ matrix.app }}/.env
       - name: Deploy to server
-        uses: iacobfred/deploy-docker-ssh@v0.4.4
+        uses: iacobfred/deploy-docker-ssh@v0.4.5
         with:
           host: ${{ steps.dotenv.outputs.domain }}
           user: jacob
