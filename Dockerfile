@@ -18,7 +18,7 @@ ENV APP_NAME ${APP_NAME}
 ENV PORT ${PORT}
 ENV CYPRESS_INSTALL_BINARY 0
 
-LABEL org.opencontainers.image.source https://github.com/iacobfred/selfbuilder
+LABEL org.opencontainers.image.source https://github.com/iacobfred/orega
 
 ############################################################################
 # STAGE 1:                                                                 #
