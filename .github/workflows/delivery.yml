@@ -127,6 +127,7 @@ jobs:
             .config
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-auth-sock: /tmp/${{ matrix.app }}_ssh_agent.sock"
           command: |
             set -a && source .env && set +a &&
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin &&
