@@ -1,6 +1,7 @@
 .env
 .DS_Store
 .next
+next-env.d.ts
 
 # workbox
 **/public/workbox-*.js*
@@ -35,8 +36,6 @@ node_modules
 # System Files
 .DS_Store
 Thumbs.db
-
-# React Native
 
 # Xcode
 build/

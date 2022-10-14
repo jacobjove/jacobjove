@@ -68,7 +68,7 @@ RUN --mount=type=bind,target=/docker-context \
 # https://github.com/moby/buildkit/issues/1673
 RUN --mount=type=cache,target=/base/.yarn3-cache,id=yarn3-cache \
   NODE_ENV=development YARN_CACHE_FOLDER=/base/.yarn3-cache \
-  yarn install --immutable --inline-builds
+  yarn install --inline-builds
 
 ###################################################################
 # Stage 2: Build the app                                          #
@@ -121,7 +121,7 @@ COPY --from=builder --chown=nextjs:nodejs /base/apps/${APP_NAME}/.next/static /b
 # since the service worker files from next-pwa are generated during the build.
 COPY --from=builder --chown=nextjs:nodejs /base/apps/${APP_NAME}/public /base/apps/${APP_NAME}/public
 
-RUN mv server.js server.cjs
+RUN mv server.js server.cjs || (ls && exit 1)
 
 # Switch to non-root user.
 USER nextjs

@@ -1,5 +1,7 @@
 import { withSentry } from "@sentry/nextjs";
 
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import mongoClientPromise from "@utils/mongo";
 import { PageConfig } from "next";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
@@ -7,8 +9,6 @@ import { AppProviders } from "next-auth/providers";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import mongoClientPromise from "@utils/mongo";
 
 const GOOGLE_AUTHORIZATION_URL =
   "https://accounts.google.com/o/oauth2/v2/auth?" +
@@ -18,7 +18,10 @@ const GOOGLE_AUTHORIZATION_URL =
     response_type: "code",
   });
 
-const { APP_ENV } = process.env;
+const APP_ENV = process.env.APP_ENV;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL as string;
+
+if (!ADMIN_EMAIL) throw new Error("ADMIN_EMAIL is not set.");
 
 let useMockProviders = false;
 if (APP_ENV === "test") {
@@ -26,43 +29,43 @@ if (APP_ENV === "test") {
   useMockProviders = true;
 }
 
-interface MockCredentials {
-  name: string;
-}
+// interface MockCredentials {
+//   name: string;
+// }
 
 const providers: AppProviders = [];
 if (useMockProviders) {
-  const credentials = {
-    name: { type: "test" },
-  };
-  const authorize = async (credentials?: MockCredentials) => {
-    const user = {
-      id: credentials?.name,
-      name: credentials?.name,
-      email: credentials?.name,
-    };
-    return user;
-  };
-  providers.push(
-    CredentialsProvider({
-      id: "apple",
-      name: "Mocked Apple",
-      authorize,
-      credentials,
-    }),
-    CredentialsProvider({
-      id: "google",
-      name: "Mocked Google",
-      authorize,
-      credentials,
-    }),
-    CredentialsProvider({
-      id: "github",
-      name: "Mocked GitHub",
-      authorize,
-      credentials,
-    })
-  );
+  // const credentials = {
+  //   name: { type: "test" },
+  // };
+  // const authorize = async (credentials?: MockCredentials) => {
+  //   const user = {
+  //     id: credentials?.name,
+  //     name: credentials?.name,
+  //     email: credentials?.name,
+  //   };
+  //   return user;
+  // };
+  // providers.push(
+  //   CredentialsProvider({
+  //     id: "apple",
+  //     name: "Mocked Apple",
+  //     authorize,
+  //     credentials,
+  //   }),
+  //   CredentialsProvider({
+  //     id: "google",
+  //     name: "Mocked Google",
+  //     authorize,
+  //     credentials,
+  //   }),
+  //   CredentialsProvider({
+  //     id: "github",
+  //     name: "Mocked GitHub",
+  //     authorize,
+  //     credentials,
+  //   })
+  // );
 } else {
   providers.push(
     GoogleProvider({
@@ -93,7 +96,7 @@ if (useMockProviders) {
           return {
             id: "admin",
             name: "Admin",
-            email: process.env.ADMIN_EMAIL,
+            email: ADMIN_EMAIL,
           };
         }
         return null;
@@ -106,9 +109,10 @@ if (useMockProviders) {
 const callbacks: CallbacksOptions = {
   async signIn({ user: _user, account, profile, email: _email, credentials: _credentials }) {
     // console.log("🔑 signIn", { user, account, profile, email, credentials });
-    if (account.provider === "google") {
+    if (account?.provider === "google") {
       // TODO: Allow, but set emailVerified to false
-      if (!profile.email_verified) return false;
+      const _profile = profile as { email_verified: boolean };
+      if (!_profile?.email_verified) return false;
     }
     return true;
   },
