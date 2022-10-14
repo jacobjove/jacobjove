@@ -1,28 +1,42 @@
 .env
-node_modules/
-/dist/
-
-# Next.js
+.DS_Store
 .next
-next-env.d.ts
 
-# Sentry
-.sentryclirc
-
-# Workbox
+# workbox
 **/public/workbox-*.js*
 **/public/sw.js*
 **/public/worker-*.js
 **/public/fallback-*.js
 
-# Artifacts
-apps/**/artifacts
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+node_modules
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
 
 # IDEs and editors
 /.idea
 .project
+.classpath
+.c9/
 *.launch
 .settings/
+*.sublime-workspace
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# React Native
 
 # Xcode
 build/
@@ -51,9 +65,37 @@ local.properties
 *.iml
 *.hprof
 
+# node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# BUCK
+buck-out/
+.buckd/
+*.keystore
+!debug.keystore
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
+
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+
 # Bundle artifact
 *.jsbundle
 
 # Ruby / CocoaPods
 **/ios/Pods/
 **/vendor/bundle/
+
+apps/native-e2e/artifacts
+
+# Sentry
+.sentryclirc

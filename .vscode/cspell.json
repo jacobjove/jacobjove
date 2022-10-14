@@ -9,6 +9,7 @@
     "buildx",
     "cdnjs",
     "chmod",
+    "commitlint",
     "cronstrue",
     "CSRF",
     "csrftoken",

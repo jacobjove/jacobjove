@@ -5,10 +5,10 @@
   "private": true,
   "dependencies": {
     "@sentry/nextjs": "*",
-    "react": "*",
-    "react-dom": "*",
     "next": "*",
-    "next-auth": "*"
+    "next-auth": "*",
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@types/react": "*",
