@@ -52,7 +52,7 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v32.0.0
-  push-image:
+  deploy:
     environment: ${{ matrix.app }}
     name: Push image
     needs: [changed-files]
@@ -109,26 +109,6 @@ jobs:
           push: true
           secret-files: ENV_FILE=./.env
           tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
-  deploy:
-    environment: ${{ matrix.app }}
-    name: Deploy
-    needs: [changed-files, push-image]
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        app: [blog, portfolio]
-    steps:
-      - name: Check out main branch
-        uses: actions/checkout@v3
-      - id: generate-dotenv-file
-        name: Generate dotenv file
-        uses: iacobfred/generate-dotenv@v0.3.0
-        with:
-          output-path: apps/${{ matrix.app }}/.env
-          template-paths: |
-            apps/${{ matrix.app }}/.config/_.env
-            apps/${{ matrix.app }}/.config/_.env.production
       - name: Read dotenv file
         id: dotenv
         uses: falti/dotenv-action@v0.2.8
