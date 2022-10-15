@@ -1,27 +1,27 @@
-import Link from "next/link";
-import Box from "@mui/material/Box";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import MobileDrawer from "./MobileDrawer";
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
-import { SITE_TITLE, MENU_ITEMS } from "./constants";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { setCookie } from "cookies-next";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
-import styles from "./index.module.scss";
-import { useTranslation } from "next-i18next";
-import dynamic from "next/dynamic";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { signOut, useSession } from "next-auth/react";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { setCookie } from "cookies-next";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import Avatar from "@mui/material/Avatar";
-import Divider from "@mui/material/Divider";
+import { signOut, useSession } from "next-auth/react";
+import { useTranslation } from "next-i18next";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { MENU_ITEMS, SITE_TITLE } from "./constants";
+import styles from "./index.module.scss";
+import MobileDrawer from "./MobileDrawer";
 
 const DynamicPageTransitionProgressBar = dynamic(() => import("./PageTransitionProgressBar"));
 
@@ -37,6 +37,9 @@ const LOCALES: Record<Locale, { flag: string; name: string }> = {
     name: "日本語",
   },
 };
+
+// TODO
+const USE_PROGRESS_BAR = false;
 
 export default function Navbar() {
   const router = useRouter();
@@ -189,7 +192,7 @@ export default function Navbar() {
             </Box>
           </Box>
         </Toolbar>
-        <DynamicPageTransitionProgressBar />
+        {USE_PROGRESS_BAR && <DynamicPageTransitionProgressBar />}
       </AppBar>
       <MobileDrawer open={mobileOpen} setOpen={setMobileOpen} />
     </>
