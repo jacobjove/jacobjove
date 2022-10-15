@@ -142,7 +142,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nx serve",
     "docker:build": "cd apps/portfolio && docker compose build",
     "preinstall": "npx only-allow yarn",
     "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi"

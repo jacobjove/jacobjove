@@ -28,6 +28,13 @@ const PROJECTS: [string, string, string, string, string[]][] = [
     "KW Striping is the web app used by KW Striping (a small Utah business) to accept service requests from customers.",
     ["Django", "Python", "TypeScript", "Postgres", "Docker"],
   ],
+  [
+    "GHA",
+    "https://github.com/iacobfred/gha",
+    "https://github.com/iacobfred/gha",
+    "GHA is a monorepo containing GitHub Actions that I've written.",
+    ["Typescript", "GitHub Actions"],
+  ],
 ];
 
 export default function Projects() {
@@ -43,7 +50,7 @@ export default function Projects() {
           {PROJECTS.map(([name, url, sourceUrl, description, technologies]) => (
             <Box key={name} my={4}>
               <Typography variant={"h2"} mb={"0.25rem"}>
-                <a href={url} target={"_blank"} rel="noreferrer">
+                <a href={url} target={"_blank"} rel="noreferrer" style={{ color: "inherit" }}>
                   {name}
                 </a>
               </Typography>
