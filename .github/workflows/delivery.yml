@@ -115,7 +115,7 @@ jobs:
         with:
           path: apps/${{ matrix.app }}/.env
       - name: Deploy to server
-        uses: iacobfred/deploy-docker-ssh@v0.4.5
+        uses: iacobfred/deploy-docker-ssh@v0.4.6
         with:
           host: ${{ steps.dotenv.outputs.domain }}
           user: jacob
@@ -127,7 +127,6 @@ jobs:
             .config
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh-auth-sock: ~/.ssh/ssh_auth_${{ matrix.app }}.sock
           command: |
             set -a && source .env && set +a &&
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin &&
@@ -136,3 +135,4 @@ jobs:
             docker system prune -f
         env:
           RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
