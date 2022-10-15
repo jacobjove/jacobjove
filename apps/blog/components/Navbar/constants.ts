@@ -1,4 +1,4 @@
-export const SITE_TITLE = "俺が";
+export const SITE_TITLE = "J";
 
 type MenuItem = [string, string];
 

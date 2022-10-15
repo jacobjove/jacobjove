@@ -1,4 +1,5 @@
-x-default: &default
+x-default:
+  &default
   deploy:
     restart_policy:
       condition: "${DOCKER_DEFAULT_RESTART_POLICY:-unless-stopped}"
@@ -15,7 +16,7 @@ services:
       args:
         - PORT=${PORT}
         - APP_NAME=blog
-    image: ghcr.io/iacobfred/portfolio:latest
+    image: ghcr.io/iacobfred/blog:latest
     depends_on:
       - mongo
     ports:
@@ -23,7 +24,7 @@ services:
     environment:
       MONGO_HOST: mongo
       NEXTAUTH_URL_INTERNAL: "http://nextjs:${PORT}"
-      NEXTAUTH_URL: "https://orega.org"
+      NEXTAUTH_URL: "https://blog.orega.org"
       NODE_ENV: production
     volumes:
       - ./.env:/app/.env
