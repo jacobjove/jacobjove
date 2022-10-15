@@ -1,5 +1,3 @@
-import { withSentry } from "@sentry/nextjs";
-
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import mongoClientPromise from "@utils/mongo";
 import { PageConfig } from "next";
@@ -255,7 +253,7 @@ export const authOptions: NextAuthOptions = {
 
 const nextAuthHandler = NextAuth(authOptions);
 
-export default withSentry(nextAuthHandler);
+export default nextAuthHandler;
 
 export const config: PageConfig = {
   api: {
