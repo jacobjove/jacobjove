@@ -1,10 +1,10 @@
+import Layout from "@components/Layout";
 import PageHeader from "@components/PageHeader";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { getMessages } from "@utils/i18n";
 import { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
-import Layout from "../components/Layout";
 
 const PROJECTS: [string, string, string, string, string[]][] = [
   [
