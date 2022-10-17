@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { FC, useEffect, useRef, useState } from "react";
 
 export const constants = {
+  fadeInDelay: 500,
   fadeOutDelay: 1000,
   incrementDelay: 500,
   incrementValue: 5,
@@ -20,6 +21,7 @@ const PageTransitionProgressBar: FC = () => {
   // We use this ref to track the last active interval/timeout
   // so we can cancel it when a transition is interrupted.
   const timerIDRef = useRef<number>();
+  const durationRef = useRef<number>(0);
 
   useEffect(() => {
     const clearProgressInterval = () => {
@@ -32,6 +34,8 @@ const PageTransitionProgressBar: FC = () => {
 
       // every 500ms, increase progress by 5, until we reach 80.
       timerIDRef.current = window.setInterval(() => {
+        durationRef.current = durationRef.current + constants.incrementDelay;
+        console.log(durationRef.current);
         setLoadingProgress((currentProgress) => {
           if (currentProgress >= constants.finalIncompleteValue) {
             clearProgressInterval();
@@ -62,7 +66,7 @@ const PageTransitionProgressBar: FC = () => {
     <Box position={"fixed"} width={"100%"} top={-1} left={0} zIndex={10}>
       <Fade
         in={![0, constants.finalCompleteValue].includes(loadingProgress)}
-        timeout={{ exit: constants.fadeOutDelay }}
+        timeout={{ enter: constants.fadeInDelay, exit: constants.fadeOutDelay }}
       >
         <LinearProgress variant={"determinate"} value={loadingProgress} />
       </Fade>

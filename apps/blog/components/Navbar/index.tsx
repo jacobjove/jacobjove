@@ -23,7 +23,9 @@ import { MENU_ITEMS, SITE_TITLE } from "./constants";
 import styles from "./index.module.scss";
 import MobileDrawer from "./MobileDrawer";
 
-const DynamicPageTransitionProgressBar = dynamic(() => import("./PageTransitionProgressBar"));
+const DynamicPageTransitionProgressBar = dynamic(
+  () => import("@orega/next-common/components/PageTransitionProgressBar")
+);
 
 type Locale = "en-US" | "jp";
 

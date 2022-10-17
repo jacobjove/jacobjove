@@ -1,19 +1,19 @@
-import "../styles/global.scss";
+import MDXProvider from "@components/MDXProvider";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { PageTransitionContextProvider } from "@orega/next-common/components/PageTransitionContext";
+import { createEmotionCache } from "@utils/emotion";
+import { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import { appWithTranslation as withI18n, SSRConfig } from "next-i18next";
+import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { DefaultSeo } from "next-seo";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
-import { CacheProvider, EmotionCache } from "@emotion/react";
-import { createEmotionCache } from "@utils/emotion";
-import SEO from "../next-seo.config";
-import { SessionProvider } from "next-auth/react";
-import { PageTransitionContextProvider } from "@components/PageTransitionContext";
-import { Session } from "next-auth";
-import { SSRConfig, appWithTranslation as withI18n } from "next-i18next";
 import nextI18NextConfig from "../next-i18next.config.js";
-import MDXProvider from "@components/MDXProvider";
+import SEO from "../next-seo.config";
+import "../styles/global.scss";
 
 // Create the client-side emotion cache to be used for the user's whole browser session.
 const clientSideEmotionCache = createEmotionCache();
