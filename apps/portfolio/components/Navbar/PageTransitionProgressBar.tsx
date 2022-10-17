@@ -37,7 +37,6 @@ const PageTransitionProgressBar: FC = () => {
       timerIDRef.current = window.setInterval(() => {
         durationRef.current = durationRef.current + constants.incrementDelay;
         setLoadingProgress((currentProgress) => {
-          console.log("current", currentProgress, durationRef.current);
           if (currentProgress >= constants.finalIncompleteValue) {
             clearProgressInterval();
             return currentProgress;
