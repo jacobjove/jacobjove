@@ -1,11 +1,11 @@
+import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { SyntheticEvent, useState } from "react";
+import { FormStatus, useFormDataReducer } from "@utils/forms";
 import { useTranslation } from "next-i18next";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import { useFormDataReducer, FormStatus } from "@utils/forms";
+import { SyntheticEvent, useState } from "react";
 
 const CONTACT_FORM_ENABLED = true;
 
@@ -82,7 +82,7 @@ export default function ContactForm() {
                   setStatus("idle");
                 }}
               >
-                <RefreshIcon sx={{ mr: 1 }} /> {"Refresh form"}
+                <RefreshIcon sx={{ mr: 1 }} /> {"Refresh"}
               </Button>
             </Box>
           </Box>
