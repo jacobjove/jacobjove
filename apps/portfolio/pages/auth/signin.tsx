@@ -1,18 +1,18 @@
+import Layout from "@components/Layout";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import SocialLogin from "@components/auth/SocialLogin";
-import Layout from "@components/Layout";
+import SocialLogin from "@orega/next-common/components/auth/SocialLogin";
+import { getMessages } from "@utils/i18n";
 import { GetServerSideProps } from "next";
 import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { FunctionComponent, useEffect, useState } from "react";
-import { getMessages } from "@utils/i18n";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
 
 interface SignInPageProps {
   providers: Awaited<ReturnType<typeof getProviders>>;
