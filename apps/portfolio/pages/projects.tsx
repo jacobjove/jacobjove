@@ -32,8 +32,8 @@ const PROJECTS: [string, string, string, string, string[]][] = [
     "GHA",
     "https://github.com/iacobfred/gha",
     "https://github.com/iacobfred/gha",
-    "GHA is a monorepo containing GitHub Actions that I've written.",
-    ["Typescript", "GitHub Actions"],
+    "GHA is a monorepo containing GitHub Actions that I've written, including `generate-dotenv` and `deploy-docker-ssh`.",
+    ["TypeScript", "GitHub Actions"],
   ],
 ];
 

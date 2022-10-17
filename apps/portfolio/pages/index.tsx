@@ -1,16 +1,17 @@
-import Head from "next/head";
-import Layout from "../components/Layout";
-import utilStyles from "../styles/utils.module.css";
-import { GetStaticProps } from "next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Image from "next/image";
-import { useTranslation, Trans } from "next-i18next";
 import { getMessages } from "@utils/i18n";
+import { GetStaticProps } from "next";
+import { Trans, useTranslation } from "next-i18next";
+import Head from "next/head";
+import Image from "next/image";
+import Layout from "../components/Layout";
+import utilStyles from "../styles/utils.module.css";
 
 export const siteTitle = "Jacob's portfolio";
 
 const BLOG_URL = "https://blog.orega.org";
+const LINK_BLOG = false;
 
 export default function Home() {
   const { t } = useTranslation("home");
@@ -43,9 +44,11 @@ export default function Home() {
         <Box mt={2}>
           <Typography>{t("greeting")}</Typography>
         </Box>
-        <Box>
-          <Trans t={t} i18nKey="blogIntro" components={{ blogLink: <a href={BLOG_URL} /> }} />
-        </Box>
+        {LINK_BLOG && (
+          <Box>
+            <Trans t={t} i18nKey="blogIntro" components={{ blogLink: <a href={BLOG_URL} /> }} />
+          </Box>
+        )}
       </Box>
     </Layout>
   );
