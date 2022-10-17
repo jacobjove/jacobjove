@@ -11,7 +11,7 @@ const PROJECTS: [string, string, string, string, string[]][] = [
     "SelfBuilder",
     "https://selfbuilder.orega.org/",
     "https://github.com/iacobfred/selfbuilder",
-    "SelfBuilder is a web app that helps you manage your time, build habits, and achieve your personal goals.",
+    "SelfBuilder (under development) is a web app that helps you manage your time, build habits, and achieve your personal goals.",
     ["Next.js", "React", "TypeScript", "MongoDB", "Docker"],
   ],
   [
