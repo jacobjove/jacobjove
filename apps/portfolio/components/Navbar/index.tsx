@@ -39,7 +39,7 @@ const LOCALES: Record<Locale, { flag: string; name: string }> = {
 };
 
 // TODO
-const USE_PROGRESS_BAR = false;
+const USE_PROGRESS_BAR = true;
 
 export default function Navbar() {
   const router = useRouter();

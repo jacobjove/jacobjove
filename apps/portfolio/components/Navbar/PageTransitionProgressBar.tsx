@@ -4,6 +4,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useRouter } from "next/router";
 import { FC, useEffect, useRef, useState } from "react";
 
+const DELAY_BEFORE_SHOWING_PROGRESS_BAR = 400;
+
 export const constants = {
   fadeOutDelay: 1000,
   incrementDelay: 500,
@@ -20,6 +22,7 @@ const PageTransitionProgressBar: FC = () => {
   // We use this ref to track the last active interval/timeout
   // so we can cancel it when a transition is interrupted.
   const timerIDRef = useRef<number>();
+  const durationRef = useRef<number>(0);
 
   useEffect(() => {
     const clearProgressInterval = () => {
@@ -32,7 +35,9 @@ const PageTransitionProgressBar: FC = () => {
 
       // every 500ms, increase progress by 5, until we reach 80.
       timerIDRef.current = window.setInterval(() => {
+        durationRef.current = durationRef.current + constants.incrementDelay;
         setLoadingProgress((currentProgress) => {
+          console.log("current", currentProgress, durationRef.current);
           if (currentProgress >= constants.finalIncompleteValue) {
             clearProgressInterval();
             return currentProgress;
@@ -61,7 +66,10 @@ const PageTransitionProgressBar: FC = () => {
   return (
     <Box position={"fixed"} width={"100%"} top={-1} left={0} zIndex={10}>
       <Fade
-        in={![0, constants.finalCompleteValue].includes(loadingProgress)}
+        in={
+          durationRef.current > DELAY_BEFORE_SHOWING_PROGRESS_BAR &&
+          ![0, constants.finalCompleteValue].includes(loadingProgress)
+        }
         timeout={{ exit: constants.fadeOutDelay }}
       >
         <LinearProgress variant={"determinate"} value={loadingProgress} />
