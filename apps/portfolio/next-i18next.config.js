@@ -1,10 +1,10 @@
-import HttpBackend from "i18next-http-backend/cjs";
 import ChainedBackend from "i18next-chained-backend";
+import HttpBackend from "i18next-http-backend/cjs";
 import LocalStorageBackend from "i18next-localstorage-backend";
 
 export const i18n = {
   // List all the locales to support.
-  locales: ["en-US", "jp"],
+  locales: ["en-US", "jp", "ko"],
   // Specify the default locale to use when a non-locale-prefixed path is visited.
   defaultLocale: "en-US",
   // This is a list of locale domains and the default locale they

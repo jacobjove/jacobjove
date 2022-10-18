@@ -57,6 +57,10 @@ module.exports = {
   // https://eslint.org/docs/user-guide/configuring/configuration-files#how-do-overrides-work
   overrides: [
     {
+      files: ["*.mdx", "*.md"],
+      extends: ["plugin:mdx/recommended"],
+    },
+    {
       files: ["*.test.tsx", "**/*.test.tsx"],
       rules: { "@typescript-eslint/no-non-null-assertion": "off" },
     },
