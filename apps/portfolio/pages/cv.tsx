@@ -71,5 +71,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   await dl.start().catch((err: unknown) => console.error(err));
   return {
     props: { ...(await messagesPromise) },
+    // Regenerate the page at most once every two hours.
+    revalidate: 60 * 60 * 2, // in seconds
   };
 };
