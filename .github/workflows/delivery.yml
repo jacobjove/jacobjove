@@ -110,7 +110,7 @@ jobs:
           tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
       - name: Read dotenv file
         id: dotenv
-        uses: falti/dotenv-action@v0.2.8
+        uses: falti/dotenv-action@v1.0.0
         with:
           path: apps/${{ matrix.app }}/.env
       - name: Deploy to server
