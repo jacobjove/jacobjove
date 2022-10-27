@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v32.1.2
+        uses: tj-actions/changed-files@v33.0.0
   deploy:
     environment: ${{ matrix.app }}
     name: Deploy
@@ -115,7 +115,7 @@ jobs:
             }}:latest
       - name: Read dotenv file
         id: dotenv
-        uses: falti/dotenv-action@v0.2.8
+        uses: falti/dotenv-action@v1.0.0
         with:
           path: apps/${{ matrix.app }}/.env
       - name: Deploy to server
