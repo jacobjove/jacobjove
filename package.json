@@ -139,7 +139,7 @@
   "main": "index.js",
   "name": "orega",
   "prettier": {
-    "printWidth": 100,
+    "printWidth": 110,
     "proseWrap": "always"
   },
   "version": "1.0.0",
