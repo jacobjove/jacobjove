@@ -126,7 +126,9 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
+          tags:
+            - ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }}
+            - ghcr.io/iacobfred/${{ matrix.app }}:latest
       - name: Build image without cache
         if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
         uses: docker/build-push-action@v3

@@ -18,6 +18,8 @@ ENV APP_NAME ${APP_NAME}
 ENV PORT ${PORT}
 ENV CYPRESS_INSTALL_BINARY 0
 
+RUN apk add --no-cache libc6-compat
+
 LABEL org.opencontainers.image.source https://github.com/iacobfred/orega
 
 ############################################################################
@@ -121,8 +123,6 @@ COPY --from=builder --chown=nextjs:nodejs /base/apps/${APP_NAME}/.next/static /b
 # since the service worker files from next-pwa are generated during the build.
 COPY --from=builder --chown=nextjs:nodejs /base/apps/${APP_NAME}/public /base/apps/${APP_NAME}/public
 
-RUN mv server.js server.cjs || (ls && exit 1)
-
 # Switch to non-root user.
 USER nextjs
 
@@ -135,4 +135,4 @@ HEALTHCHECK --interval=30s --timeout=7s --start-period=60s --retries=3 \
   CMD ["sh", "-c", "curl --fail http://localhost:${PORT}/ || exit 1"]
 
 # Start the app.
-CMD ["node", "server.cjs"]
+CMD ["node", "server.js"]
