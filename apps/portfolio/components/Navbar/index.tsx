@@ -27,7 +27,7 @@ const DynamicPageTransitionProgressBar = dynamic(
   () => import("@orega/next-common/components/PageTransitionProgressBar")
 );
 
-type Locale = "en-US" | "jp";
+type Locale = "en-US" | "jp" | "ko";
 
 const LOCALES: Record<Locale, { flag: string; name: string }> = {
   "en-US": {
@@ -37,6 +37,10 @@ const LOCALES: Record<Locale, { flag: string; name: string }> = {
   jp: {
     flag: "🇯🇵",
     name: "日本語",
+  },
+  ko: {
+    flag: "🇰🇷",
+    name: "한국어",
   },
 };
 

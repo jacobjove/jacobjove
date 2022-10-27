@@ -15,6 +15,7 @@ on:
       - "**.rst"
       - "**.txt"
       - package*.json
+      - yarn.lock
 
 env:
   ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
@@ -93,7 +94,8 @@ jobs:
           file: Dockerfile
           push: true
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
+          tags:
+            ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
       - name: Build image without cache
         if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
         # https://github.com/docker/build-push-action
@@ -107,7 +109,8 @@ jobs:
           no-cache: true
           push: true
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
+          tags:
+            ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
       - name: Read dotenv file
         id: dotenv
         uses: falti/dotenv-action@v1.0.0

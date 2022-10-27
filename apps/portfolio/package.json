@@ -45,7 +45,7 @@
     "nodemailer": "*",
     "react": "*",
     "react-dom": "*",
-    "rehype-highlight": "^5.0.2",
+    "rehype-highlight": "*",
     "remark": "^14.0.1",
     "remark-frontmatter": "^4.0.1",
     "remark-html": "^15.0.0",

@@ -6,7 +6,7 @@
   "editor.detectIndentation": true,
   "editor.formatOnSave": true,
   "editor.linkedEditing": true,
-  "editor.rulers": [94, 120],
+  "editor.rulers": [100],
   "editor.suggestSelection": "first",
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "explorer.autoReveal": false,
