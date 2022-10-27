@@ -15,6 +15,7 @@ on:
       - "**.rst"
       - "**.txt"
       - package*.json
+      - yarn.lock
 
 env:
   ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
@@ -93,7 +94,9 @@ jobs:
           file: Dockerfile
           push: true
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
+          tags:
+            ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app
+            }}:latest
       - name: Build image without cache
         if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
         # https://github.com/docker/build-push-action
@@ -107,7 +110,9 @@ jobs:
           no-cache: true
           push: true
           secret-files: ENV_FILE=./.env
-          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
+          tags:
+            ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app
+            }}:latest
       - name: Read dotenv file
         id: dotenv
         uses: falti/dotenv-action@v0.2.8
@@ -133,5 +138,6 @@ jobs:
             if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi;
             docker system prune -f
         env:
-          RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
+          RELOAD_WEBSERVER:
+            ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
