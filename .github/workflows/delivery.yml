@@ -71,6 +71,11 @@ jobs:
           template-paths: |
             apps/${{ matrix.app }}/.config/_.env
             apps/${{ matrix.app }}/.config/_.env.production
+      - name: Read dotenv file
+        id: dotenv
+        uses: falti/dotenv-action@v1.0.0
+        with:
+          path: apps/${{ matrix.app }}/.env
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -87,6 +92,7 @@ jobs:
         with:
           build-args: |
             APP_NAME=${{ matrix.app }}
+            PORT=${{ steps.dotenv.outputs.port }}
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -103,6 +109,7 @@ jobs:
         with:
           build-args: |
             APP_NAME=${{ matrix.app }}
+            PORT=${{ steps.dotenv.outputs.port }}
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: Dockerfile
@@ -111,11 +118,6 @@ jobs:
           secret-files: ENV_FILE=./.env
           tags:
             ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
-      - name: Read dotenv file
-        id: dotenv
-        uses: falti/dotenv-action@v1.0.0
-        with:
-          path: apps/${{ matrix.app }}/.env
       - name: Deploy to server
         uses: iacobfred/deploy-docker-ssh@v0.4.8
         with:

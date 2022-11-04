@@ -67,27 +67,24 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v33.0.0
-  build:
-    name: Build image
-    needs: changed-files
+
+  generate-dotenv:
+    name: Generate .env file
+    environment: ${{ matrix.app }}
+    needs: [changed-files]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
           - app: portfolio
-            port: 3000
           - app: blog
-            port: 3003
-        # app: ["blog", "portfolio"]
-    environment: ${{ matrix.app }}
-    if: github.actor != 'depbot'
+    outputs:
+      cache-key: ${{ steps.generate-dotenv.outputs.cache-key }}
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Generate .env file
+      - id: generate-dotenv
+        name: Generate .env file
         uses: iacobfred/gha/packages/generate-dotenv@v1
         with:
           output-path: apps/${{ matrix.app }}/.env
@@ -106,6 +103,82 @@ jobs:
           PORT: ${{ matrix.port }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+  test:
+    name: Build and test
+    environment: ${{ matrix.app }}
+    needs: [changed-files, generate-dotenv]
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - app: portfolio
+          - app: blog
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+      - name: Install dependencies
+        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
+      # - name: Restore dotenv
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: .env
+      #     key: ${{ needs.generate-dotenv.outputs.cache-key }}
+      - id: generate-dotenv
+        name: Generate .env file
+        uses: iacobfred/gha/packages/generate-dotenv@v1
+        with:
+          output-path: apps/${{ matrix.app }}/.env
+          template-paths: |
+            apps/${{ matrix.app }}/.config/_.env
+            apps/${{ matrix.app }}/.config/_.env.production
+      - name: Build
+        run: yarn workspace ${{ matrix.app }} build
+        env:
+          SENTRY_DRY_RUN: "true"
+      - name: Test
+        run: yarn workspace ${{ matrix.app }} test
+
+  docker:
+    name: Build and push image
+    environment: ${{ matrix.app }}
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    needs: [changed-files, generate-dotenv]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - app: portfolio
+            port: 3000
+          - app: blog
+            port: 3003
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v3
+      # - name: Restore dotenv
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: .env
+      #     key: ${{ needs.generate-dotenv.outputs.cache-key }}
+      - id: generate-dotenv
+        name: Generate .env file
+        uses: iacobfred/gha/packages/generate-dotenv@v1
+        with:
+          output-path: apps/${{ matrix.app }}/.env
+          template-paths: |
+            apps/${{ matrix.app }}/.config/_.env
+            apps/${{ matrix.app }}/.config/_.env.production
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2.1.0
         with:
