@@ -4781,6 +4781,7 @@ __metadata:
     i18next-chained-backend: "*"
     i18next-http-backend: "*"
     i18next-localstorage-backend: "*"
+    jest: "*"
     material-ui-popup-state: "*"
     mongodb: "*"
     next: "*"
@@ -9584,7 +9585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^29.0.3":
+"jest@npm:*, jest@npm:^29.0.3":
   version: 29.2.2
   resolution: "jest@npm:29.2.2"
   dependencies:
@@ -12200,6 +12201,7 @@ __metadata:
     i18next-chained-backend: "*"
     i18next-http-backend: "*"
     i18next-localstorage-backend: "*"
+    jest: "*"
     material-ui-popup-state: "*"
     mongodb: "*"
     next: "*"
