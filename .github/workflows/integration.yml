@@ -80,7 +80,7 @@ jobs:
             port: 3003
         # app: ["blog", "portfolio"]
     environment: ${{ matrix.app }}
-    if: github.actor != 'depbot'
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
