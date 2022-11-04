@@ -123,6 +123,8 @@ COPY --from=builder --chown=nextjs:nodejs /base/apps/${APP_NAME}/.next/static /b
 # since the service worker files from next-pwa are generated during the build.
 COPY --from=builder --chown=nextjs:nodejs /base/apps/${APP_NAME}/public /base/apps/${APP_NAME}/public
 
+RUN test -f server.js || (ls; exit 1)
+
 # Switch to non-root user.
 USER nextjs
 

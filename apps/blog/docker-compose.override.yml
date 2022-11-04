@@ -16,4 +16,3 @@ services:
       # by the initial mapping of the local directory to /app.
       - ./node_modules:/base/apps/blog/node_modules
       - ./.next:/base/apps/blog/.next
-      - ./.env:/base/apps/blog/.env
