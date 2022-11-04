@@ -72,6 +72,11 @@ jobs:
     name: Generate .env file
     needs: [changed-files]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - app: portfolio
+          - app: blog
     outputs:
       cache-key: ${{ steps.generate-dotenv.outputs.cache-key }}
     steps:
