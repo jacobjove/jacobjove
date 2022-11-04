@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next dev",
     "lint": "next lint",
-    "start": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next start"
+    "start": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next start",
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@emotion/cache": "*",

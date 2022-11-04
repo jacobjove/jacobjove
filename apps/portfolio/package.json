@@ -10,7 +10,8 @@
     "dev": "docker compose up -d mongo && PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next dev",
     "format": "prettier -w . && eslint --fix .",
     "lint": "next lint",
-    "start": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next start"
+    "start": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next start",
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@babel/core": "*",
