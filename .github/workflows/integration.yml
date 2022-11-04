@@ -130,7 +130,7 @@ jobs:
     name: Build image
     environment: ${{ matrix.app }}
     if: ${{ github.actor != 'dependabot[bot]' }}
-    needs: changed-files
+    needs: [changed-files, generate-dotenv]
     runs-on: ubuntu-latest
     strategy:
       matrix:
