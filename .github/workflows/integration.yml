@@ -70,6 +70,7 @@ jobs:
 
   generate-dotenv:
     name: Generate .env file
+    environment: ${{ matrix.app }}
     needs: [changed-files]
     runs-on: ubuntu-latest
     strategy:
