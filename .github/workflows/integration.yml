@@ -83,7 +83,8 @@ jobs:
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
-      - name: Generate .env file
+      - id: generate-dotenv
+        name: Generate .env file
         uses: iacobfred/gha/packages/generate-dotenv@v1
         with:
           output-path: apps/${{ matrix.app }}/.env
@@ -105,9 +106,15 @@ jobs:
 
   build:
     name: Build and Test
+    environment: ${{ matrix.app }}
     needs: [changed-files, generate-dotenv]
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - app: portfolio
+          - app: blog
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -120,17 +127,25 @@ jobs:
           cache: "yarn"
       - name: Install dependencies
         run: yarn
-      - name: Restore dotenv
-        uses: actions/cache@v3
+      # - name: Restore dotenv
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: .env
+      #     key: ${{ needs.generate-dotenv.outputs.cache-key }}
+      - id: generate-dotenv
+        name: Generate .env file
+        uses: iacobfred/gha/packages/generate-dotenv@v1
         with:
-          path: .env
-          key: ${{ needs.generate-dotenv.outputs.cache-key }}
+          output-path: apps/${{ matrix.app }}/.env
+          template-paths: |
+            apps/${{ matrix.app }}/.config/_.env
+            apps/${{ matrix.app }}/.config/_.env.production
       - name: Build
-        run: yarn build
+        run: yarn workspace ${{ matrix.app }} build
         env:
           SENTRY_DRY_RUN: "true"
       - name: Test
-        run: yarn test
+        run: yarn workspace ${{ matrix.app }} test
 
   docker:
     name: Build image
@@ -148,11 +163,19 @@ jobs:
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
-      - name: Restore dotenv
-        uses: actions/cache@v3
+      # - name: Restore dotenv
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: .env
+      #     key: ${{ needs.generate-dotenv.outputs.cache-key }}
+      - id: generate-dotenv
+        name: Generate .env file
+        uses: iacobfred/gha/packages/generate-dotenv@v1
         with:
-          path: .env
-          key: ${{ needs.generate-dotenv.outputs.cache-key }}
+          output-path: apps/${{ matrix.app }}/.env
+          template-paths: |
+            apps/${{ matrix.app }}/.config/_.env
+            apps/${{ matrix.app }}/.config/_.env.production
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
