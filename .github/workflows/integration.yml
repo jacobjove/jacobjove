@@ -104,8 +104,8 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
-  build:
-    name: Build and Test
+  test:
+    name: Build and test
     environment: ${{ matrix.app }}
     needs: [changed-files, generate-dotenv]
     timeout-minutes: 15
@@ -148,7 +148,7 @@ jobs:
         run: yarn workspace ${{ matrix.app }} test
 
   docker:
-    name: Build image
+    name: Build and push image
     environment: ${{ matrix.app }}
     if: ${{ github.actor != 'dependabot[bot]' }}
     needs: [changed-files, generate-dotenv]
