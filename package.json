@@ -5,7 +5,7 @@
     "@emotion/cache": "^11.10.3",
     "@emotion/react": "^11.7.0",
     "@emotion/server": "^11.4.0",
-    "@emotion/styled": "^11.10.0",
+    "@emotion/styled": "^11.10.5",
     "@mdx-js/loader": "^2.0.0-rc.2",
     "@mdx-js/react": "^2.0.0-rc.2",
     "@mui/icons-material": "^5.10.6",
