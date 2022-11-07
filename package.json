@@ -70,7 +70,7 @@
     "@types/react-portal": "^4.0.4",
     "@types/throttle-debounce": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
-    "@typescript-eslint/parser": "^5.38.1",
+    "@typescript-eslint/parser": "^5.42.0",
     "babel-jest": "^29.0.3",
     "concurrently": "^7.2.2",
     "cypress": "^9.2.1",
