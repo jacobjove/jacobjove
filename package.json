@@ -62,7 +62,7 @@
     "@types/nodemailer": "^6.4.6",
     "@types/pluralize": "^0.0.29",
     "@types/qs": "^6.9.7",
-    "@types/react": "^18.0.21",
+    "@types/react": "^18.0.25",
     "@types/react-datetime-picker": "^3.4.1",
     "@types/react-dom": "^18.0.6",
     "@types/react-grid-layout": "^1.3.0",
