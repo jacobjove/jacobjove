@@ -2,10 +2,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
-import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
@@ -166,12 +166,10 @@ export default function Navbar() {
                       >
                         {hrefOrSubitems.map(([subName, href]) => (
                           <MenuItem key={subName}>
-                            <Link href={href} passHref>
+                            <Link href={href}>
                               <Typography
                                 color="inherit"
-                                sx={{
-                                  fontWeight: router.pathname === href ? "bold" : "normal",
-                                }}
+                                fontWeight={router.pathname === href ? "bold" : "normal"}
                               >
                                 {t(subName)}
                               </Typography>
