@@ -3,7 +3,9 @@
     "Home": "Home",
     "About": "About",
     "CV": "CV",
-    "Projects": "Projects",
+    "Portfolio": "Portfolio",
+    "Software": "Software",
+    "Writing": "Writing",
     "Blog": "Blog",
     "Contact": "Contact"
   }

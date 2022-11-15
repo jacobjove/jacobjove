@@ -1,11 +1,18 @@
 export const SITE_TITLE = "J";
 
-type MenuItem = [string, string];
+type _MenuItem = [string, string];
+type MenuItem = [string, string | _MenuItem[]];
 
 export const MENU_ITEMS: MenuItem[] = [
   ["Home", "/"],
   // ["About", "/about"],
   ["CV", "/cv"],
-  ["Projects", "/projects"],
+  [
+    "Portfolio",
+    [
+      ["Software", "/portfolio/software"],
+      ["Writing", "/portfolio/writing"],
+    ],
+  ],
   ["Contact", "/contact"],
 ];

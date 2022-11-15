@@ -1,5 +1,8 @@
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
+import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -18,14 +21,14 @@ import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { Fragment, useReducer, useState } from "react";
 import { MENU_ITEMS, SITE_TITLE } from "./constants";
 import styles from "./index.module.scss";
 import MobileDrawer from "./MobileDrawer";
 
-const DynamicPageTransitionProgressBar = dynamic(
-  () => import("@orega/next-common/components/PageTransitionProgressBar")
-);
+const DynamicPageTransitionProgressBar = dynamic(() => import("nextjs-progressbar"), {
+  ssr: false,
+});
 
 type Locale = "en-US" | "jp" | "ko";
 
@@ -44,8 +47,12 @@ const LOCALES: Record<Locale, { flag: string; name: string }> = {
   },
 };
 
-// TODO
-const USE_PROGRESS_BAR = true;
+const INITIAL_MENU_STATE = Object.fromEntries(MENU_ITEMS.map(([name]) => [name, false]));
+
+const menuStateReducer = (state: Record<string, boolean>, payload: [string, boolean]) => {
+  const [key, value] = payload;
+  return { ...INITIAL_MENU_STATE, [key]: value };
+};
 
 export default function Navbar() {
   const router = useRouter();
@@ -54,6 +61,8 @@ export default function Navbar() {
   const { t } = useTranslation("common", { keyPrefix: "Navbar" });
   const [mobileOpen, setMobileOpen] = useState(false);
   const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
+  const [dropdownAnchorEl, setDropdownAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuState, dispatch] = useReducer(menuStateReducer, INITIAL_MENU_STATE);
   return (
     <>
       <AppBar className={styles.root} component={"nav"} position="static">
@@ -86,7 +95,6 @@ export default function Navbar() {
                 <Typography
                   variant="h3"
                   sx={{
-                    // color: "inherit",
                     "&:hover": {
                       textDecoration: "none",
                     },
@@ -113,23 +121,67 @@ export default function Navbar() {
                 columnGap: 2,
               }}
             >
-              {MENU_ITEMS.map(([name, href]) => (
-                <Link href={href} key={name} passHref>
-                  <Typography
-                    color="inherit"
-                    sx={{
-                      fontWeight: router.pathname === href ? "bold" : "normal",
-                      textTransform: "capitalize",
-                      fontFamily: "Open Sans",
-                      "&:hover": {
-                        textDecoration: "none",
-                      },
-                      px: "0.25rem",
-                    }}
-                  >
-                    {t(name)}
-                  </Typography>
-                </Link>
+              {MENU_ITEMS.map(([name, hrefOrSubitems]) => (
+                <Fragment key={name}>
+                  {typeof hrefOrSubitems === "string" ? (
+                    <Link href={hrefOrSubitems} onClick={() => dispatch([name, !menuState[name]])}>
+                      <Typography
+                        color="inherit"
+                        sx={{
+                          fontWeight: menuState[name] || pathname === hrefOrSubitems ? "bold" : "normal",
+                          textTransform: "capitalize",
+                          fontFamily: "Open Sans",
+                          "&:hover": {
+                            textDecoration: "none",
+                          },
+                          px: "0.25rem",
+                        }}
+                      >
+                        {t(name)}
+                      </Typography>
+                    </Link>
+                  ) : (
+                    <div>
+                      <Button
+                        onClick={(event) => {
+                          setDropdownAnchorEl(event.currentTarget);
+                          dispatch([name, !menuState[name]]);
+                        }}
+                        endIcon={menuState[name] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        sx={{
+                          fontWeight: hrefOrSubitems.map(([, href]) => href).includes(router.pathname)
+                            ? "bold"
+                            : "normal",
+                        }}
+                      >
+                        {t(name)}
+                      </Button>
+                      <Menu
+                        open={menuState[name]}
+                        anchorEl={dropdownAnchorEl}
+                        onClose={() => {
+                          dispatch([name, false]);
+                          setDropdownAnchorEl(null);
+                        }}
+                      >
+                        {hrefOrSubitems.map(([subName, href]) => (
+                          <MenuItem key={subName}>
+                            <Link href={href} passHref>
+                              <Typography
+                                color="inherit"
+                                sx={{
+                                  fontWeight: router.pathname === href ? "bold" : "normal",
+                                }}
+                              >
+                                {t(subName)}
+                              </Typography>
+                            </Link>
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </div>
+                  )}
+                </Fragment>
               ))}
             </Box>
             <Box
@@ -194,7 +246,7 @@ export default function Navbar() {
             </Box>
           </Box>
         </Toolbar>
-        {USE_PROGRESS_BAR && <DynamicPageTransitionProgressBar />}
+        <DynamicPageTransitionProgressBar />
       </AppBar>
       <MobileDrawer open={mobileOpen} setOpen={setMobileOpen} />
     </>
