@@ -73,7 +73,7 @@ jobs:
             apps/${{ matrix.app }}/.config/_.env.production
       - name: Read dotenv file
         id: dotenv
-        uses: falti/dotenv-action@v1.0.0
+        uses: falti/dotenv-action@v1.0.1
         with:
           path: apps/${{ matrix.app }}/.env
       - name: Set up Docker Buildx
