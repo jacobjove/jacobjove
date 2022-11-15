@@ -40,9 +40,6 @@ const LOCALES: Record<Locale, { flag: string; name: string }> = {
   },
 };
 
-// TODO
-const USE_PROGRESS_BAR = false;
-
 export default function Navbar() {
   const router = useRouter();
   const { pathname, asPath, query, locale } = router;
