@@ -11,7 +11,7 @@ import Layout from "../components/Layout";
 const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobfredericksen/";
 
 const GOOGLE_DOC_URL =
-  "https://docs.google.com/document/d/12FrIt6hJwACrZfv6-2VygGGjTWDQhcbKGw5oPZJdXks/edit?usp=sharing";
+  "https://docs.google.com/document/d/1bn3vr7WF3hMHF0z_UbigauILX0SUX1-Jm70f3nZ9VyE/edit?usp=sharing";
 const GOOGLE_DOC_PDF_DL_URL = GOOGLE_DOC_URL.replace("edit?usp=sharing", "export?format=pdf");
 const RESUME_DIR = `${process.cwd()}/public`;
 const RESUME_FILENAME_WITHOUT_EXTENSION = "resume";
