@@ -1,13 +1,13 @@
-import Link from "next/link";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import { SITE_TITLE, MENU_ITEMS } from "./constants";
+import Typography from "@mui/material/Typography";
+import Link from "next/link";
+import { MENU_ITEMS, SITE_TITLE } from "./constants";
 
 const DRAWER_WIDTH = 160;
 
@@ -41,7 +41,7 @@ export default function MobileDrawer({ open, setOpen }: MobileDrawerProps) {
             {MENU_ITEMS.map(([name, href]) => (
               <ListItem key={name} disablePadding>
                 <Link href={href} passHref>
-                  <ListItemButton component={"a"} onClick={handleClose}>
+                  <ListItemButton onClick={handleClose}>
                     <ListItemText primary={name} />
                   </ListItemButton>
                 </Link>
