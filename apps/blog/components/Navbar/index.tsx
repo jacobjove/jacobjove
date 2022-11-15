@@ -23,9 +23,9 @@ import { MENU_ITEMS, SITE_TITLE } from "./constants";
 import styles from "./index.module.scss";
 import MobileDrawer from "./MobileDrawer";
 
-const DynamicPageTransitionProgressBar = dynamic(
-  () => import("@orega/next-common/components/PageTransitionProgressBar")
-);
+const DynamicPageTransitionProgressBar = dynamic(() => import("nextjs-progressbar"), {
+  ssr: false,
+});
 
 type Locale = "en-US" | "jp";
 
@@ -39,9 +39,6 @@ const LOCALES: Record<Locale, { flag: string; name: string }> = {
     name: "日本語",
   },
 };
-
-// TODO
-const USE_PROGRESS_BAR = false;
 
 export default function Navbar() {
   const router = useRouter();
@@ -190,7 +187,7 @@ export default function Navbar() {
             </Box>
           </Box>
         </Toolbar>
-        {USE_PROGRESS_BAR && <DynamicPageTransitionProgressBar />}
+        <DynamicPageTransitionProgressBar />
       </AppBar>
       <MobileDrawer open={mobileOpen} setOpen={setMobileOpen} />
     </>

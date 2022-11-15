@@ -2,7 +2,6 @@ import MDXProvider from "@components/MDXProvider";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { PageTransitionContextProvider } from "@orega/next-common/components/PageTransitionContext";
 import { createEmotionCache } from "@utils/emotion";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
@@ -91,21 +90,19 @@ function App({
     <SessionProvider session={session}>
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
-          <PageTransitionContextProvider>
-            <MDXProvider>
-              <CssBaseline />
-              <Head>
-                <meta charSet="UTF-8" />
-                {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
-                <meta
-                  name="viewport"
-                  content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
-                />
-              </Head>
-              <DefaultSeo {...SEO} />
-              <Page {...pageProps} />
-            </MDXProvider>
-          </PageTransitionContextProvider>
+          <MDXProvider>
+            <CssBaseline />
+            <Head>
+              <meta charSet="UTF-8" />
+              {/* https://nextjs.org/docs/messages/no-document-viewport-meta */}
+              <meta
+                name="viewport"
+                content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, user-scalable=no"
+              />
+            </Head>
+            <DefaultSeo {...SEO} />
+            <Page {...pageProps} />
+          </MDXProvider>
         </ThemeProvider>
       </CacheProvider>
     </SessionProvider>

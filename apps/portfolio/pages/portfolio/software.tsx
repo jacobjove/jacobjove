@@ -38,7 +38,7 @@ const PROJECTS: [string, string, string, string, string[]][] = [
 ];
 
 export default function Projects() {
-  const { t } = useTranslation("projects");
+  const { t } = useTranslation("software");
   return (
     <Layout maxWidth="sm">
       <PageHeader>{t("title")}</PageHeader>
@@ -82,7 +82,7 @@ export default function Projects() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const messages = await getMessages(locale, ["projects"]);
+  const messages = await getMessages(locale, ["software"]);
   return {
     props: { ...messages },
   };
