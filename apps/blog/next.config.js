@@ -75,9 +75,9 @@ const nextConfig = {
 };
 
 // Set additional config options for the Sentry Webpack plugin.
+// https://github.com/getsentry/sentry-webpack-plugin#options
 const sentryWebpackPluginOptions = {
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options.
+  dryRun: process.env.SENTRY_DRY_RUN === "true",
   silent: true,
 };
 

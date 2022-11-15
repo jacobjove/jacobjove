@@ -1,12 +1,11 @@
-import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Layout from "@components/Layout";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import Typography from "@mui/material/Typography";
-import { FC, ReactNode } from "react";
-import { useSession } from "next-auth/react";
-import { useMemo } from "react";
 import PageHeader from "@components/PageHeader";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Typography from "@mui/material/Typography";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FC, ReactNode, useMemo } from "react";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -49,9 +48,7 @@ const AdminLayout: FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
           {breadcrumbs.map(({ name, url }) => {
             return (
               <Link key={url} href={url} passHref>
-                <Typography component={"a"} color="inherit">
-                  {name}
-                </Typography>
+                <Typography color="inherit">{name}</Typography>
               </Link>
             );
           })}

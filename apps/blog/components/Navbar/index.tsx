@@ -81,7 +81,6 @@ export default function Navbar() {
               <Link href="/" passHref>
                 <Typography
                   variant="h3"
-                  component="a"
                   sx={{
                     color: "inherit",
                     "&:hover": {
@@ -113,7 +112,6 @@ export default function Navbar() {
               {MENU_ITEMS.map(([name, href]) => (
                 <Link href={href} key={name} passHref>
                   <Typography
-                    component="a"
                     color="inherit"
                     sx={{
                       fontWeight: router.pathname === href ? "bold" : "normal",
@@ -179,9 +177,7 @@ export default function Navbar() {
                     }}
                   >
                     <Link href={"/admin"} passHref>
-                      <MenuItem component="a" sx={{ textAlign: "center" }}>
-                        {"Admin"}
-                      </MenuItem>
+                      <MenuItem sx={{ textAlign: "center" }}>{"Admin"}</MenuItem>
                     </Link>
 
                     <Divider />
