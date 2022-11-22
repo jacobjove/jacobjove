@@ -54,6 +54,7 @@ jobs:
                   const stateQuery = `query($owner: String!, $repo: String!, $pull_number: Int!) {
                     repository(owner: $owner, name: $repo) {
                       pullRequest(number:$pull_number) {
+                        mergeable
                         commits(last: 1) {
                           nodes {
                             commit {
