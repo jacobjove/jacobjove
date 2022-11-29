@@ -140,26 +140,26 @@
   },
   "main": "index.js",
   "name": "orega",
+  "packageManager": "yarn@4.0.0-rc.31",
   "prettier": {
     "printWidth": 110,
     "proseWrap": "always"
   },
-  "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
     "preinstall": "npx only-allow yarn",
     "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi",
-    "build": "turbo run build",
-    "test": "turbo run test",
-    "lint": "turbo run lint",
-    "dev": "turbo run dev"
+    "test": "turbo run test"
   },
   "stylelint": {
     "extends": "stylelint-config-standard"
   },
+  "version": "1.0.0",
   "workspaces": [
     "apps/*",
     "libs/*"
-  ],
-  "packageManager": "yarn@4.0.0-rc.31"
+  ]
 }

@@ -18,7 +18,7 @@ class Document extends BaseDocument {
           <link rel="icon" href="/favicon.ico" type="image/x-icon" />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=optional"
+            href="https://fonts.googleapis.com/css?family=Roboto|Alexandria:300,400,500&display=optional"
           />
         </Head>
         <body className="no-scrollbar" style={{ width: "100%", margin: "0", padding: "0" }}>

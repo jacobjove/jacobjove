@@ -21,7 +21,7 @@ import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useReducer, useState } from "react";
+import { Fragment, ReactNode, useReducer, useState } from "react";
 import styles from "./index.module.scss";
 import MobileDrawer from "./MobileDrawer";
 import { MenuItems } from "./types";
@@ -49,11 +49,12 @@ const LOCALES: Record<Locale, { flag: string; name: string }> = {
 
 interface NavbarProps {
   siteTitle: string;
+  logo?: ReactNode;
   menuItems: MenuItems;
   session: ReturnType<typeof useSession>["data"] | null;
 }
 
-export default function Navbar({ siteTitle, menuItems, session }: NavbarProps) {
+export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarProps) {
   const router = useRouter();
   const { pathname, asPath, query, locale } = router;
   const { t } = useTranslation("common", { keyPrefix: "Navbar" });
@@ -97,24 +98,26 @@ export default function Navbar({ siteTitle, menuItems, session }: NavbarProps) {
             </IconButton>
             <Box flexBasis={"20%"} flexShrink={1}>
               <Link href="/" passHref>
-                <Typography
-                  variant="h3"
-                  sx={{
-                    "&:hover": {
-                      textDecoration: "none",
-                    },
-                    display: {
-                      // xs: "none",
-                      xs: "block",
-                      sm: "flex",
-                    },
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    textAlign: "center",
-                  }}
-                >
-                  {siteTitle}
-                </Typography>
+                {logo || (
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      "&:hover": {
+                        textDecoration: "none",
+                      },
+                      display: {
+                        // xs: "none",
+                        xs: "block",
+                        sm: "flex",
+                      },
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      textAlign: "center",
+                    }}
+                  >
+                    {siteTitle}
+                  </Typography>
+                )}
               </Link>
             </Box>
             <Box
