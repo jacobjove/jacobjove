@@ -1,17 +1,17 @@
-import Head from "next/head";
-import Layout from "../components/Layout";
-import utilStyles from "../styles/utils.module.css";
-import { GetStaticProps } from "next";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Image from "next/image";
-import { useTranslation } from "next-i18next";
-import { getMessages } from "@utils/i18n";
-import { getPublishedPosts } from "@utils/blog";
 import PostPreview from "@components/blog/PostPreview";
 import { BlogPost } from "@interfaces/Post";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { getPublishedPosts } from "@utils/blog";
+import { getMessages } from "@utils/i18n";
+import { GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
+import Head from "next/head";
+import Image from "next/image";
+import Layout from "../components/Layout";
+import utilStyles from "../styles/utils.module.css";
 
-export const siteTitle = "Jacob's portfolio";
+export const siteTitle = "Jacob's blog";
 
 interface HomePageProps {
   posts: BlogPost[];
