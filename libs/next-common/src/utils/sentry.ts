@@ -5,9 +5,7 @@ type Config = Parameters<typeof init>[0];
 export const generateSentryConfig = (): Config => {
   const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
   const SENTRY_ENVIRONMENT =
-    process.env.SENTRY_ENVIRONMENT ||
-    process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT ||
-    process.env.NODE_ENV;
+    process.env.SENTRY_ENVIRONMENT || process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT || process.env.NODE_ENV;
 
   return {
     autoSessionTracking: false,

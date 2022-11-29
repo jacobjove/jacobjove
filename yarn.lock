@@ -11693,6 +11693,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-transpile-modules@npm:10.0.0":
+  version: 10.0.0
+  resolution: "next-transpile-modules@npm:10.0.0"
+  dependencies:
+    enhanced-resolve: ^5.10.0
+  checksum: 3300fc7081f63b2c9487588db7cbe718f209dfd2111adec22d9c8af0e3c8ade2d95fd45f91e045546d78d98cafc78a49431de9a623360d33831b5e694bf007c9
+  languageName: node
+  linkType: hard
+
 "next@npm:*":
   version: 13.0.0
   resolution: "next@npm:13.0.0"
@@ -12381,6 +12390,7 @@ __metadata:
     next-i18next: ^12.1.0
     next-router-mock: ^0.7.4
     next-seo: ^5.5.0
+    next-transpile-modules: 10.0.0
     nextjs-progressbar: 0.0.16
     nginx-linter: ^0.6.3
     nginxbeautifier: ^1.0.19

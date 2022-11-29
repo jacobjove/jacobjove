@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { SyntheticEvent, useState } from "react";
-import { FormStatus, FormAction } from "@utils/forms";
-import { Dispatch, ReactNode } from "react";
+import { FormAction, FormStatus } from "@utils/forms";
+import { Dispatch, ReactNode, SyntheticEvent, useState } from "react";
 
 type FormDataBase = { [key: string]: string };
 
@@ -15,10 +14,7 @@ interface FormProps<FormData extends FormDataBase> {
   children: ReactNode;
 }
 
-export default function Form<FormData extends FormDataBase>({
-  children,
-  onSubmit,
-}: FormProps<FormData>) {
+export default function Form<FormData extends FormDataBase>({ children, onSubmit }: FormProps<FormData>) {
   //   const { t } = useTranslation(translationsKey);
   const [status, setStatus] = useState<FormStatus>("idle");
   const handleSubmit = async (event: SyntheticEvent) => {

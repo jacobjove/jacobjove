@@ -1,12 +1,12 @@
-import Layout from "../components/Layout";
-import { GetStaticProps } from "next";
+import PostPreview from "@components/blog/PostPreview";
 import PageHeader from "@components/PageHeader";
-import { getMessages } from "@utils/i18n";
 import { BlogPost } from "@interfaces/Post";
 import Typography from "@mui/material/Typography";
-import { useTranslation } from "next-i18next";
 import { getPublishedPosts } from "@utils/blog";
-import PostPreview from "@components/blog/PostPreview";
+import { getMessages } from "@utils/i18n";
+import { GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
+import Layout from "../components/Layout";
 
 interface BlogProps {
   posts: BlogPost[];
@@ -20,13 +20,7 @@ export default function Blog({ posts }: BlogProps) {
       {posts.length ? (
         <div>
           {posts.map(({ publishedAt, title, slug }) => (
-            <PostPreview
-              key={slug}
-              title={title}
-              publishedAt={publishedAt}
-              excerpt={""}
-              slug={slug}
-            />
+            <PostPreview key={slug} title={title} publishedAt={publishedAt} excerpt={""} slug={slug} />
           ))}
         </div>
       ) : (

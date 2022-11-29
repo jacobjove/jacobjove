@@ -144,9 +144,7 @@ const callbacks: CallbacksOptions = {
         return token;
       } else {
         // Attempt to update the token.
-        console.log(
-          `🔑 Attempting to update token because ${Date.now()} > ${token.accessTokenExpiry}`
-        );
+        console.log(`🔑 Attempting to update token because ${Date.now()} > ${token.accessTokenExpiry}`);
         return refreshAccessToken(token);
       }
     }
