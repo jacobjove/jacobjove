@@ -27,7 +27,7 @@
     "mongodb": "^4.8.1",
     "next": "^13.0.3",
     "next-auth": "^4.16.3",
-    "next-i18next": "^12.1.0",
+    "next-i18next": "^13.0.0",
     "next-seo": "^5.5.0",
     "nextjs-progressbar": "0.0.16",
     "nodemailer": "^6.8.0",
