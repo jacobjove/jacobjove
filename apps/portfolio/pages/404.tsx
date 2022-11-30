@@ -1,9 +1,9 @@
 import Layout from "@components/Layout";
 import { getMessages } from "@utils/i18n";
 import { GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
 import NextErrorComponent from "next/error";
 import { FC } from "react";
-import { useTranslation } from "next-i18next";
 
 // Do not record an exception in Sentry for 404. (This is opinionated.)
 
@@ -11,7 +11,7 @@ const NotFound: FC = () => {
   const { t } = useTranslation("404");
   return (
     <Layout>
-      <NextErrorComponent statusCode={404} title={t("message")} />
+      <NextErrorComponent statusCode={404} title={t("message") ?? "Not found"} />
     </Layout>
   );
 };

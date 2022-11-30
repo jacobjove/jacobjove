@@ -1,10 +1,13 @@
 {
   "dependencies": {
     "@sentry/nextjs": "*",
+    "i18next": "*",
     "next": "*",
     "next-auth": "*",
+    "next-i18next": "*",
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-i18next": "*"
   },
   "devDependencies": {
     "@types/react": "*",
