@@ -38,7 +38,7 @@ export default function Layout({ children, fluid = false, maxWidth }: LayoutProp
   );
   return (
     <div style={{ height: "100%", maxHeight: "100%", display: "flex", flexDirection: "column" }}>
-      <Navbar siteTitle={SITE_TITLE} menuItems={MENU_ITEMS} logo={logo} session={session} t={t} />
+      <Navbar siteTitle={SITE_TITLE} menuItems={MENU_ITEMS} logo={logo} session={session} />
       <Container
         component={"main"}
         {...(fluid ? { maxWidth: false } : maxWidth ? { maxWidth } : { maxWidth: "md" })}
