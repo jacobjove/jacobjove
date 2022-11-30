@@ -1,12 +1,11 @@
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import GoogleIcon from "@mui/icons-material/Google";
+import TwitterIcon from "@mui/icons-material/Twitter";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { getProviders, signIn } from "next-auth/react";
 import { FC, ReactElement } from "react";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
-import React from "react";
 
 export const SOCIAL_ICONS = {
   facebook: FacebookIcon,
@@ -24,11 +23,7 @@ interface SocialLoginProps {
   onError: (error: string) => void;
 }
 
-const SocialLogin: FC<SocialLoginProps> = ({
-  providers,
-  callbackUrl,
-  onError,
-}: SocialLoginProps) => {
+const SocialLogin: FC<SocialLoginProps> = ({ providers, callbackUrl, onError }: SocialLoginProps) => {
   if (!providers) throw new Error("No providers are configured.");
   const socialAuthLoginComponents: ReactElement[] = [];
   const handleSocialLogin = async (providerId: string) => {

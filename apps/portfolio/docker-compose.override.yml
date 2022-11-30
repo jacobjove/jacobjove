@@ -1,7 +1,7 @@
 services:
   mongo:
     ports:
-      - "27017:27017"
+      - "${MONGO_PORT}:${MONGO_PORT}"
   nextjs:
     # command: bash -c "export NODE_ENV=development && yarn run dev"
     environment:

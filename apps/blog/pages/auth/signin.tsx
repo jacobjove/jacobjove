@@ -30,9 +30,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
   useEffect(() => {
     if (typeof router.query.provider === "string") {
       const scope =
-        typeof router.query.scope === "string"
-          ? router.query.scope.split(",").join(" ")
-          : undefined;
+        typeof router.query.scope === "string" ? router.query.scope.split(",").join(" ") : undefined;
       signIn(
         router.query.provider,
         typeof callbackUrl === "string" ? { callbackUrl } : {},
@@ -99,11 +97,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
             <Typography variant="h1" textAlign={"center"} my={2}>
               {"Sign in"}
             </Typography>
-            <SocialLogin
-              providers={providers}
-              callbackUrl={callbackUrl ?? "/"}
-              onError={setError}
-            />
+            <SocialLogin providers={providers} callbackUrl={callbackUrl ?? "/"} onError={setError} />
             {providers?.credentials && (
               <Card sx={{ textAlign: "center", my: 2 }}>
                 <CardContent>
@@ -127,13 +121,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
                       fullWidth
                       margin="dense"
                     />
-                    <Button
-                      type="submit"
-                      variant="outlined"
-                      color="primary"
-                      size="large"
-                      sx={{ mt: 2 }}
-                    >
+                    <Button type="submit" variant="outlined" color="primary" size="large" sx={{ mt: 2 }}>
                       {"Sign in"}
                     </Button>
                   </form>

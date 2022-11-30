@@ -18,6 +18,7 @@
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.2",
     "gray-matter": "^4.0.3",
+    "i18next": "22.0.6",
     "i18next-chained-backend": "^3.1.0",
     "i18next-http-backend": "^1.4.4",
     "i18next-localstorage-backend": "^3.1.3",
@@ -29,10 +30,12 @@
     "next-auth": "^4.16.3",
     "next-i18next": "^13.0.0",
     "next-seo": "^5.5.0",
+    "next-transpile-modules": "10.0.0",
     "nextjs-progressbar": "0.0.16",
     "nodemailer": "^6.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "12.0.0",
     "sharp": "^0.31.0"
   },
   "description": "",
@@ -139,23 +142,24 @@
   },
   "main": "index.js",
   "name": "orega",
+  "packageManager": "yarn@4.0.0-rc.31",
   "prettier": {
     "printWidth": 110,
     "proseWrap": "always"
   },
-  "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
     "preinstall": "npx only-allow yarn",
     "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi",
-    "build": "turbo run build",
-    "test": "turbo run test",
-    "lint": "turbo run lint",
-    "dev": "turbo run dev"
+    "test": "turbo run test"
   },
   "stylelint": {
     "extends": "stylelint-config-standard"
   },
+  "version": "1.0.0",
   "workspaces": [
     "apps/*",
     "libs/*"

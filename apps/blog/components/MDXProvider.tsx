@@ -1,18 +1,16 @@
-import { MDXProvider as _MDXProvider } from "@mdx-js/react";
-import DateString from "@components/date";
 import PageHeader from "@components/PageHeader";
-import Typography from "@mui/material/Typography";
-import { ReactNode } from "react";
+import { MDXProvider as _MDXProvider } from "@mdx-js/react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import Typography from "@mui/material/Typography";
+import { FC, ReactNode } from "react";
 
 interface UniversalProps {
-  children?: ReactNode;
+  children: ReactNode;
 }
 
 // https://nextjs.org/docs/advanced-features/using-mdx#custom-elements
-const components = {
-  DateString,
+const components: Record<string, FC<UniversalProps>> = {
   PageHeader,
   h1: (props: UniversalProps) => <Typography variant="h1" {...props} />,
   h2: (props: UniversalProps) => <Typography variant="h2" {...props} />,

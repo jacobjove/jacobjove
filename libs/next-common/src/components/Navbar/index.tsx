@@ -21,10 +21,10 @@ import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useReducer, useState } from "react";
-import { MENU_ITEMS, SITE_TITLE } from "./constants";
+import { Fragment, ReactNode, useReducer, useState } from "react";
 import styles from "./index.module.scss";
 import MobileDrawer from "./MobileDrawer";
+import { MenuItems } from "./types";
 
 const DynamicPageTransitionProgressBar = dynamic(() => import("nextjs-progressbar"), {
   ssr: false,
@@ -47,22 +47,28 @@ const LOCALES: Record<Locale, { flag: string; name: string }> = {
   },
 };
 
-const INITIAL_MENU_STATE = Object.fromEntries(MENU_ITEMS.map(([name]) => [name, false]));
+interface NavbarProps {
+  siteTitle: string;
+  logo?: ReactNode;
+  menuItems: MenuItems;
+  session: ReturnType<typeof useSession>["data"] | null;
+}
 
-const menuStateReducer = (state: Record<string, boolean>, payload: [string, boolean]) => {
-  const [key, value] = payload;
-  return { ...INITIAL_MENU_STATE, [key]: value };
-};
-
-export default function Navbar() {
+export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarProps) {
   const router = useRouter();
   const { pathname, asPath, query, locale } = router;
-  const { data: session } = useSession();
   const { t } = useTranslation("common", { keyPrefix: "Navbar" });
   const [mobileOpen, setMobileOpen] = useState(false);
   const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
   const [dropdownAnchorEl, setDropdownAnchorEl] = useState<null | HTMLElement>(null);
-  const [menuState, dispatch] = useReducer(menuStateReducer, INITIAL_MENU_STATE);
+
+  const initialMenuState = Object.fromEntries(menuItems.map(([name]) => [name, false]));
+  const menuStateReducer = (_state: Record<string, boolean>, payload: [string, boolean]) => {
+    const [key, value] = payload;
+    return { ...initialMenuState, [key]: value };
+  };
+  const [menuState, dispatch] = useReducer(menuStateReducer, initialMenuState);
+
   return (
     <>
       <AppBar className={styles.root} component={"nav"} position="static">
@@ -92,24 +98,26 @@ export default function Navbar() {
             </IconButton>
             <Box flexBasis={"20%"} flexShrink={1}>
               <Link href="/" passHref>
-                <Typography
-                  variant="h3"
-                  sx={{
-                    "&:hover": {
-                      textDecoration: "none",
-                    },
-                    display: {
-                      // xs: "none",
-                      xs: "block",
-                      sm: "flex",
-                    },
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    textAlign: "center",
-                  }}
-                >
-                  {SITE_TITLE}
-                </Typography>
+                {logo || (
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      "&:hover": {
+                        textDecoration: "none",
+                      },
+                      display: {
+                        // xs: "none",
+                        xs: "block",
+                        sm: "flex",
+                      },
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      textAlign: "center",
+                    }}
+                  >
+                    {siteTitle}
+                  </Typography>
+                )}
               </Link>
             </Box>
             <Box
@@ -121,7 +129,7 @@ export default function Navbar() {
                 columnGap: 2,
               }}
             >
-              {MENU_ITEMS.map(([name, hrefOrSubitems]) => (
+              {menuItems.map(([name, hrefOrSubitems]) => (
                 <Fragment key={name}>
                   {typeof hrefOrSubitems === "string" ? (
                     <Link href={hrefOrSubitems} onClick={() => dispatch([name, !menuState[name]])}>
@@ -246,7 +254,7 @@ export default function Navbar() {
         </Toolbar>
         <DynamicPageTransitionProgressBar />
       </AppBar>
-      <MobileDrawer open={mobileOpen} setOpen={setMobileOpen} />
+      <MobileDrawer open={mobileOpen} setOpen={setMobileOpen} siteTitle={siteTitle} menuItems={menuItems} />
     </>
   );
 }

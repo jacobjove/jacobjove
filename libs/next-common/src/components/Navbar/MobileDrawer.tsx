@@ -8,17 +8,19 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { Fragment } from "react";
-import { MENU_ITEMS, SITE_TITLE } from "./constants";
 import styles from "./MobileDrawer.module.scss";
+import { MenuItems } from "./types";
 
 const DRAWER_WIDTH = 160;
 
 interface MobileDrawerProps {
+  siteTitle: string;
+  menuItems: MenuItems;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-export default function MobileDrawer({ open, setOpen }: MobileDrawerProps) {
+export default function MobileDrawer({ open, setOpen, siteTitle, menuItems }: MobileDrawerProps) {
   const handleClose = () => setOpen(false);
   return (
     <Box component="nav">
@@ -36,11 +38,11 @@ export default function MobileDrawer({ open, setOpen }: MobileDrawerProps) {
       >
         <Box sx={{ textAlign: "center" }}>
           <Typography variant="h6" sx={{ my: 2 }}>
-            {SITE_TITLE}
+            {siteTitle}
           </Typography>
           <Divider />
           <List sx={{ "& .MuiListItemButton-root": { textAlign: "center" } }}>
-            {MENU_ITEMS.map(([name, hrefOrSubitems]) => (
+            {menuItems.map(([name, hrefOrSubitems]) => (
               <Fragment key={name}>
                 {typeof hrefOrSubitems === "string" ? (
                   <ListItem disablePadding className={styles.item}>
