@@ -5,6 +5,10 @@
   "scripts": {
     "build": "next build",
     "dev": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next dev",
+    "docker:build": "docker compose build",
+    "docker:start": "yarn kill; docker compose up -d && docker compose logs -f",
+    "format": "prettier -w . && eslint --fix .",
+    "kill": "npx kill-port $(grep '^PORT=' .env | cut -d '=' -f2); docker compose down",
     "lint": "next lint",
     "start": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next start",
     "test": "jest --passWithNoTests"

@@ -1,7 +1,7 @@
 services:
   mongo:
     ports:
-      - "27017:27017"
+      - "${MONGO_PORT}:${MONGO_PORT}"
   nextjs:
     # command: bash -c "export NODE_ENV=development && yarn run dev"
     environment:
@@ -9,10 +9,10 @@ services:
       NEXTAUTH_URL: "http://localhost:${PORT}"
       NODE_ENV: development
       REACT_EDITOR: code
-    user: root # avoid permissions issues with writing in build dir
-    volumes:
-      - .:/base/apps/blog
-      # Prevent the container's node_modules and .next folders from being overwritten
-      # by the initial mapping of the local directory to /app.
-      - ./node_modules:/base/apps/blog/node_modules
-      - ./.next:/base/apps/blog/.next
+    # user: root # avoid permissions issues with writing in build dir
+    # volumes:
+    #   - .:/base/apps/blog
+    #   # Prevent the container's node_modules and .next folders from being overwritten
+    #   # by the initial mapping of the local directory to /app.
+    #   - ./node_modules:/base/apps/blog/node_modules
+    #   - ./.next:/base/apps/blog/.next
