@@ -8452,21 +8452,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-http-backend@npm:*":
+"i18next-http-backend@npm:*, i18next-http-backend@npm:^2.0.2":
   version: 2.0.2
   resolution: "i18next-http-backend@npm:2.0.2"
   dependencies:
     cross-fetch: "npm:3.1.5"
   checksum: 803463b533b2c20b907e5854dfea87ee013bcc952b7f8b56e33e206d38b22059ca31623873bfccb70fcd289e550776e037dfe55b3a45eb50d69a347e95419c20
-  languageName: node
-  linkType: hard
-
-"i18next-http-backend@npm:^1.4.4":
-  version: 1.4.5
-  resolution: "i18next-http-backend@npm:1.4.5"
-  dependencies:
-    cross-fetch: "npm:3.1.5"
-  checksum: 471fe50d7c486d8627f1ff49d3a282f196e88e8dc6db5ea870a3ac498da634212e5ddf2247cc017a2f2b7917731ea582c7ec6af70f274bd1a66315b6f4a63cef
   languageName: node
   linkType: hard
 
@@ -12070,7 +12061,7 @@ __metadata:
     hygen: "npm:^6.2.8"
     i18next: "npm:22.0.6"
     i18next-chained-backend: "npm:^3.1.0"
-    i18next-http-backend: "npm:^1.4.4"
+    i18next-http-backend: "npm:^2.0.2"
     i18next-localstorage-backend: "npm:^3.1.3"
     identity-obj-proxy: "npm:^3.0.0"
     inflection: "npm:^1.13.2"
