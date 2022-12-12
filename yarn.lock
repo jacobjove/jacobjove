@@ -2346,7 +2346,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/system@npm:*, @mui/system@npm:^5.10.16, @mui/system@npm:^5.10.8":
+"@mui/system@npm:*, @mui/system@npm:^5.10.16":
   version: 5.10.16
   resolution: "@mui/system@npm:5.10.16"
   dependencies:
@@ -2371,6 +2371,34 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 9c0988ad0e5de6418c3598e2c1a03f8cd63e3bbc3be9da3c202b0bcddc21fd8b91fcfa93e8d33222fabc3a30bd105323a4a47a21b64680cfb79c0178efbbd5ef
+  languageName: node
+  linkType: hard
+
+"@mui/system@npm:^5.10.17":
+  version: 5.10.17
+  resolution: "@mui/system@npm:5.10.17"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.1"
+    "@mui/private-theming": "npm:^5.10.16"
+    "@mui/styled-engine": "npm:^5.10.16"
+    "@mui/types": "npm:^7.2.2"
+    "@mui/utils": "npm:^5.10.16"
+    clsx: "npm:^1.2.1"
+    csstype: "npm:^3.1.1"
+    prop-types: "npm:^15.8.1"
+  peerDependencies:
+    "@emotion/react": ^11.5.0
+    "@emotion/styled": ^11.3.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/react":
+      optional: true
+    "@emotion/styled":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: dbf2e9dd586199de31a794421fd8760fe2b7f1f8ec0f9fd78e77458c2d5517439350cb440f86eb96a4ca3ef5778bea16ebc95a246cb7aac4bbc2c5ade3944277
   languageName: node
   linkType: hard
 
@@ -11967,7 +11995,7 @@ __metadata:
     "@mdx-js/react": "npm:^2.0.0-rc.2"
     "@mui/icons-material": "npm:^5.10.6"
     "@mui/material": "npm:^5.10.8"
-    "@mui/system": "npm:^5.10.8"
+    "@mui/system": "npm:^5.10.17"
     "@next/mdx": "npm:^12.3.1"
     "@sentry/nextjs": "npm:^7.19.0"
     "@simbathesailor/use-what-changed": "npm:^2.0.0"
