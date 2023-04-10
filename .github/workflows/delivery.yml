@@ -120,8 +120,7 @@ jobs:
           tags:
             ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
       - name: Deploy to server
-        # uses: iacobfred/deploy-docker-ssh@v0.4.8
-        uses: iacobfred/gha/packages/deploy-docker-ssh@v1
+        uses: iacobfred/deploy-docker-ssh@v0.4.9
         with:
           host: ${{ steps.dotenv.outputs.domain }}
           user: jacob
