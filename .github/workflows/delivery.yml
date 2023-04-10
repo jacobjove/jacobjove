@@ -16,6 +16,7 @@ on:
       - "**.txt"
       - package*.json
       - yarn.lock
+  workflow_dispatch:
 
 env:
   ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}

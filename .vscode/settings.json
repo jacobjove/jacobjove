@@ -32,6 +32,8 @@
     "dist": true
   },
   "gitlens.currentLine.scrollable": false,
+  "html.autoClosingTags": true,
+  "javascript.autoClosingTags": true,
   "php.suggest.basic": false,
   "php.validate.enable": false,
   "search.exclude": {
@@ -41,6 +43,7 @@
   },
   "terminal.integrated.cursorWidth": 4,
   "terminal.integrated.cursorStyle": "line",
+  "typescript.autoClosingTags": true,
   "workbench.tree.indent": 16,
   "workbench.iconTheme": "material-icon-theme",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
