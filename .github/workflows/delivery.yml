@@ -66,7 +66,7 @@ jobs:
       - name: Check out main branch
         uses: actions/checkout@v3
       - id: generate-dotenv-file
-        uses: iacobfred/generate-dotenv@v0.3.1
+        uses: iacobfred/gha/packages/generate-dotenv@v1
         with:
           output-path: apps/${{ matrix.app }}/.env
           template-paths: |
@@ -120,7 +120,8 @@ jobs:
           tags:
             ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
       - name: Deploy to server
-        uses: iacobfred/deploy-docker-ssh@v0.4.8
+        # uses: iacobfred/deploy-docker-ssh@v0.4.8
+        uses: iacobfred/gha/packages/deploy-docker-ssh@v1
         with:
           host: ${{ steps.dotenv.outputs.domain }}
           user: jacob
