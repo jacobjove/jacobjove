@@ -28,7 +28,7 @@
     "**/*.pyc": true,
     "**/__pycache__": true,
     "**/.next": false,
-    "**/node_modules": false,
+    "**/node_modules": true,
     "dist": true
   },
   "gitlens.currentLine.scrollable": false,
