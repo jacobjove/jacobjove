@@ -11718,13 +11718,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-router-mock@npm:^0.7.4":
-  version: 0.7.4
-  resolution: "next-router-mock@npm:0.7.4"
+"next-router-mock@npm:^0.9.3":
+  version: 0.9.3
+  resolution: "next-router-mock@npm:0.9.3"
   peerDependencies:
     next: ">=10.0.0"
     react: ">=17.0.0"
-  checksum: 2c18e159fd428b14eb3f56315b5cb3502d69076161b34d4d513659a8d4fad65a2ee2aaf81317100f37017e904b89aa21e1c5945796900cf0a06a9c8df4c93551
+  checksum: 2f4960a6d21ed953566cab11bee117cda8915f36caa84de2a5d7d0ce312ed89626aa7d9569bf2b33169399e18543ce9c5cc780839091b559d8088621db02f562
   languageName: node
   linkType: hard
 
@@ -12365,7 +12365,7 @@ __metadata:
     next: "npm:^13.0.3"
     next-auth: "npm:^4.16.3"
     next-i18next: "npm:^13.0.0"
-    next-router-mock: "npm:^0.7.4"
+    next-router-mock: "npm:^0.9.3"
     next-seo: "npm:^5.5.0"
     next-transpile-modules: "npm:10.0.0"
     nextjs-progressbar: "npm:0.0.16"
