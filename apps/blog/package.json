@@ -29,7 +29,7 @@
     "@sentry/nextjs": "*",
     "cookies-next": "*",
     "date-fns": "*",
-    "glob": "^8.0.3",
+    "glob": "^10.2.4",
     "gray-matter": "*",
     "i18next": "*",
     "i18next-chained-backend": "*",
