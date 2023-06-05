@@ -1288,6 +1288,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.20.6":
+  version: 7.22.3
+  resolution: "@babel/runtime@npm:7.22.3"
+  dependencies:
+    regenerator-runtime: "npm:^0.13.11"
+  checksum: f42e4e8ef50e6b8676ab996d224ed8ed7e6927a43c131cb55092246a368ccfd9f7909bbe51b1d01ad330ea18920865ef0a46cbd89b6d1a3f1e5f26c1089c4196
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.21.0":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
@@ -10731,7 +10740,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"material-ui-popup-state@npm:*, material-ui-popup-state@npm:^4.1.0":
+"material-ui-popup-state@npm:*":
   version: 4.1.0
   resolution: "material-ui-popup-state@npm:4.1.0"
   dependencies:
@@ -10742,6 +10751,20 @@ __metadata:
   peerDependencies:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: 8b066505f8fcf081004117f0a8ae923e0629df2240abd62e5608598cb84f1c45885bd25557ce0e992d310544b72703047649b692f85ebcccfb9d054ee015148f
+  languageName: node
+  linkType: hard
+
+"material-ui-popup-state@npm:^5.0.9":
+  version: 5.0.9
+  resolution: "material-ui-popup-state@npm:5.0.9"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.6"
+    "@mui/material": "npm:^5.0.0"
+    classnames: "npm:^2.2.6"
+    prop-types: "npm:^15.7.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: c85361ae7706f609aedfdd814a2d73f78b6a0e51736e6759ce8b738325f17656a65088f71d12a171515ec5eb20cb4e9537afba214e04c00469eaeb86d5ee320f
   languageName: node
   linkType: hard
 
@@ -12360,7 +12383,7 @@ __metadata:
     json5: "npm:^2.2.1"
     lint-staged: "npm:^13.0.3"
     lodash: "npm:^4.17.21"
-    material-ui-popup-state: "npm:^4.1.0"
+    material-ui-popup-state: "npm:^5.0.9"
     mongodb: "npm:^4.8.1"
     next: "npm:^13.0.3"
     next-auth: "npm:^4.16.3"
