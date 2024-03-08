@@ -46,6 +46,13 @@ export default function Projects() {
         <Typography textAlign={"center"} flexBasis={"100%"}>
           {t("lead")}
         </Typography>
+        <p>
+          {"See also my "}
+          <a href="https://blog.orega.org/" target={"_blank"} rel="noreferrer">
+            {"blog"}
+          </a>
+          {"."}
+        </p>
         <div>
           {PROJECTS.map(([name, url, sourceUrl, description, technologies]) => (
             <Box key={name} my={4}>

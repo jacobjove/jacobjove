@@ -2,7 +2,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
-const copyrightOwner = "Jacob T. Fredericksen";
+const copyrightOwner = "Jacob T. Jove";
 
 interface FooterProps {
   height: string;

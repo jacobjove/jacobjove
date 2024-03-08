@@ -1,16 +1,16 @@
-import Layout from "../components/Layout";
-import Card from "@mui/material/Card";
-import Image from "next/image";
-import { GetStaticProps } from "next";
+import ContactForm from "@components/contact/ContactForm";
+import PageHeader from "@components/PageHeader";
 import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import PageHeader from "@components/PageHeader";
-import { useTranslation } from "next-i18next";
 import { getMessages } from "@utils/i18n";
-import ContactForm from "@components/contact/ContactForm";
+import { GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
+import Image from "next/image";
+import Layout from "../components/Layout";
 
-const NAME = "Jacob T. Fredericksen";
+const NAME = "Jacob T. Jove";
 const EMAIL = "jacob.t.fredericksen@gmail.com";
 
 const CONTACT_FORM_ENABLED = true;

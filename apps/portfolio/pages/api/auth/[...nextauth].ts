@@ -157,7 +157,7 @@ const callbacks: CallbacksOptions = {
       An incoming session might looks like this:
       {
         user: {
-          name: 'Jacob Fredericksen',
+          name: 'Jacob Jove',
           email: 'jacob.t.fredericksen@gmail.com',
           image: 'https://lh3.googleusercontent.com/a-/AOh14Ggi_RwygCCU2-fH3tOLF8o8l9rlTJALV_TqnJXP=s96-c'
         },
@@ -166,7 +166,7 @@ const callbacks: CallbacksOptions = {
 
       And the token might look like this:
       {
-        name: 'Jacob Fredericksen',
+        name: 'Jacob Jove',
         email: 'jacob.t.fredericksen@gmail.com',
         picture: 'https://lh3.googleusercontent.com/a-/AOh14Ggi_RwygCCU2-fH3tOLF8o8l9rlTJALV_TqnJXP=s96-c',
         sub: '103939397459532242325',
