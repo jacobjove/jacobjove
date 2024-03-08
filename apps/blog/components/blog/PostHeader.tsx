@@ -9,7 +9,7 @@ type Props = {
   updatedAt?: string;
 };
 
-const AUTHOR_NAME = "Jacob Fredericksen";
+const AUTHOR_NAME = "Jacob Jove";
 const IMAGE = "/images/profile.jpg";
 
 const PostHeader = ({ title, publishedAt }: Props) => {

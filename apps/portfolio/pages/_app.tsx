@@ -9,6 +9,7 @@ import { appWithTranslation as withI18n, SSRConfig } from "next-i18next";
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { useEffect } from "react";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 import nextI18NextConfig from "../next-i18next.config.js";
 import SEO from "../next-seo.config";
@@ -86,6 +87,19 @@ function App({
   emotionCache = clientSideEmotionCache,
   pageProps: { session, ...pageProps },
 }: CustomAppProps) {
+  useEffect(() => {
+    const script = document.createElement("script");
+
+    script.src = "https://platform.linkedin.com/badges/js/profile.js";
+    script.async = true;
+    script.defer = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   return (
     <SessionProvider session={session}>
       <CacheProvider value={emotionCache}>
