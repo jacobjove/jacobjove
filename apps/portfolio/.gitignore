@@ -1,2 +1,11 @@
 # Generated
 resume*.pdf
+
+# Sentry
+.sentryclirc
+
+# Sentry
+next.config.original.js
+
+# Sentry
+next.config.wizardcopy.js
