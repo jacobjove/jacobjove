@@ -3,19 +3,21 @@
 name: Delivery
 on:
   push:
-    branches: [main]
-    paths-ignore:
-      - .gitignore
-      - .github/**
-      - "!.github/workflows/delivery.yml"
-      - .husky/**
-      - .idea/**
-      - .vscode/**
-      - "**.md"
-      - "**.rst"
-      - "**.txt"
-      - package*.json
-      - yarn.lock
+    tags:
+      - douzo
+    # branches: [main]
+    # paths-ignore:
+    #   - .gitignore
+    #   - .github/**
+    #   - "!.github/workflows/delivery.yml"
+    #   - .husky/**
+    #   - .idea/**
+    #   - .vscode/**
+    #   - "**.md"
+    #   - "**.rst"
+    #   - "**.txt"
+    #   - package*.json
+    #   - yarn.lock
   workflow_dispatch:
 
 env:
@@ -38,8 +40,36 @@ env:
   SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
 jobs:
+  check:
+    name: Check conditions
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.check_branch.outputs.branch }}
+      tag: ${{ steps.check_tag.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get branch
+        id: check_branch
+        run: |
+          raw=$(git branch -r --contains ${{ github.ref }})
+          branch=${raw##*/}
+          echo "branch=${branch}" >> "$GITHUB_OUTPUT"
+          echo "Branch: ${branch}"
+      - name: Get tag
+        id: check_tag
+        run: |
+          tag=${GITHUB_REF#refs/*/}
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "Tag: ${tag}"
+
   changed-files:
     name: Get changed files
+    needs: [check]
+    if: ${{ needs.check.outputs.branch == 'main' }}
     outputs:
       added-files: ${{ steps.changed-files.outputs.added_files }}
       deleted-files: ${{ steps.changed-files.outputs.deleted_files }}
@@ -53,6 +83,34 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v34.5.0
+
+  create-dotenv:
+    name: Generate .env file
+    needs: [check]
+    if: ${{ needs.check.outputs.branch == 'main' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [blog, portfolio]
+    environment: ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out main branch
+      uses: actions/checkout@v4
+    - name: Generate dotenv file
+      id: generate-dotenv
+      # https://github.com/iacobfred/generate-dotenv
+      uses: iacobfred/generate-dotenv@v0.3.5
+      with:
+        template-paths: |
+          apps/${{ matrix.app }}/.config/_.env
+          apps/${{ matrix.app }}/.config/_.env.production
+        output-path: apps/${{ matrix.app }}/.env
+        cache: true
+        upload: true
+        key: dotenv-${{ matrix.app }}-${{ github.sha }}-${{ github.run_id }}
+        allow-missing-vars: true
+
   deploy:
     environment: ${{ matrix.app }}
     name: Deploy
@@ -65,13 +123,10 @@ jobs:
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
-      - id: generate-dotenv-file
-        uses: iacobfred/generate-dotenv@v0.3.1
+      - name: Restore dotenv
+        uses: actions/download-artifact@v4
         with:
-          output-path: apps/${{ matrix.app }}/.env
-          template-paths: |
-            apps/${{ matrix.app }}/.config/_.env
-            apps/${{ matrix.app }}/.config/_.env.production
+          name: dotenv-${{ matrix.app }}-${{ github.sha }}-${{ github.run_id }}
       - name: Read dotenv file
         id: dotenv
         uses: falti/dotenv-action@v1.0.2
