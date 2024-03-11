@@ -5299,6 +5299,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bson@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "bson@npm:6.4.0"
+  checksum: 7415bb1dc08cfb8da0efc96c986b56651ca3c773fecb415715e0bd38384f7feaec6d18b85bbe9a6a09f19f969e7ff074f629f296504aaf8297c82c1e7807d865
+  languageName: node
+  linkType: hard
+
 "buffer-crc32@npm:~0.2.3":
   version: 0.2.13
   resolution: "buffer-crc32@npm:0.2.13"
@@ -12526,7 +12533,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^5.38.1"
     "@typescript-eslint/parser": "npm:^5.42.0"
     babel-jest: "npm:^29.0.3"
-    bson: "npm:^4.7.0"
+    bson: "npm:^6.4.0"
     concurrently: "npm:^7.2.2"
     cookies-next: "npm:^2.1.1"
     cypress: "npm:^9.2.1"
