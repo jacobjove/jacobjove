@@ -44,24 +44,6 @@ export default function Home() {
         <Box mt={2}>
           <Typography>{t("greeting")}</Typography>
         </Box>
-        <Box>
-          <div
-            className="badge-base LI-profile-badge"
-            data-locale="en_US"
-            data-size="medium"
-            data-theme="dark"
-            data-type="VERTICAL"
-            data-vanity="jacobjove"
-            data-version="v1"
-          >
-            <a
-              className="badge-base__link LI-simple-link"
-              href="https://www.linkedin.com/in/jacobjove?trk=profile-badge"
-            >
-              Jacob Jove
-            </a>
-          </div>
-        </Box>
         {LINK_BLOG && (
           <Box>
             <Trans t={t} i18nKey="blogIntro" components={{ blogLink: <a href={BLOG_URL} /> }} />

@@ -11,7 +11,7 @@ import Layout from "../components/Layout";
 const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobfredericksen/";
 
 const GOOGLE_DOC_URL =
-  "https://docs.google.com/document/d/1bn3vr7WF3hMHF0z_UbigauILX0SUX1-Jm70f3nZ9VyE/edit?usp=sharing";
+  "https://docs.google.com/document/d/1hP2AVmetnqVviUFYHziqh4z4i-Kq-0CL1Pqyv-pfwrw/edit?usp=sharing";
 const GOOGLE_DOC_PDF_DL_URL = GOOGLE_DOC_URL.replace("edit?usp=sharing", "export?format=pdf");
 const RESUME_DIR = `${process.cwd()}/public`;
 const RESUME_FILENAME_WITHOUT_EXTENSION = "resume";
@@ -26,12 +26,24 @@ export default function CV() {
     <Layout>
       <PageHeader>{t("title")}</PageHeader>
       <Box textAlign={"center"} my={2}>
-        <Typography>{t("linkedInProfileIntro")}</Typography>
-        <Typography>
-          <a href={LINKEDIN_PROFILE_URL} target="_blank" rel="noreferrer">
-            {LINKEDIN_PROFILE_URL}
+        <div
+          className="badge-base LI-profile-badge"
+          data-locale="en_US"
+          data-size="medium"
+          data-theme="dark"
+          data-type="VERTICAL"
+          data-vanity="jacobjove"
+          data-version="v1"
+        >
+          <a
+            className="badge-base__link LI-simple-link"
+            href="https://www.linkedin.com/in/jacobjove?trk=profile-badge"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Typography>{LINKEDIN_PROFILE_URL}</Typography>
           </a>
-        </Typography>
+        </div>
       </Box>
       <Box
         sx={{
