@@ -1,6 +1,6 @@
 import { BlogPost } from "@interfaces/Post";
 import { readFileSync } from "fs";
-import glob from "glob";
+import { globSync } from "glob";
 import matter from "gray-matter";
 import { join } from "path";
 
@@ -8,7 +8,7 @@ const POSTS_DIR = `${process.cwd()}/posts`;
 const POSTS_GLOB_PATTERN = `${POSTS_DIR}/**/*.mdx`;
 
 export const getAllPostSlugs = async () => {
-  return glob.sync(POSTS_GLOB_PATTERN).map((filename) => {
+  return globSync(POSTS_GLOB_PATTERN).map((filename) => {
     return filename
       .split("/")
       .slice(-1)[0]
