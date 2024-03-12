@@ -22,3 +22,15 @@ node_modules
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# Generated
+resume*.pdf
+
+# Sentry
+.sentryclirc
+
+# Sentry
+next.config.original.js
+
+# Sentry
+next.config.wizardcopy.js

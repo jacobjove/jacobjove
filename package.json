@@ -11,12 +11,14 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
     "@mui/system": "^5.11.11",
+    "@next-auth/mongodb-adapter": "^1.1.0",
     "@next/mdx": "^12.3.1",
     "@sentry/nextjs": "^7.87.0",
     "bson": "^4.7.0",
     "cookies-next": "^2.1.1",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.2",
+    "glob": "^10.3.10",
     "gray-matter": "^4.0.3",
     "i18next": "22.0.6",
     "i18next-chained-backend": "^3.1.0",
@@ -29,14 +31,20 @@
     "next": "^13.0.3",
     "next-auth": "^4.16.3",
     "next-i18next": "^13.0.0",
+    "next-mdx-remote": "^4.1.0",
     "next-seo": "^5.5.0",
     "next-transpile-modules": "10.0.0",
     "nextjs-progressbar": "0.0.16",
+    "node-downloader-helper": "^2.1.4",
     "nodemailer": "^6.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "12.0.0",
-    "sharp": "^0.31.0"
+    "remark": "^14.0.1",
+    "remark-frontmatter": "^4.0.1",
+    "remark-html": "^15.0.0",
+    "sharp": "^0.31.0",
+    "typeface-open-sans": "^1.1.13"
   },
   "description": "",
   "devDependencies": {
@@ -105,9 +113,8 @@
     "prettier-plugin-organize-imports": "^3.1.1",
     "react-test-renderer": "^18.2.0",
     "sass": "^1.55.0",
-    "stylelint": "^14.13.0",
-    "stylelint-config-standard": "^33.0.0",
-    "stylelint-config-standard-scss": "^7.0.1",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard": "^36.0.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^4.0.0",
@@ -125,10 +132,10 @@
   "license": "ISC",
   "lint-staged": {
     "*.conf": [
-      "nginxbeautifier -s 4",
+      "yarn nginxbeautifier -s 4",
       "nginx-linter --include"
     ],
-    "*.{css,scss}": [
+    "*.{css}": [
       "prettier --write",
       "stylelint --fix"
     ],
@@ -149,19 +156,24 @@
   },
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
+    "build": "next build",
+    "dev": "docker compose up -d mongo && PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next dev",
+    "docker:build": "docker compose build",
+    "docker:start": "yarn kill; docker compose up -d && docker compose logs -f",
+    "format": "prettier -w . && eslint --fix .",
+    "kill": "npx kill-port $(grep '^PORT=' .env | cut -d '=' -f2); docker compose down",
+    "lint": "next lint",
+    "start": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next start",
+    "test": "jest --passWithNoTests",
+    "//build": "turbo run build",
+    "//dev": "turbo run dev",
+    "//lint": "turbo run lint",
     "preinstall": "npx only-allow yarn",
     "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi",
-    "test": "turbo run test"
+    "//test": "turbo run test"
   },
   "stylelint": {
     "extends": "stylelint-config-standard"
   },
-  "version": "1.0.0",
-  "workspaces": [
-    "apps/*",
-    "libs/*"
-  ]
+  "version": "1.0.0"
 }

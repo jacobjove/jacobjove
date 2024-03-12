@@ -70,14 +70,8 @@ jobs:
 
   generate-dotenv:
     name: Generate .env file
-    environment: ${{ matrix.app }}
     needs: [changed-files]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - app: portfolio
-          # - app: blog
     outputs:
       cache-key: ${{ steps.generate-dotenv.outputs.cache-key }}
     steps:
@@ -87,13 +81,13 @@ jobs:
         name: Generate .env file
         uses: iacobfred/generate-dotenv@v0.3.5
         with:
-          output-path: apps/${{ matrix.app }}/.env
+          output-path: .env
           template-paths: |
-            apps/${{ matrix.app }}/.config/_.env
-            apps/${{ matrix.app }}/.config/_.env.production
+            .config/_.env
+            .config/_.env.production
           cache: true
           upload: true
-          key: dotenv-${{ matrix.app }}-${{ github.sha }}-${{ github.run_id }}
+          key: dotenv-${{ github.sha }}-${{ github.run_id }}
           allow-missing-vars: true
         env:
           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
@@ -104,21 +98,15 @@ jobs:
           MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
           MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
           NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
-          PORT: ${{ matrix.port }}
+          PORT: ${{ vars.PORT }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
   test:
     name: Build and test
-    environment: ${{ matrix.app }}
     needs: [changed-files, generate-dotenv]
     timeout-minutes: 15
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - app: portfolio
-          # - app: blog
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -140,30 +128,22 @@ jobs:
         name: Generate .env file
         uses: iacobfred/generate-dotenv@v0.3.1
         with:
-          output-path: apps/${{ matrix.app }}/.env
+          output-path: .env
           template-paths: |
-            apps/${{ matrix.app }}/.config/_.env
-            apps/${{ matrix.app }}/.config/_.env.production
+            .config/_.env
+            .config/_.env.production
       - name: Build
-        run: yarn workspace ${{ matrix.app }} build
+        run: yarn build
         env:
           SENTRY_DRY_RUN: "true"
       - name: Test
-        run: yarn workspace ${{ matrix.app }} test
+        run: yarn test
 
   docker:
     name: Build and push image
-    environment: ${{ matrix.app }}
     if: ${{ github.actor != 'dependabot[bot]' }}
     needs: [changed-files, generate-dotenv]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - app: portfolio
-            port: 3000
-          # - app: blog
-          #   port: 3003
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
@@ -176,10 +156,10 @@ jobs:
         name: Generate .env file
         uses: iacobfred/generate-dotenv@v0.3.1
         with:
-          output-path: apps/${{ matrix.app }}/.env
+          output-path: .env
           template-paths: |
-            apps/${{ matrix.app }}/.config/_.env
-            apps/${{ matrix.app }}/.config/_.env.production
+            .config/_.env
+            .config/_.env.production
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
@@ -195,33 +175,29 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           build-args: |
-            APP_NAME=${{ matrix.app }}
-            PORT=${{ matrix.port }}
+            PORT=${{ vars.PORT }}
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=gha
-          cache-to: type=gha,scope=${{ matrix.app }},mode=max
+          cache-to: type=gha,scope=jacobjove,mode=max
           context: .
           file: Dockerfile
           push: true
-          tags:
-            ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }},ghcr.io/iacobfred/${{ matrix.app }}:latest
+          tags: ghcr.io/iacobfred/jacobjove:${{ github.sha }},ghcr.io/iacobfred/jacobjove:latest
       - name: Build image without cache
         if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
         uses: docker/build-push-action@v5
         with:
           build-args: |
-            APP_NAME=${{ matrix.app }}
-            PORT=${{ matrix.port }}
+            PORT=${{ vars.PORT }}
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: Dockerfile
           push: true
           cache-from: type=gha
-          cache-to: type=gha,scope=${{ matrix.app }},mode=max
-          tags: ghcr.io/iacobfred/${{ matrix.app }}:${{ github.sha }}
+          cache-to: type=gha,scope=jacobjove,mode=max
+          tags: ghcr.io/iacobfred/jacobjove:${{ github.sha }}
       - name: Run containers
         run: |
-          cd apps/${{ matrix.app }}
           docker compose pull;
           docker compose up -d --no-build --wait || {
             docker compose logs nextjs;

@@ -1,9 +1,9 @@
-import Layout from "../components/Layout";
-import { GetStaticProps } from "next";
-import Typography from "@mui/material/Typography";
 import PageHeader from "@components/PageHeader";
-import { useTranslation } from "next-i18next";
+import Typography from "@mui/material/Typography";
 import { getMessages } from "@utils/i18n";
+import { GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
+import Layout from "../components/Layout";
 
 export default function About() {
   const { t } = useTranslation("about");

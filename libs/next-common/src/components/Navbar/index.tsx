@@ -22,7 +22,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, ReactNode, useReducer, useState } from "react";
-import styles from "./index.module.scss";
+import styles from "./index.module.css";
 import MobileDrawer from "./MobileDrawer";
 import { MenuItems } from "./types";
 

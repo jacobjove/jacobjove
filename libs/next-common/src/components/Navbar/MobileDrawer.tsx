@@ -8,7 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { Fragment } from "react";
-import styles from "./MobileDrawer.module.scss";
+import styles from "./MobileDrawer.module.css";
 import { MenuItems } from "./types";
 
 const DRAWER_WIDTH = 160;

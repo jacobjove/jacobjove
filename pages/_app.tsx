@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import "typeface-open-sans"; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 import nextI18NextConfig from "../next-i18next.config.js";
 import SEO from "../next-seo.config";
-import "../styles/global.scss";
+import "../styles/global.css";
 
 // Create the client-side emotion cache to be used for the user's whole browser session.
 const clientSideEmotionCache = createEmotionCache();

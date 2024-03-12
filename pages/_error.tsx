@@ -11,11 +11,11 @@
  *  - https://reactjs.org/docs/error-boundaries.html
  */
 
-import * as Sentry from "@sentry/nextjs";
-import NextErrorComponent, { ErrorProps } from "next/error";
 import Layout from "@components/Layout";
+import * as Sentry from "@sentry/nextjs";
 import { NextPage } from "next";
 import { useTranslation } from "next-i18next";
+import NextErrorComponent, { ErrorProps } from "next/error";
 
 const CustomErrorComponent: NextPage<ErrorProps> = (props) => {
   const { i18n } = useTranslation();
