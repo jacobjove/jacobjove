@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { getMessages } from "@utils/i18n";
 import { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 
 const PROJECTS: [string, string, string, string, string[]][] = [
   // [
@@ -48,9 +49,9 @@ export default function Projects() {
         </Typography>
         <p>
           {"See also my "}
-          <a href="/blog/" target={"_blank"} rel="noreferrer">
+          <Link href="/blog/" target={"_blank"} rel="noreferrer">
             {"blog"}
-          </a>
+          </Link>
           {"."}
         </p>
         <div>
