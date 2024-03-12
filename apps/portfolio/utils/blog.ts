@@ -1,8 +1,8 @@
-import glob from "glob";
 import { BlogPost } from "@interfaces/Post";
+import { readFileSync } from "fs";
+import glob from "glob";
 import matter from "gray-matter";
 import { join } from "path";
-import { readFileSync } from "fs";
 
 const POSTS_DIR = `${process.cwd()}/posts`;
 const POSTS_GLOB_PATTERN = `${POSTS_DIR}/**/*.mdx`;

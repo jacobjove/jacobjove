@@ -77,7 +77,7 @@ jobs:
       matrix:
         include:
           - app: portfolio
-          - app: blog
+          # - app: blog
     outputs:
       cache-key: ${{ steps.generate-dotenv.outputs.cache-key }}
     steps:
@@ -118,7 +118,7 @@ jobs:
       matrix:
         include:
           - app: portfolio
-          - app: blog
+          # - app: blog
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -162,8 +162,8 @@ jobs:
         include:
           - app: portfolio
             port: 3000
-          - app: blog
-            port: 3003
+          # - app: blog
+          #   port: 3003
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
