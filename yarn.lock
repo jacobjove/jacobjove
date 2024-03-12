@@ -3655,7 +3655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/glob@npm:*, @types/glob@npm:^8.0.0":
+"@types/glob@npm:^8.0.0":
   version: 8.0.0
   resolution: "@types/glob@npm:8.0.0"
   dependencies:
@@ -5136,78 +5136,6 @@ __metadata:
   checksum: 9e67f55a729ba26b7a472c084f7706d0d0eb88c67274cc855854ea2ea6da37c9a190ffb2ae41f154ba5ae14276f3f3ce1a30ef3cf2dd89fb775e2d93da815a36
   languageName: node
   linkType: hard
-
-"blog@workspace:apps/blog":
-  version: 0.0.0-use.local
-  resolution: "blog@workspace:apps/blog"
-  dependencies:
-    "@babel/core": "npm:*"
-    "@emotion/cache": "npm:*"
-    "@emotion/react": "npm:*"
-    "@emotion/server": "npm:*"
-    "@emotion/styled": "npm:*"
-    "@mdx-js/loader": "npm:*"
-    "@mdx-js/react": "npm:*"
-    "@mui/icons-material": "npm:*"
-    "@mui/material": "npm:*"
-    "@mui/system": "npm:*"
-    "@next-auth/mongodb-adapter": "npm:^1.1.0"
-    "@next/mdx": "npm:*"
-    "@orega/next-common": "workspace:^"
-    "@sentry/nextjs": "npm:*"
-    "@types/glob": "npm:*"
-    "@types/lodash": "npm:*"
-    "@types/node": "npm:*"
-    "@types/nodemailer": "npm:*"
-    "@types/react": "npm:*"
-    "@typescript-eslint/eslint-plugin": "npm:*"
-    "@typescript-eslint/parser": "npm:*"
-    cookies-next: "npm:*"
-    date-fns: "npm:*"
-    eslint: "npm:*"
-    eslint-config-next: "npm:*"
-    eslint-plugin-mui-path-imports: "npm:*"
-    eslint-plugin-next: "npm:*"
-    eslint-plugin-react: "npm:*"
-    eslint-plugin-unused-imports: "npm:*"
-    glob: "npm:^10.3.1"
-    gray-matter: "npm:*"
-    i18next: "npm:*"
-    i18next-chained-backend: "npm:*"
-    i18next-http-backend: "npm:*"
-    i18next-localstorage-backend: "npm:*"
-    jest: "npm:*"
-    material-ui-popup-state: "npm:*"
-    mongodb: "npm:*"
-    next: "npm:*"
-    next-auth: "npm:*"
-    next-i18next: "npm:*"
-    next-mdx-remote: "npm:^4.1.0"
-    next-seo: "npm:*"
-    next-transpile-modules: "npm:*"
-    nextjs-progressbar: "npm:*"
-    node-downloader-helper: "npm:^2.1.4"
-    nodemailer: "npm:*"
-    postcss: "npm:*"
-    prettier: "npm:*"
-    prettier-eslint: "npm:*"
-    react: "npm:*"
-    react-dom: "npm:*"
-    react-i18next: "npm:*"
-    rehype-highlight: "npm:*"
-    remark: "npm:^14.0.1"
-    remark-frontmatter: "npm:^4.0.1"
-    remark-html: "npm:^15.0.0"
-    sass: "npm:*"
-    sharp: "npm:*"
-    stylelint: "npm:*"
-    stylelint-config-standard: "npm:*"
-    stylelint-config-standard-scss: "npm:*"
-    typeface-open-sans: "npm:^1.1.13"
-    typescript: "npm:*"
-    webpack: "npm:*"
-  languageName: unknown
-  linkType: soft
 
 "bluebird@npm:^3.7.2":
   version: 3.7.2
@@ -8230,18 +8158,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.3.1":
-  version: 10.3.1
-  resolution: "glob@npm:10.3.1"
+"glob@npm:^10.3.10":
+  version: 10.3.10
+  resolution: "glob@npm:10.3.10"
   dependencies:
     foreground-child: "npm:^3.1.0"
-    jackspeak: "npm:^2.0.3"
+    jackspeak: "npm:^2.3.5"
     minimatch: "npm:^9.0.1"
-    minipass: "npm:^5.0.0 || ^6.0.2"
-    path-scurry: "npm:^1.10.0"
+    minipass: "npm:^5.0.0 || ^6.0.2 || ^7.0.0"
+    path-scurry: "npm:^1.10.1"
   bin:
-    glob: dist/cjs/src/bin.js
-  checksum: 8058ab8675173d3dc6a0b373d5c8fd7bf0a58b5487f55fb148a7c5ea61ec54c1bb0713674439c61de2d34382b14b626bf7cc71d41aedfd02ce8131c634d25072
+    glob: dist/esm/bin.mjs
+  checksum: 47111e73a4085b583af98c76c2ff4937ff93c01bfc8754b9e77e8fd2f8a0dac8d6f1f705ebcc35e04e8d377acef7938b4f1c74a875a985adcb3767f71e3c12c2
   languageName: node
   linkType: hard
 
@@ -9640,16 +9568,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jackspeak@npm:^2.0.3":
-  version: 2.2.1
-  resolution: "jackspeak@npm:2.2.1"
+"jackspeak@npm:^2.3.5":
+  version: 2.3.6
+  resolution: "jackspeak@npm:2.3.6"
   dependencies:
     "@isaacs/cliui": "npm:^8.0.2"
     "@pkgjs/parseargs": "npm:^0.11.0"
   dependenciesMeta:
     "@pkgjs/parseargs":
       optional: true
-  checksum: b7c66988fb8575356fcf6b6c0fdcfb89a78fd0aaceb16d1318ae355fb7b6f51a456e9b8cf47ac0875bb7d6b94d82cc649762d5b819f4055ad5c5f5d617a0e20f
+  checksum: 19bc339b2c9dbc393965fe2edc8c633638561e63b5dc10234aa2505b9a1cb5cf3ec79ba0bd0938f97735885d5f5ef42d0107ee1943330681d4387fe26d0b4ced
   languageName: node
   linkType: hard
 
@@ -11668,10 +11596,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^5.0.0 || ^6.0.2":
-  version: 6.0.2
-  resolution: "minipass@npm:6.0.2"
-  checksum: 9d8e7a2dc7dd240f1c2b4255b75ffadb7f296ab917d5289978869436333866a05b5128760847bd6b772ee7f0d78cfe775489669a4ba728f1de0f194ca14fe829
+"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0":
+  version: 7.0.4
+  resolution: "minipass@npm:7.0.4"
+  checksum: ac50fdf5fe77b3b2c9fe1019633cf596bfddff7e9c3b013766257f36c7fe3a03a5d69fabd7ecd1e2f4f7852448f9becea4703e7507a9ced9e1a4618151ae4c5d
   languageName: node
   linkType: hard
 
@@ -12784,13 +12712,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-scurry@npm:^1.10.0":
-  version: 1.10.0
-  resolution: "path-scurry@npm:1.10.0"
+"path-scurry@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "path-scurry@npm:1.10.1"
   dependencies:
     lru-cache: "npm:^9.1.1 || ^10.0.0"
-    minipass: "npm:^5.0.0 || ^6.0.2"
-  checksum: 7308181e1b82034e379753cba2a573c3c0ee0583e1c090e49b6707fd18a73156586e9d8b77eaabcec94f1f18addbe00119c7b005bd38d3fb3331a08d4e999259
+    minipass: "npm:^5.0.0 || ^6.0.2 || ^7.0.0"
+  checksum: 27512ed33f02818c608d719ca7b18cc038341b09b76aefa6830c8f39a7a5966f412efe7a9fc92a5d426f11d3040df78f10ed5eb319665cf856c69892c3098ed6
   languageName: node
   linkType: hard
 
@@ -12912,7 +12840,7 @@ __metadata:
     eslint-plugin-next: "npm:*"
     eslint-plugin-react: "npm:*"
     eslint-plugin-unused-imports: "npm:*"
-    glob: "npm:^10.3.1"
+    glob: "npm:^10.3.10"
     gray-matter: "npm:*"
     i18next: "npm:*"
     i18next-chained-backend: "npm:*"
