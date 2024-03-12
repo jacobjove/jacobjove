@@ -1,7 +1,0 @@
-version: "3.8"
-
-services:
-  nextjs:
-    environment:
-      NEXTAUTH_URL: "http://localhost"
-      NODE_ENV: production

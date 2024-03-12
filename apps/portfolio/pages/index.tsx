@@ -10,7 +10,7 @@ import utilStyles from "../styles/utils.module.css";
 
 export const siteTitle = "Jacob's portfolio";
 
-const BLOG_URL = "https://blog.orega.org";
+const BLOG_URL = "https://jacobjove.org/blog/";
 const LINK_BLOG = false;
 
 export default function Home() {

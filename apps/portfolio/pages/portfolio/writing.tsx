@@ -48,7 +48,7 @@ export default function Projects() {
         </Typography>
         <p>
           {"See also my "}
-          <a href="https://blog.orega.org/" target={"_blank"} rel="noreferrer">
+          <a href="/blog/" target={"_blank"} rel="noreferrer">
             {"blog"}
           </a>
           {"."}

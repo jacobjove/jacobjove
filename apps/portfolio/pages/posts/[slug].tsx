@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
-import ErrorPage from "next/error";
-import { getMessages } from "@utils/i18n";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Layout from "@components/Layout";
 import PageHeader from "@components/PageHeader";
 import { BlogPost } from "@interfaces/Post";
 import { getAllPostSlugs, getPostBySlug } from "@utils/blog";
-import { serialize } from "next-mdx-remote/serialize";
+import { getMessages } from "@utils/i18n";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
+import ErrorPage from "next/error";
+import { useRouter } from "next/router";
 
 interface BlogPostPageProps {
   metadata: BlogPost;

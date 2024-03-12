@@ -93,7 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [blog, portfolio]
+        app: [portfolio]
     runs-on: ubuntu-latest
     steps:
     - name: Check out main branch
@@ -120,7 +120,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [blog, portfolio]
+        app: [portfolio]
     steps:
       - name: Check out main branch
         uses: actions/checkout@v3
