@@ -3,7 +3,7 @@ services:
     ports:
       - "${MONGO_PORT}:${MONGO_PORT}"
   nextjs:
-    # command: bash -c "export NODE_ENV=development && yarn run dev"
+    # command: bash -c "export NODE_ENV=development && pnpm dev"
     environment:
       NEXT_PUBLIC_BASE_URL: "http://localhost:${PORT}"
       NEXTAUTH_URL: "http://localhost:${PORT}"

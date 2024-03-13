@@ -123,8 +123,8 @@
   "license": "ISC",
   "lint-staged": {
     "*.conf": [
-      "yarn nginxbeautifier -s 4",
-      "nginx-linter --include"
+      "pnpm nginxbeautifier -s 4",
+      "pnpm nginx-linter --include"
     ],
     "*.{css}": [
       "prettier --write",
@@ -148,7 +148,7 @@
     "build": "next build",
     "dev": "docker compose up -d mongo && PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next dev",
     "docker:build": "docker compose build",
-    "docker:start": "yarn kill; docker compose up -d && docker compose logs -f",
+    "docker:start": "pnpm kill; docker compose up -d && docker compose logs -f",
     "format": "prettier -w . && eslint --fix .",
     "kill": "npx kill-port $(grep '^PORT=' .env | cut -d '=' -f2); docker compose down",
     "lint": "next lint",

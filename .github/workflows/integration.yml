@@ -116,9 +116,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 16
-          cache: "yarn"
+          cache: "pnpm"
       - name: Install dependencies
-        run: yarn || YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
+        run: pnpm install
       # - name: Restore dotenv
       #   uses: actions/cache@v3
       #   with:
@@ -133,11 +133,11 @@ jobs:
             .config/_.env
             .config/_.env.production
       - name: Build
-        run: yarn build
+        run: pnpm build
         env:
           SENTRY_DRY_RUN: "true"
       - name: Test
-        run: yarn test
+        run: pnpm test
 
   docker:
     name: Build and push image
