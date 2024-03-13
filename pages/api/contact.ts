@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { sendMail } from "@utils/email";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const contact = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = req.body;

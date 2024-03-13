@@ -14,8 +14,7 @@ services:
       network: host
       args:
         - PORT=${PORT}
-        - APP_NAME=portfolio
-    image: ghcr.io/iacobfred/portfolio:latest
+    image: ghcr.io/iacobfred/jacobjove:latest
     depends_on:
       - mongo
     ports:

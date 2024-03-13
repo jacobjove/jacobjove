@@ -6,7 +6,6 @@ import { Trans, useTranslation } from "next-i18next";
 import Head from "next/head";
 import Image from "next/image";
 import Layout from "../components/Layout";
-import utilStyles from "../styles/utils.module.css";
 
 export const siteTitle = "Jacob's portfolio";
 
@@ -35,7 +34,7 @@ export default function Home() {
         <Image
           priority
           src="/images/profile.jpg"
-          className={utilStyles.borderCircle}
+          // className={utilStyles.borderCircle}
           height={144}
           width={144}
           alt={name}
