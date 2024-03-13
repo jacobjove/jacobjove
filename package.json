@@ -10,7 +10,7 @@
     "@mdx-js/react": "^2.0.0-rc.2",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
-    "@mui/system": "^5.11.11",
+    "@mui/system": "^5.15.13",
     "@next-auth/mongodb-adapter": "^1.1.0",
     "@next/mdx": "^12.3.1",
     "@sentry/nextjs": "^7.87.0",
