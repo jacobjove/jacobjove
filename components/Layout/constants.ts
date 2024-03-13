@@ -1,4 +1,4 @@
-export const SITE_TITLE = "J";
+export const SITE_TITLE = "JJ";
 
 type _MenuItem = [string, string];
 type MenuItem = [string, string | _MenuItem[]];

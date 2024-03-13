@@ -11,7 +11,7 @@ import Image from "next/image";
 import Layout from "../components/Layout";
 
 const NAME = "Jacob T. Jove";
-const EMAIL = "jacob.t.fredericksen@gmail.com";
+const EMAIL = "jacob.t.jove@gmail.com";
 
 const CONTACT_FORM_ENABLED = true;
 
@@ -56,8 +56,8 @@ export default function Contact() {
               {t("name")}
             </Typography>
             <Box my={1}>
-              <Typography>{"100 DuPont St."}</Typography>
-              <Typography>{"Brooklyn, NY 11222"}</Typography>
+              <Typography>{"565 W 144th St"}</Typography>
+              <Typography>{"New York, NY 10031"}</Typography>
             </Box>
             <Typography my={1}>
               <a href={`mailto:${EMAIL}`} target="_blank" rel="noreferrer">

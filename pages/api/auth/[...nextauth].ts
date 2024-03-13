@@ -158,7 +158,7 @@ const callbacks: CallbacksOptions = {
       {
         user: {
           name: 'Jacob Jove',
-          email: 'jacob.t.fredericksen@gmail.com',
+          email: 'jacob.t.jove@gmail.com',
           image: 'https://lh3.googleusercontent.com/a-/AOh14Ggi_RwygCCU2-fH3tOLF8o8l9rlTJALV_TqnJXP=s96-c'
         },
         expires: '2021-12-27T17:57:11.871Z'
@@ -167,7 +167,7 @@ const callbacks: CallbacksOptions = {
       And the token might look like this:
       {
         name: 'Jacob Jove',
-        email: 'jacob.t.fredericksen@gmail.com',
+        email: 'jacob.t.jove@gmail.com',
         picture: 'https://lh3.googleusercontent.com/a-/AOh14Ggi_RwygCCU2-fH3tOLF8o8l9rlTJALV_TqnJXP=s96-c',
         sub: '103939397459532242325',
         accessToken: 'ya29.a0ARrdaM8aR-DKoygFFlTF8WaPdI4iihykJvUYI940WPSALlwaZxa35kKSiUxm9BvZlkWQJYyA914Z3gaMnN2YZBg339qD-iRPedsdOobq4mDLJ3QIKcBhEIOjqm0z9wqEaNALubwYNITCTD4cGLyBEmzzC0H4',
