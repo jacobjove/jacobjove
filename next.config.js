@@ -47,7 +47,7 @@ const nextConfig = {
   // https://nextjs.org/docs/advanced-features/i18n-routing
   i18n,
   images: {
-    domains: ["orega.org"],
+    domains: ["jacobjove.org"],
   },
   // https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files
   output: "standalone",

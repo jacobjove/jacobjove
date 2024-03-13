@@ -9,7 +9,7 @@ services:
   nextjs:
     <<: *default
     build:
-      context: ../..
+      context: .
       dockerfile: Dockerfile
       network: host
       args:
@@ -22,7 +22,7 @@ services:
     environment:
       MONGO_HOST: mongo
       NEXTAUTH_URL_INTERNAL: "http://nextjs:${PORT}"
-      NEXTAUTH_URL: "https://orega.org"
+      NEXTAUTH_URL: "https://jacobjove.org"
       NODE_ENV: production
   mongo:
     <<: *default

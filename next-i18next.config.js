@@ -12,7 +12,7 @@ export const i18n = {
   // Note: subdomains must be included in the domain value to be matched e.g. "fr.example.com".
   domains: [
     {
-      domain: "orega.org",
+      domain: "jacobjove.org",
       defaultLocale: "en-US",
     },
     // {
