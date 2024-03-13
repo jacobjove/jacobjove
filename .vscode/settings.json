@@ -37,7 +37,6 @@
   "php.suggest.basic": false,
   "php.validate.enable": false,
   "search.exclude": {
-    ".yarn": true,
     "**/.next": true,
     "**/node_modules": true
   },

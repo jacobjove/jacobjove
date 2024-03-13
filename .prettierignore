@@ -1,6 +1,5 @@
 .next/
 .npm/
-.yarn/
 node_modules/
 dist/
 *lock.yaml
