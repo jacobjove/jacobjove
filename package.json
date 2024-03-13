@@ -126,7 +126,7 @@
       "pnpm nginxbeautifier -s 4",
       "pnpm nginx-linter --include"
     ],
-    "*.{css}": [
+    "*.css": [
       "prettier --write",
       "stylelint --fix"
     ],
