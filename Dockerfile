@@ -1,13 +1,21 @@
 ARG NODE_VERSION=18
+ARG PNPM_VERSION=8.15.3
 ARG PORT=3000
+
+# TODO: https://github.com/mpash/pnpm-next-docker/blob/main/Dockerfile
 
 FROM node:${NODE_VERSION}-alpine AS base
 
-ENV PORT ${PORT}
-ENV CYPRESS_INSTALL_BINARY 0
+ARG PNPM_VERSION
+
+ENV PORT=${PORT} CYPRESS_INSTALL_BINARY=0
 
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache curl libc6-compat rsync
+
+RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION}
+
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
 LABEL org.opencontainers.image.source https://github.com/iacobfred/jacobjove
 
@@ -17,17 +25,12 @@ FROM base AS deps
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-# COPY package.json yarn.lock* .yarnrc.yml package-lock.json* pnpm-lock.yaml* ./
-COPY package.json yarn.lock* .yarnrc.yml ./
-COPY .yarn/ ./.yarn/
-# RUN ls -alt && exit 1;
+COPY package.json pnpm-lock.yaml .npmr[c] ./
+
 RUN \
-  if [ -f yarn.lock ]; then yarn --immutable; \
-  # elif [ -f package-lock.json ]; then npm ci; \
-  # elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
+  if [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
   fi
-
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -40,12 +43,7 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN \
-  if [ -f yarn.lock ]; then yarn run build; \
-  # elif [ -f package-lock.json ]; then npm run build; \
-  # elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -54,8 +52,6 @@ WORKDIR /app
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
 # Note: The public dir also must be copied from the builder rather than from the host,
 # since the service worker files from next-pwa are generated during the build.

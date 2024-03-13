@@ -30,9 +30,7 @@
       "@messages/*": ["messages/*"],
       "@interfaces/*": ["interfaces/*"],
       "@types/*": ["types/*"],
-      "@utils/*": ["utils/*"],
-      "@orega/next-common/*": ["./libs/next-common/src/*"],
-      "@orega/next-common": ["./libs/next-common/src/index.ts"]
+      "@utils/*": ["utils/*"]
     }
   },
   "exclude": ["**/node_modules", "cypress", "dist", "**/.*/"],

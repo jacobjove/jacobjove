@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { FormStatus, useFormDataReducer } from "@orega/next-common/utils/forms";
+import { FormStatus, useFormDataReducer } from "@utils/forms";
 import { useTranslation } from "next-i18next";
 import { SyntheticEvent, useState } from "react";
 

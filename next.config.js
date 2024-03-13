@@ -1,18 +1,15 @@
 import mdx from "@next/mdx";
 import { withSentryConfig } from "@sentry/nextjs";
-import TM from "next-transpile-modules";
 import path from "path";
 import url from "url";
 import { i18n } from "./next-i18next.config.js";
-
-const withTM = TM(["@orega/next-common"]);
 
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 const _filename = url.fileURLToPath(import.meta.url);
 const _dirname = path.dirname(_filename);
-const ROOT_DIR = path.resolve(_dirname, "..", "..");
+const ROOT_DIR = path.resolve(_dirname);
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -35,11 +32,12 @@ const nextConfig = {
     // Prefer loading of ES Modules over CommonJS.
     esmExternals: true, // default in Next.js 12+
     externalDir: true,
-    modularizeImports: {
-      lodash: {
-        transform: "lodash/{{member}}",
-      },
-    },
+    // TODO
+    // modularizeImports: {
+    //   lodash: {
+    //     transform: "lodash/{{member}}",
+    //   },
+    // },
     // For tracing, include files from the monorepo base (two directories up).
     // https://nextjs.org/docs/advanced-features/output-file-tracing#caveats
     outputFileTracingRoot: ROOT_DIR,
@@ -84,4 +82,4 @@ const sentryWebpackPluginOptions = {
   silent: true,
 };
 
-export default withSentryConfig(withTM(withMDX(nextConfig)), sentryWebpackPluginOptions);
+export default withSentryConfig(withMDX(nextConfig), sentryWebpackPluginOptions);

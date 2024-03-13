@@ -6,7 +6,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import SocialLogin from "@orega/next-common/components/auth/SocialLogin";
+import SocialLogin from "@components/auth/SocialLogin";
 import { getMessages } from "@utils/i18n";
 import { GetServerSideProps } from "next";
 import { getProviders, signIn, signOut, useSession } from "next-auth/react";
