@@ -81,6 +81,7 @@
     "@types/throttle-debounce": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.42.0",
+    "autoprefixer": "^10.4.18",
     "babel-jest": "^29.0.3",
     "concurrently": "^7.2.2",
     "ejs-lint": "^1.2.2",
@@ -104,7 +105,7 @@
     "next-router-mock": "^0.7.4",
     "nginx-linter": "^0.6.3",
     "nginxbeautifier": "^1.0.19",
-    "postcss": "^8.3.3",
+    "postcss": "^8.4.35",
     "prettier": "^2.7.1",
     "prettier-eslint": "^15.0.1",
     "prettier-plugin-organize-imports": "^3.1.1",
@@ -112,6 +113,8 @@
     "sass": "^1.55.0",
     "stylelint": "^16.2.1",
     "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-tailwindcss": "^0.0.7",
+    "tailwindcss": "^3.4.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^4.0.0",
@@ -157,7 +160,10 @@
     "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky install; fi"
   },
   "stylelint": {
-    "extends": "stylelint-config-standard"
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-tailwindcss"
+    ]
   },
   "version": "1.0.0",
   "packageManager": "pnpm@8.15.3",
@@ -176,6 +182,12 @@
         "x64",
         "arm64"
       ]
+    },
+    "postcss": {
+      "plugins": {
+        "tailwindcss": {},
+        "autoprefixer": {}
+      }
     }
   }
 }

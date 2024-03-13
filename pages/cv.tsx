@@ -1,6 +1,5 @@
 import PageHeader from "@components/PageHeader";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { getMessages } from "@utils/i18n";
 import { existsSync, renameSync } from "fs";
 import { GetStaticProps } from "next";
@@ -8,7 +7,7 @@ import { useTranslation } from "next-i18next";
 import { DownloaderHelper } from "node-downloader-helper";
 import Layout from "../components/Layout";
 
-const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobfredericksen/";
+const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobjove/";
 
 const GOOGLE_DOC_URL =
   "https://docs.google.com/document/d/1hP2AVmetnqVviUFYHziqh4z4i-Kq-0CL1Pqyv-pfwrw/edit?usp=sharing";
@@ -27,7 +26,7 @@ export default function CV() {
       <PageHeader>{t("title")}</PageHeader>
       <Box textAlign={"center"} my={2}>
         <div
-          className="badge-base LI-profile-badge"
+          className="badge-base LI-profile-badge text-center"
           data-locale="en_US"
           data-size="medium"
           data-theme="dark"
@@ -40,9 +39,8 @@ export default function CV() {
             href="https://www.linkedin.com/in/jacobjove?trk=profile-badge"
             target="_blank"
             rel="noreferrer"
-          >
-            <Typography>{LINKEDIN_PROFILE_URL}</Typography>
-          </a>
+            title={LINKEDIN_PROFILE_URL}
+          />
         </div>
       </Box>
       <Box

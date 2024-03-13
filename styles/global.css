@@ -1,3 +1,9 @@
+/* Omit Tailwind's base layer in favor of MUI's baseline. */
+
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   height: 100%;
@@ -11,6 +17,7 @@ body {
 #__next {
   height: 100%;
 }
+
 /* stylelint-enable */
 
 * {
