@@ -1,7 +1,7 @@
 import Footer from "@components/Footer";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Navbar from "@orega/next-common/components/Navbar";
+import Navbar from "@components/Navbar";
 import { useSession } from "next-auth/react";
 import { MENU_ITEMS, SITE_TITLE } from "./constants";
 

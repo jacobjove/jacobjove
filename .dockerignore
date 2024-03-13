@@ -1,4 +1,5 @@
 cypress/
+.yarn/
 
 # All node_modules directories
 node_modules

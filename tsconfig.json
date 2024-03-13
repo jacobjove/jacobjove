@@ -1,16 +1,38 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "inlineSources": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "esnext", "esnext.asynciterable"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "sourceRoot": "/",
+    "strict": true,
+    "target": "esnext",
     "paths": {
       "@components/*": ["components/*"],
       "@messages/*": ["messages/*"],
       "@interfaces/*": ["interfaces/*"],
       "@types/*": ["types/*"],
-      "@utils/*": ["utils/*"],
-      "@orega/next-common/*": ["./libs/next-common/src/*"],
-      "@orega/next-common": ["./libs/next-common/src/index.ts"]
+      "@utils/*": ["utils/*"]
     }
   },
-  "include": ["next-env.d.ts", "./types", "**/*.ts", "**/*.tsx"]
+  "exclude": ["**/node_modules", "cypress", "dist", "**/.*/"],
+  "include": ["next-env.d.ts", "types", "**/*.ts", "**/*.tsx"]
 }
