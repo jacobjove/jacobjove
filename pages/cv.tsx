@@ -24,25 +24,6 @@ export default function CV() {
   return (
     <Layout>
       <PageHeader>{t("title")}</PageHeader>
-      <Box textAlign={"center"} my={2}>
-        <div
-          className="badge-base LI-profile-badge text-center"
-          data-locale="en_US"
-          data-size="medium"
-          data-theme="dark"
-          data-type="VERTICAL"
-          data-vanity="jacobjove"
-          data-version="v1"
-        >
-          <a
-            className="badge-base__link LI-simple-link"
-            href="https://www.linkedin.com/in/jacobjove?trk=profile-badge"
-            target="_blank"
-            rel="noreferrer"
-            title={LINKEDIN_PROFILE_URL}
-          />
-        </div>
-      </Box>
       <Box
         sx={{
           width: "100%",
@@ -57,6 +38,25 @@ export default function CV() {
           height="1079" // pixels
           type="application/pdf"
         />
+      </Box>
+      <Box textAlign={"center"} my={2}>
+        <div
+          className="badge-base LI-profile-badge text-center"
+          data-locale="en_US"
+          data-size="large"
+          data-theme="dark"
+          data-type="VERTICAL"
+          data-vanity="jacobjove"
+          data-version="v1"
+        >
+          <a
+            className="badge-base__link LI-simple-link"
+            href="https://www.linkedin.com/in/jacobjove?trk=profile-badge"
+            target="_blank"
+            rel="noreferrer"
+            title={LINKEDIN_PROFILE_URL}
+          />
+        </div>
       </Box>
     </Layout>
   );
