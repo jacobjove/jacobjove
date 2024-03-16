@@ -24,7 +24,7 @@ const PROJECTS: [string, string, string, string, string[]][] = [
   [
     "KW Striping",
     "https://kwstriping.com/",
-    "https://github.com/iacobfred/service-shop",
+    "https://github.com/SokaiSolutions/tempo",
     "KW Striping is the web app used by KW Striping (a small Utah business) to accept service requests from customers.",
     ["Django", "Python", "TypeScript", "Postgres", "Docker"],
   ],

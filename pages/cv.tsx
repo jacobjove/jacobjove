@@ -6,20 +6,35 @@ import { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
 import { DownloaderHelper } from "node-downloader-helper";
 import Layout from "../components/Layout";
+import kebabCase from "lodash/kebabCase";
 
 const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/jacobjove/";
 
-const GOOGLE_DOC_URL =
-  "https://docs.google.com/document/d/1hP2AVmetnqVviUFYHziqh4z4i-Kq-0CL1Pqyv-pfwrw/edit?usp=sharing";
-const GOOGLE_DOC_PDF_DL_URL = GOOGLE_DOC_URL.replace("edit?usp=sharing", "export?format=pdf");
 const RESUME_DIR = `${process.cwd()}/public`;
-const RESUME_FILENAME_WITHOUT_EXTENSION = "resume";
 const RESUME_FILE_EXTENSION = "pdf";
-const RESUME_FILENAME = `${RESUME_FILENAME_WITHOUT_EXTENSION}.${RESUME_FILE_EXTENSION}`;
-const RESUME_FILEPATH = `${RESUME_DIR}/${RESUME_FILENAME}`;
-const RESUME_URL = "/resume.pdf#toolbar=0&navpanes=0&scrollbar=0";
 
-export default function CV() {
+interface Resume {
+  url: string;
+  name: string;
+}
+
+const RESUMES = [
+  {
+    url: "https://docs.google.com/document/d/1hP2AVmetnqVviUFYHziqh4z4i-Kq-0CL1Pqyv-pfwrw/edit?usp=sharing",
+    name: "Legal",
+  },
+  {
+    url: "https://docs.google.com/document/d/1LpHANvDcycMiKWBHM9p4j8WzNkI7M18MWlaqPanaEwU/edit?usp=sharing",
+    name: "Data Science",
+  },
+  // Add more resumes as needed
+];
+
+interface CVPageProps {
+  resumes: Resume[];
+}
+
+export default function CV({ resumes }: CVPageProps) {
   const { t } = useTranslation("cv");
   return (
     <Layout>
@@ -32,12 +47,17 @@ export default function CV() {
           mx: "auto",
         }}
       >
-        <embed
-          src={RESUME_URL}
-          style={{ width: "100%" }}
-          height="1079" // pixels
-          type="application/pdf"
-        />
+        {resumes.map((resume, index) => (
+          <div key={index} style={{ margin: "20px" }}>
+            <p>{resume.name}</p>
+            <embed
+              src={resume.url}
+              style={{ width: "100%" }}
+              height="1079" // pixels
+              type="application/pdf"
+            />
+          </div>
+        ))}
       </Box>
       <Box textAlign={"center"} my={2}>
         <div
@@ -64,23 +84,46 @@ export default function CV() {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const messagesPromise = getMessages(locale, ["cv"]);
-  const id = Date.now(); // e.g., 1664775602649
-  const tempFilename = `${RESUME_FILENAME_WITHOUT_EXTENSION}-${id}.pdf`;
-  const dl = new DownloaderHelper(GOOGLE_DOC_PDF_DL_URL, RESUME_DIR, {
-    fileName: tempFilename,
-  });
-  dl.on("error", (err: unknown) => console.log("Download failed:", err));
-  dl.on("end", () => {
-    const tempFilepath = `${RESUME_DIR}/${tempFilename}`;
-    if (existsSync(tempFilepath)) {
-      renameSync(tempFilepath, RESUME_FILEPATH);
-    } else {
-      console.error(`File not found: ${tempFilepath}`);
-    }
-  });
-  await dl.start().catch((err: unknown) => console.error(err));
+  const resumes = await Promise.all(
+    RESUMES.map(async (resume, index) => {
+      const id = `${Date.now() + index}`; // Unique ID for each resume
+      const tempFilename = `resume-${id}.${RESUME_FILE_EXTENSION}`;
+      const slug = kebabCase(resume.name);
+      const dl = new DownloaderHelper(
+        resume.url.replace("edit?usp=sharing", `export?format=${RESUME_FILE_EXTENSION}`),
+        RESUME_DIR,
+        { fileName: tempFilename }
+      );
+
+      return new Promise((resolve, reject) => {
+        dl.on("error", (err) => {
+          console.log(`Download failed for resume ${index + 1}:`, err);
+          resolve(null);
+        });
+        dl.on("end", () => {
+          const tempFilepath = `${RESUME_DIR}/${tempFilename}`;
+          if (existsSync(tempFilepath)) {
+            const resumeData = {
+              url: `/resume-${slug}.pdf#toolbar=0&navpanes=0&scrollbar=0`,
+              name: resume.name,
+            };
+            renameSync(tempFilepath, `${RESUME_DIR}/${tempFilename.replace(id, slug)}`);
+            resolve(resumeData);
+          } else {
+            console.error(`File not found: ${tempFilepath}`);
+            resolve(null);
+          }
+        });
+        dl.start().catch((err) => {
+          console.error(`Failed to start downloading resume ${index + 1}:`, err);
+          reject(err);
+        });
+      });
+    })
+  );
+
   return {
-    props: { ...(await messagesPromise) },
+    props: { resumes, ...(await messagesPromise) },
     // Regenerate the page at most once every two hours.
     revalidate: 60 * 60 * 2, // in seconds
   };
