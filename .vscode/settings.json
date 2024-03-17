@@ -8,7 +8,9 @@
   "editor.linkedEditing": true,
   "editor.rulers": [100],
   "editor.suggestSelection": "first",
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.experimental.useFlatConfig": true,
+  "eslint.lintTask.enable": false,
+  "eslint.format.enable": true,
   "explorer.autoReveal": false,
   "explorer.confirmDragAndDrop": false,
   "files.associations": {

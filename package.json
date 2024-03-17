@@ -86,13 +86,14 @@
     "concurrently": "^7.2.2",
     "ejs-lint": "^1.2.2",
     "enzyme": "^3.11.0",
-    "eslint": "^8.26.0",
+    "eslint": "^8.57.0",
     "eslint-config-next": "^12.3.1",
     "eslint-plugin-jest": "^27.1.1",
     "eslint-plugin-jest-dom": "^4.0.2",
     "eslint-plugin-jsonc": "^2.4.0",
     "eslint-plugin-mdx": "2.0.5",
     "eslint-plugin-mui-path-imports": "^0.0.3",
+    "eslint-plugin-prettier": "^5.1.2",
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-unused-imports": "^2.0.0",
     "husky": "^8.0.1",
@@ -106,9 +107,11 @@
     "nginx-linter": "^0.6.3",
     "nginxbeautifier": "^1.0.19",
     "postcss": "^8.4.35",
-    "prettier": "^2.7.1",
+    "prettier": "^3.2.5",
     "prettier-eslint": "^15.0.1",
+    "prettier-plugin-multiline-arrays": "^3.0.4",
     "prettier-plugin-organize-imports": "^3.1.1",
+    "prettier-plugin-packagejson": "^2.4.8",
     "react-test-renderer": "^18.2.0",
     "sass": "^1.55.0",
     "stylelint": "^16.2.1",
@@ -130,15 +133,15 @@
       "pnpm nginx-linter --include"
     ],
     "*.css": [
-      "prettier --write",
-      "stylelint --fix"
+      "pnpm prettier --write",
+      "pnpm stylelint --fix"
     ],
     "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
+      "pnpm prettier --write",
+      "pnpm eslint --fix"
     ],
     "*.{json,md}": [
-      "prettier --write"
+      "pnpm prettier --write"
     ]
   },
   "name": "jacobjove",
