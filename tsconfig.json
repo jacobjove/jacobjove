@@ -26,13 +26,23 @@
     "strict": true,
     "target": "esnext",
     "paths": {
+      "@app/*": ["app/*"],
       "@components/*": ["components/*"],
+      "@i18n": ["i18n/index.ts"],
+      "@i18n/*": ["i18n/*"],
+      "@pages/*": ["pages/*"],
+      "@public/*": ["public/*"],
       "@messages/*": ["messages/*"],
-      "@interfaces/*": ["interfaces/*"],
+      "@navigation": ["navigation"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "exclude": ["**/node_modules", "cypress", "dist", "**/.*/"],
-  "include": ["next-env.d.ts", "types", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "types", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

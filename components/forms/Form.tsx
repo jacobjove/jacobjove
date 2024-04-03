@@ -1,7 +1,8 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { FormAction, FormStatus } from "@utils/forms";
-import { Dispatch, ReactNode, SyntheticEvent, useState } from "react";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import type { Dispatch, ReactNode, SyntheticEvent } from 'react';
+import { useState } from 'react';
+import type { FormAction, FormStatus } from '@utils/forms';
 
 type FormDataBase = { [key: string]: string };
 
@@ -14,27 +15,30 @@ interface FormProps<FormData extends FormDataBase> {
   children: ReactNode;
 }
 
-export default function Form<FormData extends FormDataBase>({ children, onSubmit }: FormProps<FormData>) {
-  //   const { t } = useTranslation(translationsKey);
-  const [status, setStatus] = useState<FormStatus>("idle");
+export default function Form<FormData extends FormDataBase>({
+  children,
+  onSubmit,
+}: FormProps<FormData>) {
+  //   const t = useTranslations(translationsKey);
+  const [status, setStatus] = useState<FormStatus>('idle');
   const handleSubmit = async (event: SyntheticEvent) => {
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
-    setStatus("submitting");
+    setStatus('submitting');
     const result = await onSubmit(event);
     if (result.ok) {
-      setStatus("submitted");
+      setStatus('submitted');
     } else if (result.error) {
       console.error(result.error);
-      setStatus("error");
+      setStatus('error');
     }
   };
   return (
-    <form onSubmit={handleSubmit} style={{ width: "100%", position: "relative" }}>
+    <form onSubmit={handleSubmit} style={{ width: '100%', position: 'relative' }}>
       {children}
       <Box textAlign="center">
-        <Button type="submit" variant={"outlined"} size={"large"} sx={{ my: 2, mx: "auto" }}>
-          {status === "submitting" ? "Submitting..." : "Submit"}
+        <Button type="submit" variant={'outlined'} size={'large'} sx={{ my: 2, mx: 'auto' }}>
+          {status === 'submitting' ? 'Submitting...' : 'Submit'}
         </Button>
       </Box>
     </form>

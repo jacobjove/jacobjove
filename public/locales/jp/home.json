@@ -1,5 +1,10 @@
 {
   "name": "フレデリクセン・ジェイコブ",
-  "greeting": "こんにちは。ジェイコブです。このサイトはわたしのポートフォリオとなっています.",
-  "blogIntro": "興味のある方は<blogLink>ブログ</blogLink>もご覧ください。"
+  "greeting": {
+    "heading": "こんにちは。ジェイコブです。"
+  },
+  "blog": {
+    "heading": "My blog",
+    "intro": "興味のある方は<link>ブログ</link>もご覧ください。"
+  }
 }

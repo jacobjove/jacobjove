@@ -1,0 +1,71 @@
+{
+  "404": {
+    "message": "This page coudl not be found"
+  },
+  "about": {
+    "title": "About Jacob"
+  },
+  "blog": {
+    "title": "Blog"
+  },
+  "common": {
+    "navbar": {
+      "about": "About",
+      "portfolio": "Portfolio",
+      "writing": "Writing",
+      "software": "Software",
+      "cv": "CV",
+      "blog": "Blog",
+      "contact": "Contact"
+    }
+  },
+  "contact": {
+    "title": "Contact me",
+    "lead": "If you have any questions About Jacob or this website, feel free to contact me using the form below.",
+    "name": "Jacob T. Jove",
+    "error": "Something went wrong. Please try again later.",
+    "success": "Your message was delivered to me successfully. Thanks!",
+    "nameFieldLabel": "Name",
+    "emailFieldLabel": "Email address",
+    "messageFieldLabel": "Message"
+  },
+  "cv": {
+    "title": "CV",
+    "linkedInProfileIntro": "See also my LinkedIn profile:"
+  },
+  "home": {
+    "about": {
+      "heading": "About Jacob"
+    },
+    "blog": {
+      "heading": "My blog",
+      "intro": "If you are interested, check out my <link>blog</link>."
+    },
+    "contact": {
+      "heading": "Contact me",
+      "intro": "If you have any questions About Jacob or this website, feel free to <link>contact me</link>."
+    },
+    "cv": {
+      "heading": "My resume",
+      "intro": "If you are interested, check out my <link>resume</link>."
+    },
+    "greeting": {
+      "heading": "Hi, I'm Jacob."
+    },
+    "name": "Jacob T. Jove",
+    "portfolio": {
+      "heading": "My portfolio",
+      "intro": "If you are interested, check out my <link>portfolio</link>."
+    }
+  },
+  "portfolio": {
+    "software": {
+      "title": "Software Projects",
+      "lead": "Here are a few apps I've built and/or am in the process of building:"
+    },
+    "writing": {
+      "title": "Writing Samples",
+      "lead": "Coming soon!"
+    }
+  }
+}

@@ -1,8 +1,8 @@
-import mdx from "@next/mdx";
-import { withSentryConfig } from "@sentry/nextjs";
-import path from "path";
-import url from "url";
-import { i18n } from "./next-i18next.config.js";
+import path from 'path';
+import url from 'url';
+import mdx from '@next/mdx';
+import { withSentryConfig } from '@sentry/nextjs';
+import createNextIntlPlugin from 'next-intl/plugin';
 
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
@@ -11,46 +11,39 @@ const _filename = url.fileURLToPath(import.meta.url);
 const _dirname = path.dirname(_filename);
 const ROOT_DIR = path.resolve(_dirname);
 
+const withNextIntl = createNextIntlPlugin('./i18n/index.ts');
+
 const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [],
     rehypePlugins: [],
     // If you use `MDXProvider`, uncomment the following line.
-    providerImportSource: "@mdx-js/react",
+    providerImportSource: '@mdx-js/react',
   },
 });
 
-const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === "production";
+const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === 'production';
 
 /**
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
   compress: !NGINX_COMPRESSION_ENABLED,
-  experimental: {
-    // Prefer loading of ES Modules over CommonJS.
-    esmExternals: true, // default in Next.js 12+
-    externalDir: true,
-    // TODO
-    // modularizeImports: {
-    //   lodash: {
-    //     transform: "lodash/{{member}}",
-    //   },
-    // },
-    // For tracing, include files from the monorepo base (two directories up).
-    // https://nextjs.org/docs/advanced-features/output-file-tracing#caveats
-    outputFileTracingRoot: ROOT_DIR,
-  },
-  // https://nextjs.org/docs/advanced-features/i18n-routing
-  i18n,
-  images: {
-    domains: ["jacobjove.org"],
-  },
+  // images: {
+  //   remotePatterns: ['jacobjove.org'],
+  // },
   // https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files
-  output: "standalone",
+  output: 'standalone',
   // https://nextjs.org/docs/advanced-features/using-mdx
-  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+  pageExtensions: [
+    'ts',
+    'tsx',
+    'js',
+    'jsx',
+    'md',
+    'mdx',
+  ],
   // https://nextjs.org/docs/api-reference/next.config.js/disabling-x-powered-by
   poweredByHeader: false,
   sentry: {
@@ -68,7 +61,7 @@ const nextConfig = {
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/tree-shaking/#tree-shaking-optional-code
     config.plugins.push(
       new webpack.DefinePlugin({
-        __SENTRY_DEBUG__: process.env.NODE_ENV === "development",
+        __SENTRY_DEBUG__: process.env.NODE_ENV === 'development',
       })
     );
     return config;
@@ -78,8 +71,8 @@ const nextConfig = {
 // Set additional config options for the Sentry Webpack plugin.
 // https://github.com/getsentry/sentry-webpack-plugin#options
 const sentryWebpackPluginOptions = {
-  dryRun: process.env.SENTRY_DRY_RUN === "true",
+  dryRun: process.env.SENTRY_DRY_RUN === 'true',
   silent: true,
 };
 
-export default withSentryConfig(withMDX(nextConfig), sentryWebpackPluginOptions);
+export default withSentryConfig(withNextIntl(withMDX(nextConfig), sentryWebpackPluginOptions));

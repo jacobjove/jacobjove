@@ -1,19 +1,19 @@
-import ChainedBackend from "i18next-chained-backend";
-import HttpBackend from "i18next-http-backend/cjs";
-import LocalStorageBackend from "i18next-localstorage-backend";
+import ChainedBackend from 'i18next-chained-backend';
+import HttpBackend from 'i18next-http-backend/cjs';
+import LocalStorageBackend from 'i18next-localstorage-backend';
 
 export const i18n = {
   // List all the locales to support.
-  locales: ["en-US", "jp", "ko"],
+  locales: ['en', 'jp', 'ko'],
   // Specify the default locale to use when a non-locale-prefixed path is visited.
-  defaultLocale: "en-US",
+  defaultLocale: 'en',
   // This is a list of locale domains and the default locale they
   // should handle (these are only required when setting up domain routing)
   // Note: subdomains must be included in the domain value to be matched e.g. "fr.example.com".
   domains: [
     {
-      domain: "jacobjove.org",
-      defaultLocale: "en-US",
+      domain: 'jacobjove.org',
+      defaultLocale: 'en',
     },
     // {
     //   domain: 'example.fr',
@@ -25,7 +25,7 @@ export const i18n = {
   ],
 };
 
-const BROWSER_MODE = typeof window !== "undefined";
+const BROWSER_MODE = typeof window !== 'undefined';
 
 const i18nConfig = {
   i18n,
@@ -39,7 +39,7 @@ const i18nConfig = {
     ], // 1 hour
     backends: BROWSER_MODE ? [LocalStorageBackend, HttpBackend] : [],
   },
-  reloadOnPrerender: process.env.NODE_ENV === "development",
+  reloadOnPrerender: process.env.NODE_ENV === 'development',
   serializeConfig: false,
   use: BROWSER_MODE ? [ChainedBackend] : [],
 };

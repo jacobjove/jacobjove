@@ -58,10 +58,10 @@ tsconfig.tsbuildinfo
 .eslintcache
 
 # Used when building with nextjs (next-eslint)
-!.eslintrc.base.json
-!.prettierignore
-!.prettierrc.js
 !.eslintignore
+!eslint.config.js
+!.prettierignore
+!prettier.config.js
 
 # Yarn
 !.yarnrc.yml

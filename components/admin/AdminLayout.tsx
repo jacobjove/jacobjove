@@ -1,11 +1,11 @@
-import Layout from "@components/Layout";
-import PageHeader from "@components/PageHeader";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Typography from "@mui/material/Typography";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { FC, ReactNode, useMemo } from "react";
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Typography from '@mui/material/Typography';
+import { useSession } from 'next-auth/react';
+import type { FC, ReactNode } from 'react';
+import { useMemo } from 'react';
+import { Link, usePathname, useRouter, useSearchParams } from '@navigation';
+import Layout from '@app/client/layout';
+import PageHeader from '@components/PageHeader';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -13,7 +13,9 @@ interface AdminLayoutProps {
 
 const AdminLayout: FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
   const router = useRouter();
-  const { pathname, asPath, query } = router;
+  const { asPath } = router;
+  const query = useSearchParams();
+  const pathname = usePathname();
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -21,12 +23,12 @@ const AdminLayout: FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
     },
   });
   const breadcrumbs = useMemo(() => {
-    const pathnames = pathname.split("/").filter((x) => x);
+    const pathnames = pathname.split('/').filter((x) => x);
     // In the case of pathnames with query params, display the params in the breadcrumb
     // rather than displaying the parameter key(s). For example, display the object ID
     // as the last breadcrumb rather than the string `[id]`.
     if (Object.keys(query).length) {
-      pathnames[pathnames.length - 1] = Object.values(query).join(" ");
+      pathnames[pathnames.length - 1] = Object.values(query).join(' ');
     }
     return pathnames.map((pathname, index) => {
       return {
@@ -54,7 +56,7 @@ const AdminLayout: FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
           })}
         </Breadcrumbs>
       ) : (
-        <PageHeader>{"Admin"}</PageHeader>
+        <PageHeader>{'Admin'}</PageHeader>
       )}
       {children}
     </Layout>

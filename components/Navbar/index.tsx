@@ -1,65 +1,60 @@
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import LogoutIcon from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
-import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import FormControl from "@mui/material/FormControl";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { setCookie } from "cookies-next";
-import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { signOut, useSession } from "next-auth/react";
-import { useTranslation } from "next-i18next";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Fragment, ReactNode, useReducer, useState } from "react";
-import styles from "./index.module.css";
-import MobileDrawer from "./MobileDrawer";
-import { MenuItems } from "./types";
+'use client';
+import { useSession, signOut } from 'next-auth/react';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { setCookie } from 'cookies-next';
+import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import dynamic from 'next/dynamic';
+import type { ReactNode } from 'react';
+import { Fragment, useReducer, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { useColorScheme } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import styles from './index.module.css';
+import MobileDrawer from './MobileDrawer';
+import { useRouter, usePathname, useParams, Link } from '@navigation';
+import { LOCALES, defaultLocale } from '@i18n/settings';
+import type { Locale } from '@i18n/settings';
 
-const DynamicPageTransitionProgressBar = dynamic(() => import("nextjs-progressbar"), {
+const DynamicPageTransitionProgressBar = dynamic(() => import('next13-progressbar'), {
   ssr: false,
 });
 
-type Locale = "en-US" | "jp" | "ko";
-
-const LOCALES: Record<Locale, { flag: string; name: string }> = {
-  "en-US": {
-    flag: "🇺🇸",
-    name: "English (US)",
-  },
-  jp: {
-    flag: "🇯🇵",
-    name: "日本語",
-  },
-  ko: {
-    flag: "🇰🇷",
-    name: "한국어",
-  },
-};
+type MenuItemKey = keyof Messages['common']['navbar'];
+type _MenuItem = [MenuItemKey, string, string];
+export type MenuItem = [MenuItemKey, string, string | _MenuItem[]];
+export type MenuItems = MenuItem[];
 
 interface NavbarProps {
   siteTitle: string;
   logo?: ReactNode;
   menuItems: MenuItems;
-  session: ReturnType<typeof useSession>["data"] | null;
 }
 
-export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarProps) {
+export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
+  const { data: session } = useSession();
   const router = useRouter();
-  const { pathname, asPath, query, locale } = router;
-  const { t } = useTranslation("common", { keyPrefix: "Navbar" });
+  const pathname = usePathname();
+  const { locale } = useParams<{ locale: Locale }>();
+  const t = useTranslations('common.navbar');
+  const { mode: colorMode, setMode: setColorMode } = useColorScheme();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const accountMenuState = usePopupState({ variant: "popover", popupId: "account-menu" });
+  const accountMenuState = usePopupState({ variant: 'popover', popupId: 'account-menu' });
   const [dropdownAnchorEl, setDropdownAnchorEl] = useState<null | HTMLElement>(null);
 
   const initialMenuState = Object.fromEntries(menuItems.map(([name]) => [name, false]));
@@ -68,17 +63,18 @@ export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarPr
     return { ...initialMenuState, [key]: value };
   };
   const [menuState, dispatch] = useReducer(menuStateReducer, initialMenuState);
+  const toggleTheme = () => setColorMode(colorMode === 'dark' ? 'light' : 'dark');
 
   return (
     <>
-      <AppBar className={styles.root} component={"nav"} position="static">
+      <AppBar className={styles.root} component={'nav'} position="static">
         <Toolbar>
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
             }}
           >
             <IconButton
@@ -88,31 +84,31 @@ export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarPr
               onClick={() => setMobileOpen(!mobileOpen)}
               sx={{
                 mr: 2,
-                display: { sm: "none" },
-                flexBasis: "20%",
+                display: { sm: 'none' },
+                flexBasis: '20%',
                 flexShrink: 1,
-                justifyContent: "flex-start",
+                justifyContent: 'flex-start',
               }}
             >
               <MenuIcon />
             </IconButton>
-            <Box flexBasis={"20%"} flexShrink={1}>
+            <Box flexBasis={'20%'} flexShrink={1}>
               <Link href="/" passHref>
                 {logo || (
                   <Typography
                     variant="h3"
                     sx={{
-                      "&:hover": {
-                        textDecoration: "none",
+                      '&:hover': {
+                        textDecoration: 'none',
                       },
                       display: {
                         // xs: "none",
-                        xs: "block",
-                        sm: "flex",
+                        xs: 'block',
+                        sm: 'flex',
                       },
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                      textAlign: "center",
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      textAlign: 'center',
                     }}
                   >
                     {siteTitle}
@@ -124,28 +120,29 @@ export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarPr
               sx={{
                 flexGrow: 1,
                 flexShrink: 0,
-                display: { xs: "none", sm: "flex" },
-                justifyContent: "space-evenly",
+                display: { xs: 'none', sm: 'flex' },
+                justifyContent: 'space-evenly',
                 columnGap: 2,
               }}
             >
-              {menuItems.map(([name, hrefOrSubitems]) => (
-                <Fragment key={name}>
-                  {typeof hrefOrSubitems === "string" ? (
-                    <Link href={hrefOrSubitems} onClick={() => dispatch([name, !menuState[name]])}>
+              {menuItems.map(([key, name, hrefOrSubitems]) => (
+                <Fragment key={key}>
+                  {typeof hrefOrSubitems === 'string' ? (
+                    <Link href={hrefOrSubitems} onClick={() => dispatch([key, !menuState[key]])}>
                       <Typography
                         color="inherit"
                         sx={{
-                          fontWeight: menuState[name] || pathname === hrefOrSubitems ? "bold" : "normal",
-                          textTransform: "capitalize",
-                          fontFamily: "Open Sans",
-                          "&:hover": {
-                            textDecoration: "none",
+                          fontWeight:
+                            menuState[key] || pathname === hrefOrSubitems ? 'bold' : 'normal',
+                          textTransform: 'capitalize',
+                          fontFamily: 'Open Sans',
+                          '&:hover': {
+                            textDecoration: 'none',
                           },
-                          px: "0.25rem",
+                          px: '0.25rem',
                         }}
                       >
-                        {t(name)}
+                        {t(key) || name}
                       </Typography>
                     </Link>
                   ) : (
@@ -153,33 +150,35 @@ export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarPr
                       <Button
                         onClick={(event) => {
                           setDropdownAnchorEl(event.currentTarget);
-                          dispatch([name, !menuState[name]]);
+                          dispatch([key, !menuState[key]]);
                         }}
-                        endIcon={menuState[name] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        endIcon={
+                          menuState[key] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
+                        }
                         sx={{
-                          fontWeight: hrefOrSubitems.map(([, href]) => href).includes(router.pathname)
-                            ? "bold"
-                            : "normal",
+                          fontWeight: hrefOrSubitems.map(([, href]) => href).includes(pathname)
+                            ? 'bold'
+                            : 'normal',
                         }}
                       >
-                        {t(name)}
+                        {t(key) || name}
                       </Button>
                       <Menu
-                        open={menuState[name]}
+                        open={menuState[key]}
                         anchorEl={dropdownAnchorEl}
                         onClose={() => {
-                          dispatch([name, false]);
+                          dispatch([key, false]);
                           setDropdownAnchorEl(null);
                         }}
                       >
-                        {hrefOrSubitems.map(([subName, href]) => (
-                          <MenuItem key={subName}>
-                            <Link href={href}>
+                        {hrefOrSubitems.map(([subKey, subName, href]) => (
+                          <MenuItem key={subKey}>
+                            <Link href={href} className={'w-full'}>
                               <Typography
                                 color="inherit"
-                                fontWeight={router.pathname === href ? "bold" : "normal"}
+                                fontWeight={pathname === href ? 'bold' : 'normal'}
                               >
-                                {t(subName)}
+                                {t(subKey) || subName}
                               </Typography>
                             </Link>
                           </MenuItem>
@@ -191,23 +190,26 @@ export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarPr
               ))}
             </Box>
             <Box
-              className={styles["language-selector-container"]}
+              className={styles['language-selector-container']}
               sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                flexBasis: "20%",
+                display: 'flex',
+                justifyContent: 'flex-end',
+                flexBasis: '20%',
                 flexShrink: 1,
                 color: (theme) => theme.palette.primary.contrastText,
               }}
             >
-              <FormControl size="small" sx={{ width: "55px" }}>
+              <FormControl size="small" sx={{ width: '55px' }}>
                 <Select
-                  className={styles["language-selector"]}
-                  value={locale ?? "en-US"}
-                  renderValue={(value) => LOCALES[value as Locale].flag}
+                  className={styles['language-selector']}
+                  value={locale ?? defaultLocale}
+                  renderValue={(value) => LOCALES[value ?? defaultLocale]?.flag}
                   onChange={(event) => {
-                    router.push({ pathname, query }, asPath, { locale: event.target.value });
-                    setCookie("NEXT_LOCALE", event.target.value);
+                    console.log(pathname);
+                    const newLocale = event.target.value;
+                    const newPathname = pathname.replace(`/${locale}/`, `/${newLocale}/`);
+                    setCookie('NEXT_LOCALE', newLocale);
+                    router.push(newPathname);
                   }}
                 >
                   {Object.entries(LOCALES).map(([locale, { flag, name }]) => (
@@ -224,27 +226,33 @@ export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarPr
                   </IconButton>
                   <Menu
                     sx={{
-                      mt: "45px",
-                      "& a": { color: "text.primary" },
+                      mt: '45px',
+                      '& a': { color: 'text.primary' },
                     }}
                     {...bindMenu(accountMenuState)}
                     anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
+                      vertical: 'top',
+                      horizontal: 'right',
                     }}
                     keepMounted
                     transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
+                      vertical: 'top',
+                      horizontal: 'right',
                     }}
                   >
-                    <Link href={"/admin"} passHref>
-                      <MenuItem sx={{ textAlign: "center" }}>{"Admin"}</MenuItem>
+                    <Link href={'/admin'} passHref>
+                      <MenuItem sx={{ textAlign: 'center' }}>{'Admin'}</MenuItem>
                     </Link>
-
+                    <MenuItem onClick={toggleTheme}>
+                      <FormControlLabel
+                        control={<Switch checked={colorMode === 'dark'} disableRipple />}
+                        label={'Enable Dark Mode'}
+                        // onChange={toggleTheme}
+                      />
+                    </MenuItem>
                     <Divider />
-                    <MenuItem onClick={() => signOut({ callbackUrl: "/" })}>
-                      Sign out <LogoutIcon sx={{ marginLeft: "0.5rem" }} />
+                    <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>
+                      Sign out <LogoutIcon sx={{ marginLeft: '0.5rem' }} />
                     </MenuItem>
                   </Menu>
                 </Box>
@@ -254,7 +262,12 @@ export default function Navbar({ siteTitle, logo, menuItems, session }: NavbarPr
         </Toolbar>
         <DynamicPageTransitionProgressBar />
       </AppBar>
-      <MobileDrawer open={mobileOpen} setOpen={setMobileOpen} siteTitle={siteTitle} menuItems={menuItems} />
+      <MobileDrawer
+        open={mobileOpen}
+        setOpen={setMobileOpen}
+        siteTitle={siteTitle}
+        menuItems={menuItems}
+      />
     </>
   );
 }
