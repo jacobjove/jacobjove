@@ -1,8 +1,13 @@
 {
   "auto-rename-tag.activationOnLanguage": ["html", "*"],
   "auto-close-tag.activationOnLanguage": ["html"],
+  "colorize.languages": ["javascript", "typescript", "typescriptreact", "css"],
   "debug.console.fontSize": 11,
   "debug.javascript.unmapMissingSources": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "never",
+    "source.fixAll": "explicit"
+  },
   "editor.detectIndentation": true,
   "editor.formatOnSave": true,
   "editor.linkedEditing": true,
@@ -35,6 +40,8 @@
   },
   "gitlens.currentLine.scrollable": false,
   "html.autoClosingTags": true,
+  "i18n-ally.localesPaths": ["./i18n/locales"],
+  "i18n-ally.keystyle": "nested",
   "javascript.autoClosingTags": true,
   "php.suggest.basic": false,
   "php.validate.enable": false,

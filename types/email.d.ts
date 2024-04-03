@@ -1,4 +1,4 @@
-import { Transporter } from "nodemailer";
+import type { Transporter } from 'nodemailer';
 
 declare global {
   // eslint-disable-next-line no-var

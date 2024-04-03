@@ -1,8 +1,8 @@
-import { BlogPost } from "@interfaces/Post";
-import { readFileSync } from "fs";
-import { globSync } from "glob";
-import matter from "gray-matter";
-import { join } from "path";
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { globSync } from 'glob';
+import matter from 'gray-matter';
+import type { BlogPost } from '@types/blog';
 
 const POSTS_DIR = `${process.cwd()}/posts`;
 const POSTS_GLOB_PATTERN = `${POSTS_DIR}/**/*.mdx`;
@@ -10,10 +10,10 @@ const POSTS_GLOB_PATTERN = `${POSTS_DIR}/**/*.mdx`;
 export const getAllPostSlugs = async () => {
   return globSync(POSTS_GLOB_PATTERN).map((filename) => {
     return filename
-      .split("/")
+      .split('/')
       .slice(-1)[0]
-      .replace(/ /g, "-")
-      .replace(/\.mdx?$/, "")
+      .replace(/ /g, '-')
+      .replace(/\.mdx?$/, '')
       .trim();
   });
 };
@@ -29,13 +29,13 @@ export const getPublishedPosts = async (): Promise<BlogPost[]> => {
 
 export const getPostBySlug = async (slug: string): Promise<BlogPost> => {
   const modulePath = slugToPath(slug);
-  const fileContents = readFileSync(modulePath, "utf8");
+  const fileContents = readFileSync(modulePath, 'utf8');
   return parseMarkdown(fileContents);
 };
 
 export const parseMarkdown = (fileContents: string): BlogPost => {
   const { data, content } = matter(fileContents);
-  const parsedData = data as Omit<BlogPost, "content">;
+  const parsedData = data as Omit<BlogPost, 'content'>;
   return {
     ...parsedData,
     content,

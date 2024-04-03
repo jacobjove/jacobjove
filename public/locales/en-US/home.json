@@ -1,5 +1,10 @@
 {
   "name": "Jacob T. Jove",
-  "greeting": "Hi, I'm Jacob. This is my portfolio.",
-  "blogIntro": "If you are interested, see also my <blogLink>blog</blogLink>."
+  "greeting": {
+    "heading": "Hi, I'm Jacob."
+  },
+  "blog": {
+    "heading": "My blog",
+    "intro": "If you are interested, check out my <link>blog</link>."
+  }
 }

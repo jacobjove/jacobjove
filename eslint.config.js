@@ -9,7 +9,7 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import tsParser from '@typescript-eslint/parser';
 import unusedImportsPlugin from 'eslint-plugin-unused-imports';
 import * as espree from 'espree';
-import prettierConfig from './.prettierrc.js';
+import prettierConfig from './prettier.config.js';
 
 const PROJECT_PATTERNS = ['./tsconfig.json'];
 
@@ -77,8 +77,18 @@ const configs = [
       ],
       // https://github.com/import-js/eslint-plugin-import#importparsers
       'import/parsers': {
-        '@typescript-eslint/parser': ['.ts', '.cts', '.mts', '.tsx'],
-        espree: ['.js', '.cjs', '.mjs', '.jsx'],
+        '@typescript-eslint/parser': [
+          '.ts',
+          '.cts',
+          '.mts',
+          '.tsx',
+        ],
+        espree: [
+          '.js',
+          '.cjs',
+          '.mjs',
+          '.jsx',
+        ],
       },
       // https://github.com/import-js/eslint-plugin-import#resolvers
       'import/resolver': {
@@ -186,7 +196,12 @@ const configs = [
     },
   },
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
+    files: [
+      '**/*.ts',
+      '**/*.tsx',
+      '**/*.mts',
+      '**/*.cts',
+    ],
     languageOptions: {
       ecmaVersion: 'latest',
       parser: tsParser,
@@ -443,7 +458,15 @@ const configs = [
       'jsx-a11y/control-has-associated-label': [
         'off',
         {
-          ignoreElements: ['audio', 'canvas', 'embed', 'input', 'textarea', 'tr', 'video'],
+          ignoreElements: [
+            'audio',
+            'canvas',
+            'embed',
+            'input',
+            'textarea',
+            'tr',
+            'video',
+          ],
           ignoreRoles: [
             'grid',
             'listbox',
@@ -514,9 +537,31 @@ const configs = [
       'jsx-a11y/no-noninteractive-element-to-interactive-role': [
         'error',
         {
-          ul: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
-          ol: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
-          li: ['menuitem', 'option', 'row', 'tab', 'treeitem'],
+          ul: [
+            'listbox',
+            'menu',
+            'menubar',
+            'radiogroup',
+            'tablist',
+            'tree',
+            'treegrid',
+          ],
+          ol: [
+            'listbox',
+            'menu',
+            'menubar',
+            'radiogroup',
+            'tablist',
+            'tree',
+            'treegrid',
+          ],
+          li: [
+            'menuitem',
+            'option',
+            'row',
+            'tab',
+            'treeitem',
+          ],
           table: ['grid'],
           td: ['gridcell'],
           fieldset: ['radiogroup', 'presentation'],
@@ -535,7 +580,14 @@ const configs = [
         'error',
         {
           allowExpressionValues: true,
-          handlers: ['onClick', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
+          handlers: [
+            'onClick',
+            'onMouseDown',
+            'onMouseUp',
+            'onKeyPress',
+            'onKeyDown',
+            'onKeyUp',
+          ],
         },
       ],
       'jsx-a11y/role-has-required-aria-props': 'error',

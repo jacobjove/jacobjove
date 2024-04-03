@@ -25,7 +25,7 @@
 }
 
 .language-selector-container .language-selector * {
-  color: inherit !important;
+  /* color: inherit !important; */
   font-size: 1rem !important;
   border: none !important;
 }
