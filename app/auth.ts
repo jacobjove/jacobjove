@@ -1,13 +1,11 @@
 import NextAuth from 'next-auth';
 
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import type { NextAuthConfig } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type { AppProviders } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
-import mongoClientPromise from '@utils/mongo';
 
 const GOOGLE_AUTHORIZATION_URL =
   'https://accounts.google.com/o/oauth2/v2/auth?' +
@@ -235,7 +233,6 @@ async function refreshAccessToken(token: JWT) {
 
 export const authOptions: NextAuthConfig = {
   // https://next-auth.js.org/configuration/options#callbacks
-  adapter: MongoDBAdapter(mongoClientPromise),
   callbacks,
   debug: process.env.NODE_ENV === 'development' && false,
   // https://next-auth.js.org/configuration/pages

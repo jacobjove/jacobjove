@@ -1,7 +1,4 @@
 services:
-  mongo:
-    ports:
-      - "${MONGO_PORT}:${MONGO_PORT}"
   nextjs:
     # command: bash -c "export NODE_ENV=development && pnpm dev"
     environment:
