@@ -31,7 +31,7 @@
     "inflection": "^1.13.2",
     "intl-locale-textinfo-polyfill": "^2.1.1",
     "lodash": "^4.17.21",
-    "material-ui-popup-state": "^4.1.0",
+    "material-ui-popup-state": "^5.1.0",
     "negotiator": "^0.6.3",
     "next": "^14.1.4",
     "next-auth": "5.0.0-beta.15",
