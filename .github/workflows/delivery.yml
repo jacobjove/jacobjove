@@ -2,22 +2,6 @@
 
 name: Delivery
 on:
-  push:
-    tags:
-      - douzo
-    # branches: [main]
-    # paths-ignore:
-    #   - .gitignore
-    #   - .github/**
-    #   - "!.github/workflows/delivery.yml"
-    #   - .husky/**
-    #   - .idea/**
-    #   - .vscode/**
-    #   - "**.md"
-    #   - "**.rst"
-    #   - "**.txt"
-    #   - package*.json
-    #   - yarn.lock
   workflow_dispatch:
 
 env:
