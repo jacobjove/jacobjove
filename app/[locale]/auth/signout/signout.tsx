@@ -1,4 +1,3 @@
-import Layout from '@components/Layout';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -6,6 +5,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { NextSeo } from 'next-seo';
 import type { FunctionComponent } from 'react';
 import { useEffect } from 'react';
+import Layout from '@app/client/layout';
 
 const SignOut: FunctionComponent = () => {
   const { data: session } = useSession();
