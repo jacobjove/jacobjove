@@ -11,6 +11,10 @@ const _filename = url.fileURLToPath(import.meta.url);
 const _dirname = path.dirname(_filename);
 const ROOT_DIR = path.resolve(_dirname);
 
+if (process.env.NODE_ENV !== 'development') {
+  throw new Error('Not dev');
+}
+
 const withNextIntl = createNextIntlPlugin('./i18n/index.ts');
 
 const withMDX = mdx({
@@ -74,7 +78,7 @@ const nextConfig = {
 // Set additional config options for the Sentry Webpack plugin.
 // https://github.com/getsentry/sentry-webpack-plugin#options
 const sentryWebpackPluginOptions = {
-  dryRun: process.env.SENTRY_DRY_RUN === 'true',
+  dryRun: process.env.NODE_ENV === 'development' || process.env.SENTRY_DRY_RUN === 'true',
   silent: true,
   org: 'jacobjove',
   project: 'jacobjove',
@@ -88,7 +92,7 @@ const sentryOptions = {
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
 
-  // Transpiles SDK to be compatible with IE11 (increases bundle size)
+  // Transpile SDK to be compatible with IE11 (increases bundle size)
   transpileClientSDK: true,
 
   // Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
@@ -107,7 +111,7 @@ const sentryOptions = {
   // See the following for more information:
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
-  automaticVercelMonitors: true,
+  automaticVercelMonitors: false,
 };
 
 export default withSentryConfig(
