@@ -1,5 +1,5 @@
 ARG NODE_VERSION=18
-ARG PNPM_VERSION=8.15.3
+ARG PNPM_VERSION=9.0.6
 ARG PORT=3000
 
 # TODO: https://github.com/mpash/pnpm-next-docker/blob/main/Dockerfile
