@@ -27,3 +27,9 @@ next.config.original.js
 
 # Sentry
 next.config.wizardcopy.js
+
+# Sentry Config File
+.sentryclirc
+
+# Sentry Config File
+.sentryclirc

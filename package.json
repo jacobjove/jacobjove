@@ -14,7 +14,7 @@
     "@mui/material-nextjs": "^5.15.11",
     "@mui/system": "^5.11.11",
     "@next/mdx": "^12.3.1",
-    "@sentry/nextjs": "^7.87.0",
+    "@sentry/nextjs": "^7.106.1",
     "accept-language": "^3.0.18",
     "cookies-next": "^2.1.1",
     "date-fns": "^2.29.3",
