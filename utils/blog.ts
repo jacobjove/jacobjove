@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { globSync } from 'glob';
 import matter from 'gray-matter';
-import type { BlogPost } from '@types/blog';
+import type { BlogPost } from '@app/blog';
 
 const POSTS_DIR = `${process.cwd()}/posts`;
 const POSTS_GLOB_PATTERN = `${POSTS_DIR}/**/*.mdx`;
