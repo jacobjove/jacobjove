@@ -46,7 +46,8 @@ async function getResumes(): Promise<Resume[]> {
       return new Promise((resolve, reject) => {
         dl.on('error', (err) => {
           console.log(`Download failed for resume ${index + 1}:`, err);
-          resolve(null);
+          // resolve(null);
+          reject();
         });
         dl.on('end', () => {
           const tempFilepath = `${RESUME_DIR}/${tempFilename}`;
@@ -59,7 +60,8 @@ async function getResumes(): Promise<Resume[]> {
             resolve(resumeData);
           } else {
             console.error(`File not found: ${tempFilepath}`);
-            resolve(null);
+            // resolve(null);
+            reject();
           }
         });
         dl.start().catch((err) => {
