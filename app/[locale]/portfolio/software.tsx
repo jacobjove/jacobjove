@@ -56,7 +56,7 @@ const PROJECTS: [string, string, string, string, string[]][] = [
 ];
 
 export default function Projects() {
-  const t = useTranslations('software');
+  const t = useTranslations('portfolio.software');
   return (
     <>
       <PageHeader>{t('title')}</PageHeader>

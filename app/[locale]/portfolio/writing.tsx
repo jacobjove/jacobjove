@@ -38,7 +38,7 @@ const PROJECTS: [string, string, string, string, string[]][] = [
 ];
 
 export default function Projects() {
-  const t = useTranslations('writing');
+  const t = useTranslations('portfolio.writing');
   return (
     <>
       <PageHeader>{t('title')}</PageHeader>
