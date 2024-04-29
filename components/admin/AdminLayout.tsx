@@ -13,13 +13,12 @@ interface AdminLayoutProps {
 
 const AdminLayout: FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
   const router = useRouter();
-  const { asPath } = router;
   const query = useSearchParams();
   const pathname = usePathname();
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push(`/auth/signin?callbackUrl=${asPath}`);
+      router.push(`/auth/signin?callbackUrl=${pathname}`);
     },
   });
   const breadcrumbs = useMemo(() => {

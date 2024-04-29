@@ -3,7 +3,7 @@
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
-import { MENU_ITEMS, SITE_TITLE } from './constants';
+import { SITE_TITLE } from './constants';
 import ContextProvider from './context';
 import Navbar from '@components/Navbar';
 import Footer from '@components/Footer';
@@ -55,7 +55,30 @@ export default function ClientLayout({ children, fluid = false, maxWidth = 'md' 
       <div
         style={{ height: '100%', maxHeight: '100%', display: 'flex', flexDirection: 'column' }}
       >
-        <Navbar siteTitle={SITE_TITLE} menuItems={MENU_ITEMS} logo={<Logo />} />
+        <Navbar
+          siteTitle={SITE_TITLE}
+          menuItems={[
+            [
+              'about',
+              'About',
+              [
+                ['about', 'About Jacob', '/about'],
+                ['cv', 'CV', '/cv'],
+              ],
+            ],
+            [
+              'portfolio',
+              'Portfolio',
+              [
+                ['software', 'Software', '/portfolio/software'],
+                ['writing', 'Writing', '/portfolio/writing'],
+              ],
+            ],
+            ['blog', 'Blog', '/blog'],
+            ['contact', 'Contact', '/contact'],
+          ]}
+          logo={<Logo />}
+        />
         <Container
           component={'main'}
           {...(fluid ? { maxWidth: false } : maxWidth ? { maxWidth } : { maxWidth: 'md' })}
