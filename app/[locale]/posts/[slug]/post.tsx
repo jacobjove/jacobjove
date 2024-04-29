@@ -1,3 +1,5 @@
+'use client';
+
 import type { NextPage } from 'next';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { MDXRemote } from 'next-mdx-remote';
