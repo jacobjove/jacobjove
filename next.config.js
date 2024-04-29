@@ -11,10 +11,6 @@ const _filename = url.fileURLToPath(import.meta.url);
 const _dirname = path.dirname(_filename);
 const ROOT_DIR = path.resolve(_dirname);
 
-if (process.env.NODE_ENV !== 'development') {
-  throw new Error('Not dev');
-}
-
 const withNextIntl = createNextIntlPlugin('./i18n/index.ts');
 
 const withMDX = mdx({
