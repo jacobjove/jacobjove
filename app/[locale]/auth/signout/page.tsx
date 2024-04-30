@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import SignOutPage from './signout';
-import Layout from '@app/client/layout';
 import { getStaticParams } from '@i18n';
 
 export const metadata: Metadata = {
@@ -8,11 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page({ params }: { params: { locale: string } }) {
-  return (
-    <Layout>
-      <SignOutPage />
-    </Layout>
-  );
+  return <SignOutPage />;
 }
 
 export function generateStaticParams() {

@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from '@navigation';
 import SocialLogin from '@components/auth/SocialLogin';
 import type { Providers } from '@app/auth';
+import Layout from '@app/client/layout';
 
 interface SignInPageProps {
   providers: Providers;
@@ -61,7 +62,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
     }
   };
   return (
-    <>
+    <Layout>
       <NextSeo
         title={'Sign in'}
         canonical={'/auth/signin'}
@@ -144,7 +145,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
           </div>
         )}
       </Box>
-    </>
+    </Layout>
   );
 };
 
