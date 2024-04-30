@@ -1,15 +1,6 @@
-import path from 'path';
-import url from 'url';
 import mdx from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
-
-// https://nextjs.org/docs/api-reference/next.config.js/introduction
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
-const _filename = url.fileURLToPath(import.meta.url);
-const _dirname = path.dirname(_filename);
-const ROOT_DIR = path.resolve(_dirname);
 
 const withNextIntl = createNextIntlPlugin('./i18n/index.ts');
 
@@ -51,8 +42,8 @@ const nextConfig = {
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
     hideSourceMaps: true,
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#disable-sentrywebpackplugin
-    disableServerWebpackPlugin: process.env.NODE_ENV === 'development',
-    disableClientWebpackPlugin: process.env.NODE_ENV === 'development',
+    disableServerWebpackPlugin: true, // process.env.NODE_ENV === 'development',
+    disableClientWebpackPlugin: true, // process.env.NODE_ENV === 'development',
   },
   // https://nextjs.org/docs/api-reference/next.config.js/react-strict-mode
   reactStrictMode: true,
@@ -74,7 +65,7 @@ const nextConfig = {
 // Set additional config options for the Sentry Webpack plugin.
 // https://github.com/getsentry/sentry-webpack-plugin#options
 const sentryWebpackPluginOptions = {
-  dryRun: process.env.NODE_ENV === 'development' || process.env.SENTRY_DRY_RUN === 'true',
+  dryRun: true, // TODO
   silent: true,
   org: 'jacobjove',
   project: 'jacobjove',

@@ -1,4 +1,5 @@
 'use client';
+
 import { useSession, signOut } from 'next-auth/react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
