@@ -8,9 +8,8 @@ import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { NextSeo } from 'next-seo';
 import type { FunctionComponent } from 'react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from '@navigation';
 import SocialLogin from '@components/auth/SocialLogin';
 import type { Providers } from '@app/auth';
@@ -20,7 +19,7 @@ interface SignInPageProps {
   providers: Providers;
 }
 
-const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
+const SignIn: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
   const router = useRouter();
   const query = useSearchParams();
   const { data: session } = useSession();
@@ -63,11 +62,11 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
   };
   return (
     <Layout>
-      <NextSeo
+      {/* <NextSeo
         title={'Sign in'}
         canonical={'/auth/signin'}
         description={'Sign in to your SelfBuilder account.'}
-      />
+      /> */}
       <Box m={'auto'} p={4} maxWidth={'30rem'}>
         {!!error && (
           <>
@@ -146,6 +145,14 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
         )}
       </Box>
     </Layout>
+  );
+};
+
+const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
+  return (
+    <Suspense>
+      <SignIn providers={providers} />
+    </Suspense>
   );
 };
 

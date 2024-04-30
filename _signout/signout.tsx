@@ -4,9 +4,8 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { signOut, useSession } from 'next-auth/react';
-import { NextSeo } from 'next-seo';
 import type { FunctionComponent } from 'react';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import Layout from '@app/client/layout';
 
 const SignOut: FunctionComponent = () => {
@@ -16,7 +15,7 @@ const SignOut: FunctionComponent = () => {
   }, [session]);
   return (
     <Layout>
-      <NextSeo title={'Sign out'} noindex />
+      {/* <NextSeo title={'Sign out'} noindex /> */}
       <Container>
         <Box
           display="flex"
@@ -33,4 +32,12 @@ const SignOut: FunctionComponent = () => {
   );
 };
 
-export default SignOut;
+const SignOutPage: FunctionComponent = () => {
+  return (
+    <Suspense>
+      <SignOut />
+    </Suspense>
+  );
+};
+
+export default SignOutPage;
