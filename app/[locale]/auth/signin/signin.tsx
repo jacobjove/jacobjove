@@ -7,17 +7,16 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import type { getProviders } from 'next-auth/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { NextSeo } from 'next-seo';
 import type { FunctionComponent } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from '@navigation';
-import Layout from '@app/client/layout';
 import SocialLogin from '@components/auth/SocialLogin';
+import type { Providers } from '@app/auth';
 
 interface SignInPageProps {
-  providers: Awaited<ReturnType<typeof getProviders>>;
+  providers: Providers;
 }
 
 const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
@@ -62,7 +61,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
     }
   };
   return (
-    <Layout>
+    <>
       <NextSeo
         title={'Sign in'}
         canonical={'/auth/signin'}
@@ -145,7 +144,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
           </div>
         )}
       </Box>
-    </Layout>
+    </>
   );
 };
 

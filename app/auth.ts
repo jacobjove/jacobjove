@@ -7,6 +7,9 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
+// TODO
+export type ProviderId = 'credentials' | 'github' | 'google';
+
 const GOOGLE_AUTHORIZATION_URL =
   'https://accounts.google.com/o/oauth2/v2/auth?' +
   new URLSearchParams({
@@ -29,7 +32,6 @@ if (APP_ENV === 'test') {
 // interface MockCredentials {
 //   name: string;
 // }
-
 const providers: AppProviders = [];
 if (useMockProviders) {
   // const credentials = {
@@ -253,3 +255,39 @@ export const {
   handlers: { GET, POST },
   auth,
 } = NextAuth(authOptions);
+
+export type Provider = {
+  id: ProviderId;
+  name: string;
+  type: string;
+  style: {
+    logo: string;
+    bg: string;
+    text: string;
+  };
+};
+
+export type Providers = Partial<Record<ProviderId, Provider>>;
+export function getProviders(): Providers {
+  const providerKeys: (keyof Provider)[] = [
+    'id',
+    'name',
+    'type',
+    'style',
+  ];
+  return Object.fromEntries(
+    providers.map((provider) => {
+      const providerObj = getKeyValuesFromObject<Provider>(provider, providerKeys);
+      return [providerObj.id, getKeyValuesFromObject<Provider>(provider, providerKeys)];
+    })
+  );
+}
+
+function getKeyValuesFromObject<T>(obj: any, keys: (keyof T)[]): T {
+  return keys.reduce((acc, key) => {
+    if (obj[key]) {
+      acc[key] = obj[key];
+    }
+    return acc;
+  }, {} as T);
+}
