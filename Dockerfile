@@ -17,7 +17,7 @@ RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION}
 
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
-LABEL org.opencontainers.image.source https://github.com/iacobfred/jacobjove
+LABEL org.opencontainers.image.source https://github.com/jacobjove/jacobjove
 
 # Install dependencies only when needed
 FROM base AS deps

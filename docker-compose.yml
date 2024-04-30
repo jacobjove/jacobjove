@@ -13,12 +13,6 @@ services:
       - ./.env:/root/.env
   nextjs:
     <<: *default
-    build:
-      context: .
-      dockerfile: Dockerfile
-      network: host
-      args:
-        - PORT=${PORT}
     image: ghcr.io/jacobjove/jacobjove:latest
     depends_on:
       - tempo
