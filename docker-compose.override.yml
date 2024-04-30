@@ -1,10 +1,14 @@
 services:
   nextjs:
-    # command: bash -c "export NODE_ENV=development && pnpm dev"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+      args:
+        - PORT=${PORT}
     environment:
       NEXT_PUBLIC_BASE_URL: "http://localhost:${PORT}"
       NEXTAUTH_URL: "http://localhost:${PORT}"
-      NODE_ENV: development
       REACT_EDITOR: code
     # user: root # avoid permissions issues with writing in build dir
     # volumes:

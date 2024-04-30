@@ -1,3 +1,5 @@
+'use client';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
@@ -7,7 +9,7 @@ const PROJECTS: [string, string, string, string, string[]][] = [
   [
     'SelfBuilder',
     'https://selfbuilder.orega.org/',
-    'https://github.com/iacobfred/selfbuilder',
+    'https://github.com/jacobjove/selfbuilder',
     'SelfBuilder (under development) is a web app that helps you manage your time, build habits, and achieve your personal goals.',
     [
       'Next.js',
@@ -46,15 +48,15 @@ const PROJECTS: [string, string, string, string, string[]][] = [
   ],
   [
     'GHA',
-    'https://github.com/iacobfred/gha',
-    'https://github.com/iacobfred/gha',
+    'https://github.com/jacobjove/gha',
+    'https://github.com/jacobjove/gha',
     "GHA is a monorepo containing GitHub Actions that I've written, including `generate-dotenv` and `deploy-docker-ssh`.",
     ['TypeScript', 'GitHub Actions'],
   ],
 ];
 
 export default function Projects() {
-  const t = useTranslations('software');
+  const t = useTranslations('portfolio.software');
   return (
     <>
       <PageHeader>{t('title')}</PageHeader>

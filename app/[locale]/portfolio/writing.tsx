@@ -1,3 +1,5 @@
+'use client';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
@@ -8,7 +10,7 @@ const PROJECTS: [string, string, string, string, string[]][] = [
   // [
   //   "SelfBuilder",
   //   "https://selfbuilder.orega.org/",
-  //   "https://github.com/iacobfred/selfbuilder",
+  //   "https://github.com/jacobjove/selfbuilder",
   //   "SelfBuilder (under development) is a web app that helps you manage your time, build habits, and achieve your personal goals.",
   //   ["Next.js", "React", "TypeScript", "MongoDB", "Docker"],
   // ],
@@ -22,21 +24,21 @@ const PROJECTS: [string, string, string, string, string[]][] = [
   // [
   //   "KW Striping",
   //   "https://kwstriping.com/",
-  //   "https://github.com/iacobfred/service-shop",
+  //   "https://github.com/jacobjove/service-shop",
   //   "KW Striping is the web app used by KW Striping (a small Utah business) to accept service requests from customers.",
   //   ["Django", "Python", "TypeScript", "Postgres", "Docker"],
   // ],
   // [
   //   "GHA",
-  //   "https://github.com/iacobfred/gha",
-  //   "https://github.com/iacobfred/gha",
+  //   "https://github.com/jacobjove/gha",
+  //   "https://github.com/jacobjove/gha",
   //   "GHA is a monorepo containing GitHub Actions that I've written, including `generate-dotenv` and `deploy-docker-ssh`.",
   //   ["TypeScript", "GitHub Actions"],
   // ],
 ];
 
 export default function Projects() {
-  const t = useTranslations('writing');
+  const t = useTranslations('portfolio.writing');
   return (
     <>
       <PageHeader>{t('title')}</PageHeader>

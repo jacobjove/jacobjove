@@ -1,4 +1,4 @@
-ARG NODE_VERSION=18
+ARG NODE_VERSION=20
 ARG PNPM_VERSION=9.0.6
 ARG PORT=3000
 
@@ -17,7 +17,7 @@ RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION}
 
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
-LABEL org.opencontainers.image.source https://github.com/iacobfred/jacobjove
+LABEL org.opencontainers.image.source https://github.com/jacobjove/jacobjove
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -49,7 +49,6 @@ RUN pnpm build
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 

@@ -1,11 +1,12 @@
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { getProviders, signIn } from "next-auth/react";
-import { FC, ReactElement } from "react";
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import GoogleIcon from '@mui/icons-material/Google';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { signIn } from 'next-auth/react';
+import type { FC, ReactElement } from 'react';
+import type { Providers } from '@app/auth';
 
 export const SOCIAL_ICONS = {
   facebook: FacebookIcon,
@@ -14,17 +15,21 @@ export const SOCIAL_ICONS = {
   github: GitHubIcon,
 };
 
-const CREDENTIALS_KEY = "credentials";
-const EMAIL_KEY = "email";
+const CREDENTIALS_KEY = 'credentials';
+const EMAIL_KEY = 'email';
 
 interface SocialLoginProps {
-  providers: Awaited<ReturnType<typeof getProviders>>;
+  providers: Providers;
   callbackUrl: string;
   onError: (error: string) => void;
 }
 
-const SocialLogin: FC<SocialLoginProps> = ({ providers, callbackUrl, onError }: SocialLoginProps) => {
-  if (!providers) throw new Error("No providers are configured.");
+const SocialLogin: FC<SocialLoginProps> = ({
+  providers,
+  callbackUrl,
+  onError,
+}: SocialLoginProps) => {
+  if (!providers) throw new Error('No providers are configured.');
   const socialAuthLoginComponents: ReactElement[] = [];
   const handleSocialLogin = async (providerId: string) => {
     try {
@@ -40,7 +45,7 @@ const SocialLogin: FC<SocialLoginProps> = ({ providers, callbackUrl, onError }: 
     socialAuthLoginComponents.push(
       <Button
         key={provider.name}
-        style={{ minWidth: "245px", maxWidth: "245px" }}
+        style={{ minWidth: '245px', maxWidth: '245px' }}
         onClick={() => handleSocialLogin(provider.id)}
       >
         <Icon /> {`Sign in with ${provider.name}`}
@@ -52,7 +57,7 @@ const SocialLogin: FC<SocialLoginProps> = ({ providers, callbackUrl, onError }: 
       {(!!socialAuthLoginComponents.length && (
         <Box id="social-sign-in" justifyContent="center">
           {socialAuthLoginComponents.map((component) => (
-            <Box key={component.key} sx={{ my: 1, display: "flex", justifyContent: "center" }}>
+            <Box key={component.key} sx={{ my: 1, display: 'flex', justifyContent: 'center' }}>
               {component}
             </Box>
           ))}

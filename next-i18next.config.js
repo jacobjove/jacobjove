@@ -39,7 +39,7 @@ const i18nConfig = {
     ], // 1 hour
     backends: BROWSER_MODE ? [LocalStorageBackend, HttpBackend] : [],
   },
-  reloadOnPrerender: process.env.NODE_ENV === 'development',
+  reloadOnPrerender: process.env.NODE_ENV !== 'development', // TODO: confirm this works
   serializeConfig: false,
   use: BROWSER_MODE ? [ChainedBackend] : [],
 };

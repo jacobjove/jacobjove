@@ -1,4 +1,6 @@
 'use client';
+
+import { Suspense, Fragment, useReducer, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -20,7 +22,6 @@ import { setCookie } from 'cookies-next';
 import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
-import { Fragment, useReducer, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useColorScheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
@@ -260,7 +261,9 @@ export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
             </Box>
           </Box>
         </Toolbar>
-        <DynamicPageTransitionProgressBar />
+        <Suspense>
+          <DynamicPageTransitionProgressBar />
+        </Suspense>
       </AppBar>
       <MobileDrawer
         open={mobileOpen}

@@ -1,15 +1,6 @@
-import path from 'path';
-import url from 'url';
 import mdx from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
 import createNextIntlPlugin from 'next-intl/plugin';
-
-// https://nextjs.org/docs/api-reference/next.config.js/introduction
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
-const _filename = url.fileURLToPath(import.meta.url);
-const _dirname = path.dirname(_filename);
-const ROOT_DIR = path.resolve(_dirname);
 
 const withNextIntl = createNextIntlPlugin('./i18n/index.ts');
 
@@ -50,6 +41,9 @@ const nextConfig = {
     // https://webpack.js.org/configuration/devtool/
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
     hideSourceMaps: true,
+    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#disable-sentrywebpackplugin
+    disableServerWebpackPlugin: true, // process.env.NODE_ENV === 'development',
+    disableClientWebpackPlugin: true, // process.env.NODE_ENV === 'development',
   },
   // https://nextjs.org/docs/api-reference/next.config.js/react-strict-mode
   reactStrictMode: true,
@@ -71,8 +65,42 @@ const nextConfig = {
 // Set additional config options for the Sentry Webpack plugin.
 // https://github.com/getsentry/sentry-webpack-plugin#options
 const sentryWebpackPluginOptions = {
-  dryRun: process.env.SENTRY_DRY_RUN === 'true',
+  dryRun: true, // TODO
   silent: true,
+  org: 'jacobjove',
+  project: 'jacobjove',
+  url: 'https://glitchtip.orega.org/',
 };
 
-export default withSentryConfig(withNextIntl(withMDX(nextConfig), sentryWebpackPluginOptions));
+const sentryOptions = {
+  // For all available options, see:
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+
+  // Upload a larger set of source maps for prettier stack traces (increases build time)
+  widenClientFileUpload: true,
+
+  // Transpile SDK to be compatible with IE11 (increases bundle size)
+  transpileClientSDK: true,
+
+  // Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
+  // This can increase your server load as well as your hosting bill.
+  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
+  // side errors will fail.
+  // tunnelRoute: "/monitoring",
+
+  // Hides source maps from generated client bundles
+  hideSourceMaps: true,
+
+  // Automatically tree-shake Sentry logger statements to reduce bundle size
+  disableLogger: true,
+
+  // Enables automatic instrumentation of Vercel Cron Monitors.
+  // See the following for more information:
+  // https://docs.sentry.io/product/crons/
+  // https://vercel.com/docs/cron-jobs
+  automaticVercelMonitors: false,
+};
+
+export default withSentryConfig(
+  withNextIntl(withMDX(nextConfig), sentryWebpackPluginOptions, sentryOptions)
+);

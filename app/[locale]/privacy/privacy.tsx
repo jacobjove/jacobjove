@@ -1,3 +1,5 @@
+'use client';
+
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import PageHeader from '@components/PageHeader';

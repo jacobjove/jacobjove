@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import DateFormatter from './DateFormatter';
-import type { BlogPost } from '@types/blog';
+import type { BlogPost } from '@app/blog';
 
 const DEFAULT_EXCERPT = 'This post has no excerpt.';
 

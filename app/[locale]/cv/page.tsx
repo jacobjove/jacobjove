@@ -31,7 +31,9 @@ export const metadata: Metadata = {
   title: 'CV',
 };
 
-async function getResumes(): Promise<Resume[]> {
+type MaybeResume = Resume | null;
+
+async function getResumes(): Promise<MaybeResume[]> {
   return await Promise.all(
     RESUMES.map(async (resume, index) => {
       const id = `${Date.now() + index}`; // Unique ID for each resume
@@ -47,6 +49,7 @@ async function getResumes(): Promise<Resume[]> {
         dl.on('error', (err) => {
           console.log(`Download failed for resume ${index + 1}:`, err);
           resolve(null);
+          // reject();
         });
         dl.on('end', () => {
           const tempFilepath = `${RESUME_DIR}/${tempFilename}`;
@@ -60,6 +63,7 @@ async function getResumes(): Promise<Resume[]> {
           } else {
             console.error(`File not found: ${tempFilepath}`);
             resolve(null);
+            // reject();
           }
         });
         dl.start().catch((err) => {
@@ -73,7 +77,8 @@ async function getResumes(): Promise<Resume[]> {
 
 export default async function Page({ params }: { params: { locale: string } }) {
   unstable_setRequestLocale(params.locale);
-  const resumes = await getResumes();
+  const maybeResumes = await getResumes();
+  const resumes = maybeResumes.filter((resume) => !!resume) as Resume[];
   return (
     <Layout>
       <CVPage resumes={resumes} />

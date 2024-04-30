@@ -7,48 +7,48 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import type { getProviders } from 'next-auth/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { NextSeo } from 'next-seo';
 import type { FunctionComponent } from 'react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from '@navigation';
-import Layout from '@app/client/layout';
 import SocialLogin from '@components/auth/SocialLogin';
+import type { Providers } from '@app/auth';
+import Layout from '@app/client/layout';
 
 interface SignInPageProps {
-  providers: Awaited<ReturnType<typeof getProviders>>;
+  providers: Providers;
 }
 
-const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
+const SignIn: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
   const router = useRouter();
   const query = useSearchParams();
   const { data: session } = useSession();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const callbackUrl = Array.isArray(query?.callbackUrl)
-    ? query.callbackUrl[0]
-    : query?.callbackUrl;
+  const _callbackUrl = query?.get('callbackUrl');
+  const provider = query?.get('provider');
+  const callbackUrl = Array.isArray(_callbackUrl) ? _callbackUrl[0] : _callbackUrl;
   useEffect(() => {
-    if (typeof query.provider === 'string') {
-      const scope =
-        typeof query.scope === 'string' ? query.scope.split(',').join(' ') : undefined;
+    const _scope = query?.get('scope');
+    const error = query?.get('error');
+    if (typeof provider === 'string') {
+      const scope = typeof _scope === 'string' ? _scope.split(',').join(' ') : undefined;
       signIn(
-        query.provider,
+        provider,
         typeof callbackUrl === 'string' ? { callbackUrl } : {},
         scope ? { scope } : {}
       );
-    } else if (query.error) {
-      setError(`${query?.error}`);
+    } else if (error) {
+      setError(`${error}`);
     }
-  }, [query, callbackUrl]);
+  }, [query, provider, callbackUrl]);
   useEffect(() => {
     if (session && callbackUrl) {
       router.push(callbackUrl);
     }
   }, [session, router, callbackUrl]);
-  if (query.provider) return <div>{'Redirecting...'}</div>;
+  if (provider) return <div>{'Redirecting...'}</div>;
   const handleCredentialsSubmission = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const response = await signIn('credentials', {
@@ -62,11 +62,11 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
   };
   return (
     <Layout>
-      <NextSeo
+      {/* <NextSeo
         title={'Sign in'}
         canonical={'/auth/signin'}
         description={'Sign in to your SelfBuilder account.'}
-      />
+      /> */}
       <Box m={'auto'} p={4} maxWidth={'30rem'}>
         {!!error && (
           <>
@@ -145,6 +145,14 @@ const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPag
         )}
       </Box>
     </Layout>
+  );
+};
+
+const SignInPage: FunctionComponent<SignInPageProps> = ({ providers }: SignInPageProps) => {
+  return (
+    <Suspense>
+      <SignIn providers={providers} />
+    </Suspense>
   );
 };
 

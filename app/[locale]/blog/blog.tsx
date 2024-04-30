@@ -1,8 +1,10 @@
+'use client';
+
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import PostPreview from '@components/blog/PostPreview';
 import PageHeader from '@components/PageHeader';
-import type { BlogPost } from '@types/blog';
+import type { BlogPost } from '@app/blog';
 
 interface BlogProps {
   posts: BlogPost[];
