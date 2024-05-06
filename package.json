@@ -68,7 +68,7 @@
     "@types/jest": "^26.0.24",
     "@types/jquery": "^3.5.29",
     "@types/json2mq": "^0.2.2",
-    "@types/lodash": "^4.17.0",
+    "@types/lodash": "^4.17.1",
     "@types/micro-cors": "^0.1.5",
     "@types/negotiator": "^0.6.3",
     "@types/node": "^18.19.31",
