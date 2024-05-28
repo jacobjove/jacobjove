@@ -144,7 +144,7 @@ jobs:
           push: true
           tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
       - name: Deploy to server
-        uses: jacobjove/deploy-docker-ssh@v0.4.9
+        uses: jacobjove/deploy-docker-ssh@v0.5.0
         with:
           host: ${{ steps.dotenv.outputs.domain }}
           user: jacob

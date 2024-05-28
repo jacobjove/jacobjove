@@ -1,9 +1,9 @@
-import PageHeader from "@components/PageHeader";
-import { MDXProvider as _MDXProvider } from "@mdx-js/react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Typography from "@mui/material/Typography";
-import { FC, ReactNode } from "react";
+import { MDXProvider as _MDXProvider } from '@mdx-js/react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Typography from '@mui/material/Typography';
+import type { FC, ReactNode } from 'react';
+import PageHeader from '@components/PageHeader';
 
 interface UniversalProps {
   children: ReactNode;
