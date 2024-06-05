@@ -53,7 +53,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v44.5.1
+        uses: tj-actions/changed-files@v44.5.2
 
   create-dotenv:
     name: Generate .env file
@@ -114,7 +114,7 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@v3.2.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -149,7 +149,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
       - name: Deploy to server
-        uses: jacobjove/deploy-docker-ssh@v0.5.0
+        uses: jacobjove/deploy-docker-ssh@v0.5.1
         with:
           host: kfred.duckdns.org
           user: jacob
