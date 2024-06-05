@@ -148,7 +148,7 @@ jobs:
       - name: Deploy to server
         uses: jacobjove/deploy-docker-ssh@v0.5.0
         with:
-          host: jacobjove.duckdns.org
+          host: kfred.duckdns.org
           user: jacob
           source-dir: .
           target-dir: /var/www/${{ steps.dotenv.outputs.domain }}
@@ -156,14 +156,11 @@ jobs:
             .env
             docker-compose.yml
             .config
+            scripts
           ssh-port: ${{ secrets.SSH_PORT }}
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: |
-            set -a && source .env && set +a &&
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin &&
-            docker compose pull && docker compose up -d &&
-            if [ $RELOAD_WEBSERVER = true ]; then echo 'Reloading webserver...'; nginx -s reload; fi;
-            docker system prune -f
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_TOWER }}
+          command:
+            python3 scripts/deploy.py jacobjove --sha ${{ github.sha }} --token ${{ secrets.GITHUB_TOKEN }}
         env:
           RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
