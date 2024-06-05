@@ -8,6 +8,8 @@ import subprocess
 from time import sleep
 from typing import Any
 
+CORE_SERVICES = ("tempo", "front")
+
 print(f"User: {getpass.getuser()}")
 
 parser = argparse.ArgumentParser(
@@ -55,6 +57,13 @@ parser.add_argument(
     # "elasticsearch", "tempo", "celery", "celery_beat", "next")
     help="Comma-delimited list of services to start",
 )
+parser.add_argument(
+    "--user",
+    dest="user",
+    action="store",
+    default="jacob.t.jove@gmail.com",
+    help="GitHub username/email",
+)
 
 config = vars(parser.parse_args())
 
@@ -72,9 +81,9 @@ if (sha := config.pop("sha", os.environ.get("SHA"))) is None:
 if (pat := config.pop("token", os.environ.get("PAT"))) is None:
     raise ValueError("PAT must be specified")
 
-continue_on_error = bool(config.pop("continue_on_error", False))
+user = config.pop("user")
 
-CORE_SERVICES = ("tempo", "dashboard", "storefront")
+continue_on_error = bool(config.pop("continue_on_error", False))
 
 services_to_pull = parse_csv(str(config.pop("services_to_pull", ""))) or [*CORE_SERVICES]
 
@@ -201,7 +210,7 @@ for service_name in service_names:
 # Login to the container registry.
 print("")
 print("Logging in to the container registry...")
-run(["docker", "login", "ghcr.io", "-u", "jacob.t.jove@gmail.com", "-p", pat])
+run(["docker", "login", "ghcr.io", "-u", user, "-p", pat])
 
 # Pull new images.
 print("")

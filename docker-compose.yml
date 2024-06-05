@@ -30,7 +30,7 @@ services:
     image: ghcr.io/sokaisolutions/tempo:latest
     volumes:
       - ./.env:/root/.env
-  nextjs:
+  front:
     <<: *default
     image: ghcr.io/jacobjove/jacobjove:latest
     depends_on:
@@ -38,7 +38,7 @@ services:
     ports:
       - ${PORT}:${PORT}
     environment:
-      NEXTAUTH_URL_INTERNAL: "http://nextjs:${PORT}"
+      NEXTAUTH_URL_INTERNAL: "http://front:${PORT}"
       NEXTAUTH_URL: "https://jacobjove.org"
       NODE_ENV: production
 

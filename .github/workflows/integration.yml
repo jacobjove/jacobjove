@@ -190,7 +190,7 @@ jobs:
         run: |
           docker compose pull;
           docker compose up -d --no-build --wait || {
-            docker compose logs nextjs;
+            docker compose logs front;
             docker compose ps;
             exit 1;
           }

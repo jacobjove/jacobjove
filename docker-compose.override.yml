@@ -1,5 +1,5 @@
 services:
-  nextjs:
+  front:
     build:
       context: .
       dockerfile: Dockerfile
