@@ -1,7 +1,7 @@
-import Avatar from "@mui/material/Avatar";
-import DateFormatter from "./DateFormatter";
+import Avatar from '@mui/material/Avatar';
+import DateFormatter from './DateFormatter';
 // import CoverImage from "./CoverImage";
-import PostTitle from "./PostTitle";
+import PostTitle from './PostTitle';
 
 type Props = {
   title: string;
@@ -9,8 +9,8 @@ type Props = {
   updatedAt?: string;
 };
 
-const AUTHOR_NAME = "Jacob Jove";
-const IMAGE = "/images/profile.jpg";
+const AUTHOR_NAME = 'Jacob Jove';
+const IMAGE = '/images/profile.jpg';
 
 const PostHeader = ({ title, publishedAt }: Props) => {
   return (

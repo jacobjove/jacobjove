@@ -21,8 +21,8 @@ export default function Home() {
         <Image priority src="/images/profile.jpg" height={144} width={144} alt={'Jacob Jove'} />
         <Box maxWidth={'26rem'} padding={'5px'}>
           <Typography className="lead">
-            Jacob Jove is a data scientist, technical consultant, writer,{' '}
-            <Link href="/pt">personal trainer</Link>, amateur chef, co-founder of{' '}
+            Jacob Jove is a writer, <Link href="/pt">personal trainer</Link>, amateur chef,
+            co-founder of{' '}
             <a href="https://www.sokaisolutions.com/" target="_blank" rel="noreferrer">
               Sokai Solutions
             </a>

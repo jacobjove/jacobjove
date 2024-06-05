@@ -1,14 +1,15 @@
-import { createTransport, Transporter } from "nodemailer";
+import type { Transporter } from 'nodemailer';
+import { createTransport } from 'nodemailer';
 
 if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
-  throw new Error("SMTP_USER and SMTP_PASSWORD environment variables are required.");
+  throw new Error('SMTP_USER and SMTP_PASSWORD environment variables are required.');
 }
 
 let transporter: Transporter;
 
 const options = {
   port: 465,
-  host: "smtp.gmail.com",
+  host: 'smtp.gmail.com',
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
@@ -16,7 +17,7 @@ const options = {
   secure: true,
 };
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === 'development') {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
   if (!global._transporter) {

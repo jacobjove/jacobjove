@@ -51,6 +51,7 @@
     "nostyle",
     "nullglob",
     "orega",
+    "packagejson",
     "Patreon",
     "postgres",
     "prefetch",

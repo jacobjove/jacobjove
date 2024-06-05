@@ -13,7 +13,6 @@
   "editor.linkedEditing": true,
   "editor.rulers": [100],
   "editor.suggestSelection": "first",
-  "eslint.experimental.useFlatConfig": true,
   "eslint.lintTask.enable": false,
   "eslint.format.enable": true,
   "explorer.autoReveal": false,

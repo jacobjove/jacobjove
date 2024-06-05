@@ -1,13 +1,13 @@
-import { DefaultSeoProps } from "next-seo";
+import type { DefaultSeoProps } from 'next-seo';
 
-const SITE_NAME = "JJ";
+const SITE_NAME = 'JJ';
 const DESCRIPTION = "Jacob's portfolio";
 
 const NextSeoConfig: DefaultSeoProps = {
   description: DESCRIPTION,
   openGraph: {
-    type: "website",
-    url: "https://jacobjove.org/",
+    type: 'website',
+    url: 'https://jacobjove.org/',
     site_name: SITE_NAME,
     title: SITE_NAME,
     description: DESCRIPTION,
@@ -30,36 +30,36 @@ const NextSeoConfig: DefaultSeoProps = {
   defaultTitle: SITE_NAME, // https://github.com/garmeeh/next-seo#default-title
   additionalMetaTags: [
     {
-      httpEquiv: "content-type",
-      content: "text/html; charset=utf-8",
+      httpEquiv: 'content-type',
+      content: 'text/html; charset=utf-8',
     },
     {
-      name: "application-name",
+      name: 'application-name',
       content: SITE_NAME,
     },
     {
-      name: "mobile-web-app-capable",
-      content: "yes",
+      name: 'mobile-web-app-capable',
+      content: 'yes',
     },
     {
-      name: "apple-mobile-web-app-capable",
-      content: "yes",
+      name: 'apple-mobile-web-app-capable',
+      content: 'yes',
     },
     {
-      name: "apple-mobile-web-app-status-bar-style",
-      content: "default",
+      name: 'apple-mobile-web-app-status-bar-style',
+      content: 'default',
     },
     {
-      name: "apple-mobile-web-app-title",
+      name: 'apple-mobile-web-app-title',
       content: SITE_NAME,
     },
     {
-      name: "format-detection",
-      content: "telephone=no",
+      name: 'format-detection',
+      content: 'telephone=no',
     },
     {
-      name: "apple-mobile-web-app-status-bar-style",
-      content: "default",
+      name: 'apple-mobile-web-app-status-bar-style',
+      content: 'default',
     },
     // <meta name='msapplication-config' content='/icons/browserconfig.xml' />
     // <meta name='msapplication-TileColor' content='#2B5797' />

@@ -1,5 +1,5 @@
-import Typography from "@mui/material/Typography";
-import { FC, ReactNode } from "react";
+import Typography from '@mui/material/Typography';
+import type { FC, ReactNode } from 'react';
 
 interface PageHeaderProps {
   children: ReactNode;
@@ -8,13 +8,13 @@ interface PageHeaderProps {
 const PageHeader: FC<PageHeaderProps> = ({ children }) => {
   return (
     <Typography
-      variant={"h1"}
-      component={"h1"}
+      variant={'h1'}
+      component={'h1'}
       sx={{
-        fontSize: "2.5rem",
-        fontWeight: "400",
-        margin: "1rem 0",
-        textAlign: "center",
+        fontSize: '2.5rem',
+        fontWeight: '400',
+        margin: '1rem 0',
+        textAlign: 'center',
       }}
     >
       {children}
