@@ -146,7 +146,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
       - name: Deploy to server
-        uses: jacobjove/deploy-docker-ssh@v0.5.0
+        uses: jacobjove/deploy-docker-ssh@v0.5.1
         with:
           host: kfred.duckdns.org
           user: jacob
