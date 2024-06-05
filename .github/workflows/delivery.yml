@@ -119,7 +119,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image with cache
+      - name: Build image
         id: build_with_cache
         # https://github.com/docker/build-push-action
         uses: docker/build-push-action@v5
@@ -134,20 +134,20 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
-      - name: Build image without cache
-        if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
-        # https://github.com/docker/build-push-action
-        uses: docker/build-push-action@v5
-        with:
-          build-args: |
-            PORT=${{ steps.dotenv.outputs.port }}
-          builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          file: Dockerfile
-          no-cache: true
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
+      # - name: Build image without cache
+      #   if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
+      #   # https://github.com/docker/build-push-action
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     build-args: |
+      #       PORT=${{ steps.dotenv.outputs.port }}
+      #     builder: ${{ steps.buildx.outputs.name }}
+      #     context: .
+      #     file: Dockerfile
+      #     no-cache: true
+      #     push: true
+      #     platforms: linux/amd64,linux/arm64
+      #     tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
       - name: Deploy to server
         uses: jacobjove/deploy-docker-ssh@v0.5.1
         with:
