@@ -167,6 +167,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
       - name: Build image without cache
         if: ${{ failure() && steps.build_with_cache.outcome == 'failure' }}
@@ -180,6 +181,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,scope=jacobjove,mode=max
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }}
       - name: Run containers
         run: |
