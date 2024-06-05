@@ -195,6 +195,9 @@ importers:
       '@types/jquery':
         specifier: ^3.5.30
         version: 3.5.30
+      '@types/json-merge-patch':
+        specifier: ^0.0.10
+        version: 0.0.10
       '@types/json2mq':
         specifier: ^0.2.2
         version: 0.2.2
@@ -1563,6 +1566,9 @@ packages:
 
   '@types/jsdom@20.0.1':
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
+
+  '@types/json-merge-patch@0.0.10':
+    resolution: {integrity: sha512-2OkvrOzPq/0XmXKdz9ImSOS28GUVLbH9vv0UDZoeX8qj/zJVCaBbJ6iDlZMOqOc5Y2zvzYoTJDoQ8FiV1JeL5g==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -7292,6 +7298,8 @@ snapshots:
       '@types/node': 18.19.34
       '@types/tough-cookie': 4.0.5
       parse5: 7.1.2
+
+  '@types/json-merge-patch@0.0.10': {}
 
   '@types/json-schema@7.0.15': {}
 
