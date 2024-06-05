@@ -45,14 +45,14 @@ parser.add_argument(
     "--services-to-pull",
     dest="services_to_pull",
     action="store",
-    default="".join(CORE_SERVICES),
+    default=",".join(CORE_SERVICES),
     help="Comma-delimited list of services to pull with the specified SHA",
 )
 parser.add_argument(
     "--services-to-start",
     dest="services_to_start",
     action="store",
-    default="".join(CORE_SERVICES),
+    default=",".join(CORE_SERVICES),
     # Specify containers to start IF NOT ALREADY RUNNING, in order of startup.
     # "elasticsearch", "tempo", "celery", "celery_beat", "next")
     help="Comma-delimited list of services to start",
