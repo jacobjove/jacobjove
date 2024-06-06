@@ -18,7 +18,7 @@ export default function Home() {
           justifyContent: 'center',
         }}
       >
-        <Image priority src="/images/profile.jpg" height={144} width={144} alt={'Jacob Jove'} />
+        <Image priority src="/images/profile.png" height={144} width={144} alt={'Jacob Jove'} />
         <Box maxWidth={'26rem'} padding={'5px'}>
           <Typography className="lead">
             Jacob Jove is a writer, <Link href="/pt">personal trainer</Link>, amateur chef,

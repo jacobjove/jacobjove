@@ -10,7 +10,7 @@ type Props = {
 };
 
 const AUTHOR_NAME = 'Jacob Jove';
-const IMAGE = '/images/profile.jpg';
+const IMAGE = '/images/profile.png';
 
 const PostHeader = ({ title, publishedAt }: Props) => {
   return (
