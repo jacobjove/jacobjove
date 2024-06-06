@@ -162,8 +162,7 @@ jobs:
             scripts
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_TOWER }}
-          command:
-            python3 scripts/deploy.py jacobjove --sha ${{ github.sha }} --token ${{ secrets.GITHUB_TOKEN }}
+          command: python3 scripts/deploy.py jacobjove --sha latest --token ${{ secrets.GITHUB_TOKEN }}
         env:
           RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock

@@ -1,6 +1,6 @@
 import { unstable_setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
-import SoftwarePortfolioPage from './software/software';
+import SoftwarePortfolioPage from './software';
 import { getStaticParams } from '@i18n';
 import Layout from '@app/client/layout';
 
