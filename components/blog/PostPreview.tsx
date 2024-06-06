@@ -20,7 +20,7 @@ const PostPreview = ({ title, publishedAt, excerpt, slug }: PostPreviewProps) =>
     >
       <Avatar
         alt={'Jacob'}
-        src={'/images/profile.jpg'}
+        src={'/images/profile.png'}
         sx={{
           width: 64,
           height: 64,

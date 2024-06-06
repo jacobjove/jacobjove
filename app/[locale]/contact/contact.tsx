@@ -45,7 +45,7 @@ export default function Contact() {
           <CardContent sx={{ textAlign: 'center', px: 4 }}>
             <Image
               // priority
-              src={'/images/profile.jpg'}
+              src={'/images/profile.png'}
               style={{ borderRadius: '50%' }}
               height={108}
               width={108}
