@@ -2,7 +2,7 @@ import { existsSync, renameSync } from 'fs';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { DownloaderHelper } from 'node-downloader-helper';
-import CVPage from './cv';
+import CVPage from '../cv';
 import { getStaticParams } from '@i18n';
 import Layout from '@app/client/layout';
 
@@ -61,9 +61,9 @@ async function getResume(slug: string): Promise<MaybeResume> {
   });
 }
 
-export default async function Page({ params }: { params: { locale: string } }) {
+export default async function Page({ params }: { params: { locale: string; slug: string } }) {
   unstable_setRequestLocale(params.locale);
-  const maybeResume = await getResume('default');
+  const maybeResume = await getResume(params.slug);
   if (!maybeResume) return null;
   return (
     <Layout>
