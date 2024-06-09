@@ -1,7 +1,17 @@
 {
-  "auto-rename-tag.activationOnLanguage": ["html", "*"],
-  "auto-close-tag.activationOnLanguage": ["html"],
-  "colorize.languages": ["javascript", "typescript", "typescriptreact", "css"],
+  "auto-rename-tag.activationOnLanguage": [
+    "html",
+    "*"
+  ],
+  "auto-close-tag.activationOnLanguage": [
+    "html"
+  ],
+  "colorize.languages": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "css"
+  ],
   "debug.console.fontSize": 11,
   "debug.javascript.unmapMissingSources": true,
   "editor.codeActionsOnSave": {
@@ -11,7 +21,9 @@
   "editor.detectIndentation": true,
   "editor.formatOnSave": true,
   "editor.linkedEditing": true,
-  "editor.rulers": [100],
+  "editor.rulers": [
+    100
+  ],
   "editor.suggestSelection": "first",
   "eslint.lintTask.enable": false,
   "eslint.format.enable": true,
@@ -19,7 +31,8 @@
   "explorer.confirmDragAndDrop": false,
   "files.associations": {
     "**/*.html": "html",
-    "**/*.htm": "html"
+    "**/*.htm": "html",
+    "*.css": "tailwindcss"
   },
   "files.autoSave": "onFocusChange",
   "files.autoSaveDelay": 3000,
@@ -39,7 +52,9 @@
   },
   "gitlens.currentLine.scrollable": false,
   "html.autoClosingTags": true,
-  "i18n-ally.localesPaths": ["./i18n/locales"],
+  "i18n-ally.localesPaths": [
+    "./i18n/locales"
+  ],
   "i18n-ally.keystyle": "nested",
   "javascript.autoClosingTags": true,
   "php.suggest.basic": false,
