@@ -41,24 +41,12 @@ services:
         "core.asgi.UvicornWorker",
         "core.asgi:application"
       ]
-    env_file:
-      - .env
     environment:
       JAEGER_AGENT_HOST: jaeger
       POSTGRES_HOST: db
       PORT: ${PORT_API}
     depends_on:
       <<: *services
-    # healthcheck:
-    #   test:
-    #     [
-    #       "CMD-SHELL",
-    #       "curl --fail http://localhost:${PORT_API}/_health/ || exit 1"
-    #     ]
-    #   timeout: 7s
-    #   interval: 30s
-    #   retries: 3
-    #   start_period: 60s
     ports:
       - ${PORT_API}:${PORT_API}
     restart: unless-stopped

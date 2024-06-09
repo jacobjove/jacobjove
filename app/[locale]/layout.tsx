@@ -1,6 +1,6 @@
 // import { dir } from 'i18next';
 import CssBaseline from '@mui/material/CssBaseline';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
 import Locale from 'intl-locale-textinfo-polyfill';
 import { unstable_setRequestLocale } from 'next-intl/server';
@@ -33,10 +33,10 @@ export default function RootLayout({
   const messages = useMessages();
   const { direction: dir } = new Locale(locale).textInfo;
   return (
-    <html lang={locale} dir={dir} className={openSans.className}>
+    <html lang={locale} dir={dir} className={openSans.className} suppressHydrationWarning>
       <CssBaseline />
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <body>
           <AppRouterCacheProvider options={{ key: 'mui', prepend: true, enableCssLayer: true }}>
             <CssVarsProvider theme={theme} defaultMode="dark">
               {getInitColorSchemeScript({
@@ -51,8 +51,8 @@ export default function RootLayout({
               {children}
             </CssVarsProvider>
           </AppRouterCacheProvider>
-        </NextIntlClientProvider>
-      </body>
+        </body>
+      </NextIntlClientProvider>
     </html>
   );
 }

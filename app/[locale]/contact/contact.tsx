@@ -12,16 +12,18 @@ import ContactForm from '@components/contact/ContactForm';
 const NAME = 'Jacob T. Jove';
 const EMAIL = 'jacob.t.jove@gmail.com';
 
-const CONTACT_FORM_ENABLED = true;
+const CONTACT_FORM_ENABLED = false;
 
 export default function Contact() {
   const t = useTranslations('contact');
   return (
     <>
       <PageHeader>{t('title')}</PageHeader>
-      <Box display="flex" justifyContent="center">
-        <Typography sx={{ maxWidth: 'sm', mb: 2, px: 2 }}>{t('lead')}</Typography>
-      </Box>
+      {CONTACT_FORM_ENABLED && (
+        <Box display="flex" justifyContent="center">
+          <Typography sx={{ maxWidth: 'sm', mb: 2, px: 2 }}>{t('lead')}</Typography>
+        </Box>
+      )}
       <Box
         sx={{
           width: '100%',
@@ -55,7 +57,6 @@ export default function Contact() {
               {t('name')}
             </Typography>
             <Box my={1}>
-              <Typography>{'565 W 144th St'}</Typography>
               <Typography>{'New York, NY 10031'}</Typography>
             </Box>
             <Typography my={1}>

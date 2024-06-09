@@ -1,6 +1,8 @@
 .env
 next-env.d.ts
 .turbo
+_*
+.*
 
 # workbox
 **/public/workbox-*.js*

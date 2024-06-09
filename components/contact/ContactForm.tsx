@@ -1,3 +1,5 @@
+'use client';
+
 import RefreshIcon from '@mui/icons-material/Refresh';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,7 +11,7 @@ import { useState } from 'react';
 import { useFormDataReducer } from '@utils/forms';
 import type { FormStatus } from '@utils/forms';
 
-const CONTACT_FORM_ENABLED = true;
+const CONTACT_FORM_ENABLED = false;
 
 interface ContactFormData {
   name?: string;
@@ -97,6 +99,10 @@ export default function ContactForm() {
           display: {
             xs: ['submitted', 'error'].includes(status) ? 'none' : 'block',
             sm: 'block',
+          },
+          // TODO: figure out why this is necessary to fix broken styles...
+          '& label[data-shrink="false"]': {
+            transform: 'translate(10px, 4px) scale(1)',
           },
         }}
       >

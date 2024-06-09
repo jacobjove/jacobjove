@@ -262,7 +262,7 @@ export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
           </Box>
         </Toolbar>
         <Suspense>
-          <DynamicPageTransitionProgressBar />
+          <DynamicPageTransitionProgressBar options={{ showSpinner: false }} />
         </Suspense>
       </AppBar>
       <MobileDrawer
