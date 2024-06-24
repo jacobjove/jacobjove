@@ -21,17 +21,13 @@ export default function Home() {
         <Image priority src="/images/profile.png" height={275} width={275} alt={'Jacob Jove'} />
         <Box maxWidth={'26rem'} padding={'5px'}>
           <Typography className="lead">
-            Jacob Jove is a writer, <Link href="/pt">personal trainer</Link>, amateur chef,
-            co-founder of{' '}
+            Jacob Jove is a writer, <Link href="/pt">personal trainer</Link>, co-founder of{' '}
             <a href="https://www.sokaisolutions.com/" target="_blank" rel="noreferrer">
               Sokai Solutions
             </a>
-            ,{' and upcoming legal professional.'}
+            ,{' and future lawyer.'}
           </Typography>
         </Box>
-        {/* TODO: - Background Image or Visual Element
-          - Welcome Message: "Welcome to [Your Name]'s Website"
-          - Call-to-Action Button: "Explore My Work" */}
       </Box>
     </>
   );
