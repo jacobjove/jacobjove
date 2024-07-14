@@ -30,7 +30,7 @@
     "inflection": "^1.13.4",
     "intl-locale-textinfo-polyfill": "^2.1.1",
     "lodash": "^4.17.21",
-    "material-ui-popup-state": "^4.1.0",
+    "material-ui-popup-state": "^5.1.2",
     "negotiator": "^0.6.3",
     "next": "^14.2.5",
     "next-auth": "5.0.0-beta.17",
@@ -44,7 +44,7 @@
     "react-cookie": "^7.1.4",
     "react-dom": "^18.3.1",
     "remark": "^14.0.3",
-    "remark-frontmatter": "^4.0.1",
+    "remark-frontmatter": "^5.0.0",
     "remark-html": "^15.0.2",
     "sharp": "^0.33.4"
   },
@@ -177,7 +177,7 @@
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=7.0.0",
-    "pnpm": ">=9.2.0"
+    "pnpm": ">=9.5.0"
   },
   "postcss": {
     "plugins": {
