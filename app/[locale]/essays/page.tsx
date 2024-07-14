@@ -1,22 +1,18 @@
 import { unstable_setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
-import PortfolioPage from './portfolio';
-import { getStaticParams } from '@i18n';
+import EssaysPage from './essays';
+import { ESSAYS } from './[slug]/page';
 import Layout from '@app/client/layout';
 
 export const metadata: Metadata = {
-  title: 'Portfolio',
+  title: 'Essays',
 };
 
-export default async function Page({ params }: { params: { locale: string } }) {
+export default async function Page({ params }: { params: { locale: string; slug: string } }) {
   unstable_setRequestLocale(params.locale);
   return (
     <Layout maxWidth="sm">
-      <PortfolioPage />
+      <EssaysPage essays={ESSAYS} />
     </Layout>
   );
-}
-
-export function generateStaticParams() {
-  return getStaticParams();
 }

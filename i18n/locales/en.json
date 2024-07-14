@@ -12,8 +12,6 @@
     "navbar": {
       "about": "About",
       "portfolio": "Portfolio",
-      "writing": "Writing",
-      "software": "Software",
       "cv": "CV",
       "blog": "Blog",
       "contact": "Contact"
@@ -59,14 +57,8 @@
     }
   },
   "portfolio": {
-    "software": {
-      "title": "Software Projects",
-      "lead": "Here are a few apps I've built and/or am in the process of building:"
-    },
-    "writing": {
-      "title": "Writing Samples",
-      "lead": "Coming soon!"
-    }
+    "title": "Portfolio",
+    "lead": ""
   },
   "privacy": {
     "title": "Privacy Policy",

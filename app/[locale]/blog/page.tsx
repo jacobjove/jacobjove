@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import BlogPage from './blog';
-import { getStaticParams } from '@i18n';
 import Layout from '@app/client/layout';
 import { getPublishedPosts } from '@utils/blog';
 
@@ -19,8 +18,4 @@ export default async function Page({ params }: { params: { locale: string } }) {
       <BlogPage posts={posts} />
     </Layout>
   );
-}
-
-export function generateStaticParams() {
-  return getStaticParams();
 }

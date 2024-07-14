@@ -1,19 +1,26 @@
 'use client';
 
+import type { NextPage } from 'next';
+import ErrorPage from 'next/error';
+
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
-interface Resume {
+export interface Essay {
   url: string;
-  // name: string;
+  title: string;
+  description?: string;
 }
 
-interface CVPageProps {
-  resume: Resume;
+interface EssayPageProps {
+  essay: Essay;
 }
 
-export default function CV({ resume }: CVPageProps) {
+const EssayPage: NextPage<EssayPageProps> = ({ essay }) => {
+  if (!essay?.url) {
+    return <ErrorPage statusCode={404} />;
+  }
   return (
     <>
       <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}>
@@ -28,14 +35,14 @@ export default function CV({ resume }: CVPageProps) {
         >
           <>
             <IconButton
-              href={resume.url}
+              href={essay.url}
               sx={{ position: 'absolute', right: '8px', top: '8px' }}
               download
             >
               <FileDownloadIcon />
             </IconButton>
             <embed
-              src={`${resume.url}#toolbar=0&navpanes=0&scrollbar=0`}
+              src={`${essay.url}#toolbar=0&navpanes=0&scrollbar=0`}
               style={{ width: '100%' }}
               height="1079" // pixels
               type="application/pdf"
@@ -45,4 +52,6 @@ export default function CV({ resume }: CVPageProps) {
       </Box>
     </>
   );
-}
+};
+
+export default EssayPage;

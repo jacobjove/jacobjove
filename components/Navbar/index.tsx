@@ -136,7 +136,6 @@ export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
                           fontWeight:
                             menuState[key] || pathname === hrefOrSubitems ? 'bold' : 'normal',
                           textTransform: 'capitalize',
-                          fontFamily: 'Open Sans',
                           '&:hover': {
                             textDecoration: 'none',
                           },
