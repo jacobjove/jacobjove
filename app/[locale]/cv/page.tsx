@@ -3,7 +3,6 @@ import { unstable_setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { DownloaderHelper } from 'node-downloader-helper';
 import CVPage from './cv';
-import { getStaticParams } from '@i18n';
 import Layout from '@app/client/layout';
 
 const RESUME_DIR = `${process.cwd()}/public`;
@@ -70,8 +69,4 @@ export default async function Page({ params }: { params: { locale: string } }) {
       <CVPage resume={maybeResume} />
     </Layout>
   );
-}
-
-export function generateStaticParams() {
-  return getStaticParams();
 }

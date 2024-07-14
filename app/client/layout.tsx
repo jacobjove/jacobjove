@@ -2,15 +2,14 @@
 
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { SITE_TITLE } from './constants';
 import ContextProvider from './context';
 import Navbar from '@components/Navbar';
 import Footer from '@components/Footer';
-import 'typeface-open-sans'; // https://github.com/KyleAMathews/typefaces/tree/master/packages
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
   fluid?: boolean;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
@@ -37,19 +36,6 @@ function Logo() {
 }
 
 export default function ClientLayout({ children, fluid = false, maxWidth = 'md' }: LayoutProps) {
-  useEffect(() => {
-    const script = document.createElement('script');
-
-    script.src = 'https://platform.linkedin.com/badges/js/profile.js';
-    script.async = true;
-    script.defer = true;
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
   return (
     <ContextProvider>
       <div
@@ -66,14 +52,7 @@ export default function ClientLayout({ children, fluid = false, maxWidth = 'md' 
                 ['cv', 'CV', '/cv'],
               ],
             ],
-            [
-              'portfolio',
-              'Portfolio',
-              [
-                ['software', 'Software', '/portfolio/software'],
-                ['writing', 'Writing', '/portfolio/writing'],
-              ],
-            ],
+            ['portfolio', 'Portfolio', '/portfolio'],
             ['blog', 'Blog', '/blog'],
             ['contact', 'Contact', '/contact'],
           ]}

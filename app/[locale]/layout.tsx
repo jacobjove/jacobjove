@@ -7,11 +7,11 @@ import { unstable_setRequestLocale } from 'next-intl/server';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { Open_Sans } from 'next/font/google';
 import getInitColorSchemeScript from '@mui/system/cssVars/getInitColorSchemeScript';
+import type { ReactNode } from 'react';
 import { getStaticParams } from '@i18n';
 import theme from '@app/theme';
 import '../global.css';
 
-// If loading a variable font, you don't need to specify the font weight
 const openSans = Open_Sans({
   subsets: ['latin'],
 });
@@ -26,7 +26,7 @@ export default function RootLayout({
   children,
   locale = 'en',
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   locale: string;
 }) {
   unstable_setRequestLocale(locale);
