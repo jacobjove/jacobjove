@@ -3,7 +3,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
-import { Link } from '@navigation';
+import { Link } from '@i18n';
 
 export default function Home() {
   return (

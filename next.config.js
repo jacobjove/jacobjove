@@ -1,8 +1,15 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
 import mdx from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
-import createNextIntlPlugin from 'next-intl/plugin';
+// eslint-disable-next-line import/no-unresolved
+import { paraglide } from '@inlang/paraglide-next/plugin';
 
-const withNextIntl = createNextIntlPlugin('./i18n/index.ts');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export const workspaceRoot = path.resolve(__dirname);
+const paraglideDir = path.resolve(workspaceRoot, `paraglide`);
+const messagesDir = path.resolve(workspaceRoot, `messages`);
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -19,7 +26,7 @@ const NGINX_COMPRESSION_ENABLED = process.env.NODE_ENV === 'production';
 /**
  * @type {import('next').NextConfig}
  */
-const nextConfig = {
+const nextConfig = paraglide({
   compress: !NGINX_COMPRESSION_ENABLED,
   // images: {
   //   remotePatterns: ['jacobjove.org'],
@@ -35,6 +42,10 @@ const nextConfig = {
     'md',
     'mdx',
   ],
+  paraglide: {
+    project: path.resolve(messagesDir, `${process.env.APP}.inlang`),
+    outdir: paraglideDir,
+  },
   // https://nextjs.org/docs/api-reference/next.config.js/disabling-x-powered-by
   poweredByHeader: false,
   sentry: {
@@ -48,19 +59,7 @@ const nextConfig = {
   // https://nextjs.org/docs/api-reference/next.config.js/react-strict-mode
   reactStrictMode: true,
   swcMinify: true,
-  // https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
-  webpack: (config, { webpack }) => {
-    // For production builds, tree-shake all code in the Sentry SDK related to debug logging.
-    // The debug code is only useful in development environments.
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/tree-shaking/#tree-shaking-optional-code
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __SENTRY_DEBUG__: process.env.NODE_ENV === 'development',
-      })
-    );
-    return config;
-  },
-};
+});
 
 // Set additional config options for the Sentry Webpack plugin.
 // https://github.com/getsentry/sentry-webpack-plugin#options
@@ -101,6 +100,4 @@ const sentryOptions = {
   automaticVercelMonitors: false,
 };
 
-export default withSentryConfig(
-  withNextIntl(withMDX(nextConfig), sentryWebpackPluginOptions, sentryOptions)
-);
+export default withSentryConfig(withMDX(nextConfig), sentryWebpackPluginOptions, sentryOptions);

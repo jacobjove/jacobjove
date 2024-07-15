@@ -5,9 +5,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useTranslations } from 'next-intl';
 import type { SyntheticEvent } from 'react';
 import { useState } from 'react';
+import * as m from '@paraglide/messages.js';
 import { useFormDataReducer } from '@utils/forms';
 import type { FormStatus } from '@utils/forms';
 
@@ -20,7 +20,6 @@ interface ContactFormData {
 }
 
 export default function ContactForm() {
-  const t = useTranslations('contact');
   const [status, setStatus] = useState<FormStatus>('idle');
   const [contactFormData, dispatchContactFormData] = useFormDataReducer<ContactFormData>({});
 
@@ -73,11 +72,11 @@ export default function ContactForm() {
       >
         {status === 'error' ? (
           <Typography color="error" sx={{ mb: 2 }}>
-            {t('error')}
+            {m.contact_error()}
           </Typography>
         ) : status === 'submitted' ? (
           <Box>
-            <Typography>{t('success')}</Typography>
+            <Typography>{m.contact_success()}</Typography>
             <Box mt={3} display={'flex'} justifyContent={'center'}>
               <Button
                 variant={'outlined'}
@@ -108,7 +107,7 @@ export default function ContactForm() {
       >
         <form onSubmit={handleSubmit} style={{ width: '100%', position: 'relative' }}>
           <TextField
-            label={t('nameFieldLabel')}
+            label={m.contact_nameFieldLabel()}
             name={'name'}
             value={contactFormData.name ?? ''}
             onChange={(event) => handleChange('name', event.target.value)}
@@ -117,7 +116,7 @@ export default function ContactForm() {
             margin={'dense'}
           />
           <TextField
-            label={t('emailFieldLabel')}
+            label={m.contact_emailFieldLabel()}
             name={'email'}
             value={contactFormData.email ?? ''}
             onChange={(event) => handleChange('email', event.target.value)}
@@ -126,7 +125,7 @@ export default function ContactForm() {
             margin={'dense'}
           />
           <TextField
-            label={t('messageFieldLabel')}
+            label={m.contact_messageFieldLabel()}
             name={'message'}
             value={contactFormData.message ?? ''}
             onChange={(event) => handleChange('message', event.target.value)}

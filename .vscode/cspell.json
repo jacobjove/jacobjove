@@ -1,6 +1,7 @@
 {
   "language": "en",
   "words": [
+    "asynciterable",
     "authorships",
     "bento",
     "booklist",
@@ -31,7 +32,9 @@
     "HMAC",
     "iframe",
     "initdb",
+    "inlang",
     "isready",
+    "jacobjove",
     "Jove",
     "keyscan",
     "klass",
@@ -52,6 +55,7 @@
     "nullglob",
     "orega",
     "packagejson",
+    "paraglide",
     "Patreon",
     "postgres",
     "prefetch",
@@ -86,7 +90,9 @@
     "webserver",
     "xsrf"
   ],
-  "flagWords": ["hte"],
+  "flagWords": [
+    "hte"
+  ],
   "ignoreRegExpList": [
     ".*r'",
     "'//.+",

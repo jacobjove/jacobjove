@@ -12,8 +12,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext", "esnext.asynciterable"],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "noEmit": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -31,6 +31,7 @@
       "@i18n": ["i18n/index.ts"],
       "@i18n/*": ["i18n/*"],
       "@pages/*": ["pages/*"],
+      "@paraglide/*": ["paraglide/*"],
       "@public/*": ["public/*"],
       "@messages/*": ["messages/*"],
       "@navigation": ["navigation"],
@@ -43,6 +44,6 @@
       }
     ]
   },
-  "exclude": ["**/node_modules", "cypress", "dist", "**/.*/"],
+  "exclude": ["node_modules", "cypress", "dist", "**/.*/", "**/node_modules"],
   "include": ["next-env.d.ts", "types", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }
