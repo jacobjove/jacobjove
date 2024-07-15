@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import type { FC, ReactNode } from 'react';
-import PageHeader from '@components/PageHeader';
+import PageHeader from '@app/components/PageHeader';
 
 interface UniversalProps {
   children: ReactNode;

@@ -6,6 +6,7 @@ import importPlugin from 'eslint-plugin-import';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+// eslint-disable-next-line import/no-unresolved
 import tsParser from '@typescript-eslint/parser';
 import unusedImportsPlugin from 'eslint-plugin-unused-imports';
 import * as espree from 'espree';
@@ -35,11 +36,12 @@ const configs = [
       '**/build',
       '**/dist',
       '**/locales',
+      '**/public',
       '**/.next',
       '**/workbox-*.js',
       '**/sw.js',
-      'pnpm-lock.yaml',
       '**/$path.ts',
+      'pnpm-lock.yaml',
       // TODO
       '**/cypress/**',
       '**/*.test.ts',

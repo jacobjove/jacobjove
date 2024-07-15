@@ -2,7 +2,7 @@
 
 import Typography from '@mui/material/Typography';
 import * as m from '@paraglide/messages';
-import PageHeader from '@components/PageHeader';
+import PageHeader from '@app/components/PageHeader';
 
 export default function Terms() {
   return (

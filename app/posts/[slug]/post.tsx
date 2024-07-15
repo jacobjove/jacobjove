@@ -5,7 +5,7 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { MDXRemote } from 'next-mdx-remote';
 import ErrorPage from 'next/error';
 import type { BlogPost } from '../../blog/blog';
-import PageHeader from '@components/PageHeader';
+import PageHeader from '@app/components/PageHeader';
 
 interface BlogPostPageProps {
   metadata: Omit<BlogPost, 'content'>;

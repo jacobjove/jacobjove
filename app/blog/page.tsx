@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import BlogPage from './blog';
 import Layout from '@app/client/layout';
-import { getPublishedPosts } from '@utils/blog';
+import { getPublishedPosts } from '@app/utils/blog';
 
 export const metadata: Metadata = {
   title: 'Blog',

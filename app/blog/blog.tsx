@@ -1,9 +1,9 @@
 'use client';
 
 import Typography from '@mui/material/Typography';
-import PostPreview from './PostPreview';
 import * as m from '@paraglide/messages';
-import PageHeader from '@components/PageHeader';
+import PostPreview from './PostPreview';
+import PageHeader from '@app/components/PageHeader';
 
 export interface BlogPost {
   title: string;

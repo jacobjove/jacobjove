@@ -6,8 +6,8 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import * as m from '@paraglide/messages';
-import PageHeader from '@components/PageHeader';
-import ContactForm from '@components/contact/ContactForm';
+import PageHeader from '@app/components/PageHeader';
+import ContactForm from '@app/components/contact/ContactForm';
 
 const NAME = 'Jacob T. Jove';
 const EMAIL = 'jacob.t.jove@gmail.com';

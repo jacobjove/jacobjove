@@ -27,7 +27,6 @@
     "target": "esnext",
     "paths": {
       "@app/*": ["app/*"],
-      "@components/*": ["components/*"],
       "@i18n": ["i18n/index.ts"],
       "@i18n/*": ["i18n/*"],
       "@pages/*": ["pages/*"],
@@ -35,8 +34,7 @@
       "@public/*": ["public/*"],
       "@messages/*": ["messages/*"],
       "@navigation": ["navigation"],
-      "@types/*": ["types/*"],
-      "@utils/*": ["utils/*"]
+      "@types/*": ["types/*"]
     },
     "plugins": [
       {

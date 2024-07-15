@@ -11,7 +11,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import type { FunctionComponent } from 'react';
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from '@i18n';
-import SocialLogin from '@components/auth/SocialLogin';
+import SocialLogin from '@app/components/auth/SocialLogin';
 import type { Providers } from '@app/auth';
 import Layout from '@app/client/layout';
 

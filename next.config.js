@@ -8,8 +8,8 @@ import { paraglide } from '@inlang/paraglide-next/plugin';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const workspaceRoot = path.resolve(__dirname);
-const paraglideDir = path.resolve(workspaceRoot, `paraglide`);
-const messagesDir = path.resolve(workspaceRoot, `messages`);
+const paraglideDir = path.resolve(workspaceRoot, `i18n/paraglide`);
+const messagesDir = path.resolve(workspaceRoot, `i18n/messages`);
 const inlangDir = path.resolve(messagesDir, `jacobjove.inlang`);
 
 const withMDX = mdx({

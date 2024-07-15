@@ -3,7 +3,7 @@ import { serialize } from 'next-mdx-remote/serialize';
 import PostPage from './post';
 import Layout from '@app/client/layout';
 
-import { getPostBySlug } from '@utils/blog';
+import { getPostBySlug } from '@app/utils/blog';
 
 export const metadata: Metadata = {
   title: 'Post',
