@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import * as m from '@paraglide/messages.js';
+import * as m from '@paraglide/messages';
 import PageHeader from '@components/PageHeader';
 
 const GITHUB_PROFILE_URL = 'https://github.com/jacobjove';

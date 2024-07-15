@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import type { SyntheticEvent } from 'react';
 import { useState } from 'react';
-import * as m from '@paraglide/messages.js';
+import * as m from '@paraglide/messages';
 import { useFormDataReducer } from '@utils/forms';
 import type { FormStatus } from '@utils/forms';
 

@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography';
-import * as m from '@paraglide/messages.js';
+import * as m from '@paraglide/messages';
 import PageHeader from '@components/PageHeader';
 
 export default function About() {
