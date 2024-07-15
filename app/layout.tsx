@@ -14,9 +14,11 @@ const openSans = Open_Sans({
   subsets: ['latin'],
 });
 
+const colorSchemeElementId = '__next' as const;
+
 const cssVarsOptions = {
   defaultMode: 'dark',
-  colorSchemeSelector: '#__next',
+  colorSchemeSelector: `#${colorSchemeElementId}`,
   attribute: 'data-mui-color-scheme',
   colorSchemeStorageKey: 'mui-color-scheme',
   modeStorageKey: 'mui-mode',
@@ -40,7 +42,7 @@ export default function RootLayout({
           <AppRouterCacheProvider options={{ key: 'mui', prepend: true, enableCssLayer: true }}>
             <CssVarsProvider theme={theme} {...cssVarsOptions}>
               {getInitColorSchemeScript(cssVarsOptions)}
-              <main id="__next">{children}</main>
+              <main id={colorSchemeElementId}>{children}</main>
             </CssVarsProvider>
           </AppRouterCacheProvider>
         </body>
