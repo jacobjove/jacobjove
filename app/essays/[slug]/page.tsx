@@ -62,7 +62,7 @@ async function getEssay(slug: string): Promise<MaybeEssay> {
   });
 }
 
-export default async function Page({ params }: { params: { locale: string; slug: string } }) {
+export default async function Page({ params }: { params: { slug: string } }) {
   const maybeEssay = await getEssay(params.slug);
   console.log(maybeEssay);
   if (!maybeEssay) return null;

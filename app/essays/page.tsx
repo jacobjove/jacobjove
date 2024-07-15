@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Essays',
 };
 
-export default async function Page({ params }: { params: { locale: string; slug: string } }) {
+export default async function Page() {
   return (
     <Layout>
       <EssaysPage essays={ESSAYS} />
