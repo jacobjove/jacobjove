@@ -10,6 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const workspaceRoot = path.resolve(__dirname);
 const paraglideDir = path.resolve(workspaceRoot, `paraglide`);
 const messagesDir = path.resolve(workspaceRoot, `messages`);
+const inlangDir = path.resolve(messagesDir, `jacobjove.inlang`);
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -43,7 +44,7 @@ const nextConfig = paraglide({
     'mdx',
   ],
   paraglide: {
-    project: path.resolve(messagesDir, `${process.env.APP}.inlang`),
+    project: inlangDir,
     outdir: paraglideDir,
   },
   // https://nextjs.org/docs/api-reference/next.config.js/disabling-x-powered-by

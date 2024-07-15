@@ -157,15 +157,12 @@
   "private": true,
   "scripts": {
     "compile": "tsx scripts/compile.ts",
-    "build": "dotenv -- next build",
+    "build": "pnpm compile && dotenv -- next build",
     "dev": "docker compose up -d tempo && PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next dev",
-    "docker:build": "docker compose build",
-    "docker:start": "pnpm kill; docker compose up -d && docker compose logs -f",
     "format": "pnpm prettier -w . && pnpm eslint --fix .",
-    "kill": "npx kill-port $(grep '^PORT=' .env | cut -d '=' -f2); docker compose down",
     "lint": "next lint",
-    "start": "PORT=$(grep '^PORT=' .env | cut -d '=' -f2) next start",
     "test": "jest --passWithNoTests",
+    "typecheck": "tsc --noEmit",
     "prepare": "if [ ! $DOCKERIZED = true ]; then npx husky; fi"
   },
   "stylelint": {

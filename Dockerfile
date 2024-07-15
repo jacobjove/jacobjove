@@ -43,7 +43,7 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN pnpm build
+RUN pwd && echo "" && cat messages/jacobjove.inlang/settings.json && echo "" && pnpm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
