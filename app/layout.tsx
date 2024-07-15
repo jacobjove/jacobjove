@@ -14,6 +14,14 @@ const openSans = Open_Sans({
   subsets: ['latin'],
 });
 
+const cssVarsOptions = {
+  defaultMode: 'dark',
+  colorSchemeSelector: '#__next',
+  attribute: 'data-mui-color-scheme',
+  colorSchemeStorageKey: 'mui-color-scheme',
+  modeStorageKey: 'mui-mode',
+} as const;
+
 export default function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
@@ -30,17 +38,9 @@ export default function RootLayout({
         <CssBaseline />
         <body>
           <AppRouterCacheProvider options={{ key: 'mui', prepend: true, enableCssLayer: true }}>
-            <CssVarsProvider theme={theme} defaultMode="dark">
-              {getInitColorSchemeScript({
-                // These properties are normally set when importing from @mui/material,
-                // but we have to set manually because we are importing from @mui/system.
-                attribute: 'data-mui-color-scheme',
-                modeStorageKey: 'mui-mode',
-                colorSchemeStorageKey: 'mui-color-scheme',
-                // All options that you pass to CssVarsProvider you should also pass here.
-                defaultMode: 'dark',
-              })}
-              {children}
+            <CssVarsProvider theme={theme} {...cssVarsOptions}>
+              {getInitColorSchemeScript(cssVarsOptions)}
+              <main id="__next">{children}</main>
             </CssVarsProvider>
           </AppRouterCacheProvider>
         </body>

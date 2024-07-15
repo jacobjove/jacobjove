@@ -30,10 +30,9 @@
       "@i18n": ["i18n/index.ts"],
       "@i18n/*": ["i18n/*"],
       "@pages/*": ["pages/*"],
-      "@paraglide/*": ["paraglide/*"],
+      "@paraglide/*": ["i18n/paraglide/*"],
       "@public/*": ["public/*"],
-      "@messages/*": ["messages/*"],
-      "@navigation": ["navigation"],
+      "@messages/*": ["i18n/messages/*"],
       "@types/*": ["types/*"]
     },
     "plugins": [
