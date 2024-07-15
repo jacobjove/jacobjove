@@ -44,16 +44,10 @@ export default function ClientLayout({ children, fluid = false, maxWidth = 'md' 
         <Navbar
           siteTitle={SITE_TITLE}
           menuItems={[
-            [
-              'about',
-              'About',
-              [
-                ['about', 'About Jacob', '/about'],
-                ['cv', 'CV', '/cv'],
-              ],
-            ],
+            ['about', 'About', '/about'],
+            ['cv', 'CV', '/cv'],
             ['portfolio', 'Portfolio', '/portfolio'],
-            ['blog', 'Blog', '/blog'],
+            // ['blog', 'Blog', '/blog'],
             ['contact', 'Contact', '/contact'],
           ]}
           logo={<Logo />}

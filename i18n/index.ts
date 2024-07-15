@@ -1,16 +1,12 @@
-import { getRequestConfig } from 'next-intl/server';
-import { locales } from './settings';
-import { notFound } from '@navigation';
+import { DetectionStrategy, Navigation, Middleware } from '@inlang/paraglide-next';
+import type { AvailableLanguageTag } from '@paraglide/runtime';
 
-export function getStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}
+const strategy = DetectionStrategy<AvailableLanguageTag>();
 
-export default getRequestConfig(async ({ locale }) => {
-  // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale as any)) notFound();
+export const middleware = Middleware({ strategy });
 
-  return {
-    messages: (await import(`./locales/${locale}.json`)).default,
-  };
+export { useParams, useSearchParams } from 'next/navigation';
+
+export const { Link, useRouter, usePathname, redirect, permanentRedirect } = Navigation({
+  strategy,
 });

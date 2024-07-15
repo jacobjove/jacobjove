@@ -22,13 +22,12 @@ import { setCookie } from 'cookies-next';
 import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
-import { useTranslations } from 'next-intl';
 import { useColorScheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import styles from './index.module.css';
 import MobileDrawer from './MobileDrawer';
-import { useRouter, usePathname, useParams, Link } from '@navigation';
+import { useRouter, usePathname, useParams, Link } from '@i18n';
 import { LOCALES, defaultLocale } from '@i18n/settings';
 import type { Locale } from '@i18n/settings';
 
@@ -36,7 +35,7 @@ const DynamicPageTransitionProgressBar = dynamic(() => import('next13-progressba
   ssr: false,
 });
 
-type MenuItemKey = keyof Messages['common']['navbar'];
+type MenuItemKey = string;
 type _MenuItem = [MenuItemKey, string, string];
 export type MenuItem = [MenuItemKey, string, string | _MenuItem[]];
 export type MenuItems = MenuItem[];
@@ -52,7 +51,6 @@ export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { locale } = useParams<{ locale: Locale }>();
-  const t = useTranslations('common.navbar');
   const { mode: colorMode, setMode: setColorMode } = useColorScheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const accountMenuState = usePopupState({ variant: 'popover', popupId: 'account-menu' });
@@ -127,7 +125,7 @@ export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
               }}
             >
               {menuItems.map(([key, name, hrefOrSubitems]) => (
-                <Fragment key={key}>
+                <Fragment key={key as string}>
                   {typeof hrefOrSubitems === 'string' ? (
                     <Link href={hrefOrSubitems} onClick={() => dispatch([key, !menuState[key]])}>
                       <Typography
@@ -142,7 +140,7 @@ export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
                           px: '0.25rem',
                         }}
                       >
-                        {t(key) || name}
+                        {name}
                       </Typography>
                     </Link>
                   ) : (
@@ -161,7 +159,7 @@ export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
                             : 'normal',
                         }}
                       >
-                        {t(key) || name}
+                        {name}
                       </Button>
                       <Menu
                         open={menuState[key]}
@@ -178,7 +176,7 @@ export default function Navbar({ siteTitle, logo, menuItems }: NavbarProps) {
                                 color="inherit"
                                 fontWeight={pathname === href ? 'bold' : 'normal'}
                               >
-                                {t(subKey) || subName}
+                                {subName}
                               </Typography>
                             </Link>
                           </MenuItem>
