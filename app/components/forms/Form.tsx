@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import type { Dispatch, ReactNode, SyntheticEvent } from 'react';
 import { useState } from 'react';
-import type { FormAction, FormStatus } from '@utils/forms';
+import type { FormAction, FormStatus } from '@app/utils/forms';
 
 type FormDataBase = { [key: string]: string };
 

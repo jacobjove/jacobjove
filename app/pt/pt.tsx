@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import PageHeader from '@components/PageHeader';
+import PageHeader from '@app/components/PageHeader';
 
 interface DataItem {
   url: string;

@@ -5,8 +5,8 @@ import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
 import { SITE_TITLE } from './constants';
 import ContextProvider from './context';
-import Navbar from '@components/Navbar';
-import Footer from '@components/Footer';
+import Navbar from '@app/components/Navbar';
+import Footer from '@app/components/Footer';
 
 interface LayoutProps {
   children: ReactNode;

@@ -11,8 +11,8 @@ const __dirname = dirname(__filename);
 const rootDir = resolve(__dirname, '..');
 
 function generateMessages() {
-  const messagesDir = `${rootDir}/messages`;
-  const paraglideDir = `${rootDir}/paraglide`;
+  const messagesDir = `${rootDir}/i18n/messages`;
+  const paraglideDir = `${rootDir}/i18n/paraglide`;
   const inlangDir = `${messagesDir}/jacobjove.inlang`;
   const inlangSettingsFile = `${inlangDir}/settings.json`;
   if (!fs.existsSync(messagesDir)) fs.mkdirSync(messagesDir);
@@ -31,7 +31,7 @@ function generateMessages() {
     ],
     // eslint-disable-next-line ts/naming-convention
     'plugin.inlang.messageFormat': {
-      pathPattern: `${rootDir}/messages/{languageTag}.json`,
+      pathPattern: `${rootDir}/i18n/messages/{languageTag}.json`,
     },
   };
   fs.writeFileSync(inlangSettingsFile, JSON.stringify(inlangSettings, null, 2));

@@ -3,7 +3,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import * as m from '@paraglide/messages';
-import PageHeader from '@components/PageHeader';
+import PageHeader from '@app/components/PageHeader';
 
 const GITHUB_PROFILE_URL = 'https://github.com/jacobjove';
 

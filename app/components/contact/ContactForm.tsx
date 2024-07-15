@@ -8,8 +8,8 @@ import Typography from '@mui/material/Typography';
 import type { SyntheticEvent } from 'react';
 import { useState } from 'react';
 import * as m from '@paraglide/messages';
-import { useFormDataReducer } from '@utils/forms';
-import type { FormStatus } from '@utils/forms';
+import { useFormDataReducer } from '@app/utils/forms';
+import type { FormStatus } from '@app/utils/forms';
 
 const CONTACT_FORM_ENABLED = false;
 

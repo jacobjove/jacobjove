@@ -71,24 +71,6 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
-      i18next:
-        specifier: 23.10.1
-        version: 23.10.1
-      i18next-browser-languagedetector:
-        specifier: ^7.2.1
-        version: 7.2.1
-      i18next-chained-backend:
-        specifier: ^3.1.0
-        version: 3.1.0
-      i18next-http-backend:
-        specifier: ^2.5.2
-        version: 2.5.2
-      i18next-localstorage-backend:
-        specifier: ^3.1.3
-        version: 3.1.3
-      i18next-resources-to-backend:
-        specifier: ^1.2.1
-        version: 1.2.1
       inflection:
         specifier: ^1.13.4
         version: 1.13.4
@@ -2645,9 +2627,6 @@ packages:
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
-  cross-fetch@4.0.0:
-    resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
-
   cross-spawn@5.1.0:
     resolution: {integrity: sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==}
 
@@ -3703,24 +3682,6 @@ packages:
   hygen@6.2.11:
     resolution: {integrity: sha512-t6/zLI2XozP5gvV74nnl8LZSbwpVNFUkUs/O9DwuOdiiBbws5k4AQNVwKZ9FGzcKjdJ5EBBYkVzlcUHkLyY0FQ==}
     hasBin: true
-
-  i18next-browser-languagedetector@7.2.1:
-    resolution: {integrity: sha512-h/pM34bcH6tbz8WgGXcmWauNpQupCGr25XPp9cZwZInR9XHSjIFDYp1SIok7zSPsTOMxdvuLyu86V+g2Kycnfw==}
-
-  i18next-chained-backend@3.1.0:
-    resolution: {integrity: sha512-ltWy0fPMrtXjq0rSLo7s4ZF92LGvVsO47hhV3czaZXzMzhpFva6LVKMyDT7x82R8vAyB7VAeyGLBvMiW4W543A==}
-
-  i18next-http-backend@2.5.2:
-    resolution: {integrity: sha512-+K8HbDfrvc1/2X8jpb7RLhI9ZxBDpx3xogYkQwGKlWAUXLSEGXzgdt3EcUjLlBCdMwdQY+K+EUF6oh8oB6rwHw==}
-
-  i18next-localstorage-backend@3.1.3:
-    resolution: {integrity: sha512-tx8dxQTEsTnRC654IrXPFr94c3NH7bIVHGKHnGvbgefpLz13/uFT5ITsmhqhg/gOza0TIj8e5jTsGnQytIhh+A==}
-
-  i18next-resources-to-backend@1.2.1:
-    resolution: {integrity: sha512-okHbVA+HZ7n1/76MsfhPqDou0fptl2dAlhRDu2ideXloRRduzHsqDOznJBef+R3DFZnbvWoBW+KxJ7fnFjd6Yw==}
-
-  i18next@23.10.1:
-    resolution: {integrity: sha512-NDiIzFbcs3O9PXpfhkjyf7WdqFn5Vq6mhzhtkXzj51aOcNuPNcTwuYNuXCpHsanZGHlHKL35G7huoFeVic1hng==}
 
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
@@ -9107,12 +9068,6 @@ snapshots:
 
   create-require@1.1.1: {}
 
-  cross-fetch@4.0.0:
-    dependencies:
-      node-fetch: 2.7.0
-    transitivePeerDependencies:
-      - encoding
-
   cross-spawn@5.1.0:
     dependencies:
       lru-cache: 4.1.5
@@ -10482,32 +10437,6 @@ snapshots:
       yargs-parser: 21.1.1
     transitivePeerDependencies:
       - supports-color
-
-  i18next-browser-languagedetector@7.2.1:
-    dependencies:
-      '@babel/runtime': 7.24.8
-
-  i18next-chained-backend@3.1.0:
-    dependencies:
-      '@babel/runtime': 7.24.8
-
-  i18next-http-backend@2.5.2:
-    dependencies:
-      cross-fetch: 4.0.0
-    transitivePeerDependencies:
-      - encoding
-
-  i18next-localstorage-backend@3.1.3:
-    dependencies:
-      '@babel/runtime': 7.24.8
-
-  i18next-resources-to-backend@1.2.1:
-    dependencies:
-      '@babel/runtime': 7.24.8
-
-  i18next@23.10.1:
-    dependencies:
-      '@babel/runtime': 7.24.8
 
   iconv-lite@0.6.3:
     dependencies:
