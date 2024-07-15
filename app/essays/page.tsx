@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { locale: string; slug: string } }) {
   return (
-    <Layout maxWidth="sm">
+    <Layout>
       <EssaysPage essays={ESSAYS} />
     </Layout>
   );

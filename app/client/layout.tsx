@@ -45,7 +45,7 @@ export default function ClientLayout({ children, fluid = false, maxWidth = 'md' 
           siteTitle={SITE_TITLE}
           menuItems={[
             ['about', 'About', '/about'],
-            ['cv', 'CV', '/cv'],
+            ['cv', 'Résumé', '/cv'],
             ['portfolio', 'Portfolio', '/portfolio'],
             // ['blog', 'Blog', '/blog'],
             ['contact', 'Contact', '/contact'],
