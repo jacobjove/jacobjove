@@ -1,8 +1,9 @@
 .env
 next-env.d.ts
 .turbo
+.jwt_rsa.pem
 _*
-.*
+
 
 # workbox
 **/public/workbox-*.js*

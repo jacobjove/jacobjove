@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
-import * as m from '@paraglide/messages.js';
+import * as m from '@paraglide/messages';
 import PageHeader from '@components/PageHeader';
 import ContactForm from '@components/contact/ContactForm';
 

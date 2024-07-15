@@ -54,6 +54,7 @@
     "nostyle",
     "nullglob",
     "orega",
+    "outdir",
     "packagejson",
     "paraglide",
     "Patreon",
@@ -90,9 +91,7 @@
     "webserver",
     "xsrf"
   ],
-  "flagWords": [
-    "hte"
-  ],
+  "flagWords": ["hte"],
   "ignoreRegExpList": [
     ".*r'",
     "'//.+",

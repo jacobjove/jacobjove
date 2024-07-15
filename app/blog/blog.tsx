@@ -2,7 +2,7 @@
 
 import Typography from '@mui/material/Typography';
 import PostPreview from './PostPreview';
-import * as m from '@paraglide/messages.js';
+import * as m from '@paraglide/messages';
 import PageHeader from '@components/PageHeader';
 
 export interface BlogPost {
