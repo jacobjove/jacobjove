@@ -6,6 +6,9 @@ import ErrorPage from 'next/error';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 
 export interface Essay {
   url: string;
@@ -23,6 +26,14 @@ const EssayPage: NextPage<EssayPageProps> = ({ essay }) => {
   }
   return (
     <>
+      <Box role="presentation" mb={2}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link underline="hover" color="inherit" href="/essays">
+            {'Essays'}
+          </Link>
+          <Typography color="text.primary">&quot;{essay.title}&quot;</Typography>
+        </Breadcrumbs>
+      </Box>
       <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}>
         <Box
           sx={{

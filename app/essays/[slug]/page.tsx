@@ -9,10 +9,15 @@ const ESSAY_DIR = `${process.cwd()}/public/essays`;
 const ESSAY_FILE_EXTENSION = 'pdf';
 
 export const ESSAYS: Record<string, Essay> = {
-  'climate-change': {
-    url: 'https://docs.google.com/document/d/1qK5nqxvm-zw1-EwqyqUOKumJdGoJ4H2LKSRVtCVcToc/edit?usp=sharing',
-    title: 'Climate Change',
-    description: 'An examination of the evidence for climate change',
+  // 'secular-america': {
+  //   url: 'https://docs.google.com/document/d/1rHve2C3Lg7Rj-m21K395UMKU58qATIeM7HrSQakmy7I/edit',
+  //   title: 'On American Religiosity and the Separation of Church and State',
+  //   description: 'Is America a Christian nation or a secular nation?',
+  // },
+  'history-of-science-and-religion': {
+    url: 'https://docs.google.com/document/d/12_DAF9wBjXn_T3GJE6NJJDm62--9HSPnMzplX1Yg7gI/edit',
+    title: 'On the History of Science and Religion',
+    description: 'How did we get here?',
   },
 };
 
@@ -29,7 +34,7 @@ async function getEssay(slug: string): Promise<MaybeEssay> {
   const tempFilename = `${id}.${ESSAY_FILE_EXTENSION}`;
   // const slug = kebabCase(essay.name);
   const dl = new DownloaderHelper(
-    essay.url.replace('edit?usp=sharing', `export?format=${ESSAY_FILE_EXTENSION}`),
+    essay.url.replace(/edit(\?usp=sharing)?/, `export?format=${ESSAY_FILE_EXTENSION}`),
     ESSAY_DIR,
     { fileName: tempFilename }
   );
