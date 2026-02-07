@@ -63,8 +63,3 @@ tsconfig.tsbuildinfo
 !eslint.config.js
 !.prettierignore
 !prettier.config.js
-
-# Yarn
-!.yarnrc.yml
-!.yarn/plugins
-!.yarn/releases

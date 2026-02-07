@@ -1,46 +1,11 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "inlineSources": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext", "esnext.asynciterable"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "rootDir": ".",
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "sourceRoot": "/",
-    "strict": true,
-    "target": "esnext",
-    "paths": {
-      "@app/*": ["app/*"],
-      "@i18n": ["i18n/index.ts"],
-      "@i18n/*": ["i18n/*"],
-      "@pages/*": ["pages/*"],
-      "@paraglide/*": ["i18n/paraglide/*"],
-      "@public/*": ["public/*"],
-      "@messages/*": ["i18n/messages/*"],
-      "@types/*": ["types/*"]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
-  "exclude": ["node_modules", "cypress", "dist", "**/.*/", "**/node_modules"],
-  "include": ["next-env.d.ts", "types", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    ".astro/types.d.ts",
+    ".prettierrc.mjs",
+    "**/*"
+  ],
+  "exclude": [
+    "dist"
+  ]
 }
