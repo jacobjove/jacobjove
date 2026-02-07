@@ -151,7 +151,7 @@ jobs:
       - name: Deploy to server
         uses: jacobjove/deploy-docker-ssh@v0.5.1
         with:
-          host: kfred.duckdns.org
+          host: kfred.dyndns.org
           user: jacob
           source-dir: .
           target-dir: /var/www/${{ steps.dotenv.outputs.domain }}

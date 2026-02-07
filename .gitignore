@@ -1,38 +1,23 @@
-.env
-next-env.d.ts
-.turbo
-.jwt_rsa.pem
-_*
-
-
-# workbox
-**/public/workbox-*.js*
-**/public/sw.js*
-**/public/worker-*.js
-**/public/fallback-*.js
-
-# compiled output
-.next
-/dist
-/tmp
+# build output
+dist/
+# generated types
+.astro/
 
 # dependencies
-node_modules
+node_modules/
 
-# Generated
-resume*.pdf
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Sentry
-.sentryclirc
+# environment variables
+.env
+.env.production
 
-# Sentry
-next.config.original.js
+# macOS-specific files
+.DS_Store
 
-# Sentry
-next.config.wizardcopy.js
-
-# Sentry Config File
-.sentryclirc
-
-# Sentry Config File
-.sentryclirc
+# jetbrains setting folder
+.idea/
