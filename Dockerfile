@@ -3,14 +3,13 @@ ARG PORT=3000
 FROM node:lts-alpine AS base
 ENV PORT=${PORT} CYPRESS_INSTALL_BINARY=0
 # https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine
-RUN apk add --no-cache curl libc6-compat rsync
-RUN corepack enable && corepack prepare pnpm
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+RUN apk add --no-cache curl libc6-compat
 WORKDIR /app
 LABEL org.opencontainers.image.source https://github.com/jacobjove/jacobjove
 
 # Install dependencies only when needed
 FROM base AS deps
+RUN corepack enable && corepack prepare pnpm
 COPY package.json pnpm-lock.yaml .npmr[c] ./
 RUN \
   if [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile; \
