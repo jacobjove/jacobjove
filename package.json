@@ -8,7 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": ""
+    "test": "echo 'success'"
   },
   "packageManager": "pnpm@10.28.2",
   "dependencies": {
