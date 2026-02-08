@@ -92,8 +92,8 @@ jobs:
           key: dotenv-${{ github.sha }}-${{ github.run_id }}
           allow-missing-vars: true
 
-  deploy:
-    name: Deploy
+  deploy-docker:
+    name: Deploy to container registry
     needs: [changed-files]
     runs-on: ubuntu-latest
     strategy:
@@ -110,8 +110,6 @@ jobs:
         uses: falti/dotenv-action@v1.1.2
         with:
           path: .env
-      - name: Build
-        run: pnpm build
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
@@ -150,13 +148,33 @@ jobs:
       #     push: true
       #     platforms: linux/amd64,linux/arm64
       #     tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
+
+  deploy-server:
+    name: Deploy to container registry
+    needs: [changed-files]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
       - name: Deploy to server
         uses: jacobjove/deploy-docker-ssh@v0.5.1
         with:
           host: kfred.dyndns.org
           user: jacob
           source-dir: .
-          target-dir: /var/www/${{ steps.dotenv.outputs.domain }}
+          target-dir: /var/www/jacobjove.org
           files: |
             dist
             .config
