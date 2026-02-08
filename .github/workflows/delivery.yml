@@ -68,7 +68,7 @@ jobs:
       AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
+      GTM_ID: ${{ secrets.GTM_ID }}
       POSTGRES_DB: ${{ vars.POSTGRES_DB }}
       POSTGRES_USER: ${{ vars.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}

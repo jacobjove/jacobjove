@@ -39,7 +39,7 @@ env:
   AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
   AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
+  GTM_ID: ${{ secrets.GTM_ID }}
   POSTGRES_DB: ${{ vars.POSTGRES_DB }}
   POSTGRES_USER: ${{ vars.POSTGRES_USER }}
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -94,7 +94,7 @@ jobs:
           AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
           AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
           AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
-          NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
+          GTM_ID: ${{ secrets.GTM_ID }}
           PORT: ${{ vars.PORT }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
