@@ -1,7 +1,7 @@
-ARG PORT=3000
+ARG PORT=4321
 
 FROM node:lts-alpine AS base
-ENV PORT=${PORT} CYPRESS_INSTALL_BINARY=0
+ENV CYPRESS_INSTALL_BINARY=0
 # https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine
 RUN apk add --no-cache curl libc6-compat
 WORKDIR /app
@@ -23,11 +23,12 @@ RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM base AS runtime
+ARG PORT
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-ENV PORT 3000
-EXPOSE 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=${PORT}
+EXPOSE ${PORT}
+ENV HOSTNAME="0.0.0.0"
 HEALTHCHECK --interval=30s --timeout=7s --start-period=60s --retries=3 \
   CMD ["sh", "-c", "curl --fail http://localhost:${PORT}/ || exit 1"]
 

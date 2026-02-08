@@ -7,13 +7,6 @@ services:
       args:
         - PORT=${PORT}
     environment:
-      NEXT_PUBLIC_BASE_URL: "http://localhost:${PORT}"
+      BASE_URL: "http://localhost:${PORT}"
       NEXTAUTH_URL: "http://localhost:${PORT}"
       REACT_EDITOR: code
-    # user: root # avoid permissions issues with writing in build dir
-    # volumes:
-    #   - .:/app
-    #   # Prevent the container's node_modules and .next folders from being overwritten
-    #   # by the initial mapping of the local directory to /app.
-    #   - ./node_modules:/app/node_modules
-    #   - ./.next:/app/.next

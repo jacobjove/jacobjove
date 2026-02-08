@@ -13,7 +13,7 @@ services:
     <<: *default
     image: ghcr.io/jacobjove/jacobjove:latest
     ports:
-      - ${PORT}:${PORT}
+      - 4321:4321
     environment:
       NEXTAUTH_URL_INTERNAL: "http://front:${PORT}"
       NEXTAUTH_URL: "https://jacobjove.org"
