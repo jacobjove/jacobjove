@@ -150,7 +150,7 @@ jobs:
       #     tags: ghcr.io/jacobjove/jacobjove:${{ github.sha }},ghcr.io/jacobjove/jacobjove:latest
 
   deploy-server:
-    name: Deploy to container registry
+    name: Deploy to server
     needs: [changed-files]
     runs-on: ubuntu-latest
     strategy:
@@ -178,7 +178,6 @@ jobs:
           files: |
             dist
             .config
-            .env
             docker-compose.yml
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_TOWER }}
