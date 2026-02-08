@@ -159,7 +159,6 @@ jobs:
             .env
             docker-compose.yml
             .config
-            scripts
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_TOWER }}
           command: python3 scripts/deploy.py jacobjove --sha latest --token ${{ secrets.GITHUB_TOKEN }}
