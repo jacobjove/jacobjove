@@ -110,6 +110,8 @@ jobs:
         uses: falti/dotenv-action@v1.1.2
         with:
           path: .env
+      - name: Build
+        run: pnpm build
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
@@ -156,12 +158,13 @@ jobs:
           source-dir: .
           target-dir: /var/www/${{ steps.dotenv.outputs.domain }}
           files: |
+            dist
+            .config
             .env
             docker-compose.yml
-            .config
           ssh-port: ${{ secrets.SSH_PORT }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_TOWER }}
-          command: docker compose up -d front
+          command: echo "ok"
         env:
           RELOAD_WEBSERVER: ${{ contains(needs.changed-files.outputs.modified-files, 'nginx.conf') }}
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
