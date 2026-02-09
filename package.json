@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/node": "^9.5.2",
     "@sentry/astro": "^10.38.0",
-    "astro": "^5.16.15"
+    "astro": "^5.17.1"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^8.54.0",
