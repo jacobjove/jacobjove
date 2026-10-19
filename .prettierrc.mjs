@@ -15,10 +15,7 @@ const config = {
   tabWidth: 2,
   trailingComma: 'es5',
   useTabs: false,
-  plugins: [
-    'prettier-plugin-packagejson',
-    'prettier-plugin-astro',
-  ],
+  plugins: ['prettier-plugin-astro'],
 };
 
 export default config;

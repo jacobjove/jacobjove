@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, getEssays } from '../../lib/essays';
+
+// The index is built only once there is something to list.
+export async function getStaticPaths() {
+  const essays = await getEssays();
+  return essays.length ? [{ params: { index: undefined } }] : [];
+}
+
+const essays = await getEssays();
+---
+
+<BaseLayout title="Writing" description="Essays by Jacob Jove.">
+  <h1>Writing</h1>
+  <ul class="essays">
+    {
+      essays.map((essay) => (
+        <li>
+          <a href={`/writing/${essay.id}/`}>{essay.data.title}</a>
+          <p class="meta">{formatDate(essay.data.date)}</p>
+          <p>{essay.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

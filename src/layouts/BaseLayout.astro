@@ -1,67 +1,53 @@
 ---
-// Learn about using Astro layouts:
-// https://docs.astro.build/en/basics/layouts/
-
+import '@fontsource/source-serif-4/400.css';
+import '@fontsource/source-serif-4/400-italic.css';
+import '@fontsource/source-serif-4/600.css';
+import '@fontsource/public-sans/400.css';
+import '../styles/global.css';
 import Footer from '../components/Footer.astro';
-// Component Imports
-import MainHead from '../components/MainHead.astro';
-import Nav from '../components/Nav.astro';
+import Header from '../components/Header.astro';
+import { getEssays } from '../lib/essays';
 
 interface Props {
-  title?: string | undefined;
-  description?: string | undefined;
+  title?: string;
+  description?: string;
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description = 'Jacob Jove: law student at Georgetown, former engineer, building Lychnos.',
+  noindex = false,
+} = Astro.props;
+const pageTitle = title ? `${title} · Jacob Jove` : 'Jacob Jove';
+const hasEssays = (await getEssays()).length > 0;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const portrait = new URL('/assets/portrait.jpeg', Astro.site);
 ---
 
+<!doctype html>
 <html lang="en">
   <head>
-    <MainHead title={title} description={description} />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={portrait} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {hasEssays && <link rel="alternate" type="application/rss+xml" title="Jacob Jove" href="/rss.xml" />}
   </head>
   <body>
-    <div class="stack backgrounds">
-      <Nav />
+    <Header hasEssays={hasEssays} />
+    <main>
       <slot />
-      <Footer />
-    </div>
-
-    <script>
-      // Add “loaded” class once the document has completely loaded.
-      addEventListener('load', () => document.documentElement.classList.add('loaded'));
-    </script>
-
-    <style>
-      :root {
-        --_placeholder-bg: linear-gradient(transparent, transparent);
-        --bg-image-subtle-1: var(--_placeholder-bg);
-        --bg-image-subtle-2: var(--_placeholder-bg);
-        --bg-image-footer: var(--_placeholder-bg);
-        --bg-svg-blend-mode: overlay;
-        --bg-blend-mode: darken;
-        --bg-image-aspect-ratio: 2.25;
-        --bg-scale: 1.68;
-        --bg-aspect-ratio: calc(var(--bg-image-aspect-ratio) / var(--bg-scale));
-        --bg-gradient-size: calc(var(--bg-scale) * 100%);
-      }
-
-      :root.theme-dark {
-        --bg-svg-blend-mode: darken;
-        --bg-blend-mode: lighten;
-      }
-
-      @media (min-width: 50em) {
-        :root {
-          --bg-scale: 1;
-        }
-      }
-
-      .backgrounds {
-        min-height: 100%;
-        isolation: isolate;
-        background:
-					/*base*/ var(--gray-999);
-      }
-    </style>
+    </main>
+    <Footer />
   </body>
 </html>
