@@ -41,13 +41,13 @@
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
-    "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    "**/CVS": true,
     "**/*.pyc": true,
     "**/__pycache__": true,
     "**/.next": false,
-    "**/node_modules": true,
+    "**/node_modules": false,
     "dist": true
   },
   "gitlens.currentLine.scrollable": false,
@@ -59,6 +59,10 @@
   "javascript.autoClosingTags": true,
   "php.suggest.basic": false,
   "php.validate.enable": false,
+  "python.defaultInterpreterPath": "${workspaceFolder}/back/.venv/bin/python",
+  "python.analysis.extraPaths": [
+    "./back/jacobjove"
+  ],
   "search.exclude": {
     "**/.next": true,
     "**/node_modules": true
