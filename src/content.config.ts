@@ -11,11 +11,4 @@ export const collections = {
       draft: z.boolean().default(false),
     }),
   }),
-  pages: defineCollection({
-    loader: glob({ base: './src/content/pages', pattern: '**/*.md' }),
-    schema: z.object({
-      title: z.string(),
-      description: z.string().optional(),
-    }),
-  }),
 };
