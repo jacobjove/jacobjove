@@ -26,15 +26,6 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - name: Ensure the Cloudflare Pages project exists
-        if: github.event_name != 'pull_request'
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages project create jacobjove --production-branch=main
-        # wrangler has no idempotent create; "already exists" is the expected failure after the first run.
-        continue-on-error: true
       - name: Deploy to Cloudflare Pages
         if: github.event_name != 'pull_request'
         uses: cloudflare/wrangler-action@v4
